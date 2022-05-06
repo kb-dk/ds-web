@@ -1,8 +1,10 @@
 # ds-web
 
 ## Project setup
+The project requires node v16.15.0.
+
 ```
-npm install
+npm install 
 ```
 
 ### Compiles and hot-reloads for development
