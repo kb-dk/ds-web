@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent } from "vue"
 import { useSearchResultStore } from "@/store/searchResults"
 import HitCount from "@/components/search/HitCount.vue"
 import SearchResults from "@/components/search/SearchResults.vue"
