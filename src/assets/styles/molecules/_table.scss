@@ -1,0 +1,39 @@
+.table {
+	thead th,
+	tfoot th {
+		font-size: 0.875rem;
+		color: $almost-black-50;
+		border-bottom-width: 1px;
+	}
+	tfoot th, tr:last-of-type {
+		border-bottom: 1px solid $almost-black-50;
+	}
+	tbody th {
+		font-weight: normal;
+	}
+
+	@include media-breakpoint-up(lg) {
+		thead th,
+		tfoot th {
+			white-space: nowrap;
+		}
+	}
+	td p:last-child {
+		margin-bottom: 0;
+	}
+	&.table-borderless {
+		thead th,
+		tfoot th,
+		tbody th {
+			border-bottom-width: 0;
+		}
+		tfoot th, tr:last-of-type {
+			border-bottom: none;
+		}
+	}
+	caption {
+		font-size: 0.75rem;
+	}
+
+}
+

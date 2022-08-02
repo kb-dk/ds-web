@@ -1,0 +1,16 @@
+.tooltip-icon {
+	color: $almost-black-50;
+	&:hover {
+		color: $primary;
+	}
+}
+.tooltip {
+	font-family: noway, sans-serif;
+	.tooltip-header,
+	.tooltip-text {
+		margin-bottom: 0;
+	}
+	.tooltip-header {
+		font-size: $font-size-sm;
+	}
+}

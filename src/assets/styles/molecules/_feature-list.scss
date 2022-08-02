@@ -1,0 +1,228 @@
+.rdl-features {
+	.feature {
+		text-align: center;
+		width: 148px;
+		margin-bottom: 26px;
+		.small {
+			padding-right: 8px;
+			padding-left: 8px;
+		}
+		hr {
+			margin: 12px 0;
+		}
+		.material-icons {
+			font-size: 67px;
+		}
+		.rdl-icons {
+			font-size: 72px;
+		}
+		&.not-included {
+			.rdl-icons,
+			.material-icons {
+				color: $almost-black-50;
+			}
+		}
+	}
+
+	// default fit to the middle of a 3-6-3 content page
+	@media (min-width: 300px) and (max-width: 491px) {
+		.feature {
+			width: 50%;
+		}
+		// border right - 2 features per row
+		// if more than one and not the last and not every 2nd
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(2n)),
+		.feature:nth-last-child(n + 1):first-child,
+		.feature:nth-last-child(n + 1):first-child ~ .feature:not(:nth-child(2n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+
+	@media (min-width: 492px) and (max-width: 639px) {
+		// 3 per row
+		.feature {
+			width: 33.33%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(3n)),
+		.feature:nth-last-child(n + 2):first-child,
+		.feature:nth-last-child(n + 2):first-child ~ .feature:not(:nth-child(3n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+
+	@media (min-width: 640px) and (max-width: 725px) {
+		// 2 per row
+		.feature {
+			width: 50%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(2n)),
+		.feature:nth-last-child(n + 1):first-child,
+		.feature:nth-last-child(n + 1):first-child ~ .feature:not(:nth-child(2n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+	@media (min-width: 726px) and (max-width: 947px) {
+		// 3 per row
+		.feature {
+			width: 33.33%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(3n)),
+		.feature:nth-last-child(n + 2):first-child,
+		.feature:nth-last-child(n + 2):first-child ~ .feature:not(:nth-child(3n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+	@media (min-width: 948px) and (max-width: 989px) {
+		// 4 per row
+		.feature {
+			width: 25%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(4n)),
+		.feature:nth-last-child(n + 3):first-child,
+		.feature:nth-last-child(n + 3):first-child ~ .feature:not(:nth-child(4n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+	@media (min-width: 990px) and (max-width: 1271px) {
+		// 3 per row
+		.feature {
+			width: 33.33%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(3n)),
+		.feature:nth-last-child(n + 2):first-child,
+		.feature:nth-last-child(n + 2):first-child ~ .feature:not(:nth-child(3n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+	@media (min-width: 1272px) {
+		// 4 per row
+		.feature {
+			width: 25%;
+		}
+		.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(4n)),
+		.feature:nth-last-child(n + 3):first-child,
+		.feature:nth-last-child(n + 3):first-child ~ .feature:not(:nth-child(4n)) {
+			border-right: 1px solid $light-gray;
+		}
+		.feature:last-of-type {
+			border-right-color: transparent !important;
+		}
+	}
+}
+
+// border right on 3-9 or 9-3 pages - 6 features per row
+.main-9-3,
+.main-3-9 {
+	.col-lg-9 {
+		.rdl-features {
+			@media (min-width: 640px) and (max-width: 787px) {
+				// 4 per row
+				.feature {
+					width: 25%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(4n)),
+				.feature:nth-last-child(n + 3):first-child,
+				.feature:nth-last-child(n + 3):first-child ~ .feature:not(:nth-child(4n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(4n) {
+					border-right-color: transparent !important;
+				}
+			}
+			@media (min-width: 788px) and (max-width: 953px) {
+				// 5 per row
+				.feature {
+					width: 20%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(5n)),
+				.feature:nth-last-child(n + 4):first-child,
+				.feature:nth-last-child(n + 4):first-child ~ .feature:not(:nth-child(5n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(5n) {
+					border-right-color: transparent !important;
+				}
+			}
+			@media (min-width: 954px) and (max-width: 989px){
+				// 6 per row
+				.feature {
+					width: 16.66%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(6n)),
+				.feature:nth-last-child(n + 5):first-child,
+				.feature:nth-last-child(n + 5):first-child ~ .feature:not(:nth-child(6n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(6n) {
+					border-right-color: transparent !important;
+				}
+			}
+			@media (min-width: 990px) and (max-width: 1058px) {
+				// 4 per row
+				.feature {
+					width: 25%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(4n)),
+				.feature:nth-last-child(n + 3):first-child,
+				.feature:nth-last-child(n + 3):first-child ~ .feature:not(:nth-child(4n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(4n) {
+					border-right-color: transparent !important;
+				}
+			}
+			@media (min-width: 1059px) and (max-width: 1255px) {
+				// 5 per row
+				.feature {
+					width: 20%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(5n)),
+				.feature:nth-last-child(n + 4):first-child,
+				.feature:nth-last-child(n + 4):first-child ~ .feature:not(:nth-child(5n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(5n) {
+					border-right-color: transparent !important;
+				}
+			}
+			@media (min-width: 1256px){
+				// 6 per row
+				.feature {
+					width: 16.66%;
+				}
+				.feature:not(:only-of-type):not(:last-of-type):not(:nth-child(6n)),
+				.feature:nth-last-child(n + 5):first-child,
+				.feature:nth-last-child(n + 5):first-child ~ .feature:not(:nth-child(6n)) {
+					border-right: 1px solid $light-gray;
+				}
+				.feature:last-of-type,
+				.feature:nth-child(6n) {
+					border-right-color: transparent !important;
+				}
+			}
+		}
+	}
+}

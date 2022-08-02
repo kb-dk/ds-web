@@ -1,0 +1,41 @@
+.datatable {
+	.sorting {
+		cursor: pointer;
+	}
+	.sorting-arrows {
+		display: inline-flex;
+		flex-direction: column;
+		color: $almost-black-50;
+		i:last-of-type {
+			margin-top: -10px;
+		}
+	}
+	.sorting_asc .sorting-arrows i:first-of-type,
+	.sorting_desc .sorting-arrows i:last-of-type {
+		color: $primary;
+	}
+}
+.dataTables_paginate {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	color: $primary;
+	margin-top: -2rem;
+	.paginate_button {
+		cursor: pointer;
+		padding: 0.5rem 0.75rem;
+		line-height: 1.25;
+		&.current,
+		&:hover {
+			text-decoration: none;
+		}
+		&.current {
+			color: $almost-black-100;
+		}
+	}
+	.paginate_button.previous,
+	.paginate_button.next {
+		@extend %material-icons;
+		text-decoration: none;
+	}
+}

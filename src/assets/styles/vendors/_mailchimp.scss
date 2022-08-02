@@ -1,0 +1,25 @@
+.mc-embed-signup {
+	h3 {
+		display: flex;
+		i {
+			padding-left: 20px;
+			color: $primary;
+		}
+	}
+	.form-inline .form-input {
+		margin-right: 12px;
+		flex-grow: 1;
+	}
+}
+
+aside {
+	.mc-embed-signup {
+		.form-inline .form-input {
+			margin-right: 0;
+			width: 100%;
+		}
+		.btn {
+			width: 100%;
+		}
+	}
+}

@@ -1,0 +1,13 @@
+.pagination {
+	.page-item .page-link {
+		text-decoration: underline;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	.page-item.active .page-link,
+	.page-item.page-pre .page-link,
+	.page-item.page-next .page-link {
+		text-decoration: none;
+	}
+}
