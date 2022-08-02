@@ -1,16 +1,16 @@
 <template>
-  <div class="hello">{{ msg }}</div>
+	<div class="hello">{{ msg }}</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "SpotlightCampaign",
-  props: {
-    msg: String
-  }
-})
+	name: 'SpotlightCampaign',
+	props: {
+		msg: String,
+	},
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

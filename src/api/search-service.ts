@@ -1,8 +1,8 @@
-import axios from "axios"
-import { StatsServiceClient } from "./SearchAPI"
+import axios from 'axios';
+import { StatsServiceClient } from './SearchAPI';
 
 const axiosStatsInstance = axios.create({
-  baseURL: "/ds-api/query"
-})
+	baseURL: '/ds-api/query',
+});
 
-export const SearchService = new StatsServiceClient(axiosStatsInstance)
+export const SearchService = new StatsServiceClient(axiosStatsInstance);
