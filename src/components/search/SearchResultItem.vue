@@ -2,7 +2,7 @@
   <div class="hit-data">
     <div class="hit-title">
       <span v-for="(title, index) in searchItemData.solr_summary_record.title" :key="index">
-        {{ title }}
+        <router-link :to="{ name: 'Record', params: { id: searchItemData.id } }"> {{ title }}</router-link>
       </span>
     </div>
     <div>

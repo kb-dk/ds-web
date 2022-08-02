@@ -1,11 +1,13 @@
 import { GenericSearchResult } from "./GenericSearchResult"
+import { GenericRecord } from "./GenericRecord"
 
-export interface ServerData {
+export interface ServerResponse {
+  data: ServerDataResponse
   response: SearchResponse
 }
 
-export interface ServerResponse {
-  data: ServerData
+export interface ServerDataResponse {
+  dataFeedElement: Array<GenericRecord>
   response: SearchResponse
 }
 
