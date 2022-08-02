@@ -1,0 +1,63 @@
+input[type="number"] {
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.custom-control.custom-number-input {
+	display: flex;
+	padding-left: 0;
+	align-items: center;
+	button {
+		margin: 0;
+		padding: 10px;
+		line-height: 1;
+	}
+	.custom-number-input-remove {
+		order: 2;
+		border-radius: 2px 0 0 2px;
+	}
+	.custom-number-input-add {
+		order: 4;
+		border-radius: 0 2px 2px 0;
+	}
+	input[type=number] {
+		order: 3;
+		width: 60px;
+		text-align: center;
+		border-top: 1px solid $almost-black-50;
+		border-right-width: 0;
+		border-bottom: 1px solid $almost-black-50;
+		border-left-width: 0;
+	}
+	label {
+		order: 1;
+		margin-right: auto;
+	}
+	&.form-control-sm {
+		button {
+			padding: 4px;
+		}
+		input[type=number] {
+			width: 52px;
+		}
+	}
+	&.form-control-lg {
+		button {
+			padding: 16px;
+		}
+		input[type=number] {
+			width: 76px;
+		}
+	}
+}
+
+.was-validated input.form-control:invalid + button + label {
+	border: 1px solid red;
+	padding: 0 6px;
+}

@@ -1,0 +1,38 @@
+.rdl-system-message {
+	color: $dark-gray;
+	border-top: 2px solid rgba(50, 50, 50, 0.4);
+	border-bottom: 2px solid rgba(50, 50, 50, 0.4);
+	&-accept {
+		background-color: $success;
+	}
+	&-warning {
+		background-color: $warning;
+	}
+	&-info {
+		background-color: white;
+		color: $primary;
+	}
+	&-error {
+		background-color: $danger;
+		color: white;
+	}
+	.col {
+		display: flex;
+		padding: 10px 12px;
+	}
+	p {
+		font-family: noway, sans-serif;
+		margin-bottom: 0;
+		display: inline;
+		margin-left: 18px;
+	}
+	i {
+		font-size: rem-calc(38);
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	.global-header.sub-page .rdl-system-messages-wrapper > div:first-of-type {
+		margin-top: 12px;
+	}
+}

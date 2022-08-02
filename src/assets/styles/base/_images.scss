@@ -1,0 +1,127 @@
+/*------------------------------------*\
+    $MEDIA ELEMENTS
+\*------------------------------------*/
+
+/* Flexible Media */
+img, video, object {
+	max-width: 100%;
+	height: auto;
+}
+
+iframe {
+	margin-bottom: 1.5rem;
+}
+
+figure {
+	margin-bottom: 0;
+	img {
+		margin-bottom: 0;
+	}
+}
+figcaption, .figcaption {
+	font-family: 'noway', sans-serif;
+	color: $almost-black-50;
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+	margin-bottom: .75rem;
+}
+
+.rdl-credits {
+	margin-bottom: 0;
+	display: inline-block;
+	font-family: 'nowaymedium', sans-serif;
+	color: $almost-black-50;
+	font-size: rem-calc(12);
+}
+
+.rdl-image {
+	position: relative;
+	clear: both;
+	@extend %regular-sans-serif;
+	margin-bottom: 24px;
+
+	picture {
+		position: relative;
+		display: inline-table;
+
+		img {
+			margin-bottom: 6px;
+		}
+	}
+
+	figcaption {
+		z-index: 80;
+	}
+
+
+	// offset article images - fixed width images - and pull quotes
+	@include media-breakpoint-up(lg) {
+
+		// see also _grid.scss for offset
+		//&.offset-content-left,
+		//&.offset-content-right {
+		//	margin-bottom: 0;
+		//}
+
+		&.offset-content-left figcaption,
+		&.offset-content-right figcaption {
+			max-width: 60%;
+			position: absolute;
+		}
+
+		&.offset-content-right {
+			align-items: flex-end;
+
+			figcaption {
+				right: 0;
+			}
+		}
+		&.offset-figcaption-left {
+			figcaption {
+				position: absolute;
+				left: calc(-50% - 24px);
+				top: 50%;
+				transform: translateY(-50%);
+				max-width: calc(50% - 12px);
+				margin-right: 24px;
+				margin-bottom: 0;
+			}
+		}
+		&.offset-figcaption-right {
+			figcaption {
+				position: absolute;
+				right: calc(-50% - 12px);
+				top: 50%;
+				transform: translateY(-50%);
+				max-width: calc(50% - 12px);
+				margin-left: 24px;
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	// inline article images - arbitrary width/height images
+	&.article-inline-left,
+	&.article-inline-right {
+		max-width: 60%;
+	}
+	&.article-inline-left {
+		margin-right: $grid-gutter-width;
+		float: left;
+	}
+	&.article-inline-right {
+		margin-left: $grid-gutter-width;
+		float: right;
+	}
+	&.article-inline-center {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		picture {
+			figcaption {
+				display: table-caption;
+				caption-side: bottom;
+			}
+		}
+	}
+}
