@@ -1,0 +1,225 @@
+.progress-wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	@include media-breakpoint-up(lg) {
+		height: auto;
+	}
+	h4 {
+		margin-bottom: 0;
+	}
+}
+
+.progress {
+	margin: 20px 0 72px 30px;
+	width: calc(100% - 60px);
+	@include media-breakpoint-up(lg) {
+		margin: 32px 0 160px 45px;
+		width: calc(100% - 90px);
+	}
+
+	.progress-bar.disabled {
+		background-color: $almost-black-50;
+	}
+}
+
+
+.progress-steps {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	margin-top: -9px;
+	margin-bottom: 0;
+	margin-left: -28px;
+	padding: 0;
+	@include media-breakpoint-up(lg) {
+		margin-top: -27px;
+		margin-left: -52px;
+		padding: revert;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
+		text-align: center;
+		width: 30px;
+		position: relative;
+		@include media-breakpoint-up(lg) {
+			width: 90px;
+		}
+
+		&::before {
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 6px 0 6px 8px;
+			border-color: white white white $light-gray;
+			position: absolute;
+			left: -8px;
+			top: 9px;
+			@include media-breakpoint-up(lg) {
+				left: 6px;
+				top: 27px;
+			}
+		}
+		&:first-of-type::before {
+			border: none;
+		}
+
+		span {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			height: 30px;
+			width: 30px;
+			border-radius: 1px;
+			background-color: $light-gray;
+			border: 6px solid white;
+			color: $almost-black-100;
+			font-size: 0.75rem;
+
+			@include media-breakpoint-up(lg) {
+				height: 66px;
+				width: 66px;
+				font-size: 1.25rem;
+				font-family: nowaymedium;
+				border-radius: 2px;
+				border: 12px solid white;
+				margin-bottom: 23px;
+			}
+		}
+		p {
+			display: none;
+			@include media-breakpoint-up(lg) {
+				display: inline-flex;
+				margin-bottom: 0;
+				line-height: 1.25rem;
+				max-width: 155px;
+				overflow-wrap: break-word;
+			}
+		}
+		a {
+			text-decoration: none;
+			&:hover {
+				color: $almost-black-100;
+			}
+		}
+		i {
+			font-size: 0.75rem;
+			@include media-breakpoint-up(lg) {
+				font-size: rem-calc(24);
+			}
+		}
+
+		&.complete {
+			&::before {
+				border-color: transparent;
+			}
+			span {
+				background-color: $primary;
+				color: white;
+			}
+			& a:hover span {
+				border-color: $primary;
+			}
+			p {
+				font-family: nowayregular-italic;
+			}
+		}
+		&.active {
+			&::before {
+				border: none;
+			}
+			span {
+				background-color: $primary;
+				border-color: $primary;
+				color: white;
+			}
+			p {
+				font-family: nowaymedium;
+			}
+		}
+		&.complete.disabled {
+			span {
+				background-color: $almost-black-50;
+				color: white;
+				&:hover {
+					border-color: white;
+				}
+			}
+		}
+		&:last-of-type {
+			&::before {
+				width: 14px;
+				left: -14px;
+			}
+			span {
+				border-radius: 50%;
+				color: white;
+				border-width: 0;
+			}
+			&:hover {
+				border-color: white;
+			}
+			@include media-breakpoint-up(lg) {
+				&::before {
+					width: 0;
+					left: 6px;
+				}
+				span {
+					border-width: 12px;
+				}
+				i {
+					font-size: 2rem;
+				}
+			}
+		}
+
+		&:last-of-type.complete {
+			&::before {
+				border-color: white;
+				width: 0;
+				left: -8px;
+				@include media-breakpoint-up(lg) {
+					left: 10px;
+				}
+			}
+			&:hover span {
+				border-color: white;
+			}
+		}
+	}
+}
+
+.progress-nav {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: calc(100% + 18px);
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.75rem;
+	color: $almost-black-50;
+	margin: 0 -8px 32px;
+	a {
+		align-items: center;
+		max-width: 50%;
+		line-height: 1rem;
+		text-decoration: none;
+		&:last-of-type {
+			text-align: end;
+		}
+	}
+	i {
+		color: $light-gray;
+	}
+	@include media-breakpoint-up(lg) {
+		display: none;
+	}
+}

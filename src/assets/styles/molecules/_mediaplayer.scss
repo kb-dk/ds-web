@@ -1,0 +1,38 @@
+.rdl-mediaplayer {
+	&.theme-bg {
+		padding: 16px 12px;
+		margin-bottom: 24px;
+	}
+	&.page-video {
+		display: contents;
+		h3, p {
+			display: none;
+		}
+	}
+	h3 {
+		margin-top: 16px;
+	}
+	iframe + .cookie-spot-wrapper {
+		display: none;
+	}
+	iframe[src=""] {
+		+ .cookie-spot-wrapper {
+			display: block;
+			position: absolute;
+			top: -16px;
+			width: 100%;
+		}
+	}
+	&.rdl-mediaplayer-kaltura .embed-responsive-16by9::before {
+		padding-top: calc(56.25% + 34px);
+	}
+}
+.page-container {
+	.rdl-mediaplayer {
+		&.page-video {
+			.embed-responsive {
+				margin: 0 12px 24px;
+			}
+		}
+	}
+}

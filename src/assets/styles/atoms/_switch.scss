@@ -1,0 +1,29 @@
+//bootstrap switch - a.k.a. toggle in PL
+.custom-switch {
+	min-height: 32px;
+	line-height: rem-calc(40);
+	margin-bottom: 20px;
+	.custom-control-label {
+		.tooltip-icon {
+			margin-left: 4px;
+		}
+	}
+	.custom-control-label::before {
+		height: 32px;
+		background-color: $light-gray;
+		border: none;
+		left: -74px;
+		width: 63px;
+	}
+	.custom-control-label::after {
+		top: 10px;
+		left: -68px;
+		background-color: white;
+	}
+	.custom-control-input:checked ~ .custom-control-label::before {
+		background-color: $primary;
+	}
+	.custom-control-input:checked ~ .custom-control-label::after {
+		transform: translateX(32px);
+	}
+}

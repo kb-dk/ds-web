@@ -1,20 +1,20 @@
-import { GenericSearchResult } from "./GenericSearchResult"
-import { GenericRecord } from "./GenericRecord"
+import { GenericSearchResult } from './GenericSearchResult';
+import { GenericRecord } from './GenericRecord';
 
 export interface ServerResponse {
-  data: ServerDataResponse
-  response: SearchResponse
+	data: ServerDataResponse;
+	response: SearchResponse;
 }
 
 export interface ServerDataResponse {
-  dataFeedElement: Array<GenericRecord>
-  response: SearchResponse
+	dataFeedElement: Array<GenericRecord>;
+	response: SearchResponse;
 }
 
 export interface SearchResponse {
-  docs: Array<GenericSearchResult>
-  maxScore: number
-  numFound: number
-  numFoundExact: boolean
-  start: number
+	docs: Array<GenericSearchResult>;
+	maxScore: number;
+	numFound: number;
+	numFoundExact: boolean;
+	start: number;
 }

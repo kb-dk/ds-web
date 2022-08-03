@@ -1,0 +1,19 @@
+.subsite {
+	@include media-breakpoint-up(lg) {
+		.breadcrumb {
+			a {
+				color: white;
+
+				&:hover, &:focus {
+					color: white;
+				}
+			}
+
+			.breadcrumb-item {
+				+ .breadcrumb-item::before {
+					color: white;
+				}
+			}
+		}
+	}
+}

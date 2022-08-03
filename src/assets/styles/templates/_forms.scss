@@ -1,0 +1,11 @@
+.form-actions {
+	display: block;
+	min-height: 40px;
+	margin-bottom: 24px;
+	.btn-prev {
+		float: left;
+	}
+	.btn-next {
+		float: right;
+	}
+}

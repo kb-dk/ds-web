@@ -1,0 +1,284 @@
+$sl-lightbox-transition: opacity 0.5s ease !default;
+$caption-width-md: 60%;
+$caption-width-xxl: 22.64vw;
+$caption-width-xxxl: 20.88vw;
+
+body.lightbox-open {
+	overflow-y: hidden;
+}
+
+.slick-lightbox {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	background: $almost-black-05;
+	-webkit-transition: $sl-lightbox-transition;
+	transition: $sl-lightbox-transition;
+	font-family: 'noway', sans-serif;
+	.slick-loading .slick-list {
+		background-color: transparent;
+	}
+	.slick-prev, .slick-next {
+		display: none !important;
+	}
+	@include media-breakpoint-up(md) {
+		.slick-prev, .slick-next {
+			display: inline-block !important;
+			top: calc(85vh + 8vw); // image container height + % of width to make it responsive
+			bottom: 72px;
+		}
+		.slick-prev {
+			left: auto;
+			right: 180px;
+		}
+		.slick-next {
+			right: 50px;
+		}
+	}
+	@include media-breakpoint-up(xxl) {
+		.slick-prev {
+			bottom: 7vh;
+			top: auto;
+			right: calc(22.64vw - 40px - 42px); // white width - caption padding - button width
+		}
+		.slick-next {
+			top: auto;
+			right: 40px; // caption padding
+			bottom: 7vh;
+		}
+	}
+	@include media-breakpoint-up(xxxl) {
+		.slick-prev {
+			bottom: 7vh;
+			right: calc(20.88vw - 68px - 42px);
+		}
+		.slick-next {
+			right: 68px;
+			bottom: 7vh;
+		}
+	}
+	.slick-slide[aria-hidden=true] .slick-lightbox-slick-caption * {
+		opacity: 0;
+		transition: opacity 0.05s ease-in-out;
+	}
+	.slick-slide[aria-hidden=false] .slick-lightbox-slick-caption * {
+		opacity: 1;
+		transition: opacity 0.35s ease-in-out;
+		transition-delay: 0.35s;
+	}
+}
+.slick-lightbox-hide {
+	opacity: 0;
+	&.slick-lightbox-ie {
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+		filter: alpha(opacity=0);
+	}
+}
+
+.slick-lightbox-hide-init {
+	position: absolute;
+	top: -9999px;
+	opacity: 0;
+	&.slick-lightbox-ie {
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+		filter: alpha(opacity=0);
+	}
+}
+
+.slick-lightbox-inner {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.slick-lightbox-slick-item {
+	overflow: hidden;
+	&::before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+		margin-right: -0.25em;
+	}
+	.slick-caption-bottom &,
+	.slick-lightbox-slick-item {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+}
+
+.slick-lightbox-slick-item-inner {
+	width: 100vw;
+	height: 100vh;
+	max-height: 100vh !important;
+	display: inline-flex;
+	flex-direction: column;
+	position: absolute;
+	@include media-breakpoint-up(xxl) {
+		flex-direction: row;
+	}
+}
+
+.slick-lightbox-slick-img {
+	display: flex;
+	flex-grow: 1;
+	object-fit: contain;
+	padding: 24px 24px 44px 24px;
+	background: $almost-black-05;
+	height: 75vh !important;
+	max-height: 75vh !important;
+	margin-top: 55px;
+	@include media-breakpoint-up(md) {
+		height: 80vh !important;
+		max-height: 80vh !important;
+	}
+	@include media-breakpoint-up(xxl) {
+		max-width: 100vw - $caption-width-xxl;
+		height: 100vh !important;
+		max-height: 100vh !important;
+		margin-top: 0;
+		padding: 30px 20px 50px 20px;
+	}
+	@include media-breakpoint-up(xxxl) {
+		max-width: 100vw - $caption-width-xxxl;
+		padding: 30px 50px 70px 50px;
+	}
+}
+
+.slick-lightbox-slick-caption {
+	display: flex;
+	flex-direction: column-reverse;
+	font-size: 0.875rem;
+	color: $almost-black-50;
+	background: white;
+	padding: 24px;
+	.slide-counter {
+		color: $primary;
+		font-size: 20px;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		width: 100%;
+		height: 42px;
+		.current {
+			font-family: 'nowaymedium', sans-serif;
+		}
+	}
+	@include media-breakpoint-up(md) {
+		padding: 48px 24px 12px 24px;
+		max-width: $caption-width-md;
+		.slide-counter {
+			width: 85px;
+			justify-content: center;
+			position: absolute;
+			top: calc(85vh + 8vw - 21px);
+			right: 90px;
+		}
+	}
+	@include media-breakpoint-up(xxl) {
+		justify-content: center;
+		max-width: $caption-width-xxl;
+		padding: 0 40px 100px;
+		.slide-counter {
+			width: $caption-width-xxl;
+			right: 0;
+			bottom: calc(7vh - 6px);
+			top: auto;
+		}
+	}
+	@include media-breakpoint-up(xxxl) {
+		max-width: $caption-width-xxxl;
+		padding: 0 68px 100px;
+		.slide-counter {
+			max-width: $caption-width-xxxl;
+		}
+	}
+	.rdl-credits {
+		font-family: 'nowaymedium', sans-serif;
+		display: inline-block;
+	}
+}
+
+
+// dots
+.slick-lightbox {
+	.slick-dots {
+		display: none;
+		@include media-breakpoint-up(md) {
+			display: block;
+			top: 81vh;
+		}
+		@include media-breakpoint-up(xxl) {
+			bottom: 30px;
+			top: unset;
+			width: 77.15vw;
+		}
+	}
+	.slick-dots li button:before {
+		font-size: 32px;
+	}
+	.slick-dots li.slick-active button:before {
+		opacity: 1;
+	}
+}
+
+
+// used slick's button css
+.slick-lightbox-close {
+	position: absolute;
+	top: 22px;
+	right: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 24px;
+	width: 46px;
+	line-height: 0;
+	font-size: 0;
+	cursor: pointer;
+	background: transparent;
+	color: transparent;
+	padding: 0;
+	border: none;
+	@include media-breakpoint-up(xxl) {
+		top: 76px;
+		right: 68px;
+	}
+	&:focus {
+		outline: none;
+	}
+	&::before {
+		font-family: 'nowaymedium', sans-serif;
+		font-size: 0.875rem;
+		line-height: 1;
+		color: $primary;
+		content: 'LUK';
+		padding-bottom: 6px;
+	}
+	&::after {
+		@extend %material-icons;
+		font-size: 1rem;
+		content: 'close';
+		color: $primary;
+		padding-bottom: 6px;
+		padding-left: 4px;
+	}
+	&:hover {
+		&::before {
+			border-bottom: 2px solid $primary;
+			padding-bottom: 4px;
+		}
+		&::after {
+			font-size: 1.25rem;
+
+		}
+	}
+}

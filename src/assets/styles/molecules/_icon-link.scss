@@ -1,0 +1,60 @@
+.rdl-icon-link {
+	font-family: 'noway', sans-serif;
+	font-weight: normal;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	span {
+		text-decoration: underline;
+
+	}
+	&:hover, &:focus {
+		text-decoration: none;
+	}
+	&.rdl-icon-link-before {
+		span {
+			padding-left: 0.25rem;
+		}
+	}
+	&.rdl-icon-link-after {
+		span {
+			padding-right: 0.25rem;
+		}
+	}
+	&.rdl-page-link {
+		color: $primary;
+		font-size: 1.25rem;
+		line-height: 1.5rem;
+		span {
+			text-decoration: none;
+			border-bottom: 2px solid transparent;
+			transition: border-bottom-color 0.3s ease-in-out;
+		}
+		&:hover span {
+			border-bottom: 2px solid $primary;
+			transition: border-bottom-color 0.1s ease-in-out;
+		}
+	}
+}
+
+
+.some-link {
+	display: inline-flex;
+	background-color: $primary;
+	color: white;
+	padding: 6px;
+	text-decoration: none;
+	border-radius: 50%;
+	margin-bottom: 24px;
+	&:hover {
+		color: white;
+		text-decoration: none;
+	}
+	i {
+		font-size: rem-calc(18);
+		width: 18px;
+	}
+	+ .some-link {
+		margin-left: 6px;
+	}
+}
