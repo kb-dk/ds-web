@@ -13,12 +13,12 @@ module.exports = {
 	devServer: {
 		proxy: {
 			'^/ds-api/search/': {
-				target: process.env.DEVEL_SERVER_SEARCH,
+				target: process.env.DEVEL_API_SEARCH,
 				pathRewrite: { '^/ds-api/search/': '' },
 				changeOrigin: true,
 			},
 			'^/ds-api/record/': {
-				target: process.env.DEVEL_SERVER_RECORD,
+				target: process.env.DEVEL_API_RECORD,
 				pathRewrite: { '^/ds-api/record/': '' },
 				changeOrigin: true,
 			},
