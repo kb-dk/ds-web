@@ -16,7 +16,9 @@ export const useSearchResultStore = defineStore({
 		currentQuery: '',
 		noHits: false,
 	}),
+
 	getters: {},
+
 	actions: {
 		async getSearchResults(query: string) {
 			try {

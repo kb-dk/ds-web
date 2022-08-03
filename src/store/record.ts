@@ -15,7 +15,6 @@ export const useRecordStore = defineStore({
 			try {
 				const responseData = await APIService.getRecord(id);
 				this.record = responseData.data.dataFeedElement;
-				console.log(responseData);
 			} catch (err) {
 				throw new Error('error');
 			}
