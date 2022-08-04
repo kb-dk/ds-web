@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
-import { SearchService } from '@/api/search-service';
+import { APIService } from '@/api/api-service';
 
 export interface SearchArgs {
 	currentQuery: string;
@@ -16,11 +16,13 @@ export const useSearchResultStore = defineStore({
 		currentQuery: '',
 		noHits: false,
 	}),
+
 	getters: {},
+
 	actions: {
 		async getSearchResults(query: string) {
 			try {
-				const responseData = await SearchService.getSearchResults(query);
+				const responseData = await APIService.getSearchResults(query);
 				this.searchResult = responseData.data.response.docs;
 				this.numFound = responseData.data.response.numFound;
 				if (this.numFound === 0) {

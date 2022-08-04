@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
 		name: 'Search',
 		component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue'),
 	},
+	{
+		path: '/search/record/:id',
+		name: 'Record',
+		component: () => import(/* webpackChunkName: "show record" */ '../views/ShowRecord.vue'),
+	},
 ];
 
 const router = createRouter({
