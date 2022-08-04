@@ -1,0 +1,12 @@
+.rdl-archive-result {
+	margin-bottom: 36px;
+	@include media-breakpoint-up(lg) {
+		margin-bottom: 48px;
+	}
+	h2 {
+		text-transform: uppercase;
+	}
+	p {
+		margin-bottom: 24px;
+	}
+}

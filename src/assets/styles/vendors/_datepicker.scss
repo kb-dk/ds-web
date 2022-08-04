@@ -1,0 +1,131 @@
+//.date-picker is the PL input element
+//
+//.datepicker is the js-generated popup
+
+.date {
+	position: relative;
+}
+
+.datepicker > div {
+	display: block;
+}
+
+.datepicker {
+	@extend %regular-sans-serif;
+	padding: 0;
+	&.dropdown-menu {
+		min-width: 220px;
+		td {
+			padding: 0;
+		}
+	}
+	table {
+		border-collapse: collapse;
+		text-align: center;
+	}
+	td, th {
+		width: 3rem;
+		height: 3rem;
+		margin: 0;
+		padding: 0;
+		border: none;
+		font-size: 1rem;
+		&.active {
+			background-color: $dark-blue-05 !important;
+		}
+	}
+	td.active.day,
+	td.active.year,
+	td span.month:hover,
+	td span.year:hover,
+	td span.decade:hover,
+	td.day:hover,
+	.datepicker-switch:hover,
+	.focused {
+		cursor: pointer;
+		background-color: $dark-blue-05;
+		color: $primary;
+	}
+	td.disabled.day {
+		color: $light-gray;
+	}
+	td.today {
+		background-color: $sky-blue-50;
+	}
+	.prev:hover,
+	.next:hover {
+		cursor: pointer;
+		background-color: $dark-blue-05;
+	}
+	.focused {
+
+	}
+	th {
+		@extend %medium-sans-serif;
+		font-weight: normal;
+		&.prev, &.next {
+			position: relative;
+			color: transparent;
+			&::before {
+				content: "";
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				background-image: url('../../assets/images/icon-chevron.svg');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: .75rem;
+				transform: rotate(90deg);
+			}
+		}
+		&.next {
+			&::before {
+				transform: rotate(-90deg);
+			}
+		}
+	}
+	.datepicker-switch {
+		color: $primary;
+	}
+	span.active {
+		background-color: $dark-blue-05 !important;
+	}
+	.datepicker-months,
+	.datepicker-years,
+	.datepicker-decades {
+		table {
+			width: 220px;
+		}
+		span {
+			display: inline-block;
+			width: 25%;
+			min-width: 3rem;
+			padding: 10px;
+			margin: 0;
+		}
+	}
+}
+
+.date-picker {
+	label.form-required {
+		&::after {
+			display: inline;
+			content: " *";
+		}
+	}
+}
+
+
+// large input
+.date-picker.date-picker-lg {
+	label {
+		transform: translateY(18px);
+	}
+	&.active {
+		label {
+			transform: translateY(-15px) scale(0.75);
+		}
+	}
+}

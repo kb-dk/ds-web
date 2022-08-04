@@ -1,0 +1,292 @@
+// main navigation wrapper
+.rdl-main-navigation {
+	display: flex;
+	flex-direction: column;
+	@include media-breakpoint-up(lg) {
+		align-items: flex-end;
+	}
+}
+
+// general styling for _LINKS_ (nav-items) in mobile navigation and desktop left navigation (both standard and sub)
+.rdl-left-navigation,
+.rdl-primary-nav,
+.rdl-secondary-nav {
+	list-style-type: none;
+	padding-left: 24px;
+	margin: 0;
+	@extend %regular-sans-serif;
+	ul {
+		padding-inline-start: 0;
+	}
+	li {
+		list-style-type: none;
+	}
+	a {
+		text-decoration: none;
+		color: $primary;
+		display: inline-block;
+		width: calc(100% - 56px);
+	}
+	.icon-button {
+		color: $primary;
+		margin-right: 10px;
+		&[aria-expanded='true'] i::after {
+			content: 'remove';
+		}
+		&[aria-expanded='false'] i::after {
+			content: 'add';
+		}
+	}
+	.nav-item {
+		letter-spacing: -0.0125rem;
+	}
+	// level 1
+	.nav-item.level-1 {
+		text-transform: uppercase;
+		font-family: 'nowaymedium', sans-serif;
+		font-size: 1.25rem;
+		line-height: 1.5rem;
+		padding-top: 13px;
+		padding-bottom: 13px;
+	}
+
+	// level 2
+	.nav-item.level-2 {
+		padding-left: 9px;
+		font-size: 1.25rem;
+		line-height: 1.375rem;
+		padding-top: 13px;
+		padding-bottom: 13px;
+		&.active {
+			font-family: 'nowayregular-italic', sans-serif;
+		}
+		&.current {
+			font-family: 'nowaymedium-italic', sans-serif;
+		}
+	}
+
+	// level 3
+	.nav-item.level-3 {
+		padding-left: 24px;
+		font-size: 1rem;
+		line-height: 1.25rem;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		&.active {
+			font-family: 'nowayregular-italic', sans-serif;
+		}
+		&.current {
+			font-family: 'nowaymedium-italic', sans-serif;
+		}
+	}
+
+	// level 4
+	.nav-item.level-4 {
+		padding-left: 44px;
+		font-size: 1rem;
+		line-height: 1.25rem;
+		padding-top: 6px;
+		padding-bottom: 6px;
+		&.active {
+			font-family: 'nowayregular-italic', sans-serif;
+		}
+		&.current {
+			font-family: 'nowaymedium-italic', sans-serif;
+		}
+	}
+}
+
+
+// Header navigation on desktop and full mobile navigation
+.rdl-primary-nav,
+.rdl-secondary-nav {
+	.login.nav-item.level-1 {
+		i {
+			padding-left: 4px;
+			font-size: 14px;
+		}
+	}
+	@include media-breakpoint-up(lg) {
+		padding-left: 0;
+		ul {
+			display: none;
+		}
+		li {
+			display: inline-flex;
+		}
+		button {
+			display: none;
+		}
+		.nav-item.level-1 {
+			display: table;
+			white-space: nowrap;
+			padding: 0;
+			margin-top: 13px;
+			margin-bottom: 10px;
+			border-bottom: 2px solid transparent;
+			transition: border-bottom-color 0.3s ease-in-out;
+			&.active, &.current {
+				border-bottom: 2px solid $primary;
+			}
+			&:hover {
+				border-bottom: 2px solid $primary;
+				transition: border-bottom-color 0.1s ease-in-out;
+			}
+		}
+		.login.nav-item.level-1 {
+			display: flex;
+			align-items: center;
+			width: 100%;
+		}
+	}
+}
+
+.rdl-primary-nav {
+	padding-top: 24px;
+	padding-bottom: 12px;
+	@include media-breakpoint-up(lg) {
+		order: 2;
+		padding-top: 0;
+		padding-bottom: 0;
+		.nav-item.level-1 {
+			margin-right: 8px;
+			margin-left: 8px;
+			font-size: 1rem;
+		}
+		li:last-child {
+			height: 54px;
+			.search-button {
+				align-self: center;
+			}
+		}
+	}
+	@include media-breakpoint-up(xl) {
+		.nav-item.level-1 {
+			padding-bottom: 2px;
+			font-size: 1.25rem;
+		}
+		li:last-child {
+			height: 51px;
+		}
+	}
+}
+
+.rdl-secondary-nav {
+	padding-top: 36px;
+	padding-bottom: 24px;
+	@include media-breakpoint-up(lg) {
+		padding-top: 0;
+		padding-bottom: 0;
+		.nav-item.level-1 {
+			line-height: 1.25rem;
+			margin-right: 4px;
+			margin-left: 4px;
+			padding-bottom: 0;
+			font-size: 0.75rem;
+		}
+	}
+	@include media-breakpoint-up(xl) {
+		padding-bottom: 22px;
+
+		.nav-item.level-1 {
+			line-height: 1.5rem;
+			font-size: 0.875rem;
+		}
+	}
+	&.no-secondary-nav {
+		@include media-breakpoint-up(lg) {
+			height: 46px;
+		}
+		@include media-breakpoint-up(xl) {
+			height: 65px;
+		}
+	}
+}
+
+
+
+
+// Desktop left navigation (standard and sub) and mobile page navigation
+.rdl-left-navigation {
+	padding-left: 0;
+	.level-1-back {
+		display: flex;
+		align-items: center;
+		i {
+			color: $primary;
+		}
+	}
+	.nav-item.level-1 {
+		margin-bottom: 0;
+		text-transform: none;
+	}
+	a {
+		width: calc(100% - 46px);
+		text-decoration: transparent underline;
+		transition: text-decoration-color 0.3s ease-in-out;
+	}
+	.icon-button {
+		margin-right: 0;
+	}
+	a:hover {
+		text-decoration: underline $primary;
+		transition: text-decoration-color 0.1s ease-in-out;
+	}
+
+
+	// sub navigation (desktop) / page navigation (mobile)
+	&[data-type="sub-nav"] {
+		ul {
+			margin-bottom: 0;
+		}
+		@include media-breakpoint-down(search) {
+			.level-1-back,
+			&[data-levels="1"],
+			&[data-levels="2"] {
+				display: none;
+			}
+			a {
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: none;
+			}
+			.nav-item.level-2 {
+				padding-left: 0;
+			}
+			.nav-item.level-3 {
+				padding-left: 12px;
+			}
+			.dropdown-edge {
+				border-bottom: 24px solid white;
+				margin-left: -24px;
+				margin-bottom: -12px;
+				display: none;
+			}
+			.collapse.show + .dropdown-edge {
+				display: block;
+			}
+		}
+
+		@include media-breakpoint-up(lg) {
+			button {
+				display: none;
+			}
+			.sub-nav-show {
+				display: block;
+			}
+		}
+	}
+}
+
+
+
+
+
+// ABC anchor nav
+.rdl-anchor-nav {
+	margin-bottom: 36px;
+	@include media-breakpoint-up(xl) {
+		margin-bottom: 48px;
+	}
+}

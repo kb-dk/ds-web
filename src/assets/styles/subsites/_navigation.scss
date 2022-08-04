@@ -1,0 +1,65 @@
+.subsite {
+	//
+	// Main navigation in header and mobile navigation
+	//
+	.rdl-primary-nav a {
+		color: white;
+	}
+	.rdl-primary-nav {
+		background-color: $primary;
+	}
+	.rdl-secondary-nav {
+		background-color: $sky-blue-50;
+		&.no-secondary-nav {
+			@include media-breakpoint-up(lg) {
+				height: 47px;
+			}
+			@include media-breakpoint-up(xl) {
+				height: 71px;
+			}
+		}
+	}
+	.rdl-primary-nav .icon-button {
+		color: white;
+	}
+	@include media-breakpoint-up(lg) {
+		.rdl-primary-nav,
+		.rdl-secondary-nav {
+			background-color: transparent;
+		}
+		.rdl-primary-nav {
+			.nav-item.level-1 {
+				&.active, &.current, &:hover {
+					border-bottom-color: white;
+				}
+			}
+		}
+	}
+	.primary.header-edge {
+		border-bottom: 20px solid transparent;
+		order: 0;
+		margin-bottom: 0;
+		border-bottom-color: $sky-blue-50;
+	}
+	.dropdown-edge {
+		border-right-color: $primary;
+	}
+
+	//
+	// Sub navigation
+	//
+	.rdl-left-navigation[data-type="sub-nav"] {
+		background-color: $primary;
+		.nav-item,
+		.material-icons {
+			color: white;
+		}
+		@include media-breakpoint-up(lg) {
+			background-color: transparent;
+			.nav-item,
+			.material-icons {
+				color: $primary;
+			}
+		}
+	}
+}

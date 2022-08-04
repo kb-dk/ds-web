@@ -1,0 +1,21 @@
+body {
+	overflow-x: hidden;
+}
+
+@include media-breakpoint-up(search) {
+	.d-search-none {
+		display: none;
+	}
+	.d-search-inline-flex {
+		display: inline-flex;
+	}
+}
+
+@include media-breakpoint-up(xxxl) {
+	.d-xxxl-none {
+		display: none;
+	}
+	.d-xxxl-block {
+		display: block;
+	}
+}

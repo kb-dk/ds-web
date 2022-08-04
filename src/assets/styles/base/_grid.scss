@@ -1,0 +1,152 @@
+// Special custom grid styling
+
+
+.container-fluid {
+	padding: 0;
+	.container {
+		padding-right: 24px;
+		padding-left: 24px;
+	}
+}
+
+
+
+// Header vertical blue divider line on subpages
+//
+// Add extra padding to left col and main col on sub pages with the "blue divider line" in header
+.sub-page.two-columns {
+	@include media-breakpoint-up(lg) {
+		// first left col (navigation col)
+		main > section > .container > .row > .col-3:first-child > *,
+		main > section > .container > .row > .col-lg-3:first-child > *{
+			margin-right: 36px;
+		}
+		// any size col after the first left col (main col) .. except
+		main > section > .container > .row > .col-3 + [class^="col"] > *,
+		main > section > .container > .row > .col-lg-3 + [class^="col"] > *{
+			margin-left: 12px;
+		}
+		// ..except any nested rows inside the
+		main > section > .container > .row > .col-3 + [class^="col"] .row,
+		main > section > .container > .row > .col-lg-3 + [class^="col"] .row {
+			margin-left: 0;
+		}
+	}
+}
+
+
+// Nested containers
+//
+// extra page-container class to cater for special needs re. nested containers
+.page-container {
+	padding-right: 24px;
+	padding-left: 24px;
+
+	// content grids for special pages - (F-pages)
+	.content-grid-container {
+		padding: 0;
+	}
+
+	// adding extra padding to columns with the "blue divider line" in header
+	@include media-breakpoint-up(lg) {
+		.nav-col {
+			padding-right: 48px;
+		}
+		.main-col {
+			padding-left: 24px;
+		}
+	}
+}
+
+
+
+// Full width containers
+//
+// offsetting full width containers to 100% of viewport width even inside main col
+header .container-fluid {
+	width: 100vw;
+
+	@include media-breakpoint-up(lg) {
+		margin-left: calc(-50vw + 50%);
+	}
+}
+
+.page-container .container-fluid {
+	width: 100vw;
+	margin-left: -24px;
+
+	@include media-breakpoint-up(lg) {
+		margin-left: calc(-50vw + 50%);
+	}
+}
+.main-12 {
+	.page-container .container-fluid {
+		@include media-breakpoint-up(lg) {
+			margin-left: calc(-50vw + 50%);
+		}
+	}
+}
+.main-3-6-3 {
+	.page-container .container-fluid {
+		@include media-breakpoint-up(lg) {
+			margin-left: calc(-50vw + 50% - 8px);
+		}
+		.container {
+			padding-right: 24px;
+			padding-left: 24px;
+		}
+
+		@include media-breakpoint-up(xxl) {
+			.container {
+				padding-right: 24px;
+				padding-left: 24px;
+			}
+		}
+	}
+	.main-col .col-md-8 {
+		z-index: 2;
+	}
+}
+.main-3-9 {
+	.page-container .container-fluid {
+		@include media-breakpoint-up(lg) {
+			margin-left: calc(-50vw + 33.33% - 12px);
+		}
+	}
+}
+.main-9-3 {
+	.page-container .container-fluid {
+		@include media-breakpoint-up(lg) {
+			margin-left: calc(-50vw + 66.66%);
+		}
+	}
+	.main-col.col-lg-9 {
+		z-index: 2;
+	}
+}
+
+
+
+// Content
+//
+// offsetting content on article pages - mainly used for images (and quotes to come)
+.offset-content-left,
+.offset-content-right {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+@include media-breakpoint-up(lg) {
+	.offset-content-right {
+		float: right;
+		margin-left: 24px;
+		margin-right: calc(-50% - 24px);
+		max-width: calc(83.33333% - 4px);
+	}
+	.offset-content-left {
+		float: left;
+		margin-right: 24px;
+		margin-left: calc(-50% - 24px);
+		max-width: calc(83.33333% - 4px);
+	}
+}

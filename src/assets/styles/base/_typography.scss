@@ -1,0 +1,151 @@
+html, body {
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	height: 100%;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
+	text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
+}
+body {
+	@extend %regular-serif;
+	letter-spacing: rem-calc(-0.2);
+}
+
+.display-1, .display-2, .display-3, .display-4, .rdl-feature h2 {
+	@extend %display;
+	margin-bottom: 1rem;
+}
+
+// serif text
+.serif {
+	@extend %regular-serif;
+}
+// strong serif
+b, strong, dt {
+	@extend %strong-serif;
+}
+// italic serif
+em, .sans-serif em, table em {
+	@extend %italic-regular-serif;
+}
+
+// sans serif text
+.sans-serif__medium, .sans-serif__medium strong, .sans-serif__medium b, table strong, table b, .sans-serif dt, aside strong, aside b, .lead {
+
+	@extend %medium-sans-serif;
+}
+// sans serif
+.sans-serif, h1, .h1,
+input, label, button, select, aside, .invalid-feedback,
+table, .rdl-mediaplayer, .rdl-spot, .rdl-card, .pagination, .discovery-nav, .tooltip, .progress-steps, legend, .rdl-series, .rdl-event-months {
+	@extend %regular-sans-serif;
+}
+// italic sans serif
+
+// strong italic sans serif
+.pull-quote blockquote em {
+	@extend %strong-italic-sans-serif;
+}
+
+// headers
+h2, .h2, h3, .h3, h4, .h4 {
+	@extend %medium-sans-serif;
+	line-height: rem-calc(24);
+	margin-bottom: 12px;
+}
+h2, .h2 {
+	margin-bottom: 16px;
+}
+
+h1 a, h2 a, h3 a, h4 a {
+	text-decoration: none;
+	color: $primary;
+}
+
+h4, .h4 {
+	letter-spacing: rem-calc(-0.18);
+}
+
+h5, .h5 {
+	font-size: rem-calc(15);
+	line-height: rem-calc(18);
+	text-transform: uppercase;
+}
+
+small, .small {
+	letter-spacing: rem-calc(-0.18);
+	font-family: 'noway', sans-serif;
+	font-weight: normal;
+	color: $almost-black-50;
+	line-height: rem-calc(18);
+	display: inline-block;
+	a {
+		color: $almost-black-50;
+	}
+}
+
+.theme-bg small,
+.theme-bg .small {
+	color: $dark-gray;
+	a {
+		color: $dark-gray;
+	}
+}
+
+time {
+	font-family: 'noway', sans-serif;
+	font-weight: normal;
+}
+
+blockquote {
+	@extend %regular-serif;
+	font-style: italic;
+	position: relative;
+	padding-left: 27px;
+	display: flex;
+	flex-direction: column;
+	margin: 32px 0 36px;
+	&::before {
+		content:"";
+		position: absolute;
+		width: 3px;
+		height: 100%;
+		left: 12px;
+		background: $sky-blue-50;
+	}
+}
+
+abbr {
+	border-bottom: 1px dotted;
+	cursor: help;
+	z-index: 99999;
+}
+
+legend {
+	font-size: 1rem;
+	margin-bottom: 0.75rem;
+}
+
+[itemprop="telephone"] a {
+	text-decoration: none;
+}
+
+.rdl-series {
+	font-size: rem-calc(14);
+	margin-bottom: 16px;
+	p, a {
+		display: inline-block;
+		margin-bottom: 0;
+	}
+}
+
+.rdl-block-text {
+	margin-bottom: 16px;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	p {
+		margin-bottom: 0;
+	}
+}
