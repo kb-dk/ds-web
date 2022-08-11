@@ -1,0 +1,40 @@
+#search {
+	display: flex;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 70px;
+	.btn {
+		width: auto;
+		margin-bottom: 0;
+		padding: 0;
+		color: $body-color;
+		background-color: white;
+		.material-icons {
+			padding: 0;
+			margin-right: 20px;
+		}
+	}
+
+	.rdl-advanced-search {
+		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
+		border-radius: 2px;
+		width: 100%;
+		height: 55px;
+		background-color: white;
+	}
+
+	.rdl-advanced-search-input {
+		display: flex;
+		align-items: center;
+
+		margin-bottom: 0;
+		border: none;
+
+		input {
+			border: none;
+			font-size: $font-size-xs;
+		}
+	}
+	
+}
