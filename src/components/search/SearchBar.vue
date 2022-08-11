@@ -75,7 +75,6 @@
 </template>
 
 <script lang="ts">
-import { useSearchResultStore } from '@/store/searchResults';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -84,10 +83,6 @@ export default defineComponent({
 		return {
 			searchQuery: '',
 		};
-	},
-	setup() {
-		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
 	},
 	methods: {
 		search: function () {
