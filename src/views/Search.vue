@@ -30,6 +30,7 @@ export default defineComponent({
 		return { searchResultStore };
 	},
 	created() {
+		// Watch query params and update search results if anything changes 
 		this.$watch(
 			() => this.$route.query.term,
 			(newTerm: string, prevTerm: string) => {
