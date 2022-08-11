@@ -24,4 +24,16 @@ module.exports = {
 			},
 		},
 	},
+	css: {
+		loaderOptions: {
+		  sass: {
+			additionalData: `
+				@import "bootstrap/scss/functions.scss";
+				@import "bootstrap/scss/mixins.scss";
+				@import "bootstrap/scss/variables.scss";
+				@import "@/assets/styles/generic/custom-variables.scss";
+			`
+		  }
+		}
+	  }
 };
