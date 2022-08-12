@@ -30,12 +30,15 @@ export default defineComponent({
 		return { searchResultStore };
 	},
 	created() {
-		// Watch query params and update search results if anything changes 
+		// Set initial search term from query param
+		this.searchResultStore.getSearchResults(this.$route.query.term as string);
+
+		// Watch the 'term' param and update search results if it changes
 		this.$watch(
 			() => this.$route.query.term,
 			(newTerm: string, prevTerm: string) => {
 				if (newTerm !== prevTerm) {
-					this.searchResultStore.getSearchResults(newTerm as string);
+					this.searchResultStore.getSearchResults(newTerm);
 				}
 			},
 		);
@@ -47,10 +50,6 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
-.search-box {
-	width: 100%;
-}
-
 .hit-count {
 	text-align: left;
 	padding: 0 200px 0 200px;
