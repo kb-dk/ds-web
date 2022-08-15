@@ -5,7 +5,11 @@
 	>
 		<div class="header-bg-wrapper theme-bg">
 			<div class="container">
-				<div class="row justify-content-between">
+				<!-- TODO: remove mock height when logo works -->
+				<div
+					class="row justify-content-between"
+					style="height: 95px"
+				>
 					<div class="col logo-col">
 						<a
 							href="http://www.kb.dk"
@@ -72,11 +76,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="row rdl-system-messages-wrapper">
-					<div class="header-edge d-inline-block d-lg-none"></div>
-				</div>
+				<div class="row rdl-system-messages-wrapper"></div>
 				<div
-					class="rdl-main-search collapse show"
+					class="rdl-main-search collapse"
 					id="mainSearch"
 					data-parent="#mainHeader"
 					style=""
@@ -3416,6 +3418,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="header-edge d-none d-lg-inline-block"></div>
 	</header>
 </template>
 <script lang="ts">
