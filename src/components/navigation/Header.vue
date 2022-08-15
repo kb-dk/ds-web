@@ -23,12 +23,12 @@
 						role="search"
 					>
 						<button
-							id="mobileMainSearchButton"
+							id="mainSearchButton"
 							type="button"
-							class="icon-button search-button d-lg-none"
+							class="d-none d-lg-inline-flex search-button"
 							data-toggle="collapse"
 							data-target="#mainSearch"
-							aria-expanded="true"
+							aria-expanded="false"
 							aria-controls="mainSearch"
 							aria-label=""
 						>
