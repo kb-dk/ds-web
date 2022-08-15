@@ -39,21 +39,21 @@
         var datepickerLang = document.documentElement.lang;
 
         // date picker settings
-        $('.date-picker input').datepicker({
-            language: datepickerLang,
-            autoclose: true,
-            orientation: "bottom auto",
-            maxViewMode: 3,
-            weekStart: 1
-        })
-            .on('show', function(){
-                $(this).parent().addClass('active');
-            })
-            .on('hide', function(){
-                if ($(this).val() === '') {
-                    $(this).parent().removeClass('active');
-                }
-            });
+        // $('.date-picker input').datepicker({
+        //     language: datepickerLang,
+        //     autoclose: true,
+        //     orientation: "bottom auto",
+        //     maxViewMode: 3,
+        //     weekStart: 1
+        // })
+        //     .on('show', function(){
+        //         $(this).parent().addClass('active');
+        //     })
+        //     .on('hide', function(){
+        //         if ($(this).val() === '') {
+        //             $(this).parent().removeClass('active');
+        //         }
+        //     });
 
 
         // jump to search input
@@ -83,56 +83,56 @@
         }
         window.addEventListener('resize', resizeListener);
 
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        // $(function () {
+        //     $('[data-toggle="tooltip"]').tooltip();
+        // });
 
-        $.fn.dataTable.ext.order.intl = function ( locales, options ) {
-            if ( window.Intl ) {
-                var collator = new window.Intl.Collator( locales, options );
-                var types = $.fn.dataTable.ext.type;
+        // $.fn.dataTable.ext.order.intl = function ( locales, options ) {
+        //     if ( window.Intl ) {
+        //         var collator = new window.Intl.Collator( locales, options );
+        //         var types = $.fn.dataTable.ext.type;
 
-                delete types.order['string-pre'];
-                types.order['string-asc'] = collator.compare;
-                types.order['string-desc'] = function ( a, b ) {
-                    return collator.compare( a, b ) * -1;
-                }
-            }
-        };
+        //         delete types.order['string-pre'];
+        //         types.order['string-asc'] = collator.compare;
+        //         types.order['string-desc'] = function ( a, b ) {
+        //             return collator.compare( a, b ) * -1;
+        //         }
+        //     }
+        // };
 
-        $.fn.dataTable.ext.order.intl('da', {'numeric': true} );
+        // $.fn.dataTable.ext.order.intl('da', {'numeric': true} );
 
-        $('table.datatable').each(function(){
-            let paging = $(this).data('paging'),
-                pageLength = $(this).data('pagelenght'),
-                ordering = $(this).data('ordering'),
-                sortAscending = $(this).data('sortascending'),
-                sortDescending = $(this).data('sortdescending');
+        // $('table.datatable').each(function(){
+        //     let paging = $(this).data('paging'),
+        //         pageLength = $(this).data('pagelenght'),
+        //         ordering = $(this).data('ordering'),
+        //         sortAscending = $(this).data('sortascending'),
+        //         sortDescending = $(this).data('sortdescending');
 
-            $(this).DataTable({
-                searching: false,
-                lengthChange: false,
-                order: [],
-                ordering: ordering,
-                info: false,
-                paging: paging,
-                pageLength: pageLength,
-                language: {
-                    paginate: {
-                        previous: 'navigate_before',
-                        next: 'navigate_next'
-                    },
-                    aria: {
-                        sortAscending: sortAscending,
-                        sortDescending: sortDescending
-                    }
-                },
-                columnDefs: [ {
-                    ariaTitle: ' ',
-                    targets: '_all'
-                } ]
-            });
-        })
+        //     $(this).DataTable({
+        //         searching: false,
+        //         lengthChange: false,
+        //         order: [],
+        //         ordering: ordering,
+        //         info: false,
+        //         paging: paging,
+        //         pageLength: pageLength,
+        //         language: {
+        //             paginate: {
+        //                 previous: 'navigate_before',
+        //                 next: 'navigate_next'
+        //             },
+        //             aria: {
+        //                 sortAscending: sortAscending,
+        //                 sortDescending: sortDescending
+        //             }
+        //         },
+        //         columnDefs: [ {
+        //             ariaTitle: ' ',
+        //             targets: '_all'
+        //         } ]
+        //     });
+        // })
 
 
 
