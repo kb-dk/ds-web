@@ -11,6 +11,7 @@ import './assets/js/slick.js';
 import './assets/js/choices.js';
 import './assets/js/popper.js';
 import './assets/js/bootstrap.js';
+import './assets/js/bootstrap-select';
 import './assets/js/jquery.dataTables.js';
 import './assets/js/app.js';
 
