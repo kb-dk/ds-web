@@ -7,9 +7,7 @@ import router from './router';
 /* Stylesheets */
 import './assets/styles/style.scss';
 
-/* Javscript */
-import './assets/js/jquery.js';
-import './assets/js/jquery.dataTables.js';
+/* Javascript */
 import './assets/js/slick.js';
 import './assets/js/choices.js';
 import './assets/js/popper.js';
