@@ -14,7 +14,8 @@
 			height: 22px;
 			width: 96px;
 			@include media-breakpoint-up(lg) {
-				background-image: url('../../assets/images/logo-digital.svg');
+				// TODO: Uncomment this once svgs are working
+				// background-image: url('../../images/logo-digital.svg');
 			}
 		}
 		.subsite-logo {

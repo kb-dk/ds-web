@@ -1,0 +1,13 @@
+.rdl-advanced-search-input {
+	display: flex;
+	background-color: white;
+
+	.form-control {
+		max-width: 20%;
+
+	}
+
+	button[type="submit"] {
+		margin-left: auto;
+	}
+}

@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<div class="search-box">
-			<SearchBox @search-triggered="search" />
-		</div>
 		<div class="hit-count">
 			<HitCount
 				:hit-count="searchResultStore.numFound"
@@ -20,24 +17,31 @@ import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResults';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBox from '@/components/search/SearchBox.vue';
 
 export default defineComponent({
 	name: 'Search',
 	components: {
 		HitCount,
 		SearchResults,
-		SearchBox,
 	},
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore };
 	},
-	methods: {
-		search: function (query: string) {
-			this.searchResultStore.getSearchResults(query);
-		},
+	created() {
+		// Set initial search term from query param
+		this.searchResultStore.getSearchResults(this.$route.query.term as string);
+
+		// Watch the 'term' param and update search results if it changes
+		this.$watch(
+			() => this.$route.query.term,
+			(newTerm: string, prevTerm: string) => {
+				if (newTerm !== prevTerm) {
+					this.searchResultStore.getSearchResults(newTerm);
+				}
+			},
+		);
 	},
 });
 </script>
@@ -46,10 +50,6 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
-.search-box {
-	width: 100%;
-}
-
 .hit-count {
 	text-align: left;
 	padding: 0 200px 0 200px;
