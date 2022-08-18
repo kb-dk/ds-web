@@ -16,6 +16,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
+    "openseadragon": "^3.1.0",
     "pinia": "^2.0.13",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
@@ -24,6 +25,7 @@
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/openseadragon": "^3.0.3",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
