@@ -3,7 +3,7 @@
 		<img
 			class="image-item"
 			:src="imgSrc"
-			alt="cover image"
+			:alt="altTxt"
 		/>
 	</figure>
 </template>
@@ -15,6 +15,7 @@ export default defineComponent({
 	name: 'ImageItem',
 	props: {
 		imgSrc: String,
+		altTxt: String,
 	},
 });
 </script>

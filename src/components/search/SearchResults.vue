@@ -6,7 +6,10 @@
 	>
 		<SearchResultItem :search-item-data="res" />
 		<div class="hit-img">
-			<ImageItem :img-src="getImgServerSrcURL(res.pages[0])" />
+			<ImageItem
+				:img-src="getImgServerSrcURL(res)"
+				:alt-txt="getAltTxt(res)"
+			/>
 		</div>
 		<hr />
 	</div>
@@ -30,8 +33,13 @@ export default defineComponent({
 	},
 
 	methods: {
-		getImgServerSrcURL(url: string) {
-			return url.replace(/.info.json$/, '/full/!250,150/0/native.jpg');
+		getImgServerSrcURL(res: GenericSearchResult) {
+			return res.pages && res.pages.length > 0
+				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
+				: require('@/assets/images/No-Image-Placeholder.svg.png');
+		},
+		getAltTxt(res: GenericSearchResult) {
+			return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		},
 	},
 });
