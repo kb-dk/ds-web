@@ -1,20 +1,17 @@
 <template>
 	<div class="hit-data">
 		<div class="hit-title">
-			<span
-				v-for="(title, index) in searchItemData.solr_summary_record.title"
-				:key="index"
-			>
-				<router-link :to="{ name: 'Record', params: { id: searchItemData.id } }">{{ title }}</router-link>
+			<span>
+				<router-link :to="{ name: 'Record', params: { id: searchItemData.id } }">
+					{{ searchItemData.solr_summary_record.title[0] }}
+				</router-link>
 			</span>
 		</div>
 		<div>
-			<span
-				v-for="(creator, index) in searchItemData.solr_summary_record.creator"
-				:key="index"
-			>
-				{{ creator }}
+			<span v-if="searchItemData.solr_summary_record.creator">
+				{{ searchItemData.solr_summary_record.creator[0] }}
 			</span>
+			<span v-else-if="!searchItemData.solr_summary_record.creator">Creator Unknown</span>
 		</div>
 		<div>
 			<span
