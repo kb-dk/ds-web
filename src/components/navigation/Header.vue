@@ -12,7 +12,7 @@
 				>
 					<div class="col logo-col">
 						<a
-							href="http://www.kb.dk"
+							href="https://www.kb.dk"
 							class="logo"
 						>
 							<span class="sr-only"></span>
@@ -78,7 +78,7 @@
 				</div>
 				<div class="row rdl-system-messages-wrapper"></div>
 				<div
-					class="rdl-main-search collapse"
+					class="rdl-main-search collapse show"
 					id="mainSearch"
 					data-parent="#mainHeader"
 					style=""
@@ -100,12 +100,12 @@
 							role="menubar"
 						>
 							<li>
-								<router-link
+								<a
+									href="https://www.kb.dk/find-materiale"
 									class="nav-item level-1"
-									to="/find-materiale"
 								>
 									Find materiale
-								</router-link>
+								</a>
 
 								<button
 									class="icon-button"
@@ -1237,12 +1237,12 @@
 								</ul>
 							</li>
 							<li>
-								<router-link
+								<a
+									href="https://www.kb.dk/inspiration"
 									class="nav-item level-1"
-									to="/inspiration"
 								>
 									Inspiration
-								</router-link>
+								</a>
 								<button
 									class="icon-button"
 									type="button"
@@ -1420,7 +1420,7 @@
 									<li>
 										<a
 											href="https://www.kb.dk/inspiration/digtoplaesninger-i-bibliotekshaven"
-											class="nav-item level-2"
+											class="nav-item level-1"
 										>
 											Digtoplæsninger i Bibliotekshaven
 										</a>
@@ -2047,12 +2047,12 @@
 								</ul>
 							</li>
 							<li>
-								<router-link
+								<a
+									href="https://www.kb.dk/arrangementer"
 									class="nav-item level-1"
-									to="/arrangementer"
 								>
 									Arrangementer
-								</router-link>
+								</a>
 								<button
 									class="icon-button"
 									type="button"
@@ -2378,12 +2378,12 @@
 								</ul>
 							</li>
 							<li>
-								<router-link
+								<a
+									href="https://www.kb.dk/services"
 									class="nav-item level-1"
-									to="/services"
 								>
 									Services
-								</router-link>
+								</a>
 								<button
 									class="icon-button"
 									type="button"
@@ -2616,12 +2616,12 @@
 								</ul>
 							</li>
 							<li>
-								<router-link
+								<a
+									href="https://www.kb.dk/besoeg-os"
 									class="nav-item level-1"
-									to="/besoeg-os"
 								>
 									Besøg os
-								</router-link>
+								</a>
 								<button
 									class="icon-button"
 									type="button"
