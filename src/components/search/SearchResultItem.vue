@@ -1,6 +1,6 @@
 <template>
 	<div class="hit-data">
-		<div class="hit-title">
+		<!-- <div class="hit-title">
 			<span>
 				<router-link :to="{ name: 'Record', params: { id: searchItemData.id } }">
 					{{ searchItemData.solr_summary_record.title[0] }}
@@ -20,7 +20,7 @@
 			>
 				{{ description }}
 			</span>
-		</div>
+		</div> -->
 	</div>
 </template>
 

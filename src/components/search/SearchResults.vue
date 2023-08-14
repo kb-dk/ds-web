@@ -34,12 +34,14 @@ export default defineComponent({
 
 	methods: {
 		getImgServerSrcURL(res: GenericSearchResult) {
-			return res.pages && res.pages.length > 0
+			return require('@/assets/images/No-Image-Placeholder.svg.png');
+			/* return res.pages && res.pages.length > 0
 				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
-				: require('@/assets/images/No-Image-Placeholder.svg.png');
+				: require('@/assets/images/No-Image-Placeholder.svg.png'); */
 		},
 		getAltTxt(res: GenericSearchResult) {
-			return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
+			return "testlol";
+			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		},
 	},
 });
