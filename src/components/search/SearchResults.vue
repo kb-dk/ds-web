@@ -1,35 +1,48 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="res in searchResults"
+		v-for="(res, i) in (currentResults as PropType<GenericSearchResult[]>)"
 		:key="res.id"
 	>
-		<SearchResultItem :search-item-data="res" />
-		<div class="hit-img">
-			<ImageItem
-				:img-src="getImgServerSrcURL(res)"
-				:alt-txt="getAltTxt(res)"
-			/>
-		</div>
-		<hr />
+		<kb-resultcomponent
+			:data="JSON.stringify(res)"
+			:number="i"
+			:hide="flushResults"
+		></kb-resultcomponent>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { GenericSearchResult } from '../../types/GenericSearchResult';
-import SearchResultItem from '@/components/search/SearchResultItem.vue';
-import ImageItem from '@/components/search/ImageItem.vue';
+import './result-component';
 
 export default defineComponent({
 	name: 'SearchResults',
-	components: {
-		SearchResultItem,
-		ImageItem,
-	},
+
+	data: () => ({
+		flushResults: false,
+		currentResults: [],
+	}),
 
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResult[]>, required: true },
+	},
+
+	created() {
+		this.flushResults = false;
+		this.$watch(
+			() => this.searchResults,
+			(newResults: Array<never>, prevResults: Array<never>) => {
+				if (newResults !== prevResults) {
+					this.flushResults = true;
+					setTimeout(() => {
+						this.flushResults = false;
+						this.currentResults = newResults;
+					}, 600);
+				}
+			},
+		);
 	},
 
 	methods: {
@@ -40,7 +53,7 @@ export default defineComponent({
 				: require('@/assets/images/No-Image-Placeholder.svg.png'); */
 		},
 		getAltTxt(res: GenericSearchResult) {
-			return "testlol";
+			return 'license';
 			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		},
 	},
