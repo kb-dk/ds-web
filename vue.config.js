@@ -1,8 +1,18 @@
 module.exports = {
 	chainWebpack: (config) => {
+		config.module
+			.rule('vue')
+			.use('vue-loader')
+			.tap((options) => ({
+				...options,
+				compilerOptions: {
+					// treat any tag that starts with ion- as custom elements
+					isCustomElement: (tag) => tag.startsWith('kb-'),
+				},
+			}));
 		config.plugin('define').tap((args) => {
 			// eslint-disable-next-line
-      let v = JSON.stringify(require("./package.json").version)
+			let v = JSON.stringify(require('./package.json').version);
 			args[0]['process.env']['VUE_APP_VERSION'] = process.env.NODE_ENV === 'production' ? v : '"DEVELOPMENT BUILD"';
 			return args;
 		});
@@ -31,7 +41,6 @@ module.exports = {
 				@import "bootstrap/scss/functions.scss";
 				@import "bootstrap/scss/mixins.scss";
 				@import "bootstrap/scss/variables.scss";
-				@import "@/assets/styles/generic/custom-variables.scss";
 			`,
 			},
 		},

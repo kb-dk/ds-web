@@ -1,11 +1,7 @@
 <template>
-	<Header />
-	<div class="nav-container">
-		<div
-			id="nav"
-			class="rdl-li"
-		>
-		</div>
+	<div>
+		<nav>NAVIGATION GOES HERE</nav>
+		<SearchBar></SearchBar>
 	</div>
 	<div class="content">
 		<router-view />
@@ -14,11 +10,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Header from './components/navigation/Header.vue';
+import SearchBar from './components/search/SearchBar.vue';
 
 export default defineComponent({
 	name: 'App',
-	components: { Header },
+	components: { SearchBar },
 });
 </script>
 
