@@ -23,6 +23,7 @@ export const useSearchResultStore = defineStore({
 		async getSearchResults(query: string) {
 			try {
 				const responseData = await APIService.getSearchResults(query);
+				this.currentQuery = query;
 				this.searchResult = responseData.data.response.docs;
 				this.numFound = responseData.data.response.numFound;
 				if (this.numFound === 0) {

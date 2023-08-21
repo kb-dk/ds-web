@@ -1,10 +1,10 @@
 <template>
-	<div>
+	<div v-if="query !== ''">
 		<div
 			class="hit-count"
 			v-if="hitCount > 0 || noHits"
 		>
-			Hits found - {{ hitCount }}
+			{{ hitCount }} resultater fundet for "{{ query }}"
 		</div>
 	</div>
 </template>
@@ -17,6 +17,7 @@ export default defineComponent({
 	name: 'HitCount',
 	props: {
 		hitCount: { type: Number, required: true },
+		query: { type: String || undefined, required: true },
 		noHits: { type: Boolean, required: true },
 	},
 
