@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<div class="container">
+		<SearchBar></SearchBar>
 		<div class="hit-count">
 			<HitCount
 				:hit-count="searchResultStore.numFound"
 				:no-hits="searchResultStore.noHits"
+				:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
 			/>
 		</div>
-			<div class="search-resultset">
-				<div class="search-facets"></div>
-		<div class="search-results">
-			<SearchResults :search-results="searchResultStore.searchResult" />
-		</div>
-	</div>
+		<div class="search-resultset">
+			<div class="search-facets"></div>
+			<div class="search-results">
+				<SearchResults :search-results="searchResultStore.searchResult" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -22,12 +22,14 @@ import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResults';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
+import SearchBar from '@/components/search/SearchBar.vue';
 
 export default defineComponent({
 	name: 'Search',
 	components: {
 		HitCount,
 		SearchResults,
+		SearchBar,
 	},
 
 	setup() {
@@ -35,15 +37,15 @@ export default defineComponent({
 		return { searchResultStore };
 	},
 	created() {
-		// Set initial search term from query param
-		this.searchResultStore.getSearchResults(this.$route.query.term as string);
-
+		if (this.$route.query.q !== undefined) {
+			this.searchResultStore.getSearchResults(this.$route.query.q as string);
+		}
 		// Watch the 'term' param and update search results if it changes
 		this.$watch(
-			() => this.$route.query.term,
-			(newTerm: string, prevTerm: string) => {
-				if (newTerm !== prevTerm) {
-					this.searchResultStore.getSearchResults(newTerm);
+			() => this.$route.query.q,
+			(newq: string, prevq: string) => {
+				if (newq !== prevq) {
+					this.searchResultStore.getSearchResults(newq);
 				}
 			},
 		);

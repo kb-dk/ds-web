@@ -4,6 +4,10 @@ class SearchComponent extends HTMLElement {
 		this.shadowRoot.innerHTML = TEMPLATE + STYLES;
 
 		this.searchQuery = this.shadowRoot.querySelector('#focusSearchInput');
+		if (location.search) {
+			let q = location.search.split('&')[0].split('=')[1];
+			this.searchQuery.value = q;
+		}
 		this.searchQuery.addEventListener('input', () => {
 			window.dispatchEvent(new CustomEvent('query-update', { detail: { query: this.searchQuery.value } }));
 		});
