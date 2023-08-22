@@ -1,14 +1,14 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, i) in (currentResults as PropType<GenericSearchResult[]>)"
-		:key="res.id"
+		v-for="(res, index) in (currentResults as PropType<GenericSearchResult[]>)"
+		:key="res.id + '-' + index"
 	>
 		<kb-resultcomponent
+			:number="index"
 			:data="JSON.stringify(res)"
-			:number="i"
-			:hide="flushResults"
-		></kb-resultcomponent>
+			:show="flushResults"
+		/>
 	</div>
 </template>
 
@@ -66,6 +66,8 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .hit-box {
 	padding: 0 0 10px 0;
+	box-sizing: border-box;
+	width: 100%;
 }
 
 .hit-img {

@@ -30,7 +30,7 @@ export default defineComponent({
 		},
 		search: function () {
 			if (this.searchQuery) {
-				this.$router.push({ name: 'Search', query: { term: this.searchQuery } });
+				this.$router.push({ name: 'Home', query: { q: this.searchQuery } });
 			}
 		},
 	},
