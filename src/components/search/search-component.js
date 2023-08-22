@@ -18,7 +18,7 @@ class SearchComponent extends HTMLElement {
 			e.preventDefault();
 		});
 
-		const observer = new IntersectionObserver((entries) => {
+		/* const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					this.style.opacity = 1;
@@ -27,7 +27,16 @@ class SearchComponent extends HTMLElement {
 			});
 		});
 
-		observer.observe(this);
+		observer.observe(this); */
+	}
+
+	static get observedAttributes() {
+		return ['q'];
+	}
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === 'q') {
+			this.query = newValue;
+		}
 	}
 
 	connectedCallback() {
@@ -77,8 +86,8 @@ const STYLES = /*css*/ `
 	  
 		:host {
 			display: block;
-			opacity: 0;
-			transition: opacity 0.5s;
+			/* opacity: 0;
+			transition: opacity 0.5s; */
 		}
 
 		.btn-icon i {
