@@ -36,10 +36,13 @@ export default defineComponent({
 			(newResults: Array<never>, prevResults: Array<never>) => {
 				if (newResults !== prevResults) {
 					this.flushResults = true;
-					setTimeout(() => {
-						this.flushResults = false;
-						this.currentResults = newResults;
-					}, 600);
+					setTimeout(
+						() => {
+							this.flushResults = false;
+							this.currentResults = newResults;
+						},
+						prevResults.length === 0 ? 0 : 600,
+					);
 				}
 			},
 		);
