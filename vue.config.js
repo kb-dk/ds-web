@@ -18,7 +18,7 @@ module.exports = {
 		});
 	},
 
-	publicPath: process.env.NODE_ENV === 'production' ? '/digisam/' : '/',
+	publicPath: process.env.NODE_ENV === 'production' ? '/dsweb/' : '/',
 	assetsDir: 'static',
 	devServer: {
 		proxy: {
@@ -31,17 +31,6 @@ module.exports = {
 				target: process.env.DEVEL_API_RECORD,
 				pathRewrite: { '^/ds-api/record/': '' },
 				changeOrigin: true,
-			},
-		},
-	},
-	css: {
-		loaderOptions: {
-			sass: {
-				additionalData: `
-				@import "bootstrap/scss/functions.scss";
-				@import "bootstrap/scss/mixins.scss";
-				@import "bootstrap/scss/variables.scss";
-			`,
 			},
 		},
 	},
