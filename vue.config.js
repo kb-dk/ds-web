@@ -18,7 +18,7 @@ module.exports = {
 		});
 	},
 
-	publicPath: process.env.NODE_ENV === 'production' ? '/digisam/' : '/',
+	publicPath: process.env.NODE_ENV === 'production' ? '/dsweb/' : '/',
 	assetsDir: 'static',
 	devServer: {
 		proxy: {
