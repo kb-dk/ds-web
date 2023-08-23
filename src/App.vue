@@ -13,9 +13,6 @@
 	<div class="content">
 		<router-view v-slot="{ Component }">
 			<transition
-				:duration="{ enter: 500, leave: 500 }"
-				@before-enter="onBeforeEnter"
-				@before-leave="onBeforeLeave"
 				name="fade"
 				mode="out-in"
 			>
@@ -27,46 +24,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'App',
 	components: {},
-	created() {
-		console.log(gsap);
-	},
-	methods: {
-		onBeforeLeave() {
-			console.log('LEAVE STARTED');
-			const elem = this.$refs.wipe as HTMLElement;
-			gsap.to(elem, {
-				//opacity: 1,
-				transform: 'translateX(100%)',
-				duration: 0.7,
-				overwrite: true,
-				ease: 'power0.inOut',
-				onComplete: () => {
-					console.log('LEAVE DONE');
-				},
-			});
-		},
-		onBeforeEnter() {
-			console.log("ENTER STARTED")
-			const elem = this.$refs.wipe as HTMLElement;
-			gsap.to(elem, {
-				//opacity: 0,
-				duration: 0.7,
-				delay: 5.3,
-				transform: 'translateX(100%)',
-				overwrite: true,
-				ease: 'power0.inOut',
-				onComplete: () => {
-					console.log('ENTER DONE!');
-					gsap.set(elem, { transform: 'translateX(-100%)' });
-				},
-			});
-		},
-	},
 });
 </script>
 
@@ -88,12 +49,12 @@ export default defineComponent({
 
 .fade-enter-active,
 .fade-leave-active {
-	//transition: opacity 0.01s linear 0.175s;
+	transition: opacity 0.01s linear 0.175s;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-	//opacity: 0;
+	opacity: 0;
 }
 .container {
 	text-align: left;
