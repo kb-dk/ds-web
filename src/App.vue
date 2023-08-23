@@ -18,7 +18,6 @@
 				:duration="{ enter: td * 1000, leave: td * 1000 }"
 				@before-leave="onBeforeLeave"
 				@before-enter="onBeforeEnter"
-				name="fade"
 				mode="out-in"
 			>
 				<component :is="Component" />
@@ -38,21 +37,13 @@ export default defineComponent({
 			td: 0.35,
 		};
 	},
-	components: {},
-	created() {
-		console.log(gsap);
-	},
 	methods: {
 		getImgServerSrcURL() {
 			return require('@/assets/images/crown.png');
 		},
 		onBeforeLeave() {
-			console.log('LEAVE STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.set(elem, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
-			/* gsap.set(wipe, {
-				pointerEvents: 'auto',
-			}); */
 			gsap.to(elem, {
 				//transform: 'translateX(0%)',
 				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
@@ -66,15 +57,11 @@ export default defineComponent({
 						duration: this.td / 2,
 						ease: 'linear',
 						overwrite: true,
-						onComplete: () => {
-							console.log('LEAVE DONE');
-						},
 					});
 				},
 			});
 		},
 		onBeforeEnter() {
-			console.log('ENTER STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
 				//opacity: 0,
@@ -90,9 +77,6 @@ export default defineComponent({
 						duration: this.td / 2,
 						ease: 'linear',
 						overwrite: true,
-						onComplete: () => {
-							console.log('ENTER DONE!');
-						},
 					});
 				},
 			});
@@ -102,17 +86,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.wipe-container {
-	pointer-events: none;
-	z-index: 51;
-	top: 0;
-	margin: 0;
-	left: 0;
-	padding: 0;
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-}
 .wipe {
 	opacity: 1;
 	pointer-events: none;
@@ -133,15 +106,6 @@ export default defineComponent({
 	background-color: #002e70;
 }
 
-/* .fade-enter-active,
-.fade-leave-active {
-	transition: opacity 1s linear 0s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-} */
 .container {
 	text-align: left;
 	padding-right: 12px;
