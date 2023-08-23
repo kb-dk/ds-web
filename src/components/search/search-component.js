@@ -86,8 +86,8 @@ const STYLES = /*css*/ `
 	  
 		:host {
 			display: block;
-			/* opacity: 0;
-			transition: opacity 0.5s; */
+			opacity: 0;
+			transition: opacity 0.5s;
 		}
 
 		.btn-icon i {
