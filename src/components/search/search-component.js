@@ -111,6 +111,9 @@ const STYLES = /*css*/ `
 			padding-left: 12px;
 			margin-right: auto;
 			margin-left: auto;
+/* 			display: flex;
+			align-content: center;
+			flex-wrap: wrap; */
 		}	
 		
 		.rdl-advanced-search {
@@ -294,8 +297,8 @@ const STYLES = /*css*/ `
 		/* MEDIA QUERY 1280 */
 		@media (min-width: 1280px) {
 			.container {
-				padding-right: 0;
-				padding-left: 0;
+				/* padding-right: 0;
+				padding-left: 0; */
 			}
 		}
 	</style>`;

@@ -3,7 +3,9 @@
 		<div
 			class="wipe"
 			ref="wipe"
-		></div>
+		>
+			<img :src="getImgServerSrcURL()" />
+		</div>
 		<nav>
 			NAVIGATION GOES HERE
 			<router-link to="/about">About</router-link>
@@ -33,7 +35,7 @@ export default defineComponent({
 	name: 'App',
 	data() {
 		return {
-			td: 1,
+			td: 0.35,
 		};
 	},
 	components: {},
@@ -41,16 +43,33 @@ export default defineComponent({
 		console.log(gsap);
 	},
 	methods: {
+		getImgServerSrcURL() {
+			return require('@/assets/images/crown.png');
+		},
 		onBeforeLeave() {
 			console.log('LEAVE STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
+			gsap.set(elem, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
+			/* gsap.set(wipe, {
+				pointerEvents: 'auto',
+			}); */
 			gsap.to(elem, {
 				//transform: 'translateX(0%)',
-				clipPath: 'polygon(0% 0%,100% 0%,100% 100%,0% 100%)',
-				duration: this.td,
+				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
+				duration: this.td / 2,
 				ease: 'linear',
+				overwrite: true,
 				onComplete: () => {
-					console.log('LEAVE DONE');
+					gsap.to(elem, {
+						//transform: 'translateX(0%)',
+						clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,100% 100%,100% 100%)',
+						duration: this.td / 2,
+						ease: 'linear',
+						overwrite: true,
+						onComplete: () => {
+							console.log('LEAVE DONE');
+						},
+					});
 				},
 			});
 		},
@@ -58,15 +77,23 @@ export default defineComponent({
 			console.log('ENTER STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
-				//clearProps: 'all',
 				//opacity: 0,
-				duration: this.td,
-				clipPath: 'polygon(100% 100%,100% 0%,100% 100%,0% 100%)',
+				duration: this.td / 2,
+				overwrite: true,
+				clipPath: 'polygon(100% 0%,100% 0%,0% 100%,0% 100%,100% 100%,100% 100%)',
 				//transform: 'translateX(100%)',
 				ease: 'linear',
 				onComplete: () => {
-					console.log('ENTER DONE!');
-					gsap.set(elem, { clipPath: 'polygon(0% 0%,100% 0%,0% 0%,0% 100%)' });
+					gsap.to(elem, {
+						//transform: 'translateX(0%)',
+						clipPath: 'polygon(100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%)',
+						duration: this.td / 2,
+						ease: 'linear',
+						overwrite: true,
+						onComplete: () => {
+							console.log('ENTER DONE!');
+						},
+					});
 				},
 			});
 		},
@@ -75,6 +102,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.wipe-container {
+	pointer-events: none;
+	z-index: 51;
+	top: 0;
+	margin: 0;
+	left: 0;
+	padding: 0;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+}
 .wipe {
 	opacity: 1;
 	pointer-events: none;
@@ -86,9 +124,13 @@ export default defineComponent({
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
 	//transform: translateX(-100%);
-	background-color: blue;
+	background-color: #002e70;
 }
 
 /* .fade-enter-active,
