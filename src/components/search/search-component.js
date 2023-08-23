@@ -18,7 +18,7 @@ class SearchComponent extends HTMLElement {
 			e.preventDefault();
 		});
 
-		/* const observer = new IntersectionObserver((entries) => {
+		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					this.style.opacity = 1;
@@ -27,7 +27,7 @@ class SearchComponent extends HTMLElement {
 			});
 		});
 
-		observer.observe(this); */
+		observer.observe(this);
 	}
 
 	static get observedAttributes() {

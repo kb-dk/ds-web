@@ -1,9 +1,5 @@
 <template>
 	<div class="container">
-		<div
-			class="wipe"
-			ref="wipe"
-		></div>
 		<nav>
 			NAVIGATION GOES HERE
 			<router-link to="/about">About</router-link>
@@ -32,24 +28,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.wipe {
-	opacity: 1;
-	pointer-events: none;
-	z-index: 50;
-	top: 0;
-	margin: 0;
-	left: 0;
-	padding: 0;
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	transform: translateX(-100%);
-	background-color: blue;
-}
-
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.01s linear 0.175s;
+	transition: opacity 0.5s ease;
 }
 
 .fade-enter-from,
