@@ -30,15 +30,6 @@ class SearchComponent extends HTMLElement {
 		observer.observe(this);
 	}
 
-	static get observedAttributes() {
-		return ['q'];
-	}
-	attributeChangedCallback(name, oldValue, newValue) {
-		if (name === 'q') {
-			this.query = newValue;
-		}
-	}
-
 	connectedCallback() {
 		console.log('search bar connected!');
 	}
