@@ -13,9 +13,9 @@
 	<div class="content">
 		<router-view v-slot="{ Component }">
 			<transition
-				:duration="{ enter: 500, leave: 500 }"
-				@before-enter="onBeforeEnter"
+				:duration="{ enter: td * 1000, leave: td * 1000 }"
 				@before-leave="onBeforeLeave"
+				@before-enter="onBeforeEnter"
 				name="fade"
 				mode="out-in"
 			>
@@ -31,38 +31,42 @@ import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'App',
+	data() {
+		return {
+			td: 1,
+		};
+	},
 	components: {},
 	created() {
 		console.log(gsap);
 	},
 	methods: {
 		onBeforeLeave() {
-			console.log('LEAVE STARTED');
+			console.log('LEAVE STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
-				//opacity: 1,
-				transform: 'translateX(100%)',
-				duration: 0.7,
-				overwrite: true,
-				ease: 'power0.inOut',
+				//transform: 'translateX(0%)',
+				clipPath: 'polygon(0% 0%,100% 0%,100% 100%,0% 100%)',
+				duration: this.td,
+				ease: 'linear',
 				onComplete: () => {
 					console.log('LEAVE DONE');
 				},
 			});
 		},
 		onBeforeEnter() {
-			console.log("ENTER STARTED")
+			console.log('ENTER STARTED', new Date().getTime() / 1000);
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
+				//clearProps: 'all',
 				//opacity: 0,
-				duration: 0.7,
-				delay: 5.3,
-				transform: 'translateX(100%)',
-				overwrite: true,
-				ease: 'power0.inOut',
+				duration: this.td,
+				clipPath: 'polygon(100% 100%,100% 0%,100% 100%,0% 100%)',
+				//transform: 'translateX(100%)',
+				ease: 'linear',
 				onComplete: () => {
 					console.log('ENTER DONE!');
-					gsap.set(elem, { transform: 'translateX(-100%)' });
+					gsap.set(elem, { clipPath: 'polygon(0% 0%,100% 0%,0% 0%,0% 100%)' });
 				},
 			});
 		},
@@ -82,19 +86,20 @@ export default defineComponent({
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-	transform: translateX(-100%);
+	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	//transform: translateX(-100%);
 	background-color: blue;
 }
 
-.fade-enter-active,
+/* .fade-enter-active,
 .fade-leave-active {
-	//transition: opacity 0.01s linear 0.175s;
+	transition: opacity 1s linear 0s;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-	//opacity: 0;
-}
+	opacity: 0;
+} */
 .container {
 	text-align: left;
 	padding-right: 12px;
