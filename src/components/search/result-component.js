@@ -28,6 +28,7 @@ class ResultComponent extends HTMLElement {
 		if (name === 'data') {
 			this.resultData = JSON.parse(newValue);
 			this.shadowRoot.querySelector('.title').textContent = Number(this.number + 1) + ' ' + this.resultData.title;
+			this.shadowRoot.querySelector('.title').href = '/record/' + this.resultData.id; ///record/:id
 			this.shadowRoot.querySelector('.where').textContent = 'KANAL';
 			this.shadowRoot.querySelector('.when').textContent = 'TIDSPUNKT';
 			this.shadowRoot.querySelector('.duration').textContent = 'VARIGHED';
@@ -52,7 +53,7 @@ class ResultComponent extends HTMLElement {
 const TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
-			<div class="title"></div>
+			<a href="" class="title"></a>
 			<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
 			<div class="summary"></div>
 		</div>

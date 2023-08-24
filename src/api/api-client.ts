@@ -10,8 +10,8 @@ export class APIServiceClient {
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponse> {
-		console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
-		const encodeId = encodeURIComponent('doms.radio:albert-einstein.xml');
+		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
+		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
 	}
 }
