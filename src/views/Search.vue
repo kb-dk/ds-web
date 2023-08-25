@@ -10,7 +10,7 @@
 		</div>
 		<div class="search-resultset">
 			<div class="search-facets">
-				<Facets :facets="searchResultStore.facetResult" />
+				<Facets :facet-results="searchResultStore.facetResult" />
 			</div>
 			<div class="search-results">
 				<SearchResults :search-results="searchResultStore.searchResult" />
@@ -73,7 +73,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .search-facets {
-	background-color: rgba(30, 30, 30, 0.1);
 	min-width: 300px;
 	width: 100%;
 }

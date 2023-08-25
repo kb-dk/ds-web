@@ -11,7 +11,7 @@ class ResultComponent extends HTMLElement {
 				if (entry.isIntersecting) {
 					this.style.transitionDelay = this.number / 50 + 's';
 					this.style.opacity = 1;
-					this.style.transform = 'translateX(0px)';
+					this.style.transform = 'translateY(0px)';
 					observer.disconnect();
 				}
 			});
@@ -40,10 +40,10 @@ class ResultComponent extends HTMLElement {
 		if (name === 'show') {
 			if (newValue === true) {
 				this.style.opacity = 1;
-				this.style.transform = 'translateX(0px)';
+				this.style.transform = 'translateY(0px)';
 			} else {
 				this.style.opacity = 0;
-				this.style.transform = 'translateX(-20px)';
+				this.style.transform = 'translateY(-20px)';
 			}
 		}
 	}
@@ -71,8 +71,8 @@ const STYLES = /*css*/ `
 		:host {
 			display: block;
 			opacity: 0;
-			transition: all .2s linear;
-            transform:translateX(20px);
+			transition: all .3s linear;
+            transform:translateY(20px);
 			padding-bottom:30px;
 			overflow:hidden;
 		}
