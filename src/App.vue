@@ -35,6 +35,7 @@ export default defineComponent({
 	data() {
 		return {
 			td: 0.35,
+			leaveDone: false,
 		};
 	},
 	methods: {
@@ -42,6 +43,7 @@ export default defineComponent({
 			return require('@/assets/images/crown.png');
 		},
 		onBeforeLeave() {
+			console.log('ON BEFORE LEAVE');
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.set(elem, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
 			gsap.to(elem, {
@@ -58,10 +60,12 @@ export default defineComponent({
 						ease: 'linear',
 						overwrite: true,
 					});
+					this.leaveDone = true;
 				},
 			});
 		},
 		onBeforeEnter() {
+			if (!this.leaveDone) return;
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
 				//opacity: 0,
@@ -78,6 +82,7 @@ export default defineComponent({
 						ease: 'linear',
 						overwrite: true,
 					});
+					this.leaveDone = false;
 				},
 			});
 		},
