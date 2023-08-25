@@ -6,7 +6,7 @@ export class APIServiceClient {
 
 	//Search and record methods
 	async getSearchResults(query: string): Promise<APISearchResponse> {
-		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true`));
+		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true&facet=true`));
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponse> {

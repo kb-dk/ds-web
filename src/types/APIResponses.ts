@@ -10,6 +10,7 @@ export interface APISearchResponse {
 			numFoundExact: boolean;
 			start: number;
 		};
+		facet_counts: any;
 	};
 }
 

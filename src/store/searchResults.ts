@@ -10,6 +10,7 @@ export const useSearchResultStore = defineStore({
 	id: 'searchResults',
 	state: () => ({
 		searchResult: [] as Array<GenericSearchResult>,
+		facetResult: [] as Array<unknown>,
 		numFound: 0,
 		loading: false,
 		error: '',
@@ -25,6 +26,7 @@ export const useSearchResultStore = defineStore({
 				const responseData = await APIService.getSearchResults(query);
 				this.currentQuery = query;
 				this.searchResult = responseData.data.response.docs;
+				this.facetResult = responseData.data.facet_counts.facet_field;
 				this.numFound = responseData.data.response.numFound;
 				if (this.numFound === 0) {
 					this.noHits = true;
