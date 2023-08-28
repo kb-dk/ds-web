@@ -144,7 +144,6 @@ const STYLES = /*css*/ `
         } 
         input:focus {
             box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
-
         }
 
         .checkbox:checked {
@@ -169,12 +168,6 @@ const STYLES = /*css*/ `
         .label {
             cursor:pointer;
             width: calc(100% - 38px);
-
-        }
-        .checkbox :disabled {
-
-        }
-        .checkbox :hover {
 
         }
     </style>`;
