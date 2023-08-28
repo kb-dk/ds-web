@@ -23,7 +23,7 @@ class SearchComponent extends HTMLElement {
 			  })
 			: null;
 
-		const observer = new IntersectionObserver((entries) => {
+		/* const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					this.style.opacity = '1';
@@ -32,7 +32,16 @@ class SearchComponent extends HTMLElement {
 			});
 		});
 
-		observer.observe(this);
+		observer.observe(this); */
+	}
+
+	static get observedAttributes() {
+		return ['q'];
+	}
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === 'q') {
+			this.query = newValue;
+		}
 	}
 
 	dispatchUpdate(query: string) {
@@ -87,8 +96,8 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 	  
 		:host {
 			display: block;
-			opacity: 0;
-			transition: opacity 0.5s;
+			/* opacity: 0;
+			transition: opacity 0.5s; */
 		}
 
 		.btn-icon i {
@@ -112,6 +121,9 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			padding-left: 12px;
 			margin-right: auto;
 			margin-left: auto;
+/* 			display: flex;
+			align-content: center;
+			flex-wrap: wrap; */
 		}	
 		
 		.rdl-advanced-search {
@@ -295,8 +307,8 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		/* MEDIA QUERY 1280 */
 		@media (min-width: 1280px) {
 			.container {
-				padding-right: 0;
-				padding-left: 0;
+				/* padding-right: 0;
+				padding-left: 0; */
 			}
 		}
 	</style>`;
