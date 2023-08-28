@@ -39,8 +39,10 @@ class checkboxComponent extends HTMLElement {
 		if (name === 'value') {
 			if (newValue === 'false') {
 				this.shadowRoot.querySelector('.checkbox').checked = false;
+				this.shadowRoot.querySelector('.checkbox').ariaChecked = false;
 			} else {
 				this.shadowRoot.querySelector('.checkbox').checked = true;
+				this.shadowRoot.querySelector('.checkbox').ariaChecked = true;
 			}
 		}
 		if (name === 'title') {
@@ -73,7 +75,7 @@ class checkboxComponent extends HTMLElement {
 const TEMPLATE = /*html*/ `
     <div class="container">
         <label class="label"><span class="title"></span><span class="number"></span></label>
-        <input type="checkbox" class="checkbox">
+        <input role="checkbox" tabindex="0" type="checkbox" class="checkbox">
 	</div>
 `;
 
@@ -83,7 +85,6 @@ const STYLES = /*css*/ `
             display: block;
 			opacity: 0;
 			transition: all 0.3s linear;
-			overflow:hidden;
             transform:translateY(20px);
             height:25px;
             width:100%;
@@ -137,6 +138,13 @@ const STYLES = /*css*/ `
             transition: background .3s, border-color .3s, box-shadow .2s;
             width: 38px;
             border-radius: 11px;
+        }
+        .checkbox:hover:after {
+            background-color:#fff6c4;
+        } 
+        input:focus {
+            box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
+
         }
 
         .checkbox:checked {
