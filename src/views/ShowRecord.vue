@@ -1,56 +1,59 @@
 <template>
-	<div>
-		We're at the full record post at least.
-		<div
-			class=""
-			v-for="rec in recordStore.record"
-			:key="rec.id"
-		>
-			{{ rec }}
+	<!-- TODO handle empty response scenario -->
+
+	<div v-if="recordData">
+		<div v-if="recordType === 'BroadcastEvent'">
+			<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
+		</div>
+		<div v-else>
+			<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useRecordStore } from '@/store/record';
-//import RecordItem from '@/components/records/recordItem.vue';
+import { APIService } from '@/api/api-service';
+import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
+import BroadcastRecordMetadataView from '@/components/records/BroadcastRecord.vue';
+//Types
+import { BroadcastRecord } from '@/types/BroadcastRecord';
+import { GenericRecord } from '@/types/GenericRecord';
 
 export default defineComponent({
 	name: 'ShowRecord',
 	components: {
-		//ImageItem,
-		//RecordItem,
-	},
-	data: () => ({
-		record: {},
-	}),
-
-	methods: {
-		getId() {
-			const route = useRoute();
-			const id = route.params.id;
-			const recordStore = useRecordStore();
-			console.log(recordStore.getRecord(id as string));
-			console.log(recordStore.record);
-			return id as string;
-		},
+		GenericRecordMetadataView,
+		BroadcastRecordMetadataView,
 	},
 
 	setup() {
-		const recordStore = useRecordStore();
-		onMounted(() => {
+		const recordData = ref<BroadcastRecord | GenericRecord | null>(null);
+		const recordType = ref<string | null>(null);
+		const getRecord = async (id: string) => {
+			try {
+				return await APIService.getRecord(id);
+			} catch (err) {
+				throw new Error('Error fetching record');
+			}
+		};
+
+		onMounted(async () => {
 			const route = useRoute();
 			const id = route.params.id;
-			//TODO check if id is present and handle array of ids
-			if (typeof id === 'string') {
-				recordStore.getRecord(id);
+			//TODO handle array of ids if needed
+			const idStr = id as string;
+			const recordResp = await getRecord(idStr);
+			if (recordResp) {
+				recordType.value = recordResp.data['@type'];
+				recordData.value = recordResp.data;
+			} else {
+				console.log('No reasonable response from record service');
 			}
 		});
 
-		console.log(recordStore);
-		return { recordStore };
+		return { recordData, recordType };
 	},
 });
 </script>

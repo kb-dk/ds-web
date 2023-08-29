@@ -1,23 +1,25 @@
 <template>
 	<div class="">
-		<!-- <deep-zoom-viewer /> -->
-		<div>Author: {{ recordItemData }}</div>
+		<div
+			class=""
+			v-for="(creator, index) in recordData.creator"
+			:key="index"
+		>
+			{{ creator.name }},
+			{{ creator.familyName }}
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { GenericRecord } from '@/types/GenericRecord';
 import { defineComponent, PropType } from 'vue';
-/* import DeepZoomViewer from '../viewers/deepzoom/DeepZoomViewer.vue';
- */
+
 export default defineComponent({
-	name: 'RecordItem',
-	components: {
-		/* 		DeepZoomViewer,
-		 */
-	},
+	name: 'GenericRecord',
+	components: {},
 	props: {
-		recordItemData: {
+		recordData: {
 			type: Object as PropType<GenericRecord>,
 			required: true,
 		},

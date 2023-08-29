@@ -1,5 +1,6 @@
 import { GenericSearchResult } from './GenericSearchResult';
 import { GenericRecord } from './GenericRecord';
+import { BroadcastRecord } from './BroadcastRecord';
 
 export interface APISearchResponse {
 	data: {
@@ -14,7 +15,5 @@ export interface APISearchResponse {
 }
 
 export interface APIRecordResponse {
-	data: {
-		dataFeedElement: Array<GenericRecord>;
-	};
+	data: GenericRecord | BroadcastRecord;
 }
