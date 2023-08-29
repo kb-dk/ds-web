@@ -11,7 +11,7 @@ export const useSearchResultStore = defineStore({
 	state: () => ({
 		searchResult: [] as Array<GenericSearchResult>,
 		//TODO build the array type when we know how it's gonna look
-		facetResult: [] as Array<unknown>,
+		facetResult: [] as Array<string>,
 		numFound: 0,
 		loading: false,
 		error: '',
@@ -45,11 +45,7 @@ export const useSearchResultStore = defineStore({
 				this.searchResult = responseData.data.response.docs;
 				this.facetResult = responseData.data.facet_counts.facet_fields;
 				this.numFound = responseData.data.response.numFound;
-				if (this.numFound === 0) {
-					this.noHits = true;
-				} else {
-					this.noHits = false;
-				}
+				this.noHits = this.numFound === 0 ? true : false;
 			} catch (err) {
 				throw new Error('error');
 			}

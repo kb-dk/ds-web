@@ -7,15 +7,15 @@
 		>
 			<div
 				class="checkbox"
-				v-for="(singleFacet, index2) in simplifyFacets(facet)"
-				:key="index2 + 'facet' + lastUpdate"
+				v-for="(singleFacet, i2) in simplifyFacets(facet)"
+				:key="i2 + 'facet' + lastUpdate"
 			>
 				<kb-checkboxcomponent
 					:fqkey="i1"
 					:title="singleFacet[0]"
 					:number="singleFacet[1]"
-					:value="filterExists(i1, singleFacet[0])"
-					:inslide="index2"
+					:value="filterExists(i1.toString(), singleFacet[0])"
+					:inslide="i2"
 					:show="showFacets"
 				/>
 			</div>
@@ -25,19 +25,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import './checkbox-component';
+import './facet-checkbox-component';
 import { useSearchResultStore } from '@/store/searchResults';
 
 export default defineComponent({
 	name: 'Facets',
 	data: () => ({
 		showFacets: true,
-		currentFacets: new Array<unknown>(),
+		currentFacets: new Array<string[]>(),
 		lastUpdate: 0,
 	}),
 
 	props: {
-		facetResults: { type: Object, required: true },
+		facetResults: { required: true },
 	},
 
 	setup() {
@@ -56,7 +56,7 @@ export default defineComponent({
 
 		this.$watch(
 			() => this.facetResults,
-			(newFacets: Array<unknown>, prevFacets: Array<unknown>) => {
+			(newFacets: Array<string[]>, prevFacets: Array<string[]>) => {
 				if (newFacets !== prevFacets) {
 					this.showFacets = true;
 					let sum = '';
@@ -90,21 +90,21 @@ export default defineComponent({
 		},
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.
-		simplifyFacets(facet: Array<unknown>) {
-			const array: Array<unknown> = [];
-			let entry: Array<unknown> = [];
+		simplifyFacets(facet: Array<string>) {
+			const allPairedFacets: Array<string[]> = [];
+			let facetPair: Array<string> = [];
 			facet.forEach((facet, i) => {
-				if (i % 2 == 0) {
+				if (i % 2 === 0) {
 					if (i !== 0) {
-						entry = [];
+						facetPair = [];
 					}
-					entry.push(facet);
+					facetPair.push(facet);
 				} else {
-					entry.push(facet);
-					array.push(entry);
+					facetPair.push(facet);
+					allPairedFacets.push(facetPair);
 				}
 			});
-			return array;
+			return allPairedFacets;
 		},
 	},
 });
