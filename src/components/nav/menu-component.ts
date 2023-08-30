@@ -1,10 +1,10 @@
-class DesktopComponent extends HTMLElement {
+class MenuComponent extends HTMLElement {
 	shadow: ShadowRoot;
 
 	constructor() {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
-		this.shadow.innerHTML = DESKTOP_COMPONENT_TEMPLATE + DESKTOP_COMPONMENT_STYLES;
+		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
 
 		/* const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
@@ -28,7 +28,7 @@ class DesktopComponent extends HTMLElement {
 	}
 }
 
-const DESKTOP_COMPONENT_TEMPLATE = /*html*/ `
+const MENU_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container main-12">
 		<div class="row">
 			<div class="col">
@@ -37,8 +37,8 @@ const DESKTOP_COMPONENT_TEMPLATE = /*html*/ `
 	</div>
 `;
 
-const DESKTOP_COMPONMENT_STYLES = /*css*/ `
+const MENU_COMPONMENT_STYLES = /*css*/ `
 	<style>
 	</style>`;
 
-customElements.define('kb-header', DesktopComponent);
+customElements.define('kb-mobilemenu', MenuComponent);

@@ -1,10 +1,6 @@
 <template>
 	<div class="container">
-		<nav>
-			NAVIGATION GOES HERE
-			<router-link to="/about">About</router-link>
-			<router-link to="/">Search</router-link>
-		</nav>
+		<Header></Header>
 	</div>
 	<div class="content">
 		<router-view v-slot="{ Component }">
@@ -20,14 +16,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Header from '@/components/nav/Header.vue';
 
 export default defineComponent({
 	name: 'App',
-	components: {},
+	components: {
+		Header,
+	},
 });
 </script>
 
 <style lang="scss">
+body {
+	margin: 0;
+	padding: 0;
+}
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.5s ease;
@@ -37,13 +40,13 @@ export default defineComponent({
 .fade-leave-to {
 	opacity: 0;
 }
-.container {
+/* .container {
 	text-align: left;
 	padding-right: 12px;
 	padding-left: 12px;
 	margin-right: auto;
 	margin-left: auto;
-}
+} */
 
 nav {
 	flex-basis: 0;
@@ -55,19 +58,19 @@ nav {
 	padding-left: 12px;
 	box-sizing: border-box;
 }
-/* MEDIA QUERY 480 */
+/* // MEDIA QUERY 480 
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
 	}
 }
-/* MEDIA QUERY 640 */
+// MEDIA QUERY 640 
 @media (min-width: 640px) {
 	.container {
 		max-width: 990px;
 	}
 }
-/* MEDIA QUERY 990 */
+// MEDIA QUERY 990
 @media (min-width: 990px) {
 	.container {
 		display: flex;
@@ -75,19 +78,20 @@ nav {
 		max-width: 1150px;
 	}
 }
-/* MEDIA QUERY 1150 */
+// MEDIA QUERY 1150 
 @media (min-width: 1150px) {
 	.container {
 		max-width: 1280px;
 	}
 }
-/* MEDIA QUERY 1280 */
+// MEDIA QUERY 1280
 @media (min-width: 1280px) {
 	.container {
 		padding-right: 0;
 		padding-left: 0;
 	}
 }
+*/
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
