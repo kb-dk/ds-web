@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import { useRecordStore } from '@/store/record';
 import OpenSeadragon from 'openseadragon';
 
 export default defineComponent({
@@ -30,7 +29,6 @@ export default defineComponent({
 	},
 
 	setup() {
-		const recordStore = useRecordStore();
 		const deepZoom = ref<HTMLElement | null>(null);
 		const options = {
 			id: '',
@@ -49,7 +47,7 @@ export default defineComponent({
 				OpenSeadragon(options);
 			}
 		});
-		return { recordStore, deepZoom };
+		return { deepZoom };
 	},
 });
 </script>
