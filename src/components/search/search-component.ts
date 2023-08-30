@@ -1,8 +1,10 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
+	query: string;
 
 	constructor() {
 		super();
+		this.query = '';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -22,23 +24,12 @@ class SearchComponent extends HTMLElement {
 					this.dispatchSearch(e);
 			  })
 			: null;
-
-		/* const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					this.style.opacity = '1';
-					observer.disconnect();
-				}
-			});
-		});
-
-		observer.observe(this); */
 	}
 
 	static get observedAttributes() {
 		return ['q'];
 	}
-	attributeChangedCallback(name, oldValue, newValue) {
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'q') {
 			this.query = newValue;
 		}
