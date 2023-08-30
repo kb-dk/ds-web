@@ -14,18 +14,21 @@ export default defineComponent({
 		};
 	},
 	created: function () {
-		window.addEventListener('query-update', (event) => {
-			this.updateQuery(event as CustomEvent);
-			event.stopPropagation();
-			event.preventDefault();
-		});
-		window.addEventListener('query-search', () => {
-			this.search();
-		});
+		window.addEventListener('query-update', this.updateWrapper);
+		window.addEventListener('query-search', this.search);
+	},
+	beforeUnmount() {
+		window.removeEventListener('query-update', this.updateWrapper);
+		window.removeEventListener('query-search', this.search);
 	},
 	methods: {
-		updateQuery: function (e: CustomEvent) {
-			console.log('query: ', e.detail.query);
+		updateWrapper(e: Event) {
+			this.updateQuery(e as CustomEvent);
+		},
+		updateQuery(e: CustomEvent) {
+			e.stopPropagation();
+			e.preventDefault();
+			//console.log('query: ', e.detail.query);
 			this.searchQuery = e.detail.query;
 		},
 		search: function () {
