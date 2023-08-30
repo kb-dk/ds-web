@@ -1,12 +1,13 @@
 <template>
-	<!-- TODO handle empty response scenario -->
-
-	<div v-if="recordData">
-		<div v-if="recordType === 'BroadcastEvent'">
-			<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
-		</div>
-		<div v-else>
-			<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
+	<div>
+		<!-- TODO handle empty response scenario -->
+		<div v-if="recordData">
+			<div v-if="recordType === 'BroadcastEvent'">
+				<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
+			</div>
+			<div v-else>
+				<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
+			</div>
 		</div>
 	</div>
 </template>
