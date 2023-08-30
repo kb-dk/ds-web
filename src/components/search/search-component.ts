@@ -1,41 +1,60 @@
 class SearchComponent extends HTMLElement {
+	shadow: ShadowRoot;
+
 	constructor() {
-		super().attachShadow({ mode: 'open' });
-		this.shadowRoot.innerHTML = TEMPLATE + STYLES;
+		super();
+		this.shadow = this.attachShadow({ mode: 'open' });
+		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
-		this.searchQuery = this.shadowRoot.querySelector('#focusSearchInput');
-		if (location.search) {
-			let q = location.search.split('&')[0].split('=')[1];
-			this.searchQuery.value = decodeURIComponent(q);
+		const searchQuery: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
+		if (searchQuery) {
+			if (location.search) {
+				const q = location.search.split('&')[0].split('=')[1];
+				searchQuery.value = q;
+			}
+			searchQuery.addEventListener('input', () => {
+				this.dispatchUpdate(searchQuery.value);
+			});
 		}
-		this.searchQuery.addEventListener('input', () => {
-			window.dispatchEvent(new CustomEvent('query-update', { detail: { query: this.searchQuery.value } }));
-		});
+		const searchButton: HTMLButtonElement | null = this.shadow.querySelector('#searchButton');
+		searchButton
+			? searchButton.addEventListener('click', (e) => {
+					this.dispatchSearch(e);
+			  })
+			: null;
 
-		this.searchButton = this.shadowRoot.querySelector('#searchButton');
-		this.searchButton.addEventListener('click', (e) => {
-			window.dispatchEvent(new Event('query-search'));
-			e.preventDefault();
-		});
-
-		const observer = new IntersectionObserver((entries) => {
+		/* const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					this.style.opacity = 1;
+					this.style.opacity = '1';
 					observer.disconnect();
 				}
 			});
 		});
 
-		observer.observe(this);
+		observer.observe(this); */
 	}
 
-	connectedCallback() {
-		console.log('search bar connected!');
+	static get observedAttributes() {
+		return ['q'];
+	}
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === 'q') {
+			this.query = newValue;
+		}
+	}
+
+	dispatchUpdate(query: string) {
+		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query } }));
+	}
+
+	dispatchSearch(e: Event) {
+		window.dispatchEvent(new Event('query-search'));
+		e.preventDefault();
 	}
 }
 
-const TEMPLATE = /*html*/ `
+const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container main-12">
 		<div class="row">
 			<div class="col">
@@ -57,7 +76,7 @@ const TEMPLATE = /*html*/ `
 	</div>
 `;
 
-const STYLES = /*css*/ `
+const SEARCH_COMPONMENT_STYLES = /*css*/ `
 	<style>
 	  .material-icons {
 		font-family: 'Material Icons';
@@ -77,8 +96,8 @@ const STYLES = /*css*/ `
 	  
 		:host {
 			display: block;
-			opacity: 0;
-			transition: opacity 0.5s;
+			/* opacity: 0;
+			transition: opacity 0.5s; */
 		}
 
 		.btn-icon i {
@@ -102,6 +121,9 @@ const STYLES = /*css*/ `
 			padding-left: 12px;
 			margin-right: auto;
 			margin-left: auto;
+/* 			display: flex;
+			align-content: center;
+			flex-wrap: wrap; */
 		}	
 		
 		.rdl-advanced-search {
@@ -285,8 +307,8 @@ const STYLES = /*css*/ `
 		/* MEDIA QUERY 1280 */
 		@media (min-width: 1280px) {
 			.container {
-				padding-right: 0;
-				padding-left: 0;
+				/* padding-right: 0;
+				padding-left: 0; */
 			}
 		}
 	</style>`;
