@@ -9,7 +9,9 @@
 			/>
 		</div>
 		<div class="search-resultset">
-			<div class="search-facets"></div>
+			<div class="search-facets">
+				<Facets :facet-results="searchResultStore.facetResult" />
+			</div>
 			<div class="search-results">
 				<SearchResults :search-results="searchResultStore.searchResult" />
 			</div>
@@ -23,6 +25,7 @@ import { useSearchResultStore } from '@/store/searchResults';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
+import Facets from '@/components/search/Facets.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -30,6 +33,7 @@ export default defineComponent({
 		HitCount,
 		SearchResults,
 		SearchBar,
+		Facets,
 	},
 
 	setup() {
@@ -69,7 +73,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .search-facets {
-	background-color: rgba(30, 30, 30, 0.1);
 	min-width: 300px;
 	width: 100%;
 }

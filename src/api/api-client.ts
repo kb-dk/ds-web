@@ -5,8 +5,8 @@ export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {}
 
 	//Search and record methods
-	async getSearchResults(query: string): Promise<APISearchResponse> {
-		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true`));
+	async getSearchResults(query: string, filters: string): Promise<APISearchResponse> {
+		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true&facet=true${filters}`));
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponse> {
