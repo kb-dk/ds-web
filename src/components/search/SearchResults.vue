@@ -2,12 +2,12 @@
 	<div
 		class="hit-box"
 		v-for="(res, index) in (currentResults as PropType<GenericSearchResult[]>)"
-		:key="res.id + '-' + index"
+		:key="res.id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
 			:number="index"
 			:data="JSON.stringify(res)"
-			:show="flushResults"
+			:show="showResults"
 		/>
 	</div>
 </template>
@@ -21,8 +21,9 @@ export default defineComponent({
 	name: 'SearchResults',
 
 	data: () => ({
-		flushResults: false,
+		showResults: false,
 		currentResults: [],
+		lastUpdate: 0,
 	}),
 
 	props: {
@@ -30,16 +31,17 @@ export default defineComponent({
 	},
 
 	created() {
-		this.flushResults = false;
+		this.showResults = false;
 		this.$watch(
 			() => this.searchResults,
 			(newResults: Array<never>, prevResults: Array<never>) => {
 				if (newResults !== prevResults) {
-					this.flushResults = true;
+					this.showResults = true;
 					setTimeout(
 						() => {
-							this.flushResults = false;
+							this.showResults = false;
 							this.currentResults = newResults;
+							this.lastUpdate = new Date().getTime();
 						},
 						prevResults.length === 0 ? 0 : 600,
 					);

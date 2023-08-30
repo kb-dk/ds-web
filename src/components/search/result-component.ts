@@ -84,8 +84,8 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 		:host {
 			display: block;
 			opacity: 0;
-			transition: all .2s linear;
-            transform:translateX(20px);
+			transition: all .3s linear;
+            transform:translateY(20px);
 			padding-bottom:30px;
 			overflow:hidden;
 		}
