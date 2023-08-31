@@ -1,2 +1,9 @@
 
-
+{
+  "search":{
+     "searchbtn":"Søg"
+  },
+  "record":{
+     "title":"Titel"
+  }
+}
