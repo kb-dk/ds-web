@@ -340,12 +340,10 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		}
 	}
 	
-	@media (min-width: 990px) {
-		.rdl-primary-nav li,
-		.rdl-secondary-nav li {
+	.rdl-primary-nav li,
+	.rdl-secondary-nav li {
 			display: inline-flex;
 		}
-	}
 
 	.logo-col {
 		display: flex;
