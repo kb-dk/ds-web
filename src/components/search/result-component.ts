@@ -1,16 +1,17 @@
 class ResultComponent extends HTMLElement {
-	constructor() {
-		super().attachShadow({ mode: 'open' });
-		this.shadowRoot.innerHTML = TEMPLATE + STYLES;
+	shadow: ShadowRoot;
+	number: number | undefined;
 
-		this.number = 0;
-		this.resultData;
+	constructor() {
+		super();
+		this.shadow = this.attachShadow({ mode: 'open' });
+		this.shadow.innerHTML = RESULT_COMPONENT_TEMPLATE + RESULT_COMPONENT_STYLES;
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					this.style.transitionDelay = this.number / 50 + 's';
-					this.style.opacity = 1;
+					this.style.transitionDelay = Number(this.number === undefined ? 0 : this.number) / 50 + 's';
+					this.style.opacity = '1';
 					this.style.transform = 'translateX(0px)';
 					observer.disconnect();
 				}
@@ -24,35 +25,48 @@ class ResultComponent extends HTMLElement {
 		return ['data', 'number', 'show'];
 	}
 
-	attributeChangedCallback(name, oldValue, newValue) {
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'data') {
-			this.resultData = JSON.parse(newValue);
-			this.shadowRoot.querySelector('.title').textContent = Number(this.number + 1) + ' ' + this.resultData.title;
-			this.shadowRoot.querySelector('.where').textContent = 'KANAL';
-			this.shadowRoot.querySelector('.when').textContent = 'TIDSPUNKT';
-			this.shadowRoot.querySelector('.duration').textContent = 'VARIGHED';
-			this.shadowRoot.querySelector('.summary').textContent =
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.';
+			const resultData = JSON.parse(newValue);
+			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
+			title && (title.href = '/record/' + resultData.id); // /record/:id
+			title && (title.textContent = resultData.title);
+
+			const where = this.shadow.querySelector('.where');
+			where && (where.textContent = 'KANAL');
+
+			const when = this.shadow.querySelector('.when');
+			when && (when.textContent = 'TIDSPUNKT');
+
+			const duration = this.shadow.querySelector('.duration');
+			duration && (duration.textContent = 'VARIGHED');
+
+			const summary = this.shadow.querySelector('.summary');
+			summary &&
+				(summary.textContent =
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.');
 		}
 		if (name === 'number') {
-			this.number = newValue;
+			const number = this.shadow.querySelector('number');
+			this.number = Number(newValue);
+			number && (number.textContent = Number(newValue + 1).toString());
 		}
 		if (name === 'show') {
-			if (newValue === true) {
-				this.style.opacity = 1;
+			if (newValue === 'true') {
+				this.style.opacity = '1';
 				this.style.transform = 'translateX(0px)';
 			} else {
-				this.style.opacity = 0;
+				this.style.opacity = '0';
 				this.style.transform = 'translateX(-20px)';
 			}
 		}
 	}
 }
 
-const TEMPLATE = /*html*/ `
+const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
-			<div class="title"></div>
+			<a href="" class="title"></a>
 			<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
 			<div class="summary"></div>
 		</div>
@@ -66,13 +80,13 @@ const TEMPLATE = /*html*/ `
 	</div>
 `;
 
-const STYLES = /*css*/ `
+const RESULT_COMPONENT_STYLES = /*css*/ `
 	<style>
 		:host {
 			display: block;
 			opacity: 0;
-			transition: all .2s linear;
-            transform:translateX(20px);
+			transition: all .3s linear;
+            transform:translateY(20px);
 			padding-bottom:30px;
 			overflow:hidden;
 		}
