@@ -31,17 +31,16 @@ export default defineComponent({
 	},
 
 	created() {
-		this.showResults = false;
 		this.$watch(
 			() => this.searchResults,
 			(newResults: Array<never>, prevResults: Array<never>) => {
 				if (newResults !== prevResults) {
-					this.showResults = true;
+					this.showResults = false;
 					setTimeout(
 						() => {
-							this.showResults = false;
 							this.currentResults = newResults;
 							this.lastUpdate = new Date().getTime();
+							this.showResults = true;
 						},
 						prevResults.length === 0 ? 0 : 600,
 					);
