@@ -12,7 +12,7 @@ class ResultComponent extends HTMLElement {
 				if (entry.isIntersecting) {
 					this.style.transitionDelay = Number(this.number === undefined ? 0 : this.number) / 50 + 's';
 					this.style.opacity = '1';
-					this.style.transform = 'translateX(0px)';
+					this.style.transform = 'translateY(0px)';
 					observer.disconnect();
 				}
 			});
@@ -52,12 +52,12 @@ class ResultComponent extends HTMLElement {
 			number && (number.textContent = Number(newValue + 1).toString());
 		}
 		if (name === 'show') {
-			if (newValue === 'true') {
-				this.style.opacity = '1';
-				this.style.transform = 'translateX(0px)';
-			} else {
+			if (newValue === 'false') {
 				this.style.opacity = '0';
-				this.style.transform = 'translateX(-20px)';
+				this.style.transform = 'translateY(-20px)';
+			} else {
+				/* 				this.style.opacity = '1';
+				this.style.transform = 'translateY(0px)'; */
 			}
 		}
 	}
@@ -66,8 +66,8 @@ class ResultComponent extends HTMLElement {
 const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
-			<a href="" class="title"></a>
-			<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
+		<a href="" class="title"></a>
+		<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
 			<div class="summary"></div>
 		</div>
         <figure class="image-wrapper">
@@ -86,7 +86,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			display: block;
 			opacity: 0;
 			transition: all .3s linear;
-            transform:translateY(20px);
+            transform:translateY(-20px);
 			padding-bottom:30px;
 			overflow:hidden;
 		}
