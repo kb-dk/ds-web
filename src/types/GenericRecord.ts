@@ -1,74 +1,67 @@
-// Expand as we go
 export interface GenericRecord {
+	'@context': Array<ContextClass | string>;
+	'@type': string;
 	id: string;
 	url: string;
+	'kb:admin_data': KBAdminData;
 	headline: Headline[];
-	author: Author[];
-	recipient: Recipient[];
-	about: About[];
+	creator: Creator[];
+	about: string[];
+	keywords: string[];
+	dateCreated: string;
+	temporal: string;
 	publication: Publication;
-	materialExtent: MaterialExtent;
 	identifier: Identifier[];
-	inLanguage: string[];
-	encoding: Encoding[];
+	isPartOf: IsPartOf[];
+	image: Image;
+	'kb:read_direction': string;
 }
 
-interface Headline {
-	'@value': string;
+export interface ContextClass {
+	kb: string;
+	relator: string;
+}
+
+export interface Creator {
+	'@type': string;
+	name: string;
+	familyName: string;
+}
+
+export interface Headline {
+	value: string;
 	'@language': string;
 }
 
-interface Author {
+export interface Identifier {
 	'@type': string;
-	sameAs: string;
-	homeLocation: string[];
-	name: {
-		'@language': string;
-		'@value': string;
-	};
+	PropertyID: string;
+	value: string;
 }
 
-interface Recipient {
+export interface Image {
 	'@type': string;
-	sameAs: string;
-	homeLocation: string[];
-	name: {
-		'@language': string;
-		'@value': string;
-	};
+	contentSize: string;
+	contentURL: string;
+	thumbnail: string;
+	height: string;
+	width: string;
 }
 
-interface About {
+export interface IsPartOf {
 	'@type': string;
-	id: string;
-	name: [
-		{
-			'@language': string;
-			'@value': string;
-		},
-	];
+	headline: string;
+	description: string;
+	url: string;
 }
 
-interface Publication {
+export interface KBAdminData {
+	'kb:catalogingLanguage': string;
+	'kb:localIdentifier': string;
+	'kb:shelfLocator': string;
+}
+
+export interface Publication {
 	'@type': string;
-	endDate: string;
-	startDate: string;
 	description: string[];
-}
-
-interface MaterialExtent {
-	'@type': string;
-	'@value': string;
-	unitText: string;
-}
-
-interface Identifier {
-	'@type': string;
-	'@value': string;
-	additionalType: string;
-}
-
-interface Encoding {
-	'@type': string;
-	url: string[];
 }
