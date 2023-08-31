@@ -28,7 +28,8 @@ class ResultComponent extends HTMLElement {
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'data') {
 			const resultData = JSON.parse(newValue);
-			const title = this.shadow.querySelector('.title');
+			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
+			title && (title.href = '/record/' + resultData.id); // /record/:id
 			title && (title.textContent = resultData.title);
 
 			const where = this.shadow.querySelector('.where');
@@ -65,7 +66,7 @@ class ResultComponent extends HTMLElement {
 const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
-			<div class="title"></div>
+			<a href="" class="title"></a>
 			<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
 			<div class="summary"></div>
 		</div>
