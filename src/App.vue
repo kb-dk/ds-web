@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<Header></Header>
+		<kb-menu></kb-menu>
 	</div>
 	<div class="content">
 		<router-view v-slot="{ Component }">
@@ -16,13 +16,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Header from '@/components/nav/Header.vue';
+import './components/nav/menu-component';
 
 export default defineComponent({
 	name: 'App',
-	components: {
-		Header,
-	},
+	components: {},
 });
 </script>
 
