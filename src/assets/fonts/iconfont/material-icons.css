@@ -10,6 +10,14 @@
        url(MaterialIcons-Regular.ttf) format('truetype');
 }
 
+/* This probably shouldn't be here. We need a place for global styles at some point i guess */
+@font-face {
+  font-family: 'noway';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./../noway-regular-webfont.woff2') format('woff2'),
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
