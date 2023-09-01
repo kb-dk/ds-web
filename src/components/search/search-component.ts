@@ -46,25 +46,31 @@ class SearchComponent extends HTMLElement {
 }
 
 const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
-	<div class="container main-12">
-		<div class="row">
-			<div class="col">
-				<form action=" " method=" "  role="search" >
-					<div role="group" class="rdl-advanced-search ">
-						<div class="rdl-advanced-search-input">
-							<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
-							<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
+<div>
+<div class="edge blue"></div>
+	<div class="search-container">
+		<div class="container main-12">
+			<div class="row">
+				<div class="col">
+					<form action=" " method=" "  role="search" >
+						<div role="group" class="rdl-advanced-search ">
+							<div class="rdl-advanced-search-input">
+								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
+								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
+							</div>
+							<button id="searchButton" type="submit" aria-label="" class="btn btn-primary btn-icon">
+								<span class="d-none d-search-inline-flex">Søg</span>
+								<span class="d-inline-flex d-search-none">Søg her</span>
+								<i class="material-icons " aria-hidden="true">search</i>
+							</button>
 						</div>
-						<button id="searchButton" type="submit" aria-label="" class="btn btn-primary btn-icon">
-							<span class="d-none d-search-inline-flex">Søg</span>
-							<span class="d-inline-flex d-search-none">Søg her</span>
-							<i class="material-icons " aria-hidden="true">search</i>
-						</button>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div class="edge white"></div>
+</div>
 `;
 
 const SEARCH_COMPONMENT_STYLES = /*css*/ `
@@ -93,6 +99,37 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 
 		.btn-icon i {
 			margin-left: auto;
+		}
+
+		.edge {
+			height:31px;
+		}
+
+		.edge.blue {
+			width:100%;
+			position:absolute;
+			background-color:#caf0fe;
+			clip-path: polygon(0 0, 0 100%, 100% 0);
+			margin-top:-1px;
+		}
+
+		.edge.white {
+			width:100%;
+			position:absolute;
+			background-color:white;
+			clip-path: polygon(0 0, 0 100%, 100% 100%);
+			margin-top:-30px;
+		}
+
+		.search-container {
+			display: flex;
+			height: 500px;
+			background-image: url('https://design.kb.dk/components/assets/images/sourcesets/2/1280x560px_a.jpg');
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+			background-size: cover;
+			background-position:center;
 		}
 		
 		.btn-icon {
@@ -154,6 +191,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			flex-wrap: wrap;
 			margin-right: -12px;
 			margin-left: -12px;
+			width: 90vw;
 		}
 
 		.btn-primary {
@@ -285,7 +323,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		@media (min-width: 990px) {
 			.container {
 				display: flex;
-				flex-direction: column;
+				/* flex-direction: column; */
 				max-width: 1150px;
 			}
 		}

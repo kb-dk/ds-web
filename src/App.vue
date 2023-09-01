@@ -1,16 +1,12 @@
 <template>
 	<div class="container">
+		<kb-menu></kb-menu>
 		<div
 			class="wipe"
 			ref="wipe"
 		>
 			<img :src="getImgServerSrcURL()" />
 		</div>
-		<nav>
-			NAVIGATION GOES HERE
-			<router-link to="/about">About</router-link>
-			<router-link to="/">Search</router-link>
-		</nav>
 	</div>
 	<div class="content">
 		<router-view v-slot="{ Component }">
@@ -28,6 +24,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import './components/nav/menu-component';
 import gsap from 'gsap';
 
 export default defineComponent({
@@ -91,6 +88,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+body {
+	margin: 0;
+	padding: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
 .wipe {
 	opacity: 1;
 	pointer-events: none;
@@ -110,14 +120,14 @@ export default defineComponent({
 	//transform: translateX(-100%);
 	background-color: #002e70;
 }
-
+/*
 .container {
 	text-align: left;
 	padding-right: 12px;
 	padding-left: 12px;
 	margin-right: auto;
 	margin-left: auto;
-}
+} */
 
 nav {
 	flex-basis: 0;
@@ -129,19 +139,19 @@ nav {
 	padding-left: 12px;
 	box-sizing: border-box;
 }
-/* MEDIA QUERY 480 */
+/* // MEDIA QUERY 480 
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
 	}
 }
-/* MEDIA QUERY 640 */
+// MEDIA QUERY 640 
 @media (min-width: 640px) {
 	.container {
 		max-width: 990px;
 	}
 }
-/* MEDIA QUERY 990 */
+// MEDIA QUERY 990
 @media (min-width: 990px) {
 	.container {
 		display: flex;
@@ -149,19 +159,20 @@ nav {
 		max-width: 1150px;
 	}
 }
-/* MEDIA QUERY 1150 */
+// MEDIA QUERY 1150 
 @media (min-width: 1150px) {
 	.container {
 		max-width: 1280px;
 	}
 }
-/* MEDIA QUERY 1280 */
+// MEDIA QUERY 1280
 @media (min-width: 1280px) {
 	.container {
 		padding-right: 0;
 		padding-left: 0;
 	}
 }
+*/
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
