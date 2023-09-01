@@ -12,7 +12,7 @@ class SearchComponent extends HTMLElement {
 		if (searchQuery) {
 			if (location.search) {
 				const q = location.search.split('&')[0].split('=')[1];
-				searchQuery.value = q;
+				searchQuery.value = decodeURIComponent(q);
 			}
 			searchQuery.addEventListener('input', () => {
 				this.dispatchUpdate(searchQuery.value);
