@@ -28,6 +28,9 @@ export const useSearchResultStore = defineStore({
 				this.filters.push(filter);
 			}
 		},
+		resetFilters() {
+			this.filters = [];
+		},
 		removeFilter(filter: string) {
 			this.filters.splice(this.filters.indexOf(filter), 1);
 		},

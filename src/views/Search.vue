@@ -40,6 +40,9 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore };
 	},
+	onMounted() {
+		this.searchResultStore.resetFilters();
+	},
 	created() {
 		if (this.$route.query.q !== undefined) {
 			this.searchResultStore.getSearchResults(this.$route.query.q as string);
