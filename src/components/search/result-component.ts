@@ -29,7 +29,7 @@ class ResultComponent extends HTMLElement {
 		if (name === 'data') {
 			const resultData = JSON.parse(newValue);
 			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
-			title && (title.href = '/record/' + resultData.id); // /record/:id
+			title && (title.href = 'record/' + resultData.id); // /record/:id
 			title && (title.textContent = resultData.title);
 
 			const where = this.shadow.querySelector('.where');
