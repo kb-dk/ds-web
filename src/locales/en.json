@@ -1,8 +1,11 @@
 {
   "search":{
-     "searchbtn":"Search"
+     "searchbtn":"Search",
+     "hitcount": "{n} result fund for | {n} results found for"
+  
   },
   "record":{
-     "title":"Title"
+     "title":"Title",
+     "genre":"Genre"
   }
 }

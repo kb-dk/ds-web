@@ -1,9 +1,11 @@
 
 {
   "search":{
-     "searchbtn":"Søg"
+     "searchbtn":"Søg",
+     "hitcount": "{n} resultat fundet for | {n} resultater fundet for"
   },
   "record":{
-     "title":"Titel"
+     "title":"Titel",
+     "genre":"Genre"
   }
 }
