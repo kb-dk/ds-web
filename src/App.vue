@@ -10,6 +10,15 @@
 			NAVIGATION GOES HERE
 			<router-link to="/about">About</router-link>
 			<router-link to="/">Search</router-link>
+			<span class="lang-switcher">
+				<a
+					href="#"
+					role="button"
+					@click="switchLocale"
+				>
+					{{ $i18n.locale === 'da' ? 'English' : 'Dansk' }}
+				</a>
+			</span>
 		</nav>
 	</div>
 	<div class="content">
@@ -39,6 +48,11 @@ export default defineComponent({
 		};
 	},
 	methods: {
+		switchLocale(e: Event) {
+			e.preventDefault();
+			this.$i18n.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
+		},
+
 		getImgServerSrcURL() {
 			return require('@/assets/images/crown.png');
 		},
@@ -188,5 +202,9 @@ nav {
 	//height: 100vh;
 	background-color: white;
 	z-index: 2;
+}
+
+.lang-switcher {
+	float: right;
 }
 </style>
