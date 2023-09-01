@@ -1,15 +1,6 @@
 <template>
 	<div class="container">
-		<span class="lang-switcher">
-			<a
-				href="#"
-				role="button"
-				@click="switchLocale"
-			>
-				{{ $i18n.locale === 'da' ? 'English' : 'Dansk' }}
-			</a>
-		</span>
-		<kb-menu></kb-menu>
+		<kb-menu :locale="locale"></kb-menu>
 		<div
 			class="wipe"
 			ref="wipe"
@@ -42,12 +33,17 @@ export default defineComponent({
 		return {
 			td: 0.35,
 			leaveDone: false,
+			locale: 'da',
 		};
+	},
+	created: function () {
+		//Remember to check for init locale once we now where to get it from
+		window.addEventListener('locale-switch', this.switchLocale);
 	},
 	methods: {
 		switchLocale(e: Event) {
 			e.preventDefault();
-			this.$i18n.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
+			this.$i18n.locale = this.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
 		},
 
 		getImgServerSrcURL() {

@@ -5,26 +5,29 @@ class MenuComponent extends HTMLElement {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
-
-		/* const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					this.style.opacity = '1';
-					observer.disconnect();
-				}
-			});
-		});
-
-		observer.observe(this); */
+		const localeSwitcher: HTMLAnchorElement | null = this.shadow.querySelector('#localeSwitcher');
+		localeSwitcher
+			? localeSwitcher.addEventListener('click', (e) => {
+					this.dispatchLocaleSwitch(e);
+			  })
+			: null;
 	}
 
 	static get observedAttributes() {
-		return [''];
+		return ['locale'];
 	}
+
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === '') {
-			//console.log("something")
+		if (name === 'locale') {
+			const localeSwitcher = this.shadow.querySelector('#localeSwitcher');
+			const localeSwitcherTxt = newValue === 'da' ? 'In English' : 'På dansk';
+			localeSwitcher && (localeSwitcher.textContent = localeSwitcherTxt);
 		}
+	}
+
+	dispatchLocaleSwitch(e: Event) {
+		window.dispatchEvent(new Event('locale-switch'));
+		e.preventDefault();
 	}
 }
 
@@ -149,10 +152,12 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 						</li>
 						<li>
 							<a
-								href="/en"
+								href="#"
 								class="nav-item level-1"
 								hreflang="en"
+								role="button"
 								lang="en"
+								id="localeSwitcher"
 							>
 								In English
 							</a>
