@@ -28,5 +28,6 @@ export interface GenericSearchResult {
 	title: string;
 	topic: string[];
 	type_of_resource: string[];
+	thumbnail: string;
 	_version: number;
 }
