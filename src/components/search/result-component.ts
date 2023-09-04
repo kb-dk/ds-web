@@ -41,6 +41,9 @@ class ResultComponent extends HTMLElement {
 			const duration = this.shadow.querySelector('.duration');
 			duration && (duration.textContent = 'VARIGHED');
 
+			const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
+			thumb && (thumb.src = resultData.thumbnail);
+
 			const summary = this.shadow.querySelector('.summary');
 			summary &&
 				(summary.textContent =
@@ -73,7 +76,7 @@ const RESULT_COMPONENT_TEMPLATE = /*html*/ `
         <figure class="image-wrapper">
 			<img
 				class="image-item"
-				src="http://devel11.statsbiblioteket.dk:10001/ds-image/v1/IIP/?FIF=%2FDAMJP2%2FDAM%2FMaps%2F0000%2F067%2F807%2Fdk001991&ROT=0&CVT=jpeg"
+				src=""
 				alt="altTxt"
 			/>
 		</figure>
