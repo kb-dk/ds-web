@@ -4,7 +4,7 @@
 			class="hit-count"
 			v-if="hitCount > 0 || noHits"
 		>
-			{{ hitCount }} resultater fundet for "{{ query }}"
+			{{ $tc('search.hitcount', hitCount) }} "{{ query }}"
 		</div>
 	</div>
 </template>

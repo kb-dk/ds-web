@@ -17,7 +17,7 @@
 					<span class="broadcast-duration">({{ getBroadcastDuration(recordData.duration) }})</span>
 				</div>
 				<div>{{ recordData.publishedOn.broadcastDisplayName }}</div>
-				<h4>Genre</h4>
+				<h4>{{ $t('record.genre') }}</h4>
 				<div>{{ recordData.keywords }}</div>
 			</div>
 		</div>
