@@ -98,6 +98,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+/* This probably shouldn't be here. We need a place for global styles at some point i guess */
+@font-face {
+	font-family: 'noway';
+	font-style: normal;
+	font-weight: 400;
+	src: url('./assets/fonts/noway-regular-webfont.woff2') format('woff2');
+}
 body {
 	margin: 0;
 	padding: 0;
@@ -184,7 +191,8 @@ nav {
 }
 */
 #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+	//font-family: Avenir, Helvetica, Arial, sans-serif;
+	font-family: noway, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
