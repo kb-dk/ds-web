@@ -1,10 +1,19 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { APIService } from '@/api/api-service';
+import { ErrorManager } from '@/error-handling/error-manager';
+import { AxiosError } from 'axios';
 
 export interface SearchArgs {
 	currentQuery: string;
 }
+
+/* I need a store wide error manager so I instantiate here BUT
+/ We should consider a rewrite of the store as Pinia supports
+/ a composition style syntax that lets you do this in a setup() 
+/ function
+*/
+const errorManager = new ErrorManager();
 
 export const useSearchResultStore = defineStore({
 	id: 'searchResults',
@@ -50,7 +59,7 @@ export const useSearchResultStore = defineStore({
 				this.numFound = responseData.data.response.numFound;
 				this.noHits = this.numFound === 0 ? true : false;
 			} catch (err) {
-				throw new Error('error');
+				errorManager.submitError(err as AxiosError);
 			}
 		},
 	},

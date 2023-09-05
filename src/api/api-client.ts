@@ -1,8 +1,30 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { APISearchResponse, APIRecordResponse } from '@/types/APIResponses';
 
 export class APIServiceClient {
-	constructor(private httpClient: AxiosInstance) {}
+	constructor(private httpClient: AxiosInstance) {
+		httpClient.interceptors.request.use(
+			(config) => {
+				// We have a hook here to manipulate the request or the request header
+				// We will need this later
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			},
+		);
+
+		httpClient.interceptors.response.use(
+			(response: AxiosResponse) => {
+				return response;
+			},
+			(error: AxiosError) => {
+				// We have a hook here to handle more generel errors like e.g. network errors
+				// For now errors pass through as clean AxiosError
+				return Promise.reject(error);
+			},
+		);
+	}
 
 	//Search and record methods
 	async getSearchResults(query: string, filters: string): Promise<APISearchResponse> {

@@ -18,9 +18,11 @@ import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
 import BroadcastRecordMetadataView from '@/components/records/BroadcastRecord.vue';
+import { ErrorManager } from '@/error-handling/error-manager';
 //Types
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { GenericRecord } from '@/types/GenericRecord';
+import { AxiosError } from 'axios';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -32,11 +34,14 @@ export default defineComponent({
 	setup() {
 		const recordData = ref<BroadcastRecord | GenericRecord | null>(null);
 		const recordType = ref<string | null>(null);
+		const errorManager = new ErrorManager();
+
 		const getRecord = async (id: string) => {
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
-				throw new Error('Error fetching record');
+				console.log('Axios error sent to error manager from full record', err);
+				errorManager.submitError(err as AxiosError);
 			}
 		};
 
