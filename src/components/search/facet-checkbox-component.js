@@ -107,7 +107,7 @@ const STYLES = /*css*/ `
         }
 
         .title {
-            font-size:18px;
+            font-size:14px;
             text-overflow: ellipsis;
             max-width: calc(100% - 38px);
             white-space: nowrap;

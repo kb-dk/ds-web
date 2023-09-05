@@ -7,6 +7,12 @@ class ResultComponent extends HTMLElement {
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = RESULT_COMPONENT_TEMPLATE + RESULT_COMPONENT_STYLES;
 
+		const imageWrapper: HTMLDivElement | null = this.shadow.querySelector('.image-wrapper');
+		const image: HTMLImageElement | null = this.shadow.querySelector('.image-item');
+		if (image && imageWrapper) {
+			image.addEventListener('load', this.showImage);
+		}
+
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
@@ -23,6 +29,10 @@ class ResultComponent extends HTMLElement {
 
 	static get observedAttributes() {
 		return ['data', 'number', 'show'];
+	}
+
+	showImage() {
+		this.style.opacity = '1';
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -70,11 +80,18 @@ const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
 		<a href="" class="title"></a>
-		<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
+		<div class="subtitle">
+			<span class="material-icons icons">tv</span>
+			<span class="where"></span>
+			<span class="when"></span>
+			<span class="material-icons icons">schedule</span>
+			<span class="duration"></span>
+		</div>
 			<div class="summary"></div>
 		</div>
         <figure class="image-wrapper">
 			<img
+				loading = "lazy"
 				class="image-item"
 				src=""
 				alt="altTxt"
@@ -94,10 +111,31 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			overflow:hidden;
 		}
 
+		.material-icons {
+			font-family: 'Material Icons';
+			font-weight: normal;
+			font-style: normal;
+			font-size: 16px;
+			line-height: 1;
+			letter-spacing: normal;
+			text-transform: none;
+			display: inline-block;
+			white-space: nowrap;
+			word-wrap: normal;
+			direction: ltr;
+			-webkit-font-feature-settings: 'liga';
+			-webkit-font-smoothing: antialiased;
+		}
+		.icons {
+			padding-right:3px;
+			position:relative;
+			top:3px;
+		}
+
 		.container {
 			display: flex;
 			flex-direction: row;
-			height:90px;
+			height:100px;
 			justify-content: space-between;
 			gap:30px;
 			width:100%;
@@ -118,10 +156,14 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			white-space: nowrap;
 			overflow: hidden;
 			width: 75ch;
+			text-transform:uppercase;
+			text-decoration:none;
+			padding-bottom:5px;
 			
 		}
 
 		.image-wrapper {
+			background: linear-gradient(45deg, #caf0fe, #fff6c4);
 			width:20%;
 			padding:0px;
 			margin-block-start: 0em;
@@ -135,11 +177,14 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			height:100%;
 			max-height:160px;
 			object-fit:cover;
+			transition:opacity 0.5s ease-in-out 0s;
+			opacity:0;
 		}
 
 		.where, .when, .duration {
 			padding-right:15px;
 			text-overflow: ellipsis;
+			font-size:14px;
 		}
 		.summary {
 			overflow: hidden;
