@@ -1,7 +1,7 @@
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
-
+	vueRouting: boolean | undefined;
 	constructor() {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
@@ -22,7 +22,7 @@ class ResultComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['data', 'number', 'show'];
+		return ['data', 'number', 'show', 'vueRouting'];
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -30,6 +30,16 @@ class ResultComponent extends HTMLElement {
 			const resultData = JSON.parse(newValue);
 			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
 			title && (title.href = 'record/' + resultData.id); // /record/:id
+			title.addEventListener('click', (event) => {
+				if (this.vueRouting) {
+				event.preventDefault();
+				window.dispatchEvent(
+					new CustomEvent('change-path', {
+						detail: { path: 'record/' + resultData.id },
+					}),
+				);
+				}
+			});
 			title && (title.textContent = resultData.title);
 
 			const where = this.shadow.querySelector('.where');
@@ -60,14 +70,16 @@ class ResultComponent extends HTMLElement {
 				this.style.transform = 'translateY(0px)'; */
 			}
 		}
+		if (name === 'vueRouting') {
+			newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
+		}
 	}
 }
 
 const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 	<div class="container">
 		<div class="information">
-		<a href="" class="title"></a>
-		<div class="subtitle"><span class="where"></span><span class="when"></span><span class="duration"></span></div>
+		<a role="link" class="title"></a>
 			<div class="summary"></div>
 		</div>
         <figure class="image-wrapper">

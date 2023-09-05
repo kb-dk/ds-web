@@ -39,8 +39,21 @@ export default defineComponent({
 	created: function () {
 		//Remember to check for init locale once we now where to get it from
 		window.addEventListener('locale-switch', this.switchLocale);
+		window.addEventListener('change-path', this.gotoPath);
+	},
+	beforeUnmount() {
+		window.removeEventListener('locale-switch', this.switchLocale);
+		window.removeEventListener('change-path', this.gotoPath);
 	},
 	methods: {
+		gotoPath(e: Event) {
+			e.preventDefault();
+			this.changePath(e as CustomEvent);
+			//console.log(this, e);
+		},
+		changePath(e: CustomEvent) {
+			this.$router.push({ path: e.detail.path });
+		},
 		switchLocale(e: Event) {
 			e.preventDefault();
 			this.$i18n.locale = this.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
