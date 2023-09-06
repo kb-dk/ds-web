@@ -1,15 +1,24 @@
 import { AxiosError } from 'axios';
+import { createApp } from 'vue';
+import { ErrorManagerType } from '@/error-handling/ErrorManagerType';
 
-export class ErrorManager {
+export class ErrorManager implements ErrorManagerType {
 	private errorHistory: AxiosError[] = [];
+
+	// Singleton pattern - we only want one instance
+	private static instance: ErrorManager | null = null;
+	public static getInstance(): ErrorManager {
+		if (!ErrorManager.instance) {
+			ErrorManager.instance = new ErrorManager();
+		}
+		return ErrorManager.instance;
+	}
 
 	private isErrorInHistory(error: AxiosError): boolean {
 		return this.errorHistory.some((historyError) => this.isSameError(historyError, error));
 	}
 
 	private isSameError(error1: AxiosError, error2: AxiosError): boolean {
-		console.log('error1', error1);
-		console.log('error2', error2);
 		if (!error1 || !error2) {
 			return false;
 		}
@@ -61,4 +70,9 @@ export class ErrorManager {
 		});
 		window.dispatchEvent(customEvent);
 	}
+}
+
+// Export hook to provide ErrorManager globally
+export function provideErrorManager(app: ReturnType<typeof createApp>): void {
+	app.provide('errorManager', ErrorManager.getInstance());
 }
