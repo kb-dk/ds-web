@@ -1,25 +1,7 @@
-type TranslationItem = {
-	title: string;
-	link: string;
-	icon?: string;
-	id?: string;
-};
-
-type Translation = {
-	da: {
-		primary: TranslationItem[];
-		secondary: TranslationItem[];
-	};
-	en: {
-		primary: TranslationItem[];
-		secondary: TranslationItem[];
-	};
-};
-
 class MenuComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	lang: string;
-	translation: Translation;
+	translation: MenuTranslation;
 
 	constructor() {
 		super();
@@ -129,6 +111,24 @@ class MenuComponent extends HTMLElement {
 		parent.appendChild(listElem);
 	}
 }
+
+type MenuTranslationItem = {
+	title: string;
+	link: string;
+	icon?: string;
+	id?: string;
+};
+
+type MenuTranslation = {
+	da: {
+		primary: MenuTranslationItem[];
+		secondary: MenuTranslationItem[];
+	};
+	en: {
+		primary: MenuTranslationItem[];
+		secondary: MenuTranslationItem[];
+	};
+};
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
 	<header
