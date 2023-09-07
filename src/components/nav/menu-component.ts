@@ -218,7 +218,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		z-index: 100;
 		background-color: #caf0fe;
 		font-family: noway,sans-serif;
 	}

@@ -5,6 +5,7 @@
 		:key="res.id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
+			:vueRouting="true"
 			:number="index"
 			:data="JSON.stringify(res)"
 			:show="showResults"
