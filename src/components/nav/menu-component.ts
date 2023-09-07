@@ -1,16 +1,55 @@
 class MenuComponent extends HTMLElement {
 	shadow: ShadowRoot;
+	lang: string;
+	translation: MenuTranslation;
 
 	constructor() {
 		super();
+		this.translation = {
+			da: {
+				secondary: [
+					{ title: 'Lån og aflvering', link: '#' },
+					{ title: 'Bliv bruger', link: '#' },
+					{ title: 'Om os', link: '#' },
+					{ title: 'Åbningstider', link: '#' },
+					{ title: 'Webshop', link: '#' },
+					{ title: 'In english', link: '#', id: 'localeSwitcher' },
+					{ title: 'Log in', link: '#', icon: 'account_circle' },
+				],
+				primary: [
+					{ title: 'Find materiale', link: '#' },
+					{ title: 'Inspiration', link: '#' },
+					{ title: 'Arrangementer', link: '#' },
+					{ title: 'Services', link: '#' },
+					{ title: 'Besøg os', link: '#' },
+					{ title: 'Søg', link: '#', icon: 'search' },
+				],
+			},
+			en: {
+				secondary: [
+					{ title: 'Collect and return', link: '#' },
+					{ title: 'New user', link: '#' },
+					{ title: 'About us', link: '#' },
+					{ title: 'Webshop', link: '#' },
+					{ title: 'På dansk', link: '#', id: 'localeSwitcher' },
+					{ title: 'Log in', link: '#', icon: 'account_circle' },
+				],
+				primary: [
+					{ title: 'Find materials', link: '#' },
+					{ title: 'Inspiration', link: '#' },
+					{ title: 'Events', link: '#' },
+					{ title: 'Services', link: '#' },
+					{ title: 'Visit us', link: '#' },
+					{ title: 'Search', link: '#', icon: 'search' },
+				],
+			},
+		};
+		this.lang = 'da';
+
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
-		const localeSwitcher: HTMLAnchorElement | null = this.shadow.querySelector('#localeSwitcher');
-		localeSwitcher
-			? localeSwitcher.addEventListener('click', (e) => {
-					this.dispatchLocaleSwitch(e);
-			  })
-			: null;
+
+		this.createFullHeaderMenu();
 	}
 
 	static get observedAttributes() {
@@ -19,9 +58,8 @@ class MenuComponent extends HTMLElement {
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'locale') {
-			const localeSwitcher = this.shadow.querySelector('#localeSwitcher');
-			const localeSwitcherTxt = newValue === 'da' ? 'In English' : 'På dansk';
-			localeSwitcher && (localeSwitcher.textContent = localeSwitcherTxt);
+			this.lang = newValue;
+			this.createFullHeaderMenu();
 		}
 	}
 
@@ -29,7 +67,68 @@ class MenuComponent extends HTMLElement {
 		window.dispatchEvent(new Event('locale-switch'));
 		e.preventDefault();
 	}
+
+	createFullHeaderMenu() {
+		const main: HTMLElement | null = this.shadow.querySelector('.rdl-main-navigation');
+		if (main) {
+			main.innerHTML = '';
+			this.createSingleMenu(main, this.translation[this.lang === 'da' ? 'da' : 'en'].primary, 'rdl-primary-nav');
+			this.createSingleMenu(main, this.translation[this.lang === 'da' ? 'da' : 'en'].secondary, 'rdl-secondary-nav');
+			const localeSwitcher: HTMLAnchorElement | null = this.shadow.querySelector('#localeSwitcher');
+			localeSwitcher
+				? localeSwitcher.addEventListener('click', (e) => {
+						this.dispatchLocaleSwitch(e);
+				  })
+				: null;
+		}
+	}
+
+	createSingleMenu(parent: HTMLElement, menu: Array<TranslationItem>, name: string) {
+		const currentMenu = document.createElement('ul');
+		currentMenu.setAttribute('role', 'menubar');
+		currentMenu.classList.add(name);
+		menu.forEach((el) => {
+			this.createMenuElement(currentMenu, el.title, el.link, el.icon, el.id);
+		});
+		parent.appendChild(currentMenu);
+	}
+
+	createMenuElement(parent: HTMLUListElement, title: string, url: string, icon?: string, id?: string) {
+		const listElem = document.createElement('li');
+		const link = document.createElement('a');
+		if (id) link.id = id;
+		listElem.appendChild(link);
+		link.classList.add('nav-item', 'level-1');
+		link.textContent = title;
+		link.href = url;
+		if (icon) {
+			const iconElem = document.createElement('i');
+			iconElem.classList.add('material-icons');
+			iconElem.setAttribute('aria-hidden', 'true');
+			iconElem.innerText = icon;
+			link.appendChild(iconElem);
+		}
+		parent.appendChild(listElem);
+	}
 }
+
+type MenuTranslationItem = {
+	title: string;
+	link: string;
+	icon?: string;
+	id?: string;
+};
+
+type MenuTranslation = {
+	da: {
+		primary: MenuTranslationItem[];
+		secondary: MenuTranslationItem[];
+	};
+	en: {
+		primary: MenuTranslationItem[];
+		secondary: MenuTranslationItem[];
+	};
+};
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
 	<header
@@ -57,126 +156,6 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 					class="rdl-main-navigation"
 					aria-label="Hovednavigation"
 				>
-					<ul
-						class="rdl-primary-nav"
-						role="menubar"
-					>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Find materiale
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Inspiration
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Arrangementer
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Services
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Besøg os
-							</a>
-						</li>
-						<li>
-							
-							<a
-								href="#"
-								class="nav-item level-1"
-							>Søg
-								<i
-									class="material-icons"
-									aria-hidden="true"
-								>
-									search
-								</i>
-								</a>
-						</li>
-					</ul>
-
-					<ul class="rdl-secondary-nav">
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Lån og aflevering
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Bliv bruger
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Om os
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-							>
-								Åbningstider
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1"
-								hreflang="en"
-								role="button"
-								lang="en"
-								id="localeSwitcher"
-							>
-								In English
-							</a>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="nav-item level-1 login"
-							>
-								Log ind
-								<i
-									class="material-icons d-none d-lg-inline"
-									aria-hidden="true"
-								>
-									account_circle
-								</i>
-							</a>
-						</li>
-					</ul>
 				</nav>
 			</div>
 		</div>
