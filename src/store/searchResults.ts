@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { APIService } from '@/api/api-service';
-import { ErrorManagerType } from '@/error-handling/ErrorManagerType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
 

@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { createApp } from 'vue';
-import { ErrorManagerType } from '@/error-handling/ErrorManagerType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export class ErrorManager implements ErrorManagerType {
 	private errorHistory: AxiosError[] = [];
