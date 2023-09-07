@@ -1,19 +1,29 @@
 <template>
 	<div>
-		<SearchBar></SearchBar>
-		<div class="hit-count">
-			<HitCount
-				:hit-count="searchResultStore.numFound"
-				:no-hits="searchResultStore.noHits"
-				:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-			/>
+		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
+			<SearchBar></SearchBar>
 		</div>
-		<div class="search-resultset">
-			<div class="search-facets">
-				<Facets :facet-results="searchResultStore.facetResult" />
+		<div class="container">
+			<div class="row">
+				<div class="hit-count">
+					<HitCount
+						:hit-count="searchResultStore.numFound"
+						:no-hits="searchResultStore.noHits"
+						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+					/>
+				</div>
 			</div>
-			<div class="search-results">
-				<SearchResults :search-results="searchResultStore.searchResult" />
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="search-resultset">
+					<div class="search-facets">
+						<Facets :facet-results="searchResultStore.facetResult" />
+					</div>
+					<div class="search-results">
+						<SearchResults :search-results="searchResultStore.searchResult" />
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -64,6 +74,18 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.search-container {
+	height: 500px;
+	transition: height 0.5s ease-in-out 0s;
+}
+
+.search-container.big {
+	height: 500px;
+}
+
+.search-container.small {
+	height: 300px;
+}
 .search-resultset {
 	display: flex;
 	flex-direction: column;

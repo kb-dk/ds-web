@@ -46,7 +46,7 @@ class SearchComponent extends HTMLElement {
 }
 
 const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
-<div>
+<div class="search-box">
 <div class="edge blue"></div>
 	<div class="search-container">
 		<div class="container main-12">
@@ -92,9 +92,16 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 	  }
 	  
 		:host {
+			max-width:100vw;
+			overflow:hidden;
+			height:100%;
 			display: block;
 			/* opacity: 0;
 			transition: opacity 0.5s; */
+		}
+
+		.search-box { 
+			height:100%
 		}
 
 		.btn-icon i {
@@ -123,7 +130,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 
 		.search-container {
 			display: flex;
-			height: 500px;
+			height: 100%;
 			background-image: url('https://design.kb.dk/components/assets/images/sourcesets/2/1280x560px_a.jpg');
 			align-content: center;
 			justify-content: center;
@@ -191,7 +198,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			flex-wrap: wrap;
 			margin-right: -12px;
 			margin-left: -12px;
-			width: 90vw;
+			width: 100vw;
 		}
 
 		.btn-primary {

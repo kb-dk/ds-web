@@ -39,8 +39,21 @@ export default defineComponent({
 	created: function () {
 		//Remember to check for init locale once we now where to get it from
 		window.addEventListener('locale-switch', this.switchLocale);
+		window.addEventListener('change-path', this.gotoPath);
+	},
+	beforeUnmount() {
+		window.removeEventListener('locale-switch', this.switchLocale);
+		window.removeEventListener('change-path', this.gotoPath);
 	},
 	methods: {
+		gotoPath(e: Event) {
+			e.preventDefault();
+			this.changePath(e as CustomEvent);
+			//console.log(this, e);
+		},
+		changePath(e: CustomEvent) {
+			this.$router.push({ path: e.detail.path });
+		},
 		switchLocale(e: Event) {
 			e.preventDefault();
 			this.$i18n.locale = this.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
@@ -98,6 +111,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+/* This probably shouldn't be here. We need a place for global styles at some point i guess */
+@font-face {
+	font-family: 'noway';
+	font-style: normal;
+	font-weight: 400;
+	src: url('./assets/fonts/noway-regular-webfont.woff2') format('woff2');
+}
 body {
 	margin: 0;
 	padding: 0;
@@ -184,7 +204,8 @@ nav {
 }
 */
 #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+	//font-family: Avenir, Helvetica, Arial, sans-serif;
+	font-family: noway, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
