@@ -83,7 +83,7 @@ class MenuComponent extends HTMLElement {
 		}
 	}
 
-	createSingleMenu(parent: HTMLElement, menu: Array<TranslationItem>, name: string) {
+	createSingleMenu(parent: HTMLElement, menu: Array<MenuTranslationItem>, name: string) {
 		const currentMenu = document.createElement('ul');
 		currentMenu.setAttribute('role', 'menubar');
 		currentMenu.classList.add(name);

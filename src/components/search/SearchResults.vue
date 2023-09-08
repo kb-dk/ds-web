@@ -7,7 +7,7 @@
 		<kb-resultcomponent
 			:vueRouting="true"
 			:number="index"
-			:data="JSON.stringify(res)"
+			:resultData="res"
 			:show="showResults"
 		/>
 	</div>
