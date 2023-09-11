@@ -1,7 +1,11 @@
+import { GenericSearchResult } from '@/types/GenericSearchResult';
+
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
 	vueRouting: boolean | undefined;
+	resultData: GenericSearchResult | undefined;
+
 	constructor() {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
@@ -28,47 +32,54 @@ class ResultComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['data', 'number', 'show', 'vueRouting'];
+		return ['number', 'show', 'vueRouting'];
 	}
 
 	showImage() {
 		this.style.opacity = '1';
 	}
 
-	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === 'data') {
-			const resultData = JSON.parse(newValue);
-			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
-			title && (title.href = 'record/' + resultData.id); // /record/:id
-			title.addEventListener('click', (event) => {
-				if (this.vueRouting) {
-					event.preventDefault();
-					window.dispatchEvent(
-						new CustomEvent('change-path', {
-							detail: { path: 'record/' + resultData.id },
-						}),
-					);
-				}
-			});
-			title && (title.textContent = resultData.title);
-
-			const where = this.shadow.querySelector('.where');
-			where && (where.textContent = 'KANAL');
-
-			const when = this.shadow.querySelector('.when');
-			when && (when.textContent = 'TIDSPUNKT');
-
-			const duration = this.shadow.querySelector('.duration');
-			duration && (duration.textContent = 'VARIGHED');
-
-			const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
-			thumb && (thumb.src = resultData.thumbnail);
-
-			const summary = this.shadow.querySelector('.summary');
-			summary &&
-				(summary.textContent =
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.');
+	connectedCallback() {
+		if (this.resultData) {
+			this.renderResultData(this.resultData);
 		}
+	}
+
+	renderResultData(resultData: GenericSearchResult) {
+		const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
+		title && (title.href = 'record/' + resultData.id);
+		title.addEventListener('click', (event) => {
+			if (this.vueRouting) {
+				event.preventDefault();
+				window.dispatchEvent(
+					new CustomEvent('change-path', {
+						detail: { path: 'record/' + resultData.id },
+					}),
+				);
+			}
+		});
+
+		title && (title.textContent = resultData.title);
+
+		const where = this.shadow.querySelector('.where');
+		where && (where.textContent = 'KANAL');
+
+		const when = this.shadow.querySelector('.when');
+		when && (when.textContent = 'TIDSPUNKT');
+
+		const duration = this.shadow.querySelector('.duration');
+		duration && (duration.textContent = 'VARIGHED');
+
+		const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
+		thumb && (thumb.src = resultData.thumbnail);
+
+		const summary = this.shadow.querySelector('.summary');
+		summary &&
+			(summary.textContent =
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.');
+	}
+
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'number') {
 			const number = this.shadow.querySelector('number');
 			this.number = Number(newValue);
