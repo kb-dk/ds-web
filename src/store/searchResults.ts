@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { APIService } from '@/api/api-service';
+import { useSpinnerStore } from '@/store/spinner';
 
 export interface SearchArgs {
 	currentQuery: string;
@@ -18,6 +19,7 @@ export const useSearchResultStore = defineStore({
 		currentQuery: '',
 		noHits: false,
 		filters: [] as Array<string>,
+		spinnerStore: useSpinnerStore(),
 	}),
 
 	getters: {},
@@ -36,7 +38,7 @@ export const useSearchResultStore = defineStore({
 		},
 
 		async getSearchResults(query: string) {
-			window.dispatchEvent(new Event('show-spinner'));
+			this.spinnerStore.toggleSpinner(true);
 			this.loading = true;
 			let fq = '';
 			if (this.filters.length > 0) {
@@ -52,7 +54,7 @@ export const useSearchResultStore = defineStore({
 				this.numFound = responseData.data.response.numFound;
 				this.noHits = this.numFound === 0 ? true : false;
 				this.loading = false;
-				window.dispatchEvent(new Event('hide-spinner'));
+				this.spinnerStore.toggleSpinner(false);
 			} catch (err) {
 				throw new Error('error');
 			}
