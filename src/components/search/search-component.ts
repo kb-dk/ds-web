@@ -11,8 +11,11 @@ class SearchComponent extends HTMLElement {
 		const searchQuery: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
 		if (searchQuery) {
 			if (location.search) {
-				const q = location.search.split('&')[0].split('=')[1];
-				searchQuery.value = decodeURIComponent(q);
+				//Note - this does not handle arrays
+				const q = new URL(location.href).searchParams.get('q');
+				if (q) {
+					searchQuery.value = decodeURIComponent(q.toString());
+				}
 			}
 			searchQuery.addEventListener('input', () => {
 				this.dispatchUpdate(searchQuery.value);
