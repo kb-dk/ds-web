@@ -22,7 +22,7 @@ import BroadcastRecordMetadataView from '@/components/records/BroadcastRecord.vu
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { GenericRecord } from '@/types/GenericRecord';
 import { AxiosError } from 'axios';
-import { ErrorManagerType } from '@/error-handling/ErrorManagerType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'ShowRecord',
