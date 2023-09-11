@@ -36,6 +36,8 @@ export const useSearchResultStore = defineStore({
 		},
 
 		async getSearchResults(query: string) {
+			window.dispatchEvent(new Event('show-spinner'));
+			this.loading = true;
 			let fq = '';
 			if (this.filters.length > 0) {
 				this.filters.forEach((filt: string) => {
@@ -49,6 +51,8 @@ export const useSearchResultStore = defineStore({
 				this.facetResult = responseData.data.facet_counts.facet_fields;
 				this.numFound = responseData.data.response.numFound;
 				this.noHits = this.numFound === 0 ? true : false;
+				this.loading = false;
+				window.dispatchEvent(new Event('hide-spinner'));
 			} catch (err) {
 				throw new Error('error');
 			}
