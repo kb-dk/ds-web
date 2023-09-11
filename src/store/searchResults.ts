@@ -2,62 +2,74 @@ import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { APIService } from '@/api/api-service';
 import { useSpinnerStore } from '@/store/spinner';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { AxiosError } from 'axios';
+import { inject, ref } from 'vue';
 
-export interface SearchArgs {
-	currentQuery: string;
-}
+export const useSearchResultStore = defineStore('searchResults', () => {
+	const searchResult = ref([] as Array<GenericSearchResult>);
+	const facetResult = ref([] as Array<string>);
+	const errorManager = inject('errorManager') as ErrorManagerType;
+	const numFound = ref(0);
+	const loading = ref(false);
+	const error = ref('');
+	const currentQuery = ref('');
+	const noHits = ref(false);
+	const filters = ref([] as Array<string>);
+	const spinnerStore = useSpinnerStore();
 
-export const useSearchResultStore = defineStore({
-	id: 'searchResults',
-	state: () => ({
-		searchResult: [] as Array<GenericSearchResult>,
-		//TODO build the array type when we know how it's gonna look
-		facetResult: [] as Array<string>,
-		numFound: 0,
-		loading: false,
-		error: '',
-		currentQuery: '',
-		noHits: false,
-		filters: [] as Array<string>,
-		spinnerStore: useSpinnerStore(),
-	}),
+	const addFilter = (filter: string) => {
+		if (!filters.value.includes(filter)) {
+			filters.value.push(filter);
+		}
+	};
 
-	getters: {},
+	const resetFilters = () => {
+		filters.value = [];
+	};
 
-	actions: {
-		addFilter(filter: string) {
-			if (!this.filters.includes(filter)) {
-				this.filters.push(filter);
-			}
-		},
-		resetFilters() {
-			this.filters = [];
-		},
-		removeFilter(filter: string) {
-			this.filters.splice(this.filters.indexOf(filter), 1);
-		},
+	const removeFilter = (filter: string) => {
+		filters.value.splice(filters.value.indexOf(filter), 1);
+	};
 
-		async getSearchResults(query: string) {
-			this.spinnerStore.toggleSpinner(true);
-			this.loading = true;
-			let fq = '';
-			if (this.filters.length > 0) {
-				this.filters.forEach((filt: string) => {
-					fq += '&' + filt;
-				});
-			}
-			try {
-				const responseData = await APIService.getSearchResults(query, fq);
-				this.currentQuery = query;
-				this.searchResult = responseData.data.response.docs;
-				this.facetResult = responseData.data.facet_counts.facet_fields;
-				this.numFound = responseData.data.response.numFound;
-				this.noHits = this.numFound === 0 ? true : false;
-				this.loading = false;
-				this.spinnerStore.toggleSpinner(false);
-			} catch (err) {
-				throw new Error('error');
-			}
-		},
-	},
+	const getSearchResults = async (query: string) => {
+		let fq = '';
+		if (filters.value.length > 0) {
+			filters.value.forEach((filt: string) => {
+				fq += '&' + filt;
+			});
+		}
+		try {
+			spinnerStore.toggleSpinner(true);
+			loading.value = true;
+			const responseData = await APIService.getSearchResults(query, fq);
+			currentQuery.value = query;
+			searchResult.value = responseData.data.response.docs;
+			facetResult.value = responseData.data.facet_counts.facet_fields;
+			numFound.value = responseData.data.response.numFound;
+			noHits.value = numFound.value === 0;
+		} catch (err: unknown) {
+			error.value = (err as AxiosError).message;
+			errorManager.submitError(err as AxiosError);
+		} finally {
+			spinnerStore.toggleSpinner(false);
+			loading.value = false;
+		}
+	};
+
+	return {
+		searchResult,
+		facetResult,
+		errorManager,
+		numFound,
+		loading,
+		error,
+		currentQuery,
+		noHits,
+		filters,
+		addFilter,
+		resetFilters,
+		removeFilter,
+		getSearchResults,
+	};
 });
