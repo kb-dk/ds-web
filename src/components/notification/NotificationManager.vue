@@ -51,8 +51,11 @@ export default defineComponent({
 		return { notificationStore };
 	},
 
-	created() {
-		console.log('created');
+	created: function () {
+		window.addEventListener('notify-user', this.newNotification);
+	},
+	beforeUnmount() {
+		window.removeEventListener('notify-user', this.newNotification);
 	},
 	methods: {
 		spawnNotePassive() {
@@ -70,6 +73,14 @@ export default defineComponent({
 				'moderate',
 				true,
 			);
+		},
+
+		newNotification(e: Event) {
+			this.addNotification(e as CustomEvent);
+		},
+		addNotification(e: CustomEvent) {
+			//this needs to be ironed out better o_O
+			this.notificationStore.addNotification(e.detail.type, e.detail.message, 'low', Math.random() < 0.5);
 		},
 		removeNotification(notification: NotificationType) {
 			this.notificationStore.removeNotification(notification);
