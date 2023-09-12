@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useSpinnerStore = defineStore({
-	id: 'SpinnerStore',
-	state: () => ({
-		spinner: false,
-	}),
+export const useSpinnerStore = defineStore('SpinnerStore', () => {
+	const spinner = ref(false);
 
-	getters: {},
+	const toggleSpinner = (value: boolean) => {
+		spinner.value = value;
+	};
 
-	actions: {
-		toggleSpinner(value: boolean) {
-			this.spinner = value;
-		},
-	},
+	return {
+		spinner,
+		toggleSpinner,
+	};
 });
