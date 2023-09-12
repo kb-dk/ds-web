@@ -33,7 +33,6 @@ export default defineComponent({
 	name: 'App',
 	data() {
 		return {
-			spinner: false,
 			td: 0.35,
 			leaveDone: false,
 			locale: 'da',
@@ -46,22 +45,12 @@ export default defineComponent({
 		//Remember to check for init locale once we now where to get it from
 		window.addEventListener('locale-switch', this.switchLocale);
 		window.addEventListener('change-path', this.gotoPath);
-		window.addEventListener('show-spinner', this.showSpinner);
-		window.addEventListener('hide-spinner', this.hideSpinner);
 	},
 	beforeUnmount() {
 		window.removeEventListener('locale-switch', this.switchLocale);
 		window.removeEventListener('change-path', this.gotoPath);
-		window.removeEventListener('show-spinner', this.showSpinner);
-		window.removeEventListener('hide-spinner', this.hideSpinner);
 	},
 	methods: {
-		showSpinner() {
-			this.spinner = true;
-		},
-		hideSpinner() {
-			this.spinner = false;
-		},
 		gotoPath(e: Event) {
 			e.preventDefault();
 			this.changePath(e as CustomEvent);
