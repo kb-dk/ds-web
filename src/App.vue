@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu :locale="locale"></kb-menu>
 		<div
@@ -27,19 +28,21 @@
 import { defineComponent } from 'vue';
 import './components/nav/menu-component';
 import gsap from 'gsap';
+import Notifier from '@/components/notification/Notifier.vue';
 import Spinner from '@/components/search/Spinner.vue';
 
 export default defineComponent({
 	name: 'App',
+	components: {
+		Notifier,
+		Spinner,
+	},
 	data() {
 		return {
 			td: 0.35,
 			leaveDone: false,
 			locale: 'da',
 		};
-	},
-	components: {
-		Spinner,
 	},
 	created: function () {
 		//Remember to check for init locale once we now where to get it from
