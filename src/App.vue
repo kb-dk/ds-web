@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<NotificationManager></NotificationManager>
+		<Notifier></Notifier>
 		<kb-menu :locale="locale"></kb-menu>
 		<div
 			class="wipe"
@@ -27,12 +27,12 @@
 import { defineComponent } from 'vue';
 import './components/nav/menu-component';
 import gsap from 'gsap';
-import NotificationManager from '@/components/notification/NotificationManager.vue';
+import Notifier from '@/components/notification/Notifier.vue';
 
 export default defineComponent({
 	name: 'App',
 	components: {
-		NotificationManager,
+		Notifier,
 	},
 	data() {
 		return {

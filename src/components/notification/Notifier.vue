@@ -1,9 +1,5 @@
 <template>
 	<div class="container">
-		<!-- FOR TESTING PURPOSES ONLY-->
-		<button @click="spawnNotePassive()">passive</button>
-		<button @click="spawnNoteUser()">user</button>
-
 		<div class="user-notifications">
 			<TransitionGroup
 				tag="ul"
@@ -40,7 +36,7 @@ import NotificationItem from '@/components/notification/NotificationItem.vue';
 import { NotificationType } from '@/types/Notifications';
 
 export default defineComponent({
-	name: 'NotificationManager',
+	name: 'Notifier',
 	components: {
 		NotificationItem,
 	},
@@ -58,23 +54,6 @@ export default defineComponent({
 		window.removeEventListener('notify-user', this.newNotification);
 	},
 	methods: {
-		spawnNotePassive() {
-			this.notificationStore.addNotification(
-				(Math.random() * 2525252525).toString(),
-				'test test desc test desc test desc test desc test desc',
-				'moderate',
-				false,
-			);
-		},
-		spawnNoteUser() {
-			this.notificationStore.addNotification(
-				(Math.random() * 2525252525).toString(),
-				'test test desc test desc test desc test desc test desc',
-				'moderate',
-				true,
-			);
-		},
-
 		newNotification(e: Event) {
 			this.addNotification(e as CustomEvent);
 		},
