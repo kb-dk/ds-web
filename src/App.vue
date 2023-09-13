@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<Spinner></Spinner>
 		<kb-menu :locale="locale"></kb-menu>
 		<div
 			class="wipe"
@@ -26,6 +27,7 @@
 import { defineComponent } from 'vue';
 import './components/nav/menu-component';
 import gsap from 'gsap';
+import Spinner from '@/components/search/Spinner.vue';
 
 export default defineComponent({
 	name: 'App',
@@ -35,6 +37,9 @@ export default defineComponent({
 			leaveDone: false,
 			locale: 'da',
 		};
+	},
+	components: {
+		Spinner,
 	},
 	created: function () {
 		//Remember to check for init locale once we now where to get it from
@@ -131,6 +136,7 @@ body {
 .fade-leave-to {
 	opacity: 0;
 }
+
 .wipe {
 	opacity: 1;
 	pointer-events: none;
