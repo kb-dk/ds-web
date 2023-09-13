@@ -131,42 +131,53 @@ type MenuTranslation = {
 };
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
-	<header
-	id="mainHeader"
-	class="global-header"
->
-	<div class="header-bg-wrapper rdl-theme-bg">
-		<div class="container">
-			<div class="row justify-content-between">
-				<div class="col logo-col">
-					<a
-						href="#"
-						class="rdl-logo"
+<div>
+	<header id="mainHeader" class="global-header">
+		<div class="header-bg-wrapper rdl-theme-bg">
+			<div class="container">
+				<div class="row justify-content-between">
+					<div class="col logo-col">
+						<a
+							href="#"
+							class="rdl-logo"
+						>
+							<span class="sr-only"></span>
+						</a>
+					</div>
+				</div>
+				<div
+					class="collapse rdl-main-navigation-wrapper"
+					id="mobileNavigation"
+					data-parent="#mainHeader"
+				>
+					<nav
+						class="rdl-main-navigation"
+						aria-label="Hovednavigation"
 					>
-						<span class="sr-only"></span>
-					</a>
+					</nav>
 				</div>
 			</div>
-			<div
-				class="collapse rdl-main-navigation-wrapper"
-				id="mobileNavigation"
-				data-parent="#mainHeader"
-			>
-				<nav
-					class="rdl-main-navigation"
-					aria-label="Hovednavigation"
-				>
-				</nav>
-			</div>
 		</div>
-	</div>
+	</header>
+	<div class="edge blue"></div>
+</div>
 
-	<div class="header-edge d-none d-lg-inline-block"></div>
-</header>
 `;
 
 const MENU_COMPONMENT_STYLES = /*css*/ `
 	<style>
+	.edge {
+		height:31px;
+	}
+
+	.edge.blue {
+		width:100%;
+		position:absolute;
+		background-color:#caf0fe;
+		clip-path: polygon(0 0, 0 100%, 100% 0);
+		margin-top:-1px;
+		z-index: 3;
+	}
 	a {
 		font-weight: 700;
 		color:#002e70;
