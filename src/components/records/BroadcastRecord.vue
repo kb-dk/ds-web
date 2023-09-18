@@ -1,6 +1,8 @@
 <template>
 	<div class="">
-		<VideoPlayer></VideoPlayer>
+		<VideoPlayer
+			videoUrl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+		></VideoPlayer>
 		<div class="title-box">
 			<h2>{{ recordData.name[0].value }}</h2>
 		</div>
@@ -27,7 +29,8 @@
 <script lang="ts">
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { defineComponent, PropType } from 'vue';
-import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
+//import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
+import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',

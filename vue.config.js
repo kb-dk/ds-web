@@ -1,3 +1,6 @@
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
 	chainWebpack: (config) => {
 		config.module
@@ -12,10 +15,24 @@ module.exports = {
 			}));
 		config.plugin('define').tap((args) => {
 			// eslint-disable-next-line
-			let v = JSON.stringify(require('./package.json').version);
+      let v = JSON.stringify(require('./package.json').version);
 			args[0]['process.env']['VUE_APP_VERSION'] = process.env.NODE_ENV === 'production' ? v : '"DEVELOPMENT BUILD"';
 			return args;
 		});
+		config.plugin('copy').use(CopyWebpackPlugin, [
+			{
+				patterns: [
+					{
+						from: path.resolve('./node_modules/kaltura-player-js/dist/kaltura-tv-player.js'),
+						to: '.',
+					},
+					{
+						from: path.resolve('./node_modules/kaltura-player-js/dist/kaltura-tv-player.js.map'),
+						to: '.',
+					},
+				],
+			},
+		]);
 	},
 
 	publicPath: process.env.NODE_ENV === 'production' ? '/dsweb/' : '/',
