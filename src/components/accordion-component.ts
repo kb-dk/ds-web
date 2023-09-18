@@ -163,6 +163,8 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
 
     .collapsable {
         white-space: pre-wrap;
+        padding-bottom: 10px;
+        display: inline-block;
     }
 	</style>`;
 
