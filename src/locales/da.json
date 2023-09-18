@@ -1,4 +1,3 @@
-
 {
   "search":{
      "searchbtn":"Søg",
@@ -8,5 +7,8 @@
      "title":"Titel",
      "genre":"Genre",
      "copy": "Kopier henvisning til dette indhold"
+  },
+  "notification": {
+      "close":"Luk"
   }
 }

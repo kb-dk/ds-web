@@ -1,5 +1,7 @@
 <template>
 	<div class="container">
+		<Notifier></Notifier>
+		<Spinner></Spinner>
 		<kb-menu :locale="locale"></kb-menu>
 		<div
 			class="wipe"
@@ -26,9 +28,15 @@
 import { defineComponent } from 'vue';
 import './components/nav/menu-component';
 import gsap from 'gsap';
+import Notifier from '@/components/notification/Notifier.vue';
+import Spinner from '@/components/search/Spinner.vue';
 
 export default defineComponent({
 	name: 'App',
+	components: {
+		Notifier,
+		Spinner,
+	},
 	data() {
 		return {
 			td: 0.35,
@@ -122,15 +130,7 @@ body {
 	margin: 0;
 	padding: 0;
 }
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.5s ease;
-}
 
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-}
 .wipe {
 	opacity: 1;
 	pointer-events: none;

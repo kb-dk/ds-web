@@ -11,8 +11,7 @@ class SearchComponent extends HTMLElement {
 		const searchQuery: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
 		if (searchQuery) {
 			if (location.search) {
-				const q = location.search.split('&')[0].split('=')[1];
-				searchQuery.value = decodeURIComponent(q);
+				this.updateSearchQuery(searchQuery);
 			}
 			searchQuery.addEventListener('input', () => {
 				this.dispatchUpdate(searchQuery.value);
@@ -24,6 +23,30 @@ class SearchComponent extends HTMLElement {
 					this.dispatchSearch(e);
 			  })
 			: null;
+	}
+
+	private updateSearchQuery(searchQuery: HTMLInputElement) {
+		//Note - this does not handle arrays
+		try {
+			const q = new URL(location.href).searchParams.get('q');
+			if (q !== null) {
+				searchQuery.value = decodeURIComponent(q.toString());
+			}
+		} catch (error) {
+			if (error instanceof URIError) {
+				// TODO dispatch to errorManager og direct to Notifier
+				/**
+				 * Specific error: MalformedURI - aka you messsed up the query
+				 * and even worse you did it by manipulating the url directly
+				 * in the URL bar
+				 * */
+				console.log('Malformed URI:', error.message);
+			} else {
+				// TODO dispatch to errorManager or direct to Notifier
+				// General error happened here so message to user should be generel
+				console.log('An error occurred decoding search params:', error);
+			}
+		}
 	}
 
 	static get observedAttributes() {

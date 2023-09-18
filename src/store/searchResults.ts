@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { APIService } from '@/api/api-service';
+import { useSpinnerStore } from '@/store/spinner';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
@@ -15,6 +16,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const currentQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
+	const spinnerStore = useSpinnerStore();
 
 	const addFilter = (filter: string) => {
 		if (!filters.value.includes(filter)) {
@@ -38,6 +40,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			});
 		}
 		try {
+			spinnerStore.toggleSpinner(true);
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(query, fq);
 			currentQuery.value = query;
@@ -49,6 +52,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError);
 		} finally {
+			spinnerStore.toggleSpinner(false);
 			loading.value = false;
 		}
 	};
