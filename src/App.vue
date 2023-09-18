@@ -8,7 +8,7 @@
 			<img :src="getImgServerSrcURL()" />
 		</div>
 	</div>
-	<div :class="$router.currentRoute.value.name === 'Home' ? 'content' : 'content deepdive'">
+	<div class="content">
 		<router-view v-slot="{ Component }">
 			<transition
 				:duration="{ enter: td * 1000, leave: td * 1000 }"
@@ -229,16 +229,7 @@ nav {
 	position: relative;
 	//height: 100vh;
 	background-color: white;
-	z-index: 2;
-}
-
-.content.deepdive {
-	margin-top: -15px;
-	width: 90vw;
-	background-color: white;
-	min-height: 50vh;
-	z-index: 4;
-	margin: -15px auto 0 auto;
+	//z-index: 2;
 }
 
 .lang-switcher {

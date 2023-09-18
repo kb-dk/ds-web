@@ -1,12 +1,14 @@
 <template>
-	<div>
-		<!-- TODO handle empty response scenario -->
-		<div v-if="recordData">
-			<div v-if="recordType === 'BroadcastEvent'">
-				<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
-			</div>
-			<div v-else>
-				<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
+	<div class="container top-offset">
+		<div class="record-data">
+			<!-- TODO handle empty response scenario -->
+			<div v-if="recordData">
+				<div v-if="recordType === 'BroadcastEvent'">
+					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
+				</div>
+				<div v-else>
+					<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -61,3 +63,58 @@ export default defineComponent({
 	},
 });
 </script>
+
+<style scoped>
+.container {
+	text-align: left;
+	padding-right: 12px;
+	padding-left: 12px;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+}
+
+.record-data {
+	padding: 25px;
+}
+
+.top-offset {
+	position: relative;
+	background: white;
+	top: -20px;
+	z-index: 3;
+}
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.container {
+		max-width: 640px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.container {
+		max-width: 990px;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.container {
+		max-width: 1280px;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.container {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+</style>

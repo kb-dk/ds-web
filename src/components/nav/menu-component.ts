@@ -170,6 +170,16 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		height:31px;
 	}
 
+	.rdl-logo {
+		background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
+		background-position: 0;
+		background-repeat: no-repeat;
+		background-size: contain;
+		display: inline-block;
+		height: 32px;
+		width: 138px;
+	}
+
 	.edge.blue {
 		width:100%;
 		position:absolute;
@@ -191,6 +201,41 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		justify-content: space-between;
 		padding-left:12px;
 		padding-right:12px;
+		width:100%;
+	}
+
+		/* MEDIA QUERY 480 */
+	@media (min-width: 480px) {
+		.container {
+			max-width: 640px;
+		}
+	}
+	/* MEDIA QUERY 640 */
+	@media (min-width: 640px) {
+		.container {
+			max-width: 990px;
+		}
+	}
+	/* MEDIA QUERY 990 */
+	@media (min-width: 990px) {
+		.container {
+			display: flex;
+			/* flex-direction: column; */
+			max-width: 1150px;
+		}
+	}
+	/* MEDIA QUERY 1150 */
+	@media (min-width: 1150px) {
+		.container {
+			max-width: 1280px;
+		}
+	}
+	/* MEDIA QUERY 1280 */
+	@media (min-width: 1280px) {
+		.container {
+			padding-right: 0;
+			padding-left: 0;
+		}
 	}
 
 	.rdl-main-navigation {
@@ -239,6 +284,11 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	
 	.justify-content-between {
 		justify-content: space-between !important;
+	}
+
+	.header-bg-wrapper {
+		display: flex;
+		justify-content: center;
 	}
 
 	.nav-item.level-1 {
@@ -313,24 +363,20 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			height: 1.4vw;
 			margin-bottom: -1.5vw;
 		}
-	}
-
-	@media (min-width: 990px) {
 		.rdl-primary-nav button, .rdl-secondary-nav button {
     		display: none;
 		}
-	}
-
-	@media (min-width: 990px) {
 		.d-lg-inline-flex {
     		display: inline-flex!important;
 		}
-	}
-
-	@media (min-width: 990px) {
 		.rdl-primary-nav ul,
 		.rdl-secondary-nav ul {
 			display: none;
+		}
+		.rdl-logo {
+			background-image: url('https://design.kb.dk/components/assets/images/logo.svg');
+			height: 69px;
+			width: 174px;
 		}
 	}
 	
@@ -343,23 +389,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		display: flex;
 		align-content: center;
 		flex-wrap: wrap;
-	}
-
-	.rdl-logo {
-		background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
-		background-position: 0;
-		background-repeat: no-repeat;
-		background-size: contain;
-		display: inline-block;
-		height: 32px;
-		width: 138px;
-	}
-	@media (min-width: 990px) {
-		.rdl-logo {
-			background-image: url('https://design.kb.dk/components/assets/images/logo.svg');
-			height: 69px;
-			width: 174px;
-		}
 	}
 	</style>`;
 

@@ -6,6 +6,7 @@
   },
   "record":{
      "title":"Titel",
-     "genre":"Genre"
+     "genre":"Genre",
+     "copy": "Kopier henvisning til dette indhold"
   }
 }

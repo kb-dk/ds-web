@@ -1,24 +1,62 @@
 <template>
-	<div class="">
+	<div class="broadcast-record">
 		<VideoPlayer></VideoPlayer>
-		<div class="title-box">
-			<h2>{{ recordData.name[0].value }}</h2>
-		</div>
-		<div>
-			<div class="record-title">
-				<p>
-					{{ recordData.description }}
-				</p>
-			</div>
-			<div class="right-side-metadata-box">
-				<div>{{ getBroadcastDate(recordData.startDate) }}</div>
-				<div>
-					Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
-					<span class="broadcast-duration">({{ getBroadcastDuration(recordData.duration) }})</span>
+		<div class="boardcast-record-data">
+			<div class="main-record-data">
+				<div class="record-data">
+					<h2>{{ recordData.name[0].value }}</h2>
+					<p>
+						{{ recordData.description }}
+					</p>
 				</div>
-				<div>{{ recordData.publishedOn.broadcastDisplayName }}</div>
-				<h4>{{ $t('record.genre') }}</h4>
-				<div>{{ recordData.keywords }}</div>
+			</div>
+			<div class="right-side">
+				<div class="right-side-metadata-box">
+					<h3>Sendt</h3>
+					<div>
+						<span class="material-icons blue">event</span>
+						{{ getBroadcastDate(recordData.startDate) }}
+					</div>
+					<div>
+						<span class="material-icons blue">schedule</span>
+						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
+						<span class="broadcast-duration">({{ getBroadcastDuration(recordData.duration) }})</span>
+					</div>
+					<div>
+						<span class="material-icons blue">tv</span>
+						{{ recordData.publishedOn.broadcastDisplayName }}
+					</div>
+					<h4>{{ $t('record.genre') }}</h4>
+					<div>{{ recordData.keywords }}</div>
+				</div>
+				<div class="divider darkblue"></div>
+				<button
+					class="get-link"
+					@click="getCurrentUrl()"
+				>
+					<span class="material-icons">link</span>
+					<span class="link-text">{{ $t('record.copy') }}</span>
+				</button>
+			</div>
+		</div>
+		<div class="extra-record-data">
+			<div class="accordian">
+				<kb-accordion
+					first="true"
+					title="Yderligere information om videoen"
+					expanded="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet quam felis. Curabitur dui augue, auctor eu sodales sit amet, porta vel dolor. Ut libero purus, malesuada ut tincidunt non, auctor nec magna. Quisque interdum, libero vitae varius tempor, ipsum sapien tempor tellus, et aliquet ex enim in neque. Donec lacinia justo urna, et imperdiet tellus sodales sit amet. Nulla nec aliquam nunc. Nam pretium suscipit posuere. Pellentesque tincidunt auctor mattis.
+					
+Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
+				></kb-accordion>
+			</div>
+			<h3>Relateret indhold</h3>
+			<div class="related-records">
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
 			</div>
 		</div>
 	</div>
@@ -28,6 +66,8 @@
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
+import './../accordion-component';
+import './../spot-component';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -40,7 +80,14 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	created() {
+		console.log('object', this.recordData);
+	},
 	methods: {
+		getCurrentUrl() {
+			//make function to copy to clipboard.
+			console.log('YHEARRAP');
+		},
 		//TODO when refined/DRY´ied - these data, time and duration utilities should be 'global' - we are going to use it many places
 		//ISO 8601 duration format
 		getBroadcastDuration: (isoDuration: string) => {
@@ -90,6 +137,104 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+:host {
+	margin-top: -1px;
+	position: relative;
+}
+
+.material-icons {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 16px;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	-webkit-font-feature-settings: 'liga';
+	-webkit-font-smoothing: antialiased;
+	position: relative;
+	top: 2px;
+}
+
+.get-link {
+	font-family: noway, sans-serif;
+	background-color: transparent;
+	border: 0px;
+	cursor: pointer;
+}
+
+.get-link .link-text {
+	text-decoration: underline;
+}
+
+.get-link .material-icons {
+	position: relative;
+	top: 3px;
+	margin-right: 3px;
+}
+
+.material-icons.blue {
+	color: #002e70;
+}
+
+.boardcast-record-data {
+	display: flex;
+	gap: 20px;
+	margin-top: 40px;
+}
+
+.extra-record-data {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.accordian {
+	flex: 0 0 calc(66.66666667% - 20px);
+	max-width: calc(66.66666667% - 20px);
+}
+
+.related-records {
+	flex: 0 0 calc(66.66666667% - 20px);
+	max-width: calc(66.66666667% - 20px);
+}
+
+.main-record-data {
+	flex: 0 0 calc(66.66666667% - 20px);
+	max-width: calc(66.66666667% - 20px);
+}
+
+.right-side {
+	overflow: hidden;
+	flex: 0 0 33.33333333%;
+	max-width: 33.33333333%;
+}
+
+.right-side-metadata-box {
+	color: #002e70;
+	width: 100%;
+	padding: 20px 10px 30px 10px;
+	background-color: #f0fbff;
+	box-sizing: border-box;
+}
+
+@media (min-width: 990px) {
+	.main-record-data,
+	.related-records,
+	.accordian {
+		flex: 0 0 calc(75% - 20px);
+		max-width: calc(75% - 20px);
+	}
+
+	.right-side {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+}
 .title-box {
 	margin: 0 0 0 5%;
 }
@@ -100,15 +245,42 @@ temporary styling until patterns from design system are implemented
 	margin: 0 0 0 5%;
 }
 
-.right-side-metadata-box {
-	float: right;
-	margin: 0 10.5% 0 0;
-	border: 1px solid;
-	padding: 10px;
-	width: 20%;
-}
-
 .broadcast-duration {
 	font-size: 80%;
+}
+
+.divider {
+	height: 13px;
+	margin: 24px 0 36px;
+	width: 100%;
+	transform: skewX(-2deg) skewY(2deg);
+	margin-top: -7px;
+}
+
+.divider.darkblue {
+	background-color: #002e70;
+}
+
+.related-records {
+	display: flex;
+	flex-wrap: wrap;
+	padding-left: 0;
+}
+
+.related-record {
+	flex: 0 0 33.333333%;
+	box-sizing: border-box;
+}
+.related-record:nth-of-type(3n + 1) {
+	padding-left: 0px;
+	padding-right: 10px;
+}
+.related-record:nth-of-type(3n + 2) {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.related-record:nth-of-type(3n) {
+	padding-right: 0px;
+	padding-left: 10px;
 }
 </style>

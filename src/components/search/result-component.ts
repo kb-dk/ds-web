@@ -71,7 +71,9 @@ class ResultComponent extends HTMLElement {
 		duration && (duration.textContent = 'VARIGHED');
 
 		const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
-		thumb && (thumb.src = resultData.thumbnail);
+		if (resultData.thumbnail !== undefined) {
+			thumb && (thumb.src = resultData.thumbnail);
+		}
 
 		const summary = this.shadow.querySelector('.summary');
 		summary &&
