@@ -123,6 +123,7 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         color: #002E70;
         background-color: transparent;
         border: none;
+        cursor:pointer;
     }
 
     .rdl-accordion-item {
