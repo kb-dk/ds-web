@@ -331,6 +331,7 @@ temporary styling until patterns from design system are implemented
 		flex-wrap: wrap;
 	}
 	.related-record {
+		margin: 0px;
 		flex: 0 0 33.3333%;
 		box-sizing: border-box;
 	}
