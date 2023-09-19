@@ -50,12 +50,12 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 			<div class="related-content">
 				<h3>Relateret indhold</h3>
 				<div class="related-records">
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="First test yay"></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="Second test yay"></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="Third test yay"></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="Fourth test yay"></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="Fifth test yay"></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent title="Sixth test yay"></kb-spotcomponent></div>
 				</div>
 			</div>
 		</div>
@@ -71,6 +71,16 @@ import './../spot-component';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
+	data() {
+		return {
+			isDown: false,
+			startX: 0,
+			scrollLeft: 0 as number,
+			slidingElement: null as null | HTMLElement,
+			linkItems: null as null | NodeList,
+			move: false,
+		};
+	},
 	components: {
 		VideoPlayer,
 	},
@@ -80,10 +90,69 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	created() {
-		console.log('object', this.recordData);
+	mounted() {
+		this.slidingElement = document.querySelector('.related-records');
+		this.linkItems = document.querySelectorAll('.related-record');
+		if (this.slidingElement) {
+			this.slidingElement.addEventListener('mousedown', this.startAndCalculateOffset);
+			this.slidingElement.addEventListener('mouseleave', this.stopMovementOnParent);
+			this.slidingElement.addEventListener('mouseup', this.stopMovementOnParent);
+			this.slidingElement.addEventListener('mousemove', this.calculateMovement);
+
+			this.linkItems.forEach((element) => {
+				element.addEventListener('mousedown', this.stopMovement);
+				element.addEventListener('mousemove', this.startMovement);
+				element.addEventListener('click', this.preventClickIfMovement);
+			});
+		}
+	},
+	beforeUnmount() {
+		this.slidingElement = document.querySelector('.related-records');
+		this.linkItems = document.querySelectorAll('.related-record');
+		if (this.slidingElement) {
+			this.slidingElement.removeEventListener('mousedown', this.startAndCalculateOffset);
+			this.slidingElement.removeEventListener('mouseleave', this.stopMovementOnParent);
+			this.slidingElement.removeEventListener('mouseup', this.stopMovementOnParent);
+			this.slidingElement.removeEventListener('mousemove', this.calculateMovement);
+
+			this.linkItems.forEach((element) => {
+				element.removeEventListener('mousedown', this.stopMovement);
+				element.removeEventListener('mousemove', this.startMovement);
+				element.removeEventListener('click', this.preventClickIfMovement);
+			});
+		}
 	},
 	methods: {
+		startMovement() {
+			this.move = true;
+		},
+		stopMovement() {
+			this.move = false;
+		},
+		preventClickIfMovement(e: Event) {
+			if (this.move) e.preventDefault();
+		},
+
+		startAndCalculateOffset(e: MouseEvent) {
+			if (this.slidingElement) {
+				this.isDown = true;
+				this.startX = e.pageX - this.slidingElement.offsetLeft;
+				this.scrollLeft = this.slidingElement.scrollLeft;
+			}
+		},
+		stopMovementOnParent() {
+			if (this.slidingElement) {
+				this.isDown = false;
+			}
+		},
+		calculateMovement(e: MouseEvent) {
+			if (this.slidingElement) {
+				if (!this.isDown) return;
+				e.preventDefault();
+				const x = e.pageX - this.slidingElement.offsetLeft;
+				this.slidingElement.scrollLeft = this.scrollLeft - (x - this.startX);
+			}
+		},
 		getCurrentUrl() {
 			//make function to copy to clipboard.
 			console.log('YHEARRAP');
@@ -187,7 +256,6 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
-	margin-top: 40px;
 }
 
 .extra-record-data {
@@ -260,6 +328,7 @@ temporary styling until patterns from design system are implemented
 	padding-left: 0;
 	max-width: 100%;
 	overflow: hidden;
+	padding-top: 5px;
 }
 
 .related-content {
@@ -279,6 +348,7 @@ temporary styling until patterns from design system are implemented
 		margin-left: 0px;
 		margin-right: 0px;
 		gap: 20px;
+		margin-top: 40px;
 	}
 	.main-record-data,
 	.related-records {

@@ -14,8 +14,10 @@ class SpotComponent extends HTMLElement {
 
 	connectedCallback() {
 		if (this.title) {
-			const titleHolder = this.shadow.querySelector('.rdl-accordion-title');
+			const titleHolder = this.shadow.querySelector('.record-title');
 			titleHolder && (titleHolder.innerHTML = this.title);
+			const symbol = this.shadow.querySelector('.type-symbol');
+			symbol && (symbol.innerHTML = 'play_arrow');
 		}
 		if (this.data) {
 			//put in the data
@@ -38,14 +40,14 @@ const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
                 class="image-item"
                 src=""
                 alt="altTxt"
-            />
+            /><span class="type-symbol material-icons"></span>
         </figure>
             <div class="record-info">
                 <div class="record-metadata">
                     <div><span class="material-icons">event</span><span>DR1, 7. september 1993</span></div>
                     <div><span class="material-icons">schedule</span>Varighed: <span>16min</span></div>
                 </div>
-                <h3 class="record-title">Lorem ipsum dolor sit amen</h3>
+                <h3 class="record-title"></h3>
                 <div class="record-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec accumsan arcu. 
                     Fusce fermentum lorem eget mi egestas facilisis. Etiam at malesuada turpis. 
                     Sed scelerisque at ex ut mattis. Nam et porttitor sapien. Donec consectetur libero lectus, 
@@ -62,7 +64,6 @@ const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
 
 const ACCORDION_COMPONMENT_STYLES = /*css*/ `
 	<style>
-
     .record-metadata {
         padding-top:20px;
     }
@@ -90,6 +91,14 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         -webkit-font-smoothing: antialiased;
         position:relative;
         top:3px;
+    }
+    
+    .type-symbol {
+        font-size:64px !important;
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%);
     }
 
     .record-title {
