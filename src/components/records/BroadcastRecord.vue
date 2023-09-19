@@ -5,9 +5,7 @@
 			<div class="main-record-data">
 				<div class="record-data">
 					<h2>{{ recordData.name[0].value }}</h2>
-					<p>
-						{{ recordData.description }}
-					</p>
+					<p>{{ recordData.description }} ALSO, LOREM IPSUM PLEASE</p>
 				</div>
 			</div>
 			<div class="right-side">
@@ -40,7 +38,7 @@
 			</div>
 		</div>
 		<div class="extra-record-data">
-			<div class="accordian">
+			<div class="accordion">
 				<kb-accordion
 					first="true"
 					title="Yderligere information om videoen"
@@ -49,14 +47,16 @@
 Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
 				></kb-accordion>
 			</div>
-			<h3>Relateret indhold</h3>
-			<div class="related-records">
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
-				<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+			<div class="related-content">
+				<h3>Relateret indhold</h3>
+				<div class="related-records">
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+					<div class="related-record"><kb-spotcomponent></kb-spotcomponent></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -165,6 +165,8 @@ temporary styling until patterns from design system are implemented
 	background-color: transparent;
 	border: 0px;
 	cursor: pointer;
+	padding-top: 0px;
+	padding-bottom: 25px;
 }
 
 .get-link .link-text {
@@ -183,7 +185,8 @@ temporary styling until patterns from design system are implemented
 
 .boardcast-record-data {
 	display: flex;
-	gap: 20px;
+	flex-direction: column;
+	margin: 0px 20px;
 	margin-top: 40px;
 }
 
@@ -193,25 +196,21 @@ temporary styling until patterns from design system are implemented
 	gap: 20px;
 }
 
-.accordian {
-	flex: 0 0 calc(66.66666667% - 20px);
-	max-width: calc(66.66666667% - 20px);
+.accordion {
+	margin: 0px 20px;
 }
 
-.related-records {
-	flex: 0 0 calc(66.66666667% - 20px);
-	max-width: calc(66.66666667% - 20px);
-}
-
+.accordion,
+.related-records,
 .main-record-data {
-	flex: 0 0 calc(66.66666667% - 20px);
-	max-width: calc(66.66666667% - 20px);
+	flex: 0 0 100%;
+	max-width: 100%;
 }
 
 .right-side {
 	overflow: hidden;
-	flex: 0 0 33.33333333%;
-	max-width: 33.33333333%;
+	flex: 0 0 100%;
+	max-width: 100%;
 }
 
 .right-side-metadata-box {
@@ -222,19 +221,13 @@ temporary styling until patterns from design system are implemented
 	box-sizing: border-box;
 }
 
-@media (min-width: 990px) {
-	.main-record-data,
-	.related-records,
-	.accordian {
-		flex: 0 0 calc(75% - 20px);
-		max-width: calc(75% - 20px);
-	}
-
-	.right-side {
-		flex: 0 0 25%;
-		max-width: 25%;
-	}
+.related-record {
+	margin-left: 20px;
 }
+.related-record:first-of-type {
+	margin-left: 0px;
+}
+
 .title-box {
 	margin: 0 0 0 5%;
 }
@@ -263,24 +256,116 @@ temporary styling until patterns from design system are implemented
 
 .related-records {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	padding-left: 0;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.related-content {
+	padding: 0px 20px;
 }
 
 .related-record {
-	flex: 0 0 33.333333%;
+	flex: 0 0 90%;
 	box-sizing: border-box;
 }
-.related-record:nth-of-type(3n + 1) {
-	padding-left: 0px;
-	padding-right: 10px;
+
+/* First breakpoint for tablet */
+
+@media (min-width: 640px) {
+	.boardcast-record-data {
+		flex-direction: row;
+		margin-left: 0px;
+		margin-right: 0px;
+		gap: 20px;
+	}
+	.main-record-data,
+	.related-records {
+		flex: 0 0 calc(50% - 20px);
+		max-width: calc(50% - 20px);
+	}
+
+	.accordion {
+		margin-left: 0px;
+		margin-right: 0px;
+		flex: 0 0 calc(100%);
+	}
+
+	.right-side {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.related-records {
+		flex: 0 0 calc(100%);
+		max-width: calc(100%);
+	}
+	.related-record {
+		flex: 0 0 66.6666%;
+	}
+	.related-content {
+		padding: 0px;
+	}
 }
-.related-record:nth-of-type(3n + 2) {
-	padding-left: 10px;
-	padding-right: 10px;
+
+/* Second break for small screen */
+@media (min-width: 800px) {
+	.boardcast-record-data {
+		flex-direction: row;
+		margin-left: 0px;
+		margin-right: 0px;
+		gap: 20px;
+	}
+	.main-record-data,
+	.related-records,
+	.accordion {
+		flex: 0 0 calc(66.66667% - 20px);
+		max-width: calc(66.66667% - 20px);
+	}
+
+	.right-side {
+		flex: 0 0 33.33333%;
+		max-width: 33.33333%;
+	}
+	.related-records {
+		flex-wrap: wrap;
+	}
+	.related-record {
+		flex: 0 0 33.3333%;
+		box-sizing: border-box;
+	}
+	.related-record:nth-of-type(3n + 1) {
+		padding-left: 0px;
+		padding-right: 10px;
+	}
+	.related-record:nth-of-type(3n + 2) {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	.related-record:nth-of-type(3n) {
+		padding-right: 0px;
+		padding-left: 10px;
+	}
 }
-.related-record:nth-of-type(3n) {
-	padding-right: 0px;
-	padding-left: 10px;
+
+/* third break for large screen */
+@media (min-width: 990px) {
+	.boardcast-record-data {
+		flex-direction: row;
+		margin-left: 0px;
+		margin-right: 0px;
+		gap: 20px;
+	}
+	.main-record-data,
+	.related-records,
+	.accordion {
+		flex: 0 0 calc(75% - 20px);
+		max-width: calc(75% - 20px);
+	}
+
+	.right-side {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
 }
 </style>

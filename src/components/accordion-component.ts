@@ -49,19 +49,20 @@ class AccordionComponent extends HTMLElement {
 		if (this.collapsed) {
 			expand?.classList.toggle('collapse');
 			expand?.classList.toggle('show');
+			this.collapsed = !this.collapsed;
 			gsap.to(expand, {
 				height: 'auto',
 				duration: 0.25,
-				onComplete: () => {
-					this.collapsed = !this.collapsed;
-				},
+				overwrite: true,
 			});
 		} else {
+			this.collapsed = !this.collapsed;
+
 			gsap.to(expand, {
 				height: '0px',
 				duration: 0.25,
+				overwrite: true,
 				onComplete: () => {
-					this.collapsed = !this.collapsed;
 					expand?.classList.toggle('collapse');
 					expand?.classList.toggle('show');
 				},

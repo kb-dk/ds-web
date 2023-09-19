@@ -67,8 +67,11 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         padding-top:20px;
     }
 
-    a { text-decoration:none;
+    a { 
+        text-decoration:none;
         color:black;
+        margin-bottom:40px;
+        display:inline-block;
     }
 
     .material-icons {
@@ -110,6 +113,12 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         margin-block-end: 0em;
         margin-inline-start: 0px;
         margin-inline-end: 0px;
+        transition:all 0.3s ease-in-out 0s;
+        filter:hue-rotate(0rad);
+    }
+
+    a:hover .image-wrapper {
+        filter:hue-rotate(3.142rad);
     }
 
     .image-item {

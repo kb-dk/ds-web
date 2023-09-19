@@ -67,15 +67,13 @@ export default defineComponent({
 <style scoped>
 .container {
 	text-align: left;
-	padding-right: 12px;
-	padding-left: 12px;
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
 }
 
 .record-data {
-	padding: 25px;
+	padding-top: 25px;
 }
 
 .top-offset {
@@ -92,7 +90,12 @@ export default defineComponent({
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
+	.record-data {
+		padding: 25px;
+	}
 	.container {
+		padding-right: 12px;
+		padding-left: 12px;
 		max-width: 990px;
 	}
 }
