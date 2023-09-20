@@ -2,7 +2,6 @@ class MenuComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	lang: string;
 	translation: MenuTranslation;
-
 	constructor() {
 		super();
 		this.translation = {
@@ -45,9 +44,13 @@ class MenuComponent extends HTMLElement {
 			},
 		};
 		this.lang = 'da';
-
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
+
+		const menuButton = this.shadow.querySelector('#mobileNavButton');
+		if (menuButton) {
+			menuButton.addEventListener('click', () => this.toggleMenu());
+		}
 
 		this.createFullHeaderMenu();
 	}
@@ -66,6 +69,10 @@ class MenuComponent extends HTMLElement {
 	dispatchLocaleSwitch(e: Event) {
 		window.dispatchEvent(new Event('locale-switch'));
 		e.preventDefault();
+	}
+
+	toggleMenu() {
+		this.shadow.querySelector('.rdl-main-navigation-wrapper')?.classList.toggle('collapse');
 	}
 
 	createFullHeaderMenu() {
@@ -132,34 +139,47 @@ type MenuTranslation = {
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
 <div>
-	<header id="mainHeader" class="global-header">
-		<div class="header-bg-wrapper rdl-theme-bg">
-			<div class="container">
-				<div class="row justify-content-between">
-					<div class="col logo-col">
-						<a
-							href="#"
-							class="rdl-logo"
-						>
-							<span class="sr-only"></span>
-						</a>
+	<header
+	id="mainHeader"
+	class="global-header"
+>
+	<div class="header-bg-wrapper rdl-theme-bg">
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col logo-col">
+					<a
+						href="#"
+						class="rdl-logo"
+					>
+						<span class="sr-only"></span>
+					</a>
+				</div>
+				<div class="col-auto d-lg-none burger-col">
+					<div id="mobileNavToggle">
+						<button id="mobileNavButton" class="btn rdl-burger collapsed" data-toggle="collapse" data-target="#mobileNavigation" aria-expanded="false" aria-controls="mobileNavigation" aria-label="Åbn eller luk navigation" aria-pressed="false">
+							<span class="rdl-line" aria-hidden="true"></span>
+							<span class="rdl-line" aria-hidden="true"></span>
+							<span class="rdl-line" aria-hidden="true"></span>
+							<span>Menu</span>
+						</button>
 					</div>
 				</div>
-				<div
-					class="collapse rdl-main-navigation-wrapper"
-					id="mobileNavigation"
-					data-parent="#mainHeader"
+			</div>
+			<div
+				class="collapse rdl-main-navigation-wrapper"
+				id="mobileNavigation"
+				data-parent="#mainHeader"
+			>
+				<nav
+					class="rdl-main-navigation"
+					aria-label="Hovednavigation"
 				>
-					<nav
-						class="rdl-main-navigation"
-						aria-label="Hovednavigation"
-					>
-					</nav>
-				</div>
+				</nav>
 			</div>
 		</div>
-	</header>
-	<div class="edge blue"></div>
+	</div>
+</header>
+<div class="edge blue"></div>
 </div>
 
 `;
@@ -204,52 +224,60 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		width:100%;
 	}
 
-		/* MEDIA QUERY 480 */
-	@media (min-width: 480px) {
-		.container {
-			max-width: 640px;
-		}
+	.collapse .rdl-main-navigation {
+		display:none;
 	}
-	/* MEDIA QUERY 640 */
-	@media (min-width: 640px) {
-		.container {
-			max-width: 990px;
-		}
-	}
-	/* MEDIA QUERY 990 */
-	@media (min-width: 990px) {
-		.container {
-			display: flex;
-			/* flex-direction: column; */
-			max-width: 1150px;
-		}
-	}
-	/* MEDIA QUERY 1150 */
-	@media (min-width: 1150px) {
-		.container {
-			max-width: 1280px;
-		}
-	}
-	/* MEDIA QUERY 1280 */
-	@media (min-width: 1280px) {
-		.container {
-			padding-right: 0;
-			padding-left: 0;
-		}
-	}
+
+			/* MEDIA QUERY 480 */
+			@media (min-width: 480px) {
+				.container {
+					max-width: 640px;
+				}
+			}
+			/* MEDIA QUERY 640 */
+			@media (min-width: 640px) {
+				.container {
+					max-width: 990px;
+				}
+			}
+			/* MEDIA QUERY 990 */
+			@media (min-width: 990px) {
+				.container {
+					display: flex;
+					/* flex-direction: column; */
+					max-width: 1150px;
+				}
+			}
+			/* MEDIA QUERY 1150 */
+			@media (min-width: 1150px) {
+				.container {
+					max-width: 1280px;
+				}
+			}
+			/* MEDIA QUERY 1280 */
+			@media (min-width: 1280px) {
+				.container {
+					padding-right: 0;
+					padding-left: 0;
+				}
+			}
 
 	.rdl-main-navigation {
+		flex-direction: column;
+   		 align-items: flex-start;
 		display:flex;
-		flex-direction: column-reverse;
-	    align-items: flex-end;
 	}
-	.rdl-secondary-nav {
-		font-size: .75rem;
+	.rdl-secondary-nav, .rdl-primary-nav {
+		text-transform: uppercase;
+		font-family: "noway",sans-serif;
+		font-weight: 700;
+		font-size: 1.25rem;
+		line-height: 1.5rem;
+		padding-top: 13px;
+		padding-bottom: 13px;
+		padding-left: 24px;
 	}
 
-	.rdl-primary-nav {
-		font-size: 1rem;
-	}
 	.material-icons {
 		font-family: 'Material Icons';
 		font-weight: normal;
@@ -265,6 +293,11 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		-webkit-font-feature-settings: 'liga';
 		-webkit-font-smoothing: antialiased;
 	  }
+
+	.rdl-main-navigation-wrapper {
+		margin-right: -12px;
+    	margin-left: -12px;
+	}
 
 	.global-header .header-bg-wrapper {
 		padding-top: 24px;
@@ -285,22 +318,19 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	.justify-content-between {
 		justify-content: space-between !important;
 	}
-
 	.header-bg-wrapper {
 		display: flex;
 		justify-content: center;
 	}
 
 	.nav-item.level-1 {
-		line-height: 1.25rem;
+		line-height: 24px;
 		margin-left: 4px;
 		margin-right: 4px;
 		padding-bottom: 0;
 		border-bottom: 2px solid transparent;
 		display: table;
-		margin-bottom: 10px;
-		margin-top: 13px;
-		padding: 0;
+		padding:13px 0px;
 		transition: border-bottom-color .3s ease-in-out;
 		white-space: nowrap;
 	}
@@ -340,8 +370,17 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 
 	.rdl-primary-nav, .rdl-secondary-nav {
+			list-style-type: none
+	}
+
+	.rdl-primary-nav, .rdl-secondary-nav {
 		margin-bottom: 0;
     	margin-top: 0;
+	}
+
+	.container {
+		display:flex;
+		flex-direction:column;
 	}
 	
 	.row {
@@ -355,7 +394,25 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		flex-direction: column;
 		order: 3;
 	}
-	
+
+		
+	.logo-col {
+		display: flex;
+		align-content: center;
+		flex-wrap: wrap;
+		margin-left: 12px;
+	}
+
+	.rdl-logo {
+		background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
+		background-position: 0;
+		background-repeat: no-repeat;
+		background-size: contain;
+		display: inline-block;
+		height: 32px;
+		width: 138px;
+	}
+
 	@media (min-width: 990px) {
 		.global-header .header-edge {
 			-webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5vw), 0 100%);
@@ -363,15 +420,58 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			height: 1.4vw;
 			margin-bottom: -1.5vw;
 		}
+		.container {
+			flex-direction: row;
+		}
+		.logo-col {
+			margin-left: 0px;
+		}
+		
+		.burger-col {
+			display:none;
+		}
+		.rdl-secondary-nav {
+			font-size: .75rem;
+			padding-left: 0px;
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+	
+		.rdl-primary-nav {
+			font-size: 1rem;
+			padding-left: 0px;
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
 		.rdl-primary-nav button, .rdl-secondary-nav button {
     		display: none;
 		}
 		.d-lg-inline-flex {
     		display: inline-flex!important;
 		}
+		.rdl-primary-nav li,
+		.rdl-secondary-nav li {
+			display: inline-flex;
+		}
 		.rdl-primary-nav ul,
 		.rdl-secondary-nav ul {
 			display: none;
+		}
+		.rdl-main-navigation {
+			display:flex;
+			flex-direction: column-reverse;
+			align-items: flex-end;
+		}
+
+		.nav-item.level-1 {
+			padding:0px 0px;
+			margin-top:13px;
+			margin-bottom:13px;
+		}
+
+		.collapse .rdl-main-navigation {
+			display:flex;
 		}
 		.rdl-logo {
 			background-image: url('https://design.kb.dk/components/assets/images/logo.svg');
@@ -379,16 +479,10 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			width: 174px;
 		}
 	}
-	
-	.rdl-primary-nav li,
-	.rdl-secondary-nav li {
-			display: inline-flex;
-		}
 
-	.logo-col {
-		display: flex;
-		align-content: center;
-		flex-wrap: wrap;
+	/* large screen */
+	@media (min-width: 1150px) {
+		
 	}
 	</style>`;
 
