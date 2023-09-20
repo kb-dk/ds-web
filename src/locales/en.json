@@ -2,13 +2,13 @@
   "search":{
      "searchbtn":"Search",
      "hitcount": "{n} result fund for | {n} results found for"
-  
   },
   "record":{
      "title":"Title",
-     "genre":"Genre"
+     "genre":"Genre",
+     "copy":"Copy reference for this content"
   },
   "notification": {
-   "close":"Close"
+      "close":"Close"
 }
 }

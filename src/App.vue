@@ -229,7 +229,7 @@ nav {
 	position: relative;
 	//height: 100vh;
 	background-color: white;
-	z-index: 2;
+	//z-index: 2;
 }
 
 .lang-switcher {
