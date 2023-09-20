@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="video-player">
 		<video
 			ref="videoElement"
 			class="video-js vjs-default-skin vjs-custom"
@@ -57,9 +57,18 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.video-player {
+	background-color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	aspect-ratio: 4/2;
+}
 .vjs-custom {
-	width: 1200px;
+	height: 100%;
+	/* width: 1200px;
 	height: 440px;
-	margin: 0 4% 0 5%;
+	margin: 0 4% 0 5%; */
 }
 </style>

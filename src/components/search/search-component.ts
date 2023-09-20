@@ -70,7 +70,6 @@ class SearchComponent extends HTMLElement {
 
 const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 <div class="search-box">
-<div class="edge blue"></div>
 	<div class="search-container">
 		<div class="container main-12">
 			<div class="row">
@@ -133,14 +132,6 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 
 		.edge {
 			height:31px;
-		}
-
-		.edge.blue {
-			width:100%;
-			position:absolute;
-			background-color:#caf0fe;
-			clip-path: polygon(0 0, 0 100%, 100% 0);
-			margin-top:-1px;
 		}
 
 		.edge.white {
