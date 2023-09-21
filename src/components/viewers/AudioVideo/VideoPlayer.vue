@@ -64,7 +64,26 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	width: 100%;
 	aspect-ratio: 4/2;
+	margin-left: 0px;
+	overflow-y: hidden;
 }
+
+@media (min-width: 640px) {
+	.video-player {
+		margin-left: -36px;
+		width: 100vw;
+		max-width: calc(100% + 36px * 2);
+	}
+}
+
+@media (min-width: 990px) {
+	.video-player {
+		width: 100%;
+		margin-left: 0px;
+		max-width: 100%;
+	}
+}
+
 .vjs-custom {
 	height: 100%;
 	/* width: 1200px;
