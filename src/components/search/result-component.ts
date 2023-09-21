@@ -5,6 +5,7 @@ class ResultComponent extends HTMLElement {
 	number: number | undefined;
 	vueRouting: boolean | undefined;
 	resultData: GenericSearchResult | undefined;
+	placeholder: string | undefined;
 
 	constructor() {
 		super();
@@ -73,6 +74,10 @@ class ResultComponent extends HTMLElement {
 		const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
 		if (resultData.thumbnail !== undefined) {
 			thumb && (thumb.src = resultData.thumbnail);
+		} else if (this.placeholder !== undefined) {
+			thumb && (thumb.src = this.placeholder);
+			thumb.style.backgroundColor = 'rgb(237,237,237)';
+			thumb.style.objectFit = 'contain';
 		}
 
 		const summary = this.shadow.querySelector('.summary');
