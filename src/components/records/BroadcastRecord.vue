@@ -161,34 +161,6 @@ export default defineComponent({
 			//make function to copy to clipboard.
 			console.log('YHEARRAP');
 		},
-		//TODO when refined/DRY´ied - these data, time and duration utilities should be 'global' - we are going to use it many places
-		//ISO 8601 duration format
-		getBroadcastDuration: (isoDuration: string) => {
-			if (isoDuration) {
-				const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-				if (match) {
-					const hours = parseInt(match[1] || '0');
-					const minutes = parseInt(match[2] || '0');
-					const seconds = parseInt(match[3] || '0');
-					//TODO remember to handle translation and localization
-					const durationParts = [];
-					if (hours > 0) {
-						durationParts.push(`${hours}t`);
-					}
-					if (minutes > 0) {
-						durationParts.push(`${minutes}min`);
-					}
-					if (seconds > 0) {
-						durationParts.push(`${seconds}sek`);
-					}
-					return durationParts.join(' ');
-				} else {
-					console.log('No match found for the ISO duration format.');
-				}
-			} else {
-				console.log('No ISO duration provided.');
-			}
-		},
 
 		getBroadcastDate: (isoDate: Date) => {
 			const date = new Date(isoDate);
