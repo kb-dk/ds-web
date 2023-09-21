@@ -18,7 +18,9 @@
 					<div>
 						<span class="material-icons blue">schedule</span>
 						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
-						<span class="broadcast-duration">({{ getBroadcastDuration(recordData.duration) }})</span>
+						<span class="broadcast-duration">
+							<duration :isoDuration="recordData.duration"></duration>
+						</span>
 					</div>
 					<div>
 						<span class="material-icons blue">tv</span>
@@ -65,6 +67,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 <script lang="ts">
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { defineComponent, PropType } from 'vue';
+import Duration from '@/components/records/components/Duration.vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import './../accordion-component';
 import './../spot-component';
@@ -83,6 +86,7 @@ export default defineComponent({
 	},
 	components: {
 		VideoPlayer,
+		Duration,
 	},
 	props: {
 		recordData: {
@@ -161,12 +165,23 @@ export default defineComponent({
 		//ISO 8601 duration format
 		getBroadcastDuration: (isoDuration: string) => {
 			if (isoDuration) {
-				const match = isoDuration.match(/PT(\d+)M(\d+)S/);
+				const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
 				if (match) {
-					const minutes = parseInt(match[1] || '0');
-					const seconds = parseInt(match[2] || '0');
-					//TODO handle hours and translation/localisation
-					return `${minutes}min ${seconds}sek`;
+					const hours = parseInt(match[1] || '0');
+					const minutes = parseInt(match[2] || '0');
+					const seconds = parseInt(match[3] || '0');
+					//TODO remember to handle translation and localization
+					const durationParts = [];
+					if (hours > 0) {
+						durationParts.push(`${hours}t`);
+					}
+					if (minutes > 0) {
+						durationParts.push(`${minutes}min`);
+					}
+					if (seconds > 0) {
+						durationParts.push(`${seconds}sek`);
+					}
+					return durationParts.join(' ');
 				} else {
 					console.log('No match found for the ISO duration format.');
 				}
@@ -174,6 +189,7 @@ export default defineComponent({
 				console.log('No ISO duration provided.');
 			}
 		},
+
 		getBroadcastDate: (isoDate: Date) => {
 			const date = new Date(isoDate);
 
