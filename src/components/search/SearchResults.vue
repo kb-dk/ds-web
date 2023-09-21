@@ -9,6 +9,7 @@
 			:number="index"
 			:resultData="res"
 			:show="showResults"
+			:placeholder="getPlaceholderImage()"
 		/>
 	</div>
 </template>
@@ -51,7 +52,7 @@ export default defineComponent({
 	},
 
 	methods: {
-		getImgServerSrcURL(res: GenericSearchResult) {
+		getPlaceholderImage() {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
 			/* return res.pages && res.pages.length > 0
 				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
