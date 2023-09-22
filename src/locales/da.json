@@ -8,6 +8,12 @@
      "genre":"Genre",
      "copy": "Kopier henvisning til dette indhold"
   },
+  "duration":{
+   "hours":"t",
+   "minutes":"min",
+   "seconds":"sek",
+   "unknown":"Længde ukendt"
+  },
   "notification": {
       "close":"Luk"
   }

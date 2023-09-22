@@ -21,7 +21,11 @@
 						<span class="material-icons blue">schedule</span>
 						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
 						<span class="broadcast-duration">
-							<duration :isoDuration="recordData.duration"></duration>
+							<duration
+								:duration="recordData.duration"
+								:startDate="recordData.startDate"
+								:endDate="recordData.endDate"
+							></duration>
 						</span>
 					</div>
 					<div>
@@ -165,7 +169,7 @@ export default defineComponent({
 			console.log('YHEARRAP');
 		},
 
-		getBroadcastDate: (isoDate: Date) => {
+		getBroadcastDate: (isoDate: string) => {
 			const date = new Date(isoDate);
 
 			// Define formatting options - had to do the weird const typing...
@@ -177,7 +181,7 @@ export default defineComponent({
 
 			return new Intl.DateTimeFormat('da-DK', options).format(date);
 		},
-		getBroadcastTime: (isoDate: Date) => {
+		getBroadcastTime: (isoDate: string) => {
 			const dateObj = new Date(isoDate);
 
 			// Formatting options - had to do the weird const typing...
