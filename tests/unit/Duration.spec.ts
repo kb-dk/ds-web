@@ -31,9 +31,7 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
-
 		expect(spanElement.text()).toContain('(2hours 30minutes 45seconds)');
 	});
 
@@ -50,7 +48,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('(2hours 30minutes 45seconds)');
 	});
@@ -67,7 +64,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('(2hours 30minutes 45seconds)');
 	});
@@ -85,7 +81,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('(2hours 30minutes 45seconds)');
 	});
@@ -103,7 +98,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('(2hours 30minutes 45seconds)');
 	});
@@ -121,7 +115,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('Duration unknown');
 	});
@@ -139,7 +132,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('Duration unknown');
 	});
@@ -157,7 +149,6 @@ describe('Duration.vue', () => {
 		});
 
 		await wrapper.vm.$nextTick();
-
 		const spanElement = wrapper.find('span');
 		expect(spanElement.text()).toContain('Duration unknown');
 	});
