@@ -12,7 +12,7 @@
    "hours":"t",
    "minutes":"min",
    "seconds":"sek",
-   "unknown":"Længde ukendt"
+   "unknown":"Ukendt længde"
   },
   "notification": {
       "close":"Luk"
