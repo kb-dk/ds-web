@@ -1,6 +1,7 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	query: string;
+	background: string | undefined;
 
 	constructor() {
 		super();
@@ -52,6 +53,14 @@ class SearchComponent extends HTMLElement {
 	static get observedAttributes() {
 		return ['q'];
 	}
+
+	connectedCallback() {
+		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
+		if (bgContainer && this.background) {
+			bgContainer.style.backgroundImage = `url(${this.background})`;
+		}
+	}
+
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'q') {
 			this.query = newValue;
