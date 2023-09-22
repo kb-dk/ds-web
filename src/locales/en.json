@@ -12,7 +12,7 @@
    "hours":"h",
    "minutes":"min",
    "seconds":"sec",
-   "unknown":"Duration Unknown"
+   "unknown":"Duration unknown"
   },
 
   "notification": {
