@@ -8,45 +8,7 @@ class MenuComponent extends HTMLElement {
 	constructor() {
 		super();
 		this.collapsed = true;
-		this.translation = {
-			da: {
-				secondary: [
-					{ title: 'Lån og aflvering', link: '#' },
-					{ title: 'Bliv bruger', link: '#' },
-					{ title: 'Om os', link: '#' },
-					{ title: 'Åbningstider', link: '#' },
-					{ title: 'Webshop', link: '#' },
-					{ title: 'In english', link: '#', id: 'localeSwitcher' },
-					{ title: 'Log in', link: '#', icon: 'account_circle' },
-				],
-				primary: [
-					{ title: 'Find materiale', link: '#' },
-					{ title: 'Inspiration', link: '#' },
-					{ title: 'Arrangementer', link: '#' },
-					{ title: 'Services', link: '#' },
-					{ title: 'Besøg os', link: '#' },
-					{ title: 'Søg', link: '#', icon: 'search' },
-				],
-			},
-			en: {
-				secondary: [
-					{ title: 'Collect and return', link: '#' },
-					{ title: 'New user', link: '#' },
-					{ title: 'About us', link: '#' },
-					{ title: 'Webshop', link: '#' },
-					{ title: 'På dansk', link: '#', id: 'localeSwitcher' },
-					{ title: 'Log in', link: '#', icon: 'account_circle' },
-				],
-				primary: [
-					{ title: 'Find materials', link: '#' },
-					{ title: 'Inspiration', link: '#' },
-					{ title: 'Events', link: '#' },
-					{ title: 'Services', link: '#' },
-					{ title: 'Visit us', link: '#' },
-					{ title: 'Search', link: '#', icon: 'search' },
-				],
-			},
-		};
+		this.translation = menuTranslations;
 		this.lang = 'da';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
@@ -76,14 +38,13 @@ class MenuComponent extends HTMLElement {
 	}
 
 	toggleMenu() {
-		//this.shadow.querySelector('.rdl-main-navigation-wrapper')?.classList.toggle('collapse');
 		this.shadow.querySelector('#mobileNavButton')?.setAttribute('aria-expanded', this.collapsed.toString());
-		const expand = this.shadow.querySelector('.rdl-main-navigation-wrapper');
+		const navigationWrapper = this.shadow.querySelector('.rdl-main-navigation-wrapper');
 		if (this.collapsed) {
-			expand?.classList.toggle('collapse');
-			expand?.classList.toggle('show');
+			navigationWrapper?.classList.toggle('collapse');
+			navigationWrapper?.classList.toggle('show');
 			this.collapsed = !this.collapsed;
-			gsap.to(expand, {
+			gsap.to(navigationWrapper, {
 				height: 'auto',
 				duration: 0.25,
 				overwrite: false,
@@ -91,13 +52,13 @@ class MenuComponent extends HTMLElement {
 		} else {
 			this.collapsed = !this.collapsed;
 
-			gsap.to(expand, {
+			gsap.to(navigationWrapper, {
 				height: '0px',
 				duration: 0.25,
 				overwrite: false,
 				onComplete: () => {
-					expand?.classList.toggle('collapse');
-					expand?.classList.toggle('show');
+					navigationWrapper?.classList.toggle('collapse');
+					navigationWrapper?.classList.toggle('show');
 				},
 			});
 		}
@@ -163,6 +124,46 @@ type MenuTranslation = {
 		primary: MenuTranslationItem[];
 		secondary: MenuTranslationItem[];
 	};
+};
+
+const menuTranslations = {
+	da: {
+		secondary: [
+			{ title: 'Lån og aflvering', link: '#' },
+			{ title: 'Bliv bruger', link: '#' },
+			{ title: 'Om os', link: '#' },
+			{ title: 'Åbningstider', link: '#' },
+			{ title: 'Webshop', link: '#' },
+			{ title: 'In english', link: '#', id: 'localeSwitcher' },
+			{ title: 'Log in', link: '#', icon: 'account_circle' },
+		],
+		primary: [
+			{ title: 'Find materiale', link: '#' },
+			{ title: 'Inspiration', link: '#' },
+			{ title: 'Arrangementer', link: '#' },
+			{ title: 'Services', link: '#' },
+			{ title: 'Besøg os', link: '#' },
+			{ title: 'Søg', link: '#', icon: 'search' },
+		],
+	},
+	en: {
+		secondary: [
+			{ title: 'Collect and return', link: '#' },
+			{ title: 'New user', link: '#' },
+			{ title: 'About us', link: '#' },
+			{ title: 'Webshop', link: '#' },
+			{ title: 'På dansk', link: '#', id: 'localeSwitcher' },
+			{ title: 'Log in', link: '#', icon: 'account_circle' },
+		],
+		primary: [
+			{ title: 'Find materials', link: '#' },
+			{ title: 'Inspiration', link: '#' },
+			{ title: 'Events', link: '#' },
+			{ title: 'Services', link: '#' },
+			{ title: 'Visit us', link: '#' },
+			{ title: 'Search', link: '#', icon: 'search' },
+		],
+	},
 };
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
