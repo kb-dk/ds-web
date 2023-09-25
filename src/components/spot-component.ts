@@ -1,6 +1,8 @@
+import { SpotType } from '../types/SpotType';
+
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	data: unknown | undefined;
+	data: SpotType | undefined;
 
 	constructor() {
 		super();
@@ -13,14 +15,11 @@ class SpotComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (this.title) {
+		if (this.data) {
 			const titleHolder = this.shadow.querySelector('.record-title');
 			titleHolder && (titleHolder.innerHTML = this.title);
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_arrow');
-		}
-		if (this.data) {
-			//put in the data
 		}
 	}
 

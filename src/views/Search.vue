@@ -3,29 +3,42 @@
 		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
 			<SearchBar></SearchBar>
 		</div>
-		<div class="container">
-			<div class="row">
-				<div class="hit-count">
-					<HitCount
-						:hit-count="searchResultStore.numFound"
-						:no-hits="searchResultStore.noHits"
-						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-					/>
-				</div>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="search-resultset">
-					<div class="search-facets">
-						<Facets :facet-results="searchResultStore.facetResult" />
-					</div>
-					<div class="search-results">
-						<SearchResults :search-results="searchResultStore.searchResult" />
+		<Transition name="fade">
+			<div
+				key="1"
+				v-if="searchResultStore.searchResult.length > 0"
+			>
+				<div class="container">
+					<div class="row">
+						<div class="hit-count">
+							<HitCount
+								:hit-count="searchResultStore.numFound"
+								:no-hits="searchResultStore.noHits"
+								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+							/>
+						</div>
 					</div>
 				</div>
+				<div class="container">
+					<div class="row">
+						<div class="search-resultset">
+							<div class="search-facets">
+								<Facets :facet-results="searchResultStore.facetResult" />
+							</div>
+							<div class="search-results">
+								<SearchResults :search-results="searchResultStore.searchResult" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+			<div
+				key="2"
+				v-else
+			>
+				<GridDisplay :row-nr="4"></GridDisplay>
+			</div>
+		</Transition>
 	</div>
 </template>
 
@@ -36,7 +49,7 @@ import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Facets from '@/components/search/Facets.vue';
-
+import GridDisplay from '@/components/GridDisplay.vue';
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -44,6 +57,7 @@ export default defineComponent({
 		SearchResults,
 		SearchBar,
 		Facets,
+		GridDisplay,
 	},
 
 	setup() {
@@ -74,6 +88,15 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-active {
+	opacity: 0;
+}
 .search-container {
 	height: 500px;
 	transition: height 0.5s ease-in-out 0s;
