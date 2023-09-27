@@ -4,8 +4,8 @@ export interface BroadcastRecord {
 	name: Name[];
 	publishedOn: PublishedOn;
 	description: string;
-	startDate: Date;
-	endDate: Date;
+	startDate: string;
+	endDate: string;
 	duration: string;
 	keywords: string;
 	identifier: Identifier[];

@@ -8,6 +8,13 @@
      "genre":"Genre",
      "copy":"Copy reference for this content"
   },
+  "duration":{
+   "hours":"h",
+   "minutes":"min",
+   "seconds":"sec",
+   "unknown":"Duration unknown"
+  },
+
   "notification": {
       "close":"Close"
 }

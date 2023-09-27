@@ -4,7 +4,7 @@
 			class="hit-count"
 			v-if="hitCount > 0 || noHits"
 		>
-			{{ $tc('search.hitcount', hitCount) }} "{{ query }}"
+			{{ $t('search.hitcount', hitCount) }} "{{ query }}"
 		</div>
 	</div>
 </template>
