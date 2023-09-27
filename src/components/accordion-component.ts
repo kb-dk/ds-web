@@ -53,7 +53,7 @@ class AccordionComponent extends HTMLElement {
 			gsap.to(expand, {
 				height: 'auto',
 				duration: 0.25,
-				overwrite: true,
+				overwrite: false,
 			});
 		} else {
 			this.collapsed = !this.collapsed;
@@ -61,7 +61,7 @@ class AccordionComponent extends HTMLElement {
 			gsap.to(expand, {
 				height: '0px',
 				duration: 0.25,
-				overwrite: true,
+				overwrite: false,
 				onComplete: () => {
 					expand?.classList.toggle('collapse');
 					expand?.classList.toggle('show');

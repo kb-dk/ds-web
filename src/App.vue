@@ -191,6 +191,13 @@ nav {
 	//z-index: 2;
 }
 
+@media (min-width: 1280px) {
+	.content {
+		display: flex;
+		justify-content: center;
+	}
+}
+
 .lang-switcher {
 	float: right;
 }

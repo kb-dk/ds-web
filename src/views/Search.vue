@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="search-box">
 		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
 			<SearchBar></SearchBar>
 		</div>
@@ -96,8 +96,12 @@ temporary styling until patterns from design system are implemented
 .fade-enter,
 .fade-leave-active {
 	opacity: 0;
+.search-box {
+	max-width: 100%;
+	overflow: hidden;
 }
 .search-container {
+	width: 100vw;
 	height: 500px;
 	transition: height 0.5s ease-in-out 0s;
 }

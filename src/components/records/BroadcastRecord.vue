@@ -20,7 +20,13 @@
 					<div>
 						<span class="material-icons blue">schedule</span>
 						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
-						<span class="broadcast-duration">({{ getBroadcastDuration(recordData.duration) }})</span>
+						<span class="broadcast-duration">
+							<duration
+								:duration="recordData.duration"
+								:startDate="recordData.startDate"
+								:endDate="recordData.endDate"
+							></duration>
+						</span>
 					</div>
 					<div>
 						<span class="material-icons blue">tv</span>
@@ -68,6 +74,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
+import Duration from '@/components/records/components/Duration.vue';
 
 import './../accordion-component';
 import './../spot-component';
@@ -86,6 +93,7 @@ export default defineComponent({
 	},
 	components: {
 		VideoPlayer,
+		Duration,
 	},
 	props: {
 		recordData: {
@@ -160,24 +168,8 @@ export default defineComponent({
 			//make function to copy to clipboard.
 			console.log('YHEARRAP');
 		},
-		//TODO when refined/DRY´ied - these data, time and duration utilities should be 'global' - we are going to use it many places
-		//ISO 8601 duration format
-		getBroadcastDuration: (isoDuration: string) => {
-			if (isoDuration) {
-				const match = isoDuration.match(/PT(\d+)M(\d+)S/);
-				if (match) {
-					const minutes = parseInt(match[1] || '0');
-					const seconds = parseInt(match[2] || '0');
-					//TODO handle hours and translation/localisation
-					return `${minutes}min ${seconds}sek`;
-				} else {
-					console.log('No match found for the ISO duration format.');
-				}
-			} else {
-				console.log('No ISO duration provided.');
-			}
-		},
-		getBroadcastDate: (isoDate: Date) => {
+
+		getBroadcastDate: (isoDate: string) => {
 			const date = new Date(isoDate);
 
 			// Define formatting options - had to do the weird const typing...
@@ -189,7 +181,7 @@ export default defineComponent({
 
 			return new Intl.DateTimeFormat('da-DK', options).format(date);
 		},
-		getBroadcastTime: (isoDate: Date) => {
+		getBroadcastTime: (isoDate: string) => {
 			const dateObj = new Date(isoDate);
 
 			// Formatting options - had to do the weird const typing...

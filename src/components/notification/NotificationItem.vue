@@ -10,7 +10,7 @@
 				class="close"
 				v-if="notification.userClose"
 				@click="close(notification)"
-				:aria-label="$tc('notification.close')"
+				:aria-label="$t('notification.close')"
 			>
 				&times;
 				<div class="close-border"></div>

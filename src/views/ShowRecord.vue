@@ -106,6 +106,10 @@ export default defineComponent({
 		flex-direction: column;
 		max-width: 1150px;
 	}
+	.top-offset {
+		margin-left: 24px;
+		margin-right: 24px;
+	}
 }
 /* MEDIA QUERY 1150 */
 @media (min-width: 1150px) {

@@ -59,7 +59,29 @@ export default defineComponent({
 
 <style scoped>
 .kaltura-player {
+	background-color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
-	height: 400px;
+	aspect-ratio: 4/2;
+	margin-left: 0px;
+	overflow-y: hidden;
+}
+
+@media (min-width: 640px) {
+	.kaltura-player {
+		margin-left: -36px;
+		width: 100vw;
+		max-width: calc(100% + 36px * 2);
+	}
+}
+
+@media (min-width: 990px) {
+	.kaltura-player {
+		width: 100%;
+		margin-left: 0px;
+		max-width: 100%;
+	}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<kb-searchbar></kb-searchbar>
+	<kb-searchbar :background="getBackgroundImage()"></kb-searchbar>
 </template>
 
 <script lang="ts">
@@ -24,6 +24,12 @@ export default defineComponent({
 	methods: {
 		updateWrapper(e: Event) {
 			this.updateQuery(e as CustomEvent);
+		},
+		getBackgroundImage() {
+			return require('@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg');
+			/* return res.pages && res.pages.length > 0
+				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
+				: require('@/assets/images/No-Image-Placeholder.svg.png'); */
 		},
 		updateQuery(e: CustomEvent) {
 			e.stopPropagation();
