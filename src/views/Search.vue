@@ -96,6 +96,7 @@ temporary styling until patterns from design system are implemented
 .fade-enter,
 .fade-leave-active {
 	opacity: 0;
+}
 .search-box {
 	max-width: 100%;
 	overflow: hidden;
