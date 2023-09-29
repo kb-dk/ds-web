@@ -17,5 +17,10 @@
 
   "notification": {
       "close":"Close"
-}
+   },
+   "error": {
+   "getrecordfailed": "The requested material could not be loaded",
+   "searchfailed":"The search request could not be performed",
+   "malformeduri": "Something went wrong with your search terms - try to change some of them"
+  }
 }

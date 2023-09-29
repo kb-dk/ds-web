@@ -35,17 +35,23 @@ class SearchComponent extends HTMLElement {
 			}
 		} catch (error) {
 			if (error instanceof URIError) {
-				// TODO dispatch to errorManager og direct to Notifier
 				/**
 				 * Specific error: MalformedURI - aka you messsed up the query
 				 * and even worse you did it by manipulating the url directly
 				 * in the URL bar
 				 * */
-				console.log('Malformed URI:', error.message);
+				window.dispatchEvent(
+					new CustomEvent('component-error', {
+						detail: { customError: true, message: 'malformeduri', systemError: error.message },
+					}),
+				);
 			} else {
-				// TODO dispatch to errorManager or direct to Notifier
-				// General error happened here so message to user should be generel
-				console.log('An error occurred decoding search params:', error);
+				// General search error happened here so message to user should be generel
+				window.dispatchEvent(
+					new CustomEvent('component-error', {
+						detail: { customError: true, message: 'searchfailed', systemError: null },
+					}),
+				);
 			}
 		}
 	}
