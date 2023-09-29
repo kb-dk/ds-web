@@ -57,14 +57,11 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 			</div>
 			<div class="related-content">
 				<h3>Relateret indhold</h3>
-				<div class="related-records">
-					<div class="related-record"><kb-spotcomponent title="First test yay"></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent title="Second test yay"></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent title="Third test yay"></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent title="Fourth test yay"></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent title="Fifth test yay"></kb-spotcomponent></div>
-					<div class="related-record"><kb-spotcomponent title="Sixth test yay"></kb-spotcomponent></div>
-				</div>
+				<GridDisplay
+					:row-nr="3"
+					:spot-nr="3"
+					:draggable="true"
+				></GridDisplay>
 			</div>
 		</div>
 	</div>
@@ -75,6 +72,7 @@ import { BroadcastRecord } from '@/types/BroadcastRecord';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/records/components/Duration.vue';
+import GridDisplay from '../GridDisplay.vue';
 
 import './../accordion-component';
 import './../spot-component';
@@ -94,6 +92,7 @@ export default defineComponent({
 	components: {
 		VideoPlayer,
 		Duration,
+		GridDisplay,
 	},
 	props: {
 		recordData: {
@@ -101,69 +100,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	mounted() {
-		this.slidingElement = document.querySelector('.related-records');
-		this.linkItems = document.querySelectorAll('.related-record');
-		if (this.slidingElement) {
-			this.slidingElement.addEventListener('mousedown', this.startAndCalculateOffset);
-			this.slidingElement.addEventListener('mouseleave', this.stopMovementOnParent);
-			this.slidingElement.addEventListener('mouseup', this.stopMovementOnParent);
-			this.slidingElement.addEventListener('mousemove', this.calculateMovement);
-
-			this.linkItems.forEach((element) => {
-				element.addEventListener('mousedown', this.stopMovement);
-				element.addEventListener('mousemove', this.startMovement);
-				element.addEventListener('click', this.preventClickIfMovement);
-			});
-		}
-	},
-	beforeUnmount() {
-		this.slidingElement = document.querySelector('.related-records');
-		this.linkItems = document.querySelectorAll('.related-record');
-		if (this.slidingElement) {
-			this.slidingElement.removeEventListener('mousedown', this.startAndCalculateOffset);
-			this.slidingElement.removeEventListener('mouseleave', this.stopMovementOnParent);
-			this.slidingElement.removeEventListener('mouseup', this.stopMovementOnParent);
-			this.slidingElement.removeEventListener('mousemove', this.calculateMovement);
-
-			this.linkItems.forEach((element) => {
-				element.removeEventListener('mousedown', this.stopMovement);
-				element.removeEventListener('mousemove', this.startMovement);
-				element.removeEventListener('click', this.preventClickIfMovement);
-			});
-		}
-	},
 	methods: {
-		startMovement() {
-			this.move = true;
-		},
-		stopMovement() {
-			this.move = false;
-		},
-		preventClickIfMovement(e: Event) {
-			if (this.move) e.preventDefault();
-		},
-
-		startAndCalculateOffset(e: MouseEvent) {
-			if (this.slidingElement) {
-				this.isDown = true;
-				this.startX = e.pageX - this.slidingElement.offsetLeft;
-				this.scrollLeft = this.slidingElement.scrollLeft;
-			}
-		},
-		stopMovementOnParent() {
-			if (this.slidingElement) {
-				this.isDown = false;
-			}
-		},
-		calculateMovement(e: MouseEvent) {
-			if (this.slidingElement) {
-				if (!this.isDown) return;
-				e.preventDefault();
-				const x = e.pageX - this.slidingElement.offsetLeft;
-				this.slidingElement.scrollLeft = this.scrollLeft - (x - this.startX);
-			}
-		},
 		getCurrentUrl() {
 			//make function to copy to clipboard.
 			console.log('YHEARRAP');
@@ -264,7 +201,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .accordion,
-.related-records,
 .main-record-data {
 	flex: 0 0 100%;
 	max-width: 100%;
@@ -313,17 +249,12 @@ temporary styling until patterns from design system are implemented
 	margin-top: -7px;
 }
 
-.divider.darkblue {
-	background-color: #002e70;
+.extra-record-data {
+	width: 100%;
 }
 
-.related-records {
-	display: flex;
-	flex-wrap: nowrap;
-	padding-left: 0;
-	max-width: 100%;
-	overflow: hidden;
-	padding-top: 5px;
+.divider.darkblue {
+	background-color: #002e70;
 }
 
 .related-content {
@@ -345,8 +276,7 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 		margin-top: 40px;
 	}
-	.main-record-data,
-	.related-records {
+	.main-record-data {
 		flex: 0 0 calc(50% - 20px);
 		max-width: calc(50% - 20px);
 	}
@@ -361,15 +291,15 @@ temporary styling until patterns from design system are implemented
 		flex: 0 0 50%;
 		max-width: 50%;
 	}
-	.related-records {
-		flex: 0 0 calc(100%);
-		max-width: calc(100%);
-	}
 	.related-record {
 		flex: 0 0 66.6666%;
 	}
 	.related-content {
 		padding: 0px;
+	}
+	.extra-record-data {
+		flex: 0 0 calc(100%);
+		max-width: calc(100%);
 	}
 }
 
@@ -381,19 +311,18 @@ temporary styling until patterns from design system are implemented
 		margin-right: 0px;
 		gap: 20px;
 	}
-	.main-record-data,
-	.related-records,
-	.accordion {
-		flex: 0 0 calc(66.66667% - 20px);
-		max-width: calc(66.66667% - 20px);
+	.extra-record-data {
+		flex: 0 0 calc(100%);
+		max-width: calc(100%);
+	}
+	.main-record-data {
+		flex: 0 0 calc(66.666666% - 20px);
+		max-width: calc(66.666666% - 20px);
 	}
 
 	.right-side {
 		flex: 0 0 33.33333%;
 		max-width: 33.33333%;
-	}
-	.related-records {
-		flex-wrap: wrap;
 	}
 	.related-record {
 		margin: 0px;
@@ -423,7 +352,7 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 	}
 	.main-record-data,
-	.related-records,
+	.related-content,
 	.accordion {
 		flex: 0 0 calc(75% - 20px);
 		max-width: calc(75% - 20px);

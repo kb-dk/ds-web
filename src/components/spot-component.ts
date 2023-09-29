@@ -15,7 +15,8 @@ class SpotComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (this.data) {
+		//TODO: We're waiting for real data here
+		if (this.data || !this.data) {
 			const titleHolder = this.shadow.querySelector('.record-title');
 			titleHolder && (titleHolder.innerHTML = this.title);
 			const symbol = this.shadow.querySelector('.type-symbol');
@@ -39,7 +40,7 @@ const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
                 class="image-item"
                 src=""
                 alt="altTxt"
-            /><span class="type-symbol material-icons"></span>
+            /><span class="type-symbol material-icons">play_arrow</span>
         </figure>
             <div class="record-info">
                 <div class="record-metadata">
