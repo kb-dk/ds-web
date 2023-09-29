@@ -5,11 +5,13 @@ import { useSpinnerStore } from '@/store/spinner';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResult>);
 	const facetResult = ref([] as Array<string>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
+	const { t } = useI18n();
 	const numFound = ref(0);
 	const loading = ref(false);
 	const error = ref('');
@@ -50,7 +52,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			noHits.value = numFound.value === 0;
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
-			errorManager.submitError(err as AxiosError);
+			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
 			spinnerStore.toggleSpinner(false);
 			loading.value = false;

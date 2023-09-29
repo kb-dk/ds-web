@@ -16,5 +16,11 @@
   },
   "notification": {
       "close":"Luk"
-  }
+  },
+
+  "error": {
+   "getrecordfailed": "Materialet kunne ikke hentes",
+   "searchfailed":"Noget gik galt med din søgning",
+   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
+  } 
 }
