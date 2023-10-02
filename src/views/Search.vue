@@ -80,6 +80,7 @@ temporary styling until patterns from design system are implemented
 }
 .search-container {
 	width: 100vw;
+	max-width: 100%;
 	height: 500px;
 	transition: height 0.5s ease-in-out 0s;
 }

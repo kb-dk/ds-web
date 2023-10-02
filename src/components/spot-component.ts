@@ -1,3 +1,6 @@
+import './image-component';
+import { ImageComponentType } from '@/types/ImageComponentType';
+
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	data: unknown | undefined;
@@ -5,7 +8,17 @@ class SpotComponent extends HTMLElement {
 	constructor() {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
-		this.shadow.innerHTML = ACCORDION_COMPONMENT_TEMPLATE + ACCORDION_COMPONMENT_STYLES;
+		this.shadow.innerHTML = SPOT_COMPONMENT_TEMPLATE + SPOT_COMPONMENT_STYLES;
+
+		const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
+		if (imageComponent) {
+			//No data yet, so it's just filler
+			imageComponent.imgSrc = '';
+			imageComponent.altText = 'alt text here';
+			imageComponent.imgTitle = 'title here';
+			imageComponent.aspect = '2/1.25';
+			imageComponent.icon = 'play_arrow';
+		}
 	}
 
 	static get observedAttributes() {
@@ -31,17 +44,10 @@ class SpotComponent extends HTMLElement {
 	}
 }
 
-const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
-    <a href="#">
+const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
+    <a class="spot-wrapper" href="#">
         <div class="spot-component">
-        <figure class="image-wrapper">
-            <img
-                loading = "lazy"
-                class="image-item"
-                src=""
-                alt="altTxt"
-            /><span class="type-symbol material-icons"></span>
-        </figure>
+        <kb-imagecomponent></kb-imagecomponent>
             <div class="record-info">
                 <div class="record-metadata">
                     <div><span class="material-icons">event</span><span>DR1, 7. september 1993</span></div>
@@ -62,7 +68,7 @@ const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
 
 `;
 
-const ACCORDION_COMPONMENT_STYLES = /*css*/ `
+const SPOT_COMPONMENT_STYLES = /*css*/ `
 	<style>
     .record-metadata {
         padding-top:20px;
@@ -73,6 +79,7 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         color:black;
         margin-bottom:40px;
         display:inline-block;
+        transition:all 0.3s ease-in-out 0s;
     }
 
     .material-icons {
@@ -92,14 +99,6 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         position:relative;
         top:3px;
     }
-    
-    .type-symbol {
-        font-size:64px !important;
-        position: absolute !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%);
-    }
 
     .record-title {
         color: #002E70
@@ -113,29 +112,13 @@ const ACCORDION_COMPONMENT_STYLES = /*css*/ `
         -webkit-box-orient: vertical;			
     }
 
-    .image-wrapper {
-        background: linear-gradient(45deg, #caf0fe, #fff6c4);
-        aspect-ratio: 2/1.25;
-        width:100%;
-        padding:0px;
-        margin-block-start: 0em;
-        margin-block-end: 0em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        transition:all 0.3s ease-in-out 0s;
-        filter:hue-rotate(0rad);
-    }
-
     a:hover .image-wrapper {
+        transform-origin:center;
         filter:hue-rotate(3.142rad);
     }
 
-    .image-item {
-        width:100%;
-        height:100%;
-        object-fit:cover;
-        transition:opacity 0.5s ease-in-out 0s;
-        opacity:0;
+    a:hover .image-item {
+        transform:scale(1.1);
     }
 	</style>`;
 
