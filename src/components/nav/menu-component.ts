@@ -177,7 +177,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 			<div class="row justify-content-between">
 				<div class="col logo-col">
 					<a
-						href="#"
+						href="/"
 						class="rdl-logo"
 					>
 						<span class="sr-only"></span>

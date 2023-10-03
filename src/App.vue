@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="app">
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu :locale="locale"></kb-menu>
