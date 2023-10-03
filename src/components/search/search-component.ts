@@ -35,17 +35,23 @@ class SearchComponent extends HTMLElement {
 			}
 		} catch (error) {
 			if (error instanceof URIError) {
-				// TODO dispatch to errorManager og direct to Notifier
 				/**
 				 * Specific error: MalformedURI - aka you messsed up the query
 				 * and even worse you did it by manipulating the url directly
 				 * in the URL bar
 				 * */
-				console.log('Malformed URI:', error.message);
+				window.dispatchEvent(
+					new CustomEvent('component-error', {
+						detail: { customError: true, message: 'malformeduri', systemError: error.message },
+					}),
+				);
 			} else {
-				// TODO dispatch to errorManager or direct to Notifier
-				// General error happened here so message to user should be generel
-				console.log('An error occurred decoding search params:', error);
+				// General search error happened here so message to user should be generel
+				window.dispatchEvent(
+					new CustomEvent('component-error', {
+						detail: { customError: true, message: 'searchfailed', systemError: null },
+					}),
+				);
 			}
 		}
 	}
@@ -106,7 +112,16 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 
 const SEARCH_COMPONMENT_STYLES = /*css*/ `
 	<style>
-	  .material-icons {
+	/* clears the ‘X’ from Internet Explorer */
+		input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+		input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+		/* clears the ‘X’ from Chrome */
+		input[type="search"]::-webkit-search-decoration,
+		input[type="search"]::-webkit-search-cancel-button,
+		input[type="search"]::-webkit-search-results-button,
+		input[type="search"]::-webkit-search-results-decoration { display: none; }
+	
+		.material-icons {
 		font-family: 'Material Icons';
 		font-weight: normal;
 		font-style: normal;

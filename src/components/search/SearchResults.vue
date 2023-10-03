@@ -2,7 +2,7 @@
 	<div
 		class="hit-box"
 		v-for="(res, index) in (currentResults as PropType<GenericSearchResult[]>)"
-		:key="res.id + '-' + lastUpdate"
+		:key="(res as GenericSearchResult).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
 			:vueRouting="true"

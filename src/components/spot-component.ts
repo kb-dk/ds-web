@@ -1,9 +1,10 @@
 import './image-component';
 import { ImageComponentType } from '@/types/ImageComponentType';
+import { SpotType } from '../types/SpotType';
 
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	data: unknown | undefined;
+	data: SpotType | undefined;
 
 	constructor() {
 		super();
@@ -26,14 +27,12 @@ class SpotComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (this.title) {
+		//TODO: We're waiting for real data here
+		if (this.data || !this.data) {
 			const titleHolder = this.shadow.querySelector('.record-title');
 			titleHolder && (titleHolder.innerHTML = this.title);
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_arrow');
-		}
-		if (this.data) {
-			//put in the data
 		}
 	}
 
@@ -45,7 +44,7 @@ class SpotComponent extends HTMLElement {
 }
 
 const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
-    <a class="spot-wrapper" href="#">
+    <a draggable="false" class="spot-wrapper" href="#">
         <div class="spot-component">
         <kb-imagecomponent></kb-imagecomponent>
             <div class="record-info">
