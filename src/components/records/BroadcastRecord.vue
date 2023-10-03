@@ -71,7 +71,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 </template>
 
 <script lang="ts">
-import { BroadcastRecordType } from '@/types/BroadcastRecordTypes';
+import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/records/components/Duration.vue';

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { GenericSearchResultType } from '@/types/GenericSearchResultType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { APIService } from '@/api/api-service';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';

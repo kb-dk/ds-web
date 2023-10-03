@@ -17,29 +17,23 @@ export interface GenericRecordType {
 	'kb:read_direction': string;
 }
 
-export interface ContextClassType {
+interface ContextClassType {
 	kb: string;
 	relator: string;
 }
 
-export interface CreatorType {
+interface CreatorType {
 	'@type': string;
 	name: string;
 	familyName: string;
 }
 
-export interface HeadlineType {
+interface HeadlineType {
 	value: string;
 	'@language': string;
 }
 
-export interface IdentifierType {
-	'@type': string;
-	PropertyID: string;
-	value: string;
-}
-
-export interface ImageType {
+interface ImageType {
 	'@type': string;
 	contentSize: string;
 	contentURL: string;
@@ -48,17 +42,23 @@ export interface ImageType {
 	width: string;
 }
 
-export interface IsPartOfType {
+interface IsPartOfType {
 	'@type': string;
 	headline: string;
 	description: string;
 	url: string;
 }
 
-export interface KBAdminDataType {
+interface KBAdminDataType {
 	'kb:catalogingLanguage': string;
 	'kb:localIdentifier': string;
 	'kb:shelfLocator': string;
+}
+
+export interface IdentifierType {
+	'@type': string;
+	PropertyID: string;
+	value: string;
 }
 
 export interface PublicationType {

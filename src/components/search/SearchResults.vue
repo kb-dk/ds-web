@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { GenericSearchResultType } from '../../types/GenericSearchResultType';
+import { GenericSearchResultType } from '../../types/GenericSearchResultTypes';
 import './result-component';
 
 export default defineComponent({

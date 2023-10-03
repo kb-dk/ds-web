@@ -14,6 +14,6 @@ export interface BroadcastRecordType {
 	identifier: IdentifierType[];
 }
 
-export interface NameType {
+interface NameType {
 	value: string;
 }

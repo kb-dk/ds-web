@@ -4,10 +4,10 @@
 			<!-- TODO handle empty response scenario -->
 			<div v-if="recordData">
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
-					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
+					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecordType)" />
 				</div>
 				<div v-else>
-					<GenericRecordMetadataView :record-data="(recordData as GenericRecord)" />
+					<GenericRecordMetadataView :record-data="(recordData as GenericRecordType)" />
 				</div>
 			</div>
 		</div>
@@ -24,7 +24,7 @@ import { useI18n } from 'vue-i18n';
 import { AxiosError } from 'axios';
 
 //Types
-import { BroadcastRecordType } from '@/types/BroadcastRecordTypes';
+import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
