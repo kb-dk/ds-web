@@ -32,7 +32,7 @@ class SpotComponent extends HTMLElement {
 }
 
 const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
-    <a href="#">
+    <a draggable="false" class="spot-link" href="#">
         <div class="spot-component">
         <figure class="image-wrapper">
             <img
