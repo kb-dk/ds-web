@@ -29,7 +29,7 @@ export class ErrorManager implements ErrorManagerType {
 	private handleError(error: AxiosError | string, message: string) {
 		// Check if the current error is in the error history
 		if (!this.isErrorInHistory(error)) {
-			this.publishNotifyEvent(error, message);
+			this.publishNotifyEvent(message);
 			this.errorHistory.push(error);
 
 			// Remove error after 5 seconds
@@ -77,17 +77,12 @@ export class ErrorManager implements ErrorManagerType {
 		}, delayMs);
 	}
 
-	private getNotifierMessage(error: AxiosError | string, message: string) {
-		if (typeof error === 'string') {
-			return { type: 'error', message: message };
-		} else {
-			return { type: 'error', message: message };
-		}
+	private getNotifierMessage(message: string) {
+		return { type: 'error', message: message };
 	}
 
-	private publishNotifyEvent(error: AxiosError | string, message: string) {
-		console.log('send notification to user', error);
-		const notifierMsgDetails = this.getNotifierMessage(error, message);
+	private publishNotifyEvent(message: string) {
+		const notifierMsgDetails = this.getNotifierMessage(message);
 		const customEvent = new CustomEvent('notify-user', {
 			detail: notifierMsgDetails,
 		});
