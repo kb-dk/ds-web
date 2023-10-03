@@ -1,10 +1,10 @@
-import { GenericSearchResult } from '@/types/GenericSearchResultType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultType';
 
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
 	vueRouting: boolean | undefined;
-	resultData: GenericSearchResult | undefined;
+	resultData: GenericSearchResultType | undefined;
 	placeholder: string | undefined;
 
 	constructor() {
@@ -46,7 +46,7 @@ class ResultComponent extends HTMLElement {
 		}
 	}
 
-	renderResultData(resultData: GenericSearchResult) {
+	renderResultData(resultData: GenericSearchResultType) {
 		const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
 		title && (title.href = 'record/' + resultData.id);
 		title.addEventListener('click', (event) => {

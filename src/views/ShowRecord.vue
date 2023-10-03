@@ -24,8 +24,8 @@ import { useI18n } from 'vue-i18n';
 import { AxiosError } from 'axios';
 
 //Types
-import { BroadcastRecord } from '@/types/BroadcastRecordTypes';
-import { GenericRecord } from '@/types/GenericRecordTypes';
+import { BroadcastRecordType } from '@/types/BroadcastRecordTypes';
+import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
@@ -36,7 +36,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const recordData = ref<BroadcastRecord | GenericRecord | null>(null);
+		const recordData = ref<BroadcastRecordType | GenericRecordType | null>(null);
 		const recordType = ref<string | null>(null);
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n();

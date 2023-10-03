@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { GenericSearchResult } from '@/types/GenericSearchResultType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultType';
 import { APIService } from '@/api/api-service';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
@@ -8,7 +8,7 @@ import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
-	const searchResult = ref([] as Array<GenericSearchResult>);
+	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref([] as Array<string>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const { t } = useI18n();

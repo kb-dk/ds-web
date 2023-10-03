@@ -1,27 +1,19 @@
-export interface BroadcastRecord {
+import { IdentifierType } from './GenericRecordTypes';
+import { PublicationType } from './GenericRecordTypes';
+
+export interface BroadcastRecordType {
 	'@type': string;
 	id: string;
-	name: Name[];
-	publishedOn: PublishedOn;
+	name: NameType[];
+	publishedOn: PublicationType;
 	description: string;
 	startDate: string;
 	endDate: string;
 	duration: string;
 	keywords: string;
-	identifier: Identifier[];
+	identifier: IdentifierType[];
 }
 
-export interface Identifier {
-	'@type': string;
-	PropertyID: string;
+export interface NameType {
 	value: string;
-}
-
-export interface Name {
-	value: string;
-}
-
-export interface PublishedOn {
-	'@type': string;
-	broadcastDisplayName: string;
 }

@@ -1,5 +1,5 @@
 // Expand as we go
-export interface GenericSearchResult {
+export interface GenericSearchResultType {
 	access_billede_aftale: boolean;
 	access_blokeret: boolean;
 	access_ejermaerke: boolean;
