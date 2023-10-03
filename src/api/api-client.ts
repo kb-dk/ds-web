@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { APISearchResponse, APIRecordResponse } from '@/types/APIResponses';
+import { APISearchResponse, APIRecordResponse } from '@/types/APIResponseTypes';
 
 export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {

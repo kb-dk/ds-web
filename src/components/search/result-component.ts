@@ -1,4 +1,4 @@
-import { GenericSearchResult } from '@/types/GenericSearchResult';
+import { GenericSearchResult } from '@/types/GenericSearchResultType';
 
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;

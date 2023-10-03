@@ -1,6 +1,6 @@
-import { GenericSearchResult } from './GenericSearchResult';
-import { GenericRecord } from './GenericRecord';
-import { BroadcastRecord } from './BroadcastRecord';
+import { GenericSearchResult } from './GenericSearchResultType';
+import { GenericRecord } from './GenericRecordTypes';
+import { BroadcastRecord } from './BroadcastRecordTypes';
 
 export interface APISearchResponse {
 	data: {

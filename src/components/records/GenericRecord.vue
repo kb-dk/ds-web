@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { GenericRecord } from '@/types/GenericRecord';
+import { GenericRecord } from '@/types/GenericRecordTypes';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
