@@ -4,8 +4,6 @@ import App from './App.vue';
 import router from './router';
 import { provideErrorManager } from './error-handling/error-manager';
 
-import './assets/global-styles.css';
-
 import './assets/fonts/iconfont/material-icons.css';
 
 /* Third party */

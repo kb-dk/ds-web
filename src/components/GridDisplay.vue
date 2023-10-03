@@ -1,9 +1,8 @@
 <template>
 	<div class="grid-display">
-		<h2 v-if="title">{{ title }}</h2>
 		<div :class="draggable ? 'record-grid draggable row-' + rowNr : 'record-grid row-' + rowNr">
 			<div
-				v-bind:key="item"
+				:key="item"
 				v-for="item in spotNr"
 				:class="draggable ? 'related-record draggable-item' : 'related-record'"
 			>
@@ -81,7 +80,9 @@ export default defineComponent({
 			this.move = false;
 		},
 		preventClickIfMovement(e: Event) {
-			if (this.move) e.preventDefault();
+			if (this.move) {
+				e.preventDefault();
+			}
 		},
 
 		startAndCalculateOffset(e: MouseEvent) {

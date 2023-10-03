@@ -3,39 +3,34 @@
 		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
 			<SearchBar></SearchBar>
 		</div>
-		<div key="1">
-			<div class="container">
-				<div class="row">
-					<div
-						v-if="searchResultStore.searchResult.length > 0"
-						class="hit-count"
-					>
-						<HitCount
-							:hit-count="searchResultStore.numFound"
-							:no-hits="searchResultStore.noHits"
-							:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-						/>
-					</div>
+		<div class="container">
+			<div class="row">
+				<div
+					v-if="searchResultStore.searchResult.length > 0"
+					class="hit-count"
+				>
+					<HitCount
+						:hit-count="searchResultStore.numFound"
+						:no-hits="searchResultStore.noHits"
+						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+					/>
 				</div>
 			</div>
-			<div class="container">
-				<div class="row">
-					<div class="search-resultset">
-						<div class="search-facets">
-							<Facets :facet-results="searchResultStore.facetResult" />
-						</div>
-						<div class="search-results">
-							<SearchResults :search-results="searchResultStore.searchResult" />
-						</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="search-resultset">
+					<div class="search-facets">
+						<Facets :facet-results="searchResultStore.facetResult" />
+					</div>
+					<div class="search-results">
+						<SearchResults :search-results="searchResultStore.searchResult" />
 					</div>
 				</div>
 			</div>
 		</div>
 		<Transition name="fade">
-			<div
-				v-if="searchResultStore.searchResult.length === 0"
-				key="2"
-			>
+			<div v-if="searchResultStore.searchResult.length === 0">
 				<div class="container">
 					<div class="intro">
 						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
