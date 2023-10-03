@@ -14,12 +14,6 @@ class ResultComponent extends HTMLElement {
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = RESULT_COMPONENT_TEMPLATE + RESULT_COMPONENT_STYLES;
 
-		const imageWrapper: HTMLDivElement | null = this.shadow.querySelector('.image-wrapper');
-		const image: HTMLImageElement | null = this.shadow.querySelector('.image-item');
-		if (image && imageWrapper) {
-			image.addEventListener('load', this.showImage);
-		}
-
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
@@ -36,10 +30,6 @@ class ResultComponent extends HTMLElement {
 
 	static get observedAttributes() {
 		return ['number', 'show', 'vueRouting'];
-	}
-
-	showImage() {
-		this.style.opacity = '1';
 	}
 
 	connectedCallback() {
