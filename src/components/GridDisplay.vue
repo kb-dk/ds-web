@@ -99,7 +99,9 @@ export default defineComponent({
 		},
 		calculateMovement(e: MouseEvent) {
 			if (this.slidingElement) {
-				if (!this.isDown) return;
+				if (!this.isDown) {
+					return;
+				}
 				e.preventDefault();
 				const x = e.pageX - this.slidingElement.offsetLeft;
 				this.slidingElement.scrollLeft = this.scrollLeft - (x - this.startX);
