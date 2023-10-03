@@ -3,7 +3,7 @@
 		<div class="record-data">
 			<!-- TODO handle empty response scenario -->
 			<div v-if="recordData">
-				<div v-if="recordType === 'BroadcastEvent'">
+				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecord)" />
 				</div>
 				<div v-else>
