@@ -5,7 +5,10 @@
 		</div>
 		<div class="container">
 			<div class="row">
-				<div class="hit-count">
+				<div
+					v-if="searchResultStore.searchResult.length > 0"
+					class="hit-count"
+				>
 					<HitCount
 						:hit-count="searchResultStore.numFound"
 						:no-hits="searchResultStore.noHits"
@@ -26,6 +29,43 @@
 				</div>
 			</div>
 		</div>
+		<Transition name="fade">
+			<div v-if="searchResultStore.searchResult.length === 0">
+				<div class="container">
+					<div class="intro">
+						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+							ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+							fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							mollit anim id est laborum.
+						</p>
+					</div>
+				</div>
+				<div class="container">
+					<h3>Udpluk fra arkivet</h3>
+					<GridDisplay
+						:spot-nr="8"
+						:row-nr="4"
+						:draggable="true"
+					></GridDisplay>
+				</div>
+				<div class="blue-background">
+					<div class="edge blue"></div>
+
+					<div class="container">
+						<h3>Om DR Arkivet</h3>
+						<GridDisplay
+							:draggable="false"
+							:spot-nr="3"
+							:row-nr="3"
+							:blue-background="true"
+						></GridDisplay>
+					</div>
+				</div>
+			</div>
+		</Transition>
 	</div>
 </template>
 
@@ -36,7 +76,7 @@ import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Facets from '@/components/search/Facets.vue';
-
+import GridDisplay from '@/components/GridDisplay.vue';
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -44,6 +84,7 @@ export default defineComponent({
 		SearchResults,
 		SearchBar,
 		Facets,
+		GridDisplay,
 	},
 
 	setup() {
@@ -74,12 +115,51 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-active {
+	opacity: 0;
+}
+
+.blue-background {
+	background-color: #caf0fe;
+	width: 100%;
+	max-width: 100%;
+	margin-top: 20px;
+}
+
+.intro {
+	width: 100%;
+}
+
+h3 {
+	padding-top: 20px;
+}
+
+.edge {
+	height: 31px;
+}
+
+.edge.blue {
+	width: 100%;
+	position: absolute;
+	background-color: #caf0fe;
+	clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+	margin-top: -30px;
+	z-index: 3;
+}
+
 .search-box {
 	max-width: 100%;
 	overflow: hidden;
 }
 .search-container {
 	width: 100vw;
+	max-width: 100%;
 	height: 500px;
 	transition: height 0.5s ease-in-out 0s;
 }
@@ -154,6 +234,9 @@ temporary styling until patterns from design system are implemented
 }
 /* MEDIA QUERY 1150 */
 @media (min-width: 1150px) {
+	.intro {
+		width: 75%;
+	}
 	.container {
 		max-width: 1280px;
 	}

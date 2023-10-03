@@ -1,6 +1,8 @@
+import { SpotType } from '../types/SpotType';
+
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	data: unknown | undefined;
+	data: SpotType | undefined;
 
 	constructor() {
 		super();
@@ -13,14 +15,12 @@ class SpotComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (this.title) {
+		//TODO: We're waiting for real data here
+		if (this.data || !this.data) {
 			const titleHolder = this.shadow.querySelector('.record-title');
 			titleHolder && (titleHolder.innerHTML = this.title);
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_arrow');
-		}
-		if (this.data) {
-			//put in the data
 		}
 	}
 
@@ -32,7 +32,7 @@ class SpotComponent extends HTMLElement {
 }
 
 const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
-    <a href="#">
+    <a draggable="false" class="spot-link" href="#">
         <div class="spot-component">
         <figure class="image-wrapper">
             <img
@@ -40,7 +40,7 @@ const ACCORDION_COMPONMENT_TEMPLATE = /*html*/ `
                 class="image-item"
                 src=""
                 alt="altTxt"
-            /><span class="type-symbol material-icons"></span>
+            /><span class="type-symbol material-icons">play_arrow</span>
         </figure>
             <div class="record-info">
                 <div class="record-metadata">
