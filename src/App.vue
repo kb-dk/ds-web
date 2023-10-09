@@ -26,10 +26,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import './components/nav/menu-component';
+import '@/components/global/nav/wc_header-menu';
 import gsap from 'gsap';
-import Notifier from '@/components/notification/Notifier.vue';
-import Spinner from '@/components/search/Spinner.vue';
+import Notifier from '@/components/global/notification/Notifier.vue';
+import Spinner from '@/components/global/spinner/Spinner.vue';
 
 export default defineComponent({
 	name: 'App',

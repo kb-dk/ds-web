@@ -1,27 +1,40 @@
 class checkboxComponent extends HTMLElement {
-	constructor() {
-		super().attachShadow({ mode: 'open' });
-		this.shadowRoot.innerHTML = TEMPLATE + STYLES;
+	shadow: ShadowRoot;
+	slide: string | undefined;
+	key: string | undefined;
+	sendValue: string | undefined;
+	checkbox: HTMLElement | null;
 
-		this.slide = 0;
+	constructor() {
+		super();
+		this.shadow = this.attachShadow({ mode: 'open' });
+		this.shadow.innerHTML = TEMPLATE + STYLES;
+
+		this.slide = '0';
 		this.key = '';
 		this.sendValue = '';
 
-		this.checkbox = this.shadowRoot.querySelector('.checkbox');
+		this.checkbox = this.shadow.querySelector('.checkbox');
 
-		this.checkbox.addEventListener('change', (e) => {
-			window.dispatchEvent(
-				new CustomEvent('filter-update', {
-					detail: { filter: `fq=${this.key}:"${this.sendValue}"`, add: e.target.checked },
-				}),
-			);
-		});
+		this.checkbox
+			? this.checkbox.addEventListener('change', (e: Event) => {
+					const elem = e.target as HTMLInputElement;
+					window.dispatchEvent(
+						new CustomEvent('filter-update', {
+							detail: {
+								filter: `fq=${this.key}:"${this.sendValue}"`,
+								add: e.target !== null ? elem.checked : null,
+							},
+						}),
+					);
+			  })
+			: null;
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					this.style.transitionDelay = this.slide / 50 + 's';
-					this.style.opacity = 1;
+					this.style.transitionDelay = this.slide || 0 / 50 + 's';
+					this.style.opacity = '1';
 					this.style.transform = 'translateY(0px)';
 					observer.disconnect();
 				}
@@ -35,24 +48,33 @@ class checkboxComponent extends HTMLElement {
 		return ['fqkey', 'value', 'title', 'number', 'inslide', 'show'];
 	}
 
-	attributeChangedCallback(name, oldValue, newValue) {
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'value') {
-			if (newValue === 'false') {
-				this.shadowRoot.querySelector('.checkbox').checked = false;
-				this.shadowRoot.querySelector('.checkbox').ariaChecked = false;
-			} else {
-				this.shadowRoot.querySelector('.checkbox').checked = true;
-				this.shadowRoot.querySelector('.checkbox').ariaChecked = true;
+			const checkbox = this.shadow.querySelector('.checkbox') as HTMLInputElement;
+			if (checkbox !== null) {
+				if (newValue === 'false') {
+					checkbox.checked = false;
+					checkbox.ariaChecked = 'false';
+				} else {
+					checkbox.checked = true;
+					checkbox.ariaChecked = 'true';
+				}
 			}
 		}
 		if (name === 'title') {
 			this.sendValue = newValue;
-			this.shadowRoot.querySelector('.checkbox').id = newValue;
-			this.shadowRoot.querySelector('.title').innerText = newValue;
-			this.shadowRoot.querySelector('.label').htmlFor = newValue;
+			const checkbox = this.shadow.querySelector('.checkbox') as HTMLElement;
+			checkbox.id = newValue;
+
+			const title = this.shadow.querySelector('.title') as HTMLElement;
+			title.innerText = newValue;
+
+			const label = this.shadow.querySelector('.label') as HTMLLabelElement;
+			label.htmlFor = newValue;
 		}
 		if (name === 'number') {
-			this.shadowRoot.querySelector('.number').innerText = '(' + newValue + ')';
+			const number = this.shadow.querySelector('.number') as HTMLElement;
+			number.innerText = '(' + newValue + ')';
 		}
 		if (name === 'fqkey') {
 			this.key = newValue;
@@ -61,11 +83,11 @@ class checkboxComponent extends HTMLElement {
 			this.slide = newValue;
 		}
 		if (name === 'show') {
-			if (newValue === true) {
-				this.style.opacity = 1;
+			if (newValue === 'true') {
+				this.style.opacity = '1';
 				this.style.transform = 'translateY(0px)';
 			} else {
-				this.style.opacity = 0;
+				this.style.opacity = '0';
 				this.style.transform = 'translateY(-20px)';
 			}
 		}

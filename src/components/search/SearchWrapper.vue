@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject } from 'vue';
-import './search-component';
+import '@/components/search/wc_searchbar';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
