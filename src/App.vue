@@ -25,11 +25,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import '@/components/global/nav/wc_header-menu';
 import gsap from 'gsap';
+import { defineComponent } from 'vue';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
+
+import '@/components/global/nav/wc_header-menu';
 
 export default defineComponent({
 	name: 'App',

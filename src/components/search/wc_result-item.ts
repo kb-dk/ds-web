@@ -1,6 +1,7 @@
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 import { ImageComponentType } from '@/types/ImageComponentType';
-import '../common/wc_image-item';
+
+import '@components/common/wc_image-item';
 
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;

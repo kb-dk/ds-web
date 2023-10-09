@@ -4,10 +4,11 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject } from 'vue';
-import '@/components/search/wc_searchbar';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+
+import '@/components/search/wc_searchbar';
 
 export default defineComponent({
 	name: 'SearchBar',
