@@ -25,6 +25,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			filters.value.push(filter);
 		}
 	};
+	/* 
+	const resetSearch = () => {
+		resetFilters();
+		currentQuery.value = "";
+	}; */
 
 	const resetFilters = () => {
 		filters.value = [];

@@ -1,9 +1,9 @@
 <template>
 	<kb-searchbar
-		:query="query"
+		:resetvalue="xReset"
 		:background="backgroundImage"
 	></kb-searchbar>
-	{{ query }}
+	{{ xReset }}
 </template>
 
 <script lang="ts">
@@ -11,6 +11,7 @@ import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject,
 import './search-component';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { useSearchResultStore } from '@/store/searchResults';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
@@ -20,12 +21,22 @@ export default defineComponent({
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
+		const searchResultStore = useSearchResultStore();
+		const xReset = ref(false);
 
-		watch(router.currentRoute, (newValue, oldValue) => {
-			console.log('route change!', newValue.query.q);
-			const newQuery = newValue.query.q as string;
-			if (newQuery !== null) {
-				searchQuery.value = newQuery;
+		watch(searchQuery, (newValue, oldValue) => {
+			if (newValue.length !== 0 || searchResultStore.searchResult.length !== 0) {
+				xReset.value = true;
+			} else {
+				xReset.value = false;
+			}
+		});
+
+		watch(searchResultStore, (newValue, oldValue) => {
+			if (searchQuery.value.length !== 0 || newValue.searchResult.length !== 0) {
+				xReset.value = true;
+			} else {
+				xReset.value = false;
 			}
 		});
 
@@ -38,10 +49,6 @@ export default defineComponent({
 
 		const backgroundImage = computed(() => {
 			return getBackgroundImage();
-		});
-
-		const query = computed(() => {
-			return searchQuery.value;
 		});
 
 		const updateWrapper = (e: Event) => {
@@ -91,7 +98,8 @@ export default defineComponent({
 
 		return {
 			backgroundImage,
-			query,
+			xReset,
+			searchResultStore,
 		};
 	},
 });

@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<Transition name="fade">
-			<div v-if="searchResultStore.searchResult.length === 0">
+			<div v-if="searchResultStore.searchResult.length === 0 && searchResultStore.currentQuery.length === 0">
 				<div class="container">
 					<div class="intro">
 						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>

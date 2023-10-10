@@ -1,11 +1,11 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	query: string;
+	resetvalue: boolean | undefined;
 	background: string | undefined;
 
 	constructor() {
 		super();
-		this.query = '';
+
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -32,6 +32,31 @@ class SearchComponent extends HTMLElement {
 			  })
 			: null;
 		this.setResetVisibility(false);
+	}
+
+	static get observedAttributes() {
+		return ['resetvalue'];
+	}
+
+	connectedCallback() {
+		console.log('CONNMECTED!', this.resetvalue);
+		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
+		if (bgContainer && this.background) {
+			bgContainer.style.backgroundImage = `url(${this.background})`;
+		}
+		if (this.resetvalue !== undefined) {
+			this.setResetVisibility(this.resetvalue);
+			console.log('Initialized this.resetvalue', this.resetvalue);
+		}
+	}
+
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		console.log('attributeChangedCallback called', name);
+
+		if (name === 'resetvalue') {
+			console.log('We should get here sometime, no?');
+			//newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
+		}
 	}
 
 	private updateSearchQuery(searchQuery: HTMLInputElement) {
@@ -64,25 +89,6 @@ class SearchComponent extends HTMLElement {
 		}
 	}
 
-	static get observedAttributes() {
-		return ['query'];
-	}
-
-	connectedCallback() {
-		console.log('CONNMECTED!');
-		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
-		if (bgContainer && this.background) {
-			bgContainer.style.backgroundImage = `url(${this.background})`;
-		}
-	}
-
-	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		console.log('HOORAY!', name);
-		if (name === 'query') {
-			this.query = newValue;
-		}
-	}
-
 	setResetVisibility(value: boolean) {
 		if (value) {
 			const reset = this.shadow.querySelector('#resetButton') as HTMLElement;
@@ -94,7 +100,7 @@ class SearchComponent extends HTMLElement {
 	}
 
 	dispatchUpdate(query: string) {
-		this.setResetVisibility(query.length !== 0);
+		//this.setResetVisibility(query.length !== 0);
 		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query } }));
 	}
 
