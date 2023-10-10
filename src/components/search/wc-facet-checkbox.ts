@@ -33,7 +33,7 @@ class checkboxComponent extends HTMLElement {
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					this.style.transitionDelay = this.slide || 0 / 50 + 's';
+					this.style.transitionDelay = Number(this.slide) / 50 + 's' || 0 + 's';
 					this.style.opacity = '1';
 					this.style.transform = 'translateY(0px)';
 					observer.disconnect();

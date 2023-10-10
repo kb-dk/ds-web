@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSearchResultStore } from '@/store/searchResults';
+import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchWrapper.vue';

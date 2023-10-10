@@ -25,9 +25,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSearchResultStore } from '@/store/searchResults';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
-import '@/components/search/wc_facet-checkbox';
+import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'Facets',

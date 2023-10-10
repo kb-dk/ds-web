@@ -30,7 +30,7 @@ import { defineComponent } from 'vue';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
 
-import '@/components/global/nav/wc_header-menu';
+import '@/components/global/nav/wc-header-menu';
 
 export default defineComponent({
 	name: 'App',

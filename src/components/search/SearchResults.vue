@@ -18,7 +18,7 @@
 import { defineComponent, PropType } from 'vue';
 import { GenericSearchResult } from '@/types/GenericSearchResult';
 
-import '@/components/search/wc_result-item';
+import '@/components/search/wc-result-item';
 
 export default defineComponent({
 	name: 'SearchResults',

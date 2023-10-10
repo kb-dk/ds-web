@@ -74,8 +74,8 @@ import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 
-import '@/components/common/wc_accordian';
-import '@/components/common/wc_spot-item';
+import '@/components/common/wc-accordian';
+import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastRecord',

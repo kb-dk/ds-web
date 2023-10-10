@@ -1,7 +1,7 @@
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { SpotType } from '@/types/SpotType';
 
-import '@/components/common/wc_image-item';
+import '@/components/common/wc-image-item';
 
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;

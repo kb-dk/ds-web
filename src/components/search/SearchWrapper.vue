@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
-import '@/components/search/wc_searchbar';
+import '@/components/search/wc-searchbar';
 
 export default defineComponent({
 	name: 'SearchBar',
