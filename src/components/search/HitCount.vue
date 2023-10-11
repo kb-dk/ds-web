@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSearchResultStore } from '@/store/searchResults';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'HitCount',

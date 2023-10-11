@@ -68,7 +68,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 </template>
 
 <script lang="ts">
-import { BroadcastRecord } from '@/types/BroadcastRecord';
+import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/records/components/Duration.vue';
@@ -96,7 +96,7 @@ export default defineComponent({
 	},
 	props: {
 		recordData: {
-			type: Object as PropType<BroadcastRecord>,
+			type: Object as PropType<BroadcastRecordType>,
 			required: true,
 		},
 	},

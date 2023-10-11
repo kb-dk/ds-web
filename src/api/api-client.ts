@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { APISearchResponse, APIRecordResponse } from '@/types/APIResponses';
+import { APISearchResponseType, APIRecordResponseType } from '@/types/APIResponseTypes';
 
 export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {
@@ -27,11 +27,11 @@ export class APIServiceClient {
 	}
 
 	//Search and record methods
-	async getSearchResults(query: string, filters: string): Promise<APISearchResponse> {
+	async getSearchResults(query: string, filters: string): Promise<APISearchResponseType> {
 		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true&facet=true${filters}`));
 	}
 
-	async getRecord(id: string): Promise<APIRecordResponse> {
+	async getRecord(id: string): Promise<APIRecordResponseType> {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
