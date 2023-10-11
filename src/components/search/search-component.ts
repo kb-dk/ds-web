@@ -1,6 +1,5 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	resetvalue: boolean | undefined;
 	background: string | undefined;
 
 	constructor() {
@@ -35,26 +34,35 @@ class SearchComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['resetvalue'];
+		return ['reset-value'];
 	}
 
 	connectedCallback() {
-		console.log('CONNMECTED!', this.resetvalue);
+		const resetVal = this.getAttribute('reset-value');
+
 		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
 		if (bgContainer && this.background) {
 			bgContainer.style.backgroundImage = `url(${this.background})`;
 		}
-		if (this.resetvalue !== undefined) {
-			this.setResetVisibility(this.resetvalue);
-			console.log('Initialized this.resetvalue', this.resetvalue);
+		if (resetVal) {
+			/*If you are uneasey with the JSON.parse here, 
+			/ we can either go with strings all the way or make
+			/ a more robust from string to boolean converter
+			*/
+			this.setResetVisibility(JSON.parse(resetVal.toLowerCase()));
+			console.log('Initialized this.resetvalue', resetVal);
 		}
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		console.log('attributeChangedCallback called', name);
-
-		if (name === 'resetvalue') {
+		console.log('attr! foo', name);
+		if (name === 'reset-value') {
 			console.log('We should get here sometime, no?');
+			//newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
+		}
+		if (name === 'foo') {
+			console.log('We should get here sometime, no2?');
 			//newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
 		}
 	}

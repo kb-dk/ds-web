@@ -1,6 +1,6 @@
 <template>
 	<kb-searchbar
-		:resetvalue="xReset"
+		:reset-value="xReset"
 		:background="backgroundImage"
 	></kb-searchbar>
 	{{ xReset }}
