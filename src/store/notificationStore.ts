@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { NotificationType } from '@/types/Notifications';
+import { NotificationType } from '@/types/NotificationType';
 import { ref } from 'vue';
 
 export const useNotificationStore = defineStore('notificationStore', () => {
