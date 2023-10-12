@@ -71,11 +71,11 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
-import Duration from '@/components/records/components/Duration.vue';
-import GridDisplay from '../GridDisplay.vue';
+import Duration from '@/components/common/Duration.vue';
+import GridDisplay from '@/components/common/GridDisplay.vue';
 
-import './../accordion-component';
-import './../spot-component';
+import '@/components/common/wc-accordian';
+import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastRecord',

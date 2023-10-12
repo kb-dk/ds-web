@@ -14,8 +14,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { SpotType } from '../types/SpotType';
-import './spot-component';
+import { SpotType } from '@/types/SpotType';
+
+import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'GridDisplay',
