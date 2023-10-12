@@ -55,15 +55,8 @@ class SearchComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		console.log('attributeChangedCallback called', name);
-		console.log('attr! foo', name);
 		if (name === 'reset-value') {
-			console.log('We should get here sometime, no?');
-			//newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
-		}
-		if (name === 'foo') {
-			console.log('We should get here sometime, no2?');
-			//newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
+			this.setResetVisibility(newValue === 'true' ? true : false);
 		}
 	}
 

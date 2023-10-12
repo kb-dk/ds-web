@@ -56,8 +56,9 @@ export default defineComponent({
 		};
 
 		const reset = () => {
+			router.push({ name: 'Home' });
 			console.log('YEP', router);
-			router.replace({ path: '/' });
+			//searchResultStore.resetSearch();
 		};
 
 		const updateQuery = (e: CustomEvent) => {

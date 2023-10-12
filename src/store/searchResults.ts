@@ -25,14 +25,19 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			filters.value.push(filter);
 		}
 	};
-	/* 
+
 	const resetSearch = () => {
 		resetFilters();
-		currentQuery.value = "";
-	}; */
+		resetSearchResult();
+		currentQuery.value = '';
+	};
 
 	const resetFilters = () => {
 		filters.value = [];
+	};
+
+	const resetSearchResult = () => {
+		searchResult.value = [];
 	};
 
 	const removeFilter = (filter: string) => {
@@ -78,5 +83,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetFilters,
 		removeFilter,
 		getSearchResults,
+		resetSearch,
 	};
 });
