@@ -6,10 +6,11 @@ export const useNotificationStore = defineStore('notificationStore', () => {
 	const notifications = ref([] as Array<NotificationType>);
 	const count = ref(0);
 
-	const addNotification = (title: string, desc: string, severity: string, userClose: boolean) => {
+	const addNotification = (title: string, desc: string, key: boolean, severity: string, userClose: boolean) => {
 		const notification: NotificationType = {
 			title: title,
 			desc: desc,
+			key: key,
 			severity: severity,
 			userClose: userClose,
 			time: new Date().getTime(),
