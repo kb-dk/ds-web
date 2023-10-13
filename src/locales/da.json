@@ -8,7 +8,7 @@
      "genre":"Genre",
      "copy": "Kopier henvisning til dette indhold",
      "copyTitleSuccess":"Kopiering successfuld.",
-     "copyMessageSuccess":"Linket var ssuccessfuldt kopieret til klipboardet.",
+     "copyMessageSuccess":"Linket var successfuldt kopieret til klipboardet.",
      "copyTitleFailed":"Kopiering fejlede.",
      "copyMessageFailed":"Linket blev ikke kopieret til klipboardet. Kopier URL istedet."
   },
