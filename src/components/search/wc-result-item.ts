@@ -1,22 +1,19 @@
-import { GenericSearchResult } from '@/types/GenericSearchResult';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { ImageComponentType } from '@/types/ImageComponentType';
+
+import '@/components/common/wc-image-item';
 
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
 	vueRouting: boolean | undefined;
-	resultData: GenericSearchResult | undefined;
+	resultData: GenericSearchResultType | undefined;
 	placeholder: string | undefined;
 
 	constructor() {
 		super();
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = RESULT_COMPONENT_TEMPLATE + RESULT_COMPONENT_STYLES;
-
-		const imageWrapper: HTMLDivElement | null = this.shadow.querySelector('.image-wrapper');
-		const image: HTMLImageElement | null = this.shadow.querySelector('.image-item');
-		if (image && imageWrapper) {
-			image.addEventListener('load', this.showImage);
-		}
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
@@ -36,17 +33,13 @@ class ResultComponent extends HTMLElement {
 		return ['number', 'show', 'vueRouting'];
 	}
 
-	showImage() {
-		this.style.opacity = '1';
-	}
-
 	connectedCallback() {
 		if (this.resultData) {
 			this.renderResultData(this.resultData);
 		}
 	}
 
-	renderResultData(resultData: GenericSearchResult) {
+	renderResultData(resultData: GenericSearchResultType) {
 		const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
 		title && (title.href = 'record/' + resultData.id);
 		title.addEventListener('click', (event) => {
@@ -71,19 +64,18 @@ class ResultComponent extends HTMLElement {
 		const duration = this.shadow.querySelector('.duration');
 		duration && (duration.textContent = 'VARIGHED');
 
-		const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
-		if (resultData.thumbnail !== undefined) {
-			thumb && (thumb.src = resultData.thumbnail);
-		} else if (this.placeholder !== undefined) {
-			thumb && (thumb.src = this.placeholder);
-			thumb.style.backgroundColor = 'rgb(237,237,237)';
-			thumb.style.objectFit = 'contain';
-		}
-
 		const summary = this.shadow.querySelector('.summary');
 		summary &&
 			(summary.textContent =
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.');
+
+		const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
+		if (imageComponent) {
+			imageComponent.imgSrc = resultData.thumbnail;
+			imageComponent.altText = resultData.title;
+			imageComponent.imgTitle = resultData.title;
+			imageComponent.placeholder = this.placeholder;
+		}
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -120,14 +112,7 @@ const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 		</div>
 			<div class="summary"></div>
 		</div>
-        <figure class="image-wrapper">
-			<img
-				loading = "lazy"
-				class="image-item"
-				src=""
-				alt="altTxt"
-			/>
-		</figure>
+        <div class="result-image-wrapper"><kb-imagecomponent></kb-imagecomponent></div>	
 	</div>
 `;
 
@@ -192,24 +177,8 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			padding-bottom:5px;
 			
 		}
-
-		.image-wrapper {
-			background: linear-gradient(45deg, #caf0fe, #fff6c4);
+		.result-image-wrapper {
 			width:20%;
-			padding:0px;
-			margin-block-start: 0em;
-			margin-block-end: 0em;
-			margin-inline-start: 0px;
-			margin-inline-end: 0px;
-		}
-
-		.image-item {
-			width:100%;
-			height:100%;
-			max-height:160px;
-			object-fit:cover;
-			transition:opacity 0.5s ease-in-out 0s;
-			opacity:0;
 		}
 
 		.where, .when, .duration {

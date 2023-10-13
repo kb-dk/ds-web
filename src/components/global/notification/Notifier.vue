@@ -32,8 +32,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
-import NotificationItem from '@/components/notification/NotificationItem.vue';
-import { NotificationType } from '@/types/Notifications';
+import NotificationItem from '@/components/global/notification/NotificationItem.vue';
+import { NotificationType } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'Notifier',
@@ -59,7 +59,13 @@ export default defineComponent({
 		},
 		addNotification(e: CustomEvent) {
 			//this needs to be ironed out better o_O
-			this.notificationStore.addNotification(e.detail.type, e.detail.message, 'low', Math.random() < 0.5);
+			this.notificationStore.addNotification(
+				e.detail.title,
+				e.detail.message,
+				e.detail.key !== undefined ? e.detail.key : false,
+				'low',
+				e.detail.userClose !== undefined ? e.detail.userClose : Math.random() < 0.5,
+			);
 		},
 		removeNotification(notification: NotificationType) {
 			this.notificationStore.removeNotification(notification);

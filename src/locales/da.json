@@ -6,7 +6,11 @@
   "record":{
      "title":"Titel",
      "genre":"Genre",
-     "copy": "Kopier henvisning til dette indhold"
+     "copy": "Kopier henvisning til dette indhold",
+     "copyTitleSuccess":"Kopiering successfuld.",
+     "copyMessageSuccess":"Linket var successfuldt kopieret til klipboardet.",
+     "copyTitleFailed":"Kopiering fejlede.",
+     "copyMessageFailed":"Linket blev ikke kopieret til klipboardet. Kopier URL istedet."
   },
   "duration":{
    "hours":"t",

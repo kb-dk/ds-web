@@ -71,12 +71,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSearchResultStore } from '@/store/searchResults';
+import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBar from '@/components/search/SearchBar.vue';
+import SearchBar from '@/components/search/SearchWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
-import GridDisplay from '@/components/GridDisplay.vue';
+import GridDisplay from '@/components/common/GridDisplay.vue';
 export default defineComponent({
 	name: 'Search',
 	components: {

@@ -30,9 +30,10 @@ import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import './components/nav/menu-component';
 import gsap from 'gsap';
-import Notifier from '@/components/notification/Notifier.vue';
-import Spinner from '@/components/search/Spinner.vue';
+import Notifier from '@/components/global/notification/Notifier.vue';
+import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from './utils/local-storage-wrapper';
+import '@/components/global/nav/wc-header-menu';
 
 export default defineComponent({
 	name: 'App',

@@ -1,8 +1,8 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, index) in (currentResults as PropType<GenericSearchResult[]>)"
-		:key="(res as GenericSearchResult).id + '-' + lastUpdate"
+		v-for="(res, index) in (currentResults as PropType<GenericSearchResultType[]>)"
+		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
 			:vueRouting="true"
@@ -16,8 +16,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { GenericSearchResult } from '../../types/GenericSearchResult';
-import './result-component';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+
+import '@/components/search/wc-result-item';
 
 export default defineComponent({
 	name: 'SearchResults',
@@ -29,7 +30,7 @@ export default defineComponent({
 	}),
 
 	props: {
-		searchResults: { type: Object as PropType<GenericSearchResult[]>, required: true },
+		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 	},
 
 	created() {
@@ -58,7 +59,7 @@ export default defineComponent({
 				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
 				: require('@/assets/images/No-Image-Placeholder.svg.png'); */
 		},
-		getAltTxt(res: GenericSearchResult) {
+		getAltTxt(res: GenericSearchResultType) {
 			return 'license';
 			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		},

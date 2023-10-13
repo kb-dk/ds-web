@@ -6,7 +6,11 @@
   "record":{
      "title":"Title",
      "genre":"Genre",
-     "copy":"Copy reference for this content"
+     "copy":"Copy reference for this content",
+     "copyTitleSuccess":"Copying successful.",
+     "copyMessageSuccess":"The link was successfully copied to the clipboard.",
+     "copyTitleFailed":"Copying failed.",
+     "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead."
   },
   "duration":{
    "hours":"h",

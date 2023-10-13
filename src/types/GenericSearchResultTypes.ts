@@ -1,5 +1,4 @@
-// Expand as we go
-export interface GenericSearchResult {
+export interface GenericSearchResultType {
 	access_billede_aftale: boolean;
 	access_blokeret: boolean;
 	access_ejermaerke: boolean;
@@ -30,4 +29,12 @@ export interface GenericSearchResult {
 	type_of_resource: string[];
 	thumbnail: string;
 	_version: number;
+}
+
+export interface FacetsType {
+	facet_queries: Array<string>;
+	facet_fields: Array<string>;
+	facet_ranges: Array<string>;
+	facet_interval: Array<string>;
+	facet_heatmaps: Array<string>;
 }
