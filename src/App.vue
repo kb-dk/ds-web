@@ -28,7 +28,6 @@
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
-import './components/nav/menu-component';
 import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
