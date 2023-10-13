@@ -3,7 +3,6 @@
 		:reset-value="xReset"
 		:background="backgroundImage"
 	></kb-searchbar>
-	{{ xReset }}
 </template>
 
 <script lang="ts">
@@ -25,6 +24,7 @@ export default defineComponent({
 		const xReset = ref(false);
 
 		watch(searchQuery, (newValue, oldValue) => {
+			console.log('still watching');
 			if (newValue.length !== 0 || searchResultStore.searchResult.length !== 0) {
 				xReset.value = true;
 			} else {
@@ -33,6 +33,8 @@ export default defineComponent({
 		});
 
 		watch(searchResultStore, (newValue, oldValue) => {
+			console.log('still watching2');
+
 			if (searchQuery.value.length !== 0 || newValue.searchResult.length !== 0) {
 				xReset.value = true;
 			} else {
@@ -56,9 +58,9 @@ export default defineComponent({
 		};
 
 		const reset = () => {
+			searchQuery.value = '';
+			xReset.value = false;
 			router.push({ name: 'Home' });
-			console.log('YEP', router);
-			//searchResultStore.resetSearch();
 		};
 
 		const updateQuery = (e: CustomEvent) => {

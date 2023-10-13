@@ -11,6 +11,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResult>);
 	const facetResult = ref([] as Array<string>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
+	const searchFired = ref(false);
 	const { t } = useI18n();
 	const numFound = ref(0);
 	const loading = ref(false);
@@ -27,17 +28,19 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const resetSearch = () => {
+		console.log('resetting everything o/');
 		resetFilters();
-		resetSearchResult();
+		resetResults();
 		currentQuery.value = '';
+		searchFired.value = false;
+	};
+
+	const resetResults = () => {
+		searchResult.value = searchResult.value.splice(0, searchResult.value.length);
 	};
 
 	const resetFilters = () => {
-		filters.value = [];
-	};
-
-	const resetSearchResult = () => {
-		searchResult.value = [];
+		filters.value = filters.value.splice(0, filters.value.length);
 	};
 
 	const removeFilter = (filter: string) => {
@@ -66,6 +69,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			spinnerStore.toggleSpinner(false);
 			loading.value = false;
+			searchFired.value = true;
 		}
 	};
 
@@ -79,6 +83,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		currentQuery,
 		noHits,
 		filters,
+		searchFired,
 		addFilter,
 		resetFilters,
 		removeFilter,

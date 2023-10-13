@@ -1,10 +1,11 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	background: string | undefined;
+	showXButton: boolean;
 
 	constructor() {
 		super();
-
+		this.showXButton = false;
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -49,14 +50,17 @@ class SearchComponent extends HTMLElement {
 			/ we can either go with strings all the way or make
 			/ a more robust from string to boolean converter
 			*/
-			this.setResetVisibility(JSON.parse(resetVal.toLowerCase()));
+			this.showXButton = JSON.parse(resetVal.toLowerCase());
+			this.setResetVisibility(this.showXButton);
 			console.log('Initialized this.resetvalue', resetVal);
 		}
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'reset-value') {
-			this.setResetVisibility(newValue === 'true' ? true : false);
+			console.log('reset-value changed', newValue);
+			this.showXButton = JSON.parse(newValue.toLowerCase());
+			this.setResetVisibility(this.showXButton);
 		}
 	}
 
@@ -113,7 +117,9 @@ class SearchComponent extends HTMLElement {
 	resetSearch(e: Event) {
 		const input = this.shadow.querySelector('#focusSearchInput') as HTMLInputElement;
 		input && (input.value = '');
-		this.setResetVisibility(input.value.length !== 0);
+
+		this.showXButton = false;
+		this.setResetVisibility(this.showXButton);
 
 		window.dispatchEvent(new Event('reset-search'));
 		e.preventDefault();

@@ -4,18 +4,24 @@
 			<SearchBar></SearchBar>
 		</div>
 		<div class="container">
-			<div class="row">
-				<div
-					v-if="searchResultStore.searchResult.length > 0"
-					class="hit-count"
-				>
-					<HitCount
-						:hit-count="searchResultStore.numFound"
-						:no-hits="searchResultStore.noHits"
-						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-					/>
+			<Transition
+				mode="out-in"
+				name="fade"
+			>
+				<div class="row">
+					<div
+						v-if="searchResultStore.searchResult.length > 0"
+						class="hit-count"
+					>
+						<HitCount
+							:hit-count="searchResultStore.numFound"
+							:no-hits="searchResultStore.noHits"
+							:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+						/>
+					</div>
+					<div v-else-if="searchResultStore.searchFired">No search results for this query</div>
 				</div>
-			</div>
+			</Transition>
 		</div>
 		<div class="container">
 			<div class="row">
@@ -29,8 +35,16 @@
 				</div>
 			</div>
 		</div>
-		<Transition name="fade">
-			<div v-if="searchResultStore.searchResult.length === 0 && searchResultStore.currentQuery.length === 0">
+		<Transition
+			mode="out-in"
+			name="fade"
+		>
+			<div
+				v-if="
+					searchResultStore.searchResult.length === 0 &&
+					(searchResultStore.currentQuery?.length === 0 || searchResultStore.currentQuery === undefined)
+				"
+			>
 				<div class="container">
 					<div class="intro">
 						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
@@ -102,8 +116,13 @@ export default defineComponent({
 		this.$watch(
 			() => this.$route.query.q,
 			(newq: string, prevq: string) => {
-				if (newq !== prevq) {
+				console.log(prevq, newq, 'here');
+				if (newq !== prevq && newq !== undefined) {
+					console.log('new search!');
 					this.searchResultStore.getSearchResults(newq);
+				}
+				if (newq === undefined) {
+					this.searchResultStore.resetSearch();
 				}
 			},
 		);
