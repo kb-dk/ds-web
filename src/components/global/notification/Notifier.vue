@@ -32,7 +32,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
-import NotificationItem from '@/components/notification/NotificationItem.vue';
+import NotificationItem from '@/components/global/notification/NotificationItem.vue';
 import { NotificationType } from '@/types/NotificationType';
 
 export default defineComponent({
