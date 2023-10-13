@@ -73,6 +73,7 @@ import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
+import { copyTextToClipboard } from '@/utils/copy-script';
 
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
@@ -102,8 +103,7 @@ export default defineComponent({
 	},
 	methods: {
 		getCurrentUrl() {
-			//make function to copy to clipboard.
-			console.log('YHEARRAP');
+			copyTextToClipboard();
 		},
 
 		getBroadcastDate: (isoDate: string) => {
