@@ -1,7 +1,8 @@
 {
   "search":{
      "searchbtn":"Søg",
-     "hitcount": "{n} resultat fundet for | {n} resultater fundet for"
+     "hitcount": "{n} resultat fundet for | {n} resultater fundet for",
+     "nohit":"Din søgning gav 0 resultater."
   },
   "record":{
      "title":"Titel",

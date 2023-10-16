@@ -3,73 +3,85 @@
 		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
 			<SearchBar></SearchBar>
 		</div>
-		<div class="container">
-			<div class="row">
-				<div
-					v-if="searchResultStore.searchResult.length > 0"
-					class="hit-count"
-				>
-					<HitCount
-						:hit-count="searchResultStore.numFound"
-						:no-hits="searchResultStore.noHits"
-						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-					/>
-				</div>
-				<div v-else-if="searchResultStore.searchFired">No search results for this query</div>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="search-resultset">
-					<div class="search-facets">
-						<Facets :facet-results="searchResultStore.facetResult" />
-					</div>
-					<div class="search-results">
-						<SearchResults :search-results="searchResultStore.searchResult" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div
-			v-if="
-				searchResultStore.searchResult.length === 0 &&
-				(searchResultStore.currentQuery?.length === 0 || searchResultStore.currentQuery === undefined)
-			"
+		<Transition
+			name="fade"
+			mode="out-in"
 		>
-			<div class="container">
-				<div class="intro">
-					<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-						dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-						ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-						anim id est laborum.
-					</p>
+			<div
+				key="1"
+				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+			>
+				<div class="container">
+					<div class="row">
+						<div
+							v-if="searchResultStore.searchResult.length > 0"
+							class="hit-count"
+						>
+							<HitCount
+								:hit-count="searchResultStore.numFound"
+								:no-hits="searchResultStore.noHits"
+								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+							/>
+						</div>
+						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
+					</div>
+				</div>
+				<div
+					key="2"
+					v-if="searchResultStore.searchResult.length > 0"
+					class="container"
+				>
+					<div class="row">
+						<div class="search-resultset">
+							<div class="search-facets">
+								<Facets :facet-results="searchResultStore.facetResult" />
+							</div>
+							<div class="search-results">
+								<SearchResults :search-results="searchResultStore.searchResult" />
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="container">
-				<h3>Udpluk fra arkivet</h3>
-				<GridDisplay
-					:spot-nr="8"
-					:row-nr="4"
-					:draggable="true"
-				></GridDisplay>
-			</div>
-			<div class="blue-background">
-				<div class="edge blue"></div>
-
+			<div
+				key="2"
+				v-else
+			>
 				<div class="container">
-					<h3>Om DR Arkivet</h3>
+					<div class="intro">
+						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+							ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+							fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							mollit anim id est laborum.
+						</p>
+					</div>
+				</div>
+				<div class="container">
+					<h3>Udpluk fra arkivet</h3>
 					<GridDisplay
-						:draggable="false"
-						:spot-nr="3"
-						:row-nr="3"
-						:blue-background="true"
+						:spot-nr="8"
+						:row-nr="4"
+						:draggable="true"
 					></GridDisplay>
 				</div>
+				<div class="blue-background">
+					<div class="edge blue"></div>
+
+					<div class="container">
+						<h3>Om DR Arkivet</h3>
+						<GridDisplay
+							:draggable="false"
+							:spot-nr="3"
+							:row-nr="3"
+							:blue-background="true"
+						></GridDisplay>
+					</div>
+				</div>
 			</div>
-		</div>
+		</Transition>
 	</div>
 </template>
 
@@ -106,9 +118,7 @@ export default defineComponent({
 		this.$watch(
 			() => this.$route.query.q,
 			(newq: string, prevq: string) => {
-				console.log(prevq, newq, 'here');
 				if (newq !== prevq && newq !== undefined) {
-					console.log('new search!');
 					this.searchResultStore.getSearchResults(newq);
 				}
 				if (newq === undefined) {
@@ -126,11 +136,11 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.5s;
+	transition: opacity 0.25s;
 }
 
 .fade-enter,
-.fade-leave-active {
+.fade-leave-to {
 	opacity: 0;
 }
 

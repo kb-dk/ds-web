@@ -35,12 +35,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		console.log('resetting everything o/', searchFired.value, currentQuery.value, searchResult.value, filters.value);
 	};
 
-	const getFacetNumber = () => {
-		const test = Object.keys(facetResult.value).length;
-		console.log(test);
-		return test;
-	};
-
 	const resetResults = () => {
 		searchResult.value = [];
 	};
@@ -96,6 +90,5 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		removeFilter,
 		getSearchResults,
 		resetSearch,
-		getFacetNumber,
 	};
 });

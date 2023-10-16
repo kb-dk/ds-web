@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/search/wc-facet-checkbox';
@@ -33,17 +33,21 @@ export default defineComponent({
 	name: 'Facets',
 	data: () => ({
 		showFacets: true,
-		currentFacets: new Array<string[]>(),
+		currentFacets: [] as string[],
 		lastUpdate: 0,
 	}),
 
 	props: {
-		facetResults: { required: true },
+		facetResults: { type: [] as PropType<string[]>, required: true },
 	},
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore };
+	},
+
+	mounted() {
+		this.currentFacets = this.facetResults;
 	},
 
 	created() {
@@ -57,7 +61,7 @@ export default defineComponent({
 
 		this.$watch(
 			() => this.facetResults,
-			(newFacets: Array<string[]>, prevFacets: Array<string[]>) => {
+			(newFacets: string[], prevFacets: string[]) => {
 				if (newFacets !== prevFacets) {
 					this.showFacets = true;
 					let sum = '';

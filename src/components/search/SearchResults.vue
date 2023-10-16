@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, index) in (currentResults as PropType<GenericSearchResultType[]>)"
+		v-for="(res, index) in (currentResults as GenericSearchResultType[])"
 		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
@@ -24,13 +24,17 @@ export default defineComponent({
 	name: 'SearchResults',
 
 	data: () => ({
-		showResults: false,
-		currentResults: [],
+		showResults: true,
+		currentResults: [] as GenericSearchResultType[],
 		lastUpdate: 0,
 	}),
 
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
+	},
+
+	mounted() {
+		this.currentResults = this.searchResults;
 	},
 
 	created() {
