@@ -78,7 +78,7 @@ export class ErrorManager implements ErrorManagerType {
 	}
 
 	private getNotifierMessage(message: string) {
-		return { type: 'error', message: message };
+		return { title: 'error', message: message };
 	}
 
 	private publishNotifyEvent(message: string) {
