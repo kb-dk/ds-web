@@ -7,7 +7,6 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch } from 'vue';
-import './search-component';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
