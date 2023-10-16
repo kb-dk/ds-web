@@ -119,6 +119,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
 /* This probably shouldn't be here. We need a place for global styles at some point i guess */
 @font-face {
 	font-family: 'noway';
@@ -129,6 +139,7 @@ export default defineComponent({
 body {
 	margin: 0;
 	padding: 0;
+	overscroll-behavior: none;
 }
 
 .wipe {

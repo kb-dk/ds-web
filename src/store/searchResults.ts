@@ -28,19 +28,26 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const resetSearch = () => {
-		console.log('resetting everything o/');
 		resetFilters();
 		resetResults();
 		currentQuery.value = '';
 		searchFired.value = false;
+		console.log('resetting everything o/', searchFired.value, currentQuery.value, searchResult.value, filters.value);
+	};
+
+	const getFacetNumber = () => {
+		const test = Object.keys(facetResult.value).length;
+		console.log(test);
+		return test;
 	};
 
 	const resetResults = () => {
-		searchResult.value = searchResult.value.splice(0, searchResult.value.length);
+		searchResult.value = [];
 	};
 
 	const resetFilters = () => {
-		filters.value = filters.value.splice(0, filters.value.length);
+		filters.value = [];
+		facetResult.value = [];
 	};
 
 	const removeFilter = (filter: string) => {
@@ -89,5 +96,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		removeFilter,
 		getSearchResults,
 		resetSearch,
+		getFacetNumber,
 	};
 });
