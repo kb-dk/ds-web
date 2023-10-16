@@ -5,10 +5,10 @@ export interface BroadcastRecordType {
 	'@type': string;
 	id: string;
 	name: NameType[];
-	publishedOn: PublicationType;
+	publication: PublicationType;
 	description: string;
-	startDate: string;
-	endDate: string;
+	startTime: string;
+	endTime: string;
 	duration: string;
 	keywords: string;
 	identifier: IdentifierType[];

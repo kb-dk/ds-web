@@ -64,4 +64,7 @@ export interface IdentifierType {
 export interface PublicationType {
 	'@type': string;
 	description: string[];
+	publishedOn: {
+		broadcastDisplayName: string;
+	};
 }

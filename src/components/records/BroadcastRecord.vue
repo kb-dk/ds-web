@@ -15,22 +15,22 @@
 					<h3>Sendt</h3>
 					<div>
 						<span class="material-icons blue">event</span>
-						{{ getBroadcastDate(recordData.startDate) }}
+						{{ getBroadcastDate(recordData.startTime) }}
 					</div>
 					<div>
 						<span class="material-icons blue">schedule</span>
-						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
+						Kl. {{ getBroadcastTime(recordData.startTime) }} - {{ getBroadcastTime(recordData.endTime) }}
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
-								:startDate="recordData.startDate"
-								:endDate="recordData.endDate"
+								:startDate="recordData.startTime"
+								:endDate="recordData.endTime"
 							></duration>
 						</span>
 					</div>
 					<div>
 						<span class="material-icons blue">tv</span>
-						{{ recordData.publishedOn.broadcastDisplayName }}
+						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<h4>{{ $t('record.genre') }}</h4>
 					<div>{{ recordData.keywords }}</div>
