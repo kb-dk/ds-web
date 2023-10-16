@@ -1,12 +1,13 @@
-import { GenericSearchResult } from '@/types/GenericSearchResult';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
-import './../image-component';
+
+import '@/components/common/wc-image-item';
 
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
 	vueRouting: boolean | undefined;
-	resultData: GenericSearchResult | undefined;
+	resultData: GenericSearchResultType | undefined;
 	placeholder: string | undefined;
 
 	constructor() {
@@ -38,7 +39,7 @@ class ResultComponent extends HTMLElement {
 		}
 	}
 
-	renderResultData(resultData: GenericSearchResult) {
+	renderResultData(resultData: GenericSearchResultType) {
 		const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
 		title && (title.href = 'record/' + resultData.id);
 		title.addEventListener('click', (event) => {

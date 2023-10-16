@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSpinnerStore } from '@/store/spinner';
+import { useSpinnerStore } from '@/store/spinnerStore';
 
 export default defineComponent({
 	name: 'Spinner',

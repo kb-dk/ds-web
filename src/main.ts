@@ -2,7 +2,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { provideErrorManager } from './error-handling/error-manager';
+import { provideErrorManager } from '@/components/global/error-handling/error-manager';
 
 import './assets/fonts/iconfont/material-icons.css';
 

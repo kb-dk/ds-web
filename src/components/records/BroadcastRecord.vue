@@ -15,22 +15,22 @@
 					<h3>Sendt</h3>
 					<div>
 						<span class="material-icons blue">event</span>
-						{{ getBroadcastDate(recordData.startDate) }}
+						{{ getBroadcastDate(recordData.startTime) }}
 					</div>
 					<div>
 						<span class="material-icons blue">schedule</span>
-						Kl. {{ getBroadcastTime(recordData.startDate) }} - {{ getBroadcastTime(recordData.endDate) }}
+						Kl. {{ getBroadcastTime(recordData.startTime) }} - {{ getBroadcastTime(recordData.endTime) }}
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
-								:startDate="recordData.startDate"
-								:endDate="recordData.endDate"
+								:startDate="recordData.startTime"
+								:endDate="recordData.endTime"
 							></duration>
 						</span>
 					</div>
 					<div>
 						<span class="material-icons blue">tv</span>
-						{{ recordData.publishedOn.broadcastDisplayName }}
+						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<h4>{{ $t('record.genre') }}</h4>
 					<div>{{ recordData.keywords }}</div>
@@ -68,14 +68,15 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 </template>
 
 <script lang="ts">
-import { BroadcastRecord } from '@/types/BroadcastRecord';
+import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
-import Duration from '@/components/records/components/Duration.vue';
-import GridDisplay from '../GridDisplay.vue';
+import Duration from '@/components/common/Duration.vue';
+import GridDisplay from '@/components/common/GridDisplay.vue';
+import { copyTextToClipboard } from '@/utils/copy-script';
 
-import './../accordion-component';
-import './../spot-component';
+import '@/components/common/wc-accordian';
+import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -96,14 +97,13 @@ export default defineComponent({
 	},
 	props: {
 		recordData: {
-			type: Object as PropType<BroadcastRecord>,
+			type: Object as PropType<BroadcastRecordType>,
 			required: true,
 		},
 	},
 	methods: {
 		getCurrentUrl() {
-			//make function to copy to clipboard.
-			console.log('YHEARRAP');
+			copyTextToClipboard();
 		},
 
 		getBroadcastDate: (isoDate: string) => {

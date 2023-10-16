@@ -10,8 +10,10 @@ import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject,
 import './search-component';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { useSearchResultStore } from '@/store/searchResults';
+import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+
+import '@/components/search/wc-searchbar';
 
 export default defineComponent({
 	name: 'SearchBar',

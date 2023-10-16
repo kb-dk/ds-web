@@ -5,7 +5,7 @@
 		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 	>
 		<h3>
-			{{ notification.title }}
+			<span class="title-span">{{ notification.key ? $t(notification.title) : notification.title }}</span>
 			<button
 				class="close"
 				v-if="notification.userClose"
@@ -16,7 +16,7 @@
 				<div class="close-border"></div>
 			</button>
 		</h3>
-		<p>{{ notification.desc }}</p>
+		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
 			ref="countdown"
 			v-if="!notification.userClose"
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { gsap } from 'gsap';
+import { useI18n } from 'vue-i18n';
 import GSAPTween from 'gsap';
 
 export default defineComponent({
@@ -41,7 +42,10 @@ export default defineComponent({
 		notification: { type: Object, required: true },
 		close: { type: Function, required: true },
 	},
-
+	setup() {
+		const { t } = useI18n();
+		return { t };
+	},
 	mounted() {
 		const countdown: HTMLDivElement = this.$refs.countdown as HTMLDivElement;
 
@@ -145,5 +149,9 @@ export default defineComponent({
 
 h3 {
 	margin: 0;
+}
+
+.title-span {
+	max-width: 90%;
 }
 </style>
