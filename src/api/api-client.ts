@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { APISearchResponseType, APIRecordResponseType } from '@/types/APIResponseTypes';
+import { APISearchResponseType, APIRecordResponseType, APIMoreLikeThisType } from '@/types/APIResponseTypes';
 
 export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {
@@ -35,5 +35,10 @@ export class APIServiceClient {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
+	}
+
+	async getRelatedRecords(id: string): Promise<APIMoreLikeThisType> {
+		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
+		return await this.httpClient.get(`mlt/?q=${id}`);
 	}
 }

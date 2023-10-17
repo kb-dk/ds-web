@@ -49,6 +49,7 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
+						:spots="(['1','2','3','4','5','6','7','8'] as unknown as GenericSearchResultType[])"
 					></GridDisplay>
 				</div>
 				<div class="blue-background">
@@ -61,6 +62,7 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
+							:spots="(['1','2','3'] as unknown as GenericSearchResultType[])"
 						></GridDisplay>
 					</div>
 				</div>
@@ -77,6 +79,8 @@ import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -102,7 +106,7 @@ export default defineComponent({
 		this.$watch(
 			() => this.$route.query.q,
 			(newq: string, prevq: string) => {
-				if (newq !== prevq) {
+				if (newq !== prevq && newq !== undefined) {
 					this.searchResultStore.getSearchResults(newq);
 				}
 			},
