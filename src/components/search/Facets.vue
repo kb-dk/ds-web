@@ -26,14 +26,14 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { FacetResultType } from '@/types/FacetType';
+import { FacetResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'Facets',
 	data: () => ({
-		showFacets: true,
+		showFacets: false,
 		currentFacets: Object as unknown as FacetResultType,
 		lastUpdate: 0,
 	}),
@@ -49,6 +49,7 @@ export default defineComponent({
 
 	mounted() {
 		this.currentFacets = this.facetResults;
+		this.showFacets = true;
 	},
 
 	created() {
@@ -58,13 +59,11 @@ export default defineComponent({
 			event.preventDefault();
 		});
 
-		this.showFacets = false;
-
 		this.$watch(
 			() => this.facetResults,
 			(newFacets: FacetResultType, prevFacets: FacetResultType) => {
 				if (newFacets !== prevFacets) {
-					this.showFacets = true;
+					this.showFacets = false;
 					let sum = '';
 					Object.entries(prevFacets).forEach(([key, value]) => {
 						sum += value;
@@ -73,8 +72,7 @@ export default defineComponent({
 						() => {
 							this.currentFacets = newFacets;
 							this.lastUpdate = new Date().getTime();
-							//console.log(this.currentFacets);
-							this.showFacets = false;
+							this.showFacets = true;
 						},
 						sum.length <= 0 ? 0 : 600,
 					);

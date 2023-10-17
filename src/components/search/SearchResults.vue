@@ -35,6 +35,7 @@ export default defineComponent({
 
 	mounted() {
 		this.currentResults = this.searchResults;
+		this.showResults = true;
 	},
 
 	created() {

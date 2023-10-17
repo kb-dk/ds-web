@@ -6,10 +6,11 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { FacetResultType } from '@/types/GenericSearchResultTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResultType>);
-	const facetResult = ref([] as Array<string>);
+	const facetResult = ref(Object as unknown as FacetResultType);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const searchFired = ref(false);
 	const { t } = useI18n();
@@ -32,7 +33,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetResults();
 		currentQuery.value = '';
 		searchFired.value = false;
-		console.log('resetting everything o/', searchFired.value, currentQuery.value, searchResult.value, filters.value);
+		//console.log('resetting everything o/', searchFired.value, currentQuery.value, searchResult.value, filters.value);
 	};
 
 	const resetResults = () => {
@@ -41,7 +42,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const resetFilters = () => {
 		filters.value = [];
-		facetResult.value = [];
+		facetResult.value = {} as FacetResultType;
 	};
 
 	const removeFilter = (filter: string) => {
@@ -61,7 +62,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			const responseData = await APIService.getSearchResults(query, fq);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
-			facetResult.value = responseData.data.facet_counts.facet_fields;
+			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
 			numFound.value = responseData.data.response.numFound;
 			noHits.value = numFound.value === 0;
 		} catch (err: unknown) {
