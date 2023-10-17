@@ -30,8 +30,10 @@ class SpotComponent extends HTMLElement {
 	connectedCallback() {
 		//TODO: We're waiting for real data here
 		if (this.data) {
-			const titleHolder = this.shadow.querySelector('.record-title');
-			titleHolder && (titleHolder.innerHTML = this.data.title);
+			if (this.data.title) {
+				const titleHolder = this.shadow.querySelector('.record-title');
+				titleHolder && (titleHolder.innerHTML = this.data.title);
+			}
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_arrow');
 		}
