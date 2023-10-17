@@ -24,7 +24,7 @@ export default defineComponent({
 	name: 'SearchResults',
 
 	data: () => ({
-		showResults: true,
+		showResults: false,
 		currentResults: [] as GenericSearchResultType[],
 		lastUpdate: 0,
 	}),
