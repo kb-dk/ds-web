@@ -46,19 +46,13 @@ class SearchComponent extends HTMLElement {
 			bgContainer.style.backgroundImage = `url(${this.background})`;
 		}
 		if (resetVal) {
-			/*If you are uneasey with the JSON.parse here, 
-			/ we can either go with strings all the way or make
-			/ a more robust from string to boolean converter
-			*/
 			this.showXButton = JSON.parse(resetVal.toLowerCase());
 			this.setResetVisibility(this.showXButton);
-			console.log('Initialized this.resetvalue', resetVal);
 		}
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'reset-value') {
-			console.log('reset-value changed', newValue);
 			this.showXButton = JSON.parse(newValue.toLowerCase());
 			this.setResetVisibility(this.showXButton);
 		}

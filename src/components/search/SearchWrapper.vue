@@ -91,7 +91,6 @@ export default defineComponent({
 		};
 
 		onBeforeMount(() => {
-			console.log('MOUNTING AGAIN');
 			window.addEventListener('component-error', handleError);
 			window.addEventListener('query-update', updateWrapper);
 			window.addEventListener('query-search', search);
