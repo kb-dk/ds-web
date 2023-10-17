@@ -4,7 +4,10 @@
 			<!-- TODO handle empty response scenario -->
 			<div v-if="recordData">
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
-					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecordType)" />
+					<BroadcastRecordMetadataView
+						:related-records="relatedRecords"
+						:record-data="(recordData as BroadcastRecordType)"
+					/>
 				</div>
 				<div v-else>
 					<GenericRecordMetadataView :record-data="(recordData as GenericRecordType)" />
@@ -27,6 +30,7 @@ import { AxiosError } from 'axios';
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -39,6 +43,7 @@ export default defineComponent({
 		const recordData = ref<BroadcastRecordType | GenericRecordType | null>(null);
 		const recordType = ref<string | null>(null);
 		const errorManager = inject('errorManager') as ErrorManagerType;
+		const relatedRecords = ref<Array<GenericSearchResultType>>([]);
 		const { t } = useI18n();
 
 		const getRecord = async (id: string) => {
@@ -49,19 +54,31 @@ export default defineComponent({
 			}
 		};
 
+		const getRelatedRecords = async (id: string) => {
+			try {
+				return await APIService.getRelatedRecords(`id:"${id}"&mlt.interestingTerms=list&rows=3`);
+			} catch (err) {
+				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
+			}
+		};
+
 		onMounted(async () => {
 			const route = useRoute();
 			const id = route.params.id;
 			//TODO handle array of ids if needed
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
+			const moreLikeThis = await getRelatedRecords(idStr);
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 			}
+			if (moreLikeThis) {
+				relatedRecords.value = moreLikeThis.data.response.docs;
+			}
 		});
 
-		return { recordData, recordType };
+		return { recordData, recordType, relatedRecords };
 	},
 });
 </script>
