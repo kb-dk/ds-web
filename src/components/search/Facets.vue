@@ -64,7 +64,7 @@ export default defineComponent({
 			() => this.facetResults,
 			(newFacets: FacetResultType, prevFacets: FacetResultType) => {
 				if (newFacets !== prevFacets) {
-					this.showFacets = false;
+					this.showFacets = true;
 					let sum = '';
 					Object.entries(prevFacets).forEach(([key, value]) => {
 						sum += value;
@@ -74,7 +74,7 @@ export default defineComponent({
 							this.currentFacets = newFacets;
 							this.lastUpdate = new Date().getTime();
 							//console.log(this.currentFacets);
-							this.showFacets = true;
+							this.showFacets = false;
 						},
 						sum.length <= 0 ? 0 : 600,
 					);
