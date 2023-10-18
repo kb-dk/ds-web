@@ -113,8 +113,8 @@ export default defineComponent({
 		padding: 25px;
 	}
 	.container {
-		padding-right: 12px;
-		padding-left: 12px;
+		/* padding-right: 12px;
+		padding-left: 12px; */
 		max-width: 990px;
 	}
 }
@@ -141,6 +141,7 @@ export default defineComponent({
 	.container {
 		padding-right: 0;
 		padding-left: 0;
+		width: 100%;
 	}
 }
 </style>
