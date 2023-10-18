@@ -56,7 +56,7 @@ export default defineComponent({
 
 		const getRelatedRecords = async (id: string) => {
 			try {
-				return await APIService.getRelatedRecords(`id:"${id}"&mlt.interestingTerms=list&rows=3`);
+				return await APIService.getRelatedRecords(id);
 			} catch (err) {
 				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
 			}
