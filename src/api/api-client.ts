@@ -39,6 +39,6 @@ export class APIServiceClient {
 
 	async getRelatedRecords(id: string): Promise<APIMoreLikeThisType> {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
-		return await this.httpClient.get(`mlt/?q=${id}`);
+		return await this.httpClient.get(encodeURI(`mlt/?q=${id}`));
 	}
 }

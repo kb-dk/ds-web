@@ -56,7 +56,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 				></kb-accordion>
 			</div>
 			<div
-				v-if="relatedRecords"
+				v-if="relatedRecords !== undefined && relatedRecords.length > 0"
 				class="related-content"
 			>
 				<h3>Relateret indhold</h3>
