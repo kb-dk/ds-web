@@ -71,9 +71,9 @@ export default defineComponent({
 
 @media (min-width: 640px) {
 	.kaltura-player {
-		margin-left: -36px;
+		margin-left: -37px;
 		width: 100vw;
-		max-width: calc(100% + 36px * 2);
+		max-width: calc(100% + 376px * 2);
 	}
 }
 
