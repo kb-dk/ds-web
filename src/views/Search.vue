@@ -1,7 +1,10 @@
 <template>
 	<div class="search-box">
-		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
-			<SearchBar></SearchBar>
+		<div
+			ref="searchContainer"
+			class="search-container"
+		>
+			<SearchBarWrapper></SearchBarWrapper>
 		</div>
 		<div class="container">
 			<div class="row">
@@ -41,6 +44,7 @@
 							fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 							mollit anim id est laborum.
 						</p>
+						<router-link to="/about">read more</router-link>
 					</div>
 				</div>
 				<div class="container">
@@ -70,34 +74,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBar from '@/components/search/SearchWrapper.vue';
+import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
+import gsap from 'gsap';
+
 export default defineComponent({
 	name: 'Search',
 	components: {
 		HitCount,
 		SearchResults,
-		SearchBar,
+		SearchBarWrapper,
 		Facets,
 		GridDisplay,
 	},
 
 	setup() {
+		const searchContainer = ref<HTMLElement | null>(null);
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
+		return { searchResultStore, searchContainer };
 	},
-	onMounted() {
+	mounted() {
 		this.searchResultStore.resetFilters();
+		if (this.$route.query.q !== undefined) {
+			gsap.set(this.searchContainer, {
+				height: '300px',
+			});
+		}
 	},
 	created() {
 		if (this.$route.query.q !== undefined) {
 			this.searchResultStore.getSearchResults(this.$route.query.q as string);
 		}
+		this.$watch(
+			() => this.searchResultStore.searchResult.length,
+			(newn: number, prevn: number) => {
+				if (newn > 0) {
+					gsap.to(this.searchContainer, { height: '300px', duration: '0.4' });
+				} else {
+					gsap.to(this.searchContainer, { height: '500px', duration: '0.4' });
+				}
+			},
+		);
+
 		// Watch the 'term' param and update search results if it changes
 		this.$watch(
 			() => this.$route.query.q,
@@ -161,7 +184,6 @@ h3 {
 	width: 100vw;
 	max-width: 100%;
 	height: 500px;
-	transition: height 0.5s ease-in-out 0s;
 }
 
 .search-container.big {

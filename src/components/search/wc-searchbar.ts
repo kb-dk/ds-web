@@ -24,6 +24,13 @@ class SearchComponent extends HTMLElement {
 					this.dispatchSearch(e);
 			  })
 			: null;
+		window.addEventListener('reset-input', (e) => this.resetInput(searchQuery ? searchQuery : undefined));
+	}
+
+	private resetInput(input?: HTMLInputElement) {
+		if (input) {
+			input.value = '';
+		}
 	}
 
 	private updateSearchQuery(searchQuery: HTMLInputElement) {

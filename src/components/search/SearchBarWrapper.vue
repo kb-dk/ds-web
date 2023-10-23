@@ -1,5 +1,8 @@
 <template>
-	<kb-searchbar :background="backgroundImage"></kb-searchbar>
+	<kb-searchbar
+		:q="'test'"
+		:background="backgroundImage"
+	></kb-searchbar>
 </template>
 
 <script lang="ts">
@@ -11,7 +14,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import '@/components/search/wc-searchbar';
 
 export default defineComponent({
-	name: 'SearchBar',
+	name: 'SearchBarWrapper',
 	setup() {
 		const searchQuery = ref('');
 		const { t } = useI18n();
