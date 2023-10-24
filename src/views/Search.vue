@@ -14,13 +14,20 @@
 						:no-hits="searchResultStore.noHits"
 						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
 					/>
+					<button @click="toggleFacets()">
+						<span class="material-icons">tune</span>
+						Vis filter
+					</button>
 				</div>
 			</div>
 		</div>
 		<div class="container">
 			<div class="row">
 				<div class="search-resultset">
-					<div class="search-facets">
+					<div
+						v-if="showFacets"
+						class="search-facets"
+					>
 						<Facets :facet-results="searchResultStore.facetResult" />
 					</div>
 					<div class="search-results">
@@ -86,6 +93,9 @@ export default defineComponent({
 		Facets,
 		GridDisplay,
 	},
+	data: () => ({
+		showFacets: true,
+	}),
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
@@ -107,6 +117,11 @@ export default defineComponent({
 				}
 			},
 		);
+	},
+	methods: {
+		toggleFacets() {
+			this.showFacets = !this.showFacets;
+		},
 	},
 });
 </script>
