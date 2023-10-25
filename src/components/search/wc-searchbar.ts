@@ -1,6 +1,5 @@
 class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	backgroundImgUrl: string | undefined;
 	showXButton: boolean;
 
 	constructor() {
