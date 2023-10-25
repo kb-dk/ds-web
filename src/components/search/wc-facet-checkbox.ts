@@ -86,9 +86,6 @@ class checkboxComponent extends HTMLElement {
 			if (newValue === 'false') {
 				this.style.opacity = '0';
 				this.style.transform = 'translateY(-20px)';
-			} else {
-				/* this.style.opacity = '0';
-				this.style.transform = 'translateY(-20px)'; */
 			}
 		}
 	}

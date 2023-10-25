@@ -1,7 +1,7 @@
 <template>
 	<kb-searchbar
 		:reset-value="xReset"
-		:background="backgroundImage"
+		:background-img-url="backgroundImage"
 	></kb-searchbar>
 </template>
 
@@ -36,12 +36,8 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchResultStore, (newValue, oldValue) => {
-			if (
-				searchQuery.value.length !== 0 ||
-				newValue.searchResult.length !== 0 ||
-				searchResultStore.searchFired === true
-			) {
+		watch(searchResultStore.searchResult, (newValue, oldValue) => {
+			if (searchQuery.value.length !== 0 || newValue.length !== 0 || searchResultStore.searchFired) {
 				xReset.value = true;
 			} else {
 				xReset.value = false;

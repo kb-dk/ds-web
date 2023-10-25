@@ -1,6 +1,6 @@
-class SearchComponent extends HTMLElement {
+class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	background: string | undefined;
+	backgroundImgUrl: string | undefined;
 	showXButton: boolean;
 
 	constructor() {
@@ -40,10 +40,11 @@ class SearchComponent extends HTMLElement {
 
 	connectedCallback() {
 		const resetVal = this.getAttribute('reset-value');
+		const backgroundImage = this.getAttribute('background-img-url');
 
 		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
-		if (bgContainer && this.background) {
-			bgContainer.style.backgroundImage = `url(${this.background})`;
+		if (bgContainer && backgroundImage) {
+			bgContainer.style.backgroundImage = `url(${backgroundImage})`;
 		}
 		if (resetVal) {
 			this.showXButton = JSON.parse(resetVal.toLowerCase());
@@ -451,4 +452,4 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 	</style>`;
 
-customElements.define('kb-searchbar', SearchComponent);
+customElements.define('kb-searchbar', SearchBarComponent);
