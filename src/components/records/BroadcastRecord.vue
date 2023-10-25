@@ -56,7 +56,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 				></kb-accordion>
 			</div>
 			<div
-				v-if="relatedRecords !== undefined && relatedRecords.length > 0"
+				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
 				class="related-content"
 			>
 				<h3>Relateret indhold</h3>
@@ -64,9 +64,10 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
-					:spots="relatedRecords"
+					:spots="moreLikeThisRecords"
 				></GridDisplay>
 			</div>
+			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
@@ -105,7 +106,7 @@ export default defineComponent({
 			type: Object as PropType<BroadcastRecordType>,
 			required: true,
 		},
-		relatedRecords: {
+		moreLikeThisRecords: {
 			type: Array as PropType<GenericSearchResultType[]>,
 			required: false,
 		},

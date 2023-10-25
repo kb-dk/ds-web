@@ -19,7 +19,7 @@ export interface APIRecordResponseType {
 	data: GenericRecordType | BroadcastRecordType;
 }
 
-export interface APIMoreLikeThisType {
+export interface APIMoreLikeThisResponseType {
 	data: {
 		interestingTerms: string[];
 		match: {
