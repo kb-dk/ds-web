@@ -62,11 +62,9 @@ export default defineComponent({
 			e.preventDefault();
 			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
 			LocalStorageWrapper.set('locale', locale.value);
-			router.push({
-				query: {
-					locale: currentLocale.value,
-				},
-			});
+			const routeQueries = { ...route.query };
+			routeQueries.locale = currentLocale.value;
+			router.replace({ query: routeQueries });
 		};
 
 		const getImgServerSrcURL = () => {
