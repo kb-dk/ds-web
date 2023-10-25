@@ -5,7 +5,7 @@
 			<div v-if="recordData">
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 					<BroadcastRecordMetadataView
-						:related-records="relatedRecords"
+						:more-like-this-records="moreLikeThisRecords"
 						:record-data="(recordData as BroadcastRecordType)"
 					/>
 				</div>
@@ -43,7 +43,7 @@ export default defineComponent({
 		const recordData = ref<BroadcastRecordType | GenericRecordType | null>(null);
 		const recordType = ref<string | null>(null);
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		const relatedRecords = ref<Array<GenericSearchResultType>>([]);
+		const moreLikeThisRecords = ref<Array<GenericSearchResultType>>([]);
 		const { t } = useI18n();
 
 		const getRecord = async (id: string) => {
@@ -54,9 +54,9 @@ export default defineComponent({
 			}
 		};
 
-		const getRelatedRecords = async (id: string) => {
+		const getMoreLikeThisRecords = async (id: string) => {
 			try {
-				return await APIService.getRelatedRecords(id);
+				return await APIService.getMoreLikeThisRecords(id);
 			} catch (err) {
 				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
 			}
@@ -68,17 +68,17 @@ export default defineComponent({
 			//TODO handle array of ids if needed
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
-			const moreLikeThis = await getRelatedRecords(idStr);
+			const moreLikeThis = await getMoreLikeThisRecords(idStr);
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 			}
 			if (moreLikeThis) {
-				relatedRecords.value = moreLikeThis.data.response.docs;
+				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
 			}
 		});
 
-		return { recordData, recordType, relatedRecords };
+		return { recordData, recordType, moreLikeThisRecords };
 	},
 });
 </script>
