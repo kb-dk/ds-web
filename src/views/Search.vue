@@ -96,8 +96,19 @@ export default defineComponent({
 	},
 	created() {
 		if (this.$route.query.q !== undefined) {
+			const routeFacetQueries = this.$route.query.fq;
+			if (routeFacetQueries) {
+				if (Array.isArray(routeFacetQueries)) {
+					routeFacetQueries.forEach((facet) => {
+						this.searchResultStore.addFilter(this.getFacetQueryFromFacetURLParam(facet as string));
+					});
+				} else {
+					this.searchResultStore.addFilter(this.getFacetQueryFromFacetURLParam(routeFacetQueries as string));
+				}
+			}
 			this.searchResultStore.getSearchResults(this.$route.query.q as string);
 		}
+
 		// Watch the 'term' param and update search results if it changes
 		this.$watch(
 			() => this.$route.query.q,
@@ -107,6 +118,13 @@ export default defineComponent({
 				}
 			},
 		);
+	},
+	methods: {
+		getFacetQueryFromFacetURLParam(facetUrlParam: string) {
+			const decodedFacetParam = decodeURIComponent(facetUrlParam);
+			const [facetKey, facetValue] = decodedFacetParam.split(':');
+			return `fq=${facetKey}:${facetValue}`;
+		},
 	},
 });
 </script>

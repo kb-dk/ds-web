@@ -23,6 +23,7 @@ class checkboxComponent extends HTMLElement {
 						new CustomEvent('filter-update', {
 							detail: {
 								filter: `fq=${this.key}:"${this.sendValue}"`,
+								rawFilter: `${this.key}:"${this.sendValue}"`,
 								add: e.target !== null ? elem.checked : null,
 							},
 						}),
