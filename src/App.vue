@@ -93,8 +93,10 @@ export default defineComponent({
 		getImgServerSrcURL() {
 			return require('@/assets/images/crown.png');
 		},
-		onBeforeLeave(swipe: string) {
-			if (swipe !== 'swipe') return;
+		onBeforeLeave(transitionName: string) {
+			if (transitionName !== 'swipe') {
+				return;
+			}
 			console.log('ON BEFORE LEAVE');
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.set(elem, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
@@ -116,9 +118,10 @@ export default defineComponent({
 				},
 			});
 		},
-		onBeforeEnter(swipe: string) {
-			if (swipe !== 'swipe') return;
-			if (!this.leaveDone) return;
+		onBeforeEnter(transitionName: string) {
+			if (transitionName !== 'swipe' || !this.leaveDone) {
+				return;
+			}
 			const elem = this.$refs.wipe as HTMLElement;
 			gsap.to(elem, {
 				//opacity: 0,

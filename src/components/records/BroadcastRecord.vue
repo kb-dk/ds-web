@@ -98,12 +98,6 @@ export default defineComponent({
 	name: 'BroadcastRecord',
 	data() {
 		return {
-			isDown: false,
-			startX: 0,
-			scrollLeft: 0 as number,
-			slidingElement: null as null | HTMLElement,
-			linkItems: null as null | NodeList,
-			move: false,
 			lastPath: null as null | string,
 		};
 	},

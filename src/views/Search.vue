@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
@@ -82,6 +82,7 @@ import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
 	name: 'Search',
@@ -96,40 +97,43 @@ export default defineComponent({
 	setup() {
 		const searchContainer = ref<HTMLElement | null>(null);
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore, searchContainer };
-	},
-	mounted() {
-		this.searchResultStore.resetFilters();
-		if (this.$route.query.q !== undefined) {
-			gsap.set(this.searchContainer, {
-				height: '300px',
-			});
+		const router = useRouter();
+
+		onMounted(() => {
+			searchResultStore.resetFilters();
+			if (router.currentRoute.value.query.q !== undefined) {
+				gsap.set(searchContainer, {
+					height: '300px',
+				});
+			}
+		});
+
+		if (router.currentRoute.value.query.q !== undefined) {
+			searchResultStore.getSearchResults(router.currentRoute.value.query.q as string);
 		}
-	},
-	created() {
-		if (this.$route.query.q !== undefined) {
-			this.searchResultStore.getSearchResults(this.$route.query.q as string);
-		}
-		this.$watch(
-			() => this.searchResultStore.searchResult.length,
+
+		watch(
+			() => searchResultStore.searchResult.length,
 			(newn: number, prevn: number) => {
 				if (newn > 0) {
-					gsap.to(this.searchContainer, { height: '300px', duration: '0.4' });
+					gsap.to(searchContainer, { height: '300px', duration: '0.4' });
 				} else {
-					gsap.to(this.searchContainer, { height: '500px', duration: '0.4' });
+					gsap.to(searchContainer, { height: '500px', duration: '0.4' });
 				}
 			},
 		);
 
 		// Watch the 'term' param and update search results if it changes
-		this.$watch(
-			() => this.$route.query.q,
+		watch(
+			() => router.currentRoute.value.query.q as string,
 			(newq: string, prevq: string) => {
 				if (newq !== prevq) {
-					this.searchResultStore.getSearchResults(newq);
+					searchResultStore.getSearchResults(newq);
 				}
 			},
 		);
+
+		return { searchResultStore, searchContainer };
 	},
 });
 </script>

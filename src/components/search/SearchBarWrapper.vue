@@ -1,8 +1,5 @@
 <template>
-	<kb-searchbar
-		:q="'test'"
-		:background="backgroundImage"
-	></kb-searchbar>
+	<kb-searchbar :background="backgroundImage"></kb-searchbar>
 </template>
 
 <script lang="ts">
