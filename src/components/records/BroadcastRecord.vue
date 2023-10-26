@@ -71,20 +71,26 @@
 Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
 				></kb-accordion>
 			</div>
-			<div class="related-content">
+			<div
+				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
+				class="related-content"
+			>
 				<h3>Relateret indhold</h3>
 				<GridDisplay
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
+					:spots="moreLikeThisRecords"
 				></GridDisplay>
 			</div>
+			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
@@ -110,6 +116,10 @@ export default defineComponent({
 		recordData: {
 			type: Object as PropType<BroadcastRecordType>,
 			required: true,
+		},
+		moreLikeThisRecords: {
+			type: Array as PropType<GenericSearchResultType[]>,
+			required: false,
 		},
 	},
 	created() {

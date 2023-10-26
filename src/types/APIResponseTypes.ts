@@ -18,3 +18,21 @@ export interface APISearchResponseType {
 export interface APIRecordResponseType {
 	data: GenericRecordType | BroadcastRecordType;
 }
+
+export interface APIMoreLikeThisResponseType {
+	data: {
+		interestingTerms: string[];
+		match: {
+			docs: Array<GenericSearchResultType>;
+			numFound: number;
+			numFoundExact: number;
+		};
+		response: {
+			docs: Array<GenericSearchResultType>;
+		};
+		responseHeader: {
+			QTime: number;
+			status: number;
+		};
+	};
+}
