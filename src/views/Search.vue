@@ -105,7 +105,7 @@ export default defineComponent({
 		onMounted(() => {
 			searchResultStore.resetFilters();
 			if (router.currentRoute.value.query.q !== undefined) {
-				gsap.set(searchContainer, {
+				gsap.set(searchContainer.value, {
 					height: '300px',
 				});
 			}
@@ -119,9 +119,9 @@ export default defineComponent({
 			() => searchResultStore.searchResult.length,
 			(newn: number, prevn: number) => {
 				if (newn > 0) {
-					gsap.to(searchContainer, { height: '300px', duration: '0.4' });
+					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
 				} else {
-					gsap.to(searchContainer, { height: '500px', duration: '0.4' });
+					gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
 				}
 			},
 		);
