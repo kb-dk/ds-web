@@ -2,7 +2,7 @@
 	<div class="app">
 		<Notifier></Notifier>
 		<Spinner></Spinner>
-		<kb-menu :locale="locale"></kb-menu>
+		<kb-menu :locale="currentLocale"></kb-menu>
 		<div
 			class="wipe"
 			ref="wipe"
@@ -25,11 +25,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter, useRoute } from 'vue-router';
 import gsap from 'gsap';
-import { defineComponent } from 'vue';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
-
+import { LocalStorageWrapper } from './utils/local-storage-wrapper';
 import '@/components/global/nav/wc-header-menu';
 
 export default defineComponent({
@@ -38,83 +40,114 @@ export default defineComponent({
 		Notifier,
 		Spinner,
 	},
-	data() {
-		return {
-			td: 0.35,
-			leaveDone: false,
-			locale: 'da',
-		};
-	},
-	created: function () {
-		//Remember to check for init locale once we now where to get it from
-		window.addEventListener('locale-switch', this.switchLocale);
-		window.addEventListener('change-path', this.gotoPath);
-	},
-	beforeUnmount() {
-		window.removeEventListener('locale-switch', this.switchLocale);
-		window.removeEventListener('change-path', this.gotoPath);
-	},
-	methods: {
-		gotoPath(e: Event) {
-			e.preventDefault();
-			this.changePath(e as CustomEvent);
-			//console.log(this, e);
-		},
-		changePath(e: CustomEvent) {
-			this.$router.push({ path: e.detail.path });
-		},
-		switchLocale(e: Event) {
-			e.preventDefault();
-			this.$i18n.locale = this.locale = this.$i18n.locale === 'da' ? 'en' : 'da';
-		},
+	setup() {
+		const td = ref(0.35);
+		let leaveDone = false;
+		let currentLocale = ref('da');
+		const wipe = ref<HTMLElement | null>(null);
+		const router = useRouter();
+		const route = useRoute();
+		const { locale } = useI18n({ useScope: 'global' });
 
-		getImgServerSrcURL() {
+		const gotoPath = (e: Event) => {
+			e.preventDefault();
+			changePath(e as CustomEvent);
+		};
+
+		const changePath = (e: CustomEvent) => {
+			router.push({ path: e.detail.path });
+		};
+
+		const switchLocale = (e: Event) => {
+			e.preventDefault();
+			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
+			LocalStorageWrapper.set('locale', locale.value);
+			const routeQueries = { ...route.query };
+			routeQueries.locale = currentLocale.value;
+			router.replace({ query: routeQueries });
+		};
+
+		const getImgServerSrcURL = () => {
 			return require('@/assets/images/crown.png');
-		},
-		onBeforeLeave() {
-			console.log('ON BEFORE LEAVE');
-			const elem = this.$refs.wipe as HTMLElement;
-			gsap.set(elem, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
-			gsap.to(elem, {
-				//transform: 'translateX(0%)',
+		};
+
+		const onBeforeLeave = () => {
+			gsap.set(wipe.value, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
+			gsap.to(wipe.value, {
 				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
-				duration: this.td / 2,
+				duration: td.value / 2,
 				ease: 'linear',
 				overwrite: true,
 				onComplete: () => {
-					gsap.to(elem, {
-						//transform: 'translateX(0%)',
+					gsap.to(wipe.value, {
 						clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,100% 100%,100% 100%)',
-						duration: this.td / 2,
+						duration: td.value / 2,
 						ease: 'linear',
 						overwrite: true,
 					});
-					this.leaveDone = true;
+					leaveDone = true;
 				},
 			});
-		},
-		onBeforeEnter() {
-			if (!this.leaveDone) return;
-			const elem = this.$refs.wipe as HTMLElement;
-			gsap.to(elem, {
-				//opacity: 0,
-				duration: this.td / 2,
+		};
+
+		const onBeforeEnter = () => {
+			if (!leaveDone) return;
+			gsap.to(wipe.value, {
+				duration: td.value / 2,
 				overwrite: true,
 				clipPath: 'polygon(100% 0%,100% 0%,0% 100%,0% 100%,100% 100%,100% 100%)',
-				//transform: 'translateX(100%)',
 				ease: 'linear',
 				onComplete: () => {
-					gsap.to(elem, {
-						//transform: 'translateX(0%)',
+					gsap.to(wipe.value, {
 						clipPath: 'polygon(100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%)',
-						duration: this.td / 2,
+						duration: td.value / 2,
 						ease: 'linear',
 						overwrite: true,
 					});
-					this.leaveDone = false;
+					leaveDone = false;
 				},
 			});
-		},
+		};
+
+		onMounted(async () => {
+			await router.isReady();
+			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
+			if (hasLocaleParam) {
+				const localeFromURL = route.query.locale;
+				// Just a safeguard aginst somebody trying to inject an unknown query
+				currentLocale.value = localeFromURL === 'da' || localeFromURL === 'en' ? localeFromURL : 'da';
+				return;
+			}
+
+			const storedLocale = LocalStorageWrapper.get('locale') as string;
+			if (storedLocale) {
+				locale.value = storedLocale;
+				currentLocale.value = storedLocale;
+				return;
+			}
+			currentLocale.value = 'da';
+		});
+
+		onBeforeMount(() => {
+			//Remember to check for init locale once we now where to get it from
+			window.addEventListener('locale-switch', switchLocale);
+			window.addEventListener('change-path', gotoPath);
+		});
+
+		onBeforeUnmount(() => {
+			window.removeEventListener('locale-switch', switchLocale);
+			window.removeEventListener('change-path', gotoPath);
+		});
+
+		return {
+			td,
+			leaveDone,
+			currentLocale,
+			wipe,
+			getImgServerSrcURL,
+			onBeforeEnter,
+			onBeforeLeave,
+		};
 	},
 });
 </script>
