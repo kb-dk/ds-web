@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch } from 'vue';
+import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch, onMounted, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -36,11 +36,22 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchResultStore.searchResult, (newValue, oldValue) => {
-			if (searchQuery.value.length !== 0 || newValue.length !== 0 || searchResultStore.searchFired) {
+		watch(searchResultStore, (newValue, oldValue) => {
+			if (
+				searchQuery.value.length !== 0 ||
+				searchResultStore.searchResult.length !== 0 ||
+				searchResultStore.searchFired
+			) {
 				xReset.value = true;
 			} else {
 				xReset.value = false;
+			}
+		});
+
+		onMounted(() => {
+			console.log(searchResultStore.searchFired);
+			if (searchResultStore.searchFired) {
+				xReset.value = true;
 			}
 		});
 
