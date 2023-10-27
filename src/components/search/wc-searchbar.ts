@@ -1,21 +1,19 @@
 class SearchComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	query: string;
 	background: string | undefined;
 
 	constructor() {
 		super();
-		this.query = '';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
-		const searchQuery: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
-		if (searchQuery) {
+		const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
+		if (searchQueryInputField) {
 			if (location.search) {
-				this.updateSearchQuery(searchQuery);
+				this.updateSearchQuery(searchQueryInputField);
 			}
-			searchQuery.addEventListener('input', () => {
-				this.dispatchUpdate(searchQuery.value);
+			searchQueryInputField.addEventListener('input', () => {
+				this.dispatchUpdate(searchQueryInputField.value);
 			});
 		}
 		const searchButton: HTMLButtonElement | null = this.shadow.querySelector('#searchButton');
@@ -24,6 +22,15 @@ class SearchComponent extends HTMLElement {
 					this.dispatchSearch(e);
 			  })
 			: null;
+		window.addEventListener('reset-input', (e) =>
+			this.resetInput(searchQueryInputField ? searchQueryInputField : undefined),
+		);
+	}
+
+	private resetInput(input?: HTMLInputElement) {
+		if (input) {
+			input.value = '';
+		}
 	}
 
 	private updateSearchQuery(searchQuery: HTMLInputElement) {
@@ -56,20 +63,10 @@ class SearchComponent extends HTMLElement {
 		}
 	}
 
-	static get observedAttributes() {
-		return ['q'];
-	}
-
 	connectedCallback() {
 		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
 		if (bgContainer && this.background) {
 			bgContainer.style.backgroundImage = `url(${this.background})`;
-		}
-	}
-
-	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === 'q') {
-			this.query = newValue;
 		}
 	}
 

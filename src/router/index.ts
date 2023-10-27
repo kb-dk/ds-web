@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
 import Search from '../views/Search.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -16,11 +15,6 @@ const routes: Array<RouteRecordRaw> = [
 		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
 	},
-	//{
-	//	path: '/search',
-	//	name: 'Search',
-	//	component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue'),
-	//},
 	{
 		path: '/record/:id',
 		name: 'Record',
