@@ -11,6 +11,7 @@ import i18n from './i18n';
 import { createPinia } from 'pinia';
 
 const pinia = createPinia();
+
 const app = createApp(App).use(router).use(pinia).use(i18n);
 
 //Attach to error manager globally

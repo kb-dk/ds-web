@@ -2,11 +2,11 @@
 	<div class="grid-display">
 		<div :class="draggable ? 'record-grid draggable row-' + rowNr : 'record-grid row-' + rowNr">
 			<div
-				:key="item"
-				v-for="item in spotNr"
+				v-for="(item, i) in spots"
+				:key="i"
 				:class="draggable ? 'related-record draggable-item' : 'related-record'"
 			>
-				<kb-spotcomponent :title="item + ' test yay'"></kb-spotcomponent>
+				<kb-spotcomponent :data="item"></kb-spotcomponent>
 			</div>
 		</div>
 	</div>
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { SpotType } from '@/types/SpotType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/common/wc-spot-item';
 
@@ -34,8 +34,7 @@ export default defineComponent({
 
 	props: {
 		rowNr: { type: Number, required: true },
-		//Not really usable yet - but this is where data will come!
-		spots: { type: Object as PropType<SpotType[]>, required: false },
+		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		spotNr: { type: Number, required: true },
 		draggable: { type: Boolean, required: false },
 	},

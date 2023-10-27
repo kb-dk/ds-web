@@ -8,13 +8,13 @@ class SearchBarComponent extends HTMLElement {
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
-		const searchQuery: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
-		if (searchQuery) {
+		const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
+		if (searchQueryInputField) {
 			if (location.search) {
-				this.updateSearchQuery(searchQuery);
+				this.updateSearchQuery(searchQueryInputField);
 			}
-			searchQuery.addEventListener('input', () => {
-				this.dispatchUpdate(searchQuery.value);
+			searchQueryInputField.addEventListener('input', () => {
+				this.dispatchUpdate(searchQueryInputField.value);
 			});
 		}
 		const searchButton: HTMLButtonElement | null = this.shadow.querySelector('#searchButton');

@@ -1,11 +1,11 @@
 import { ImageComponentType } from '@/types/ImageComponentType';
-import { SpotType } from '@/types/SpotType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/common/wc-image-item';
 
 class SpotComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	data: SpotType | undefined;
+	data: GenericSearchResultType | undefined;
 
 	constructor() {
 		super();
@@ -29,9 +29,11 @@ class SpotComponent extends HTMLElement {
 
 	connectedCallback() {
 		//TODO: We're waiting for real data here
-		if (this.data || !this.data) {
-			const titleHolder = this.shadow.querySelector('.record-title');
-			titleHolder && (titleHolder.innerHTML = this.title);
+		if (this.data) {
+			if (this.data.title) {
+				const titleHolder = this.shadow.querySelector('.record-title');
+				titleHolder && (titleHolder.innerHTML = this.data.title);
+			}
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_arrow');
 		}
@@ -53,7 +55,7 @@ const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
                     <div><span class="material-icons">event</span><span>DR1, 7. september 1993</span></div>
                     <div><span class="material-icons">schedule</span>Varighed: <span>16min</span></div>
                 </div>
-                <h3 class="record-title"></h3>
+                <h3 class="record-title">Placeholder</h3>
                 <div class="record-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec accumsan arcu. 
                     Fusce fermentum lorem eget mi egestas facilisis. Etiam at malesuada turpis. 
                     Sed scelerisque at ex ut mattis. Nam et porttitor sapien. Donec consectetur libero lectus, 
