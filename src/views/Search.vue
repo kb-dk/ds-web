@@ -6,34 +6,50 @@
 		>
 			<SearchBarWrapper></SearchBarWrapper>
 		</div>
-		<div class="container">
-			<div class="row">
+		<Transition
+			name="fade"
+			mode="out-in"
+		>
+			<div
+				key="1"
+				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+			>
+				<div class="container">
+					<div class="row">
+						<div
+							v-if="searchResultStore.searchResult.length > 0"
+							class="hit-count"
+						>
+							<HitCount
+								:hit-count="searchResultStore.numFound"
+								:no-hits="searchResultStore.noHits"
+								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+							/>
+						</div>
+						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
+					</div>
+				</div>
 				<div
+					key="2"
 					v-if="searchResultStore.searchResult.length > 0"
-					class="hit-count"
+					class="container"
 				>
-					<HitCount
-						:hit-count="searchResultStore.numFound"
-						:no-hits="searchResultStore.noHits"
-						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-					/>
-				</div>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="search-resultset">
-					<div class="search-facets">
-						<Facets :facet-results="searchResultStore.facetResult" />
-					</div>
-					<div class="search-results">
-						<SearchResults :search-results="searchResultStore.searchResult" />
+					<div class="row">
+						<div class="search-resultset">
+							<div class="search-facets">
+								<Facets :facet-results="searchResultStore.facetResult" />
+							</div>
+							<div class="search-results">
+								<SearchResults :search-results="searchResultStore.searchResult" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<Transition name="fade">
-			<div v-if="searchResultStore.searchResult.length === 0">
+			<div
+				key="2"
+				v-else
+			>
 				<div class="container">
 					<div class="intro">
 						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
@@ -130,8 +146,11 @@ export default defineComponent({
 		watch(
 			() => router.currentRoute.value.query.q as string,
 			(newq: string, prevq: string) => {
-				if (newq !== prevq) {
+				if (newq !== prevq && newq !== undefined) {
 					searchResultStore.getSearchResults(newq);
+				}
+				if (newq === undefined) {
+					searchResultStore.resetSearch();
 				}
 			},
 		);
@@ -147,11 +166,11 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.5s;
+	transition: opacity 0.25s;
 }
 
 .fade-enter,
-.fade-leave-active {
+.fade-leave-to {
 	opacity: 0;
 }
 

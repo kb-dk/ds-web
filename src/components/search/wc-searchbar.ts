@@ -1,9 +1,10 @@
-class SearchComponent extends HTMLElement {
+class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
-	background: string | undefined;
+	showXButton: boolean;
 
 	constructor() {
 		super();
+		this.showXButton = false;
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -22,14 +23,38 @@ class SearchComponent extends HTMLElement {
 					this.dispatchSearch(e);
 			  })
 			: null;
-		window.addEventListener('reset-input', (e) =>
-			this.resetInput(searchQueryInputField ? searchQueryInputField : undefined),
-		);
+
+		const resetButton: HTMLButtonElement | null = this.shadow.querySelector('#resetButton');
+		resetButton
+			? resetButton.addEventListener('click', (e) => {
+					this.resetSearch(e);
+			  })
+			: null;
+		this.setResetVisibility(false);
 	}
 
-	private resetInput(input?: HTMLInputElement) {
-		if (input) {
-			input.value = '';
+	static get observedAttributes() {
+		return ['reset-value'];
+	}
+
+	connectedCallback() {
+		const resetVal = this.getAttribute('reset-value');
+		const backgroundImage = this.getAttribute('background-img-url');
+
+		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
+		if (bgContainer && backgroundImage) {
+			bgContainer.style.backgroundImage = `url(${backgroundImage})`;
+		}
+		if (resetVal) {
+			this.showXButton = JSON.parse(resetVal.toLowerCase());
+			this.setResetVisibility(this.showXButton);
+		}
+	}
+
+	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		if (name === 'reset-value') {
+			this.showXButton = JSON.parse(newValue.toLowerCase());
+			this.setResetVisibility(this.showXButton);
 		}
 	}
 
@@ -63,19 +88,34 @@ class SearchComponent extends HTMLElement {
 		}
 	}
 
-	connectedCallback() {
-		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
-		if (bgContainer && this.background) {
-			bgContainer.style.backgroundImage = `url(${this.background})`;
+	setResetVisibility(value: boolean) {
+		if (value) {
+			const reset = this.shadow.querySelector('#resetButton') as HTMLElement;
+			reset && (reset.style.display = 'inline-flex');
+		} else {
+			const reset = this.shadow.querySelector('#resetButton') as HTMLElement;
+			reset && (reset.style.display = 'none');
 		}
 	}
 
 	dispatchUpdate(query: string) {
+		//this.setResetVisibility(query.length !== 0);
 		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query } }));
 	}
 
 	dispatchSearch(e: Event) {
 		window.dispatchEvent(new Event('query-search'));
+		e.preventDefault();
+	}
+
+	resetSearch(e: Event) {
+		const input = this.shadow.querySelector('#focusSearchInput') as HTMLInputElement;
+		input && (input.value = '');
+
+		this.showXButton = false;
+		this.setResetVisibility(this.showXButton);
+
+		window.dispatchEvent(new Event('reset-search'));
 		e.preventDefault();
 	}
 }
@@ -92,10 +132,13 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
 								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
 							</div>
-							<button id="searchButton" type="submit" aria-label="" class="btn btn-primary btn-icon">
+							<button id="resetButton" type="button" aria-label="reset" class="btn btn-primary btn-icon">
+							<i class="material-icons" aria-hidden="true">close</i>
+						</button>
+							<button id="searchButton" type="submit" aria-label="search" class="btn btn-primary btn-icon">
 								<span class="d-none d-search-inline-flex">Søg</span>
 								<span class="d-inline-flex d-search-none">Søg her</span>
-								<i class="material-icons " aria-hidden="true">search</i>
+								<i class="material-icons" aria-hidden="true">search</i>
 							</button>
 						</div>
 					</form>
@@ -252,6 +295,18 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			border: none;
 		}
 
+		#resetButton {
+			position: absolute;
+			width: 40px;
+			right: 25px;
+			padding-left: 0px;
+			padding-top: 7px;
+			padding-bottom: 7px;
+			top: 5px;
+			background-color: transparent;
+			color: #002E70;
+		}
+
 		.btn-icon {
 			display: inline-flex;
 			align-items: center;
@@ -261,7 +316,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 
 		.btn-icon span {
-			margin-left: auto;<
+			margin-left: auto;
 		}
 		
 		.sr-only {
@@ -287,6 +342,9 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 		/* MEDIA QUERY 640 */
 		@media (min-width: 640px) {
+			#resetButton {
+				right: calc(50% + 10px);
+			}
 			.container {
 				max-width: 990px;
 			}
@@ -304,6 +362,15 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 		/* MEDIA QUERY 800 */
 		@media (min-width: 800px) {
+
+			#resetButton {
+				position:unset;
+				width:unset;
+				right:unset;
+				padding: 0 22px;
+				background: #fff;
+			}
+
 			.d-search-none {
     			display: none;
 			}
@@ -384,4 +451,4 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 	</style>`;
 
-customElements.define('kb-searchbar', SearchComponent);
+customElements.define('kb-searchbar', SearchBarComponent);

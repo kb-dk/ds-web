@@ -181,6 +181,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
 .from-record-to-search-enter-active,
 .from-record-to-search-leave-active {
 	position: absolute;
@@ -251,6 +260,7 @@ export default defineComponent({
 body {
 	margin: 0;
 	padding: 0;
+	overscroll-behavior: none;
 	overflow-x: hidden;
 }
 
