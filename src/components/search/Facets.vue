@@ -7,7 +7,7 @@
 		>
 			<div
 				class="checkbox"
-				v-for="(singleFacet, i2) in simplifyFacets(facet)"
+				v-for="(singleFacet, i2) in simplifyFacets(facet as string[])"
 				:key="i2 + 'facet' + lastUpdate"
 			>
 				<kb-checkboxcomponent
@@ -24,26 +24,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { FacetResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'Facets',
 	data: () => ({
-		showFacets: true,
-		currentFacets: new Array<string[]>(),
+		showFacets: false,
+		currentFacets: Object as unknown as FacetResultType,
 		lastUpdate: 0,
 	}),
 
 	props: {
-		facetResults: { required: true },
+		facetResults: { type: Object as PropType<FacetResultType>, required: true },
 	},
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore };
+	},
+
+	mounted() {
+		this.currentFacets = this.facetResults;
+		this.showFacets = true;
 	},
 
 	created() {
@@ -53,12 +59,11 @@ export default defineComponent({
 			event.preventDefault();
 		});
 
-		this.showFacets = false;
 		this.$watch(
 			() => this.facetResults,
-			(newFacets: Array<string[]>, prevFacets: Array<string[]>) => {
+			(newFacets: FacetResultType, prevFacets: FacetResultType) => {
 				if (newFacets !== prevFacets) {
-					this.showFacets = true;
+					this.showFacets = false;
 					let sum = '';
 					Object.entries(prevFacets).forEach(([key, value]) => {
 						sum += value;
@@ -67,7 +72,7 @@ export default defineComponent({
 						() => {
 							this.currentFacets = newFacets;
 							this.lastUpdate = new Date().getTime();
-							this.showFacets = false;
+							this.showFacets = true;
 						},
 						sum.length <= 0 ? 0 : 600,
 					);
