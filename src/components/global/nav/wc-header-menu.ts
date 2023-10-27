@@ -25,6 +25,24 @@ class MenuComponent extends HTMLElement {
 		return ['locale'];
 	}
 
+	connectedCallback() {
+		const vueRouting = this.getAttribute('vueRouting');
+		const logo = this.shadow.querySelector('.rdl-logo');
+		if (logo && vueRouting === 'true') {
+			logo.addEventListener('click', (event) => {
+				if (vueRouting) {
+					event.preventDefault();
+					window.dispatchEvent(
+						new CustomEvent('change-path', {
+							detail: { name: 'Home', query: { q: '' }, logo: true },
+						}),
+					);
+					window.dispatchEvent(new Event('reset-input'));
+				}
+			});
+		}
+	}
+
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'locale') {
 			this.lang = newValue;
@@ -220,6 +238,8 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 
 	.overall-header {
+		position:relative;
+		z-index:2;
 		margin-bottom:50px;
 	}
 

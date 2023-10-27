@@ -2,7 +2,10 @@
 	<div class="app">
 		<Notifier></Notifier>
 		<Spinner></Spinner>
-		<kb-menu :locale="currentLocale"></kb-menu>
+		<kb-menu
+			:vueRouting="true"
+			:locale="currentLocale"
+		></kb-menu>
 		<div
 			class="wipe"
 			ref="wipe"
@@ -13,9 +16,10 @@
 	<div class="content">
 		<router-view v-slot="{ Component }">
 			<transition
-				:duration="{ enter: td * 1000, leave: td * 1000 }"
-				@before-leave="onBeforeLeave"
-				@before-enter="onBeforeEnter"
+				:name="transitionName || 'fade'"
+				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				@before-leave="onBeforeLeave(transitionName)"
+				@before-enter="onBeforeEnter(transitionName)"
 				mode="out-in"
 			>
 				<component :is="Component" />
@@ -41,9 +45,10 @@ export default defineComponent({
 		Spinner,
 	},
 	setup() {
-		const td = ref(0.35);
+		const td = ref(0.4);
 		let leaveDone = false;
 		let currentLocale = ref('da');
+		const transitionName = ref('fade');
 		const wipe = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const route = useRoute();
@@ -55,7 +60,11 @@ export default defineComponent({
 		};
 
 		const changePath = (e: CustomEvent) => {
-			router.push({ path: e.detail.path });
+			if (e.detail.name) {
+				router.push({ name: e.detail.name, params: { logo: e.detail.logo } });
+			} else {
+				router.push({ path: e.detail.path });
+			}
 		};
 
 		const switchLocale = (e: Event) => {
@@ -71,7 +80,10 @@ export default defineComponent({
 			return require('@/assets/images/crown.png');
 		};
 
-		const onBeforeLeave = () => {
+		const onBeforeLeave = (transitionName: string) => {
+			if (transitionName !== 'swipe') {
+				return;
+			}
 			gsap.set(wipe.value, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
 			gsap.to(wipe.value, {
 				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
@@ -90,8 +102,10 @@ export default defineComponent({
 			});
 		};
 
-		const onBeforeEnter = () => {
-			if (!leaveDone) return;
+		const onBeforeEnter = (transitionName: string) => {
+			if (transitionName !== 'swipe' || !leaveDone) {
+				return;
+			}
 			gsap.to(wipe.value, {
 				duration: td.value / 2,
 				overwrite: true,
@@ -108,6 +122,19 @@ export default defineComponent({
 				},
 			});
 		};
+
+		router.beforeEach((to, from) => {
+			if (from.name === 'Home' && to.name === 'Record') {
+				transitionName.value = 'from-search-to-record';
+			} else if (from.name === 'Record' && to.name === 'Home') {
+				transitionName.value = 'from-record-to-search';
+			} else if (to.params.logo === 'true') {
+				transitionName.value = 'swipe';
+			} else {
+				transitionName.value = 'swipe';
+			}
+			console.log(transitionName.value, ' IT IS');
+		});
 
 		onMounted(async () => {
 			await router.isReady();
@@ -144,6 +171,7 @@ export default defineComponent({
 			leaveDone,
 			currentLocale,
 			wipe,
+			transitionName,
 			getImgServerSrcURL,
 			onBeforeEnter,
 			onBeforeLeave,
@@ -153,6 +181,66 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.from-record-to-search-enter-active,
+.from-record-to-search-leave-active {
+	position: absolute;
+	transition: all 0.25s linear;
+}
+
+.from-record-to-search-enter-from {
+	//transform: scale(0.9);
+	margin-top: -50px;
+	opacity: 0;
+}
+
+.from-record-to-search-enter-to {
+	//transform: scale(1);
+	margin-top: 0px;
+	opacity: 1;
+}
+
+.from-record-to-search-leave-from {
+	//transform: scale(1);
+	top: 0px;
+	opacity: 1;
+}
+
+.from-record-to-search-leave-to {
+	//transform: scale(0.9);
+	margin-top: 50px;
+	opacity: 0;
+}
+
+.from-search-to-record-enter-active,
+.from-search-to-record-leave-active {
+	position: absolute;
+	transition: all 0.25s linear;
+}
+
+.from-search-to-record-enter-from {
+	//transform: scale(0.9);
+	margin-top: 50px;
+	opacity: 0;
+}
+
+.from-search-to-record-enter-to {
+	//transform: scale(1);
+	margin-top: 0px;
+	opacity: 1;
+}
+
+.from-search-to-record-leave-from {
+	//transform: scale(1);
+	top: 0px;
+	opacity: 1;
+}
+
+.from-search-to-record-leave-to {
+	//transform: scale(0.9);
+	margin-top: -50px;
+	opacity: 0;
+}
+
 /* This probably shouldn't be here. We need a place for global styles at some point i guess */
 @font-face {
 	font-family: 'noway';
@@ -163,6 +251,7 @@ export default defineComponent({
 body {
 	margin: 0;
 	padding: 0;
+	overflow-x: hidden;
 }
 
 .wipe {

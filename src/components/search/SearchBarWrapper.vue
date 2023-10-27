@@ -11,7 +11,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import '@/components/search/wc-searchbar';
 
 export default defineComponent({
-	name: 'SearchBar',
+	name: 'SearchBarWrapper',
 	setup() {
 		const searchQuery = ref('');
 		const { t } = useI18n();

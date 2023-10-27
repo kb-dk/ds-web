@@ -45,6 +45,22 @@
 				</button>
 			</div>
 		</div>
+		<div class="back-link">
+			<router-link
+				v-if="lastPath"
+				:to="lastPath"
+			>
+				<span class="material-icons">chevron_left</span>
+				Tilbage
+			</router-link>
+			<router-link
+				v-else
+				to="/"
+			>
+				<span class="material-icons">chevron_left</span>
+				Til forsiden
+			</router-link>
+		</div>
 		<div class="extra-record-data">
 			<div class="accordion">
 				<kb-accordion
@@ -88,12 +104,7 @@ export default defineComponent({
 	name: 'BroadcastRecord',
 	data() {
 		return {
-			isDown: false,
-			startX: 0,
-			scrollLeft: 0 as number,
-			slidingElement: null as null | HTMLElement,
-			linkItems: null as null | NodeList,
-			move: false,
+			lastPath: null as null | string,
 		};
 	},
 	components: {
@@ -110,6 +121,9 @@ export default defineComponent({
 			type: Array as PropType<GenericSearchResultType[]>,
 			required: false,
 		},
+	},
+	created() {
+		this.lastPath = this.$router.options.history.state.back as string;
 	},
 	methods: {
 		getCurrentUrl() {
@@ -151,6 +165,15 @@ temporary styling until patterns from design system are implemented
 :host {
 	margin-top: -1px;
 	position: relative;
+}
+
+.back-link {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.back-link a {
+	text-decoration: none;
 }
 
 .material-icons {
