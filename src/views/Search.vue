@@ -119,34 +119,31 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 
-		onMounted(() => {
-			searchResultStore.resetFilters();
-			if (router.currentRoute.value.query.q !== undefined) {
-				gsap.set(searchContainer.value, {
-					height: '300px',
-				});
-			}
-		});
-
 		const getFacetQueryFromFacetURLParam = (facetUrlParam: string) => {
 			const decodedFacetParam = decodeURIComponent(facetUrlParam);
 			const [facetKey, facetValue] = decodedFacetParam.split(':');
 			return `fq=${facetKey}:${facetValue}`;
 		};
 
-		if (route.query.q !== undefined) {
-			const routeFacetQueries = route.query.fq;
-			if (routeFacetQueries) {
-				if (Array.isArray(routeFacetQueries)) {
-					routeFacetQueries.forEach((facet) => {
-						searchResultStore.addFilter(getFacetQueryFromFacetURLParam(facet as string));
-					});
-				} else {
-					searchResultStore.addFilter(getFacetQueryFromFacetURLParam(routeFacetQueries as string));
+		onMounted(() => {
+			searchResultStore.resetFilters();
+			if (route.query.q !== undefined) {
+				gsap.set(searchContainer.value, {
+					height: '300px',
+				});
+				const routeFacetQueries = route.query.fq;
+				if (routeFacetQueries) {
+					if (Array.isArray(routeFacetQueries)) {
+						routeFacetQueries.forEach((facet) => {
+							searchResultStore.addFilter(getFacetQueryFromFacetURLParam(facet as string));
+						});
+					} else {
+						searchResultStore.addFilter(getFacetQueryFromFacetURLParam(routeFacetQueries as string));
+					}
 				}
+				searchResultStore.getSearchResults(route.query.q as string);
 			}
-			searchResultStore.getSearchResults(route.query.q as string);
-		}
+		});
 
 		watch(
 			() => searchResultStore.searchResult.length,
