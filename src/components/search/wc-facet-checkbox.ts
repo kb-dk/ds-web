@@ -83,10 +83,7 @@ class checkboxComponent extends HTMLElement {
 			this.slide = newValue;
 		}
 		if (name === 'show') {
-			if (newValue === 'true') {
-				this.style.opacity = '1';
-				this.style.transform = 'translateY(0px)';
-			} else {
+			if (newValue === 'false') {
 				this.style.opacity = '0';
 				this.style.transform = 'translateY(-20px)';
 			}
@@ -107,7 +104,7 @@ const STYLES = /*css*/ `
             display: block;
 			opacity: 0;
 			transition: all 0.3s linear;
-            transform:translateY(20px);
+            transform:translateY(-20px);
             height:25px;
             width:100%;
             margin-right:5px;

@@ -4,7 +4,10 @@
 			<!-- TODO handle empty response scenario -->
 			<div v-if="recordData">
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
-					<BroadcastRecordMetadataView :record-data="(recordData as BroadcastRecordType)" />
+					<BroadcastRecordMetadataView
+						:more-like-this-records="moreLikeThisRecords"
+						:record-data="(recordData as BroadcastRecordType)"
+					/>
 				</div>
 				<div v-else>
 					<GenericRecordMetadataView :record-data="(recordData as GenericRecordType)" />
@@ -27,6 +30,7 @@ import { AxiosError } from 'axios';
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -39,6 +43,7 @@ export default defineComponent({
 		const recordData = ref<BroadcastRecordType | GenericRecordType | null>(null);
 		const recordType = ref<string | null>(null);
 		const errorManager = inject('errorManager') as ErrorManagerType;
+		const moreLikeThisRecords = ref<Array<GenericSearchResultType>>([]);
 		const { t } = useI18n();
 
 		const getRecord = async (id: string) => {
@@ -49,19 +54,31 @@ export default defineComponent({
 			}
 		};
 
+		const getMoreLikeThisRecords = async (id: string) => {
+			try {
+				return await APIService.getMoreLikeThisRecords(id);
+			} catch (err) {
+				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
+			}
+		};
+
 		onMounted(async () => {
 			const route = useRoute();
 			const id = route.params.id;
 			//TODO handle array of ids if needed
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
+			const moreLikeThis = await getMoreLikeThisRecords(idStr);
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 			}
+			if (moreLikeThis) {
+				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+			}
 		});
 
-		return { recordData, recordType };
+		return { recordData, recordType, moreLikeThisRecords };
 	},
 });
 </script>
@@ -96,8 +113,8 @@ export default defineComponent({
 		padding: 25px;
 	}
 	.container {
-		padding-right: 12px;
-		padding-left: 12px;
+		/* padding-right: 12px;
+		padding-left: 12px; */
 		max-width: 990px;
 	}
 }
@@ -124,6 +141,7 @@ export default defineComponent({
 	.container {
 		padding-right: 0;
 		padding-left: 0;
+		width: 100%;
 	}
 }
 </style>

@@ -33,8 +33,18 @@ export interface GenericSearchResultType {
 
 export interface FacetsType {
 	facet_queries: Array<string>;
-	facet_fields: Array<string>;
+	facet_fields: FacetResultType;
 	facet_ranges: Array<string>;
 	facet_interval: Array<string>;
 	facet_heatmaps: Array<string>;
+}
+
+export interface FacetResultType {
+	catalog: string[];
+	collection: string[];
+	genre: string[];
+	resource_description: string[];
+	resource_description_general: string[];
+	creator_full_name: string[];
+	subject_full_name: string[];
 }

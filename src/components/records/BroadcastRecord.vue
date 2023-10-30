@@ -45,6 +45,22 @@
 				</button>
 			</div>
 		</div>
+		<div class="back-link">
+			<router-link
+				v-if="lastPath"
+				:to="lastPath"
+			>
+				<span class="material-icons">chevron_left</span>
+				Tilbage
+			</router-link>
+			<router-link
+				v-else
+				to="/"
+			>
+				<span class="material-icons">chevron_left</span>
+				Til forsiden
+			</router-link>
+		</div>
 		<div class="extra-record-data">
 			<div class="accordion">
 				<kb-accordion
@@ -55,20 +71,26 @@
 Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
 				></kb-accordion>
 			</div>
-			<div class="related-content">
+			<div
+				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
+				class="related-content"
+			>
 				<h3>Relateret indhold</h3>
 				<GridDisplay
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
+					:spots="moreLikeThisRecords"
 				></GridDisplay>
 			</div>
+			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
@@ -82,12 +104,7 @@ export default defineComponent({
 	name: 'BroadcastRecord',
 	data() {
 		return {
-			isDown: false,
-			startX: 0,
-			scrollLeft: 0 as number,
-			slidingElement: null as null | HTMLElement,
-			linkItems: null as null | NodeList,
-			move: false,
+			lastPath: null as null | string,
 		};
 	},
 	components: {
@@ -100,6 +117,13 @@ export default defineComponent({
 			type: Object as PropType<BroadcastRecordType>,
 			required: true,
 		},
+		moreLikeThisRecords: {
+			type: Array as PropType<GenericSearchResultType[]>,
+			required: false,
+		},
+	},
+	created() {
+		this.lastPath = this.$router.options.history.state.back as string;
 	},
 	methods: {
 		getCurrentUrl() {
@@ -141,6 +165,15 @@ temporary styling until patterns from design system are implemented
 :host {
 	margin-top: -1px;
 	position: relative;
+}
+
+.back-link {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.back-link a {
+	text-decoration: none;
 }
 
 .material-icons {

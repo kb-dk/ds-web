@@ -1,43 +1,59 @@
 <template>
 	<div class="search-box">
-		<div :class="searchResultStore.searchResult.length > 0 ? 'search-container small' : 'search-container big'">
-			<SearchBar></SearchBar>
+		<div
+			ref="searchContainer"
+			class="search-container"
+		>
+			<SearchBarWrapper></SearchBarWrapper>
 		</div>
-		<div class="container">
-			<div class="row">
+		<Transition
+			name="fade"
+			mode="out-in"
+		>
+			<div
+				key="1"
+				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+			>
+				<div class="container">
+					<div class="row">
+						<div
+							v-if="searchResultStore.searchResult.length > 0"
+							class="hit-count"
+						>
+							<HitCount
+								:hit-count="searchResultStore.numFound"
+								:no-hits="searchResultStore.noHits"
+								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+							/>
+							<button @click="toggleFacets()">
+								<span class="material-icons">tune</span>
+								Vis filter
+							</button>
+						</div>
+						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
+					</div>
+				</div>
 				<div
+					key="2"
 					v-if="searchResultStore.searchResult.length > 0"
-					class="hit-count"
+					class="container"
 				>
-					<HitCount
-						:hit-count="searchResultStore.numFound"
-						:no-hits="searchResultStore.noHits"
-						:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-					/>
-					<button @click="toggleFacets()">
-						<span class="material-icons">tune</span>
-						Vis filter
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="search-resultset">
-					<div
-						v-if="showFacets"
-						class="search-facets"
-					>
-						<Facets :facet-results="searchResultStore.facetResult" />
-					</div>
-					<div class="search-results">
-						<SearchResults :search-results="searchResultStore.searchResult" />
+					<div class="row">
+						<div class="search-resultset">
+							<div class="search-facets">
+								<Facets :facet-results="searchResultStore.facetResult" />
+							</div>
+							<div class="search-results">
+								<SearchResults :search-results="searchResultStore.searchResult" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<Transition name="fade">
-			<div v-if="searchResultStore.searchResult.length === 0">
+			<div
+				key="2"
+				v-else
+			>
 				<div class="container">
 					<div class="intro">
 						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
@@ -48,6 +64,7 @@
 							fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 							mollit anim id est laborum.
 						</p>
+						<router-link to="/about">read more</router-link>
 					</div>
 				</div>
 				<div class="container">
@@ -56,6 +73,7 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
+						:spots="(['1','2','3','4','5','6','7','8'] as unknown as GenericSearchResultType[])"
 					></GridDisplay>
 				</div>
 				<div class="blue-background">
@@ -68,6 +86,7 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
+							:spots="(['1','2','3'] as unknown as GenericSearchResultType[])"
 						></GridDisplay>
 					</div>
 				</div>
@@ -77,19 +96,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBar from '@/components/search/SearchWrapper.vue';
+import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
+import gsap from 'gsap';
+import { useRouter } from 'vue-router';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+
 export default defineComponent({
 	name: 'Search',
 	components: {
 		HitCount,
 		SearchResults,
-		SearchBar,
+		SearchBarWrapper,
 		Facets,
 		GridDisplay,
 	},
@@ -98,25 +121,48 @@ export default defineComponent({
 	}),
 
 	setup() {
+		const searchContainer = ref<HTMLElement | null>(null);
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
-	},
-	onMounted() {
-		this.searchResultStore.resetFilters();
-	},
-	created() {
-		if (this.$route.query.q !== undefined) {
-			this.searchResultStore.getSearchResults(this.$route.query.q as string);
+		const router = useRouter();
+
+		onMounted(() => {
+			searchResultStore.resetFilters();
+			if (router.currentRoute.value.query.q !== undefined) {
+				gsap.set(searchContainer.value, {
+					height: '300px',
+				});
+			}
+		});
+
+		if (router.currentRoute.value.query.q !== undefined) {
+			searchResultStore.getSearchResults(router.currentRoute.value.query.q as string);
 		}
-		// Watch the 'term' param and update search results if it changes
-		this.$watch(
-			() => this.$route.query.q,
-			(newq: string, prevq: string) => {
-				if (newq !== prevq) {
-					this.searchResultStore.getSearchResults(newq);
+
+		watch(
+			() => searchResultStore.searchResult.length,
+			(newn: number, prevn: number) => {
+				if (newn > 0) {
+					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
+				} else {
+					gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
 				}
 			},
 		);
+
+		// Watch the 'term' param and update search results if it changes
+		watch(
+			() => router.currentRoute.value.query.q as string,
+			(newq: string, prevq: string) => {
+				if (newq !== prevq && newq !== undefined) {
+					searchResultStore.getSearchResults(newq);
+				}
+				if (newq === undefined) {
+					searchResultStore.resetSearch();
+				}
+			},
+		);
+
+		return { searchResultStore, searchContainer };
 	},
 	methods: {
 		toggleFacets() {
@@ -132,11 +178,11 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.5s;
+	transition: opacity 0.25s;
 }
 
 .fade-enter,
-.fade-leave-active {
+.fade-leave-to {
 	opacity: 0;
 }
 
@@ -176,7 +222,6 @@ h3 {
 	width: 100vw;
 	max-width: 100%;
 	height: 500px;
-	transition: height 0.5s ease-in-out 0s;
 }
 
 .search-container.big {
