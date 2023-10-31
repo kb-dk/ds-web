@@ -100,7 +100,7 @@ import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 export default defineComponent({
@@ -117,19 +117,33 @@ export default defineComponent({
 		const searchContainer = ref<HTMLElement | null>(null);
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
+		const route = useRoute();
+
+		const getFacetQueryFromFacetURLParam = (facetUrlParam: string) => {
+			const decodedFacetParam = decodeURIComponent(facetUrlParam);
+			const [facetKey, facetValue] = decodedFacetParam.split(':');
+			return `fq=${facetKey}:${facetValue}`;
+		};
 
 		onMounted(() => {
 			searchResultStore.resetFilters();
-			if (router.currentRoute.value.query.q !== undefined) {
+			if (route.query.q !== undefined) {
 				gsap.set(searchContainer.value, {
 					height: '300px',
 				});
+				const routeFacetQueries = route.query.fq;
+				if (routeFacetQueries) {
+					if (Array.isArray(routeFacetQueries)) {
+						routeFacetQueries.forEach((facet) => {
+							searchResultStore.addFilter(getFacetQueryFromFacetURLParam(facet as string));
+						});
+					} else {
+						searchResultStore.addFilter(getFacetQueryFromFacetURLParam(routeFacetQueries as string));
+					}
+				}
+				searchResultStore.getSearchResults(route.query.q as string);
 			}
 		});
-
-		if (router.currentRoute.value.query.q !== undefined) {
-			searchResultStore.getSearchResults(router.currentRoute.value.query.q as string);
-		}
 
 		watch(
 			() => searchResultStore.searchResult.length,
