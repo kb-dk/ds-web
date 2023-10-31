@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, onMounted, ref, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 
@@ -32,69 +32,70 @@ import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'Facets',
-	data: () => ({
-		showFacets: false,
-		currentFacets: Object as unknown as FacetResultType,
-		lastUpdate: 0,
-	}),
 
 	props: {
 		facetResults: { type: Object as PropType<FacetResultType>, required: true },
 	},
 
-	setup() {
+	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
-	},
+		const showFacets = ref(false);
+		const currentFacets = ref(Object as unknown as FacetResultType);
+		const lastUpdate = ref(0);
 
-	mounted() {
-		this.currentFacets = this.facetResults;
-		this.showFacets = true;
-	},
+		onMounted(() => {
+			currentFacets.value = props.facetResults;
+			showFacets.value = true;
 
-	created() {
-		window.addEventListener('filter-update', (event) => {
-			this.updateFilters(event as CustomEvent);
-			event.stopPropagation();
-			event.preventDefault();
+			window.addEventListener('filter-update', filterUpdateHelper);
+
+			watch(
+				() => props.facetResults,
+				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
+					if (newFacets !== prevFacets) {
+						showFacets.value = false;
+						let sum = '';
+						Object.entries(prevFacets).forEach(([key, value]) => {
+							sum += value;
+						});
+						setTimeout(
+							() => {
+								currentFacets.value = newFacets;
+								lastUpdate.value = new Date().getTime();
+								showFacets.value = true;
+							},
+							sum.length <= 0 ? 0 : 600,
+						);
+					}
+				},
+			);
 		});
 
-		this.$watch(
-			() => this.facetResults,
-			(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-				if (newFacets !== prevFacets) {
-					this.showFacets = false;
-					let sum = '';
-					Object.entries(prevFacets).forEach(([key, value]) => {
-						sum += value;
-					});
-					setTimeout(
-						() => {
-							this.currentFacets = newFacets;
-							this.lastUpdate = new Date().getTime();
-							this.showFacets = true;
-						},
-						sum.length <= 0 ? 0 : 600,
-					);
-				}
-			},
-		);
-	},
-	methods: {
-		filterExists(key: string, title: string) {
-			return this.searchResultStore.filters.includes(`fq=${key}:"${title}"`);
-		},
-		updateFilters: function (e: CustomEvent) {
+		onUnmounted(() => {
+			window.removeEventListener('filter-update', filterUpdateHelper);
+		});
+
+		const filterExists = (key: string, title: string) => {
+			return searchResultStore.filters.includes(`fq=${key}:"${title}"`);
+		};
+
+		const filterUpdateHelper = (e: Event) => {
+			updateFilters(e as CustomEvent);
+		};
+
+		const updateFilters = (e: CustomEvent) => {
+			e.stopPropagation();
+			e.preventDefault();
 			if (e.detail.add) {
-				this.searchResultStore.addFilter(e.detail.filter);
+				searchResultStore.addFilter(e.detail.filter);
 			} else {
-				this.searchResultStore.removeFilter(e.detail.filter);
+				searchResultStore.removeFilter(e.detail.filter);
 			}
-			this.searchResultStore.getSearchResults(this.searchResultStore.currentQuery);
-		},
+			searchResultStore.getSearchResults(searchResultStore.currentQuery);
+		};
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.
-		simplifyFacets(facet: Array<string>) {
+		const simplifyFacets = (facet: Array<string>) => {
 			const allPairedFacets: Array<string[]> = [];
 			let facetPair: Array<string> = [];
 			facet.forEach((facet, i) => {
@@ -109,7 +110,9 @@ export default defineComponent({
 				}
 			});
 			return allPairedFacets;
-		},
+		};
+
+		return { showFacets, currentFacets, lastUpdate, searchResultStore, filterExists, updateFilters, simplifyFacets };
 	},
 });
 </script>

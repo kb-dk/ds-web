@@ -40,9 +40,14 @@
 				>
 					<div class="row">
 						<div class="search-resultset">
-							<div class="search-facets">
-								<Facets :facet-results="searchResultStore.facetResult" />
-							</div>
+							<Transition mode="out-in">
+								<div
+									v-if="showFacets"
+									class="search-facets"
+								>
+									<Facets :facet-results="searchResultStore.facetResult" />
+								</div>
+							</Transition>
 							<div class="search-results">
 								<SearchResults :search-results="searchResultStore.searchResult" />
 							</div>
@@ -176,6 +181,17 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.width-fade-enter-active,
+.width-fade-leave-active {
+	transition: width 0.5s; /* Adjust the duration to your preference */
+}
+.width-fade-enter, .width-fade-leave-to /* .width-fade-leave-active in <2.1.8 */ {
+	max-width: 0;
+}
+.width-fade-enter-to, .width-fade-leave /* .width-fade-enter-active in <2.1.8 */ {
+	max-width: 20%;
+}
+
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.25s;
@@ -274,7 +290,7 @@ h3 {
 }
 @media (min-width: 800px) {
 	.search-results {
-		max-width: calc(100% - (330px));
+		/* max-width: calc(100% - (330px)); */
 	}
 	.search-facets {
 		width: 20%;
