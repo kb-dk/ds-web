@@ -27,9 +27,19 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
 
-		watch(searchQuery, (newValue, oldValue) => {
+		onMounted(() => {
+			console.log(searchResultStore.searchFired);
+			if (searchResultStore.searchFired) {
+				xReset.value = true;
+			}
+			if (route.query) {
+				searchQuery.value = route.query.q as string;
+			}
+		});
+
+		watch(searchQuery, (oldValue, newValue) => {
 			if (
-				newValue.length !== 0 ||
+				newValue?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired === true
 			) {
@@ -39,9 +49,9 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchResultStore, (newValue, oldValue) => {
+		watch(searchResultStore, (oldValue, newValue) => {
 			if (
-				searchQuery.value.length !== 0 ||
+				searchQuery.value?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired
 			) {
@@ -49,17 +59,6 @@ export default defineComponent({
 			} else {
 				xReset.value = false;
 			}
-		});
-
-		onMounted(() => {
-			console.log(searchResultStore.searchFired);
-			if (searchResultStore.searchFired) {
-				xReset.value = true;
-			}
-			if (route.query) {
-				searchQuery.value = route.query.q as string;
-			}
-			console.log(route.query);
 		});
 
 		const getBackgroundImage = () => {
