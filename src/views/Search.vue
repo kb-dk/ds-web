@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, getCurrentInstance } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
