@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch, onMounted, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
@@ -22,6 +22,8 @@ export default defineComponent({
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
+		const route = useRoute();
+
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
 
@@ -54,6 +56,10 @@ export default defineComponent({
 			if (searchResultStore.searchFired) {
 				xReset.value = true;
 			}
+			if (route.query) {
+				searchQuery.value = route.query.q as string;
+			}
+			console.log(route.query);
 		});
 
 		const getBackgroundImage = () => {
