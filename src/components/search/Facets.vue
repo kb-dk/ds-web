@@ -120,7 +120,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .facet-container {
 	display: flex;
-	background-color: rgba(30, 30, 30, 0.1);
 	transition: all 1.3s linear;
 	height: auto;
 	flex-direction: column;

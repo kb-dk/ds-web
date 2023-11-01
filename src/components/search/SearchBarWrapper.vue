@@ -1,5 +1,6 @@
 <template>
 	<kb-searchbar
+		:q="searchQuery"
 		:reset-value="xReset"
 		:background-img-url="backgroundImage"
 	></kb-searchbar>
@@ -97,11 +98,16 @@ export default defineComponent({
 			}
 		};
 
+		const resetInput = () => {
+			searchQuery.value = '';
+		};
+
 		onBeforeMount(() => {
 			window.addEventListener('component-error', handleError);
 			window.addEventListener('query-update', updateWrapper);
 			window.addEventListener('query-search', search);
 			window.addEventListener('reset-search', reset);
+			window.addEventListener('reset-input', resetInput);
 		});
 
 		onBeforeUnmount(() => {
@@ -109,12 +115,14 @@ export default defineComponent({
 			window.removeEventListener('query-update', updateWrapper);
 			window.removeEventListener('query-search', search);
 			window.removeEventListener('reset-search', reset);
+			window.removeEventListener('reset-input', resetInput);
 		});
 
 		return {
 			backgroundImage,
 			xReset,
 			searchResultStore,
+			searchQuery,
 		};
 	},
 });

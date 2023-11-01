@@ -45,7 +45,6 @@ export default defineComponent({
 
 		onMounted(() => {
 			currentResults.value = toRaw(props.searchResults);
-			console.log(currentResults);
 			showResults.value = true;
 
 			watch(
