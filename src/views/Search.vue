@@ -35,7 +35,6 @@
 				</div>
 				<div
 					key="2"
-					v-if="searchResultStore.searchResult.length > 0"
 					class="container"
 				>
 					<div class="row">
@@ -51,10 +50,16 @@
 									>
 										<span class="material-icons">close</span>
 									</button>
-									<Facets :facet-results="searchResultStore.facetResult" />
+									<Facets
+										@facet-update="updateFacetContainer"
+										:facet-results="searchResultStore.facetResult"
+									/>
 								</div>
 							</div>
-							<div class="search-results">
+							<div
+								ref="resultContainer"
+								class="search-results fullwidth"
+							>
 								<SearchResults :search-results="searchResultStore.searchResult" />
 							</div>
 						</div>
@@ -115,7 +120,7 @@ import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 export default defineComponent({
@@ -131,16 +136,36 @@ export default defineComponent({
 	setup() {
 		const facetsContainer = ref<HTMLElement | null>(null);
 		const searchContainer = ref<HTMLElement | null>(null);
+		const resultContainer = ref<HTMLElement | null>(null);
+
 		const showFacets = ref(true);
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
+		const route = useRoute();
+
+		const getFacetQueryFromFacetURLParam = (facetUrlParam: string) => {
+			const decodedFacetParam = decodeURIComponent(facetUrlParam);
+			const [facetKey, facetValue] = decodedFacetParam.split(':');
+			return `fq=${facetKey}:${facetValue}`;
+		};
 
 		onMounted(() => {
 			searchResultStore.resetFilters();
-			if (router.currentRoute.value.query.q !== undefined) {
+			if (route.query.q !== undefined) {
 				gsap.set(searchContainer.value, {
 					height: '300px',
 				});
+				const routeFacetQueries = route.query.fq;
+				if (routeFacetQueries) {
+					if (Array.isArray(routeFacetQueries)) {
+						routeFacetQueries.forEach((facet) => {
+							searchResultStore.addFilter(getFacetQueryFromFacetURLParam(facet as string));
+						});
+					} else {
+						searchResultStore.addFilter(getFacetQueryFromFacetURLParam(routeFacetQueries as string));
+					}
+				}
+				searchResultStore.getSearchResults(route.query.q as string);
 			}
 		});
 
@@ -185,18 +210,33 @@ export default defineComponent({
 			},
 		);
 
+		const updateFacetContainer = () => {
+			window.innerWidth < 800 ? toggleFacets(false) : null;
+		};
+
 		const toggleFacets = (check: boolean) => {
 			showFacets.value = check;
 			if (showFacets.value) {
 				facetsContainer.value?.classList.add('active');
+				resultContainer.value?.classList.add('fullwidth');
+
 				window.document.body.classList.add('remove-body-scroll');
 			} else {
 				facetsContainer.value?.classList.remove('active');
+				resultContainer.value?.classList.remove('fullwidth');
 				window.document.body.classList.remove('remove-body-scroll');
 			}
 		};
 
-		return { searchResultStore, searchContainer, facetsContainer, toggleFacets, showFacets };
+		return {
+			searchResultStore,
+			searchContainer,
+			facetsContainer,
+			resultContainer,
+			showFacets,
+			toggleFacets,
+			updateFacetContainer,
+		};
 	},
 });
 </script>
@@ -278,6 +318,11 @@ h3 {
 	top: 10px;
 	z-index: 25;
 	right: 10px;
+	cursor: pointer;
+}
+
+.fullwidth {
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
 }
 
 .search-facets {
@@ -345,6 +390,10 @@ h3 {
 @media (min-width: 800px) {
 	.search-results {
 		max-width: 100%;
+	}
+
+	.fullwidth {
+		max-width: calc(100% - 330px);
 	}
 
 	.facet-background {

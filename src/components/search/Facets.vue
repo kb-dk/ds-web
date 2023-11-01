@@ -27,6 +27,7 @@
 import { defineComponent, PropType, onMounted, ref, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
+import { useRoute, useRouter } from 'vue-router';
 
 import '@/components/search/wc-facet-checkbox';
 
@@ -37,11 +38,13 @@ export default defineComponent({
 		facetResults: { type: Object as PropType<FacetResultType>, required: true },
 	},
 
-	setup(props) {
+	setup(props, { emit }) {
 		const searchResultStore = useSearchResultStore();
 		const showFacets = ref(false);
 		const currentFacets = ref(Object as unknown as FacetResultType);
 		const lastUpdate = ref(0);
+		const route = useRoute();
+		const router = useRouter();
 
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
@@ -81,16 +84,37 @@ export default defineComponent({
 
 		const filterUpdateHelper = (e: Event) => {
 			updateFilters(e as CustomEvent);
+			emit('facetUpdate');
 		};
 
 		const updateFilters = (e: CustomEvent) => {
-			e.stopPropagation();
-			e.preventDefault();
+			/* Future coder - don't even ask, the line of code below took me hours.... 
+				 I wanted to do it the right way: const routeQueries = { ...this.$route.query };
+				 but no worki - instead I had to do this copy trickery below.
+				 For more info on why this is broken:
+				 https://github.com/vuejs/vue-router/issues/1182
+				 **/
+			//TODO the logic below could be split up into a couple of methods.
+			//Lets do that when we know the functionality is solid and we refactor
+			//the whole component to composition API
+			const routeQueries = JSON.parse(JSON.stringify(route.query));
 			if (e.detail.add) {
+				const newFilter = encodeURIComponent(e.detail.rawFilter);
+				if (!routeQueries.fq) {
+					routeQueries.fq = [newFilter];
+				} else if (Array.isArray(routeQueries.fq)) {
+					routeQueries.fq.push(newFilter);
+				} else {
+					//This will only trigger if someone manipulates the url manually
+					routeQueries.fq = [routeQueries.fq, newFilter];
+				}
 				searchResultStore.addFilter(e.detail.filter);
 			} else {
+				const filterToRemove = encodeURIComponent(e.detail.rawFilter);
+				routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
 				searchResultStore.removeFilter(e.detail.filter);
 			}
+			router.push({ query: routeQueries });
 			searchResultStore.getSearchResults(searchResultStore.currentQuery);
 		};
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
