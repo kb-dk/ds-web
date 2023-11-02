@@ -37,7 +37,7 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchQuery, (oldValue, newValue) => {
+		watch(searchQuery, (newValue, oldValue) => {
 			if (
 				newValue?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
@@ -49,7 +49,7 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchResultStore, (oldValue, newValue) => {
+		watch(searchResultStore, (newValue, oldValue) => {
 			if (
 				searchQuery.value?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
