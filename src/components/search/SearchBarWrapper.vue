@@ -1,5 +1,6 @@
 <template>
 	<kb-searchbar
+		:q="searchQuery"
 		:reset-value="xReset"
 		:background-img-url="backgroundImage"
 	></kb-searchbar>
@@ -8,7 +9,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch, onMounted, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
@@ -21,12 +22,24 @@ export default defineComponent({
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
+		const route = useRoute();
+
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
 
+		onMounted(() => {
+			console.log(searchResultStore.searchFired);
+			if (searchResultStore.searchFired) {
+				xReset.value = true;
+			}
+			if (route.query) {
+				searchQuery.value = route.query.q as string;
+			}
+		});
+
 		watch(searchQuery, (newValue, oldValue) => {
 			if (
-				newValue.length !== 0 ||
+				newValue?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired === true
 			) {
@@ -38,20 +51,13 @@ export default defineComponent({
 
 		watch(searchResultStore, (newValue, oldValue) => {
 			if (
-				searchQuery.value.length !== 0 ||
+				searchQuery.value?.length !== 0 ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired
 			) {
 				xReset.value = true;
 			} else {
 				xReset.value = false;
-			}
-		});
-
-		onMounted(() => {
-			console.log(searchResultStore.searchFired);
-			if (searchResultStore.searchFired) {
-				xReset.value = true;
 			}
 		});
 
@@ -97,11 +103,16 @@ export default defineComponent({
 			}
 		};
 
+		const resetInput = () => {
+			searchQuery.value = '';
+		};
+
 		onBeforeMount(() => {
 			window.addEventListener('component-error', handleError);
 			window.addEventListener('query-update', updateWrapper);
 			window.addEventListener('query-search', search);
 			window.addEventListener('reset-search', reset);
+			window.addEventListener('reset-input', resetInput);
 		});
 
 		onBeforeUnmount(() => {
@@ -109,12 +120,14 @@ export default defineComponent({
 			window.removeEventListener('query-update', updateWrapper);
 			window.removeEventListener('query-search', search);
 			window.removeEventListener('reset-search', reset);
+			window.removeEventListener('reset-input', resetInput);
 		});
 
 		return {
 			backgroundImage,
 			xReset,
 			searchResultStore,
+			searchQuery,
 		};
 	},
 });
