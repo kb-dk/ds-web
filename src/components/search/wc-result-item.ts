@@ -159,7 +159,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 
 		.information {
 			text-overflow: ellipsis;
-			width:calc(100% - (20% + 30px));
+			width:calc(100% - (200px + 30px));
 			overflow:hidden;
 			max-width:100%;
 		}
@@ -168,7 +168,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			font-weight:bold;
 			color: #002E70;
 			text-overflow: ellipsis;
-			max-width:calc(100% - (20% - 60px));
+			max-width:calc(100% - (200px - 60px));
 			white-space: nowrap;
 			overflow: hidden;
 			width: 75ch;
@@ -178,7 +178,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			
 		}
 		.result-image-wrapper {
-			width:20%;
+			width:200px;
 		}
 
 		.where, .when, .duration {

@@ -264,6 +264,18 @@ body {
 	overflow-x: hidden;
 }
 
+.remove-body-scroll {
+	max-height: 100%;
+	overflow: hidden;
+}
+
+@media (min-width: 800px) {
+	.remove-body-scroll {
+		max-height: initial;
+		overflow: initial;
+	}
+}
+
 .wipe {
 	opacity: 1;
 	pointer-events: none;
