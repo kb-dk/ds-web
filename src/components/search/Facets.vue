@@ -96,7 +96,7 @@ export default defineComponent({
 			//the whole component to composition API
 			const routeQueries = JSON.parse(JSON.stringify(this.$route.query));
 			if (e.detail.add) {
-				const newFilter = encodeURIComponent(e.detail.rawFilter);
+				const newFilter = encodeURIComponent(e.detail.filter);
 				if (!routeQueries.fq) {
 					routeQueries.fq = [newFilter];
 				} else if (Array.isArray(routeQueries.fq)) {
@@ -105,11 +105,11 @@ export default defineComponent({
 					//This will only trigger if someone manipulates the url manually
 					routeQueries.fq = [routeQueries.fq, newFilter];
 				}
-				this.searchResultStore.addFilter(e.detail.filter);
+				this.searchResultStore.addFilter(`fq=${e.detail.filter}`);
 			} else {
-				const filterToRemove = encodeURIComponent(e.detail.rawFilter);
+				const filterToRemove = encodeURIComponent(e.detail.filter);
 				routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
-				this.searchResultStore.removeFilter(e.detail.filter);
+				this.searchResultStore.removeFilter(`fq=${e.detail.filter}`);
 			}
 			this.$router.push({ query: routeQueries });
 			this.searchResultStore.getSearchResults(this.searchResultStore.currentQuery);
