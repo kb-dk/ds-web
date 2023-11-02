@@ -151,7 +151,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 		.container {
 			display: flex;
 			flex-direction: row;
-			height:100px;
+			height:105px;
 			justify-content: space-between;
 			gap:30px;
 			width:100%;
@@ -191,7 +191,13 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
 					line-clamp: 3; 
-			-webkit-box-orient: vertical;			
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			line-height: 20px;        /* fallback for firefox */
+			max-height: calc(20px * 3);	/* fallback for firefox */
 		}
 	</style>`;
 
