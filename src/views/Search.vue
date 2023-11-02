@@ -25,9 +25,14 @@
 								:no-hits="searchResultStore.noHits"
 								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
 							/>
-							<button @click="toggleFacets(!showFacets)">
+							<button
+								class="filter-button"
+								@click="toggleFacets(!showFacets)"
+							>
 								<span class="material-icons">tune</span>
-								Vis filter
+								<span class="filter-button-text">
+									{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
+								</span>
 							</button>
 						</div>
 						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
@@ -308,6 +313,26 @@ h3 {
 .hit-count {
 	padding-top: 40px;
 	padding-bottom: 40px;
+}
+
+.filter-button {
+	border: 0px;
+	background-color: transparent;
+	height: 24px;
+	line-height: 24px;
+	cursor: pointer;
+	padding: 0;
+}
+
+.filter-button .material-icons {
+	font-size: 16px;
+	position: relative;
+	top: 2px;
+}
+
+.filter-button-text {
+	padding-left: 5px;
+	font-size: 16px;
 }
 
 .facet-close-button {
