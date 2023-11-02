@@ -169,8 +169,8 @@ export default defineComponent({
 			}
 		});
 
-		if (router.currentRoute.value.query.q !== undefined) {
-			searchResultStore.getSearchResults(router.currentRoute.value.query.q as string);
+		if (route.query.q !== undefined) {
+			searchResultStore.getSearchResults(route.query.q as string);
 		}
 
 		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
