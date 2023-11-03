@@ -12,30 +12,44 @@
 			:placeholder="getPlaceholderImage()"
 		/>
 	</div>
+	<Pagination
+		:itemsPerPage="itemsPerPage"
+		:totalHits="totalHits"
+		:numPagesToShow="numPagesToShow"
+	/>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import Pagination from '@/components/search/Pager.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/search/wc-result-item';
 
 export default defineComponent({
 	name: 'SearchResults',
+	components: {
+		Pagination,
+	},
 
 	data: () => ({
 		showResults: false,
 		currentResults: [] as GenericSearchResultType[],
 		lastUpdate: 0,
+		itemsPerPage: 10,
+		numPagesToShow: 8,
+		totalHits: 0,
 	}),
 
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
+		numFound: { type: Number, required: true },
 	},
 
 	mounted() {
 		this.currentResults = this.searchResults;
 		this.showResults = true;
+		this.totalHits = this.numFound;
 	},
 
 	created() {

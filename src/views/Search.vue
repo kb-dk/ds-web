@@ -40,7 +40,10 @@
 								<Facets :facet-results="searchResultStore.facetResult" />
 							</div>
 							<div class="search-results">
-								<SearchResults :search-results="searchResultStore.searchResult" />
+								<SearchResults
+									:search-results="searchResultStore.searchResult"
+									:num-found="searchResultStore.numFound"
+								/>
 							</div>
 						</div>
 					</div>
