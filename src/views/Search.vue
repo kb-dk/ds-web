@@ -351,40 +351,28 @@ h3 {
 }
 
 .search-facets {
-	overflow: hidden;
-	width: 0px;
 	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-	margin-right: 0px;
-	opacity: 0;
 	min-width: 0px;
 	margin-bottom: 20px;
 	position: fixed;
-	width: 100% !important;
 	top: 0px;
 	left: 0px;
-	z-index: -1;
+	z-index: 5;
 	background-color: white;
 	overflow-y: scroll;
 	height: 100vh;
-	/* width: calc(100% - 20px) !important; */
 	visibility: hidden;
 	pointer-events: none;
 	box-sizing: border-box;
 	padding: 40px 15% 0px 15%;
+	transform: translateX(-100%);
 }
 
 .search-facets.active {
-	opacity: 1;
-	margin-right: 0px;
-	min-width: 300px;
-	width: 100% !important;
-	top: 0px;
-	z-index: 5;
-	left: 0px;
-	min-height: 100%;
-	box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 	visibility: visible;
 	pointer-events: all;
+	transform: translateX(0%);
+	width: 100%;
 }
 
 .search-results {
@@ -430,17 +418,19 @@ h3 {
 	.search-facets {
 		position: initial;
 		background-color: initial;
-		width: 0px !important;
+		width: 0px;
 		margin-right: 0px;
 		overflow-y: initial;
-		height: auto;
-		box-sizing: border-box;
+		overflow-x: hidden;
 		padding: 0px 0px;
+		transform: translateX(0%);
+		opacity: 0;
 	}
 	.search-facets.active {
-		width: 290px !important;
+		width: 290px;
 		margin-right: 30px;
-		box-shadow: initial;
+		min-width: 300px;
+		opacity: 1;
 	}
 	.search-resultset {
 		display: flex;
