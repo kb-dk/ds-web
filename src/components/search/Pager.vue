@@ -119,6 +119,7 @@ export default defineComponent({
 			return pages;
 		});
 
+		//TODO watch currentPageRef and act accordingly
 		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages };
 	},
 });
