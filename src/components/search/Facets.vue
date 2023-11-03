@@ -88,7 +88,7 @@ export default defineComponent({
 		};
 
 		const updateFilters = (e: CustomEvent) => {
-			/* Future coder - don't even ask, the line of code below took me hours.... 
+			/* Future coder - don't even ask, the line of code below took me hours....
 				 I wanted to do it the right way: const routeQueries = { ...this.$route.query };
 				 but no worki - instead I had to do this copy trickery below.
 				 For more info on why this is broken:
@@ -99,7 +99,7 @@ export default defineComponent({
 			//the whole component to composition API
 			const routeQueries = JSON.parse(JSON.stringify(route.query));
 			if (e.detail.add) {
-				const newFilter = encodeURIComponent(e.detail.rawFilter);
+				const newFilter = encodeURIComponent(e.detail.filter);
 				if (!routeQueries.fq) {
 					routeQueries.fq = [newFilter];
 				} else if (Array.isArray(routeQueries.fq)) {
@@ -108,11 +108,11 @@ export default defineComponent({
 					//This will only trigger if someone manipulates the url manually
 					routeQueries.fq = [routeQueries.fq, newFilter];
 				}
-				searchResultStore.addFilter(e.detail.filter);
+				searchResultStore.addFilter(`fq=${e.detail.filter}`);
 			} else {
-				const filterToRemove = encodeURIComponent(e.detail.rawFilter);
+				const filterToRemove = encodeURIComponent(e.detail.filter);
 				routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
-				searchResultStore.removeFilter(e.detail.filter);
+				searchResultStore.removeFilter(`fq=${e.detail.filter}`);
 			}
 			router.push({ query: routeQueries });
 			searchResultStore.getSearchResults(searchResultStore.currentQuery);
