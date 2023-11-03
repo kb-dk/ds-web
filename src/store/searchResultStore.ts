@@ -50,16 +50,17 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		let fq = '';
+		//Disabled until DISC-390 is solved
+		/*let fq = '';
 		if (filters.value.length > 0) {
-			filters.value.forEach((filt: string) => {
-				fq += '&' + filt;
+			filters.value.forEach((filt: string, index) => {
+				fq += filt;
 			});
-		}
+		}*/
 		try {
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
-			const responseData = await APIService.getSearchResults(query, fq);
+			const responseData = await APIService.getSearchResults(query, filters.value);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
 			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
