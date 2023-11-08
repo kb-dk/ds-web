@@ -12,6 +12,7 @@ export interface BroadcastRecordType {
 	duration: string;
 	keywords: string;
 	identifier: IdentifierType[];
+	contentUrl: string;
 }
 
 interface NameType {

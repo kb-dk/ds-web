@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, defineComponent } from 'vue';
+import { ref, computed, onMounted, defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -131,12 +131,26 @@ export default defineComponent({
 			return pages;
 		});
 
+		const initializePager = () => {
+			const startParam = Number(route.query.start);
+			if (!isNaN(startParam) && startParam >= 0) {
+				const initialPage = Math.floor(startParam / props.itemsPerPage) + 1;
+				currentPageRef.value = initialPage;
+			}
+		};
+
+		onMounted(() => {
+			if (route.query.start) {
+				initializePager();
+			}
+		});
+
 		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages };
 	},
 });
 </script>
 
-<style>
+<style scoped>
 .active {
 	/*color: #002e70;*/
 	color: blue;

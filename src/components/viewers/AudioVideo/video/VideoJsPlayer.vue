@@ -3,13 +3,7 @@
 		<video
 			ref="videoElement"
 			class="video-js vjs-default-skin vjs-custom"
-			controls
-		>
-			<source
-				:src="videoSrc"
-				type="video/mp4"
-			/>
-		</video>
+		></video>
 	</div>
 </template>
 
@@ -21,20 +15,20 @@ import 'video.js/dist/video-js.css';
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
-
-	setup() {
+	props: {
+		videoUrl: String,
+	},
+	setup(props) {
 		const videoElement = ref(null);
-		//harcoded for now
-		const videoSrc = ref('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
-
+		//const videoSrc = ref('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
 		onMounted(() => {
 			const options = {
 				autoplay: false,
 				controls: true,
 			};
-
-			//Mount player
+			//Mount player with options and src
 			const player = videojs(videoElement.value, options);
+			player.src({ type: 'application/x-mpegURL', src: props.videoUrl });
 
 			// Clean up
 			const cleanup = () => {
@@ -48,7 +42,7 @@ export default defineComponent({
 				cleanup();
 			});
 		});
-		return { videoSrc, videoElement };
+		return { videoElement };
 	},
 });
 </script>
@@ -86,8 +80,5 @@ temporary styling until patterns from design system are implemented
 
 .vjs-custom {
 	height: 100%;
-	/* width: 1200px;
-	height: 440px;
-	margin: 0 4% 0 5%; */
 }
 </style>

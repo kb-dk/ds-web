@@ -27,8 +27,15 @@ export class APIServiceClient {
 	}
 
 	//Search and record methods
-	async getSearchResults(query: string, filters: string): Promise<APISearchResponseType> {
-		return await this.httpClient.get(encodeURI(`search/?q=${query}&q.op=OR&indent=true&facet=true${filters}`));
+	async getSearchResults(query: string, filters: string[]): Promise<APISearchResponseType> {
+		let reqFilters = '';
+		//Temporary fix for filters containing &. We should rework the filter flow so prep of data is done else where DISC-390
+		filters.forEach((filt: string) => {
+			reqFilters += `&fq=${encodeURIComponent(filt.split('fq=')[1])}`;
+		});
+		return await this.httpClient.get(
+			`search/?q=${encodeURIComponent(query)}&q.op=OR&indent=true&facet=true${reqFilters}`,
+		);
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponseType> {

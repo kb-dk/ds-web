@@ -2,7 +2,9 @@
   "search":{
      "searchbtn":"Søg",
      "hitcount": "{n} resultat fundet for | {n} resultater fundet for",
-     "nohit":"Din søgning gav 0 resultater."
+     "nohit":"Din søgning gav 0 resultater.",
+     "showFilters":"Vis filtre",
+     "hideFilters":"Skjul filtre"
   },
   "record":{
      "title":"Titel",

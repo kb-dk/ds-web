@@ -27,3 +27,10 @@ export default defineComponent({
 	},
 });
 </script>
+
+<style scoped>
+.hit-count {
+	font-size: 36px;
+	padding-bottom: 15px;
+}
+</style>

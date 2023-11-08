@@ -1,8 +1,6 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer
-			videoUrl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-		></VideoPlayer>
+		<VideoPlayer :videoUrl="recordData.contentUrl"></VideoPlayer>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -92,7 +90,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, PropType } from 'vue';
-import VideoPlayer from '@/components/viewers/AudioVideo/video/KalturaPlayer.vue';
+import VideoPlayer from '@/components/viewers/AudioVideo/video/VideoJsPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';

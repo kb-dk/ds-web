@@ -14,13 +14,13 @@
 	</div>
 	<Pagination
 		:itemsPerPage="itemsPerPage"
-		:totalHits="totalHits"
+		:totalHits="numFound"
 		:numPagesToShow="numPagesToShow"
 	/>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref, watch, onMounted, toRaw } from 'vue';
 import Pagination from '@/components/search/Pager.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
@@ -32,56 +32,62 @@ export default defineComponent({
 		Pagination,
 	},
 
-	data: () => ({
-		showResults: false,
-		currentResults: [] as GenericSearchResultType[],
-		lastUpdate: 0,
-		itemsPerPage: 10,
-		numPagesToShow: 8,
-		totalHits: 0,
-	}),
-
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		numFound: { type: Number, required: true },
 	},
 
-	mounted() {
-		this.currentResults = this.searchResults;
-		this.showResults = true;
-		this.totalHits = this.numFound;
-	},
+	setup(props) {
+		const showResults = ref(false);
+		const currentResults = ref([] as GenericSearchResultType[]);
+		const lastUpdate = ref(0);
+		//if itemsPerPage turns out to be non user configurable we should make it static (remove ref)
+		const itemsPerPage = ref(10);
+		const numPagesToShow = 8;
 
-	created() {
-		this.$watch(
-			() => this.searchResults,
-			(newResults: Array<never>, prevResults: Array<never>) => {
-				if (newResults !== prevResults) {
-					this.showResults = false;
-					setTimeout(
-						() => {
-							this.currentResults = newResults;
-							this.lastUpdate = new Date().getTime();
-							this.showResults = true;
-						},
-						prevResults.length === 0 ? 0 : 600,
-					);
-				}
-			},
-		);
-	},
-
-	methods: {
-		getPlaceholderImage() {
+		const getPlaceholderImage = () => {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
-			/* return res.pages && res.pages.length > 0
-				? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
-				: require('@/assets/images/No-Image-Placeholder.svg.png'); */
-		},
-		getAltTxt(res: GenericSearchResultType) {
+			// return res.pages && res.pages.length > 0
+			//	? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
+			//	: require('@/assets/images/No-Image-Placeholder.svg.png');
+		};
+		const getAltTxt = (res: GenericSearchResultType) => {
 			return 'license';
 			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
-		},
+		};
+
+		onMounted(() => {
+			currentResults.value = toRaw(props.searchResults);
+			showResults.value = true;
+
+			watch(
+				() => props.searchResults,
+				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
+					console.log('new results!', newResults, prevResults);
+					if (newResults !== prevResults) {
+						showResults.value = false;
+						setTimeout(
+							() => {
+								currentResults.value = newResults;
+								lastUpdate.value = new Date().getTime();
+								showResults.value = true;
+							},
+							prevResults.length === 0 ? 0 : 600,
+						);
+					}
+				},
+			);
+		});
+
+		return {
+			getPlaceholderImage,
+			getAltTxt,
+			showResults,
+			currentResults,
+			lastUpdate,
+			itemsPerPage,
+			numPagesToShow,
+		};
 	},
 });
 </script>

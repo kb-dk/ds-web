@@ -27,4 +27,11 @@ const router = createRouter({
 	routes,
 });
 
+router.beforeEach((to, from) => {
+	if (from.query.locale && !to.query.locale) {
+		to.query.locale = from.query.locale;
+		return to;
+	}
+});
+
 export default router;

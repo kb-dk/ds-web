@@ -151,7 +151,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 		.container {
 			display: flex;
 			flex-direction: row;
-			height:100px;
+			height:105px;
 			justify-content: space-between;
 			gap:30px;
 			width:100%;
@@ -159,7 +159,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 
 		.information {
 			text-overflow: ellipsis;
-			width:calc(100% - (20% + 30px));
+			width:calc(100% - (200px + 30px));
 			overflow:hidden;
 			max-width:100%;
 		}
@@ -168,7 +168,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			font-weight:bold;
 			color: #002E70;
 			text-overflow: ellipsis;
-			max-width:calc(100% - (20% - 60px));
+			max-width:calc(100% - (200px - 60px));
 			white-space: nowrap;
 			overflow: hidden;
 			width: 75ch;
@@ -178,7 +178,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			
 		}
 		.result-image-wrapper {
-			width:20%;
+			width:200px;
 		}
 
 		.where, .when, .duration {
@@ -191,7 +191,13 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
 					line-clamp: 3; 
-			-webkit-box-orient: vertical;			
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			line-height: 20px;        /* fallback for firefox */
+			max-height: calc(20px * 3);	/* fallback for firefox */
 		}
 	</style>`;
 

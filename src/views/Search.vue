@@ -25,21 +25,47 @@
 								:no-hits="searchResultStore.noHits"
 								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
 							/>
+							<button
+								class="filter-button"
+								@click="toggleFacets(!showFacets)"
+							>
+								<span class="material-icons">tune</span>
+								<span class="filter-button-text">
+									{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
+								</span>
+							</button>
 						</div>
 						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
 					</div>
 				</div>
 				<div
 					key="2"
-					v-if="searchResultStore.searchResult.length > 0"
 					class="container"
 				>
 					<div class="row">
 						<div class="search-resultset">
-							<div class="search-facets">
-								<Facets :facet-results="searchResultStore.facetResult" />
+							<div
+								class="search-facets active"
+								ref="facetsContainer"
+							>
+								<div class="facet-background">
+									<button
+										class="facet-close-button"
+										@click="toggleFacets(false)"
+									>
+										<span class="material-icons">close</span>
+									</button>
+									<Facets
+										@facet-update="updateFacetContainer"
+										:facet-results="searchResultStore.facetResult"
+									/>
+								</div>
 							</div>
-							<div class="search-results">
+
+							<div
+								ref="resultContainer"
+								class="search-results fullwidth"
+							>
 								<SearchResults
 									:search-results="searchResultStore.searchResult"
 									:num-found="searchResultStore.numFound"
@@ -117,7 +143,11 @@ export default defineComponent({
 	},
 
 	setup() {
+		const facetsContainer = ref<HTMLElement | null>(null);
 		const searchContainer = ref<HTMLElement | null>(null);
+		const resultContainer = ref<HTMLElement | null>(null);
+
+		const showFacets = ref(true);
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
 		const route = useRoute();
@@ -148,6 +178,23 @@ export default defineComponent({
 			}
 		});
 
+		if (route.query.q !== undefined) {
+			searchResultStore.getSearchResults(route.query.q as string);
+		}
+
+		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
+		   the ref is not actually present in onMounted, which is super weird. But we can watch for when it enters.
+		   https://github.com/vuejs/composition-api/issues/296
+		*/
+		watch(
+			() => facetsContainer.value,
+			(newValue: HTMLElement | null, oldValue: HTMLElement | null) => {
+				if (facetsContainer.value && newValue !== oldValue) {
+					window.innerWidth > 800 ? toggleFacets(true) : toggleFacets(false);
+				}
+			},
+		);
+
 		watch(
 			() => searchResultStore.searchResult.length,
 			(newn: number, prevn: number) => {
@@ -172,7 +219,33 @@ export default defineComponent({
 			},
 		);
 
-		return { searchResultStore, searchContainer };
+		const updateFacetContainer = () => {
+			window.innerWidth < 800 ? toggleFacets(false) : null;
+		};
+
+		const toggleFacets = (check: boolean) => {
+			showFacets.value = check;
+			if (showFacets.value) {
+				facetsContainer.value?.classList.add('active');
+				resultContainer.value?.classList.add('fullwidth');
+
+				window.document.body.classList.add('remove-body-scroll');
+			} else {
+				facetsContainer.value?.classList.remove('active');
+				resultContainer.value?.classList.remove('fullwidth');
+				window.document.body.classList.remove('remove-body-scroll');
+			}
+		};
+
+		return {
+			searchResultStore,
+			searchContainer,
+			facetsContainer,
+			resultContainer,
+			showFacets,
+			toggleFacets,
+			updateFacetContainer,
+		};
 	},
 });
 </script>
@@ -239,7 +312,6 @@ h3 {
 .search-resultset {
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
 }
 
 .hit-count {
@@ -247,8 +319,63 @@ h3 {
 	padding-bottom: 40px;
 }
 
+.filter-button {
+	border: 0px;
+	background-color: transparent;
+	height: 24px;
+	line-height: 24px;
+	cursor: pointer;
+	padding: 0;
+}
+
+.filter-button .material-icons {
+	font-size: 16px;
+	position: relative;
+	top: 2px;
+}
+
+.filter-button-text {
+	padding-left: 5px;
+	font-size: 16px;
+}
+
+.facet-close-button {
+	border: 0px;
+	background-color: transparent;
+	font-size: 0px;
+	position: absolute;
+	top: 10px;
+	z-index: 25;
+	right: 10px;
+	cursor: pointer;
+}
+
+.fullwidth {
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+}
+
 .search-facets {
-	min-width: 300px;
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+	min-width: 0px;
+	margin-bottom: 20px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 5;
+	background-color: white;
+	overflow-y: scroll;
+	height: 100vh;
+	visibility: hidden;
+	pointer-events: none;
+	box-sizing: border-box;
+	padding: 40px 15% 0px 15%;
+	transform: translateX(-100%);
+}
+
+.search-facets.active {
+	visibility: visible;
+	pointer-events: all;
+	transform: translateX(0%);
 	width: 100%;
 }
 
@@ -279,10 +406,35 @@ h3 {
 }
 @media (min-width: 800px) {
 	.search-results {
-		max-width: calc(100% - (330px));
+		max-width: 100%;
+	}
+
+	.fullwidth {
+		max-width: calc(100% - 330px);
+	}
+
+	.facet-background {
+		background-color: rgba(30, 30, 30, 0.1);
+	}
+	.facet-close-button {
+		display: none;
 	}
 	.search-facets {
-		width: 20%;
+		position: initial;
+		background-color: initial;
+		width: 0px;
+		margin-right: 0px;
+		overflow-y: initial;
+		overflow-x: hidden;
+		padding: 0px 0px;
+		transform: translateX(0%);
+		opacity: 0;
+	}
+	.search-facets.active {
+		width: 290px;
+		margin-right: 30px;
+		min-width: 300px;
+		opacity: 1;
 	}
 	.search-resultset {
 		display: flex;

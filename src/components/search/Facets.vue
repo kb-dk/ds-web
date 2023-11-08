@@ -24,68 +24,71 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, onMounted, ref, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
+import { useRoute, useRouter } from 'vue-router';
 
 import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'Facets',
-	data: () => ({
-		showFacets: false,
-		currentFacets: Object as unknown as FacetResultType,
-		lastUpdate: 0,
-	}),
 
 	props: {
 		facetResults: { type: Object as PropType<FacetResultType>, required: true },
 	},
 
-	setup() {
+	setup(props, { emit }) {
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
-	},
+		const showFacets = ref(false);
+		const currentFacets = ref(Object as unknown as FacetResultType);
+		const lastUpdate = ref(0);
+		const route = useRoute();
+		const router = useRouter();
 
-	mounted() {
-		this.currentFacets = this.facetResults;
-		this.showFacets = true;
-	},
+		onMounted(() => {
+			currentFacets.value = props.facetResults;
+			showFacets.value = true;
 
-	created() {
-		window.addEventListener('filter-update', (event) => {
-			this.updateFilters(event as CustomEvent);
-			event.stopPropagation();
-			event.preventDefault();
+			window.addEventListener('filter-update', filterUpdateHelper);
+
+			watch(
+				() => props.facetResults,
+				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
+					if (newFacets !== prevFacets) {
+						showFacets.value = false;
+						let sum = '';
+						Object.entries(prevFacets).forEach(([key, value]) => {
+							sum += value;
+						});
+						setTimeout(
+							() => {
+								currentFacets.value = newFacets;
+								lastUpdate.value = new Date().getTime();
+								showFacets.value = true;
+							},
+							sum.length <= 0 ? 0 : 600,
+						);
+					}
+				},
+			);
 		});
 
-		this.$watch(
-			() => this.facetResults,
-			(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-				if (newFacets !== prevFacets) {
-					this.showFacets = false;
-					let sum = '';
-					Object.entries(prevFacets).forEach(([key, value]) => {
-						sum += value;
-					});
-					setTimeout(
-						() => {
-							this.currentFacets = newFacets;
-							this.lastUpdate = new Date().getTime();
-							this.showFacets = true;
-						},
-						sum.length <= 0 ? 0 : 600,
-					);
-				}
-			},
-		);
-	},
-	methods: {
-		filterExists(key: string, title: string) {
-			return this.searchResultStore.filters.includes(`fq=${key}:"${title}"`);
-		},
-		updateFilters: function (e: CustomEvent) {
-			/* Future coder - don't even ask, the line of code below took me hours.... 
+		onUnmounted(() => {
+			window.removeEventListener('filter-update', filterUpdateHelper);
+		});
+
+		const filterExists = (key: string, title: string) => {
+			return searchResultStore.filters.includes(`fq=${key}:"${title}"`);
+		};
+
+		const filterUpdateHelper = (e: Event) => {
+			updateFilters(e as CustomEvent);
+			emit('facetUpdate');
+		};
+
+		const updateFilters = (e: CustomEvent) => {
+			/* Future coder - don't even ask, the line of code below took me hours....
 				 I wanted to do it the right way: const routeQueries = { ...this.$route.query };
 				 but no worki - instead I had to do this copy trickery below.
 				 For more info on why this is broken:
@@ -94,9 +97,9 @@ export default defineComponent({
 			//TODO the logic below could be split up into a couple of methods.
 			//Lets do that when we know the functionality is solid and we refactor
 			//the whole component to composition API
-			const routeQueries = JSON.parse(JSON.stringify(this.$route.query));
+			const routeQueries = JSON.parse(JSON.stringify(route.query));
 			if (e.detail.add) {
-				const newFilter = encodeURIComponent(e.detail.rawFilter);
+				const newFilter = encodeURIComponent(e.detail.filter);
 				if (!routeQueries.fq) {
 					routeQueries.fq = [newFilter];
 				} else if (Array.isArray(routeQueries.fq)) {
@@ -105,18 +108,18 @@ export default defineComponent({
 					//This will only trigger if someone manipulates the url manually
 					routeQueries.fq = [routeQueries.fq, newFilter];
 				}
-				this.searchResultStore.addFilter(e.detail.filter);
+				searchResultStore.addFilter(`fq=${e.detail.filter}`);
 			} else {
-				const filterToRemove = encodeURIComponent(e.detail.rawFilter);
+				const filterToRemove = encodeURIComponent(e.detail.filter);
 				routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
-				this.searchResultStore.removeFilter(e.detail.filter);
+				searchResultStore.removeFilter(`fq=${e.detail.filter}`);
 			}
-			this.$router.push({ query: routeQueries });
-			this.searchResultStore.getSearchResults(this.searchResultStore.currentQuery);
-		},
+			router.push({ query: routeQueries });
+			searchResultStore.getSearchResults(searchResultStore.currentQuery);
+		};
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.
-		simplifyFacets(facet: Array<string>) {
+		const simplifyFacets = (facet: Array<string>) => {
 			const allPairedFacets: Array<string[]> = [];
 			let facetPair: Array<string> = [];
 			facet.forEach((facet, i) => {
@@ -131,7 +134,9 @@ export default defineComponent({
 				}
 			});
 			return allPairedFacets;
-		},
+		};
+
+		return { showFacets, currentFacets, lastUpdate, searchResultStore, filterExists, updateFilters, simplifyFacets };
 	},
 });
 </script>
@@ -139,7 +144,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .facet-container {
 	display: flex;
-	background-color: rgba(30, 30, 30, 0.1);
 	transition: all 1.3s linear;
 	height: auto;
 	flex-direction: column;
