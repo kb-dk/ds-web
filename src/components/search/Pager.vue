@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { ref, computed, defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
 	name: 'Pager',
@@ -41,25 +42,36 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const route = useRoute();
+		const router = useRouter();
 		const currentPageRef = ref(1);
 
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
 
+		const navigate = () => {
+			const start = (currentPageRef.value - 1) * props.itemsPerPage;
+			const query = { ...route.query, start };
+			router.push({ query });
+		};
+
 		const nextPage = () => {
 			if (currentPageRef.value < totalPages.value) {
 				currentPageRef.value++;
+				navigate();
 			}
 		};
 
 		const prevPage = () => {
 			if (currentPageRef.value > 1) {
 				currentPageRef.value--;
+				navigate();
 			}
 		};
 
 		const goToPage = (page: number) => {
 			if (page >= 1 && page <= totalPages.value) {
 				currentPageRef.value = page;
+				navigate();
 			}
 		};
 
@@ -119,7 +131,6 @@ export default defineComponent({
 			return pages;
 		});
 
-		//TODO watch currentPageRef and act accordingly
 		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages };
 	},
 });
