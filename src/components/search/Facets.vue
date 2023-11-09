@@ -79,7 +79,8 @@ export default defineComponent({
 		});
 
 		const filterExists = (key: string, title: string) => {
-			return searchResultStore.filters.includes(`fq=${key}:"${title}"`);
+			const filterString = `${key}:"${title}"`;
+			return searchResultStore.filters.includes(`fq=${encodeURIComponent(filterString)}`);
 		};
 
 		const filterUpdateHelper = (e: Event) => {
@@ -108,14 +109,16 @@ export default defineComponent({
 					//This will only trigger if someone manipulates the url manually
 					routeQueries.fq = [routeQueries.fq, newFilter];
 				}
-				searchResultStore.addFilter(`fq=${e.detail.filter}`);
 			} else {
+				// if there's more than one, it's an array. If there's just one, it a string (apparently), that we can just remove.
 				const filterToRemove = encodeURIComponent(e.detail.filter);
-				routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
-				searchResultStore.removeFilter(`fq=${e.detail.filter}`);
+				if (Array.isArray(routeQueries.fq)) {
+					routeQueries.fq = routeQueries.fq.filter((item: string) => item !== filterToRemove);
+				} else {
+					routeQueries.fq = undefined;
+				}
 			}
 			router.push({ query: routeQueries });
-			searchResultStore.getSearchResults(searchResultStore.currentQuery);
 		};
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.

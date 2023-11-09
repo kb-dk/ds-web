@@ -50,7 +50,7 @@ export default defineComponent({
 			watch(
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
-					console.log('new results!', newResults, prevResults);
+					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
 						showResults.value = false;
 						setTimeout(

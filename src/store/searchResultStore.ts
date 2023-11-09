@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
+import { LocationQueryValue } from 'vue-router';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResultType>);
@@ -28,12 +29,25 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const setFiltersFromURL = (URLFilters: string[] | LocationQueryValue[] | string) => {
+		filters.value = [];
+		if (URLFilters !== undefined) {
+			if (URLFilters instanceof Array) {
+				URLFilters.forEach((filter) => {
+					filters.value.push(`fq=${filter}`);
+				});
+			} else {
+				filters.value.push(`fq=${URLFilters}`);
+			}
+		}
+	};
+
 	const resetSearch = () => {
 		resetFilters();
 		resetResults();
 		currentQuery.value = '';
 		searchFired.value = false;
-		//console.log('resetting everything o/', searchFired.value, currentQuery.value, searchResult.value, filters.value);
+		console.log('platform reset');
 	};
 
 	const resetResults = () => {
@@ -50,17 +64,17 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		//Disabled until DISC-390 is solved
-		/*let fq = '';
+		let searchFilters = '';
 		if (filters.value.length > 0) {
-			filters.value.forEach((filt: string, index) => {
-				fq += filt;
+			filters.value.forEach((filt: string) => {
+				searchFilters += `&${filt}`;
 			});
-		}*/
+		}
 		try {
+			console.log('Querying Solr with query', query, 'and filters', searchFilters);
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
-			const responseData = await APIService.getSearchResults(query, filters.value);
+			const responseData = await APIService.getSearchResults(query, searchFilters);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
 			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
@@ -92,5 +106,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		removeFilter,
 		getSearchResults,
 		resetSearch,
+		setFiltersFromURL,
 	};
 });
