@@ -158,12 +158,9 @@ export default defineComponent({
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
+				searchResultStore.getSearchResults(route.query.q as string);
 			}
 		});
-
-		if (route.query.q !== undefined) {
-			searchResultStore.getSearchResults(route.query.q as string);
-		}
 
 		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
 		   the ref is not actually present in onMounted, which is super weird. But we can watch for when it enters.
@@ -194,25 +191,21 @@ export default defineComponent({
 			() => router.currentRoute.value,
 			(newp: RouteLocationNormalizedLoaded, prevp: RouteLocationNormalizedLoaded) => {
 				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
-				if (checkParamUpdate(newp, prevp) && router.currentRoute.value.query.q !== undefined) {
-					searchResultStore.setFiltersFromURL(router.currentRoute.value.query.fq as string[]);
-					searchResultStore.getSearchResults(router.currentRoute.value.query.q as string);
+				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
+					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
+					searchResultStore.getSearchResults(route.query.fq as string);
 				}
-				if (router.currentRoute.value.query.q === undefined) {
+				if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
 				}
 			},
 		);
 
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
-			if (
+			return (
 				newParams.query.q !== prevParams.query.q ||
 				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq)
-			) {
-				return true;
-			} else {
-				return false;
-			}
+			);
 		};
 
 		const updateFacetContainer = () => {
