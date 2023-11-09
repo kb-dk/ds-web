@@ -139,20 +139,17 @@ export default defineComponent({
 		onMounted(async () => {
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
+			const storedLocale = LocalStorageWrapper.get('locale') as string;
 			if (hasLocaleParam) {
 				const localeFromURL = route.query.locale;
 				// Just a safeguard aginst somebody trying to inject an unknown query
 				currentLocale.value = localeFromURL === 'da' || localeFromURL === 'en' ? localeFromURL : 'da';
-				return;
-			}
-
-			const storedLocale = LocalStorageWrapper.get('locale') as string;
-			if (storedLocale) {
+			} else if (storedLocale) {
 				locale.value = storedLocale;
 				currentLocale.value = storedLocale;
-				return;
+			} else {
+				currentLocale.value = 'da';
 			}
-			currentLocale.value = 'da';
 		});
 
 		onBeforeMount(() => {
