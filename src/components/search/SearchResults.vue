@@ -12,27 +12,16 @@
 			:placeholder="getPlaceholderImage()"
 		/>
 	</div>
-	<Pagination
-		v-if="numFound > 0"
-		:itemsPerPage="itemsPerPage"
-		:totalHits="numFound"
-		:numPagesToShow="numPagesToShow"
-	/>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch, onMounted, toRaw } from 'vue';
-import Pagination from '@/components/search/Pager.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 import '@/components/search/wc-result-item';
 
 export default defineComponent({
 	name: 'SearchResults',
-	components: {
-		Pagination,
-	},
-
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		numFound: { type: Number, required: true },
@@ -42,9 +31,6 @@ export default defineComponent({
 		const showResults = ref(false);
 		const currentResults = ref([] as GenericSearchResultType[]);
 		const lastUpdate = ref(0);
-		//if itemsPerPage turns out to be non user configurable we should make it static (remove ref)
-		const itemsPerPage = ref(10);
-		const numPagesToShow = 8;
 
 		const getPlaceholderImage = () => {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
@@ -86,8 +72,6 @@ export default defineComponent({
 			showResults,
 			currentResults,
 			lastUpdate,
-			itemsPerPage,
-			numPagesToShow,
 		};
 	},
 });

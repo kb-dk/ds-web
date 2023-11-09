@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="pager">
 		<button
 			@click="prevPage"
 			:disabled="currentPageRef === 1"
@@ -16,10 +16,10 @@
 				@click="goToPage(pageNumber as number)"
 				:class="{ active: pageNumber === currentPageRef }"
 			>
-				{{ pageNumber }}
+				<span>{{ pageNumber }}</span>
 			</button>
 		</span>
-		<span>{{ currentPageRef }} / {{ totalPages }}</span>
+		<!-- <span>{{ currentPageRef }} / {{ totalPages }}</span> -->
 		<button
 			@click="nextPage"
 			:disabled="currentPageRef === totalPages"
@@ -151,9 +151,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.active {
-	/*color: #002e70;*/
-	color: blue;
-	font-weight: bold;
+.pager {
+	display: flex;
+	justify-content: center;
+	padding-top: 25px;
+	padding-bottom: 50px;
+}
+.active span {
+	color: white;
+	background-color: #002e70;
+	text-decoration: none;
+}
+
+button {
+	border: 0px transparent;
+	background-color: transparent;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button span {
+	padding: 2px 5px;
+	text-decoration: underline;
+	color: #002e70;
+	border-radius: 3px;
+	transition: all 0.2s linear 0s;
 }
 </style>
