@@ -4,7 +4,11 @@
      "hitcount": "{n} result fund for | {n} results found for",
      "nohit":"Your search gave 0 results.",
      "showFilters":"Show filters",
-     "hideFilters":"Hide filters"
+     "hideFilters":"Hide filters",
+     "nextPage":"Next page",
+     "previousPage":"Previous page",
+     "page": "Page"
+
 
   },
   "record":{

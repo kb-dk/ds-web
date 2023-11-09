@@ -22,9 +22,9 @@ import '@/components/search/wc-result-item';
 
 export default defineComponent({
 	name: 'SearchResults',
-
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
+		numFound: { type: Number, required: true },
 	},
 
 	setup(props) {

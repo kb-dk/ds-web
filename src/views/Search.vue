@@ -61,13 +61,23 @@
 									/>
 								</div>
 							</div>
+
 							<div
 								ref="resultContainer"
 								class="search-results fullwidth"
 							>
-								<SearchResults :search-results="searchResultStore.searchResult" />
+								<SearchResults
+									:search-results="searchResultStore.searchResult"
+									:num-found="searchResultStore.numFound"
+								/>
 							</div>
 						</div>
+						<Pagination
+							v-if="searchResultStore.numFound > 0"
+							:itemsPerPage="itemsPerPage"
+							:totalHits="searchResultStore.numFound"
+							:numPagesToShow="numPagesToShow"
+						/>
 					</div>
 				</div>
 			</div>
@@ -127,6 +137,7 @@ import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import Pagination from '@/components/search/Pager.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -136,6 +147,7 @@ export default defineComponent({
 		SearchBarWrapper,
 		Facets,
 		GridDisplay,
+		Pagination,
 	},
 
 	setup() {
@@ -147,6 +159,9 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
 		const route = useRoute();
+
+		const itemsPerPage = ref(10);
+		const numPagesToShow = 8;
 
 		onMounted(() => {
 			searchResultStore.resetFilters();
@@ -234,6 +249,8 @@ export default defineComponent({
 			showFacets,
 			toggleFacets,
 			updateFacetContainer,
+			itemsPerPage,
+			numPagesToShow,
 		};
 	},
 });
