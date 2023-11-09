@@ -28,7 +28,6 @@ export default defineComponent({
 		const xReset = ref(false);
 
 		onMounted(() => {
-			console.log(searchResultStore.searchFired);
 			if (searchResultStore.searchFired) {
 				xReset.value = true;
 			}

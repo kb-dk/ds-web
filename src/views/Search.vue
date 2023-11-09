@@ -135,7 +135,7 @@ import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import Pagination from '@/components/search/Pager.vue';
 
@@ -163,12 +163,6 @@ export default defineComponent({
 		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
 
-		const getFacetQueryFromFacetURLParam = (facetUrlParam: string) => {
-			const decodedFacetParam = decodeURIComponent(facetUrlParam);
-			const [facetKey, facetValue] = decodedFacetParam.split(':');
-			return `fq=${facetKey}:${facetValue}`;
-		};
-
 		onMounted(() => {
 			searchResultStore.resetFilters();
 			if (route.query.q !== undefined) {
@@ -177,21 +171,11 @@ export default defineComponent({
 				});
 				const routeFacetQueries = route.query.fq;
 				if (routeFacetQueries) {
-					if (Array.isArray(routeFacetQueries)) {
-						routeFacetQueries.forEach((facet) => {
-							searchResultStore.addFilter(getFacetQueryFromFacetURLParam(facet as string));
-						});
-					} else {
-						searchResultStore.addFilter(getFacetQueryFromFacetURLParam(routeFacetQueries as string));
-					}
+					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
 				searchResultStore.getSearchResults(route.query.q as string);
 			}
 		});
-
-		if (route.query.q !== undefined) {
-			searchResultStore.getSearchResults(route.query.q as string);
-		}
 
 		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
 		   the ref is not actually present in onMounted, which is super weird. But we can watch for when it enters.
@@ -217,18 +201,27 @@ export default defineComponent({
 			},
 		);
 
-		// Watch the 'term' param and update search results if it changes
+		// Watch the url param and update search results if it changes
 		watch(
-			() => router.currentRoute.value.query.q as string,
-			(newq: string, prevq: string) => {
-				if (newq !== prevq && newq !== undefined) {
-					searchResultStore.getSearchResults(newq);
+			() => router.currentRoute.value,
+			(newp: RouteLocationNormalizedLoaded, prevp: RouteLocationNormalizedLoaded) => {
+				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
+				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
+					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
+					searchResultStore.getSearchResults(route.query.q as string);
 				}
-				if (newq === undefined) {
+				if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
 				}
 			},
 		);
+
+		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
+			return (
+				newParams.query.q !== prevParams.query.q ||
+				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq)
+			);
+		};
 
 		const updateFacetContainer = () => {
 			window.innerWidth < 800 ? toggleFacets(false) : null;
