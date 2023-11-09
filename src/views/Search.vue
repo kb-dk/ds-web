@@ -193,7 +193,7 @@ export default defineComponent({
 				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
-					searchResultStore.getSearchResults(route.query.fq as string);
+					searchResultStore.getSearchResults(route.query.q as string);
 				}
 				if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
