@@ -20,7 +20,12 @@
 			v-for="(pageNumber, index) in computedPages"
 			:key="index"
 		>
-			<span v-if="pageNumber === '...'">{{ pageNumber }}</span>
+			<span
+				class="dots"
+				v-if="pageNumber === '...'"
+			>
+				{{ pageNumber }}
+			</span>
 			<button
 				v-else
 				@click="goToPage(pageNumber as number)"
@@ -191,11 +196,13 @@ button {
 	cursor: pointer;
 }
 
-button span {
+button span,
+.dots {
 	padding: 2px 5px;
 	text-decoration: underline;
 	color: #002e70;
 	border-radius: 3px;
 	transition: all 0.2s linear 0s;
+	line-height: 25px;
 }
 </style>
