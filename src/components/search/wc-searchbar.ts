@@ -52,7 +52,6 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		console.log('YEARP', name, newValue);
 		if (name === 'reset-value') {
 			this.showXButton = JSON.parse(newValue.toLowerCase());
 			this.setResetVisibility(this.showXButton);

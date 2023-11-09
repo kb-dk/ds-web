@@ -133,7 +133,7 @@ export default defineComponent({
 			} else {
 				transitionName.value = 'swipe';
 			}
-			console.log(transitionName.value, ' IT IS');
+			console.log(transitionName.value, 'transition');
 		});
 
 		onMounted(async () => {
