@@ -13,6 +13,7 @@
 		/>
 	</div>
 	<Pagination
+		v-if="numFound > 0"
 		:itemsPerPage="itemsPerPage"
 		:totalHits="numFound"
 		:numPagesToShow="numPagesToShow"
