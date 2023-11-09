@@ -8,7 +8,12 @@
 				:title="$t('search.previousPage')"
 				class="prevPage"
 			>
-				&lt;
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_left
+				</i>
 			</span>
 		</button>
 		<span
@@ -34,7 +39,12 @@
 				class="nextPage"
 				:title="$t('search.nextPage')"
 			>
-				&gt;
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_right
+				</i>
 			</span>
 		</button>
 	</div>
