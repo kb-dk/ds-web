@@ -4,7 +4,17 @@
 			@click="prevPage"
 			:disabled="currentPageRef === 1"
 		>
-			Previous
+			<span
+				:title="$t('search.previousPage')"
+				class="prevPage"
+			>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_left
+				</i>
+			</span>
 		</button>
 		<span
 			v-for="(pageNumber, index) in computedPages"
@@ -15,6 +25,7 @@
 				v-else
 				@click="goToPage(pageNumber as number)"
 				:class="{ active: pageNumber === currentPageRef }"
+				:title="`${$t('search.page')} ${pageNumber}`"
 			>
 				<span>{{ pageNumber }}</span>
 			</button>
@@ -24,7 +35,17 @@
 			@click="nextPage"
 			:disabled="currentPageRef === totalPages"
 		>
-			Next
+			<span
+				class="nextPage"
+				:title="$t('search.nextPage')"
+			>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_right
+				</i>
+			</span>
 		</button>
 	</div>
 </template>

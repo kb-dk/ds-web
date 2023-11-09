@@ -4,7 +4,10 @@
      "hitcount": "{n} resultat fundet for | {n} resultater fundet for",
      "nohit":"Din søgning gav 0 resultater.",
      "showFilters":"Vis filtre",
-     "hideFilters":"Skjul filtre"
+     "hideFilters":"Skjul filtre",
+     "nextPage":"Næste side",
+     "previousPage":"Forrige side",
+     "page": "Side"
   },
   "record":{
      "title":"Titel",
