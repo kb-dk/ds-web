@@ -144,10 +144,12 @@ export default defineComponent({
 				const localeFromURL = route.query.locale;
 				// Just a safeguard aginst somebody trying to inject an unknown query
 				currentLocale.value = localeFromURL === 'da' || localeFromURL === 'en' ? localeFromURL : 'da';
+				locale.value = currentLocale.value;
 			} else if (storedLocale) {
 				locale.value = storedLocale;
 				currentLocale.value = storedLocale;
 			} else {
+				locale.value = 'da';
 				currentLocale.value = 'da';
 			}
 		});
