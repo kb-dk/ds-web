@@ -48,6 +48,7 @@
 								class="search-facets active"
 								ref="facetsContainer"
 							>
+								<div class="blur-bg"></div>
 								<div class="facet-background">
 									<button
 										class="facet-close-button"
@@ -127,7 +128,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
@@ -175,6 +176,10 @@ export default defineComponent({
 				}
 				searchResultStore.getSearchResults(route.query.q as string);
 			}
+		});
+
+		onUnmounted(() => {
+			window.document.body.classList.remove('remove-body-scroll');
 		});
 
 		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
@@ -388,6 +393,7 @@ h3 {
 .search-results {
 	position: relative;
 	max-width: 100%;
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
 }
 
 .container {
