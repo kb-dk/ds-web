@@ -269,7 +269,7 @@ body {
 	overflow: hidden;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 640px) {
 	.remove-body-scroll {
 		max-height: initial;
 		overflow: initial;
@@ -345,5 +345,25 @@ nav {
 
 .lang-switcher {
 	float: right;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+	width: 20px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: rgb(238, 238, 238);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgb(120, 120, 120);
+	border-radius: 20px;
+	border: 6px solid transparent;
+	background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgb(160, 160, 160);
 }
 </style>

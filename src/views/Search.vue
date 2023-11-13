@@ -409,6 +409,25 @@ h3 {
 	.container {
 		max-width: 990px;
 	}
+
+	.search-facets {
+		top: 20%;
+		height: 60%;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		width: 70% !important;
+	}
+
+	.search-facets::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	.search-facets.active {
+		width: 70% !important;
+	}
+
+	.fullwidth {
+		max-width: calc(100%);
+	}
 }
 @media (min-width: 800px) {
 	.search-results {
@@ -435,6 +454,7 @@ h3 {
 		padding: 0px 0px;
 		transform: translateX(0%);
 		opacity: 0;
+		box-shadow: initial;
 	}
 	.search-facets.active {
 		width: 290px;
