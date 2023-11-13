@@ -420,7 +420,7 @@ h3 {
 		top: 20%;
 		height: 60%;
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-		width: 70% !important;
+		width: 70%;
 	}
 
 	.search-facets::-webkit-scrollbar-track {
@@ -428,7 +428,7 @@ h3 {
 	}
 
 	.search-facets.active {
-		width: 70% !important;
+		width: 70%;
 	}
 
 	.fullwidth {
