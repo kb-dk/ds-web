@@ -174,24 +174,6 @@ temporary styling until patterns from design system are implemented
 	text-decoration: none;
 }
 
-.material-icons {
-	font-family: 'Material Icons';
-	font-weight: normal;
-	font-style: normal;
-	font-size: 16px;
-	line-height: 1;
-	letter-spacing: normal;
-	text-transform: none;
-	display: inline-block;
-	white-space: nowrap;
-	word-wrap: normal;
-	direction: ltr;
-	-webkit-font-feature-settings: 'liga';
-	-webkit-font-smoothing: antialiased;
-	position: relative;
-	top: 2px;
-}
-
 .get-link {
 	font-family: noway, sans-serif;
 	background-color: transparent;
