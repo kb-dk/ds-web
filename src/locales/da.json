@@ -7,8 +7,9 @@
      "hideFilters":"Skjul filtre",
      "nextPage":"Næste side",
      "previousPage":"Forrige side",
-     "page": "Side"
-  },
+     "page": "Side",
+     "goToPage":"Gå til side {n}"
+   },
   "record":{
      "title":"Titel",
      "genre":"Genre",

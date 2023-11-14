@@ -3,18 +3,15 @@
 		<button
 			@click="prevPage"
 			:disabled="currentPageRef === 1"
+			:title="$t('search.previousPage')"
+			:aria-label="$t('search.previousPage')"
 		>
-			<span
-				:title="$t('search.previousPage')"
-				class="prevPage"
+			<i
+				class="material-icons"
+				aria-hidden="true"
 			>
-				<i
-					class="material-icons"
-					aria-hidden="true"
-				>
-					chevron_left
-				</i>
-			</span>
+				chevron_left
+			</i>
 		</button>
 		<span
 			v-for="(pageNumber, index) in computedPages"
@@ -31,6 +28,7 @@
 				@click="goToPage(pageNumber as number)"
 				:class="{ active: pageNumber === currentPageRef }"
 				:title="`${$t('search.page')} ${pageNumber}`"
+				:aria-label="$t('search.goToPage', Number(pageNumber))"
 			>
 				<span>{{ pageNumber }}</span>
 			</button>
@@ -39,18 +37,15 @@
 		<button
 			@click="nextPage"
 			:disabled="currentPageRef === totalPages"
+			:title="$t('search.nextPage')"
+			:aria-label="$t('search.nextPage')"
 		>
-			<span
-				class="nextPage"
-				:title="$t('search.nextPage')"
+			<i
+				class="material-icons"
+				aria-hidden="true"
 			>
-				<i
-					class="material-icons"
-					aria-hidden="true"
-				>
-					chevron_right
-				</i>
-			</span>
+				chevron_right
+			</i>
 		</button>
 	</div>
 </template>
@@ -204,5 +199,9 @@ button span,
 	border-radius: 3px;
 	transition: all 0.2s linear 0s;
 	line-height: 25px;
+}
+
+.dots {
+	text-decoration: none;
 }
 </style>

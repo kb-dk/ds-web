@@ -7,9 +7,8 @@
      "hideFilters":"Hide filters",
      "nextPage":"Next page",
      "previousPage":"Previous page",
-     "page": "Page"
-
-
+     "page": "Page",
+     "goToPage":"Go to page {n}"
   },
   "record":{
      "title":"Title",
