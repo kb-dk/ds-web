@@ -33,7 +33,6 @@
 				<span>{{ pageNumber }}</span>
 			</button>
 		</span>
-		<!-- <span>{{ currentPageRef }} / {{ totalPages }}</span> -->
 		<button
 			@click="nextPage"
 			:disabled="currentPageRef === totalPages"
@@ -51,8 +50,9 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, defineComponent } from 'vue';
+import { ref, computed, onMounted, defineComponent, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'Pager',
@@ -66,6 +66,7 @@ export default defineComponent({
 		const route = useRoute();
 		const router = useRouter();
 		const currentPageRef = ref(1);
+		const searchResultStore = useSearchResultStore();
 
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
 
@@ -165,6 +166,15 @@ export default defineComponent({
 				initializePager();
 			}
 		});
+
+		watch(
+			() => searchResultStore.start,
+			(newStart: string, prevStart: string) => {
+				if (newStart !== prevStart) {
+					initializePager();
+				}
+			},
+		);
 
 		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages };
 	},

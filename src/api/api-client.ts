@@ -27,8 +27,10 @@ export class APIServiceClient {
 	}
 
 	//Search and record methods
-	async getSearchResults(query: string, filters: string): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`search/?q=${encodeURIComponent(query)}&q.op=OR&indent=true&facet=true${filters}`);
+	async getSearchResults(query: string, filters: string, start: string): Promise<APISearchResponseType> {
+		return await this.httpClient.get(
+			`search/?q=${encodeURIComponent(query)}&q.op=OR&indent=true&facet=true${filters}${start}`,
+		);
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponseType> {
