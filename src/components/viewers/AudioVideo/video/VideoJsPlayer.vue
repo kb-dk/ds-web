@@ -1,10 +1,12 @@
 <template>
+	<div class="mobile-edge edge top"></div>
 	<div class="video-player">
 		<video
 			ref="videoElement"
 			class="video-js vjs-default-skin vjs-custom"
 		></video>
 	</div>
+	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script>
@@ -60,6 +62,31 @@ temporary styling until patterns from design system are implemented
 	aspect-ratio: 4/2;
 	margin-left: 0px;
 	overflow-y: hidden;
+	padding-top: 31px;
+	padding-bottom: 31px;
+	background-color: #caf0fe;
+}
+
+.edge {
+	height: 31px;
+}
+
+.mobile-edge {
+	width: 100%;
+	position: absolute;
+	background-color: white;
+	clip-path: polygon(100% 0, 0 0, 0 100%);
+	z-index: 3;
+	left: 0px;
+}
+
+.top {
+	clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.bottom {
+	clip-path: polygon(100% 0, 100% 100%, 0 100%);
+	margin-top: -30px;
 }
 
 @media (min-width: 640px) {
@@ -71,14 +98,19 @@ temporary styling until patterns from design system are implemented
 }
 
 @media (min-width: 990px) {
+	.mobile-edge {
+		display: none;
+	}
 	.video-player {
 		width: 100%;
 		margin-left: 0px;
 		max-width: 100%;
+		padding: 0px;
 	}
 }
 
 .vjs-custom {
 	height: 100%;
+	width: 100%;
 }
 </style>
