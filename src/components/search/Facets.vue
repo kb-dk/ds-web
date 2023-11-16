@@ -83,22 +83,57 @@ export default defineComponent({
 			return searchResultStore.filters.includes(`fq=${encodeURIComponent(filterString)}`);
 		};
 
+		const updateFilters = (e: CustomEvent) => {
+			const routeQueries = e.detail.add ? addFilter(route, e.detail.filter) : removeFilter(route, e.detail.filter);
+
+			router.push({ query: routeQueries });
+		};
+
 		const filterUpdateHelper = (e: Event) => {
 			updateFilters(e as CustomEvent);
 			emit('facetUpdate');
 		};
 
-		const updateFilters = (e: CustomEvent) => {
-			/* Future coder - don't even ask, the line of code below took me hours....
+		const addFilter = (route, filter) => {
+			const routeQueries = JSON.parse(JSON.stringify(route.query));
+			const newFilter = encodeURIComponent(filter);
+
+			if (!routeQueries.fq) {
+				routeQueries.fq = [newFilter];
+			} else if (Array.isArray(routeQueries.fq)) {
+				routeQueries.fq.push(newFilter);
+			} else {
+				// This will only trigger if someone manipulates the url manually
+				routeQueries.fq = [routeQueries.fq, newFilter];
+			}
+
+			return routeQueries;
+		};
+
+		const removeFilter = (route, filter) => {
+			const routeQueries = JSON.parse(JSON.stringify(route.query));
+			const filterToRemove = encodeURIComponent(filter);
+
+			if (Array.isArray(routeQueries.fq)) {
+				routeQueries.fq = routeQueries.fq.filter((item) => item !== filterToRemove);
+			} else {
+				routeQueries.fq = undefined;
+			}
+
+			return routeQueries;
+		};
+
+		//const updateFilters = (e: CustomEvent) => {
+		/* Future coder - don't even ask, the line of code below took me hours....
 				 I wanted to do it the right way: const routeQueries = { ...this.$route.query };
 				 but no worki - instead I had to do this copy trickery below.
 				 For more info on why this is broken:
 				 https://github.com/vuejs/vue-router/issues/1182
 				 **/
-			//TODO the logic below could be split up into a couple of methods.
-			//Lets do that when we know the functionality is solid and we refactor
-			//the whole component to composition API
-			const routeQueries = JSON.parse(JSON.stringify(route.query));
+		//TODO the logic below could be split up into a couple of methods.
+		//Lets do that when we know the functionality is solid and we refactor
+		//the whole component to composition API
+		/*const routeQueries = JSON.parse(JSON.stringify(route.query));
 			if (e.detail.add) {
 				const newFilter = encodeURIComponent(e.detail.filter);
 				if (!routeQueries.fq) {
@@ -119,7 +154,7 @@ export default defineComponent({
 				}
 			}
 			router.push({ query: routeQueries });
-		};
+		};*/
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.
 		const simplifyFacets = (facet: Array<string>) => {
