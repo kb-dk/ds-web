@@ -213,6 +213,7 @@ export default defineComponent({
 				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
+					searchResultStore.setStartFromURL(route.query.start as string);
 					searchResultStore.getSearchResults(route.query.q as string);
 				}
 				if (route.query.q === undefined) {
@@ -224,7 +225,8 @@ export default defineComponent({
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
 			return (
 				newParams.query.q !== prevParams.query.q ||
-				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq)
+				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq) ||
+				newParams.query.start !== prevParams.query.start
 			);
 		};
 

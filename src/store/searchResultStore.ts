@@ -17,6 +17,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const { t } = useI18n();
 	const numFound = ref(0);
 	const loading = ref(false);
+	const start = ref('');
 	const error = ref('');
 	const currentQuery = ref('');
 	const noHits = ref(false);
@@ -41,13 +42,20 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			}
 		}
 	};
+	const setStartFromURL = (URLStart: string | undefined) => {
+		if (URLStart) {
+			//Check if url param string is actually some kind of numeric value
+			if (!Number.isNaN(Number(URLStart))) {
+				start.value = URLStart === '0' ? '' : URLStart;
+			}
+		}
+	};
 
 	const resetSearch = () => {
 		resetFilters();
 		resetResults();
 		currentQuery.value = '';
 		searchFired.value = false;
-		console.log('platform reset');
 	};
 
 	const resetResults = () => {
@@ -74,7 +82,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			console.log('Querying Solr with query', query, 'and filters', searchFilters);
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
-			const responseData = await APIService.getSearchResults(query, searchFilters);
+			const startParam = start.value === '' ? '' : `&start=${start.value}`;
+			const responseData = await APIService.getSearchResults(query, searchFilters, startParam as string);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
 			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
@@ -101,11 +110,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		noHits,
 		filters,
 		searchFired,
+		start,
 		addFilter,
 		resetFilters,
 		removeFilter,
 		getSearchResults,
 		resetSearch,
 		setFiltersFromURL,
+		setStartFromURL,
 	};
 });
