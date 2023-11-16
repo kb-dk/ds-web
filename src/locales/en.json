@@ -11,6 +11,9 @@
      "goToPage":"Go to page {n}"
   },
   "record":{
+     "duration":"Duration",
+     "noBoardcastData":"No air date",
+     "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
      "copy":"Copy reference for this content",

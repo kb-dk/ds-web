@@ -11,6 +11,9 @@
      "goToPage":"Gå til side {n}"
    },
   "record":{
+     "duration":"Varighed",
+     "noBoardcastData":"Ingen sendetid",
+     "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
      "copy": "Kopier henvisning til dette indhold",
