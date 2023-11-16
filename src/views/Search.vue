@@ -4,6 +4,7 @@
 			ref="searchContainer"
 			class="search-container"
 		>
+			<div class="mobile-edge edge"></div>
 			<SearchBarWrapper></SearchBarWrapper>
 		</div>
 		<Transition
@@ -296,6 +297,14 @@ h3 {
 	height: 31px;
 }
 
+.mobile-edge {
+	width: 100%;
+	position: absolute;
+	background-color: white;
+	clip-path: polygon(100% 0, 0 0, 0 100%);
+	z-index: 3;
+}
+
 .edge.blue {
 	width: 100%;
 	position: absolute;
@@ -477,6 +486,9 @@ h3 {
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
+	.mobile-edge {
+		display: none;
+	}
 	.container {
 		display: flex;
 		flex-direction: column;
