@@ -13,7 +13,7 @@
 					<h3>Sendt</h3>
 					<div>
 						<span class="material-icons blue">event</span>
-						{{ getBroadcastDate(recordData.startTime) }}
+						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
 					<div>
 						<span class="material-icons blue">schedule</span>
@@ -89,27 +89,20 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, onMounted, PropType, ref } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/video/VideoJsPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
+import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
-	data() {
-		return {
-			lastPath: null as null | string,
-		};
-	},
-	components: {
-		VideoPlayer,
-		Duration,
-		GridDisplay,
-	},
 	props: {
 		recordData: {
 			type: Object as PropType<BroadcastRecordType>,
@@ -120,38 +113,25 @@ export default defineComponent({
 			required: false,
 		},
 	},
-	created() {
-		this.lastPath = this.$router.options.history.state.back as string;
+	components: {
+		VideoPlayer,
+		Duration,
+		GridDisplay,
 	},
-	methods: {
-		getCurrentUrl() {
+	setup() {
+		const lastPath = ref('');
+		const router = useRouter();
+		const { locale } = useI18n();
+
+		onMounted(() => {
+			lastPath.value = router.options.history.state.back as string;
+		});
+
+		const getCurrentUrl = () => {
 			copyTextToClipboard();
-		},
+		};
 
-		getBroadcastDate: (isoDate: string) => {
-			const date = new Date(isoDate);
-
-			// Define formatting options - had to do the weird const typing...
-			const options = {
-				year: 'numeric' as const,
-				month: 'long' as const,
-				day: 'numeric' as const,
-			};
-
-			return new Intl.DateTimeFormat('da-DK', options).format(date);
-		},
-		getBroadcastTime: (isoDate: string) => {
-			const dateObj = new Date(isoDate);
-
-			// Formatting options - had to do the weird const typing...
-			const options = {
-				hour: '2-digit' as const,
-				minute: '2-digit' as const,
-				hour12: false as const,
-			};
-
-			return new Intl.DateTimeFormat('en-GB', options).format(dateObj);
-		},
+		return { lastPath, locale, getCurrentUrl, getBroadcastDate, getBroadcastTime };
 	},
 });
 </script>

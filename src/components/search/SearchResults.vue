@@ -10,6 +10,16 @@
 			:resultData="res"
 			:show="showResults"
 			:placeholder="getPlaceholderImage()"
+			:duration="
+				locale === 'da'
+					? t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
+					: t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
+			"
+			:starttime="
+				res.startTime
+					? getBroadcastDate(res.startTime, locale) + ' ' + t('record.timestamp') + getBroadcastTime(res.startTime)
+					: t('record.noBoardcastData')
+			"
 		/>
 	</div>
 </template>
@@ -17,6 +27,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch, onMounted, toRaw } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-result-item';
 
@@ -28,6 +40,7 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const { t, locale } = useI18n();
 		const showResults = ref(false);
 		const currentResults = ref([] as GenericSearchResultType[]);
 		const lastUpdate = ref(0);
@@ -67,11 +80,16 @@ export default defineComponent({
 		});
 
 		return {
+			formatDuration,
+			getBroadcastDate,
+			getBroadcastTime,
 			getPlaceholderImage,
 			getAltTxt,
 			showResults,
 			currentResults,
 			lastUpdate,
+			t,
+			locale,
 		};
 	},
 });

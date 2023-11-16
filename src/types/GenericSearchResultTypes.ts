@@ -23,12 +23,16 @@ export interface GenericSearchResultType {
 	list_of_categories: string[];
 	place_of_production: string;
 	resource_description: string;
+	creator_affiliation: string[];
 	shelf_location: string;
 	title: string;
 	topic: string[];
 	type_of_resource: string[];
 	thumbnail: string;
 	_version: number;
+	startTime?: string;
+	endTime?: string;
+	duration?: string;
 }
 
 export interface FacetsType {

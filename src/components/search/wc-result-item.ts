@@ -30,7 +30,7 @@ class ResultComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['number', 'show', 'vueRouting'];
+		return ['show', 'duration', 'starttime'];
 	}
 
 	connectedCallback() {
@@ -56,13 +56,9 @@ class ResultComponent extends HTMLElement {
 		title && (title.textContent = resultData.title);
 
 		const where = this.shadow.querySelector('.where');
-		where && (where.textContent = 'KANAL');
-
-		const when = this.shadow.querySelector('.when');
-		when && (when.textContent = 'TIDSPUNKT');
-
-		const duration = this.shadow.querySelector('.duration');
-		duration && (duration.textContent = 'VARIGHED');
+		if (where && resultData.creator_affiliation) {
+			where.textContent = resultData.creator_affiliation[0] + ',';
+		}
 
 		const summary = this.shadow.querySelector('.summary');
 		summary &&
@@ -79,10 +75,18 @@ class ResultComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === 'number') {
-			const number = this.shadow.querySelector('number');
-			this.number = Number(newValue);
-			number && (number.textContent = Number(newValue + 1).toString());
+		if (name === 'duration') {
+			const duration = this.shadow.querySelector('.duration');
+
+			if (duration && newValue !== undefined) {
+				duration.textContent = newValue;
+			}
+		}
+		if (name === 'starttime') {
+			const when = this.shadow.querySelector('.when');
+			if (when && newValue !== undefined) {
+				when.textContent = newValue;
+			}
 		}
 		if (name === 'show') {
 			if (newValue === 'false') {
@@ -93,9 +97,6 @@ class ResultComponent extends HTMLElement {
 				this.style.transform = 'translateY(0px)'; */
 			}
 		}
-		if (name === 'vueRouting') {
-			newValue === 'true' ? (this.vueRouting = true) : (this.vueRouting = false);
-		}
 	}
 }
 
@@ -104,10 +105,10 @@ const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 		<div class="information">
 		<a role="link" class="title"></a>
 		<div class="subtitle">
-			<span class="material-icons icons">tv</span>
+			<span class="material-icons icons tv">tv</span>
 			<span class="where"></span>
 			<span class="when"></span>
-			<span class="material-icons icons">schedule</span>
+			<span class="material-icons icons schedule">schedule</span>
 			<span class="duration"></span>
 		</div>
 			<div class="summary"></div>
@@ -182,9 +183,13 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 		}
 
 		.where, .when, .duration {
-			padding-right:15px;
+			padding-right:5px;
 			text-overflow: ellipsis;
 			font-size:14px;
+		}
+
+		.where:empty, .when:empty, .duration:empty {
+			padding:0px;
 		}
 		.summary {
 			overflow: hidden;
