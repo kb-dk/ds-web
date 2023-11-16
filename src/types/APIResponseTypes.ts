@@ -33,6 +33,15 @@ export interface APIMoreLikeThisResponseType {
 		responseHeader: {
 			QTime: number;
 			status: number;
+			params: {
+				fq: string[] | string;
+				q: string;
+				rows: string;
+				start: string;
+				wt: string;
+				indent: string;
+				facet: string;
+			};
 		};
 	};
 }
