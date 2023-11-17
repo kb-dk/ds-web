@@ -258,9 +258,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		position:absolute;
 		background-color:#caf0fe;
 		clip-path: polygon(0 0, 0 100%, 100% 0);
-		margin-top:-1px;
 		z-index: 3;
-		top:93px;
 	}
 	a {
 		font-weight: 700;
