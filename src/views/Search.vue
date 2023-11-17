@@ -215,7 +215,9 @@ export default defineComponent({
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setStartFromURL(route.query.start as string);
-					searchResultStore.getSearchResults(route.query.q as string);
+					searchResultStore.getSearchResults(route.query.q as string).then(() => {
+						window.scrollTo({ top: 0, behavior: 'smooth' });
+					});
 				}
 				if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
