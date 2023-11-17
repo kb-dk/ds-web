@@ -96,6 +96,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			spinnerStore.toggleSpinner(false);
 			loading.value = false;
 			searchFired.value = true;
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	};
 
