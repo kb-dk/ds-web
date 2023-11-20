@@ -37,7 +37,12 @@ locales.forEach((locale) => {
 				global: {
 					plugins: [i18n],
 				},
-			});
+				/*Had to add 'never' here to please TypeScript compiler. I think this is OK
+				as the typing is not the core test here. The props are always strings and 
+				the rest of the setup (i18N) is not - typing wise - part of the core functionality 
+				test either  		
+				*/
+			} as never);
 		};
 
 		it('renders formatted duration when isoDuration prop is provided', async () => {
