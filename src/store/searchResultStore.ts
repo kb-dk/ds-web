@@ -51,9 +51,14 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const resetStart = () => {
+		start.value = '0';
+	};
+
 	const resetSearch = () => {
 		resetFilters();
 		resetResults();
+		resetStart();
 		currentQuery.value = '';
 		searchFired.value = false;
 	};
@@ -118,5 +123,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSearch,
 		setFiltersFromURL,
 		setStartFromURL,
+		resetStart,
 	};
 });
