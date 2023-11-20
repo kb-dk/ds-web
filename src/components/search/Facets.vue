@@ -122,6 +122,7 @@ export default defineComponent({
 
 		const updateFilters = (e: CustomEvent) => {
 			const routeQueries = e.detail.add ? addFilter(route, e.detail.filter) : removeFilter(route, e.detail.filter);
+			routeQueries.start = 0;
 			router.push({ query: routeQueries });
 		};
 

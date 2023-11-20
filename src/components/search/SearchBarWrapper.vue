@@ -98,7 +98,7 @@ export default defineComponent({
 
 		const search = () => {
 			if (searchQuery.value) {
-				router.push({ name: 'Home', query: { q: searchQuery.value } });
+				router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
 			}
 		};
 
