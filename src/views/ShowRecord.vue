@@ -4,7 +4,13 @@
 			<!-- TODO handle empty response scenario -->
 			<div v-if="recordData">
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
-					<BroadcastRecordMetadataView
+					<BroadcastVideoRecordMetadataView
+						:more-like-this-records="moreLikeThisRecords"
+						:record-data="(recordData as BroadcastRecordType)"
+					/>
+				</div>
+				<div v-if="recordType === 'AudioObject'">
+					<BroadcastAudioRecordMetadataView
 						:more-like-this-records="moreLikeThisRecords"
 						:record-data="(recordData as BroadcastRecordType)"
 					/>
@@ -22,7 +28,9 @@ import { defineComponent, onMounted, ref, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
-import BroadcastRecordMetadataView from '@/components/records/BroadcastRecord.vue';
+import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVideoRecord.vue';
+import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
+
 import { useI18n } from 'vue-i18n';
 import { AxiosError } from 'axios';
 
@@ -36,7 +44,8 @@ export default defineComponent({
 	name: 'ShowRecord',
 	components: {
 		GenericRecordMetadataView,
-		BroadcastRecordMetadataView,
+		BroadcastVideoRecordMetadataView,
+		BroadcastAudioRecordMetadataView,
 	},
 
 	setup() {
