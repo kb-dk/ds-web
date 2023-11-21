@@ -20,7 +20,8 @@
      "copyTitleSuccess":"Copying successful.",
      "copyMessageSuccess":"The link was successfully copied to the clipboard.",
      "copyTitleFailed":"Copying failed.",
-     "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead."
+     "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead.",
+     "moreMetadataBroadcast":"Additional information about the broadcast"
   },
   "duration":{
    "hours":"h",
