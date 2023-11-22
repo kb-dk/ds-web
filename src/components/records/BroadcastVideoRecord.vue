@@ -90,7 +90,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
-import VideoPlayer from '@/components/viewers/AudioVideo/video/VideoJsPlayer.vue';
+import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';

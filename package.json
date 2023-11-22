@@ -16,11 +16,13 @@
     "axios": "^0.27.2",
     "copy-webpack-plugin": "^11.0.0",
     "gsap": "^3.12.2",
+    "hls.js": "^1.4.12",
     "openseadragon": "^3.1.0",
     "pinia": "^2.0.13",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
-    "video.js": "^8.5.2",
+    "video.js": "8.6.1",
+    "vidstack": "^1.5.7",
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.0-0"
@@ -40,13 +42,12 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-0",
+    "@vue/vue3-jest": "^27.0.0-alpha.1",
     "eslint": "^7",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.0.0",
     "prettier": "^2.2.1",
-    "typescript": "~4.4.4",
     "ts-jest": "^27.0.4",
-    "@vue/vue3-jest": "^27.0.0-alpha.1"
-    
+    "typescript": "~4.4.4"
   }
 }

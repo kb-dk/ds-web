@@ -1,6 +1,6 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer :videoUrl="recordData.contentUrl"></VideoPlayer>
+		<AudioPlayer :audioUrl="recordData.contentUrl"></AudioPlayer>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -90,7 +90,7 @@ Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
-import VideoPlayer from '@/components/viewers/AudioVideo/video/VideoJsPlayer.vue';
+import AudioPlayer from '@/components/viewers/AudioVideo/AudioPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -114,7 +114,7 @@ export default defineComponent({
 		},
 	},
 	components: {
-		VideoPlayer,
+		AudioPlayer,
 		Duration,
 		GridDisplay,
 	},
