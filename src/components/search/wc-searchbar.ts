@@ -141,6 +141,20 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 							<button id="resetButton" type="button" aria-label="reset" class="btn btn-primary btn-icon">
 							<i class="material-icons" aria-hidden="true">close</i>
 						</button>
+							<div class="rdl-advanced-radio">
+								<span>
+									<input type="radio" id="radio-btn-all" name="col" checked value="all">
+									<label for="radio-btn-all">Alt</label>
+								</span>
+								<span>
+									<input type="radio" id="radio-btn-css" name="col" value="tv">
+									<label for="radio-btn-css">TV</label>
+								</span>
+								<span>
+									<input type="radio" id="radio-btn-sound" name="col" value="sound">
+									<label for="radio-btn-sound">Lyd</label>
+								</span>
+							</div>
 							<button id="searchButton" type="submit" aria-label="search" class="btn btn-primary btn-icon">
 								<span class="d-none d-search-inline-flex">Søg</span>
 								<span class="d-inline-flex d-search-none">Søg her</span>
@@ -335,6 +349,18 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			clip: rect(0, 0, 0, 0);
 			white-space: nowrap;
 			border: 0;
+		}
+
+		.rdl-advanced-radio {
+			background-color: #002E70;
+			display: flex;
+			width: calc(100% - 1px);
+			height: 48px;
+			margin-top: -33px;
+			margin-bottom: 22px;
+			color:White;
+			line-height:48px;
+			justify-content: space-evenly
 		}
 
 		.d-none {
