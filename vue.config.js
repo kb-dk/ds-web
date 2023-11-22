@@ -7,7 +7,7 @@ module.exports = {
 				...options,
 				compilerOptions: {
 					// treat any tag that starts with ion- as custom elements
-					isCustomElement: (tag) => tag.startsWith('kb-'),
+					isCustomElement: (tag) => tag.startsWith('kb-') || tag.startsWith('media-'),
 				},
 			}));
 		config.plugin('define').tap((args) => {
