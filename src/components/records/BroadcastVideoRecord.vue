@@ -63,7 +63,7 @@
 			<div class="accordion">
 				<kb-accordion
 					first="true"
-					title="Yderligere information om videoen"
+					:title="t('record.moreMetadataBroadcast')"
 					expanded="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet quam felis. Curabitur dui augue, auctor eu sodales sit amet, porta vel dolor. Ut libero purus, malesuada ut tincidunt non, auctor nec magna. Quisque interdum, libero vitae varius tempor, ipsum sapien tempor tellus, et aliquet ex enim in neque. Donec lacinia justo urna, et imperdiet tellus sodales sit amet. Nulla nec aliquam nunc. Nam pretium suscipit posuere. Pellentesque tincidunt auctor mattis.
 					
 Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
@@ -121,7 +121,7 @@ export default defineComponent({
 	setup() {
 		const lastPath = ref('');
 		const router = useRouter();
-		const { locale } = useI18n();
+		const { locale, t } = useI18n();
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
@@ -131,7 +131,7 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, getCurrentUrl, getBroadcastDate, getBroadcastTime };
+		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime };
 	},
 });
 </script>
