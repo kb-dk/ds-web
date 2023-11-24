@@ -22,7 +22,7 @@
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "video.js": "8.6.1",
-    "vidstack": "^1.5.7",
+    "vidstack": "1.6.1",
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.0-0"

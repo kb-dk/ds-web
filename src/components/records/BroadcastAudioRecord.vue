@@ -1,6 +1,6 @@
 <template>
 	<div class="broadcast-record">
-		<AudioPlayer :audioUrl="recordData.contentUrl"></AudioPlayer>
+		<AudioPlayer :audio-url="recordData.contentUrl"></AudioPlayer>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
