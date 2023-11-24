@@ -1,6 +1,6 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer :videoUrl="recordData.contentUrl"></VideoPlayer>
+		<VideoPlayer :video-url="recordData.contentUrl"></VideoPlayer>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
