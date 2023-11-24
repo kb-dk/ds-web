@@ -1,10 +1,12 @@
 class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	showXButton: boolean;
+	delimination: string;
 
 	constructor() {
 		super();
 		this.showXButton = false;
+		this.delimination = '';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -28,6 +30,30 @@ class SearchBarComponent extends HTMLElement {
 		resetButton
 			? resetButton.addEventListener('click', (e) => {
 					this.resetSearch(e);
+			  })
+			: null;
+
+		// de values are subject to change here
+		//they're what the backenders have told us work for now.
+
+		const limitAll: HTMLInputElement | null = this.shadow.querySelector('.selectAll');
+		limitAll
+			? limitAll.addEventListener('click', () => {
+					this.setDelimination('');
+			  })
+			: null;
+
+		const limitTv: HTMLInputElement | null = this.shadow.querySelector('.selectTv');
+		limitTv
+			? limitTv.addEventListener('click', () => {
+					this.setDelimination('resource_description:"VideoObject"');
+			  })
+			: null;
+
+		const limitRadio: HTMLInputElement | null = this.shadow.querySelector('.selectRadio');
+		limitRadio
+			? limitRadio.addEventListener('click', () => {
+					this.setDelimination('resource_description:"AudioObject"');
 			  })
 			: null;
 		this.setResetVisibility(false);
@@ -61,6 +87,15 @@ class SearchBarComponent extends HTMLElement {
 			if (searchQueryInputField) {
 				searchQueryInputField.value = newValue;
 			}
+		}
+	}
+
+	private setDelimination(value: string) {
+		this.delimination = value;
+		const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
+		if (searchQueryInputField) {
+			this.dispatchUpdate(searchQueryInputField.value);
+			this.dispatchSearch();
 		}
 	}
 
@@ -106,17 +141,21 @@ class SearchBarComponent extends HTMLElement {
 
 	dispatchUpdate(query: string) {
 		//this.setResetVisibility(query.length !== 0);
-		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query } }));
+		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query, filter: this.delimination } }));
 	}
 
-	dispatchSearch(e: Event) {
+	dispatchSearch(e?: Event) {
 		window.dispatchEvent(new Event('query-search'));
-		e.preventDefault();
+		e?.preventDefault();
 	}
 
 	resetSearch(e: Event) {
 		const input = this.shadow.querySelector('#focusSearchInput') as HTMLInputElement;
 		input && (input.value = '');
+
+		const limitAll: HTMLInputElement | null = this.shadow.querySelector('.selectAll');
+		limitAll && (limitAll.checked = true);
+		this.delimination = '';
 
 		this.showXButton = false;
 		this.setResetVisibility(this.showXButton);
@@ -142,18 +181,18 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 							<i class="material-icons" aria-hidden="true">close</i>
 						</button>
 							<div class="rdl-advanced-radio">
-								<span>
-									<input type="radio" id="radio-btn-all" name="col" checked value="all">
-									<label for="radio-btn-all">Alt</label>
-								</span>
-								<span>
-									<input type="radio" id="radio-btn-css" name="col" value="tv">
-									<label for="radio-btn-css">TV</label>
-								</span>
-								<span>
-									<input type="radio" id="radio-btn-sound" name="col" value="sound">
-									<label for="radio-btn-sound">Lyd</label>
-								</span>
+								<label for="radio-btn-all">
+									<input class="selectAll" type="radio" id="radio-btn-all" name="delimination" checked value="all">
+									<span>Alt</span>
+								</label>
+								<label for="radio-btn-tv">
+									<input class="selectTv" type="radio" id="radio-btn-tv" name="delimination" value="tv">
+									<span>TV</span>
+								</label>
+								<label for="radio-btn-sound">
+									<input class="selectRadio" type="radio" id="radio-btn-sound" name="delimination" value="sound">
+									<span>Lyd</span>
+								</label>
 							</div>
 							<button id="searchButton" type="submit" aria-label="search" class="btn btn-primary btn-icon">
 								<span class="d-none d-search-inline-flex">Søg</span>
@@ -254,7 +293,8 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			padding-left: 12px;
 			margin-right: auto;
 			margin-left: auto;
-/* 			display: flex;
+			width: 100%;
+			/* display: flex;
 			align-content: center;
 			flex-wrap: wrap; */
 		}	
@@ -288,15 +328,16 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			max-width: 100%;
 			position: relative;
 			width: 100%;
-			padding-right: 12px;
-			padding-left: 12px;
+/* 			padding-right: 12px;
+			padding-left: 12px; */
 		}
 		.row {
 			display: flex;
 			flex-wrap: wrap;
-			margin-right: -12px;
+			width:100%;
+			/* margin-right: -12px;
 			margin-left: -12px;
-			width: 100vw;
+			width: 100vw; */
 		}
 
 		.btn-primary {
@@ -358,9 +399,17 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			height: 48px;
 			margin-top: -33px;
 			margin-bottom: 22px;
-			color:White;
+			color: white;
 			line-height:48px;
 			justify-content: space-evenly
+		}
+
+		.rdl-advanced-radio label, .rdl-advanced-radio input {
+			cursor: pointer;
+		}
+
+		.rdl-advanced-radio label {
+			margin-right: 15px;
 		}
 
 		.d-none {
@@ -374,26 +423,41 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 		/* MEDIA QUERY 640 */
 		@media (min-width: 640px) {
-			#resetButton {
-				right: calc(50% + 10px);
+			.rdl-advanced-radio {
+			width:50%;
 			}
+			/* #resetButton {
+				right: calc(50% + 10px);
+			} */
 			.container {
 				max-width: 990px;
 			}
-			.rdl-advanced-search-input {
+			/* .rdl-advanced-search-input {
 				width: calc(50% - 12px);
 				margin-bottom:0px;
-			}
+			} */
 		
-			.rdl-advanced-search {
+			/* .rdl-advanced-search {
 				flex-wrap: nowrap;
-			}
-			.btn-primary {
+			} */
+			/* .btn-primary {
 				width: calc(50% - 12px);
-			}
+			} */
 		}
 		/* MEDIA QUERY 800 */
 		@media (min-width: 800px) {
+
+			.rdl-advanced-radio {
+				position:absolute;
+				top: 73px;
+				left: 0px;
+				margin-top:unset;
+				margin-bottom:unset;
+				width:auto;
+      		    padding: 5px 20px;
+				height:30px;
+				line-height:30px;
+			}
 
 			#resetButton {
 				position:unset;
@@ -440,6 +504,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 				border: 1px solid #F5F5F5; 
 				box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
 				border-radius: 2px;
+				height:71px;
 			}
 			.rdl-advanced-search-input {
 				width: 100%;

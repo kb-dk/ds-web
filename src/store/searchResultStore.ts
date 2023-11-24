@@ -35,10 +35,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (URLFilters !== undefined) {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
-					filters.value.push(`fq=${filter}`);
+					filter !== '' ? filters.value.push(`fq=${filter}`) : null;
 				});
 			} else {
-				filters.value.push(`fq=${URLFilters}`);
+				URLFilters !== '' ? filters.value.push(`fq=${URLFilters}`) : null;
 			}
 		}
 	};
