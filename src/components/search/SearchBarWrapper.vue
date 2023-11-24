@@ -19,6 +19,7 @@ export default defineComponent({
 	name: 'SearchBarWrapper',
 	setup() {
 		const searchQuery = ref('');
+		const preliminayFilter = ref('');
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
@@ -38,7 +39,7 @@ export default defineComponent({
 
 		watch(searchQuery, (newValue, oldValue) => {
 			if (
-				newValue?.length !== 0 ||
+				(newValue?.length !== 0 && newValue !== undefined) ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired === true
 			) {
@@ -50,7 +51,7 @@ export default defineComponent({
 
 		watch(searchResultStore, (newValue, oldValue) => {
 			if (
-				searchQuery.value?.length !== 0 ||
+				(searchQuery.value?.length !== 0 && searchQuery.value !== undefined) ||
 				searchResultStore.searchResult.length !== 0 ||
 				searchResultStore.searchFired
 			) {
@@ -85,6 +86,7 @@ export default defineComponent({
 			e.stopPropagation();
 			e.preventDefault();
 			searchQuery.value = e.detail.query;
+			preliminayFilter.value = e.detail.filter;
 		};
 
 		const handleError = (e: Event) => {
@@ -98,7 +100,11 @@ export default defineComponent({
 
 		const search = () => {
 			if (searchQuery.value) {
-				router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+				if (preliminayFilter.value.length > 0) {
+					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, fq: preliminayFilter.value } });
+				} else {
+					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+				}
 			}
 		};
 
