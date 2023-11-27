@@ -1,18 +1,29 @@
 <template>
 	<div class="mobile-edge edge top"></div>
-	<div class="video-player">
-		<video
-			ref="videoElement"
-			class="video-js vjs-default-skin vjs-custom"
-		></video>
+	<div
+		class="video-player"
+		v-if="src"
+	>
+		<media-player
+			class="player"
+			title=""
+			:src="src"
+			ref="player"
+		>
+			<media-provider></media-provider>
+			<media-video-layout></media-video-layout>
+		</media-player>
 	</div>
 	<div class="mobile-edge edge bottom"></div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import type { MediaPlayerElement } from 'vidstack/elements';
+
+import 'vidstack/player';
+import 'vidstack/player/layouts';
+import 'vidstack/player/ui';
 
 export default defineComponent({
 	name: 'VideoPlayer',
@@ -21,45 +32,40 @@ export default defineComponent({
 		videoUrl: String,
 	},
 	setup(props) {
-		const videoElement = ref(null);
-		//const videoSrc = ref('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+		const player = ref<MediaPlayerElement>();
+		const src = ref('');
 		onMounted(() => {
-			const options = {
-				autoplay: false,
-				controls: true,
-			};
-			//Mount player with options and src
-			const player = videojs(videoElement.value, options);
-			player.src({ type: 'application/x-mpegURL', src: props.videoUrl });
-
-			// Clean up
+			src.value = props.videoUrl ? props.videoUrl : '';
 			const cleanup = () => {
-				if (player) {
-					player.dispose();
+				if (player.value) {
+					player.value.destroy();
 				}
 			};
-
 			// Attach cleanup to unmmount
 			onBeforeUnmount(() => {
 				cleanup();
 			});
 		});
-		return { videoElement };
+		return { src, player };
 	},
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only 
-temporary styling until patterns from design system are implemented 
--->
 <style scoped>
+@import 'vidstack/player/styles/default/theme.css';
+@import 'vidstack/player/styles/default/layouts/video.css';
+
+.player {
+	aspect-ratio: 4/2;
+}
 .video-player {
 	background-color: black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	aspect-ratio: 4/2;
+	/*aspect-ratio disabled - messes with the controls but now player is too high...*/
+	/*aspect-ratio: 4/2;*/
 	margin-left: 0px;
 	overflow-y: hidden;
 	padding-top: 31px;
@@ -107,10 +113,5 @@ temporary styling until patterns from design system are implemented
 		max-width: 100%;
 		padding: 0px;
 	}
-}
-
-.vjs-custom {
-	height: 100%;
-	width: 100%;
 }
 </style>
