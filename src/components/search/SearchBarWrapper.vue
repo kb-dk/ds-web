@@ -3,6 +3,7 @@
 		:q="searchQuery"
 		:reset-value="xReset"
 		:background-img-url="backgroundImage"
+		:lang="locale"
 	></kb-searchbar>
 </template>
 
@@ -19,8 +20,8 @@ export default defineComponent({
 	name: 'SearchBarWrapper',
 	setup() {
 		const searchQuery = ref('');
-		const preliminayFilter = ref('');
-		const { t } = useI18n();
+		const preliminaryFilter = ref('');
+		const { t, locale } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
@@ -86,7 +87,7 @@ export default defineComponent({
 			e.stopPropagation();
 			e.preventDefault();
 			searchQuery.value = e.detail.query;
-			preliminayFilter.value = e.detail.filter;
+			preliminaryFilter.value = e.detail.filter;
 		};
 
 		const handleError = (e: Event) => {
@@ -100,8 +101,8 @@ export default defineComponent({
 
 		const search = () => {
 			if (searchQuery.value) {
-				if (preliminayFilter.value.length > 0) {
-					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, fq: preliminayFilter.value } });
+				if (preliminaryFilter.value.length > 0) {
+					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value } });
 				} else {
 					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
 				}
@@ -133,6 +134,7 @@ export default defineComponent({
 			xReset,
 			searchResultStore,
 			searchQuery,
+			locale,
 		};
 	},
 });
