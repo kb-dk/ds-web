@@ -1,12 +1,26 @@
+interface Filters {
+	all: string;
+	tv: string;
+	radio: string;
+}
+
 class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	showXButton: boolean;
 	delimitation: string;
+	filters: Filters;
 
 	constructor() {
 		super();
 		this.showXButton = false;
 		this.delimitation = '';
+
+		this.filters = {
+			all: '',
+			tv: 'resource_description:"VideoObject"',
+			radio: 'resource_description:"AudioObject"',
+		};
+
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -64,12 +78,7 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	private getPresetFilter(key: string): string {
-		const filters = {
-			all: '',
-			tv: 'resource_description:"VideoObject"',
-			radio: 'resource_description:"AudioObject"',
-		};
-		return filters[key as keyof typeof filters] || '';
+		return this.filters[key as keyof typeof this.filters] || '';
 	}
 
 	connectedCallback() {
@@ -84,6 +93,15 @@ class SearchBarComponent extends HTMLElement {
 			this.showXButton = JSON.parse(resetVal.toLowerCase());
 			this.setResetVisibility(this.showXButton);
 		}
+
+		Object.keys(this.filters).forEach((element) => {
+			const key = element as keyof Filters;
+
+			if (decodeURIComponent(history.state.current).includes(this.filters[key])) {
+				const btn = this.shadow.querySelector('#radio-btn-' + key) as HTMLInputElement;
+				btn.checked = true;
+			}
+		});
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -236,16 +254,16 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 						</button>
 							<div class="rdl-advanced-radio">
 								<label for="radio-btn-all">
-									<input class="selectAll" type="radio" id="radio-btn-all" name="delimitation" checked value="all">
+									<input class="selectAll" type="radio" id="radio-btn-all" name="delimitation" value="all">
 									<span class="selectAllSpan">Alt</span>
 								</label>
 								<label for="radio-btn-tv">
 									<input class="selectTv" type="radio" id="radio-btn-tv" name="delimitation" value="tv">
 									<span class="selectTvSpan">TV</span>
 								</label>
-								<label for="radio-btn-sound">
-									<input class="selectRadio" type="radio" id="radio-btn-sound" name="delimitation" value="sound">
-									<span class="selectRadioSpan">Lyd</span>
+								<label for="radio-btn-radio">
+									<input class="selectRadio" type="radio" id="radio-btn-radio" name="delimitation" value="radio">
+									<span class="selectRadioSpan">Radio</span>
 								</label>
 							</div>
 							<button id="searchButton" type="submit" aria-label="search" class="btn btn-primary btn-icon">
