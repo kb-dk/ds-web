@@ -54,6 +54,10 @@ export default defineComponent({
 <style scoped>
 @import 'vidstack/player/styles/default/theme.css';
 @import 'vidstack/player/styles/default/layouts/video.css';
+
+.player {
+	aspect-ratio: 4/2;
+}
 .video-player {
 	background-color: black;
 	display: flex;
