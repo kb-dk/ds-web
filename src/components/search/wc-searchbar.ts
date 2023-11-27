@@ -1,12 +1,12 @@
 class SearchBarComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	showXButton: boolean;
-	delimination: string;
+	delimitation: string;
 
 	constructor() {
 		super();
 		this.showXButton = false;
-		this.delimination = '';
+		this.delimitation = '';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = SEARCH_COMPONENT_TEMPLATE + SEARCH_COMPONMENT_STYLES;
 
@@ -39,28 +39,37 @@ class SearchBarComponent extends HTMLElement {
 		const limitAll: HTMLInputElement | null = this.shadow.querySelector('.selectAll');
 		limitAll
 			? limitAll.addEventListener('click', () => {
-					this.setDelimination('');
+					this.setDelimitationAndDispatch(this.getPresetFilter('all'));
 			  })
 			: null;
 
 		const limitTv: HTMLInputElement | null = this.shadow.querySelector('.selectTv');
 		limitTv
 			? limitTv.addEventListener('click', () => {
-					this.setDelimination('resource_description:"VideoObject"');
+					this.setDelimitationAndDispatch(this.getPresetFilter('tv'));
 			  })
 			: null;
 
 		const limitRadio: HTMLInputElement | null = this.shadow.querySelector('.selectRadio');
 		limitRadio
 			? limitRadio.addEventListener('click', () => {
-					this.setDelimination('resource_description:"AudioObject"');
+					this.setDelimitationAndDispatch(this.getPresetFilter('radio'));
 			  })
 			: null;
 		this.setResetVisibility(false);
 	}
 
 	static get observedAttributes() {
-		return ['reset-value', 'q'];
+		return ['reset-value', 'q', 'lang'];
+	}
+
+	private getPresetFilter(key: string): string {
+		const filters = {
+			all: '',
+			tv: 'resource_description:"VideoObject"',
+			radio: 'resource_description:"AudioObject"',
+		};
+		return filters[key as keyof typeof filters] || '';
 	}
 
 	connectedCallback() {
@@ -88,10 +97,55 @@ class SearchBarComponent extends HTMLElement {
 				searchQueryInputField.value = newValue;
 			}
 		}
+		if (name === 'lang') {
+			if (newValue === 'da') {
+				const sr = this.shadow.querySelector('.sr-only');
+				sr && (sr.textContent = 'Søg på KB.dk');
+
+				const all = this.shadow.querySelector('.selectAllSpan');
+				all && (all.textContent = 'Alt');
+
+				const tv = this.shadow.querySelector('.selectTvSpan');
+				tv && (tv.textContent = 'TV');
+
+				const radio = this.shadow.querySelector('.selectRadioSpan');
+				radio && (radio.textContent = 'Radio');
+
+				const input = this.shadow.querySelector('#focusSearchInput') as HTMLInputElement;
+				input && (input.placeholder = 'Søg på KB.dk');
+
+				const searchSpan = this.shadow.querySelector('searchSpan');
+				searchSpan && (searchSpan.textContent = 'Søg');
+
+				const searchHereSpan = this.shadow.querySelector('searchHereSpan');
+				searchHereSpan && (searchHereSpan.textContent = 'Søg her');
+			} else {
+				const sr = this.shadow.querySelector('.sr-only');
+				sr && (sr.textContent = 'Search on KB.dk');
+
+				const all = this.shadow.querySelector('.selectAllSpan');
+				all && (all.textContent = 'All');
+
+				const tv = this.shadow.querySelector('.selectTvSpan');
+				tv && (tv.textContent = 'TV');
+
+				const radio = this.shadow.querySelector('.selectRadioSpan');
+				radio && (radio.textContent = 'Radio');
+
+				const input = this.shadow.querySelector('#focusSearchInput') as HTMLInputElement;
+				input && (input.placeholder = 'Search at KB.dk');
+
+				const searchSpan = this.shadow.querySelector('searchSpan');
+				searchSpan && (searchSpan.textContent = 'Search');
+
+				const searchHereSpan = this.shadow.querySelector('searchHereSpan');
+				searchHereSpan && (searchHereSpan.textContent = 'Search here');
+			}
+		}
 	}
 
-	private setDelimination(value: string) {
-		this.delimination = value;
+	private setDelimitationAndDispatch(value: string) {
+		this.delimitation = value;
 		const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
 		if (searchQueryInputField) {
 			this.dispatchUpdate(searchQueryInputField.value);
@@ -141,7 +195,7 @@ class SearchBarComponent extends HTMLElement {
 
 	dispatchUpdate(query: string) {
 		//this.setResetVisibility(query.length !== 0);
-		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query, filter: this.delimination } }));
+		window.dispatchEvent(new CustomEvent('query-update', { detail: { query: query, filter: this.delimitation } }));
 	}
 
 	dispatchSearch(e?: Event) {
@@ -155,7 +209,7 @@ class SearchBarComponent extends HTMLElement {
 
 		const limitAll: HTMLInputElement | null = this.shadow.querySelector('.selectAll');
 		limitAll && (limitAll.checked = true);
-		this.delimination = '';
+		this.delimitation = '';
 
 		this.showXButton = false;
 		this.setResetVisibility(this.showXButton);
@@ -182,21 +236,21 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 						</button>
 							<div class="rdl-advanced-radio">
 								<label for="radio-btn-all">
-									<input class="selectAll" type="radio" id="radio-btn-all" name="delimination" checked value="all">
-									<span>Alt</span>
+									<input class="selectAll" type="radio" id="radio-btn-all" name="delimitation" checked value="all">
+									<span class="selectAllSpan">Alt</span>
 								</label>
 								<label for="radio-btn-tv">
-									<input class="selectTv" type="radio" id="radio-btn-tv" name="delimination" value="tv">
-									<span>TV</span>
+									<input class="selectTv" type="radio" id="radio-btn-tv" name="delimitation" value="tv">
+									<span class="selectTvSpan">TV</span>
 								</label>
 								<label for="radio-btn-sound">
-									<input class="selectRadio" type="radio" id="radio-btn-sound" name="delimination" value="sound">
-									<span>Lyd</span>
+									<input class="selectRadio" type="radio" id="radio-btn-sound" name="delimitation" value="sound">
+									<span class="selectRadioSpan">Lyd</span>
 								</label>
 							</div>
 							<button id="searchButton" type="submit" aria-label="search" class="btn btn-primary btn-icon">
-								<span class="d-none d-search-inline-flex">Søg</span>
-								<span class="d-inline-flex d-search-none">Søg her</span>
+								<span class="d-none d-search-inline-flex searchSpan">Søg</span>
+								<span class="d-inline-flex d-search-none searchHereSpan">Søg her</span>
 								<i class="material-icons" aria-hidden="true">search</i>
 							</button>
 						</div>
