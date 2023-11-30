@@ -18,7 +18,7 @@
     "gsap": "^3.12.2",
     "hls.js": "^1.4.12",
     "openseadragon": "^3.1.0",
-    "pinia": "^2.0.13",
+    "pinia": "^2.1.7",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "vidstack": "1.6.1",
