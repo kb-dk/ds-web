@@ -138,6 +138,9 @@ import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
+
+//The import is actually used so had to silence TypeScript here - have no idea why compiler is angry
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import Pagination from '@/components/search/Pager.vue';
 
@@ -198,7 +201,7 @@ export default defineComponent({
 
 		watch(
 			() => searchResultStore.searchResult.length,
-			(newn: number, prevn: number) => {
+			(newn: number) => {
 				if (newn > 0) {
 					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
 				} else {
