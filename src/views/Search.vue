@@ -106,7 +106,7 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
-						:spots="(['1','2','3','4','5','6','7','8'] as unknown as GenericSearchResultType[])"
+						:spots="['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[]"
 					></GridDisplay>
 				</div>
 				<div class="blue-background">
@@ -119,7 +119,7 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
-							:spots="(['1','2','3'] as unknown as GenericSearchResultType[])"
+							:spots="['1', '2', '3'] as unknown as GenericSearchResultType[]"
 						></GridDisplay>
 					</div>
 				</div>

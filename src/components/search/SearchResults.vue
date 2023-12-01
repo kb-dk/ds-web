@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, index) in (currentResults as GenericSearchResultType[])"
+		v-for="(res, index) in currentResults as GenericSearchResultType[]"
 		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
