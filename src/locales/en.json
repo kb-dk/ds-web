@@ -8,7 +8,9 @@
      "nextPage":"Next page",
      "previousPage":"Previous page",
      "page": "Page",
-     "goToPage":"Go to page {n}"
+     "goToPage":"Go to page {n}",
+     "sortAfter":"Sorted by ",
+     "sortBy":"Sort by"
   },
   "record":{
      "duration":"Duration",

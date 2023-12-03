@@ -8,7 +8,10 @@
      "nextPage":"Næste side",
      "previousPage":"Forrige side",
      "page": "Side",
-     "goToPage":"Gå til side {n}"
+     "goToPage":"Gå til side {n}",
+     "sortAfter":"Sorteret efter ",
+     "sortBy": "Sorter efter"
+
    },
   "record":{
      "duration":"Varighed",
