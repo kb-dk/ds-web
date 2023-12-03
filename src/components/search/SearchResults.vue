@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, index) in (currentResults as GenericSearchResultType[])"
+		v-for="(res, index) in currentResults as GenericSearchResultType[]"
 		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
@@ -51,7 +51,7 @@ export default defineComponent({
 			//	? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
 			//	: require('@/assets/images/No-Image-Placeholder.svg.png');
 		};
-		const getAltTxt = (res: GenericSearchResultType) => {
+		const getAltTxt = () => {
 			return 'license';
 			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		};

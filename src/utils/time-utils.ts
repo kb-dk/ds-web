@@ -19,7 +19,8 @@ function calculateDuration(startDate: string, endDate: string, t: ComposerTransl
 			return (formattedDuration = durationParts.join(' '));
 		}
 	}
-	return (formattedDuration = t('duration.unknown'));
+	formattedDuration = t('duration.unknown');
+	return formattedDuration;
 }
 
 function formatDuration(

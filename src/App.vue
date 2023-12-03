@@ -61,7 +61,7 @@ export default defineComponent({
 
 		const changePath = (e: CustomEvent) => {
 			if (e.detail.name) {
-				router.push({ name: e.detail.name, params: { logo: e.detail.logo } });
+				router.push({ name: e.detail.name });
 			} else {
 				router.push({ path: e.detail.path });
 			}
@@ -128,8 +128,6 @@ export default defineComponent({
 				transitionName.value = 'from-search-to-record';
 			} else if (from.name === 'Record' && to.name === 'Home') {
 				transitionName.value = 'from-record-to-search';
-			} else if (to.params.logo === 'true') {
-				transitionName.value = 'swipe';
 			} else {
 				transitionName.value = 'swipe';
 			}

@@ -6,17 +6,17 @@
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 					<BroadcastVideoRecordMetadataView
 						:more-like-this-records="moreLikeThisRecords"
-						:record-data="(recordData as BroadcastRecordType)"
+						:record-data="recordData as BroadcastRecordType"
 					/>
 				</div>
 				<div v-if="recordType === 'AudioObject'">
 					<BroadcastAudioRecordMetadataView
 						:more-like-this-records="moreLikeThisRecords"
-						:record-data="(recordData as BroadcastRecordType)"
+						:record-data="recordData as BroadcastRecordType"
 					/>
 				</div>
 				<div v-else>
-					<GenericRecordMetadataView :record-data="(recordData as GenericRecordType)" />
+					<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
 				</div>
 			</div>
 		</div>
