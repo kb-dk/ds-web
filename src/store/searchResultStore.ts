@@ -55,6 +55,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const setSortFromURL = (URLSort: string | undefined) => {
 		if (URLSort) {
 			sort.value = URLSort;
+		} else {
+			sort.value = '';
 		}
 	};
 

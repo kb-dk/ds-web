@@ -102,9 +102,23 @@ export default defineComponent({
 		const search = () => {
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
-					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value } });
+					if (searchQuery.value !== searchResultStore.currentQuery) {
+						router.push({
+							name: 'Home',
+							query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value },
+						});
+					} else {
+						router.push({
+							name: 'Home',
+							query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value, sort: searchResultStore.sort },
+						});
+					}
 				} else {
-					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+					if (searchQuery.value !== searchResultStore.currentQuery) {
+						router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+					} else {
+						router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, sort: searchResultStore.sort } });
+					}
 				}
 			}
 		};

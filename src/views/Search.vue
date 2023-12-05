@@ -222,12 +222,7 @@ export default defineComponent({
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setStartFromURL(route.query.start as string);
-					// we wanna reset the sort if it's a NEW search started (which we determine is when you use a new query).
-					if (newp.query.q !== prevp.query.q) {
-						searchResultStore.resetSort();
-					} else {
-						searchResultStore.setSortFromURL(route.query.sort as string);
-					}
+					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.getSearchResults(route.query.q as string).then(() => {
 						window.scrollTo({ top: 0, behavior: 'smooth' });
 					});
