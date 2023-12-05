@@ -28,8 +28,11 @@ export class APIServiceClient {
 
 	//Search and record methods
 	async getSearchResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
+		//Temporary fix/implementation for limiting to DR material
+		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
+
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&q.op=OR&facet=true${filters}${start}${sort}`,
+			`search/?q=${encodeURIComponent(query)}&q.op=OR&facet=true${filters}${start}${sort}&fq=${DRLimiter}`,
 		);
 	}
 
