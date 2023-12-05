@@ -34,7 +34,11 @@
       "close":"Close"
    },
    "error": {
-   "getrecordfailed": "The requested material could not be loaded",
+      "record": {
+         "loadingFailed": "The requested material could not be loaded",
+         "notAllowed":"You are not authorized to view this material"
+       },
+   
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them"
   }
