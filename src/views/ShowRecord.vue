@@ -32,7 +32,7 @@ import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVide
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
 
 import { useI18n } from 'vue-i18n';
-import { AxiosError } from 'axios';
+import { Axios, AxiosError } from 'axios';
 
 //Types
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
@@ -59,7 +59,9 @@ export default defineComponent({
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
-				errorManager.submitError(err as AxiosError, t('error.getrecordfailed'));
+				const errorMsg =
+					(err as AxiosError).response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
+				errorManager.submitError(err as AxiosError, errorMsg);
 			}
 		};
 

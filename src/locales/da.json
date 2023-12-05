@@ -38,7 +38,11 @@
   },
 
   "error": {
-   "getrecordfailed": "Materialet kunne ikke hentes",
+    "record": {
+      "loadingFailed": "Materialet kunne ikke hentes",
+      "notAllowed":"Du har ikke adgang til materialet"
+    },
+   
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
   } 
