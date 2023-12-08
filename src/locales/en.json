@@ -10,7 +10,9 @@
      "page": "Page",
      "goToPage":"Go to page {n}",
      "sortAfter":"Sorted by ",
-     "sortBy":"Sort by"
+     "sortBy":"Sort by",
+     "title": "title",
+     "score": "score"
   },
   "record":{
      "duration":"Duration",
