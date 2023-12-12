@@ -59,9 +59,7 @@ export default defineComponent({
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
-				const errorMsg =
-					(err as AxiosError).response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
-				errorManager.submitError(err as AxiosError, errorMsg);
+				handleShowRecordError(err as AxiosError, 'recordCall');
 			}
 		};
 
@@ -69,7 +67,22 @@ export default defineComponent({
 			try {
 				return await APIService.getMoreLikeThisRecords(id);
 			} catch (err) {
-				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
+				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
+			}
+		};
+
+		const handleShowRecordError = (err: AxiosError, type: string) => {
+			//Expand as we go but remember to add default switch case once needed
+			switch (type) {
+				case 'recordCall': {
+					const errorMsg =
+						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
+					errorManager.submitError(err, errorMsg);
+					break;
+				}
+				case 'moreLikeThisCall':
+					errorManager.submitError(err, t('error.getrelatedrecordsfailed'));
+					break;
 			}
 		};
 
