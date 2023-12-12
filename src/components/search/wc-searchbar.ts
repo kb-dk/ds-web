@@ -17,8 +17,8 @@ class SearchBarComponent extends HTMLElement {
 
 		this.filters = {
 			all: '',
-			tv: 'resource_description:"VideoObject"',
-			radio: 'resource_description:"AudioObject"',
+			tv: 'origin:"ds.tv"',
+			radio: 'origin:"ds.radio"',
 		};
 
 		this.shadow = this.attachShadow({ mode: 'open' });

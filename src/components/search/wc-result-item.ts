@@ -111,7 +111,11 @@ const RESULT_COMPONENT_TEMPLATE = /*html*/ `
 			<span class="material-icons icons schedule">schedule</span>
 			<span class="duration"></span>
 		</div>
-			<div class="summary"></div>
+			<div class="summary">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
 		</div>
         <div class="result-image-wrapper"><kb-imagecomponent></kb-imagecomponent></div>	
 	</div>
@@ -149,6 +153,28 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			top:3px;
 		}
 
+		.summary span {
+			height:15px;
+			display:block;
+			background-color:rgba(30,30,30,.1);
+			border-radius:15px;
+			margin-top:5px;
+		}
+
+		.summary span:nth-child(1) {
+			width:90%;
+		}
+		.summary span:nth-child(2) {
+			width:85%;
+		}
+		.summary span:nth-child(3) {
+			width:92%;
+		}
+
+		.title:empty, .summary:empty, {
+			background-color:grey;
+		}
+
 		.container {
 			display: flex;
 			flex-direction: row;
@@ -175,9 +201,17 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			width: 75ch;
 			text-transform:uppercase;
 			text-decoration:none;
-			padding-bottom:5px;
-			
+			height:15px;
+			position: relative;
+			display: block;
+			margin-bottom: 9px;
 		}
+
+		.title:empty {
+			background-color:rgba(30,30,30,0.1);
+			border-radius:15px;			
+		}
+
 		.result-image-wrapper {
 			width:200px;
 		}
