@@ -21,11 +21,16 @@
 							v-if="searchResultStore.searchResult.length > 0"
 							class="hit-count"
 						>
-							<HitCount
-								:hit-count="searchResultStore.numFound"
-								:no-hits="searchResultStore.noHits"
-								:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-							/>
+							<div class="result-options">
+								<div class="hits">
+									<HitCount
+										:hit-count="searchResultStore.numFound"
+										:no-hits="searchResultStore.noHits"
+										:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+									/>
+								</div>
+								<Sort />
+							</div>
 							<button
 								class="filter-button"
 								@click="toggleFacets(!showFacets)"
@@ -106,7 +111,7 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
-						:spots="(['1','2','3','4','5','6','7','8'] as unknown as GenericSearchResultType[])"
+						:spots="['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[]"
 					></GridDisplay>
 				</div>
 				<div class="blue-background">
@@ -119,7 +124,7 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
-							:spots="(['1','2','3'] as unknown as GenericSearchResultType[])"
+							:spots="['1', '2', '3'] as unknown as GenericSearchResultType[]"
 						></GridDisplay>
 					</div>
 				</div>
@@ -138,8 +143,12 @@ import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
+
+//The import is actually used so had to silence TypeScript here - have no idea why compiler is angry
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import Pagination from '@/components/search/Pager.vue';
+import Sort from '@/components/search/Sort.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -150,6 +159,7 @@ export default defineComponent({
 		Facets,
 		GridDisplay,
 		Pagination,
+		Sort,
 	},
 
 	setup() {
@@ -198,7 +208,7 @@ export default defineComponent({
 
 		watch(
 			() => searchResultStore.searchResult.length,
-			(newn: number, prevn: number) => {
+			(newn: number) => {
 				if (newn > 0) {
 					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
 				} else {
@@ -215,6 +225,7 @@ export default defineComponent({
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setStartFromURL(route.query.start as string);
+					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.getSearchResults(route.query.q as string).then(() => {
 						window.scrollTo({ top: 0, behavior: 'smooth' });
 					});
@@ -229,7 +240,8 @@ export default defineComponent({
 			return (
 				newParams.query.q !== prevParams.query.q ||
 				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq) ||
-				newParams.query.start !== prevParams.query.start
+				newParams.query.start !== prevParams.query.start ||
+				newParams.query.sort !== prevParams.query.sort
 			);
 		};
 
@@ -297,6 +309,18 @@ h3 {
 
 .edge {
 	height: 31px;
+}
+
+.result-options {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.hits {
+	margin-right: auto;
+	margin-left: 0;
 }
 
 .mobile-edge {

@@ -18,6 +18,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const numFound = ref(0);
 	const loading = ref(false);
 	const start = ref('');
+	const sort = ref('');
 	const error = ref('');
 	const currentQuery = ref('');
 	const noHits = ref(false);
@@ -51,14 +52,31 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const setSortFromURL = (URLSort: string | undefined) => {
+		if (URLSort) {
+			sort.value = URLSort;
+		} else {
+			sort.value = '';
+		}
+	};
+
 	const resetStart = () => {
 		start.value = '0';
+	};
+
+	const resetSort = () => {
+		sort.value = '';
+	};
+
+	const setSortValue = (value: string) => {
+		sort.value = value;
 	};
 
 	const resetSearch = () => {
 		resetFilters();
 		resetResults();
 		resetStart();
+		resetSort();
 		currentQuery.value = '';
 		searchFired.value = false;
 	};
@@ -84,11 +102,17 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			});
 		}
 		try {
-			console.log('Querying Solr with query', query, 'and filters', searchFilters);
+			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
 			const startParam = start.value === '' ? '' : `&start=${start.value}`;
-			const responseData = await APIService.getSearchResults(query, searchFilters, startParam as string);
+			const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
+			const responseData = await APIService.getSearchResults(
+				query,
+				searchFilters,
+				startParam as string,
+				sortParam as string,
+			);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
 			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
@@ -116,6 +140,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters,
 		searchFired,
 		start,
+		sort,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -124,5 +149,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setFiltersFromURL,
 		setStartFromURL,
 		resetStart,
+		setSortFromURL,
+		resetSort,
+		setSortValue,
 	};
 });

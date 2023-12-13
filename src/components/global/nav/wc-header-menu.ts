@@ -34,7 +34,7 @@ class MenuComponent extends HTMLElement {
 					event.preventDefault();
 					window.dispatchEvent(
 						new CustomEvent('change-path', {
-							detail: { name: 'Home', query: { q: '' }, logo: true },
+							detail: { name: 'Home', query: { q: '' } },
 						}),
 					);
 					window.dispatchEvent(new Event('reset-input'));
@@ -92,7 +92,7 @@ class MenuComponent extends HTMLElement {
 			localeSwitcher
 				? localeSwitcher.addEventListener('click', (e) => {
 						this.dispatchLocaleSwitch(e);
-				  })
+				})
 				: null;
 		}
 	}

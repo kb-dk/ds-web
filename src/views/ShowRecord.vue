@@ -6,17 +6,17 @@
 				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 					<BroadcastVideoRecordMetadataView
 						:more-like-this-records="moreLikeThisRecords"
-						:record-data="(recordData as BroadcastRecordType)"
+						:record-data="recordData as BroadcastRecordType"
 					/>
 				</div>
 				<div v-if="recordType === 'AudioObject'">
 					<BroadcastAudioRecordMetadataView
 						:more-like-this-records="moreLikeThisRecords"
-						:record-data="(recordData as BroadcastRecordType)"
+						:record-data="recordData as BroadcastRecordType"
 					/>
 				</div>
 				<div v-else>
-					<GenericRecordMetadataView :record-data="(recordData as GenericRecordType)" />
+					<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
 				</div>
 			</div>
 		</div>
@@ -32,7 +32,7 @@ import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVide
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
 
 import { useI18n } from 'vue-i18n';
-import { AxiosError } from 'axios';
+import { Axios, AxiosError } from 'axios';
 
 //Types
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
@@ -59,7 +59,7 @@ export default defineComponent({
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
-				errorManager.submitError(err as AxiosError, t('error.getrecordfailed'));
+				handleShowRecordError(err as AxiosError, 'recordCall');
 			}
 		};
 
@@ -67,7 +67,22 @@ export default defineComponent({
 			try {
 				return await APIService.getMoreLikeThisRecords(id);
 			} catch (err) {
-				errorManager.submitError(err as AxiosError, t('error.getrelatedrecordsfailed'));
+				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
+			}
+		};
+
+		const handleShowRecordError = (err: AxiosError, type: string) => {
+			//Expand as we go but remember to add default switch case once needed
+			switch (type) {
+				case 'recordCall': {
+					const errorMsg =
+						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
+					errorManager.submitError(err, errorMsg);
+					break;
+				}
+				case 'moreLikeThisCall':
+					errorManager.submitError(err, t('error.getrelatedrecordsfailed'));
+					break;
 			}
 		};
 

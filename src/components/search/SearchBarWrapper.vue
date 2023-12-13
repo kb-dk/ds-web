@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch, onMounted, toRaw } from 'vue';
+import { defineComponent, onBeforeUnmount, onBeforeMount, ref, computed, inject, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -38,7 +38,7 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchQuery, (newValue, oldValue) => {
+		watch(searchQuery, (newValue) => {
 			if (
 				(newValue?.length !== 0 && newValue !== undefined) ||
 				searchResultStore.searchResult.length !== 0 ||
@@ -50,7 +50,7 @@ export default defineComponent({
 			}
 		});
 
-		watch(searchResultStore, (newValue, oldValue) => {
+		watch(searchResultStore, () => {
 			if (
 				(searchQuery.value?.length !== 0 && searchQuery.value !== undefined) ||
 				searchResultStore.searchResult.length !== 0 ||
@@ -102,9 +102,23 @@ export default defineComponent({
 		const search = () => {
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
-					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value } });
+					if (searchQuery.value !== searchResultStore.currentQuery) {
+						router.push({
+							name: 'Home',
+							query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value },
+						});
+					} else {
+						router.push({
+							name: 'Home',
+							query: { q: searchQuery.value, start: 0, fq: preliminaryFilter.value, sort: searchResultStore.sort },
+						});
+					}
 				} else {
-					router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+					if (searchQuery.value !== searchResultStore.currentQuery) {
+						router.push({ name: 'Home', query: { q: searchQuery.value, start: 0 } });
+					} else {
+						router.push({ name: 'Home', query: { q: searchQuery.value, start: 0, sort: searchResultStore.sort } });
+					}
 				}
 			}
 		};

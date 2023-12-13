@@ -8,7 +8,10 @@
      "nextPage":"Næste side",
      "previousPage":"Forrige side",
      "page": "Side",
-     "goToPage":"Gå til side {n}"
+     "goToPage":"Gå til side {n}",
+     "sortAfter":"Sorteret efter ",
+     "sortBy": "Sorter efter"
+
    },
   "record":{
      "duration":"Varighed",
@@ -35,7 +38,11 @@
   },
 
   "error": {
-   "getrecordfailed": "Materialet kunne ikke hentes",
+    "record": {
+      "loadingFailed": "Materialet kunne ikke hentes",
+      "notAllowed":"Du har ikke adgang til materialet"
+    },
+   
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
   } 

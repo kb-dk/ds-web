@@ -58,7 +58,7 @@ export default defineComponent({
 					if (newFacets !== prevFacets) {
 						showFacets.value = false;
 						let sum = '';
-						Object.entries(prevFacets).forEach(([key, value]) => {
+						Object.entries(prevFacets).forEach(([, value]) => {
 							sum += value;
 						});
 						setTimeout(
