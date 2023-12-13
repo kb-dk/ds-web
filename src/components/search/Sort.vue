@@ -9,10 +9,10 @@
 					{{
 						locale === 'da'
 							? searchResultStore.sort !== ''
-								? t('search.sortAfter') + searchResultStore.sort.split('%20')[0]
+								? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
 								: t('search.sortBy')
 							: searchResultStore.sort !== ''
-							? t('search.sortAfter') + searchResultStore.sort.split('%20')[0]
+							? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
 							: t('search.sortBy')
 					}}
 				</span>
