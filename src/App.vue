@@ -1,7 +1,8 @@
 <template>
 	<div class="app">
 		<Notifier></Notifier>
-		<Spinner></Spinner>
+		<!-- 		<Spinner></Spinner>
+ -->
 		<kb-menu
 			:vueRouting="true"
 			:locale="currentLocale"

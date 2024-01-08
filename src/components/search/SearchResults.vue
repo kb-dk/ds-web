@@ -1,24 +1,42 @@
 <template>
 	<div
 		class="hit-box"
-		v-for="(res, index) in currentResults as GenericSearchResultType[]"
+		v-for="(res, index) in 10 as unknown as GenericSearchResultType[]"
 		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
 	>
 		<kb-resultcomponent
 			:vueRouting="true"
 			:number="index"
-			:resultData="res"
+			:resultdata="JSON.stringify(currentResults[index])"
 			:show="showResults"
 			:placeholder="getPlaceholderImage()"
 			:duration="
-				locale === 'da'
-					? t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
-					: t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
+				currentResults[index]
+					? locale === 'da'
+						? t('record.duration') +
+						': ' +
+						formatDuration(
+								currentResults[index].duration,
+								currentResults[index].startTime,
+								currentResults[index].endTime,
+								t,
+						)
+						: t('record.duration') +
+						': ' +
+						formatDuration(
+								currentResults[index].duration,
+								currentResults[index].startTime,
+								currentResults[index].endTime,
+								t,
+						)
+					: ''
 			"
 			:starttime="
-				res.startTime
-					? getBroadcastDate(res.startTime, locale) + ' ' + t('record.timestamp') + getBroadcastTime(res.startTime)
-					: t('record.noBoardcastData')
+				currentResults[index]
+					? currentResults[index].startTime !== undefined
+						? getBroadcastDate(currentResults[index].startTime as string, locale) + ' ' + t('record.timestamp') + getBroadcastTime(currentResults[index].startTime as string)
+						: t('record.noBoardcastData')
+					: ''
 			"
 		/>
 	</div>
@@ -63,18 +81,22 @@ export default defineComponent({
 			watch(
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
-					console.log('results updated because of the watcher in searchResults.vue');
-					if (newResults !== prevResults) {
-						showResults.value = false;
-						setTimeout(
-							() => {
-								currentResults.value = newResults;
-								lastUpdate.value = new Date().getTime();
-								showResults.value = true;
-							},
-							prevResults.length === 0 ? 0 : 600,
-						);
-					}
+					currentResults.value = [];
+					setTimeout(() => {
+						
+						console.log('results updated because of the watcher in searchResults.vue');
+						if (newResults !== prevResults) {
+							showResults.value = false;
+							setTimeout(
+								() => {
+									currentResults.value = newResults;
+									lastUpdate.value = new Date().getTime();
+									showResults.value = true;
+								},
+								prevResults.length === 0 ? 0 : 600,
+							);
+						}
+					}, 5000);
 				},
 			);
 		});

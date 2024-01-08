@@ -37,14 +37,14 @@ class SearchBarComponent extends HTMLElement {
 		searchButton
 			? searchButton.addEventListener('click', (e) => {
 					this.dispatchSearch(e);
-				})
+			})
 			: null;
 
 		const resetButton: HTMLButtonElement | null = this.shadow.querySelector('#resetButton');
 		resetButton
 			? resetButton.addEventListener('click', (e) => {
 					this.resetSearch(e);
-				})
+			})
 			: null;
 
 		// de values are subject to change here
@@ -54,27 +54,27 @@ class SearchBarComponent extends HTMLElement {
 		limitAll
 			? limitAll.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('all'));
-				})
+			})
 			: null;
 
 		const limitTv: HTMLInputElement | null = this.shadow.querySelector('.selectTv');
 		limitTv
 			? limitTv.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('tv'));
-				})
+			})
 			: null;
 
 		const limitRadio: HTMLInputElement | null = this.shadow.querySelector('.selectRadio');
 		limitRadio
 			? limitRadio.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('radio'));
-				})
+			})
 			: null;
 		this.setResetVisibility(false);
 	}
 
 	static get observedAttributes() {
-		return ['reset-value', 'q', 'lang'];
+		return ['reset-value', 'q', 'lang', 'spinner'];
 	}
 
 	private getPresetFilter(key: string): string {
@@ -113,6 +113,17 @@ class SearchBarComponent extends HTMLElement {
 			const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
 			if (searchQueryInputField) {
 				searchQueryInputField.value = newValue;
+			}
+		}
+		if (name === 'spinner') {
+			const spinner = this.shadow.querySelector('.spinner') as HTMLDivElement;
+			console.log(spinner);
+			if (newValue === 'true') {
+				spinner.setAttribute('aria-busy', "true");
+				spinner.style.opacity = "1";
+			} else {
+				spinner.removeAttribute('aria-busy');
+				spinner.style.opacity = "0";
 			}
 		}
 		if (name === 'lang') {
@@ -249,6 +260,7 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
 								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
 							</div>
+							<div class="spinner-container"><div class="spinner"></div></div>
 							<button id="resetButton" type="button" aria-label="reset" class="btn btn-primary btn-icon">
 							<i class="material-icons" aria-hidden="true">close</i>
 						</button>
@@ -317,7 +329,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			transition: opacity 0.5s; */
 		}
 
-		.search-box { 
+		.search-box {
 			height:100%
 		}
 
@@ -369,7 +381,40 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			/* display: flex;
 			align-content: center;
 			flex-wrap: wrap; */
-		}	
+		}
+
+		.spinner-container {
+			background-color:white;
+			display:flex;
+		}
+		
+		.spinner {
+			--spinner-color: #171717;
+			--spinner-mask: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='50' height='50' viewBox='0 0 50 50' xml:space='preserve'%3E%3Ccircle stroke-width='1.86' fill='none' stroke='currentColor' cx='25' cy='25' r='14'/%3E%3C/svg%3E");
+			--spinner-size: 3rem;
+			display: block;
+			margin: auto;
+			background-image: conic-gradient(transparent 90deg, var(--spinner-color, white));
+			-webkit-mask: var(--spinner-mask) 0/100% 100%;
+			mask: var(--spinner-mask) 0/100% 100%;
+			will-change: transform;
+			animation: spin 2s linear infinite;
+			animation-play-state: var(--spinner-animation-play-state,paused);
+			aspect-ratio: 1;
+			height: var(--spinner-size,16rem);
+			transition:opacity 0.3s linear 0s;
+			}
+			[aria-busy] {
+			--spinner-animation-play-state: running;
+			}
+			@keyframes spin {
+				from {
+					transform:rotate(0deg);
+				}
+				to {
+					transform:rotate(360deg);
+				}
+		}
 		
 		.rdl-advanced-search {
 			display: flex;

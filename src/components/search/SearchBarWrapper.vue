@@ -4,6 +4,7 @@
 		:reset-value="xReset"
 		:background-img-url="backgroundImage"
 		:lang="locale"
+		:spinner="searchResultStore.loading"
 	></kb-searchbar>
 </template>
 
