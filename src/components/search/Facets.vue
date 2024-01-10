@@ -1,25 +1,27 @@
 <template>
 	<div class="facet-container">
-		<div
-			class="facet-box"
-			v-for="(facet, i1) in currentFacets"
-			:key="i1"
-		>
+		<TransitionGroup name="fade">
 			<div
-				class="checkbox"
-				v-for="(singleFacet, i2) in simplifyFacets(facet as string[])"
-				:key="i2 + 'facet' + lastUpdate"
+				class="facet-box"
+				v-for="(facet, i1) in currentFacets"
+				:key="i1"
 			>
-				<kb-checkboxcomponent
-					:fqkey="i1"
-					:title="singleFacet[0]"
-					:number="singleFacet[1]"
-					:value="filterExists(i1.toString(), singleFacet[0])"
-					:inslide="i2"
-					:show="showFacets"
-				/>
+				<div
+					class="checkbox"
+					v-for="(singleFacet, i2) in simplifyFacets(facet as string[])"
+					:key="i2 + 'facet' + lastUpdate"
+				>
+					<kb-checkboxcomponent
+						:fqkey="i1"
+						:title="singleFacet[0]"
+						:number="singleFacet[1]"
+						:value="filterExists(i1.toString(), singleFacet[0])"
+						:inslide="i2"
+						:show="showFacets"
+					/>
+				</div>
 			</div>
-		</div>
+	</TransitionGroup>
 	</div>
 </template>
 
@@ -55,22 +57,24 @@ export default defineComponent({
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-					if (newFacets !== prevFacets) {
-						showFacets.value = false;
-						let sum = '';
-						Object.entries(prevFacets).forEach(([, value]) => {
-							sum += value;
-						});
-						setTimeout(
-							() => {
-								currentFacets.value = newFacets;
-								lastUpdate.value = new Date().getTime();
-								showFacets.value = true;
-							},
-							sum.length <= 0 ? 0 : 600,
-						);
-					}
-				},
+					setTimeout(() => {
+						if (newFacets !== prevFacets) {
+							showFacets.value = false;
+							let sum = '';
+							Object.entries(prevFacets).forEach(([, value]) => {
+								sum += value;
+							});
+							setTimeout(
+								() => {
+									currentFacets.value = newFacets;
+									lastUpdate.value = new Date().getTime();
+									showFacets.value = true;
+								},
+								sum.length <= 0 ? 0 : 600,
+							);
+							}
+						}, 5000);
+					},
 			);
 		});
 

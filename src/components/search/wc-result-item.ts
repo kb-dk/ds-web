@@ -115,6 +115,14 @@ class ResultComponent extends HTMLElement {
 			title && (title.textContent = this.data.title);
 			desc && (desc.textContent = this.data.description);
 			tv && (tv.textContent = this.data.origin.split('.')[1]);
+
+			const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
+			if (imageComponent) {
+				imageComponent.imgSrc = this.data.thumbnail;
+				imageComponent.altText = this.data.title;
+				imageComponent.imgTitle = this.data.title;
+				imageComponent.placeholder = this.placeholder;
+			}
 		}
 	}
 
@@ -160,14 +168,15 @@ class ResultComponent extends HTMLElement {
 
 	private containerRevealed() {
 		const container = this.shadow.querySelector('.container') as HTMLDivElement;
-		container && (container.style.display = 'flex');
-		setTimeout(() => {
-			container.style.opacity = '1';
-		}, 100);
+			container && (container.style.display = 'flex');
+			setTimeout(() => {
+				container.style.opacity = '1';
+			}, 100);
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'resultdata') {
+			console.log(newValue);
 			this.renderResultData(JSON.parse(newValue));
 		}
 		if (name === 'duration') {

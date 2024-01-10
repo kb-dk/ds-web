@@ -4,6 +4,7 @@ class checkboxComponent extends HTMLElement {
 	key: string | undefined;
 	sendValue: string | undefined;
 	checkbox: HTMLElement | null;
+	savedTitle: string | undefined;
 
 	constructor() {
 		super();
@@ -30,7 +31,7 @@ class checkboxComponent extends HTMLElement {
 				})
 			: null;
 
-		const observer = new IntersectionObserver((entries) => {
+		/* const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					this.style.transitionDelay = Number(this.slide) / 50 + 's' || 0 + 's';
@@ -41,11 +42,63 @@ class checkboxComponent extends HTMLElement {
 			});
 		});
 
-		observer.observe(this);
+		observer.observe(this); */
 	}
 
 	static get observedAttributes() {
 		return ['fqkey', 'value', 'title', 'number', 'inslide', 'show'];
+	}
+
+	hideLoadingAndShowContent = () => {
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		loading.removeEventListener('transitionend', this.hideLoadingAndShowContent);
+		this.loadingRemoved();
+		this.containerRevealed();
+	};
+
+	hideContentAndShowLoading = () => {
+		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+		container.removeEventListener('transitionend', this.hideContentAndShowLoading);
+		this.containerRemoved();
+		this.updateSkeletonDifferences();
+		this.loadingRevealed();
+	};
+
+	private loadingRemoved() {
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		loading && (loading.style.display = 'none');
+	}
+
+	private loadingRevealed() {
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		const shimmer = this.shadow.querySelector('.shimmer') as HTMLDivElement;
+		shimmer.style.animationDelay = Math.random() * 1 + 's';
+		loading && (loading.style.display = 'flex');
+		setTimeout(() => {
+			loading.style.opacity = '1';
+		}, 100);
+	}
+
+	private containerRemoved() {
+		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+		container && (container.style.display = 'none');
+	}
+
+	private containerRevealed() {
+		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+		container && (container.style.display = 'flex');
+		setTimeout(() => {
+			container.style.opacity = '1';
+		}, 100);
+	}
+
+	private updateSkeletonDifferences() {
+		const texts = this.shadow
+			.querySelectorAll('.text') as NodeListOf<HTMLSpanElement>;
+
+			texts.forEach((item) => {
+			item.style.width = Math.random() * 12 + 12 + '%';
+		});
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -62,15 +115,33 @@ class checkboxComponent extends HTMLElement {
 			}
 		}
 		if (name === 'title') {
-			this.sendValue = newValue;
-			const checkbox = this.shadow.querySelector('.checkbox') as HTMLElement;
-			checkbox.id = newValue;
+			const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+			const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+			if (newValue !== null && newValue !== undefined) {
+				console.log("we doing spinner now");
+				this.savedTitle = newValue;
+				this.sendValue = newValue;
+				const checkbox = this.shadow.querySelector('.checkbox') as HTMLElement;
+				checkbox.id = newValue;
 
-			const title = this.shadow.querySelector('.title') as HTMLElement;
-			title.innerText = newValue;
+				const title = this.shadow.querySelector('.title') as HTMLElement;
+				const label = this.shadow.querySelector('.label') as HTMLLabelElement;
 
-			const label = this.shadow.querySelector('.label') as HTMLLabelElement;
-			label.htmlFor = newValue;
+				if(this.savedTitle) {
+					title.innerText = this.savedTitle;
+					label.htmlFor = this.savedTitle;
+
+				}
+
+				loading.addEventListener('transitionend', this.hideLoadingAndShowContent);
+				container.removeEventListener('transitionend', this.hideContentAndShowLoading);
+				loading.style.opacity = '0';
+			} else {
+				container.addEventListener('transitionend', this.hideContentAndShowLoading);
+				loading.removeEventListener('transitionend', this.hideLoadingAndShowContent);
+				container.style.opacity = '0';
+	
+			}
 		}
 		if (name === 'number') {
 			const number = this.shadow.querySelector('.number') as HTMLElement;
@@ -82,35 +153,90 @@ class checkboxComponent extends HTMLElement {
 		if (name === 'inslide') {
 			this.slide = newValue;
 		}
-		if (name === 'show') {
+		/* if (name === 'show') {
 			if (newValue === 'false') {
 				this.style.opacity = '0';
 				this.style.transform = 'translateY(-20px)';
 			}
-		}
+		} */
 	}
 }
 
 const TEMPLATE = /*html*/ `
     <div class="container">
+			<div class="checkbox-container">
         <label class="label"><span class="title"></span><span class="number"></span></label>
         <input role="checkbox" tabindex="0" type="checkbox" class="checkbox">
+			</div>
+			<div class="loading">
+				<div class="shimmer"></div>
+					<span class="text"></span>
+					<span class="text"></span>
+					<span class="text"></span>
+					<input disabled role="checkbox" tabindex="0" type="checkbox" class="checkbox">
+			</div>
 	</div>
 `;
 
 const STYLES = /*css*/ `
 	<style>
-		:host { 
-            display: block;
-			opacity: 0;
+		:host {
+      display: block;
+			opacity: 1;
 			transition: all 0.3s linear;
-            transform:translateY(-20px);
-            height:25px;
-            width:100%;
-            margin-right:5px;
+			/* transform:translateY(-20px);*/
+      height:25px;
+      width:100%;
+      margin-right:5px;
+		}
+		
+		.loading {
+			width:100vw;
+			max-width:100%;
+			height:105px;
+			display:none;
+
+			flex-direction: row;
+			height: 105px;
+			justify-content: space-between;
+			gap: 30px;
 		}
 
-        .container {
+		.shimmer {
+			animation: loading 3s ease-in-out 0s infinite;
+			background: rgb(255,255,255);
+			background: linear-gradient(117deg, rgba(255,255,255,0) 44%, rgba(255,255,255,0.7455357142857143) 64%, rgba(255,255,255,0) 77%);
+			position: absolute;
+			width: 100%;
+			height: 105px;
+			mix-blend-mode: lighten;
+			overflow:hidden;
+			background-size: 200% 100%;
+			background-position: 160% center;
+		}
+		
+		.shimmer-movement {
+			position: absolute;
+			width: 100%;
+			height: 105px;
+		}
+
+		@keyframes loading {
+			0% {
+				background-position: 160% center;
+			}
+			20% {
+				background-position: 160% center;
+			}
+			80% {
+				background-position: -20% center;
+			}
+			100% {
+				background-position: -20% center;
+			}
+		}
+
+        .checkbox-container {
             display:flex;
             justify-content: space-between;
         }
@@ -160,7 +286,7 @@ const STYLES = /*css*/ `
         }
         .checkbox:hover:after {
             background-color:#fff6c4;
-        } 
+        }
         input:focus {
             box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
         }

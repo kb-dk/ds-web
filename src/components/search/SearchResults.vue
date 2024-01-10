@@ -1,45 +1,48 @@
 <template>
-	<div
-		class="hit-box"
-		v-for="(res, index) in 10 as unknown as GenericSearchResultType[]"
-		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
-	>
-		<kb-resultcomponent
-			:vueRouting="true"
-			:number="index"
-			:resultdata="JSON.stringify(currentResults[index])"
-			:show="showResults"
-			:placeholder="getPlaceholderImage()"
-			:duration="
-				currentResults[index]
-					? locale === 'da'
-						? t('record.duration') +
-						': ' +
-						formatDuration(
-								currentResults[index].duration,
-								currentResults[index].startTime,
-								currentResults[index].endTime,
-								t,
-						)
-						: t('record.duration') +
-						': ' +
-						formatDuration(
-								currentResults[index].duration,
-								currentResults[index].startTime,
-								currentResults[index].endTime,
-								t,
-						)
-					: ''
-			"
-			:starttime="
-				currentResults[index]
-					? currentResults[index].startTime !== undefined
-						? getBroadcastDate(currentResults[index].startTime as string, locale) + ' ' + t('record.timestamp') + getBroadcastTime(currentResults[index].startTime as string)
-						: t('record.noBoardcastData')
-					: ''
-			"
-		/>
-	</div>
+	<TransitionGroup name="fade">
+		<div
+			class="hit-box"
+			v-for="(res, index) in resultNr as unknown as GenericSearchResultType[]"
+			:key="(res as GenericSearchResultType).id + '-' + index + '-' + lastUpdate"
+		>
+			<kb-resultcomponent
+				:vueRouting="true"
+				:number="index"
+				:resultdata="JSON.stringify(currentResults[index])"
+				:show="showResults"
+				:placeholder="getPlaceholderImage()"
+				:inuse="index < currentResults.length"
+				:duration="
+					currentResults[index]
+						? locale === 'da'
+							? t('record.duration') +
+							': ' +
+							formatDuration(
+									currentResults[index].duration,
+									currentResults[index].startTime,
+									currentResults[index].endTime,
+									t,
+							)
+							: t('record.duration') +
+							': ' +
+							formatDuration(
+									currentResults[index].duration,
+									currentResults[index].startTime,
+									currentResults[index].endTime,
+									t,
+							)
+						: ''
+				"
+				:starttime="
+					currentResults[index]
+						? currentResults[index].startTime !== undefined
+							? getBroadcastDate(currentResults[index].startTime as string, locale) + ' ' + t('record.timestamp') + getBroadcastTime(currentResults[index].startTime as string)
+							: t('record.noBoardcastData')
+						: ''
+				"
+			/>
+		</div>
+	</TransitionGroup>
 </template>
 
 <script lang="ts">
@@ -61,6 +64,7 @@ export default defineComponent({
 		const { t, locale } = useI18n();
 		const showResults = ref(false);
 		const currentResults = ref([] as GenericSearchResultType[]);
+		const resultNr = ref(10);
 		const lastUpdate = ref(0);
 
 		const getPlaceholderImage = () => {
@@ -89,6 +93,7 @@ export default defineComponent({
 							showResults.value = false;
 							setTimeout(
 								() => {
+									resultNr.value = newResults.length;
 									currentResults.value = newResults;
 									lastUpdate.value = new Date().getTime();
 									showResults.value = true;
@@ -96,7 +101,7 @@ export default defineComponent({
 								prevResults.length === 0 ? 0 : 600,
 							);
 						}
-					}, 5000);
+					}, 0);
 				},
 			);
 		});
@@ -112,6 +117,7 @@ export default defineComponent({
 			lastUpdate,
 			t,
 			locale,
+			resultNr,
 		};
 	},
 });
