@@ -32,7 +32,7 @@ import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVide
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
 
 import { useI18n } from 'vue-i18n';
-import { Axios, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 //Types
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';

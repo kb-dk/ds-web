@@ -37,14 +37,14 @@ class SearchBarComponent extends HTMLElement {
 		searchButton
 			? searchButton.addEventListener('click', (e) => {
 					this.dispatchSearch(e);
-				})
+			  })
 			: null;
 
 		const resetButton: HTMLButtonElement | null = this.shadow.querySelector('#resetButton');
 		resetButton
 			? resetButton.addEventListener('click', (e) => {
 					this.resetSearch(e);
-				})
+			  })
 			: null;
 
 		// de values are subject to change here
@@ -54,21 +54,21 @@ class SearchBarComponent extends HTMLElement {
 		limitAll
 			? limitAll.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('all'));
-				})
+			  })
 			: null;
 
 		const limitTv: HTMLInputElement | null = this.shadow.querySelector('.selectTv');
 		limitTv
 			? limitTv.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('tv'));
-				})
+			  })
 			: null;
 
 		const limitRadio: HTMLInputElement | null = this.shadow.querySelector('.selectRadio');
 		limitRadio
 			? limitRadio.addEventListener('click', () => {
 					this.setDelimitationAndDispatch(this.getPresetFilter('radio'));
-				})
+			  })
 			: null;
 		this.setResetVisibility(false);
 	}

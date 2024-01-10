@@ -12,8 +12,8 @@
 								? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
 								: t('search.sortBy')
 							: searchResultStore.sort !== ''
-							? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
-							: t('search.sortBy')
+							  ? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
+							  : t('search.sortBy')
 					}}
 				</span>
 				<span :class="showSortingOptions ? 'material-icons sort-expand turn' : 'material-icons sort-expand'">
@@ -113,8 +113,8 @@ export default defineComponent({
 	position: absolute;
 	width: 100%;
 	box-shadow:
-	rgba(0, 0, 0, 0.16) 0px 3px 6px,
-	rgba(0, 0, 0, 0.23) 0px 3px 6px;
+		rgba(0, 0, 0, 0.16) 0px 3px 6px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .sort-options button {

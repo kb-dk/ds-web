@@ -3,11 +3,7 @@ module.exports = {
 	env: {
 		node: true,
 	},
-	extends: [
-		'plugin:vue/vue3-essential',
-		'eslint:recommended',
-		'@vue/typescript/recommended',
-	],
+	extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/typescript/recommended'],
 	plugins: ['prettier'],
 	parserOptions: {
 		ecmaVersion: 2020,
@@ -16,7 +12,9 @@ module.exports = {
 		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 		'vue/multi-word-component-names': 'off',
+		'prettier/prettier': 'error',
 		semi: ['error', 'always'],
+		'no-mixed-spaces-and-tabs': 'off',
 	},
 	overrides: [
 		{
