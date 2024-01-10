@@ -27,7 +27,7 @@ class checkboxComponent extends HTMLElement {
 							},
 						}),
 					);
-				})
+			  })
 			: null;
 
 		const observer = new IntersectionObserver((entries) => {

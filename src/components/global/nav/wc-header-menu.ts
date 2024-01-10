@@ -92,7 +92,7 @@ class MenuComponent extends HTMLElement {
 			localeSwitcher
 				? localeSwitcher.addEventListener('click', (e) => {
 						this.dispatchLocaleSwitch(e);
-				})
+				  })
 				: null;
 		}
 	}
