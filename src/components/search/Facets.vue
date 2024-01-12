@@ -1,27 +1,26 @@
 <template>
 	<div class="facet-container">
-		<TransitionGroup name="fade">
-			<div
-				class="facet-box"
-				v-for="(facet, i1) in currentFacets"
-				:key="i1"
-			>
+		<Transition
+			name="fade"
+			mode="out-in"
+		>
+			<div>
 				<div
 					class="checkbox"
-					v-for="(singleFacet, i2) in simplifyFacets(facet as string[])"
-					:key="i2 + 'facet' + lastUpdate"
+					v-for="(singleFacet, index) in currentFacetNr as unknown as facetPair[]"
+					:key="index + 'facet'"
 				>
 					<kb-checkboxcomponent
-						:fqkey="i1"
-						:title="singleFacet[0]"
-						:number="singleFacet[1]"
-						:value="filterExists(i1.toString(), singleFacet[0])"
-						:inslide="i2"
+						:fqkey="'creator_affiliation'"
+						:title="channelFacets[index]?.title"
+						:number="channelFacets[index]?.number"
+						:value="filterExists('creator_affiliation', channelFacets[index])"
+						:inslide="index"
 						:show="showFacets"
 					/>
 				</div>
 			</div>
-	</TransitionGroup>
+		</Transition>
 	</div>
 </template>
 
@@ -32,6 +31,11 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter, RouteLocationNormalizedLoaded } from 'vue-router';
 
 import '@/components/search/wc-facet-checkbox';
+
+interface facetPair {
+	title: string;
+	number: string;
+}
 
 export default defineComponent({
 	name: 'Facets',
@@ -44,12 +48,16 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const showFacets = ref(false);
 		const currentFacets = ref(Object as unknown as FacetResultType);
+		const currentFacetNr = ref(0);
 		const lastUpdate = ref(0);
 		const route = useRoute();
 		const router = useRouter();
+		const channelFacets = ref([] as facetPair[]);
 
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
+			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
+			currentFacetNr.value = channelFacets.value.length;
 			showFacets.value = true;
 
 			window.addEventListener('filter-update', filterUpdateHelper);
@@ -57,6 +65,8 @@ export default defineComponent({
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
+					currentFacets.value = {} as FacetResultType;
+					channelFacets.value = [] as facetPair[];
 					setTimeout(() => {
 						if (newFacets !== prevFacets) {
 							showFacets.value = false;
@@ -67,14 +77,16 @@ export default defineComponent({
 							setTimeout(
 								() => {
 									currentFacets.value = newFacets;
+									channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
+									currentFacetNr.value = channelFacets.value.length;
 									lastUpdate.value = new Date().getTime();
 									showFacets.value = true;
 								},
 								sum.length <= 0 ? 0 : 600,
 							);
-							}
-						}, 5000);
-					},
+						}
+					}, 0);
+				},
 			);
 		});
 
@@ -82,9 +94,13 @@ export default defineComponent({
 			window.removeEventListener('filter-update', filterUpdateHelper);
 		});
 
-		const filterExists = (key: string, title: string) => {
-			const filterString = `${key}:"${title}"`;
-			return searchResultStore.filters.includes(`fq=${encodeURIComponent(filterString)}`);
+		const filterExists = (key: string, pair: facetPair) => {
+			if (pair) {
+				const filterString = `${key}:"${pair.title}"`;
+				return searchResultStore.filters.includes(`fq=${encodeURIComponent(filterString)}`);
+			} else {
+				return false;
+			}
 		};
 
 		const cloneRouteQuery = (route: RouteLocationNormalizedLoaded) => {
@@ -137,24 +153,38 @@ export default defineComponent({
 
 		// A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 		// Might not be relevant when we know more about the backend structure.
-		const simplifyFacets = (facet: Array<string>) => {
-			const allPairedFacets: Array<string[]> = [];
-			let facetPair: Array<string> = [];
+		const simplifyFacets = (facet: Array<string>): facetPair[] => {
+			if (facet === undefined) {
+				return [];
+			}
+			console.log(facet, 'whats this');
+			const allPairedFacets: Array<facetPair> = [];
+			let facetPair = {} as facetPair;
 			facet.forEach((facet, i) => {
 				if (i % 2 === 0) {
 					if (i !== 0) {
-						facetPair = [];
+						facetPair = {} as facetPair;
 					}
-					facetPair.push(facet);
+					facetPair['title'] = facet;
 				} else {
-					facetPair.push(facet);
+					facetPair['number'] = facet;
 					allPairedFacets.push(facetPair);
 				}
 			});
 			return allPairedFacets;
 		};
 
-		return { showFacets, currentFacets, lastUpdate, searchResultStore, filterExists, updateFilters, simplifyFacets };
+		return {
+			showFacets,
+			currentFacets,
+			lastUpdate,
+			searchResultStore,
+			filterExists,
+			updateFilters,
+			simplifyFacets,
+			currentFacetNr,
+			channelFacets,
+		};
 	},
 });
 </script>

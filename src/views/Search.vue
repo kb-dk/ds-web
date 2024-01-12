@@ -111,8 +111,8 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
-						:spots="mockdata1">
-						</GridDisplay>
+						:spots="mockdata1"
+					></GridDisplay>
 				</div>
 				<div class="blue-background">
 					<div class="edge blue"></div>
@@ -124,8 +124,8 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
-							:spots="mockdata2">
-							</GridDisplay>
+							:spots="mockdata2"
+						></GridDisplay>
 					</div>
 				</div>
 			</div>
@@ -276,7 +276,7 @@ export default defineComponent({
 			itemsPerPage,
 			numPagesToShow,
 			mockdata1,
-			mockdata2
+			mockdata2,
 		};
 	},
 });

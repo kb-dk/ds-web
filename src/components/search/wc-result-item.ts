@@ -3,6 +3,8 @@ import { ImageComponentType } from '@/types/ImageComponentType';
 
 import '@/components/common/wc-image-item';
 
+import gsap from 'gsap';
+
 class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
@@ -36,59 +38,40 @@ class ResultComponent extends HTMLElement {
 		return ['show', 'duration', 'starttime', 'resultdata'];
 	}
 
-	connectedCallback() {
-		/* if (this.resultdata) {
-			this.renderResultData(this.resultdata);
-		} */
-	}
-
 	renderResultData(resultData: GenericSearchResultType) {
 		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
 		const container = this.shadow.querySelector('.container') as HTMLDivElement;
 		if (resultData !== null) {
 			this.data = resultData;
 			this.addDataToContainer();
-			loading.addEventListener('transitionend', this.hideLoadingAndShowContent);
-			container.removeEventListener('transitionend', this.hideContentAndShowLoading);
-			loading.style.opacity = '0';
-			//setTimeout(this.hideLoadingAndShowContent, 1000);
+			/* loading.addEventListener('transitionend', this.hideLoadingAndShowContent);
+			container.removeEventListener('transitionend', this.hideContentAndShowLoading); */
+			gsap.to(loading, {
+				opacity: 0,
+				//overwrite: true,
+				duration: 0.25,
+				onComplete: () => {
+					this.hideLoadingAndShowContent();
+				},
+			});
 		} else {
-			container.addEventListener('transitionend', this.hideContentAndShowLoading);
-			loading.removeEventListener('transitionend', this.hideLoadingAndShowContent);
-			container.style.opacity = '0';
-
-			//setTimeout(this.hideContentAndShowLoading, 1000);
+			gsap.to(container, {
+				opacity: 0,
+				//overwrite: true,
+				duration: 0.25,
+				onComplete: () => {
+					this.hideContentAndShowLoading();
+				},
+			});
 		}
-
-		/* const where = this.shadow.querySelector('.where');
-		if (where && resultData.creator_affiliation) {
-			where.textContent = resultData.creator_affiliation[0] + ',';
-		}
-
-		const summary = this.shadow.querySelector('.summary');
-		summary &&
-			(summary.textContent =
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique nibh vel consectetur condimentum. Vestibulum dictum luctus nulla, eu aliquam arcu vehicula eget. Praesent tristique, tortor a posuere faucibus, urna odio aliquet massa, sit amet viverra eros magna et sapien. Suspendisse sodales porta erat, nec fermentum nisi.');
-
-		const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
-		if (imageComponent) {
-			imageComponent.imgSrc = resultData.thumbnail;
-			imageComponent.altText = resultData.title;
-			imageComponent.imgTitle = resultData.title;
-			imageComponent.placeholder = this.placeholder;
-		} */
 	}
 
 	hideLoadingAndShowContent = () => {
-		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
-		loading.removeEventListener('transitionend', this.hideLoadingAndShowContent);
 		this.loadingRemoved();
 		this.containerRevealed();
 	};
 
 	hideContentAndShowLoading = () => {
-		const container = this.shadow.querySelector('.container') as HTMLDivElement;
-		container.removeEventListener('transitionend', this.hideContentAndShowLoading);
 		this.containerRemoved();
 		this.updateSkeletonDifferences();
 		this.loadingRevealed();
@@ -99,6 +82,7 @@ class ResultComponent extends HTMLElement {
 			const title = this.shadow.querySelector('.title') as HTMLAnchorElement;
 			const desc = this.shadow.querySelector('.summary') as HTMLDivElement;
 			const tv = this.shadow.querySelector('.tv') as HTMLDivElement;
+			const where = this.shadow.querySelector('.where') as HTMLDivElement;
 			title.style.color = '#002E70';
 			title && (title.href = 'record/' + this.data.id);
 			title.addEventListener('click', (event) => {
@@ -115,7 +99,7 @@ class ResultComponent extends HTMLElement {
 			title && (title.textContent = this.data.title);
 			desc && (desc.textContent = this.data.description);
 			tv && (tv.textContent = this.data.origin.split('.')[1]);
-
+			where && (where.textContent = this.data.creator_affiliation[0] + ',');
 			const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
 			if (imageComponent) {
 				imageComponent.imgSrc = this.data.thumbnail;
@@ -156,9 +140,11 @@ class ResultComponent extends HTMLElement {
 		const shimmer = this.shadow.querySelector('.shimmer') as HTMLDivElement;
 		shimmer.style.animationDelay = Math.random() * 1 + 's';
 		loading && (loading.style.display = 'flex');
-		setTimeout(() => {
-			loading.style.opacity = '1';
-		}, 100);
+		gsap.to(loading, {
+			opacity: 1,
+			delay: 0.01,
+			duration: 0.25,
+		});
 	}
 
 	private containerRemoved() {
@@ -168,21 +154,23 @@ class ResultComponent extends HTMLElement {
 
 	private containerRevealed() {
 		const container = this.shadow.querySelector('.container') as HTMLDivElement;
-			container && (container.style.display = 'flex');
-			setTimeout(() => {
-				container.style.opacity = '1';
-			}, 100);
+		container && (container.style.display = 'flex');
+		gsap.to(container, {
+			opacity: 1,
+			delay: 0.01,
+			duration: 0.25,
+		});
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'resultdata') {
-			console.log(newValue);
+			//console.log(newValue);
 			this.renderResultData(JSON.parse(newValue));
 		}
 		if (name === 'duration') {
 			const duration = this.shadow.querySelector('.duration');
 			if (duration && newValue !== undefined && newValue !== null && newValue !== '') {
-				console.log('UPDATING!', newValue);
+				//console.log('UPDATING!', newValue);
 				duration.textContent = newValue;
 			}
 		}
@@ -261,10 +249,6 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			overflow:hidden;
 		}
 
-		.loading, .container {
-			transition: opacity .3s ease-in-out 0s;
-		}
-
 		.material-icons {
 			font-family: 'Material Icons';
 			font-weight: normal;
@@ -300,7 +284,8 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 		}
 
 		.container {
-			display: flex;
+			display: none;
+			opacity: 0;
 			flex-direction: row;
 			height:105px;
 			justify-content: space-between;
@@ -347,7 +332,6 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			max-width:100%;
 			height:105px;
 			display:none;
-
 			flex-direction: row;
 			height: 105px;
 			justify-content: space-between;
@@ -387,8 +371,6 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 				background-position: -20% center;
 			}
 		}
-
-
 
 		.placeholder-t {
 			border-radius: 105px;
@@ -436,7 +418,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			overflow: hidden;
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
-					line-clamp: 3; 
+			line-clamp: 3; 
 			-webkit-box-orient: vertical;
 			overflow: hidden;
 			text-overflow: ellipsis;
