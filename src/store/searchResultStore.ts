@@ -113,9 +113,15 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 			);
+			const facetData = await APIService.getFacetResults(
+				query,
+				searchFilters,
+				startParam as string,
+				sortParam as string,
+			);
 			currentQuery.value = query;
 			searchResult.value = responseData.data.response.docs;
-			facetResult.value = responseData.data.facet_counts.facet_fields as FacetResultType;
+			facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
 			numFound.value = responseData.data.response.numFound;
 			noHits.value = numFound.value === 0;
 		} catch (err: unknown) {
