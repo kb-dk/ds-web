@@ -103,7 +103,6 @@ class checkboxComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		console.log('YES HAPPEND ON INIT!');
 		if (name === 'value') {
 			const checkbox = this.shadow.querySelector('.checkbox') as HTMLInputElement;
 			if (checkbox !== null) {
@@ -117,7 +116,6 @@ class checkboxComponent extends HTMLElement {
 			}
 		}
 		if (name === 'title') {
-			console.log('title change!', newValue);
 			const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
 			const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
 
@@ -166,12 +164,6 @@ class checkboxComponent extends HTMLElement {
 		if (name === 'inslide') {
 			this.slide = newValue;
 		}
-		/* if (name === 'show') {
-			if (newValue === 'false') {
-				this.style.opacity = '0';
-				this.style.transform = 'translateY(-20px)';
-			}
-		} */
 	}
 }
 
@@ -197,9 +189,7 @@ const STYLES = /*css*/ `
 	<style>
 		:host {
       display: block;
-			/* opacity: 1; */
 			transition: all 0.3s linear;
-			/* transform:translateY(-20px);*/
       height:25px;
       width:100%;
       margin-right:5px;

@@ -44,11 +44,8 @@ class ResultComponent extends HTMLElement {
 		if (resultData !== null) {
 			this.data = resultData;
 			this.addDataToContainer();
-			/* loading.addEventListener('transitionend', this.hideLoadingAndShowContent);
-			container.removeEventListener('transitionend', this.hideContentAndShowLoading); */
 			gsap.to(loading, {
 				opacity: 0,
-				//overwrite: true,
 				duration: 0.25,
 				onComplete: () => {
 					this.hideLoadingAndShowContent();
@@ -57,7 +54,6 @@ class ResultComponent extends HTMLElement {
 		} else {
 			gsap.to(container, {
 				opacity: 0,
-				//overwrite: true,
 				duration: 0.25,
 				onComplete: () => {
 					this.hideContentAndShowLoading();
@@ -164,13 +160,11 @@ class ResultComponent extends HTMLElement {
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'resultdata') {
-			//console.log(newValue);
 			this.renderResultData(JSON.parse(newValue));
 		}
 		if (name === 'duration') {
 			const duration = this.shadow.querySelector('.duration');
 			if (duration && newValue !== undefined && newValue !== null && newValue !== '') {
-				//console.log('UPDATING!', newValue);
 				duration.textContent = newValue;
 			}
 		}
@@ -180,15 +174,6 @@ class ResultComponent extends HTMLElement {
 				when.textContent = newValue;
 			}
 		}
-		/* if (name === 'show') {
-			if (newValue === 'false') {
-				this.style.opacity = '0';
-				this.style.transform = 'translateY(-20px)';
-			} else {
-				/* 				this.style.opacity = '1';
-				this.style.transform = 'translateY(0px)';
-			}
-		} */
 	}
 }
 
@@ -242,9 +227,7 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 	<style>
 		:host {
 			display: block;
-			/* opacity: 0; */
 			transition: all .3s linear;
-            /*  transform:translateY(-20px); */
 			padding-bottom:30px;
 			overflow:hidden;
 		}
