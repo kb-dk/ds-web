@@ -1,5 +1,6 @@
 <template>
-	<div class="mobile-edge edge top"></div>
+	<!-- 	<div class="mobile-edge edge top"></div>
+ -->
 	<div
 		class="video-player"
 		v-if="src"
@@ -14,7 +15,8 @@
 			<media-video-layout></media-video-layout>
 		</media-player>
 	</div>
-	<div class="mobile-edge edge bottom"></div>
+	<!-- 	<div class="mobile-edge edge bottom"></div>
+ -->
 </template>
 
 <script lang="ts">
@@ -68,8 +70,8 @@ export default defineComponent({
 	/*aspect-ratio: 4/2;*/
 	margin-left: 0px;
 	overflow-y: hidden;
-	padding-top: 31px;
-	padding-bottom: 31px;
+	/* padding-top: 31px;
+	padding-bottom: 31px; */
 	background-color: #caf0fe;
 }
 
