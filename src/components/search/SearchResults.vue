@@ -41,7 +41,7 @@
 								  ' ' +
 								  t('record.timestamp') +
 								  getBroadcastTime(currentResults[index].startTime as string)
-								: t('record.noBoardcastData')
+								: t('record.noBroadcastData')
 							: ''
 					"
 				/>

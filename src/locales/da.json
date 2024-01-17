@@ -17,7 +17,7 @@
    },
   "record":{
      "duration":"Varighed",
-     "noBoardcastData":"Ingen sendetid",
+     "noBroadcastData":"Ingen sendetid",
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",

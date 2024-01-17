@@ -17,7 +17,7 @@
   },
   "record":{
      "duration":"Duration",
-     "noBoardcastData":"No air date",
+     "noBroadcastData":"No air date",
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
