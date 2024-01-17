@@ -9,7 +9,7 @@
 					<h2 class="headline">{{ t('search.channels') }}</h2>
 					<div
 						class="checkbox"
-						v-for="(singleFacet, index) in currentFacetNr as unknown as facetPair[]"
+						v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
 						:key="index + 'facet'"
 					>
 						<kb-checkboxcomponent
@@ -38,7 +38,7 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter } from 'vue-router';
 import CategoryTags from '@/components/search/CategoryTags.vue';
 import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
-import { facetPair } from '@/types/GenericRecordTypes';
+import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-facet-checkbox';
@@ -58,8 +58,8 @@ export default defineComponent({
 		const showFacets = ref(false);
 		const currentFacets = ref(Object as unknown as FacetResultType);
 		const currentFacetNr = ref(0);
-		const channelFacets = ref([] as facetPair[]);
-		const categoryFacets = ref([] as facetPair[]);
+		const channelFacets = ref([] as FacetPair[]);
+		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
 
 		const lastUpdate = ref(0);
@@ -81,8 +81,8 @@ export default defineComponent({
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
 					currentFacets.value = {} as FacetResultType;
-					channelFacets.value = [] as facetPair[];
-					categoryFacets.value = [] as facetPair[];
+					channelFacets.value = [] as FacetPair[];
+					categoryFacets.value = [] as FacetPair[];
 					if (newFacets !== prevFacets) {
 						//THIS SETTIMEOUT IS FOR TESTING ONLY. SHOULD BE REMOVED WHEN PR IS READY.
 						setTimeout(() => {

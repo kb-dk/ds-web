@@ -69,7 +69,7 @@ export interface PublicationType {
 	};
 }
 
-export interface facetPair {
+export interface FacetPair {
 	title: string;
 	number: string;
 }

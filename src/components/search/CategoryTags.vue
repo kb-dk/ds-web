@@ -9,7 +9,7 @@
 				<div>
 					<div
 						:class="filterExists('categories', categoryFacets[index]?.title) ? 'tag active' : 'tag'"
-						v-for="(singleCategory, index) in currentCategoryNr as unknown as facetPair[]"
+						v-for="(singleCategory, index) in currentCategoryNr as unknown as FacetPair[]"
 						:key="index + 'category'"
 					>
 						<router-link
@@ -51,7 +51,7 @@
 import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
-import { facetPair } from '@/types/GenericRecordTypes';
+import { FacetPair } from '@/types/GenericRecordTypes';
 import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { useI18n } from 'vue-i18n';
 
@@ -61,14 +61,14 @@ export default defineComponent({
 	name: 'CategoryTags',
 
 	props: {
-		categories: { type: Object as PropType<facetPair[]>, required: true },
+		categories: { type: Object as PropType<FacetPair[]>, required: true },
 		categoryNr: { type: Number, required: true },
 	},
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
 		const currentCategoryNr = ref(0);
-		const categoryFacets = ref([] as facetPair[]);
+		const categoryFacets = ref([] as FacetPair[]);
 
 		const route = useRoute();
 
@@ -79,7 +79,7 @@ export default defineComponent({
 
 			watch(
 				() => props.categories,
-				(newCategories: facetPair[], prevCategories: facetPair[]) => {
+				(newCategories: FacetPair[], prevCategories: FacetPair[]) => {
 					categoryFacets.value = newCategories;
 				},
 			);

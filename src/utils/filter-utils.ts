@@ -1,6 +1,6 @@
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { facetPair } from '@/types/GenericRecordTypes';
+import { FacetPair } from '@/types/GenericRecordTypes';
 
 const createFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
@@ -55,21 +55,21 @@ const removeFilter = (route: RouteLocationNormalizedLoaded, filter: string) => {
 
 // A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 // Might not be relevant when we know more about the backend structure.
-const simplifyFacets = (facet: Array<string>): facetPair[] => {
+const simplifyFacets = (facet: Array<string>): FacetPair[] => {
 	if (facet === undefined) {
 		return [];
 	}
-	const allPairedFacets: Array<facetPair> = [];
-	let facetPair = {} as facetPair;
+	const allPairedFacets: Array<FacetPair> = [];
+	let facetSet = {} as FacetPair;
 	facet.forEach((facet, i) => {
 		if (i % 2 === 0) {
 			if (i !== 0) {
-				facetPair = {} as facetPair;
+				facetSet = {} as FacetPair;
 			}
-			facetPair['title'] = facet;
+			facetSet['title'] = facet;
 		} else {
-			facetPair['number'] = facet;
-			allPairedFacets.push(facetPair);
+			facetSet['number'] = facet;
+			allPairedFacets.push(facetSet);
 		}
 	});
 	return allPairedFacets;
