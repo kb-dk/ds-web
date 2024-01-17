@@ -212,7 +212,7 @@ const STYLES = /*css*/ `
 			position: absolute;
 			width: 100%;
 			height: 25px;
-			mix-blend-mode: overlay;
+			mix-blend-mode: soft-light;
 			overflow:hidden;
 			background-size: 200% 100%;
 			background-position: 160% center;
@@ -229,13 +229,7 @@ const STYLES = /*css*/ `
 		.loading .name .text {
 			margin:5px 0px;
 			border-radius:20px;
-			background-color:grey;
-		}
-
-		.shimmer-movement {
-			position: absolute;
-			width: 100%;
-			height: 105px;
+			background-color:rgba(170,170,170,1);
 		}
 
 		@keyframes loading {
@@ -254,6 +248,7 @@ const STYLES = /*css*/ `
 		}
 
 		.checkbox-container {
+			padding:5px 5px;
 			display:none;
 			opacity:0;
 			justify-content: space-between;
@@ -276,7 +271,10 @@ const STYLES = /*css*/ `
 			white-space: nowrap;
 			overflow: hidden;
 			display: inline-block;
+			text-transform:uppercase;
+			font-weight:bold;
 		}
+		
 		.checkbox {
 			position: relative;
 			top: 2px;

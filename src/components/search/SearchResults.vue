@@ -91,9 +91,9 @@ export default defineComponent({
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
 					currentResults.value = [];
-					setTimeout(() => {
-						console.log('results updated because of the watcher in searchResults.vue');
-						if (newResults !== prevResults) {
+					console.log('results updated because of the watcher in searchResults.vue');
+					if (newResults !== prevResults) {
+						setTimeout(() => {
 							showResults.value = false;
 							setTimeout(
 								() => {
@@ -104,8 +104,8 @@ export default defineComponent({
 								},
 								prevResults.length === 0 ? 0 : 600,
 							);
-						}
-					}, 0);
+						}, 5000);
+					}
 				},
 			);
 		});

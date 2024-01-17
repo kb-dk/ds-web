@@ -46,6 +46,7 @@ export interface FacetsType {
 
 export interface FacetResultType {
 	catalog: string[];
+	categories: string[];
 	collection: string[];
 	genre: string[];
 	creator_affiliation: string[];

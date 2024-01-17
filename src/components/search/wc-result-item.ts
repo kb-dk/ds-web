@@ -328,16 +328,10 @@ const RESULT_COMPONENT_STYLES = /*css*/ `
 			position: absolute;
 			width: 100%;
 			height: 105px;
-			mix-blend-mode: lighten;
+			mix-blend-mode: soft-light;
 			overflow:hidden;
 			background-size: 200% 100%;
 			background-position: 160% center;
-		}
-		
-		.shimmer-movement {
-			position: absolute;
-			width: 100%;
-			height: 105px;
 		}
 
 		@keyframes loading {
