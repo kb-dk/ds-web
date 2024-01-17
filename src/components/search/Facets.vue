@@ -84,6 +84,7 @@ export default defineComponent({
 					channelFacets.value = [] as facetPair[];
 					categoryFacets.value = [] as facetPair[];
 					if (newFacets !== prevFacets) {
+						//THIS SETTIMEOUT IS FOR TESTING ONLY. SHOULD BE REMOVED WHEN PR IS READY.
 						setTimeout(() => {
 							showFacets.value = false;
 							let sum = '';
