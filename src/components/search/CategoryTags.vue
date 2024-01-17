@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="category-tags">
-			<h2 class="headline">Relaterede emner ({{ currentCategoryNr }})</h2>
+			<h2 class="headline">{{ t('search.relatedSubjects') }} ({{ currentCategoryNr }})</h2>
 			<Transition
 				name="fade"
 				mode="out-in"
@@ -53,6 +53,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
 import { facetPair } from '@/types/GenericRecordTypes';
 import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
+import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-facet-checkbox';
 
@@ -69,6 +70,8 @@ export default defineComponent({
 		const categoryFacets = ref([] as facetPair[]);
 
 		const route = useRoute();
+
+		const { t } = useI18n();
 
 		onMounted(() => {
 			currentCategoryNr.value = categoryFacets.value.length;
@@ -94,6 +97,7 @@ export default defineComponent({
 			addFilter,
 			removeFilter,
 			route,
+			t,
 		};
 	},
 });

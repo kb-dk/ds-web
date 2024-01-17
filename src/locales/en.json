@@ -13,7 +13,11 @@
      "sortBy":"Sort by",
      "title": "title",
      "title_sort_da": "title",
-     "score": "score"
+     "score": "score",
+     "channels":"Channels",
+     "relatedSubjects":"Related subjects"
+
+
   },
   "record":{
      "duration":"Duration",

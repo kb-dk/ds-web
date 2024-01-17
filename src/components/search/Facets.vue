@@ -6,7 +6,7 @@
 				mode="out-in"
 			>
 				<div>
-					<h2 class="headline">Kanaler</h2>
+					<h2 class="headline">{{ t('search.channels') }}</h2>
 					<div
 						class="checkbox"
 						v-for="(singleFacet, index) in currentFacetNr as unknown as facetPair[]"
@@ -36,6 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 import CategoryTags from '@/components/search/CategoryTags.vue';
 import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { facetPair } from '@/types/GenericRecordTypes';
+import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-facet-checkbox';
 
@@ -55,19 +56,19 @@ export default defineComponent({
 		const currentFacets = ref(Object as unknown as FacetResultType);
 		const currentFacetNr = ref(0);
 		const channelFacets = ref([] as facetPair[]);
-		const currentCategoryNr = ref(0);
 		const categoryFacets = ref([] as facetPair[]);
 
 		const lastUpdate = ref(0);
 		const route = useRoute();
 		const router = useRouter();
 
+		const { t } = useI18n();
+
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = Math.min(channelFacets.value.length, 10);
-			currentCategoryNr.value = categoryFacets.value.length;
 			showFacets.value = true;
 
 			window.addEventListener('filter-update', filterUpdateHelper);
@@ -91,7 +92,6 @@ export default defineComponent({
 									channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
 									categoryFacets.value = simplifyFacets(newFacets['categories']);
 									currentFacetNr.value = Math.min(channelFacets.value.length, 10);
-									currentCategoryNr.value = categoryFacets.value.length;
 									lastUpdate.value = new Date().getTime();
 									showFacets.value = true;
 								},
@@ -128,12 +128,12 @@ export default defineComponent({
 			simplifyFacets,
 			currentFacetNr,
 			channelFacets,
-			currentCategoryNr,
 			categoryFacets,
 			createFilter,
 			addFilter,
 			removeFilter,
 			route,
+			t,
 		};
 	},
 });
