@@ -79,13 +79,13 @@ export default defineComponent({
 
 			watch(
 				() => props.categories,
-				(newCategories: FacetPair[], prevCategories: FacetPair[]) => {
+				(newCategories: FacetPair[]) => {
 					categoryFacets.value = newCategories;
 				},
 			);
 			watch(
 				() => props.categoryNr,
-				(newNr: number, prevNr: number) => {
+				(newNr: number) => {
 					currentCategoryNr.value = newNr;
 				},
 			);
