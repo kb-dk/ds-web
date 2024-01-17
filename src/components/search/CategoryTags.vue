@@ -62,6 +62,7 @@ export default defineComponent({
 
 	props: {
 		categories: { type: Object as PropType<facetPair[]>, required: true },
+		categoryNr: { type: Number, required: true },
 	},
 
 	setup(props) {
@@ -79,10 +80,13 @@ export default defineComponent({
 			watch(
 				() => props.categories,
 				(newCategories: facetPair[], prevCategories: facetPair[]) => {
-					if (newCategories.length !== 0) {
-						currentCategoryNr.value = newCategories.length;
-					}
 					categoryFacets.value = newCategories;
+				},
+			);
+			watch(
+				() => props.categoryNr,
+				(newNr: number, prevNr: number) => {
+					currentCategoryNr.value = newNr;
 				},
 			);
 		});

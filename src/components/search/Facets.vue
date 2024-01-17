@@ -23,7 +23,10 @@
 					</div>
 				</div>
 			</Transition>
-			<CategoryTags :categories="categoryFacets"></CategoryTags>
+			<CategoryTags
+				:categories="categoryFacets"
+				:category-nr="categoryNr"
+			></CategoryTags>
 		</div>
 	</div>
 </template>
@@ -57,6 +60,7 @@ export default defineComponent({
 		const currentFacetNr = ref(0);
 		const channelFacets = ref([] as facetPair[]);
 		const categoryFacets = ref([] as facetPair[]);
+		const categoryNr = ref(0);
 
 		const lastUpdate = ref(0);
 		const route = useRoute();
@@ -70,7 +74,7 @@ export default defineComponent({
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = Math.min(channelFacets.value.length, 10);
 			showFacets.value = true;
-
+			categoryNr.value = Number(categoryFacets.value.length);
 			window.addEventListener('filter-update', filterUpdateHelper);
 
 			watch(
@@ -92,6 +96,7 @@ export default defineComponent({
 									channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
 									categoryFacets.value = simplifyFacets(newFacets['categories']);
 									currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+									categoryNr.value = Number(categoryFacets.value.length);
 									lastUpdate.value = new Date().getTime();
 									showFacets.value = true;
 								},
@@ -129,6 +134,7 @@ export default defineComponent({
 			currentFacetNr,
 			channelFacets,
 			categoryFacets,
+			categoryNr,
 			createFilter,
 			addFilter,
 			removeFilter,

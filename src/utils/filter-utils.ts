@@ -1,4 +1,4 @@
-import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { facetPair } from '@/types/GenericRecordTypes';
 
