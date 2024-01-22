@@ -84,26 +84,23 @@ export default defineComponent({
 					channelFacets.value = [] as FacetPair[];
 					categoryFacets.value = [] as FacetPair[];
 					if (newFacets !== prevFacets) {
-						//THIS SETTIMEOUT IS FOR TESTING ONLY. SHOULD BE REMOVED WHEN PR IS READY.
-						setTimeout(() => {
-							showFacets.value = false;
-							let sum = '';
-							Object.entries(prevFacets).forEach(([, value]) => {
-								sum += value;
-							});
-							setTimeout(
-								() => {
-									currentFacets.value = newFacets;
-									channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
-									categoryFacets.value = simplifyFacets(newFacets['categories']);
-									currentFacetNr.value = Math.min(channelFacets.value.length, 10);
-									categoryNr.value = Number(categoryFacets.value.length);
-									lastUpdate.value = new Date().getTime();
-									showFacets.value = true;
-								},
-								sum.length <= 0 ? 0 : 600,
-							);
-						}, 5000);
+						showFacets.value = false;
+						let sum = '';
+						Object.entries(prevFacets).forEach(([, value]) => {
+							sum += value;
+						});
+						setTimeout(
+							() => {
+								currentFacets.value = newFacets;
+								channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
+								categoryFacets.value = simplifyFacets(newFacets['categories']);
+								currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+								categoryNr.value = Number(categoryFacets.value.length);
+								lastUpdate.value = new Date().getTime();
+								showFacets.value = true;
+							},
+							sum.length <= 0 ? 0 : 600,
+						);
 					}
 				},
 			);

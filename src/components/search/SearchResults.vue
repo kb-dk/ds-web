@@ -93,19 +93,16 @@ export default defineComponent({
 					currentResults.value = [];
 					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
-						//THIS SETTIMEOUT IS FOR TESTING ONLY. SHOULD BE REMOVED WHEN PR IS READY.
-						setTimeout(() => {
-							showResults.value = false;
-							setTimeout(
-								() => {
-									resultNr.value = newResults.length;
-									currentResults.value = newResults;
-									lastUpdate.value = new Date().getTime();
-									showResults.value = true;
-								},
-								prevResults.length === 0 ? 0 : 600,
-							);
-						}, 5000);
+						showResults.value = false;
+						setTimeout(
+							() => {
+								resultNr.value = newResults.length;
+								currentResults.value = newResults;
+								lastUpdate.value = new Date().getTime();
+								showResults.value = true;
+							},
+							prevResults.length === 0 ? 0 : 600,
+						);
 					}
 				},
 			);
