@@ -52,22 +52,24 @@ class checkboxComponent extends HTMLElement {
 	}
 
 	hideLoadingAndShowContent = () => {
-		this.loadingRemoved();
-		this.containerRevealed();
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		loading && (loading.style.display = 'none');
+
+		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+		container && (container.style.display = 'flex');
+		gsap.to(container, {
+			opacity: 1,
+			delay: 0.01,
+			duration: 0.25,
+		});
 	};
 
 	hideContentAndShowLoading = () => {
-		this.containerRemoved();
+		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
+		container && (container.style.display = 'none');
+
 		this.updateSkeletonDifferences();
-		this.loadingRevealed();
-	};
 
-	private loadingRemoved() {
-		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
-		loading && (loading.style.display = 'none');
-	}
-
-	private loadingRevealed() {
 		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
 		const shimmer = this.shadow.querySelector('.shimmer') as HTMLDivElement;
 		shimmer.style.animationDelay = Math.random() * 1 + 's';
@@ -77,22 +79,7 @@ class checkboxComponent extends HTMLElement {
 			delay: 0.01,
 			duration: 0.25,
 		});
-	}
-
-	private containerRemoved() {
-		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
-		container && (container.style.display = 'none');
-	}
-
-	private containerRevealed() {
-		const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
-		container && (container.style.display = 'flex');
-		gsap.to(container, {
-			opacity: 1,
-			delay: 0.01,
-			duration: 0.25,
-		});
-	}
+	};
 
 	private updateSkeletonDifferences() {
 		const texts = this.shadow.querySelectorAll('.text') as NodeListOf<HTMLSpanElement>;
