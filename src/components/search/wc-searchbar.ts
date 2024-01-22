@@ -74,7 +74,7 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['reset-value', 'q', 'lang'];
+		return ['reset-value', 'q', 'lang', 'spinner'];
 	}
 
 	private getPresetFilter(key: string): string {
@@ -113,6 +113,17 @@ class SearchBarComponent extends HTMLElement {
 			const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
 			if (searchQueryInputField) {
 				searchQueryInputField.value = newValue;
+			}
+		}
+		if (name === 'spinner') {
+			const spinner = this.shadow.querySelector('.spinner') as HTMLDivElement;
+			console.log(spinner);
+			if (newValue === 'true') {
+				spinner.setAttribute('aria-busy', 'true');
+				spinner.style.opacity = '1';
+			} else {
+				spinner.removeAttribute('aria-busy');
+				spinner.style.opacity = '0';
 			}
 		}
 		if (name === 'lang') {
@@ -249,6 +260,7 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
 								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
 							</div>
+							<div class="spinner-container"><div class="spinner"></div></div>
 							<button id="resetButton" type="button" aria-label="reset" class="btn btn-primary btn-icon">
 							<i class="material-icons" aria-hidden="true">close</i>
 						</button>
@@ -317,7 +329,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			transition: opacity 0.5s; */
 		}
 
-		.search-box { 
+		.search-box {
 			height:100%
 		}
 
@@ -369,7 +381,42 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 			/* display: flex;
 			align-content: center;
 			flex-wrap: wrap; */
-		}	
+		}
+
+		.spinner-container {
+			width:30px;
+			position:absolute;
+			right:60px;
+		}
+		
+		.spinner {
+			width:100%;
+			--spinner-color: #171717;
+			--spinner-mask: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='50' height='50' viewBox='0 0 50 50' xml:space='preserve'%3E%3Ccircle stroke-width='1.86' fill='none' stroke='currentColor' cx='25' cy='25' r='14'/%3E%3C/svg%3E");
+			--spinner-size: 3rem;
+			display: block;
+			margin: auto;
+			background-image: conic-gradient(transparent 90deg, var(--spinner-color, white));
+			-webkit-mask: var(--spinner-mask) 0/100% 100%;
+			mask: var(--spinner-mask) 0/100% 100%;
+			will-change: transform;
+			animation: spin 2s linear infinite;
+			animation-play-state: var(--spinner-animation-play-state,paused);
+			aspect-ratio: 1;
+			height: var(--spinner-size,16rem);
+			transition:opacity 0.3s linear 0s;
+			}
+			[aria-busy] {
+			--spinner-animation-play-state: running;
+			}
+			@keyframes spin {
+				from {
+					transform:rotate(0deg);
+				}
+				to {
+					transform:rotate(360deg);
+				}
+		}
 		
 		.rdl-advanced-search {
 			display: flex;
@@ -389,7 +436,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		.form-control {
 			width: 100%;
 			padding: 6px 12px;
-     		border: 1px solid #757575; 
+     	border: 1px solid #757575;
 			border-radius: 2px;
 			height: 3rem;
 			padding: 0.375rem 0.75rem;
@@ -519,6 +566,15 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		/* MEDIA QUERY 800 */
 		@media (min-width: 800px) {
 
+			.spinner-container {
+				background-color:white;
+				display:flex;
+				right:initial;
+				margin-top:initial;
+				position:initial;
+				width:48px;
+			}
+
 			.rdl-advanced-radio {
 				position:absolute;
 				top: 73px;
@@ -526,7 +582,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 				margin-top:unset;
 				margin-bottom:unset;
 				width:auto;
-      		    padding: 5px 20px;
+				padding: 5px 20px;
 				height:30px;
 				line-height:30px;
 			}
@@ -573,7 +629,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 				color: #171717;
 				margin-bottom: 12px;
 				flex-wrap: nowrap;
-				border: 1px solid #F5F5F5; 
+				border: 1px solid #F5F5F5;
 				box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
 				border-radius: 2px;
 				height:71px;
@@ -603,6 +659,14 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 				display: flex;
 				/* flex-direction: column; */
 				max-width: 1150px;
+			}
+			
+			.spinner-container {
+				background-color:white;
+				display:flex;
+				right:initial;
+				margin-top:initial;
+				position:initial;
 			}
 		}
 		/* MEDIA QUERY 1150 */

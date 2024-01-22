@@ -1,27 +1,53 @@
 <template>
-	<div
-		class="hit-box"
-		v-for="(res, index) in currentResults as GenericSearchResultType[]"
-		:key="(res as GenericSearchResultType).id + '-' + lastUpdate"
-	>
-		<kb-resultcomponent
-			:vueRouting="true"
-			:number="index"
-			:resultData="res"
-			:show="showResults"
-			:placeholder="getPlaceholderImage()"
-			:duration="
-				locale === 'da'
-					? t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
-					: t('record.duration') + ': ' + formatDuration(res.duration, res.startTime, res.endTime, t)
-			"
-			:starttime="
-				res.startTime
-					? getBroadcastDate(res.startTime, locale) + ' ' + t('record.timestamp') + getBroadcastTime(res.startTime)
-					: t('record.noBoardcastData')
-			"
-		/>
-	</div>
+	<Transition name="fade">
+		<div>
+			<div
+				class="hit-box"
+				v-for="(res, index) in resultNr as unknown as GenericSearchResultType[]"
+				:key="index"
+			>
+				<kb-resultcomponent
+					:vueRouting="true"
+					:number="index"
+					:resultdata="JSON.stringify(currentResults[index])"
+					:show="showResults"
+					:placeholder="getPlaceholderImage()"
+					:inuse="index < currentResults.length"
+					:duration="
+						currentResults[index]
+							? locale === 'da'
+								? t('record.duration') +
+								  ': ' +
+								  formatDuration(
+										currentResults[index].duration,
+										currentResults[index].startTime,
+										currentResults[index].endTime,
+										t,
+								  )
+								: t('record.duration') +
+								  ': ' +
+								  formatDuration(
+										currentResults[index].duration,
+										currentResults[index].startTime,
+										currentResults[index].endTime,
+										t,
+								  )
+							: ''
+					"
+					:starttime="
+						currentResults[index]
+							? currentResults[index].startTime !== undefined
+								? getBroadcastDate(currentResults[index].startTime as string, locale) +
+								  ' ' +
+								  t('record.timestamp') +
+								  getBroadcastTime(currentResults[index].startTime as string)
+								: t('record.noBroadcastData')
+							: ''
+					"
+				/>
+			</div>
+		</div>
+	</Transition>
 </template>
 
 <script lang="ts">
@@ -43,6 +69,7 @@ export default defineComponent({
 		const { t, locale } = useI18n();
 		const showResults = ref(false);
 		const currentResults = ref([] as GenericSearchResultType[]);
+		const resultNr = ref(10);
 		const lastUpdate = ref(0);
 
 		const getPlaceholderImage = () => {
@@ -63,11 +90,13 @@ export default defineComponent({
 			watch(
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
+					currentResults.value = [];
 					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
 						showResults.value = false;
 						setTimeout(
 							() => {
+								resultNr.value = newResults.length;
 								currentResults.value = newResults;
 								lastUpdate.value = new Date().getTime();
 								showResults.value = true;
@@ -90,6 +119,7 @@ export default defineComponent({
 			lastUpdate,
 			t,
 			locale,
+			resultNr,
 		};
 	},
 });

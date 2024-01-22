@@ -13,11 +13,15 @@
      "sortBy":"Sort by",
      "title": "title",
      "title_sort_da": "title",
-     "score": "score"
+     "score": "score",
+     "channels":"Channels",
+     "relatedSubjects":"Related subjects"
+
+
   },
   "record":{
      "duration":"Duration",
-     "noBoardcastData":"No air date",
+     "noBroadcastData":"No air date",
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",

@@ -68,3 +68,8 @@ export interface PublicationType {
 		broadcastDisplayName: string;
 	};
 }
+
+export interface FacetPair {
+	title: string;
+	number: string;
+}

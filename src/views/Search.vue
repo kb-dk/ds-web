@@ -111,7 +111,7 @@
 						:spot-nr="8"
 						:row-nr="4"
 						:draggable="true"
-						:spots="['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[]"
+						:spots="mockdata1"
 					></GridDisplay>
 				</div>
 				<div class="blue-background">
@@ -124,7 +124,7 @@
 							:spot-nr="3"
 							:row-nr="3"
 							:blue-background="true"
-							:spots="['1', '2', '3'] as unknown as GenericSearchResultType[]"
+							:spots="mockdata2"
 						></GridDisplay>
 					</div>
 				</div>
@@ -163,6 +163,8 @@ export default defineComponent({
 	},
 
 	setup() {
+		const mockdata1 = ['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[];
+		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
 		const facetsContainer = ref<HTMLElement | null>(null);
 		const searchContainer = ref<HTMLElement | null>(null);
 		const resultContainer = ref<HTMLElement | null>(null);
@@ -273,6 +275,8 @@ export default defineComponent({
 			updateFacetContainer,
 			itemsPerPage,
 			numPagesToShow,
+			mockdata1,
+			mockdata2,
 		};
 	},
 });

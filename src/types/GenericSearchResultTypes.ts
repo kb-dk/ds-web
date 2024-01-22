@@ -13,7 +13,7 @@ export interface GenericSearchResultType {
 	categories: string;
 	content: string[];
 	date_created: string;
-	description: string[];
+	description: string;
 	file_size: number;
 	id: string;
 	identifier_local: string;
@@ -33,6 +33,7 @@ export interface GenericSearchResultType {
 	startTime?: string;
 	endTime?: string;
 	duration?: string;
+	origin: string;
 }
 
 export interface FacetsType {
@@ -45,8 +46,10 @@ export interface FacetsType {
 
 export interface FacetResultType {
 	catalog: string[];
+	categories: string[];
 	collection: string[];
 	genre: string[];
+	creator_affiliation: string[];
 	resource_description: string[];
 	resource_description_general: string[];
 	creator_full_name: string[];

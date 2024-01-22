@@ -13,11 +13,13 @@
      "sortBy": "Sorter efter",
      "title": "titel",
      "title_sort_da": "titel",
-     "score": "score"
+     "score": "score",
+     "channels":"Kanaler",
+     "relatedSubjects":"Relaterede emner"
    },
   "record":{
      "duration":"Varighed",
-     "noBoardcastData":"Ingen sendetid",
+     "noBroadcastData":"Ingen sendetid",
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
