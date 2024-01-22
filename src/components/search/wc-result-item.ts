@@ -63,14 +63,33 @@ class ResultComponent extends HTMLElement {
 	}
 
 	hideLoadingAndShowContent = () => {
-		this.loadingRemoved();
-		this.containerRevealed();
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		loading && (loading.style.display = 'none');
+
+		const container = this.shadow.querySelector('.container') as HTMLDivElement;
+		container && (container.style.display = 'flex');
+		gsap.to(container, {
+			opacity: 1,
+			delay: 0.01,
+			duration: 0.25,
+		});
 	};
 
 	hideContentAndShowLoading = () => {
-		this.containerRemoved();
+		const container = this.shadow.querySelector('.container') as HTMLDivElement;
+		container && (container.style.display = 'none');
+
 		this.updateSkeletonDifferences();
-		this.loadingRevealed();
+
+		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+		const shimmer = this.shadow.querySelector('.shimmer') as HTMLDivElement;
+		shimmer.style.animationDelay = Math.random() * 1 + 's';
+		loading && (loading.style.display = 'flex');
+		gsap.to(loading, {
+			opacity: 1,
+			delay: 0.01,
+			duration: 0.25,
+		});
 	};
 
 	private addDataToContainer() {
@@ -123,38 +142,6 @@ class ResultComponent extends HTMLElement {
 
 		summary.forEach((item) => {
 			item.style.width = Math.random() * 12 + 12 + '%';
-		});
-	}
-
-	private loadingRemoved() {
-		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
-		loading && (loading.style.display = 'none');
-	}
-
-	private loadingRevealed() {
-		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
-		const shimmer = this.shadow.querySelector('.shimmer') as HTMLDivElement;
-		shimmer.style.animationDelay = Math.random() * 1 + 's';
-		loading && (loading.style.display = 'flex');
-		gsap.to(loading, {
-			opacity: 1,
-			delay: 0.01,
-			duration: 0.25,
-		});
-	}
-
-	private containerRemoved() {
-		const container = this.shadow.querySelector('.container') as HTMLDivElement;
-		container && (container.style.display = 'none');
-	}
-
-	private containerRevealed() {
-		const container = this.shadow.querySelector('.container') as HTMLDivElement;
-		container && (container.style.display = 'flex');
-		gsap.to(container, {
-			opacity: 1,
-			delay: 0.01,
-			duration: 0.25,
 		});
 	}
 
