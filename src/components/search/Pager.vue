@@ -1,5 +1,5 @@
 <template>
-	<div class="pager">
+	<div :class="searchResultStore.loading ? 'pager disabled' : 'pager'">
 		<button
 			@click="prevPage"
 			:disabled="currentPageRef === 1"
@@ -176,7 +176,7 @@ export default defineComponent({
 			},
 		);
 
-		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages };
+		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages, searchResultStore };
 	},
 });
 </script>
@@ -188,6 +188,18 @@ export default defineComponent({
 	padding-top: 25px;
 	padding-bottom: 50px;
 }
+
+.pager.disabled {
+	pointer-events: none;
+}
+
+.pager.disabled button span,
+.pager.disabled .dots,
+.pager.disabled button i {
+	/* https://jxnblk.github.io/grays/ */
+	color: #767676 !important;
+}
+
 .active span {
 	color: white;
 	background-color: #002e70;
@@ -199,6 +211,7 @@ button {
 	background-color: transparent;
 	font-size: 16px;
 	cursor: pointer;
+	margin: 0px 2px;
 }
 
 button span,

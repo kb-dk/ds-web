@@ -11,6 +11,7 @@ export interface APISearchResponseType {
 			numFoundExact: boolean;
 			start: number;
 		};
+		responseHeader: APIResposeHeaderType;
 		facet_counts: FacetsType;
 	};
 }
@@ -30,18 +31,21 @@ export interface APIMoreLikeThisResponseType {
 		response: {
 			docs: Array<GenericSearchResultType>;
 		};
-		responseHeader: {
-			QTime: number;
-			status: number;
-			params: {
-				fq: string[] | string;
-				q: string;
-				rows: string;
-				start: string;
-				wt: string;
-				indent: string;
-				facet: string;
-			};
-		};
+		responseHeader: APIResposeHeaderType;
+	};
+}
+
+export interface APIResposeHeaderType {
+	QTime: number;
+	status: number;
+	params: {
+		fq?: string[] | string;
+		q?: string;
+		rows?: string;
+		start?: string;
+		wt?: string;
+		indent?: string;
+		facet?: string;
+		sort?: string;
 	};
 }
