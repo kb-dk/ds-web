@@ -1,4 +1,4 @@
-export interface ValidationArgs {
+export interface SearchValidationType {
 	q: string | undefined;
 	fq: string | string[] | undefined;
 	start: string | undefined;

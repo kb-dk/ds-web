@@ -80,27 +80,20 @@ export default defineComponent({
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-					currentFacets.value = {} as FacetResultType;
-					channelFacets.value = [] as FacetPair[];
-					categoryFacets.value = [] as FacetPair[];
+					console.log('facets updated because of the watcher in searchResults.vue');
 					if (newFacets !== prevFacets) {
+						currentFacets.value = {} as FacetResultType;
+						channelFacets.value = [] as FacetPair[];
+						categoryFacets.value = [] as FacetPair[];
+
 						showFacets.value = false;
-						let sum = '';
-						Object.entries(prevFacets).forEach(([, value]) => {
-							sum += value;
-						});
-						setTimeout(
-							() => {
-								currentFacets.value = newFacets;
-								channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
-								categoryFacets.value = simplifyFacets(newFacets['categories']);
-								currentFacetNr.value = Math.min(channelFacets.value.length, 10);
-								categoryNr.value = Number(categoryFacets.value.length);
-								lastUpdate.value = new Date().getTime();
-								showFacets.value = true;
-							},
-							sum.length <= 0 ? 0 : 0,
-						);
+						currentFacets.value = newFacets;
+						channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
+						categoryFacets.value = simplifyFacets(newFacets['categories']);
+						currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+						categoryNr.value = Number(categoryFacets.value.length);
+						lastUpdate.value = new Date().getTime();
+						showFacets.value = true;
 					}
 				},
 			);
