@@ -9,11 +9,8 @@ class ResultComponent extends HTMLElement {
 	shadow: ShadowRoot;
 	number: number | undefined;
 	vueRouting: boolean | undefined;
-	//resultdata: GenericSearchResultType | undefined;
 	placeholder: string | undefined;
 	data: GenericSearchResultType | undefined;
-	savedStart: string | undefined;
-	savedDuration: string | undefined;
 
 	constructor() {
 		super();
@@ -35,30 +32,13 @@ class ResultComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['show', 'duration', 'starttime', 'resultdata'];
+		return ['duration', 'starttime', 'resultdata', 'content'];
 	}
 
 	renderResultData(resultData: GenericSearchResultType) {
-		const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
-		const container = this.shadow.querySelector('.container') as HTMLDivElement;
 		if (resultData !== null) {
 			this.data = resultData;
 			this.addDataToContainer();
-			gsap.to(loading, {
-				opacity: 0,
-				duration: 0.25,
-				onComplete: () => {
-					this.hideLoadingAndShowContent();
-				},
-			});
-		} else {
-			gsap.to(container, {
-				opacity: 0,
-				duration: 0.25,
-				onComplete: () => {
-					this.hideContentAndShowLoading();
-				},
-			});
 		}
 	}
 
@@ -148,6 +128,27 @@ class ResultComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		if (name === 'content') {
+			const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
+			const container = this.shadow.querySelector('.container') as HTMLDivElement;
+			if (newValue === 'true') {
+				gsap.to(loading, {
+					opacity: 0,
+					duration: 0.25,
+					onComplete: () => {
+						this.hideLoadingAndShowContent();
+					},
+				});
+			} else {
+				gsap.to(container, {
+					opacity: 0,
+					duration: 0.25,
+					onComplete: () => {
+						this.hideContentAndShowLoading();
+					},
+				});
+			}
+		}
 		if (name === 'resultdata') {
 			this.renderResultData(JSON.parse(newValue));
 		}

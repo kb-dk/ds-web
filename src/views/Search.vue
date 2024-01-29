@@ -41,7 +41,13 @@
 								</span>
 							</button>
 						</div>
-						<div v-else-if="searchResultStore.searchFired">{{ $t('search.nohit') }}</div>
+						<div v-else-if="searchResultStore.searchFired">
+							<div
+								class="buffer"
+								v-if="searchResultStore.loading === true"
+							></div>
+							<div v-else>{{ $t('search.nohit') }}</div>
+						</div>
 					</div>
 				</div>
 				<div
@@ -228,9 +234,7 @@ export default defineComponent({
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setStartFromURL(route.query.start as string);
 					searchResultStore.setSortFromURL(route.query.sort as string);
-					searchResultStore.getSearchResults(route.query.q as string).then(() => {
-						window.scrollTo({ top: 0, behavior: 'smooth' });
-					});
+					searchResultStore.getSearchResults(route.query.q as string);
 				}
 				if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
@@ -313,6 +317,11 @@ h3 {
 
 .edge {
 	height: 31px;
+}
+
+.buffer {
+	height: 20px;
+	width: 100%;
 }
 
 .result-options {

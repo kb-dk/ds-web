@@ -4,12 +4,15 @@ import { APIService } from '@/api/api-service';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
-import { inject, ref } from 'vue';
+import { inject, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { LocationQueryValue } from 'vue-router';
+import { ValidationArgs } from '@/types/ValidationArgs';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
+	const currentSearch = ref({} as ValidationArgs);
+	const testArgs = ref({} as ValidationArgs);
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -94,6 +97,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
 	};
 
+	const validateCurrentSearch = (args: ValidationArgs): boolean => {
+		return JSON.stringify(args) === JSON.stringify(currentSearch.value);
+	};
+
 	const getSearchResults = async (query: string) => {
 		let searchFilters = '';
 		if (filters.value.length > 0) {
@@ -101,12 +108,25 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchFilters += `&${filt}`;
 			});
 		}
+		const startParam = start.value === '' ? '' : `&start=${start.value}`;
+		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
+
+		const filtarr = [] as string[];
+
+		filters.value.forEach((i) => {
+			filtarr.push(decodeURIComponent(i).replace('fq=', ''));
+		});
+
+		currentSearch.value.q = query;
+		currentSearch.value.fq = [...filtarr];
+		currentSearch.value.start = start.value || '0';
+		currentSearch.value.sort = decodeURI(sort.value) || undefined;
+
 		try {
+			searchFired.value = true;
 			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
-			const startParam = start.value === '' ? '' : `&start=${start.value}`;
-			const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 			const responseData = await APIService.getSearchResults(
 				query,
 				searchFilters,
@@ -119,18 +139,32 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 			);
-			currentQuery.value = query;
-			searchResult.value = responseData.data.response.docs;
-			facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
-			numFound.value = responseData.data.response.numFound;
-			noHits.value = numFound.value === 0;
+
+			testArgs.value.q = responseData.data.responseHeader.params.q || undefined;
+			testArgs.value.fq = Array.isArray(responseData.data.responseHeader.params.fq)
+				? toRaw(responseData.data.responseHeader.params.fq.slice(0, -1))
+				: toRaw([]) || undefined;
+			testArgs.value.start = responseData.data.responseHeader.params.start || undefined;
+			testArgs.value.sort = responseData.data.responseHeader.params.sort || undefined;
+
+			if (validateCurrentSearch(testArgs.value)) {
+				console.log('yep we validated?');
+				currentQuery.value = query;
+				searchResult.value = responseData.data.response.docs;
+				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
+				numFound.value = responseData.data.response.numFound;
+				noHits.value = numFound.value === 0;
+			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
-			spinnerStore.toggleSpinner(false);
-			loading.value = false;
-			searchFired.value = true;
+			if (validateCurrentSearch(testArgs.value)) {
+				console.log('Current search finished, we remove spinner.');
+				spinnerStore.toggleSpinner(false);
+				loading.value = false;
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
 	};
 

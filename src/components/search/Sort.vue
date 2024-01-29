@@ -2,7 +2,7 @@
 	<div class="sort">
 		<button
 			@click="revealSortingOptions"
-			class="sort-box"
+			:class="searchResultStore.loading ? 'sort-box disabled' : 'sort-box'"
 		>
 			<span class="btn-text">
 				<span ref="currentSort">
@@ -89,6 +89,12 @@ export default defineComponent({
 	font-family: noway, sans-serif;
 	font-size: 16px;
 	padding: 6px 0px;
+}
+
+.sort-box.disabled {
+	pointer-events: none;
+	/* https://jxnblk.github.io/grays/ */
+	color: #767676;
 }
 
 .btn-text {

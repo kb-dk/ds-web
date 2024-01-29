@@ -8,11 +8,10 @@
 			>
 				<kb-resultcomponent
 					:vueRouting="true"
+					:content="!searchResultStore.loading"
 					:number="index"
 					:resultdata="JSON.stringify(currentResults[index])"
-					:show="showResults"
 					:placeholder="getPlaceholderImage()"
-					:inuse="index < currentResults.length"
 					:duration="
 						currentResults[index]
 							? locale === 'da'
@@ -57,6 +56,7 @@ import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time
 import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-result-item';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'SearchResults',
@@ -67,10 +67,10 @@ export default defineComponent({
 
 	setup(props) {
 		const { t, locale } = useI18n();
-		const showResults = ref(false);
 		const currentResults = ref([] as GenericSearchResultType[]);
 		const resultNr = ref(10);
 		const lastUpdate = ref(0);
+		const searchResultStore = useSearchResultStore();
 
 		const getPlaceholderImage = () => {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
@@ -85,7 +85,7 @@ export default defineComponent({
 
 		onMounted(() => {
 			currentResults.value = toRaw(props.searchResults);
-			showResults.value = true;
+			resultNr.value = 10;
 
 			watch(
 				() => props.searchResults,
@@ -93,15 +93,13 @@ export default defineComponent({
 					currentResults.value = [];
 					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
-						showResults.value = false;
 						setTimeout(
 							() => {
 								resultNr.value = newResults.length;
 								currentResults.value = newResults;
 								lastUpdate.value = new Date().getTime();
-								showResults.value = true;
 							},
-							prevResults.length === 0 ? 0 : 600,
+							prevResults.length === 0 ? 0 : 0,
 						);
 					}
 				},
@@ -114,12 +112,12 @@ export default defineComponent({
 			getBroadcastTime,
 			getPlaceholderImage,
 			getAltTxt,
-			showResults,
 			currentResults,
 			lastUpdate,
 			t,
 			locale,
 			resultNr,
+			searchResultStore,
 		};
 	},
 });
