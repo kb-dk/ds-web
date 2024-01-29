@@ -93,14 +93,9 @@ export default defineComponent({
 					currentResults.value = [];
 					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
-						setTimeout(
-							() => {
-								resultNr.value = newResults.length;
-								currentResults.value = newResults;
-								lastUpdate.value = new Date().getTime();
-							},
-							prevResults.length === 0 ? 0 : 0,
-						);
+						resultNr.value = newResults.length;
+						currentResults.value = newResults;
+						lastUpdate.value = new Date().getTime();
 					}
 				},
 			);

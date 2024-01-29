@@ -109,14 +109,13 @@ class SearchBarComponent extends HTMLElement {
 			const group = this.shadow.querySelector('.rdl-advanced-search');
 			const inputs = group?.querySelectorAll('input') as unknown as Array<HTMLInputElement>;
 			const sbtn = this.shadow.querySelector('#searchButton');
-			console.log(group, inputs);
 			if (newValue === 'true') {
 				group?.classList.add('locked');
 				sbtn?.setAttribute('disabled', 'disabled');
 				inputs?.forEach((input) => {
 					input.setAttribute('disabled', 'disabled');
 				});
-				console.log('searchbar temporarily disabled.');
+				//console.log('searchbar temporarily disabled.');
 			} else {
 				group?.classList.remove('locked');
 				sbtn?.removeAttribute('disabled');
@@ -124,7 +123,7 @@ class SearchBarComponent extends HTMLElement {
 					input.removeAttribute('disabled');
 				});
 				inputs[0].focus();
-				console.log('searchbar enabled.');
+				//console.log('searchbar enabled.');
 			}
 		}
 		if (name === 'reset-value') {
@@ -139,7 +138,7 @@ class SearchBarComponent extends HTMLElement {
 		}
 		if (name === 'spinner') {
 			const spinner = this.shadow.querySelector('.spinner') as HTMLDivElement;
-			console.log(spinner);
+			//console.log(spinner);
 			if (newValue === 'true') {
 				spinner.setAttribute('aria-busy', 'true');
 				spinner.style.opacity = '1';
