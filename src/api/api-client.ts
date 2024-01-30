@@ -51,12 +51,20 @@ export class APIServiceClient {
 		);
 	}
 
-	async getSearchResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
+	async getSearchResults(
+		query: string,
+		filters: string,
+		start: string,
+		sort: string,
+		uuid: string,
+	): Promise<APISearchResponseType> {
 		//Temporary fix/implementation for limiting to DR material
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
 
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&q.op=OR&facet=false${filters}${start}${sort}&fq=${DRLimiter}`,
+			`search/?q=${encodeURIComponent(
+				query,
+			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
 		);
 	}
 
