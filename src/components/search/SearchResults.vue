@@ -15,23 +15,14 @@
 					:inuse="index < currentResults.length"
 					:duration="
 						currentResults[index]
-							? locale === 'da'
-								? t('record.duration') +
-								  ': ' +
-								  formatDuration(
-										currentResults[index].duration,
-										currentResults[index].startTime,
-										currentResults[index].endTime,
-										t,
-								  )
-								: t('record.duration') +
-								  ': ' +
-								  formatDuration(
-										currentResults[index].duration,
-										currentResults[index].startTime,
-										currentResults[index].endTime,
-										t,
-								  )
+							? t('record.duration') +
+							  ': ' +
+							  formatDuration(
+									currentResults[index].duration,
+									currentResults[index].startTime,
+									currentResults[index].endTime,
+									t,
+							  )
 							: ''
 					"
 					:starttime="
@@ -80,7 +71,6 @@ export default defineComponent({
 		};
 		const getAltTxt = () => {
 			return 'license';
-			//return res.pages && res.pages.length > 0 ? 'Cover image' : 'Ranjithsiji, CC BY-SA 4.0 - via Wikimedia Commons';
 		};
 
 		onMounted(() => {

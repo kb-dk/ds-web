@@ -7,13 +7,9 @@
 			<span class="btn-text">
 				<span ref="currentSort">
 					{{
-						locale === 'da'
-							? searchResultStore.sort !== ''
-								? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
-								: t('search.sortBy')
-							: searchResultStore.sort !== ''
-							  ? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
-							  : t('search.sortBy')
+						searchResultStore.sort !== ''
+							? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
+							: t('search.sortBy')
 					}}
 				</span>
 				<span :class="showSortingOptions ? 'material-icons sort-expand turn' : 'material-icons sort-expand'">
@@ -26,8 +22,8 @@
 				v-show="showSortingOptions"
 				class="sort-options"
 			>
-				<button @click="newSort('title_sort_da')">{{ locale === 'da' ? t('search.title') : t('search.title') }}</button>
-				<button @click="newSort('score')">{{ locale === 'da' ? t('search.score') : t('search.score') }}</button>
+				<button @click="newSort('title_sort_da')">{{ t('search.title') }}</button>
+				<button @click="newSort('score')">{{ t('search.score') }}</button>
 			</div>
 		</Transition>
 	</div>
@@ -47,7 +43,7 @@ export default defineComponent({
 		const route = useRoute();
 		const router = useRouter();
 		const searchResultStore = useSearchResultStore();
-		const { t, locale } = useI18n();
+		const { t } = useI18n();
 
 		const revealSortingOptions = () => {
 			showSortingOptions.value = !showSortingOptions.value;
@@ -65,11 +61,10 @@ export default defineComponent({
 			if (route.query.sort) {
 				const sortingValue = route.query.sort as string;
 				searchResultStore.setSortValue(sortingValue.split('%20')[0]);
-				console.log(searchResultStore.sort);
 			}
 		});
 
-		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t, locale };
+		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t };
 	},
 });
 </script>
