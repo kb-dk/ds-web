@@ -117,10 +117,12 @@ class ResultComponent extends HTMLElement {
 			where && (where.textContent = this.data.creator_affiliation[0] + ',');
 			const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
 			if (imageComponent) {
-				imageComponent.imgSrc = this.data.thumbnail;
-				imageComponent.altText = this.data.title;
-				imageComponent.imgTitle = this.data.title;
-				imageComponent.placeholder = this.placeholder;
+				const imageData = {} as ImageComponentType;
+				imageData.imgSrc = this.data.thumbnail;
+				imageData.altText = this.data.title;
+				imageData.imgTitle = this.data.title;
+				imageData.placeholder = this.placeholder;
+				imageComponent.setAttribute('imagedata', JSON.stringify(imageData));
 			}
 		}
 	}

@@ -14,12 +14,14 @@ class SpotComponent extends HTMLElement {
 
 		const imageComponent = this.shadow.querySelector('kb-imagecomponent') as ImageComponentType;
 		if (imageComponent) {
+			const imageData = {} as ImageComponentType;
 			//No data yet, so it's just filler
-			imageComponent.imgSrc = '';
-			imageComponent.altText = 'alt text here';
-			imageComponent.imgTitle = 'title here';
-			imageComponent.aspect = '2/1.25';
-			imageComponent.icon = 'play_arrow';
+			imageData.imgSrc = '';
+			imageData.altText = 'alt text here';
+			imageData.imgTitle = 'title here';
+			imageData.aspect = '2/1.25';
+			imageData.icon = 'play_arrow';
+			imageComponent.setAttribute('imagedata', JSON.stringify(imageData));
 		}
 	}
 
