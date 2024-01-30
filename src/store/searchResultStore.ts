@@ -8,11 +8,10 @@ import { inject, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { LocationQueryValue } from 'vue-router';
-import { SearchValidationType } from '@/types/SearchValidationType';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
-	const currentSearchValue = ref({} as SearchValidationType);
-	const comparisonValues = ref({} as SearchValidationType);
+	const currentSearchUUID = ref('');
+	const comparisonSearchUUID = ref('');
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -97,8 +96,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
 	};
 
-	const validateCurrentSearch = (args: SearchValidationType): boolean => {
-		return JSON.stringify(args) === JSON.stringify(currentSearchValue.value);
+	const validateCurrentSearch = (uuid: string): boolean => {
+		return uuid === currentSearchUUID.value;
 	};
 
 	const getSearchResults = async (query: string) => {
@@ -111,16 +110,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 
-		const filtarr = [] as string[];
-
-		filters.value.forEach((i) => {
-			filtarr.push(decodeURIComponent(i).replace('fq=', ''));
-		});
-
-		currentSearchValue.value.q = query;
-		currentSearchValue.value.fq = [...filtarr];
-		currentSearchValue.value.start = start.value || '0';
-		currentSearchValue.value.sort = decodeURI(sort.value) || undefined;
+		const url = URL.createObjectURL(new Blob());
+		currentSearchUUID.value = url.toString().split('/').reverse()[0];
+		URL.revokeObjectURL(url);
 
 		try {
 			searchFired.value = true;
@@ -132,6 +124,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchFilters,
 				startParam as string,
 				sortParam as string,
+				currentSearchUUID.value,
 			);
 			const facetData = await APIService.getFacetResults(
 				query,
@@ -140,14 +133,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 			);
 
-			comparisonValues.value.q = responseData.data.responseHeader.params.q || undefined;
-			comparisonValues.value.fq = Array.isArray(responseData.data.responseHeader.params.fq)
-				? toRaw(responseData.data.responseHeader.params.fq.slice(0, -1))
-				: toRaw([]) || undefined;
-			comparisonValues.value.start = responseData.data.responseHeader.params.start || undefined;
-			comparisonValues.value.sort = responseData.data.responseHeader.params.sort || undefined;
+			comparisonSearchUUID.value = responseData.data.responseHeader.params.queryUUID || '';
 
-			if (validateCurrentSearch(comparisonValues.value)) {
+			if (validateCurrentSearch(comparisonSearchUUID.value)) {
 				currentQuery.value = query;
 				searchResult.value = responseData.data.response.docs;
 				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
@@ -158,7 +146,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
-			if (validateCurrentSearch(comparisonValues.value)) {
+			if (validateCurrentSearch(comparisonSearchUUID.value)) {
 				//console.log('Current search finished, we remove spinner.');
 				spinnerStore.toggleSpinner(false);
 				loading.value = false;

@@ -47,5 +47,6 @@ export interface APIResposeHeaderType {
 		indent?: string;
 		facet?: string;
 		sort?: string;
+		queryUUID?: string;
 	};
 }
