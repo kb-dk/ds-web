@@ -1,5 +1,15 @@
 <template>
 	<div class="app">
+		<div
+			v-if="!isProduction()"
+			class="test-env"
+		>
+			<span class="w">⚠</span>
+			This is a
+			<span>{{ returnCurrentEnv() }}</span>
+			environment
+			<span class="w">⚠</span>
+		</div>
 		<Notifier></Notifier>
 		<!-- 		<Spinner></Spinner>
  -->
@@ -153,6 +163,14 @@ export default defineComponent({
 			}
 		});
 
+		const isProduction = () => {
+			return process.env.NODE_ENV === 'production';
+		};
+
+		const returnCurrentEnv = () => {
+			return process.env.NODE_ENV;
+		};
+
 		onBeforeMount(() => {
 			//Remember to check for init locale once we now where to get it from
 			window.addEventListener('locale-switch', switchLocale);
@@ -173,6 +191,8 @@ export default defineComponent({
 			getImgServerSrcURL,
 			onBeforeEnter,
 			onBeforeLeave,
+			isProduction,
+			returnCurrentEnv,
 		};
 	},
 });
@@ -182,6 +202,27 @@ export default defineComponent({
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.25s ease;
+}
+
+.test-env {
+	text-transform: uppercase;
+	position: sticky;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+	color: #002e70;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1000;
+	text-align: center;
+	background-image: radial-gradient(circle 674px at 50% 50%, rgba(139, 186, 244, 1) 3.4%, rgba(15, 51, 92, 1) 86.6%);
+
+	.w,
+	span {
+		color: red;
+		font-weight: bold;
+	}
 }
 
 .fade-enter-from,
