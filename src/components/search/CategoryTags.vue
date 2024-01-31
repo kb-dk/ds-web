@@ -13,7 +13,7 @@
 						:key="index + 'category'"
 					>
 						<router-link
-							:class="!searchResultStore.loading === true ? 'tag-link' : 'tag-link disabled'"
+							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
 							:to="{
 								name: 'Home',
 								query: {
@@ -38,11 +38,7 @@
 							<span class="tag-number">{{ categoryFacets[index]?.number }}</span>
 						</router-link>
 						<span>
-							{{
-								index < currentCategoryNr - 1 && categoryFacets.length > 0 && searchResultStore.loading === false
-									? ','
-									: ''
-							}}
+							{{ index < currentCategoryNr - 1 && categoryFacets.length > 0 && !searchResultStore.loading ? ',' : '' }}
 						</span>
 					</div>
 				</div>

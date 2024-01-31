@@ -26,8 +26,10 @@
 				v-show="showSortingOptions"
 				class="sort-options"
 			>
-				<button @click="newSort('title_sort_da')">{{ locale === 'da' ? t('search.title') : t('search.title') }}</button>
-				<button @click="newSort('score')">{{ locale === 'da' ? t('search.score') : t('search.score') }}</button>
+				<button @click="newSort('title_sort_da asc')">
+					{{ locale === 'da' ? t('search.title') : t('search.title') }}
+				</button>
+				<button @click="newSort('score desc')">{{ locale === 'da' ? t('search.score') : t('search.score') }}</button>
 			</div>
 		</Transition>
 	</div>
@@ -54,8 +56,9 @@ export default defineComponent({
 		};
 
 		const newSort = (sortValue: string) => {
-			const sort = encodeURIComponent(`${sortValue} asc`);
-			const query = { ...route.query, sort };
+			const sort = encodeURIComponent(`${sortValue}`);
+			const start = `${0}`;
+			const query = { ...route.query, sort, start };
 			router.push({ query });
 			showSortingOptions.value = false;
 			searchResultStore.resetStart();

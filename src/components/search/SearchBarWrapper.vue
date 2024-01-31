@@ -5,7 +5,7 @@
 		:background-img-url="backgroundImage"
 		:lang="locale"
 		:spinner="searchResultStore.loading"
-		:disable-search="debouceMechanic"
+		:disable-search="debounceMechanic"
 	></kb-searchbar>
 </template>
 
@@ -27,7 +27,7 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
-		const debouceMechanic = ref(false);
+		const debounceMechanic = ref(false);
 
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
@@ -104,9 +104,9 @@ export default defineComponent({
 		};
 
 		const search = () => {
-			debouceMechanic.value = true;
+			debounceMechanic.value = true;
 			setTimeout(() => {
-				debouceMechanic.value = false;
+				debounceMechanic.value = false;
 			}, 500);
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
@@ -157,7 +157,7 @@ export default defineComponent({
 			searchResultStore,
 			searchQuery,
 			locale,
-			debouceMechanic,
+			debounceMechanic,
 		};
 	},
 });

@@ -11,7 +11,7 @@ export interface APISearchResponseType {
 			numFoundExact: boolean;
 			start: number;
 		};
-		responseHeader: APIResposeHeaderType;
+		responseHeader: APIResponseHeaderType;
 		facet_counts: FacetsType;
 	};
 }
@@ -31,11 +31,11 @@ export interface APIMoreLikeThisResponseType {
 		response: {
 			docs: Array<GenericSearchResultType>;
 		};
-		responseHeader: APIResposeHeaderType;
+		responseHeader: APIResponseHeaderType;
 	};
 }
 
-export interface APIResposeHeaderType {
+export interface APIResponseHeaderType {
 	QTime: number;
 	status: number;
 	params: {
