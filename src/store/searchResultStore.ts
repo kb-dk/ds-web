@@ -4,14 +4,14 @@ import { APIService } from '@/api/api-service';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
-import { inject, ref, toRaw } from 'vue';
+import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { LocationQueryValue } from 'vue-router';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
-	const currentSearchUUID = ref('');
-	const comparisonSearchUUID = ref('');
+	let currentSearchUUID = '';
+	let comparisonSearchUUID = '';
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -96,8 +96,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
 	};
 
-	const validateCurrentSearch = (uuid: string): boolean => {
-		return uuid === currentSearchUUID.value;
+	const responseMatchesCurrentSearch = (uuid: string): boolean => {
+		return uuid === currentSearchUUID;
 	};
 
 	const getSearchResults = async (query: string) => {
@@ -110,8 +110,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 
+		//https://stackoverflow.com/a/62359248
+		//to get a _GOOD_ uuid, we use the functionality from the createObjectURL method, that creates one, and just get that one.
+
 		const url = URL.createObjectURL(new Blob());
-		currentSearchUUID.value = url.toString().split('/').reverse()[0];
+		currentSearchUUID = url.toString().split('/').reverse()[0];
 		URL.revokeObjectURL(url);
 
 		try {
@@ -124,7 +127,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchFilters,
 				startParam as string,
 				sortParam as string,
-				currentSearchUUID.value,
+				currentSearchUUID,
 			);
 			const facetData = await APIService.getFacetResults(
 				query,
@@ -133,9 +136,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 			);
 
-			comparisonSearchUUID.value = responseData.data.responseHeader.params.queryUUID || '';
+			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
-			if (validateCurrentSearch(comparisonSearchUUID.value)) {
+			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				currentQuery.value = query;
 				searchResult.value = responseData.data.response.docs;
 				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
@@ -146,7 +149,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
-			if (validateCurrentSearch(comparisonSearchUUID.value)) {
+			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				//console.log('Current search finished, we remove spinner.');
 				spinnerStore.toggleSpinner(false);
 				loading.value = false;

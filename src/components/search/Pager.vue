@@ -158,6 +158,8 @@ export default defineComponent({
 			if (!isNaN(startParam) && startParam >= 0) {
 				const initialPage = Math.floor(startParam / props.itemsPerPage) + 1;
 				currentPageRef.value = initialPage;
+			} else {
+				currentPageRef.value = 1;
 			}
 		};
 

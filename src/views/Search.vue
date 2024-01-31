@@ -44,7 +44,7 @@
 						<div v-else-if="searchResultStore.searchFired">
 							<div
 								class="buffer"
-								v-if="searchResultStore.loading === true"
+								v-if="searchResultStore.loading"
 							></div>
 							<div v-else>{{ $t('search.nohit') }}</div>
 						</div>
@@ -190,6 +190,10 @@ export default defineComponent({
 					height: '300px',
 				});
 				const routeFacetQueries = route.query.fq;
+				const start = route.query.start as string;
+				const sort = route.query.sort as string;
+				searchResultStore.setStartFromURL(start);
+				searchResultStore.setSortFromURL(sort);
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
@@ -231,8 +235,12 @@ export default defineComponent({
 			(newp: RouteLocationNormalizedLoaded, prevp: RouteLocationNormalizedLoaded) => {
 				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
+					if (checkIfSortIsChanged(newp.query.sort as string, prevp.query.sort as string)) {
+						searchResultStore.resetStart();
+					} else {
+						searchResultStore.setStartFromURL(route.query.start as string);
+					}
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
-					searchResultStore.setStartFromURL(route.query.start as string);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.getSearchResults(route.query.q as string);
 				}
@@ -241,6 +249,10 @@ export default defineComponent({
 				}
 			},
 		);
+
+		const checkIfSortIsChanged = (newSort: string, oldSort: string) => {
+			return newSort !== oldSort;
+		};
 
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
 			return (
