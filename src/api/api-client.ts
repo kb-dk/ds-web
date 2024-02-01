@@ -1,6 +1,15 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { APISearchResponseType, APIRecordResponseType, APIMoreLikeThisResponseType } from '@/types/APIResponseTypes';
 
+export function sleep(random?: boolean): Promise<void> {
+	let sleep = 2000;
+	if (random) {
+		sleep = Math.random() * 3000 + 1000;
+	}
+	console.log('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
+	return new Promise((resolve) => setTimeout(resolve, sleep));
+}
+
 export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {
 		httpClient.interceptors.request.use(
@@ -15,7 +24,11 @@ export class APIServiceClient {
 		);
 
 		httpClient.interceptors.response.use(
-			(response: AxiosResponse) => {
+			async (response: AxiosResponse) => {
+				// add artificial delay for dev env
+				if (process.env.NODE_ENV === 'development') {
+					await sleep(true);
+				}
 				return response;
 			},
 			(error: AxiosError) => {
@@ -38,12 +51,20 @@ export class APIServiceClient {
 		);
 	}
 
-	async getSearchResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
+	async getSearchResults(
+		query: string,
+		filters: string,
+		start: string,
+		sort: string,
+		uuid: string,
+	): Promise<APISearchResponseType> {
 		//Temporary fix/implementation for limiting to DR material
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
 
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&q.op=OR&facet=false${filters}${start}${sort}&fq=${DRLimiter}`,
+			`search/?q=${encodeURIComponent(
+				query,
+			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
 		);
 	}
 

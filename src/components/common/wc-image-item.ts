@@ -1,12 +1,6 @@
 import { ImageComponentType } from '@/types/ImageComponentType';
 
-class ImageComponent extends HTMLElement implements ImageComponentType {
-	imgSrc: string | undefined;
-	imgTitle: string | undefined;
-	altText: string | undefined;
-	icon: string | undefined;
-	aspect: string | undefined;
-	placeholder: string | undefined;
+class ImageComponent extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = IMAGE_COMPONMENT_TEMPLATE + IMAGE_COMPONMENT_STYLES;
@@ -17,38 +11,40 @@ class ImageComponent extends HTMLElement implements ImageComponentType {
 		}
 	}
 
+	static get observedAttributes() {
+		return ['imagedata'];
+	}
+
 	showImage() {
 		this.style.opacity = '1';
 	}
 
-	connectedCallback() {
-		const thumb = this.querySelector('.image-item') as HTMLImageElement;
-		if (this.imgSrc !== undefined) {
-			thumb && (thumb.src = this.imgSrc);
-		} else if (this.placeholder !== undefined) {
-			thumb && (thumb.src = this.placeholder);
-			thumb.style.backgroundColor = 'rgb(237,237,237)';
-			thumb.style.objectFit = 'contain';
-		}
-		if (this.altText && this.querySelector('.image-item')) {
-			this.querySelector('.image-item')?.setAttribute('alt', this.altText);
-		}
-		if (this.imgTitle && this.querySelector('.image-item')) {
-			this.querySelector('.image-item')?.setAttribute('title', this.imgTitle);
-		}
-		if (this.icon) {
-			const iconHolder = this.querySelector('.type-symbol');
-			iconHolder && (iconHolder.textContent = this.icon);
-		}
-		if (this.aspect) {
-			const imageWrapper = this.querySelector('.image-wrapper') as HTMLElement;
-			imageWrapper && (imageWrapper.style.aspectRatio = this.aspect);
-		}
-	}
-
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === 'locale') {
-			this.lang = newValue;
+		if (name === 'imagedata') {
+			const imageData = JSON.parse(newValue) as ImageComponentType;
+			const thumb = this.querySelector('.image-item') as HTMLImageElement;
+			if (imageData.imgSrc !== undefined) {
+				thumb && (thumb.src = imageData.imgSrc);
+			}
+			if (imageData.placeholder !== undefined) {
+				thumb && (thumb.src = imageData.placeholder);
+				thumb.style.backgroundColor = 'rgb(237,237,237)';
+				thumb.style.objectFit = 'contain';
+			}
+			if (imageData.altText && this.querySelector('.image-item')) {
+				this.querySelector('.image-item')?.setAttribute('alt', imageData.altText);
+			}
+			if (imageData.imgTitle && this.querySelector('.image-item')) {
+				this.querySelector('.image-item')?.setAttribute('title', imageData.imgTitle);
+			}
+			if (imageData.icon) {
+				const iconHolder = this.querySelector('.type-symbol');
+				iconHolder && (iconHolder.textContent = imageData.icon);
+			}
+			if (imageData.aspect) {
+				const imageWrapper = this.querySelector('.image-wrapper') as HTMLElement;
+				imageWrapper && (imageWrapper.style.aspectRatio = imageData.aspect);
+			}
 		}
 	}
 }

@@ -5,6 +5,7 @@
 		:background-img-url="backgroundImage"
 		:lang="locale"
 		:spinner="searchResultStore.loading"
+		:disable-search="debounceMechanic"
 	></kb-searchbar>
 </template>
 
@@ -26,6 +27,7 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
+		const debounceMechanic = ref(false);
 
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
@@ -80,6 +82,7 @@ export default defineComponent({
 
 		const reset = () => {
 			searchQuery.value = '';
+			searchResultStore.loading = false;
 			xReset.value = false;
 			router.push({ name: 'Home' });
 		};
@@ -101,6 +104,10 @@ export default defineComponent({
 		};
 
 		const search = () => {
+			debounceMechanic.value = true;
+			setTimeout(() => {
+				debounceMechanic.value = false;
+			}, 500);
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
 					if (searchQuery.value !== searchResultStore.currentQuery) {
@@ -150,6 +157,7 @@ export default defineComponent({
 			searchResultStore,
 			searchQuery,
 			locale,
+			debounceMechanic,
 		};
 	},
 });

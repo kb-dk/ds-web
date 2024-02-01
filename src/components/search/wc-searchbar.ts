@@ -74,7 +74,7 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['reset-value', 'q', 'lang', 'spinner'];
+		return ['reset-value', 'q', 'lang', 'spinner', 'disable-search'];
 	}
 
 	private getPresetFilter(key: string): string {
@@ -105,6 +105,27 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		if (name === 'disable-search') {
+			const group = this.shadow.querySelector('.rdl-advanced-search');
+			const inputs = group?.querySelectorAll('input') as unknown as Array<HTMLInputElement>;
+			const sbtn = this.shadow.querySelector('#searchButton');
+			if (newValue === 'true') {
+				group?.classList.add('locked');
+				sbtn?.setAttribute('disabled', 'disabled');
+				inputs?.forEach((input) => {
+					input.setAttribute('disabled', 'disabled');
+				});
+				//console.log('searchbar temporarily disabled.');
+			} else {
+				group?.classList.remove('locked');
+				sbtn?.removeAttribute('disabled');
+				inputs?.forEach((input) => {
+					input.removeAttribute('disabled');
+				});
+				inputs[0].focus();
+				//console.log('searchbar enabled.');
+			}
+		}
 		if (name === 'reset-value') {
 			this.showXButton = JSON.parse(newValue.toLowerCase());
 			this.setResetVisibility(this.showXButton);
@@ -117,7 +138,7 @@ class SearchBarComponent extends HTMLElement {
 		}
 		if (name === 'spinner') {
 			const spinner = this.shadow.querySelector('.spinner') as HTMLDivElement;
-			console.log(spinner);
+			//console.log(spinner);
 			if (newValue === 'true') {
 				spinner.setAttribute('aria-busy', 'true');
 				spinner.style.opacity = '1';
@@ -255,7 +276,7 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 			<div class="row">
 				<div class="col">
 					<form action=" " method=" "  role="search" >
-						<div role="group" class="rdl-advanced-search ">
+						<div role="group" class="rdl-advanced-search">
 							<div class="rdl-advanced-search-input">
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
 								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
@@ -319,7 +340,21 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		-webkit-font-feature-settings: 'liga';
 		-webkit-font-smoothing: antialiased;
 	  }
+		
+		#searchButton, #focusSearchInput, .rdl-advanced-radio {
+		transition: color 0.3s linear 0s;
+		}
+
+		.locked {
+				/* https://jxnblk.github.io/grays/ */
+				color: #767676;
+		}
 	  
+		.locked #searchButton, .locked #focusSearchInput, .locked .rdl-advanced-radio {
+				/* https://jxnblk.github.io/grays/ */
+				color: #767676;
+		}
+
 		:host {
 			max-width:100vw;
 			overflow:hidden;
@@ -339,6 +374,11 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 
 		.edge {
 			height:31px;
+		}
+
+		.locked input{
+			pointer-events:none;
+			cursor:default;
 		}
 
 		.edge.white {

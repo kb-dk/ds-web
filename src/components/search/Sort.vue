@@ -2,7 +2,7 @@
 	<div class="sort">
 		<button
 			@click="revealSortingOptions"
-			class="sort-box"
+			:class="searchResultStore.loading ? 'sort-box disabled' : 'sort-box'"
 		>
 			<span class="btn-text">
 				<span ref="currentSort">
@@ -22,8 +22,8 @@
 				v-show="showSortingOptions"
 				class="sort-options"
 			>
-				<button @click="newSort('title_sort_da')">{{ t('search.title') }}</button>
-				<button @click="newSort('score')">{{ t('search.score') }}</button>
+				<button @click="newSort('title_sort_da asc')">{{ t('search.title') }}</button>
+				<button @click="newSort('score desc')">{{ t('search.score') }}</button>
 			</div>
 		</Transition>
 	</div>
@@ -50,8 +50,9 @@ export default defineComponent({
 		};
 
 		const newSort = (sortValue: string) => {
-			const sort = encodeURIComponent(`${sortValue} asc`);
-			const query = { ...route.query, sort };
+			const sort = encodeURIComponent(`${sortValue}`);
+			const start = `${0}`;
+			const query = { ...route.query, sort, start };
 			router.push({ query });
 			showSortingOptions.value = false;
 			searchResultStore.resetStart();
@@ -61,6 +62,7 @@ export default defineComponent({
 			if (route.query.sort) {
 				const sortingValue = route.query.sort as string;
 				searchResultStore.setSortValue(sortingValue.split('%20')[0]);
+				//console.log(searchResultStore.sort);
 			}
 		});
 
@@ -84,6 +86,12 @@ export default defineComponent({
 	font-family: noway, sans-serif;
 	font-size: 16px;
 	padding: 6px 0px;
+}
+
+.sort-box.disabled {
+	pointer-events: none;
+	/* https://jxnblk.github.io/grays/ */
+	color: #767676;
 }
 
 .btn-text {
