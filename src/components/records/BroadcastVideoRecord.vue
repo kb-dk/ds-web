@@ -5,7 +5,7 @@
 			<div class="main-record-data">
 				<div class="record-data">
 					<h2>{{ recordData.name[0].value }}</h2>
-					<p>{{ recordData.description }} ALSO, LOREM IPSUM PLEASE</p>
+					<p>{{ recordData.description }}</p>
 				</div>
 			</div>
 			<div class="right-side">
