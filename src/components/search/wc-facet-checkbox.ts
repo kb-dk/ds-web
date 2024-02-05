@@ -48,7 +48,7 @@ class checkboxComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['fqkey', 'value', 'title', 'number', 'inslide', 'show'];
+		return ['fqkey', 'value', 'title', 'number', 'inslide', 'content'];
 	}
 
 	hideLoadingAndShowContent = () => {
@@ -90,36 +90,10 @@ class checkboxComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === 'value') {
-			const checkbox = this.shadow.querySelector('.checkbox') as HTMLInputElement;
-			if (checkbox !== null) {
-				if (newValue === 'false') {
-					checkbox.checked = false;
-					checkbox.ariaChecked = 'false';
-				} else {
-					checkbox.checked = true;
-					checkbox.ariaChecked = 'true';
-				}
-			}
-		}
-		if (name === 'title') {
+		if (name === 'content') {
 			const loading = this.shadow.querySelector('.loading') as HTMLDivElement;
 			const container = this.shadow.querySelector('.checkbox-container') as HTMLDivElement;
-
-			if (newValue !== null && newValue !== '') {
-				this.savedTitle = newValue;
-				this.sendValue = newValue;
-				const checkbox = this.shadow.querySelector('.checkbox') as HTMLElement;
-				checkbox.id = newValue;
-
-				const title = this.shadow.querySelector('.title') as HTMLElement;
-				const label = this.shadow.querySelector('.label') as HTMLLabelElement;
-
-				if (this.savedTitle) {
-					title.innerText = this.savedTitle;
-					label.htmlFor = this.savedTitle;
-				}
-
+			if (newValue === 'true') {
 				gsap.to(loading, {
 					opacity: 0,
 					overwrite: true,
@@ -137,6 +111,34 @@ class checkboxComponent extends HTMLElement {
 						this.hideContentAndShowLoading();
 					},
 				});
+			}
+		}
+		if (name === 'value') {
+			const checkbox = this.shadow.querySelector('.checkbox') as HTMLInputElement;
+			if (checkbox !== null) {
+				if (newValue === 'false') {
+					checkbox.checked = false;
+					checkbox.ariaChecked = 'false';
+				} else {
+					checkbox.checked = true;
+					checkbox.ariaChecked = 'true';
+				}
+			}
+		}
+		if (name === 'title') {
+			if (newValue !== null && newValue !== '') {
+				this.savedTitle = newValue;
+				this.sendValue = newValue;
+				const checkbox = this.shadow.querySelector('.checkbox') as HTMLElement;
+				checkbox.id = newValue;
+
+				const title = this.shadow.querySelector('.title') as HTMLElement;
+				const label = this.shadow.querySelector('.label') as HTMLLabelElement;
+
+				if (this.savedTitle) {
+					title.innerText = this.savedTitle;
+					label.htmlFor = this.savedTitle;
+				}
 			}
 		}
 		if (name === 'number') {

@@ -1,12 +1,22 @@
 <template>
-	<div v-if="query !== ''">
-		<div
-			class="hit-count"
-			v-if="hitCount > 0 || noHits"
-		>
-			{{ $t('search.hitcount', hitCount) }} "{{ query }}"
+	<Transition
+		name="fade"
+		mode="out-in"
+	>
+		<div v-if="!searchResultStore.loading">
+			<div
+				class="hit-count"
+				v-if="hitCount > 0 || noHits"
+			>
+				<span v-if="query !== ''">{{ $t('search.hitcount', hitCount) }} "{{ query }}"</span>
+				<span v-else></span>
+			</div>
 		</div>
-	</div>
+		<div
+			class="loading-placeholder"
+			v-else
+		></div>
+	</Transition>
 </template>
 
 <script lang="ts">
@@ -31,5 +41,9 @@ export default defineComponent({
 <style scoped>
 .hit-count {
 	font-size: 36px;
+}
+
+.loading-placeholder {
+	height: 47px;
 }
 </style>

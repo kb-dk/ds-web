@@ -18,7 +18,7 @@
 							:number="channelFacets[index]?.number"
 							:value="filterExists('creator_affiliation', channelFacets[index]?.title)"
 							:inslide="index"
-							:show="showFacets"
+							:content="!searchResultStore.loading"
 						/>
 					</div>
 				</div>
@@ -57,7 +57,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const showFacets = ref(false);
 		const currentFacets = ref(Object as unknown as FacetResultType);
-		const currentFacetNr = ref(0);
+		const currentFacetNr = ref(10);
 		const channelFacets = ref([] as FacetPair[]);
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
@@ -72,35 +72,28 @@ export default defineComponent({
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
-			currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
 			showFacets.value = true;
-			categoryNr.value = Number(categoryFacets.value.length);
+			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 25;
 			window.addEventListener('filter-update', filterUpdateHelper);
 
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-					currentFacets.value = {} as FacetResultType;
-					channelFacets.value = [] as FacetPair[];
-					categoryFacets.value = [] as FacetPair[];
+					console.log('facets updated because of the watcher in searchResults.vue');
 					if (newFacets !== prevFacets) {
+						currentFacets.value = {} as FacetResultType;
+						channelFacets.value = [] as FacetPair[];
+						categoryFacets.value = [] as FacetPair[];
+
 						showFacets.value = false;
-						let sum = '';
-						Object.entries(prevFacets).forEach(([, value]) => {
-							sum += value;
-						});
-						setTimeout(
-							() => {
-								currentFacets.value = newFacets;
-								channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
-								categoryFacets.value = simplifyFacets(newFacets['categories']);
-								currentFacetNr.value = Math.min(channelFacets.value.length, 10);
-								categoryNr.value = Number(categoryFacets.value.length);
-								lastUpdate.value = new Date().getTime();
-								showFacets.value = true;
-							},
-							sum.length <= 0 ? 0 : 600,
-						);
+						currentFacets.value = newFacets;
+						channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
+						categoryFacets.value = simplifyFacets(newFacets['categories']);
+						currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+						categoryNr.value = Number(categoryFacets.value.length);
+						lastUpdate.value = new Date().getTime();
+						showFacets.value = true;
 					}
 				},
 			);

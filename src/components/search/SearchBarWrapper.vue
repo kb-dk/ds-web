@@ -6,6 +6,7 @@
 		:lang="locale"
 		:spinner="searchResultStore.loading"
 		:suggest="JSON.stringify(searchResultStore.AutocompleteResult)"
+		:disable-search="debounceMechanic"
 	></kb-searchbar>
 </template>
 
@@ -29,6 +30,7 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 		let AutocompleteTimer: ReturnType<typeof setTimeout> | null = null;
+		const debounceMechanic = ref(false);
 
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
@@ -87,6 +89,7 @@ export default defineComponent({
 
 		const reset = () => {
 			searchQuery.value = '';
+			searchResultStore.loading = false;
 			xReset.value = false;
 			router.push({ name: 'Home' });
 		};
@@ -120,6 +123,10 @@ export default defineComponent({
 				clearTimeout(AutocompleteTimer);
 			}
 
+			debounceMechanic.value = true;
+			setTimeout(() => {
+				debounceMechanic.value = false;
+			}, 500);
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
 					if (searchQuery.value !== searchResultStore.currentQuery) {
@@ -194,6 +201,7 @@ export default defineComponent({
 			searchResultStore,
 			searchQuery,
 			locale,
+			debounceMechanic,
 		};
 	},
 });

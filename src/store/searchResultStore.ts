@@ -11,6 +11,8 @@ import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
+	let currentSearchUUID = '';
+	let comparisonSearchUUID = '';
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const AutocompleteResult = ref([] as Array<APIAutocompleteTerm>);
@@ -106,6 +108,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		AutocompleteResult.value = object[Object.keys(object)[0]].suggestions;
 	};
 
+	const responseMatchesCurrentSearch = (uuid: string): boolean => {
+		return uuid === currentSearchUUID;
+	};
+
 	const getSearchResults = async (query: string) => {
 		let searchFilters = '';
 		if (filters.value.length > 0) {
@@ -113,17 +119,27 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchFilters += `&${filt}`;
 			});
 		}
+		const startParam = start.value === '' ? '' : `&start=${start.value}`;
+		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
+
+		//https://stackoverflow.com/a/62359248
+		//to get a _GOOD_ uuid, we use the functionality from the createObjectURL method, that creates one, and just get that one.
+
+		const url = URL.createObjectURL(new Blob());
+		currentSearchUUID = url.toString().split('/').reverse()[0];
+		URL.revokeObjectURL(url);
+
 		try {
+			searchFired.value = true;
 			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
 			spinnerStore.toggleSpinner(true);
 			loading.value = true;
-			const startParam = start.value === '' ? '' : `&start=${start.value}`;
-			const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 			const responseData = await APIService.getSearchResults(
 				query,
 				searchFilters,
 				startParam as string,
 				sortParam as string,
+				currentSearchUUID,
 			);
 			const facetData = await APIService.getFacetResults(
 				query,
@@ -131,18 +147,26 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 			);
-			currentQuery.value = query;
-			searchResult.value = responseData.data.response.docs;
-			facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
-			numFound.value = responseData.data.response.numFound;
-			noHits.value = numFound.value === 0;
+
+			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
+
+			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
+				currentQuery.value = query;
+				searchResult.value = responseData.data.response.docs;
+				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
+				numFound.value = responseData.data.response.numFound;
+				noHits.value = numFound.value === 0;
+			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
-			spinnerStore.toggleSpinner(false);
-			loading.value = false;
-			searchFired.value = true;
+			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
+				//console.log('Current search finished, we remove spinner.');
+				spinnerStore.toggleSpinner(false);
+				loading.value = false;
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
 	};
 

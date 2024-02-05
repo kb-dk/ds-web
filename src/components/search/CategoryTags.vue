@@ -13,7 +13,7 @@
 						:key="index + 'category'"
 					>
 						<router-link
-							:class="categoryFacets[index] !== undefined ? 'tag-link' : 'tag-link disabled'"
+							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
 							:to="{
 								name: 'Home',
 								query: {
@@ -38,7 +38,7 @@
 							<span class="tag-number">{{ categoryFacets[index]?.number }}</span>
 						</router-link>
 						<span>
-							{{ index < currentCategoryNr - 1 && categoryFacets.length > 0 ? ',' : '' }}
+							{{ index < currentCategoryNr - 1 && categoryFacets.length > 0 && !searchResultStore.loading ? ',' : '' }}
 						</span>
 					</div>
 				</div>
@@ -67,7 +67,7 @@ export default defineComponent({
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		const currentCategoryNr = ref(0);
+		const currentCategoryNr = ref(25);
 		const categoryFacets = ref([] as FacetPair[]);
 
 		const route = useRoute();
@@ -75,7 +75,7 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
-			currentCategoryNr.value = categoryFacets.value.length;
+			currentCategoryNr.value = categoryFacets.value.length ? categoryFacets.value.length : 25;
 
 			watch(
 				() => props.categories,
@@ -209,6 +209,7 @@ h2 {
 	border-radius: 20px;
 	display: inline-block;
 	color: transparent;
+	overflow: hidden;
 }
 
 .tag-link.disabled .tag-number {
@@ -218,6 +219,8 @@ h2 {
 	opacity: 0.5;
 	border-radius: 20px;
 	display: inline-block;
+	color: transparent;
+	overflow: hidden;
 }
 
 .category-tags a:visited {
