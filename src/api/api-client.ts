@@ -27,7 +27,11 @@ export class APIServiceClient {
 			async (response: AxiosResponse) => {
 				// add artificial delay for dev env
 				if (process.env.NODE_ENV === 'development') {
-					await sleep(true);
+					const isRecordRelatedRequest =
+						response.config.url?.includes('record') || response.config.url?.includes('mlt');
+					if (!isRecordRelatedRequest) {
+						await sleep(true);
+					}
 				}
 				return response;
 			},
