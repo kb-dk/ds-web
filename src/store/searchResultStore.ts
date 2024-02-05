@@ -113,6 +113,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		AutocompleteResult.value = [];
 		let searchFilters = '';
 		if (filters.value.length > 0) {
 			filters.value.forEach((filt: string) => {

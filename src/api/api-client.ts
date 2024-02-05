@@ -32,7 +32,10 @@ export class APIServiceClient {
 			async (response: AxiosResponse) => {
 				// add artificial delay for dev env
 				if (process.env.NODE_ENV === 'development') {
-					await sleep(true);
+					const isAutocompleteRequest = response.config.url?.includes('suggest.dictionary=dr_title_suggest');
+					if (!isAutocompleteRequest) {
+						await sleep(true);
+					}
 				}
 				return response;
 			},

@@ -527,21 +527,21 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
     	text-overflow: ellipsis;
 		}
 
-		.autocomplete ul li:hover, .hl {
+		#focusSearchInput:focus + .autocomplete ul li:hover, #focusSearchInput:focus + .autocomplete .hl {
 			background:#fff6c4;
 		}
 
-		.autocomplete ul li:hover button, .hl button {
+		.#focusSearchInput:focus + .autocomplete ul li:hover button, #focusSearchInput:focus + .autocomplete .hl button {
 			color:#002E70;
 			cursor:pointer;
 		}
 
-		.autocomplete ul li:hover:before,
-		.autocomplete ul li:hover + li:before,
-		.hl:before,
-		.hl + li:before,
-		.autocomplete ul li:has(> button:focus):before,
-		.autocomplete ul li:has(> button:focus) + li:before {
+		#focusSearchInput:focus + .autocomplete ul li:hover:before,
+		#focusSearchInput:focus + .autocomplete ul li:hover + li:before,
+		#focusSearchInput:focus + .autocomplete .hl:before,
+		#focusSearchInput:focus + .autocomplete .hl + li:before,
+		.#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,
+		.#focusSearchInput:focus + .autocomplete ul li:has(> button:focus) + li:before {
 			padding:0px 0px;
 			transform: scaleX(120%);
 			z-index:5;

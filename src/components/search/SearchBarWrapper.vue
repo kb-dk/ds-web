@@ -118,11 +118,9 @@ export default defineComponent({
 
 		const search = () => {
 			stopAutcomplete.value = true;
-
 			if (AutocompleteTimer !== null) {
 				clearTimeout(AutocompleteTimer);
 			}
-
 			debounceMechanic.value = true;
 			setTimeout(() => {
 				debounceMechanic.value = false;
@@ -161,9 +159,11 @@ export default defineComponent({
 						if (AutocompleteTimer !== null) {
 							clearTimeout(AutocompleteTimer);
 						}
-						AutocompleteTimer = setTimeout(() => {
-							getAutocompleteResponse(newStart);
-						}, 300); // 1000 milliseconds (1 second) delay
+						if (!searchResultStore.loading) {
+							AutocompleteTimer = setTimeout(() => {
+								getAutocompleteResponse(newStart);
+							}, 300); // 1000 milliseconds (1 second) delay
+						}
 					} else {
 						searchResultStore.AutocompleteResult = [];
 						if (AutocompleteTimer !== null) {
