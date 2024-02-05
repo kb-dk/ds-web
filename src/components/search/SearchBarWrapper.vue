@@ -152,12 +152,12 @@ export default defineComponent({
 			() => searchQuery.value,
 			(newStart: string, prevStart: string) => {
 				if (newStart !== prevStart) {
+					if (AutocompleteTimer !== null) {
+						clearTimeout(AutocompleteTimer);
+					}
 					if (!stopAutcomplete.value) {
 						if (newStart?.length < 2) {
 							searchResultStore.AutocompleteResult = [];
-						}
-						if (AutocompleteTimer !== null) {
-							clearTimeout(AutocompleteTimer);
 						}
 						if (!searchResultStore.loading) {
 							AutocompleteTimer = setTimeout(() => {
@@ -166,9 +166,6 @@ export default defineComponent({
 						}
 					} else {
 						searchResultStore.AutocompleteResult = [];
-						if (AutocompleteTimer !== null) {
-							clearTimeout(AutocompleteTimer);
-						}
 						stopAutcomplete.value = false;
 					}
 				}

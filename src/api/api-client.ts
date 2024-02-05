@@ -85,7 +85,6 @@ export class APIServiceClient {
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
 		//Temporary fix/implementation for limiting to DR material
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
-		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		return await this.httpClient.get(
 			encodeURI(
 				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(

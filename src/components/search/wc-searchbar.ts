@@ -37,7 +37,6 @@ class SearchBarComponent extends HTMLElement {
 		}
 
 		searchQueryInputField?.addEventListener('keydown', (e: KeyboardEvent) => {
-			// down key is pressed
 			if (e.key === 'ArrowDown') {
 				const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
 				const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
