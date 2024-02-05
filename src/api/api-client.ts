@@ -1,5 +1,10 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { APISearchResponseType, APIRecordResponseType, APIMoreLikeThisResponseType } from '@/types/APIResponseTypes';
+import {
+	APISearchResponseType,
+	APIRecordResponseType,
+	APIMoreLikeThisResponseType,
+	APIAutocompleteResponseType,
+} from '@/types/APIResponseTypes';
 
 export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {
@@ -51,6 +56,19 @@ export class APIServiceClient {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
+	}
+
+	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
+		//Temporary fix/implementation for limiting to DR material
+		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
+		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
+		return await this.httpClient.get(
+			encodeURI(
+				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(
+					query,
+				)}&suggest.count=5&wt=json&fq=${DRLimiter}`,
+			),
+		);
 	}
 
 	async getMoreLikeThisRecords(id: string): Promise<APIMoreLikeThisResponseType> {

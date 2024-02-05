@@ -8,10 +8,12 @@ import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { LocationQueryValue } from 'vue-router';
+import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const facetResult = ref(Object as unknown as FacetResultType);
+	const AutocompleteResult = ref([] as Array<APIAutocompleteTerm>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const searchFired = ref(false);
 	const { t } = useI18n();
@@ -90,8 +92,18 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		facetResult.value = {} as FacetResultType;
 	};
 
+	const resetAutocomplete = () => {
+		AutocompleteResult.value = [];
+	};
+
 	const removeFilter = (filter: string) => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
+	};
+
+	const getAutocompleteResults = async (query: string) => {
+		const autocompleteReponse = await APIService.getAutocomplete(query);
+		const object = autocompleteReponse.data.suggest.dr_title_suggest;
+		AutocompleteResult.value = object[Object.keys(object)[0]].suggestions;
 	};
 
 	const getSearchResults = async (query: string) => {
@@ -137,6 +149,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	return {
 		searchResult,
 		facetResult,
+		AutocompleteResult,
 		errorManager,
 		numFound,
 		loading,
@@ -158,5 +171,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setSortFromURL,
 		resetSort,
 		setSortValue,
+		getAutocompleteResults,
+		resetAutocomplete,
 	};
 });

@@ -5,6 +5,7 @@
 		:background-img-url="backgroundImage"
 		:lang="locale"
 		:spinner="searchResultStore.loading"
+		:suggest="JSON.stringify(searchResultStore.AutocompleteResult)"
 	></kb-searchbar>
 </template>
 
@@ -23,9 +24,11 @@ export default defineComponent({
 		const searchQuery = ref('');
 		const preliminaryFilter = ref('');
 		const { t, locale } = useI18n();
+		const stopAutcomplete = ref(true);
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
+		let AutocompleteTimer: ReturnType<typeof setTimeout> | null = null;
 
 		const searchResultStore = useSearchResultStore();
 		const xReset = ref(false);
@@ -37,6 +40,10 @@ export default defineComponent({
 			if (route.query) {
 				searchQuery.value = route.query.q as string;
 			}
+
+			window.onpopstate = function () {
+				searchQuery.value = route.query.q as string;
+			};
 		});
 
 		watch(searchQuery, (newValue) => {
@@ -84,6 +91,12 @@ export default defineComponent({
 			router.push({ name: 'Home' });
 		};
 
+		const getAutocompleteResponse = (query: string) => {
+			if (query !== undefined && query.length >= 2) {
+				searchResultStore.getAutocompleteResults(query);
+			}
+		};
+
 		const updateQuery = (e: CustomEvent) => {
 			e.stopPropagation();
 			e.preventDefault();
@@ -101,6 +114,12 @@ export default defineComponent({
 		};
 
 		const search = () => {
+			stopAutcomplete.value = true;
+
+			if (AutocompleteTimer !== null) {
+				clearTimeout(AutocompleteTimer);
+			}
+
 			if (searchQuery.value) {
 				if (preliminaryFilter.value.length > 0) {
 					if (searchQuery.value !== searchResultStore.currentQuery) {
@@ -123,6 +142,31 @@ export default defineComponent({
 				}
 			}
 		};
+
+		watch(
+			() => searchQuery.value,
+			(newStart: string, prevStart: string) => {
+				if (newStart !== prevStart) {
+					if (!stopAutcomplete.value) {
+						if (newStart?.length < 2) {
+							searchResultStore.AutocompleteResult = [];
+						}
+						if (AutocompleteTimer !== null) {
+							clearTimeout(AutocompleteTimer);
+						}
+						AutocompleteTimer = setTimeout(() => {
+							getAutocompleteResponse(newStart);
+						}, 300); // 1000 milliseconds (1 second) delay
+					} else {
+						searchResultStore.AutocompleteResult = [];
+						if (AutocompleteTimer !== null) {
+							clearTimeout(AutocompleteTimer);
+						}
+						stopAutcomplete.value = false;
+					}
+				}
+			},
+		);
 
 		const resetInput = () => {
 			searchQuery.value = '';
