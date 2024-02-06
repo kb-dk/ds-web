@@ -47,7 +47,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
-			)}&q.op=OR&facet=true${filters}${start}${sort}&fq=${DRLimiter}&rows=0&facet.limit=25`,
+			)}&facet=true${filters}${start}${sort}&fq=${DRLimiter}&rows=0&facet.limit=25`,
 		);
 	}
 
@@ -62,9 +62,7 @@ export class APIServiceClient {
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
 
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
-				query,
-			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
+			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
 		);
 	}
 
