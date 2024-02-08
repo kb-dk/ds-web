@@ -151,9 +151,9 @@ class SearchBarComponent extends HTMLElement {
 		const resetVal = this.getAttribute('reset-value');
 		const backgroundImage = this.getAttribute('background-img-url');
 
-		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
+		const bgContainer = this.shadow.querySelector('.bg-image') as HTMLImageElement;
 		if (bgContainer && backgroundImage) {
-			bgContainer.style.backgroundImage = `url(${backgroundImage})`;
+			bgContainer.src = `${backgroundImage}`;
 		}
 		if (resetVal) {
 			this.showXButton = JSON.parse(resetVal.toLowerCase());
@@ -384,6 +384,7 @@ class SearchBarComponent extends HTMLElement {
 
 const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 <div class="search-box">
+<img title="search background" alt="Image of the Royal Danish Library" loading="lazy" class="bg-image" />
 	<div class="search-container">
 		<div class="container main-12">
 			<div class="row">
@@ -481,7 +482,15 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 
 		.search-box {
-			height:100%
+			height:100%;
+			position: relative;
+		}
+
+		.bg-image {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			position: absolute;
 		}
 
 		.autocomplete {
