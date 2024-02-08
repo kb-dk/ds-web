@@ -29,7 +29,7 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
-		let AutocompleteTimer: ReturnType<typeof setTimeout> | null = null;
+		let AutocompleteTimer: ReturnType<typeof setTimeout>;
 		const debounceMechanic = ref(false);
 
 		const searchResultStore = useSearchResultStore();
@@ -118,9 +118,7 @@ export default defineComponent({
 
 		const search = () => {
 			stopAutcomplete.value = true;
-			if (AutocompleteTimer !== null) {
-				clearTimeout(AutocompleteTimer);
-			}
+			clearTimeout(AutocompleteTimer);
 			debounceMechanic.value = true;
 			setTimeout(() => {
 				debounceMechanic.value = false;
@@ -152,11 +150,9 @@ export default defineComponent({
 			() => searchQuery.value,
 			(newStart: string, prevStart: string) => {
 				if (newStart !== prevStart) {
-					if (AutocompleteTimer !== null) {
-						clearTimeout(AutocompleteTimer);
-					}
+					clearTimeout(AutocompleteTimer);
 					if (!stopAutcomplete.value) {
-						if (newStart?.length < 2) {
+						if (newStart.length < 2) {
 							searchResultStore.AutocompleteResult = [];
 						}
 						if (!searchResultStore.loading) {

@@ -37,49 +37,18 @@ class SearchBarComponent extends HTMLElement {
 		}
 
 		searchQueryInputField?.addEventListener('keydown', (e: KeyboardEvent) => {
-			if (e.key === 'ArrowDown') {
-				const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
-				const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
-				if (listItems !== undefined) {
-					if (this.currentSelectedAutocomplete < listItems?.length) {
-						this.currentSelectedAutocomplete++;
-					} else {
-						this.currentSelectedAutocomplete = 0;
-					}
-				}
-				listItems?.forEach((item, i) => {
-					if (i === this.currentSelectedAutocomplete - 1) {
-						item.classList.add('hl');
-					} else {
-						item.classList.remove('hl');
-					}
-				});
-			}
-			if (e.key === 'ArrowUp') {
-				const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
-				const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
-				if (listItems !== undefined) {
-					if (this.currentSelectedAutocomplete > 0) {
-						this.currentSelectedAutocomplete--;
-					} else {
-						this.currentSelectedAutocomplete = listItems.length;
-					}
-				}
-				listItems?.forEach((item, i) => {
-					if (i === this.currentSelectedAutocomplete - 1) {
-						item.classList.add('hl');
-					} else {
-						item.classList.remove('hl');
-					}
-				});
-			}
-			if (e.key === 'Enter') {
-				if (this.currentSelectedAutocomplete !== 0) {
-					e.preventDefault();
-					const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
-					const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
-					listItems?.[this.currentSelectedAutocomplete - 1].querySelector('button')?.click();
-				}
+			switch (e.key) {
+				case 'ArrowDown':
+					this.moveSelectorDown();
+					break;
+				case 'ArrowUp':
+					this.moveSelectorUp();
+					break;
+				case 'Enter':
+					this.executeOnSelector(e);
+					break;
+				default:
+					break;
 			}
 		});
 
@@ -129,6 +98,53 @@ class SearchBarComponent extends HTMLElement {
 
 	private getPresetFilter(key: string): string {
 		return this.filters[key as keyof typeof this.filters] || '';
+	}
+
+	private moveSelectorUp() {
+		const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+		const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+		if (listItems !== undefined) {
+			if (this.currentSelectedAutocomplete > 0) {
+				this.currentSelectedAutocomplete--;
+			} else {
+				this.currentSelectedAutocomplete = listItems.length;
+			}
+		}
+		listItems?.forEach((item, i) => {
+			if (i === this.currentSelectedAutocomplete - 1) {
+				item.classList.add('hl');
+			} else {
+				item.classList.remove('hl');
+			}
+		});
+	}
+
+	private moveSelectorDown() {
+		const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+		const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+		if (listItems !== undefined) {
+			if (this.currentSelectedAutocomplete < listItems?.length) {
+				this.currentSelectedAutocomplete++;
+			} else {
+				this.currentSelectedAutocomplete = 0;
+			}
+		}
+		listItems?.forEach((item, i) => {
+			if (i === this.currentSelectedAutocomplete - 1) {
+				item.classList.add('hl');
+			} else {
+				item.classList.remove('hl');
+			}
+		});
+	}
+
+	private executeOnSelector(e: Event) {
+		if (this.currentSelectedAutocomplete !== 0) {
+			e.preventDefault();
+			const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+			const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+			listItems?.[this.currentSelectedAutocomplete - 1].querySelector('button')?.click();
+		}
 	}
 
 	connectedCallback() {
@@ -526,17 +542,17 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
     	text-overflow: ellipsis;
 		}
 
-		#focusSearchInput:focus + .autocomplete ul li:hover, #focusSearchInput:focus + .autocomplete .hl {
+		.autocomplete ul li:hover, #focusSearchInput:focus + .autocomplete .hl {
 			background:#fff6c4;
 		}
 
-		.#focusSearchInput:focus + .autocomplete ul li:hover button, #focusSearchInput:focus + .autocomplete .hl button {
+		.autocomplete ul li:hover button, #focusSearchInput:focus + .autocomplete .hl button {
 			color:#002E70;
 			cursor:pointer;
 		}
 
-		#focusSearchInput:focus + .autocomplete ul li:hover:before,
-		#focusSearchInput:focus + .autocomplete ul li:hover + li:before,
+		.autocomplete ul li:hover:before,
+		.autocomplete ul li:hover + li:before,
 		#focusSearchInput:focus + .autocomplete .hl:before,
 		#focusSearchInput:focus + .autocomplete .hl + li:before,
 		.#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,

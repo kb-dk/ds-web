@@ -104,8 +104,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const getAutocompleteResults = async (query: string) => {
 		const autocompleteReponse = await APIService.getAutocomplete(query);
-		const object = autocompleteReponse.data.suggest.dr_title_suggest;
-		AutocompleteResult.value = object[Object.keys(object)[0]].suggestions;
+		const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
+		AutocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
 	};
 
 	const responseMatchesCurrentSearch = (uuid: string): boolean => {
@@ -113,7 +113,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		AutocompleteResult.value = [];
+		resetAutocomplete();
 		let searchFilters = '';
 		if (filters.value.length > 0) {
 			filters.value.forEach((filt: string) => {
