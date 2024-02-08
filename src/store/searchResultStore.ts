@@ -133,7 +133,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		try {
 			searchFired.value = true;
 			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
-			spinnerStore.toggleSpinner(true);
+			//spinnerStore.toggleSpinner(true);
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
 				query,
@@ -164,7 +164,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				//console.log('Current search finished, we remove spinner.');
-				spinnerStore.toggleSpinner(false);
+				//spinnerStore.toggleSpinner(false);
 				loading.value = false;
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}

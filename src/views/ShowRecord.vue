@@ -39,6 +39,7 @@ import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { useSpinnerStore } from '@/store/spinnerStore';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -54,12 +55,16 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const moreLikeThisRecords = ref<Array<GenericSearchResultType>>([]);
 		const { t } = useI18n();
+		const spinnerStore = useSpinnerStore();
 
 		const getRecord = async (id: string) => {
+			spinnerStore.toggleSpinner(true);
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
 				handleShowRecordError(err as AxiosError, 'recordCall');
+			} finally {
+				spinnerStore.toggleSpinner(false);
 			}
 		};
 
