@@ -20,7 +20,11 @@
 			class="wipe"
 			ref="wipe"
 		>
-			<img :src="getImgServerSrcURL()" />
+			<img
+				title="Royal Danish Library"
+				alt="Logo of the Royal Danish Library"
+				:src="getImgServerSrcURL()"
+			/>
 		</div>
 	</div>
 	<div class="content">
