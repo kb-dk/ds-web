@@ -555,8 +555,8 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		.autocomplete ul li:hover + li:before,
 		#focusSearchInput:focus + .autocomplete .hl:before,
 		#focusSearchInput:focus + .autocomplete .hl + li:before,
-		.#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,
-		.#focusSearchInput:focus + .autocomplete ul li:has(> button:focus) + li:before {
+		#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,
+		#focusSearchInput:focus + .autocomplete ul li:has(> button:focus) + li:before {
 			padding:0px 0px;
 			transform: scaleX(120%);
 			z-index:5;
