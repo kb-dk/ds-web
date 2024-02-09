@@ -149,6 +149,7 @@ h2 {
 .category-tags {
 	flex-wrap: wrap;
 	margin-top: 20px;
+	display: flex;
 }
 
 .category-tags .tag {

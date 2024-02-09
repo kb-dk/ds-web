@@ -1,92 +1,33 @@
 <template>
 	<div class="search-box">
+		<!-- This is for the search bar -->
 		<div
 			ref="searchContainer"
 			class="search-container"
 		>
 			<div class="mobile-edge edge"></div>
-			<SearchBarWrapper></SearchBarWrapper>
+			<SearchBarWrapper />
 		</div>
 		<Transition
 			name="fade"
 			mode="out-in"
 		>
+			<!-- This is for the search results / facets / did-you-mean / pager -->
 			<div
 				key="1"
 				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
 			>
+				<SearchOverhead />
 				<div class="container">
 					<div class="row">
-						<div
-							v-if="searchResultStore.searchResult.length > 0"
-							class="hit-count"
-						>
-							<div class="result-options">
-								<div class="hits">
-									<HitCount
-										:hit-count="searchResultStore.numFound"
-										:no-hits="searchResultStore.noHits"
-										:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
-									/>
-								</div>
-								<Sort />
-							</div>
-							<button
-								class="filter-button"
-								@click="toggleFacets(!showFacets)"
-							>
-								<span class="material-icons">tune</span>
-								<span class="filter-button-text">
-									{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
-								</span>
-							</button>
-						</div>
-						<div v-else-if="searchResultStore.searchFired">
-							<div
-								class="buffer"
-								v-if="searchResultStore.loading"
-							></div>
-							<div v-else>{{ $t('search.nohit') }}</div>
-						</div>
-					</div>
-				</div>
-				<div
-					key="2"
-					class="container"
-				>
-					<div class="row">
 						<div class="search-resultset">
-							<div
-								class="search-facets active"
-								ref="facetsContainer"
-							>
-								<div class="blur-bg"></div>
-								<div class="facet-background">
-									<button
-										class="facet-close-button"
-										@click="toggleFacets(false)"
-									>
-										<span class="material-icons">close</span>
-									</button>
-									<Facets
-										@facet-update="updateFacetContainer"
-										:facet-results="searchResultStore.facetResult"
-									/>
-								</div>
-							</div>
-
-							<div
-								ref="resultContainer"
-								class="search-results fullwidth"
-							>
-								<SearchResults
-									:search-results="searchResultStore.searchResult"
-									:num-found="searchResultStore.numFound"
-								/>
-							</div>
+							<Facets :facet-results="searchResultStore.facetResult" />
+							<SearchResults
+								:search-results="searchResultStore.searchResult"
+								:num-found="searchResultStore.numFound"
+							/>
 						</div>
 						<Pagination
-							v-if="searchResultStore.numFound > 0"
 							:itemsPerPage="itemsPerPage"
 							:totalHits="searchResultStore.numFound"
 							:numPagesToShow="numPagesToShow"
@@ -94,46 +35,12 @@
 					</div>
 				</div>
 			</div>
+			<!-- This for the portal content when no search has been fired -->
 			<div
 				key="2"
 				v-else
 			>
-				<div class="container">
-					<div class="intro">
-						<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-							dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-							ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-							fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum.
-						</p>
-						<router-link to="/about">read more</router-link>
-					</div>
-				</div>
-				<div class="container">
-					<h3>Udpluk fra arkivet</h3>
-					<GridDisplay
-						:spot-nr="8"
-						:row-nr="4"
-						:draggable="true"
-						:spots="mockdata1"
-					></GridDisplay>
-				</div>
-				<div class="blue-background">
-					<div class="edge blue"></div>
-
-					<div class="container">
-						<h3>Om DR Arkivet</h3>
-						<GridDisplay
-							:draggable="false"
-							:spot-nr="3"
-							:row-nr="3"
-							:blue-background="true"
-							:spots="mockdata2"
-						></GridDisplay>
-					</div>
-				</div>
+				<PortalContent />
 			</div>
 		</Transition>
 	</div>
@@ -142,40 +49,29 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import HitCount from '@/components/search/HitCount.vue';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
-import GridDisplay from '@/components/common/GridDisplay.vue';
+import PortalContent from '@/components/common/PortalContent.vue';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
-
-//The import is actually used so had to silence TypeScript here - have no idea why compiler is angry
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import Pagination from '@/components/search/Pager.vue';
-import Sort from '@/components/search/Sort.vue';
+import SearchOverhead from '@/components/search/SearchOverhead.vue';
 
 export default defineComponent({
 	name: 'Search',
 	components: {
-		HitCount,
 		SearchResults,
 		SearchBarWrapper,
 		Facets,
-		GridDisplay,
 		Pagination,
-		Sort,
+		SearchOverhead,
+		PortalContent,
 	},
 
 	setup() {
-		const mockdata1 = ['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[];
-		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
-		const facetsContainer = ref<HTMLElement | null>(null);
 		const searchContainer = ref<HTMLElement | null>(null);
-		const resultContainer = ref<HTMLElement | null>(null);
 
-		const showFacets = ref(true);
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
 		const route = useRoute();
@@ -204,19 +100,6 @@ export default defineComponent({
 		onUnmounted(() => {
 			window.document.body.classList.remove('remove-body-scroll');
 		});
-
-		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
-		   the ref is not actually present in onMounted, which is super weird. But we can watch for when it enters.
-		   https://github.com/vuejs/composition-api/issues/296
-		*/
-		watch(
-			() => facetsContainer.value,
-			(newValue: HTMLElement | null, oldValue: HTMLElement | null) => {
-				if (facetsContainer.value && newValue !== oldValue) {
-					window.innerWidth > 800 ? toggleFacets(true) : toggleFacets(false);
-				}
-			},
-		);
 
 		watch(
 			() => searchResultStore.searchResult.length,
@@ -263,36 +146,11 @@ export default defineComponent({
 			);
 		};
 
-		const updateFacetContainer = () => {
-			window.innerWidth < 800 ? toggleFacets(false) : null;
-		};
-
-		const toggleFacets = (check: boolean) => {
-			showFacets.value = check;
-			if (showFacets.value) {
-				facetsContainer.value?.classList.add('active');
-				resultContainer.value?.classList.add('fullwidth');
-
-				window.document.body.classList.add('remove-body-scroll');
-			} else {
-				facetsContainer.value?.classList.remove('active');
-				resultContainer.value?.classList.remove('fullwidth');
-				window.document.body.classList.remove('remove-body-scroll');
-			}
-		};
-
 		return {
 			searchResultStore,
 			searchContainer,
-			facetsContainer,
-			resultContainer,
-			showFacets,
-			toggleFacets,
-			updateFacetContainer,
 			itemsPerPage,
 			numPagesToShow,
-			mockdata1,
-			mockdata2,
 		};
 	},
 });
@@ -329,23 +187,6 @@ h3 {
 
 .edge {
 	height: 31px;
-}
-
-.buffer {
-	height: 20px;
-	width: 100%;
-}
-
-.result-options {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: flex-end;
-}
-
-.hits {
-	margin-right: auto;
-	margin-left: 0;
 }
 
 .mobile-edge {
@@ -392,69 +233,7 @@ h3 {
 	padding-bottom: 40px;
 }
 
-.filter-button {
-	border: 0px;
-	background-color: transparent;
-	height: 24px;
-	line-height: 24px;
-	cursor: pointer;
-	padding: 0;
-}
-
-.filter-button .material-icons {
-	font-size: 16px;
-	position: relative;
-	top: 2px;
-}
-
-.filter-button-text {
-	padding-left: 5px;
-	font-size: 16px;
-}
-
-.facet-close-button {
-	border: 0px;
-	background-color: transparent;
-	font-size: 0px;
-	position: absolute;
-	top: 10px;
-	z-index: 25;
-	right: 10px;
-	cursor: pointer;
-}
-
 .fullwidth {
-	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-}
-
-.search-facets {
-	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-	min-width: 0px;
-	margin-bottom: 20px;
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	z-index: 5;
-	background-color: white;
-	overflow-y: scroll;
-	height: 100vh;
-	visibility: hidden;
-	pointer-events: none;
-	box-sizing: border-box;
-	padding: 40px 15% 0px 15%;
-	transform: translateX(-100%);
-}
-
-.search-facets.active {
-	visibility: visible;
-	pointer-events: all;
-	transform: translateX(0%);
-	width: 100%;
-}
-
-.search-results {
-	position: relative;
-	max-width: 100%;
 	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
 }
 
@@ -477,59 +256,8 @@ h3 {
 	.container {
 		max-width: 990px;
 	}
-
-	.search-facets {
-		top: 20%;
-		height: 60%;
-		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-		width: 70%;
-	}
-
-	.search-facets::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-
-	.search-facets.active {
-		width: 70%;
-	}
-
-	.fullwidth {
-		max-width: calc(100%);
-	}
 }
 @media (min-width: 800px) {
-	.search-results {
-		max-width: 100%;
-	}
-
-	.fullwidth {
-		max-width: calc(100% - 330px);
-	}
-
-	.facet-background {
-		background-color: rgba(30, 30, 30, 0.1);
-	}
-	.facet-close-button {
-		display: none;
-	}
-	.search-facets {
-		position: initial;
-		background-color: initial;
-		width: 0px;
-		margin-right: 0px;
-		overflow-y: initial;
-		overflow-x: hidden;
-		padding: 0px 0px;
-		transform: translateX(0%);
-		opacity: 0;
-		box-shadow: initial;
-	}
-	.search-facets.active {
-		width: 290px;
-		margin-right: 30px;
-		min-width: 300px;
-		opacity: 1;
-	}
 	.search-resultset {
 		display: flex;
 		flex-direction: row;

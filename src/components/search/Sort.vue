@@ -133,9 +133,4 @@ export default defineComponent({
 .sort-options button:last-of-type {
 	margin-bottom: 0px;
 }
-
-.hits {
-	margin-right: auto;
-	margin-left: 0;
-}
 </style>
