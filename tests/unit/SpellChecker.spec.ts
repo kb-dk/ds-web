@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import { SpellCheckType } from '@/types/SpellCheckType';
+// import { SpellCheckType } from '@/types/SpellCheckType';
 import SpellChecker from '@/components/search/SpellChecker.vue';
-interface Suggestion {
+/*interface Suggestion {
 	numFound: number;
 	startOffset: number;
 	endOffset: number;
@@ -13,7 +13,7 @@ interface Collation {
 	collationQuery: string;
 	hits: number;
 	misspellingsAndCorrections: string[];
-}
+}*/
 
 describe('SpellChecker.vue', () => {
 	/*it('renders spell check query when spellCheck prop is provided', async () => {
