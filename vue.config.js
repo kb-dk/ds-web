@@ -37,6 +37,11 @@ module.exports = {
 				pathRewrite: { '^/ds-api/mlt/': '' },
 				changeOrigin: true,
 			},
+			'^/ds-api/suggest/': {
+				target: process.env.DEVEL_API_SUGGEST,
+				pathRewrite: { '^/ds-api/suggest/': '' },
+				changeOrigin: true,
+			},
 		},
 	},
 };

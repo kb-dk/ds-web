@@ -5,6 +5,7 @@
 		:background-img-url="backgroundImage"
 		:lang="locale"
 		:spinner="searchResultStore.loading"
+		:suggest="JSON.stringify(searchResultStore.AutocompleteResult)"
 		:disable-search="debounceMechanic"
 	></kb-searchbar>
 </template>
@@ -24,9 +25,11 @@ export default defineComponent({
 		const searchQuery = ref('');
 		const preliminaryFilter = ref('');
 		const { t, locale } = useI18n();
+		const stopAutcomplete = ref(true);
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const router = useRouter();
 		const route = useRoute();
+		let AutocompleteTimer: ReturnType<typeof setTimeout>;
 		const debounceMechanic = ref(false);
 
 		const searchResultStore = useSearchResultStore();
@@ -39,6 +42,10 @@ export default defineComponent({
 			if (route.query) {
 				searchQuery.value = route.query.q as string;
 			}
+
+			window.onpopstate = function () {
+				searchQuery.value = route.query.q as string;
+			};
 		});
 
 		watch(searchQuery, (newValue) => {
@@ -87,6 +94,12 @@ export default defineComponent({
 			router.push({ name: 'Home' });
 		};
 
+		const getAutocompleteResponse = (query: string) => {
+			if (query !== undefined && query.length >= 2) {
+				searchResultStore.getAutocompleteResults(query);
+			}
+		};
+
 		const updateQuery = (e: CustomEvent) => {
 			e.stopPropagation();
 			e.preventDefault();
@@ -104,6 +117,8 @@ export default defineComponent({
 		};
 
 		const search = () => {
+			stopAutcomplete.value = true;
+			clearTimeout(AutocompleteTimer);
 			debounceMechanic.value = true;
 			setTimeout(() => {
 				debounceMechanic.value = false;
@@ -130,6 +145,28 @@ export default defineComponent({
 				}
 			}
 		};
+
+		watch(
+			() => searchQuery.value,
+			(newStart: string, prevStart: string) => {
+				if (newStart !== prevStart) {
+					clearTimeout(AutocompleteTimer);
+					if (!stopAutcomplete.value) {
+						if (newStart.length < 2) {
+							searchResultStore.AutocompleteResult = [];
+						}
+						if (!searchResultStore.loading) {
+							AutocompleteTimer = setTimeout(() => {
+								getAutocompleteResponse(newStart);
+							}, 300); // 1000 milliseconds (1 second) delay
+						}
+					} else {
+						searchResultStore.AutocompleteResult = [];
+						stopAutcomplete.value = false;
+					}
+				}
+			},
+		);
 
 		const resetInput = () => {
 			searchQuery.value = '';
