@@ -178,7 +178,7 @@ h2 {
 .category-tags .tag .tag-number {
 	font-size: 10px;
 	margin-left: 5px;
-	color: rgba(130, 130, 130, 1);
+	color: #383838;
 }
 
 .category-tags .tag.active .tag-link {
@@ -214,7 +214,7 @@ h2 {
 }
 
 .tag-link.disabled .tag-number {
-	background-color: rgba(170, 170, 170, 1);
+	background-color: #383838;
 	width: 10px;
 	height: 10px;
 	opacity: 0.5;

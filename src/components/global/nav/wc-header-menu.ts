@@ -197,6 +197,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 					<a
 						href="/"
 						class="rdl-logo"
+						title="Logo of the Royal Danish Library"
 					>
 						<span class="sr-only"></span>
 					</a>
