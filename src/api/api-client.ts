@@ -64,7 +64,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
-			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
+			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}&spellcheck=true`,
 		);
 	}
 
