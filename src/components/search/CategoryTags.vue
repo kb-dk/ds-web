@@ -14,6 +14,7 @@
 					>
 						<router-link
 							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
+							:title="categoryFacets[index]?.title"
 							:to="{
 								name: 'Home',
 								query: {
@@ -33,7 +34,7 @@
 								:style="'width: ' + Math.ceil(Math.random() * 30 + 30) + 'px'"
 								class="tag-title"
 							>
-								{{ categoryFacets[index]?.title }}
+								{{ categoryFacets[index]?.title ? categoryFacets[index]?.title : 'loading...' }}
 							</span>
 							<span class="tag-number">{{ categoryFacets[index]?.number }}</span>
 						</router-link>

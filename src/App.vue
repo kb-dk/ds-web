@@ -68,6 +68,9 @@ export default defineComponent({
 		const route = useRoute();
 		const { locale } = useI18n({ useScope: 'global' });
 
+		const html = document.querySelector('html');
+		html?.setAttribute('lang', 'da');
+
 		const gotoPath = (e: Event) => {
 			e.preventDefault();
 			changePath(e as CustomEvent);
@@ -84,6 +87,8 @@ export default defineComponent({
 		const switchLocale = (e: Event) => {
 			e.preventDefault();
 			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
+			const html = document.querySelector('html');
+			html?.setAttribute('lang', locale.value);
 			LocalStorageWrapper.set('locale', locale.value);
 			const routeQueries = { ...route.query };
 			routeQueries.locale = currentLocale.value;
