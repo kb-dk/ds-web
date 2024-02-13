@@ -3,9 +3,10 @@
 		<div>
 			<div
 				class="hit-box"
-				v-for="(res, index) in resultNr as unknown as GenericSearchResultType[]"
+				v-for="(res, index) in searchResults"
 				:key="index"
 			>
+				<ResultItem :result-data="res"></ResultItem>
 				<kb-resultcomponent
 					:vueRouting="true"
 					:content="!searchResultStore.loading"
@@ -44,6 +45,7 @@
 import { defineComponent, PropType, ref, watch, onMounted, toRaw } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import ResultItem from '@/components/search/ResultItem.vue';
 import { useI18n } from 'vue-i18n';
 
 import '@/components/search/wc-result-item';
@@ -51,6 +53,9 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'SearchResults',
+	components: {
+		ResultItem,
+	},
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		numFound: { type: Number, required: true },
