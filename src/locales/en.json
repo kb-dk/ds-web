@@ -2,7 +2,7 @@
   "search":{
      "searchbtn":"Search",
      "hitcount": "{n} result fund for | {n} results found for",
-     "nohit":"Your search gave 0 results.",
+     "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
      "nextPage":"Next page",
@@ -15,9 +15,9 @@
      "title_sort_da": "title",
      "score": "score",
      "channels":"Channels",
-     "relatedSubjects":"Related subjects"
-
-
+     "relatedSubjects":"Related subjects",
+     "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
+     "didYouMeanCount": "({spellCheckHits} results)"
   },
   "record":{
      "duration":"Duration",

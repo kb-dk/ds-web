@@ -169,6 +169,7 @@ const TEMPLATE = /*html*/ `
 					<span class="text"></span>
 					<span class="text"></span>
 				</div>
+				<label>loading</label>
 				<input disabled role="checkbox" tabindex="0" type="checkbox" class="checkbox">
 			</div>
 	</div>
@@ -191,7 +192,6 @@ const STYLES = /*css*/ `
 			flex-direction: row;
 			height: 25px;
 			justify-content: space-between;
-			gap: 30px;
 		}
 
 		.shimmer {
@@ -214,6 +214,10 @@ const STYLES = /*css*/ `
 			gap:5px;
 		}
 		
+		.loading label {
+			width:0px;
+			color:transparent;
+		}
 
 		.loading .name .text {
 			margin:5px 0px;

@@ -109,7 +109,9 @@ class MenuComponent extends HTMLElement {
 
 	createMenuElement(parent: HTMLUListElement, title: string, url: string, icon?: string, id?: string) {
 		const listElem = document.createElement('li');
+		listElem.role = 'none';
 		const link = document.createElement('a');
+		link.role = 'menuitem';
 		if (id) link.id = id;
 		listElem.appendChild(link);
 		link.classList.add('nav-item', 'level-1');

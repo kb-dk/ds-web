@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
+import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 
@@ -13,6 +14,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
 	let comparisonSearchUUID = '';
 	const searchResult = ref([] as Array<GenericSearchResultType>);
+	const spellCheck = ref({} as unknown as SpellCheckType);
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const AutocompleteResult = ref([] as Array<APIAutocompleteTerm>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -74,6 +76,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const resetSort = () => {
 		sort.value = '';
 	};
+	const resetSpellCheck = () => {
+		spellCheck.value = {} as SpellCheckType;
+	};
 
 	const setSortValue = (value: string) => {
 		sort.value = value;
@@ -84,6 +89,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetResults();
 		resetStart();
 		resetSort();
+		resetSpellCheck();
 		currentQuery.value = '';
 		searchFired.value = false;
 	};
@@ -157,6 +163,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				currentQuery.value = query;
 				searchResult.value = responseData.data.response.docs;
+				spellCheck.value = responseData.data.spellcheck;
 				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;
@@ -189,6 +196,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		start,
 		sort,
 		showFacets,
+		spellCheck,
 		addFilter,
 		resetFilters,
 		removeFilter,

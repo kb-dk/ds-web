@@ -2,7 +2,7 @@
   "search":{
      "searchbtn":"Søg",
      "hitcount": "{n} resultat fundet for | {n} resultater fundet for",
-     "nohit":"Din søgning gav 0 resultater.",
+     "nohit":"Vi fandt desværre intet match på søgningen \"{query}\"",
      "showFilters":"Vis filtre",
      "hideFilters":"Skjul filtre",
      "nextPage":"Næste side",
@@ -15,7 +15,9 @@
      "title_sort_da": "titel",
      "score": "score",
      "channels":"Kanaler",
-     "relatedSubjects":"Relaterede emner"
+     "relatedSubjects":"Relaterede emner",
+     "didYouMean": "Mente du \"{spellCheckQuery}\"?",
+     "didYouMeanCount": "({spellCheckHits} resultater)"
    },
   "record":{
      "duration":"Varighed",

@@ -14,6 +14,7 @@
 					>
 						<router-link
 							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
+							:title="categoryFacets[index]?.title"
 							:to="{
 								name: 'Home',
 								query: {

@@ -395,7 +395,7 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
 								<input spellcheck="false" autocomplete="off" type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
 								<div class="autocomplete">
-									<ul role="listbox" class="autocomplete-list"></ul>
+									<ul role="listbox" class="autocomplete-list" aria-label="autocomplete list"></ul>
 								</div>
 							</div>
 							<div class="spinner-container"><div class="spinner"></div></div>
