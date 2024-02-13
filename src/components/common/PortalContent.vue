@@ -42,8 +42,6 @@
 import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
-//The import is actually used so had to silence TypeScript here - have no idea why compiler is angry
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 export default defineComponent({

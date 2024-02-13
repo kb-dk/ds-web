@@ -1,7 +1,6 @@
 <template>
 	<div class="container">
 		<div class="row">
-			<!-- If there was ANY this to show -->
 			<div class="hit-count">
 				<div class="result-options">
 					<div class="hits">

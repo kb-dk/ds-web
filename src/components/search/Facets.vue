@@ -85,6 +85,8 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
+			window.innerWidth > 800 ? searchResultStore.toggleShowFacets(true) : searchResultStore.toggleShowFacets(false);
+
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
@@ -117,21 +119,6 @@ export default defineComponent({
 		onUnmounted(() => {
 			window.removeEventListener('filter-update', filterUpdateHelper);
 		});
-
-		/* This is because Vue3 composition API has this weird bug that when a ref is wrapped in a v-if
-		   the ref is not actually present in onMounted, which is super weird. But we can watch for when it enters.
-		   https://github.com/vuejs/composition-api/issues/296
-		*/
-		watch(
-			() => facetsContainer.value,
-			(newValue: HTMLElement | null, oldValue: HTMLElement | null) => {
-				if (facetsContainer.value && newValue !== oldValue) {
-					window.innerWidth > 800
-						? searchResultStore.toggleShowFacets(true)
-						: searchResultStore.toggleShowFacets(false);
-				}
-			},
-		);
 
 		const updateFilters = (e: CustomEvent) => {
 			const routeQueries = e.detail.add ? addFilter(route, e.detail.filter) : removeFilter(route, e.detail.filter);
