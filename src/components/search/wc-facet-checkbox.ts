@@ -169,7 +169,7 @@ const TEMPLATE = /*html*/ `
 					<span class="text"></span>
 					<span class="text"></span>
 				</div>
-				<label class="invisible">loading</label>
+				<label>loading</label>
 				<input disabled role="checkbox" tabindex="0" type="checkbox" class="checkbox">
 			</div>
 	</div>
@@ -214,7 +214,7 @@ const STYLES = /*css*/ `
 			gap:5px;
 		}
 		
-		.invisible {
+		.loading label {
 			width:0px;
 			color:transparent;
 		}
