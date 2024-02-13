@@ -73,7 +73,9 @@ export class APIServiceClient {
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
 
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
+			`search/?q=${encodeURIComponent(
+				query,
+			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}&spellcheck=true`,
 		);
 	}
 

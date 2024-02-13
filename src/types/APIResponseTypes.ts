@@ -1,6 +1,7 @@
 import { GenericSearchResultType, FacetsType } from './GenericSearchResultTypes';
 import { GenericRecordType } from './GenericRecordTypes';
 import { BroadcastRecordType } from './BroadcastRecordType';
+import { SpellCheckType } from './SpellCheckType';
 
 export interface APISearchResponseType {
 	data: {
@@ -13,6 +14,7 @@ export interface APISearchResponseType {
 		};
 		responseHeader: APIResponseHeaderType;
 		facet_counts: FacetsType;
+		spellcheck: SpellCheckType;
 	};
 }
 

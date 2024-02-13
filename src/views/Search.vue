@@ -46,13 +46,16 @@
 								class="buffer"
 								v-if="searchResultStore.loading"
 							></div>
-							<div v-else>{{ $t('search.nohit') }}</div>
+							<div v-else>
+								<NoHits />
+							</div>
 						</div>
 					</div>
 				</div>
 				<div
 					key="2"
 					class="container"
+					v-if="searchResultStore.searchResult.length > 0"
 				>
 					<div class="row">
 						<div class="search-resultset">
@@ -147,6 +150,7 @@ import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
 import Facets from '@/components/search/Facets.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
+import NoHits from '@/components/search/NoHits.vue';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 
@@ -166,6 +170,7 @@ export default defineComponent({
 		GridDisplay,
 		Pagination,
 		Sort,
+		NoHits,
 	},
 
 	setup() {
