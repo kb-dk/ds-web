@@ -34,7 +34,7 @@
 								:style="'width: ' + Math.ceil(Math.random() * 30 + 30) + 'px'"
 								class="tag-title"
 							>
-								{{ categoryFacets[index]?.title ? categoryFacets[index]?.title : 'loading...' }}
+								{{ categoryFacets[index]?.title }}
 							</span>
 							<span class="tag-number">{{ categoryFacets[index]?.number }}</span>
 						</router-link>
