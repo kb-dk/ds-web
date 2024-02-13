@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
+import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -16,6 +17,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const spellCheck = ref({} as unknown as SpellCheckType);
 	const facetResult = ref(Object as unknown as FacetResultType);
+	const AutocompleteResult = ref([] as Array<APIAutocompleteTerm>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const searchFired = ref(false);
 	const { t } = useI18n();
@@ -98,8 +100,18 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		facetResult.value = {} as FacetResultType;
 	};
 
+	const resetAutocomplete = () => {
+		AutocompleteResult.value = [];
+	};
+
 	const removeFilter = (filter: string) => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
+	};
+
+	const getAutocompleteResults = async (query: string) => {
+		const autocompleteReponse = await APIService.getAutocomplete(query);
+		const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
+		AutocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
 	};
 
 	const responseMatchesCurrentSearch = (uuid: string): boolean => {
@@ -107,6 +119,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		resetAutocomplete();
 		let searchFilters = '';
 		if (filters.value.length > 0) {
 			filters.value.forEach((filt: string) => {
@@ -126,7 +139,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		try {
 			searchFired.value = true;
 			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
-			spinnerStore.toggleSpinner(true);
+			//spinnerStore.toggleSpinner(true);
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
 				query,
@@ -158,7 +171,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				//console.log('Current search finished, we remove spinner.');
-				spinnerStore.toggleSpinner(false);
+				//spinnerStore.toggleSpinner(false);
 				loading.value = false;
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
@@ -168,6 +181,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	return {
 		searchResult,
 		facetResult,
+		AutocompleteResult,
 		errorManager,
 		numFound,
 		loading,
@@ -190,5 +204,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setSortFromURL,
 		resetSort,
 		setSortValue,
+		getAutocompleteResults,
+		resetAutocomplete,
 	};
 });

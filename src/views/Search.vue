@@ -505,6 +505,7 @@ h3 {
 @media (min-width: 800px) {
 	.search-results {
 		max-width: 100%;
+		width: 100%;
 	}
 
 	.fullwidth {
@@ -512,7 +513,7 @@ h3 {
 	}
 
 	.facet-background {
-		background-color: rgba(30, 30, 30, 0.1);
+		background-color: #eeeeee;
 	}
 	.facet-close-button {
 		display: none;

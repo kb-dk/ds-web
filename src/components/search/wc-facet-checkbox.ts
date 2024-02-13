@@ -143,7 +143,7 @@ class checkboxComponent extends HTMLElement {
 		}
 		if (name === 'number') {
 			if (newValue !== null) {
-				const number = this.shadow.querySelector('.number') as HTMLElement;
+				const number = this.shadow.querySelector('.tag-number') as HTMLElement;
 				number.innerText = '(' + newValue + ')';
 			}
 		}
@@ -159,7 +159,7 @@ class checkboxComponent extends HTMLElement {
 const TEMPLATE = /*html*/ `
     <div class="container">
 			<div class="checkbox-container">
-        <label class="label"><span class="title"></span><span class="number"></span></label>
+        <label class="label"><span class="title"></span><span class="tag-number"></span></label>
         <input role="checkbox" tabindex="0" type="checkbox" class="checkbox">
 			</div>
 			<div class="loading">
@@ -243,9 +243,9 @@ const STYLES = /*css*/ `
 			justify-content: space-between;
 		}
 
-		.number {
+		.tag-number {
 			font-size:10px;
-			color:rgba(130,130,130,1);
+			color:#383838;
 			display:inline-block;
 			padding-left:5px;
 			vertical-align: bottom;

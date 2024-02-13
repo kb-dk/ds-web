@@ -9,11 +9,13 @@ class SearchBarComponent extends HTMLElement {
 	showXButton: boolean;
 	delimitation: string;
 	filters: Filters;
+	currentSelectedAutocomplete: number;
 
 	constructor() {
 		super();
 		this.showXButton = false;
 		this.delimitation = '';
+		this.currentSelectedAutocomplete = 1;
 
 		this.filters = {
 			all: '',
@@ -33,6 +35,23 @@ class SearchBarComponent extends HTMLElement {
 				this.dispatchUpdate(searchQueryInputField.value);
 			});
 		}
+
+		searchQueryInputField?.addEventListener('keydown', (e: KeyboardEvent) => {
+			switch (e.key) {
+				case 'ArrowDown':
+					this.moveSelectorDown();
+					break;
+				case 'ArrowUp':
+					this.moveSelectorUp();
+					break;
+				case 'Enter':
+					this.executeOnSelector(e);
+					break;
+				default:
+					break;
+			}
+		});
+
 		const searchButton: HTMLButtonElement | null = this.shadow.querySelector('#searchButton');
 		searchButton
 			? searchButton.addEventListener('click', (e) => {
@@ -74,20 +93,67 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['reset-value', 'q', 'lang', 'spinner', 'disable-search'];
+		return ['reset-value', 'q', 'lang', 'spinner', 'suggest', 'disable-search'];
 	}
 
 	private getPresetFilter(key: string): string {
 		return this.filters[key as keyof typeof this.filters] || '';
 	}
 
+	private moveSelectorUp() {
+		const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+		const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+		if (listItems !== undefined) {
+			if (this.currentSelectedAutocomplete > 0) {
+				this.currentSelectedAutocomplete--;
+			} else {
+				this.currentSelectedAutocomplete = listItems.length;
+			}
+		}
+		listItems?.forEach((item, i) => {
+			if (i === this.currentSelectedAutocomplete - 1) {
+				item.classList.add('hl');
+			} else {
+				item.classList.remove('hl');
+			}
+		});
+	}
+
+	private moveSelectorDown() {
+		const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+		const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+		if (listItems !== undefined) {
+			if (this.currentSelectedAutocomplete < listItems?.length) {
+				this.currentSelectedAutocomplete++;
+			} else {
+				this.currentSelectedAutocomplete = 0;
+			}
+		}
+		listItems?.forEach((item, i) => {
+			if (i === this.currentSelectedAutocomplete - 1) {
+				item.classList.add('hl');
+			} else {
+				item.classList.remove('hl');
+			}
+		});
+	}
+
+	private executeOnSelector(e: Event) {
+		if (this.currentSelectedAutocomplete !== 0) {
+			e.preventDefault();
+			const autocompleteList: HTMLInputElement | null = this.shadow.querySelector('.autocomplete-list');
+			const listItems: NodeListOf<HTMLLIElement> | null | undefined = autocompleteList?.querySelectorAll('li');
+			listItems?.[this.currentSelectedAutocomplete - 1].querySelector('button')?.click();
+		}
+	}
+
 	connectedCallback() {
 		const resetVal = this.getAttribute('reset-value');
 		const backgroundImage = this.getAttribute('background-img-url');
 
-		const bgContainer = this.shadow.querySelector('.search-container') as HTMLElement;
+		const bgContainer = this.shadow.querySelector('.bg-image') as HTMLImageElement;
 		if (bgContainer && backgroundImage) {
-			bgContainer.style.backgroundImage = `url(${backgroundImage})`;
+			bgContainer.src = `${backgroundImage}`;
 		}
 		if (resetVal) {
 			this.showXButton = JSON.parse(resetVal.toLowerCase());
@@ -105,6 +171,35 @@ class SearchBarComponent extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		if (name === 'suggest') {
+			this.currentSelectedAutocomplete = 0;
+			const autocomplete = this.shadow.querySelector('.autocomplete');
+			const list = autocomplete?.querySelector('.autocomplete-list');
+			const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
+
+			const suggests = JSON.parse(newValue);
+			if (suggests.length !== 0) {
+				list && (list.innerHTML = '');
+				suggests.forEach((item: { term: string }) => {
+					const ac = document.createElement('li');
+					ac.role = 'option';
+					const btn = document.createElement('button');
+					btn.innerHTML = this.setBold(searchQueryInputField?.value || '', item.term); //item.term;
+					btn.type = 'button';
+					ac.append(btn);
+					if (btn !== null && searchQueryInputField !== null) {
+						btn.addEventListener('click', () => {
+							searchQueryInputField && (searchQueryInputField.value = item.term);
+							this.dispatchUpdate(searchQueryInputField.value);
+							this.dispatchSearch();
+						});
+					}
+					list?.append(ac);
+				});
+			} else {
+				list && (list.innerHTML = '');
+			}
+		}
 		if (name === 'disable-search') {
 			const group = this.shadow.querySelector('.rdl-advanced-search');
 			const inputs = group?.querySelectorAll('input') as unknown as Array<HTMLInputElement>;
@@ -194,6 +289,24 @@ class SearchBarComponent extends HTMLElement {
 		}
 	}
 
+	private setBold(hl: string, str: string) {
+		const lowerCaseValue = hl.toLowerCase();
+		const lowerCaseStr = str.toLowerCase();
+
+		const startIndex = lowerCaseStr.indexOf(lowerCaseValue);
+		const endIndex = startIndex + hl.length;
+
+		if (startIndex !== -1) {
+			const before = str.substring(0, startIndex);
+			const matched = str.substring(startIndex, endIndex);
+			const after = str.substring(endIndex);
+
+			const highlightedString = `${before}<span>${matched}</span>${after}`;
+			return highlightedString;
+		}
+		return str;
+	}
+
 	private setDelimitationAndDispatch(value: string) {
 		this.delimitation = value;
 		const searchQueryInputField: HTMLInputElement | null = this.shadow.querySelector('#focusSearchInput');
@@ -271,6 +384,7 @@ class SearchBarComponent extends HTMLElement {
 
 const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 <div class="search-box">
+<img title="search background" alt="Image of the Royal Danish Library" loading="lazy" class="bg-image" />
 	<div class="search-container">
 		<div class="container main-12">
 			<div class="row">
@@ -279,7 +393,10 @@ const SEARCH_COMPONENT_TEMPLATE = /*html*/ `
 						<div role="group" class="rdl-advanced-search">
 							<div class="rdl-advanced-search-input">
 								<label for="focusSearchInput" class="sr-only">Søg på KB.dk</label>
-								<input type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
+								<input spellcheck="false" autocomplete="off" type="search" id="focusSearchInput" class="form-control" placeholder="Søg på KB.dk" name="simpleSearch">
+								<div class="autocomplete">
+									<ul role="listbox" class="autocomplete-list"></ul>
+								</div>
 							</div>
 							<div class="spinner-container"><div class="spinner"></div></div>
 							<button id="resetButton" type="button" aria-label="reset" class="btn btn-primary btn-icon">
@@ -357,7 +474,7 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 
 		:host {
 			max-width:100vw;
-			overflow:hidden;
+			/*overflow:hidden; */
 			height:100%;
 			display: block;
 			/* opacity: 0;
@@ -365,7 +482,105 @@ const SEARCH_COMPONMENT_STYLES = /*css*/ `
 		}
 
 		.search-box {
-			height:100%
+			height:100%;
+			position: relative;
+		}
+
+		.bg-image {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			position: absolute;
+		}
+
+		.autocomplete {
+			position: absolute;
+			z-index: 500;
+			background-color: white;
+			width: 50%;
+			padding:0px 0px;
+			border: 1px solid #F5F5F5;
+			border-top: 0px solid #F5F5F5;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
+			border-radius: 0px 0px 2px 2px;
+			margin-left:-1px;
+			
+		}
+
+		.autocomplete button {
+			border: 0px;
+			background-color:transparent;
+			width:100%;
+			height:100%;
+			cursor:pointer;
+			text-align:left;
+			font-size:16px;
+		}
+
+		.autocomplete button span {
+			font-weight:bold;
+		}
+
+		.autocomplete:has(> ul:empty) {
+			height:0px;
+			border:0px;
+		}
+
+		.autocomplete li:has(> button:focus) {
+			background:#fff6c4;
+			color:#002E70;
+		}
+
+		.autocomplete button:focus {
+			outline: none;
+  		box-shadow: none;
+		}
+
+		.autocomplete ul  {
+			list-style-type: none;
+    	padding: 0px 0px;
+			margin:0;
+		}
+
+		.autocomplete ul li {
+			height: 25px;
+			padding: 7px 10px;
+			transition: all 0.2s linear 0s;
+			overflow:hidden;
+			text-wrap: nowrap;
+    	text-overflow: ellipsis;
+		}
+
+		.autocomplete ul li:hover, #focusSearchInput:focus + .autocomplete .hl {
+			background:#fff6c4;
+		}
+
+		.autocomplete ul li:hover button, #focusSearchInput:focus + .autocomplete .hl button {
+			color:#002E70;
+			cursor:pointer;
+		}
+
+		.autocomplete ul li:hover:before,
+		.autocomplete ul li:hover + li:before,
+		#focusSearchInput:focus + .autocomplete .hl:before,
+		#focusSearchInput:focus + .autocomplete .hl + li:before,
+		#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,
+		#focusSearchInput:focus + .autocomplete ul li:has(> button:focus) + li:before {
+			padding:0px 0px;
+			transform: scaleX(120%);
+			z-index:5;
+		}
+
+		.autocomplete ul li:before {
+			content:'';
+			display:block;
+			padding:0px 10px;
+			border-top:1px solid rgb(229, 228, 226);
+			height:1px;
+			position:relative;
+			top:-7px;
+			transition: all 0.2s linear 0s;
+			z-index:0;
 		}
 
 		.btn-icon i {

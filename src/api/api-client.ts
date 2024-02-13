@@ -1,5 +1,10 @@
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { APISearchResponseType, APIRecordResponseType, APIMoreLikeThisResponseType } from '@/types/APIResponseTypes';
+import {
+	APISearchResponseType,
+	APIRecordResponseType,
+	APIMoreLikeThisResponseType,
+	APIAutocompleteResponseType,
+} from '@/types/APIResponseTypes';
 
 export function sleep(random?: boolean): Promise<void> {
 	let sleep = 2000;
@@ -27,7 +32,13 @@ export class APIServiceClient {
 			async (response: AxiosResponse) => {
 				// add artificial delay for dev env
 				if (process.env.NODE_ENV === 'development') {
-					await sleep(true);
+					const noDelayRequest =
+						response.config.url?.includes('suggest.dictionary=dr_title_suggest') ||
+						response.config.url?.includes('record') ||
+						response.config.url?.includes('mlt');
+					if (!noDelayRequest) {
+						await sleep(true);
+					}
 				}
 				return response;
 			},
@@ -47,7 +58,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
-			)}&q.op=OR&facet=true${filters}${start}${sort}&fq=${DRLimiter}&rows=0&facet.limit=25`,
+			)}&facet=true${filters}${start}${sort}&fq=${DRLimiter}&rows=0&facet.limit=25`,
 		);
 	}
 
@@ -64,7 +75,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
-			)}&q.op=OR&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}&spellcheck=true`,
+			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}&spellcheck=true`,
 		);
 	}
 
@@ -72,6 +83,18 @@ export class APIServiceClient {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
+	}
+
+	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
+		//Temporary fix/implementation for limiting to DR material
+		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
+		return await this.httpClient.get(
+			encodeURI(
+				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(
+					query,
+				)}&suggest.count=5&wt=json&fq=${DRLimiter}`,
+			),
+		);
 	}
 
 	async getMoreLikeThisRecords(id: string): Promise<APIMoreLikeThisResponseType> {

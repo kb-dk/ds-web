@@ -1,9 +1,11 @@
 <template>
-	<span>({{ formattedDuration }})</span>
+	<span>
+		<span>({{ formattedDuration }})</span>
+	</span>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formatDuration } from '@/utils/time-utils';
 
@@ -24,15 +26,10 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const formattedDuration = ref('');
-		const { locale, t } = useI18n();
+		const { t } = useI18n();
 
-		watch(locale, () => {
-			formattedDuration.value = formatDuration(props.isoDuration, props.startDate, props.endDate, t);
-		});
-
-		onMounted(() => {
-			formattedDuration.value = formatDuration(props.isoDuration, props.startDate, props.endDate, t);
+		const formattedDuration = computed(() => {
+			return formatDuration(props.isoDuration, props.startDate, props.endDate, t);
 		});
 
 		return {
@@ -41,6 +38,3 @@ export default defineComponent({
 	},
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
