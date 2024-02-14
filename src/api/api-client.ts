@@ -7,9 +7,9 @@ import {
 } from '@/types/APIResponseTypes';
 
 export function sleep(random?: boolean): Promise<void> {
-	let sleep = 10000;
+	let sleep = 2000;
 	if (random) {
-		sleep = Math.random() * 3000 + 10000;
+		sleep = Math.random() * 3000 + 1000;
 	}
 	console.log('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
 	return new Promise((resolve) => setTimeout(resolve, sleep));
