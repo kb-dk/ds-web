@@ -6,36 +6,12 @@
 				v-for="(res, index) in searchResults"
 				:key="index"
 			>
-				<ResultItem :result-data="res"></ResultItem>
-				<kb-resultcomponent
-					:vueRouting="true"
-					:content="!searchResultStore.loading"
-					:number="index"
-					:resultdata="JSON.stringify(currentResults[index])"
+				<ResultItem
+					:resultdata="res"
+					:duration="getDuration(res)"
+					:starttime="getStartTime(res)"
 					:placeholder="getPlaceholderImage()"
-					:duration="
-						currentResults[index]
-							? t('record.duration') +
-							  ': ' +
-							  formatDuration(
-									currentResults[index].duration,
-									currentResults[index].startTime,
-									currentResults[index].endTime,
-									t,
-							  )
-							: ''
-					"
-					:starttime="
-						currentResults[index]
-							? currentResults[index].startTime !== undefined
-								? getBroadcastDate(currentResults[index].startTime as string, locale) +
-								  ' ' +
-								  t('record.timestamp') +
-								  getBroadcastTime(currentResults[index].startTime as string)
-								: t('record.noBroadcastData')
-							: ''
-					"
-				/>
+				></ResultItem>
 			</div>
 		</div>
 	</Transition>
@@ -48,7 +24,6 @@ import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time
 import ResultItem from '@/components/search/ResultItem.vue';
 import { useI18n } from 'vue-i18n';
 
-import '@/components/search/wc-result-item';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
@@ -68,11 +43,21 @@ export default defineComponent({
 		const lastUpdate = ref(0);
 		const searchResultStore = useSearchResultStore();
 
+		const getDuration = (resultItem: GenericSearchResultType) => {
+			return resultItem
+				? t('record.duration') + ': ' + formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t)
+				: '';
+		};
+
+		const getStartTime = (resultItem: GenericSearchResultType) => {
+			return resultItem.startTime !== undefined
+				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} 
+				${t('record.timestamp')}${getBroadcastTime(resultItem.startTime as string)}`
+				: t('record.noBroadcastData');
+		};
+
 		const getPlaceholderImage = () => {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
-			// return res.pages && res.pages.length > 0
-			//	? res.pages[0].replace(/.info.json$/, '/full/!250,150/0/native.jpg')
-			//	: require('@/assets/images/No-Image-Placeholder.svg.png');
 		};
 		const getAltTxt = () => {
 			return 'license';
@@ -101,6 +86,8 @@ export default defineComponent({
 			getBroadcastDate,
 			getBroadcastTime,
 			getPlaceholderImage,
+			getDuration,
+			getStartTime,
 			getAltTxt,
 			currentResults,
 			lastUpdate,
@@ -113,17 +100,10 @@ export default defineComponent({
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only 
-temporary styling until patterns from design system are implemented 
--->
 <style scoped>
 .hit-box {
 	padding: 0 0 10px 0;
 	box-sizing: border-box;
 	width: 100%;
-}
-
-.hit-img {
-	width: 10%;
 }
 </style>

@@ -7,9 +7,9 @@ import {
 } from '@/types/APIResponseTypes';
 
 export function sleep(random?: boolean): Promise<void> {
-	let sleep = 2000;
+	let sleep = 10000;
 	if (random) {
-		sleep = Math.random() * 3000 + 1000;
+		sleep = Math.random() * 3000 + 10000;
 	}
 	console.log('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
 	return new Promise((resolve) => setTimeout(resolve, sleep));
@@ -73,9 +73,7 @@ export class APIServiceClient {
 		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
 
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
-				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}&spellcheck=true`,
+			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
 		);
 	}
 

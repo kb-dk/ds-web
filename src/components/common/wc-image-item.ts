@@ -1,11 +1,13 @@
 import { ImageComponentType } from '@/types/ImageComponentType';
 
 class ImageComponent extends HTMLElement {
+	shadow: ShadowRoot;
 	constructor() {
 		super();
-		this.innerHTML = IMAGE_COMPONMENT_TEMPLATE + IMAGE_COMPONMENT_STYLES;
-		const imageWrapper: HTMLDivElement | null = this.querySelector('.image-wrapper');
-		const image: HTMLImageElement | null = this.querySelector('.image-item');
+		this.shadow = this.attachShadow({ mode: 'open' });
+		this.shadow.innerHTML = IMAGE_COMPONMENT_TEMPLATE + IMAGE_COMPONMENT_STYLES;
+		const imageWrapper: HTMLDivElement | null = this.shadow.querySelector('.image-wrapper');
+		const image: HTMLImageElement | null = this.shadow.querySelector('.image-item');
 		if (image && imageWrapper) {
 			image.addEventListener('load', this.showImage);
 		}
@@ -22,7 +24,7 @@ class ImageComponent extends HTMLElement {
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'imagedata') {
 			const imageData = JSON.parse(newValue) as ImageComponentType;
-			const thumb = this.querySelector('.image-item') as HTMLImageElement;
+			const thumb = this.shadow.querySelector('.image-item') as HTMLImageElement;
 			if (imageData.imgSrc !== undefined) {
 				thumb && (thumb.src = imageData.imgSrc);
 			}
@@ -31,18 +33,18 @@ class ImageComponent extends HTMLElement {
 				thumb.style.backgroundColor = 'rgb(237,237,237)';
 				thumb.style.objectFit = 'contain';
 			}
-			if (imageData.altText && this.querySelector('.image-item')) {
-				this.querySelector('.image-item')?.setAttribute('alt', imageData.altText);
+			if (imageData.altText && this.shadow.querySelector('.image-item')) {
+				this.shadow.querySelector('.image-item')?.setAttribute('alt', imageData.altText);
 			}
-			if (imageData.imgTitle && this.querySelector('.image-item')) {
+			if (imageData.imgTitle && this.shadow.querySelector('.image-item')) {
 				this.querySelector('.image-item')?.setAttribute('title', imageData.imgTitle);
 			}
 			if (imageData.icon) {
-				const iconHolder = this.querySelector('.type-symbol');
+				const iconHolder = this.shadow.querySelector('.type-symbol');
 				iconHolder && (iconHolder.textContent = imageData.icon);
 			}
 			if (imageData.aspect) {
-				const imageWrapper = this.querySelector('.image-wrapper') as HTMLElement;
+				const imageWrapper = this.shadow.querySelector('.image-wrapper') as HTMLElement;
 				imageWrapper && (imageWrapper.style.aspectRatio = imageData.aspect);
 			}
 		}

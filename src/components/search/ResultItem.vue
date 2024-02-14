@@ -1,26 +1,33 @@
 <template>
-	<div v-if="resultData">
-		<div class="container">
+	<div class="result-item-wrapper">
+		<div
+			class="container"
+			v-if="!searchResultStore.loading && resultdata"
+		>
 			<div class="information">
-				<router-link :to="{ path: 'record/' + resultData.id }">
-					{{ resultData.title }}
-				</router-link>
-				<a
-					role="link"
+				<router-link
+					:to="{ path: 'record/' + resultdata.id }"
 					class="title"
-				></a>
+					role="link"
+				>
+					{{ resultdata.title[0] }}
+				</router-link>
+
 				<div class="subtitle">
 					<span class="material-icons icons tv"></span>
-					<span class="where"></span>
-					<span class="when"></span>
+					<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
+					<span class="when">{{ starttime }}</span>
 					<span class="material-icons icons schedule"></span>
-					<span class="duration"></span>
+					<span class="duration">{{ duration }}</span>
 				</div>
-				<div class="summary"></div>
+				<div class="summary">{{ resultdata.description }}</div>
 			</div>
-			<div class="result-image-wrapper"><!--kb-imagecomponent></kb-imagecomponent--></div>
+			<div class="result-image-wrapper"><kb-imagecomponent :imagedata="getImageData()"></kb-imagecomponent></div>
 		</div>
-		<div class="loading">
+		<div
+			class="loading container"
+			v-if="searchResultStore.loading"
+		>
 			<div class="shimmer"></div>
 			<div class="information">
 				<div class="placeholder-t"></div>
@@ -29,21 +36,10 @@
 					<span></span>
 				</div>
 				<div class="placeholder-s">
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
+					<span
+						v-for="n in 15"
+						:key="n"
+					></span>
 				</div>
 			</div>
 			<div class="result-image-wrapper skeleton"></div>
@@ -55,22 +51,34 @@
 import { defineComponent, PropType } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { ImageComponentType } from '@/types/ImageComponentType';
+import '@/components/common/wc-image-item';
 
 export default defineComponent({
 	name: 'ResultItem',
 	components: {},
 	props: {
-		resultData: { type: Object as PropType<GenericSearchResultType> },
+		resultdata: { type: Object as PropType<GenericSearchResultType> },
+		duration: { type: String },
+		starttime: { type: String },
+		placeholder: { type: String },
 	},
-	setup() {
+	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
+		const getImageData = () => {
+			const imageData = {} as ImageComponentType;
+			imageData.imgSrc = props.resultdata?.thumbnail;
+			imageData.altText = props.resultdata?.title;
+			imageData.imgTitle = props.resultdata?.title;
+			imageData.placeholder = props.placeholder;
+			return JSON.stringify(imageData);
+		};
+		return { searchResultStore, getImageData };
 	},
 });
 </script>
 <style scoped>
-:host {
-	display: block;
+.result-item-wrapper {
 	transition: all 0.3s linear;
 	padding-bottom: 30px;
 	overflow: hidden;
@@ -110,8 +118,7 @@ export default defineComponent({
 }
 
 .container {
-	display: none;
-	opacity: 0;
+	display: flex;
 	flex-direction: row;
 	height: 105px;
 	justify-content: space-between;
@@ -141,6 +148,7 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
+	color: #002e70;
 }
 
 .result-image-wrapper {
@@ -159,7 +167,6 @@ export default defineComponent({
 	width: 100vw;
 	max-width: 100%;
 	height: 105px;
-	display: none;
 	flex-direction: row;
 	height: 105px;
 	justify-content: space-between;
