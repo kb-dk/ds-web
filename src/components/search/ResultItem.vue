@@ -12,12 +12,11 @@
 				>
 					{{ resultdata.title[0] }}
 				</router-link>
-
 				<div class="subtitle">
-					<span class="material-icons icons tv"></span>
+					<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
 					<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
 					<span class="when">{{ starttime }}</span>
-					<span class="material-icons icons schedule"></span>
+					<span class="material-icons icons schedule">schedule</span>
 					<span class="duration">{{ duration }}</span>
 				</div>
 				<div class="summary">{{ resultdata.description }}</div>
@@ -96,6 +95,7 @@ export default defineComponent({
 	white-space: nowrap;
 	word-wrap: normal;
 	direction: ltr;
+	font-feature-settings: 'liga';
 	-webkit-font-feature-settings: 'liga';
 	-webkit-font-smoothing: antialiased;
 }
@@ -104,11 +104,9 @@ export default defineComponent({
 	position: relative;
 	top: 3px;
 }
-.tv,
 .schedule {
 	transition: all 0.5s ease-in-out 0s;
 }
-
 .summary span {
 	height: 15px;
 	display: block;
