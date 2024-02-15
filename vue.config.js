@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
 	chainWebpack: (config) => {
 		config.module
@@ -16,6 +18,15 @@ module.exports = {
 			args[0]['process.env']['VUE_APP_VERSION'] = process.env.NODE_ENV === 'production' ? v : '"DEVELOPMENT BUILD"';
 			return args;
 		});
+	},
+
+	configureWebpack: {
+		plugins: [
+			new webpack.DefinePlugin({
+				// https://github.com/vuejs/vue-cli/pull/7443
+				__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+			}),
+		],
 	},
 
 	publicPath: process.env.NODE_ENV === 'production' ? '/dsweb/' : '/',
