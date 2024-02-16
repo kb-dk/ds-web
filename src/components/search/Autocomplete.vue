@@ -13,8 +13,8 @@
 				:class="i === currentSelectedAutocomplete ? 'hl' : ''"
 			>
 				<button
-					v-html="setBold(searchResultStore.currentQuery || '', item.term)"
-					@click="doAutocompleteSearch(item.term)"
+					v-html="setBold(searchResultStore.currentQuery || '', item?.term)"
+					@click="doAutocompleteSearch(item?.term)"
 				></button>
 			</li>
 		</ul>
