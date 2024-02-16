@@ -17,7 +17,12 @@
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
      "didYouMean": "Mente du \"{spellCheckQuery}\"?",
-     "didYouMeanCount": "({spellCheckHits} resultater)"
+     "didYouMeanCount": "({spellCheckHits} resultater)",
+     "searchInput":"Søg på KB",
+     "searchHere":"Søg her",
+     "tv":"TV",
+     "radio":"radio",
+     "all":"alt"
    },
   "record":{
      "duration":"Varighed",

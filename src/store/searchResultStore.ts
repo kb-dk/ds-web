@@ -27,6 +27,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const sort = ref('');
 	const error = ref('');
 	const currentQuery = ref('');
+	const lastSearchQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const spinnerStore = useSpinnerStore();
@@ -55,6 +56,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (!Number.isNaN(Number(URLStart))) {
 				start.value = URLStart === '0' ? '' : URLStart;
 			}
+		}
+	};
+
+	const setCurrentQueryFromURL = (URLQuery: string | undefined) => {
+		if (URLQuery) {
+			currentQuery.value = URLQuery;
 		}
 	};
 
@@ -119,6 +126,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		lastSearchQuery.value = query;
 		resetAutocomplete();
 		let searchFilters = '';
 		if (filters.value.length > 0) {
@@ -187,6 +195,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		loading,
 		error,
 		currentQuery,
+		lastSearchQuery,
 		noHits,
 		filters,
 		searchFired,
@@ -200,6 +209,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSearch,
 		setFiltersFromURL,
 		setStartFromURL,
+		setCurrentQueryFromURL,
 		resetStart,
 		setSortFromURL,
 		resetSort,

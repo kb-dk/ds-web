@@ -4,7 +4,7 @@
 		mode="out-in"
 	>
 		<div>
-			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.currentQuery }) }}</div>
+			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
 			<div class="no-hits">
 				<SpellChecker :spell-check="searchResultStore.spellCheck" />
 			</div>

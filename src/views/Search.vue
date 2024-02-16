@@ -26,7 +26,7 @@
 									<HitCount
 										:hit-count="searchResultStore.numFound"
 										:no-hits="searchResultStore.noHits"
-										:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+										:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
 									/>
 								</div>
 								<Sort />
@@ -199,6 +199,7 @@ export default defineComponent({
 				const sort = route.query.sort as string;
 				searchResultStore.setStartFromURL(start);
 				searchResultStore.setSortFromURL(sort);
+				searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
@@ -247,6 +248,7 @@ export default defineComponent({
 					}
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
+					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.getSearchResults(route.query.q as string);
 				}
 				if (route.query.q === undefined) {
@@ -372,7 +374,6 @@ h3 {
 
 .search-box {
 	max-width: 100%;
-	overflow: hidden;
 }
 .search-container {
 	width: 100vw;
