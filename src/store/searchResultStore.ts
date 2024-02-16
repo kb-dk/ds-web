@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { APIService } from '@/api/api-service';
-import { useSpinnerStore } from '@/store/spinnerStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
@@ -30,7 +29,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const lastSearchQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
-	const spinnerStore = useSpinnerStore();
+	const showFacets = ref(true);
+
+	const toggleShowFacets = (value: boolean) => {
+		showFacets.value = value;
+	};
 
 	const addFilter = (filter: string) => {
 		if (!filters.value.includes(filter)) {
@@ -201,6 +204,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		searchFired,
 		start,
 		sort,
+		showFacets,
 		spellCheck,
 		addFilter,
 		resetFilters,
@@ -214,6 +218,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setSortFromURL,
 		resetSort,
 		setSortValue,
+		toggleShowFacets,
 		getAutocompleteResults,
 		resetAutocomplete,
 	};

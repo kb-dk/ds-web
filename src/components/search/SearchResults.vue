@@ -1,43 +1,48 @@
 <template>
-	<Transition name="fade">
-		<div>
-			<div
-				class="hit-box"
-				v-for="(res, index) in resultNr as unknown as GenericSearchResultType[]"
-				:key="index"
-			>
-				<kb-resultcomponent
-					:vueRouting="true"
-					:content="!searchResultStore.loading"
-					:number="index"
-					:resultdata="JSON.stringify(currentResults[index])"
-					:placeholder="getPlaceholderImage()"
-					:duration="
-						currentResults[index]
-							? t('record.duration') +
-							  ': ' +
-							  formatDuration(
-									currentResults[index].duration,
-									currentResults[index].startTime,
-									currentResults[index].endTime,
-									t,
-							  )
-							: ''
-					"
-					:starttime="
-						currentResults[index]
-							? currentResults[index].startTime !== undefined
-								? getBroadcastDate(currentResults[index].startTime as string, locale) +
-								  ' ' +
-								  t('record.timestamp') +
-								  getBroadcastTime(currentResults[index].startTime as string)
-								: t('record.noBroadcastData')
-							: ''
-					"
-				/>
+	<div
+		ref="resultContainer"
+		class="search-results fullwidth"
+	>
+		<Transition name="fade">
+			<div>
+				<div
+					class="hit-box"
+					v-for="(res, index) in resultNr as unknown as GenericSearchResultType[]"
+					:key="index"
+				>
+					<kb-resultcomponent
+						:vueRouting="true"
+						:content="!searchResultStore.loading"
+						:number="index"
+						:resultdata="JSON.stringify(currentResults[index])"
+						:placeholder="getPlaceholderImage()"
+						:duration="
+							currentResults[index]
+								? t('record.duration') +
+								  ': ' +
+								  formatDuration(
+										currentResults[index].duration,
+										currentResults[index].startTime,
+										currentResults[index].endTime,
+										t,
+								  )
+								: ''
+						"
+						:starttime="
+							currentResults[index]
+								? currentResults[index].startTime !== undefined
+									? getBroadcastDate(currentResults[index].startTime as string, locale) +
+									  ' ' +
+									  t('record.timestamp') +
+									  getBroadcastTime(currentResults[index].startTime as string)
+									: t('record.noBroadcastData')
+								: ''
+						"
+					/>
+				</div>
 			</div>
-		</div>
-	</Transition>
+		</Transition>
+	</div>
 </template>
 
 <script lang="ts">
@@ -62,6 +67,7 @@ export default defineComponent({
 		const resultNr = ref(10);
 		const lastUpdate = ref(0);
 		const searchResultStore = useSearchResultStore();
+		const resultContainer = ref<HTMLElement | null>(null);
 
 		const getPlaceholderImage = () => {
 			return require('@/assets/images/No-Image-Placeholder.svg.png');
@@ -71,6 +77,21 @@ export default defineComponent({
 		};
 		const getAltTxt = () => {
 			return 'license';
+		};
+
+		watch(
+			() => searchResultStore.showFacets,
+			() => {
+				toggleFacets();
+			},
+		);
+
+		const toggleFacets = () => {
+			if (searchResultStore.showFacets) {
+				resultContainer.value?.classList.add('fullwidth');
+			} else {
+				resultContainer.value?.classList.remove('fullwidth');
+			}
 		};
 
 		onMounted(() => {
@@ -97,6 +118,7 @@ export default defineComponent({
 			getBroadcastTime,
 			getPlaceholderImage,
 			getAltTxt,
+			resultContainer,
 			currentResults,
 			lastUpdate,
 			t,
@@ -118,7 +140,30 @@ temporary styling until patterns from design system are implemented
 	width: 100%;
 }
 
+.search-results {
+	position: relative;
+	max-width: 100%;
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+}
+
 .hit-img {
 	width: 10%;
+}
+
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.fullwidth {
+		max-width: calc(100%);
+	}
+}
+@media (min-width: 800px) {
+	.search-results {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.fullwidth {
+		max-width: calc(100% - 330px);
+	}
 }
 </style>
