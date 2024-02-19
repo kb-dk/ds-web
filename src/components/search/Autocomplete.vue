@@ -10,7 +10,7 @@
 				:key="i"
 				v-for="(item, i) in searchResultStore.AutocompleteResult"
 				role="option"
-				:class="i === currentSelectedAutocomplete ? 'hl' : ''"
+				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 			>
 				<button
 					v-html="setBold(searchResultStore.currentQuery || '', item?.term)"
@@ -37,10 +37,10 @@ export default defineComponent({
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		const currentSelectedAutocomplete = ref(0);
+		const currentSelectedAutocomplete = ref(1);
 
 		const doAutocompleteSearch = (query: string) => {
-			router.push({ name: 'Home', query: { q: query, start: 0 } });
+			router.push({ name: 'Home', query: { q: query ? query : searchResultStore.currentQuery, start: 0 } });
 		};
 
 		watch(
@@ -86,7 +86,12 @@ export default defineComponent({
 
 		const executeOnSelector = (e: Event) => {
 			e.preventDefault();
-			doAutocompleteSearch(searchResultStore.AutocompleteResult[currentSelectedAutocomplete.value].term);
+
+			doAutocompleteSearch(
+				currentSelectedAutocomplete.value !== 0
+					? searchResultStore.AutocompleteResult[currentSelectedAutocomplete.value].term
+					: searchResultStore.currentQuery,
+			);
 		};
 
 		const setBold = (hl: string, str: string) => {
