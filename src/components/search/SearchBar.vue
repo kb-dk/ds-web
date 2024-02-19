@@ -39,8 +39,14 @@
 										name="simpleSearch"
 										v-model="searchResultStore.currentQuery"
 										@keydown="updateKeystrokeForAutocomplete"
+										v-on:focusin="toggleAutocomplete(true)"
+										v-on:focusout="toggleAutocomplete(false)"
 									/>
-									<Autocomplete :keystroke="keyStrokeEvent" />
+									<Transition name="fade">
+										<div :class="showAutocomplete ? 'autocomplete-container show' : 'autocomplete-container'">
+											<Autocomplete :keystroke="keyStrokeEvent" />
+										</div>
+									</Transition>
 								</div>
 								<div
 									v-if="searchResultStore.loading"
@@ -156,6 +162,7 @@ export default defineComponent({
 			radio: 'origin:"ds.radio"',
 		};
 
+		const showAutocomplete = ref(false);
 		const searchResultStore = useSearchResultStore();
 		const preliminaryFilter = ref('');
 		const stopAutcomplete = ref(false);
@@ -170,7 +177,7 @@ export default defineComponent({
 					clearTimeout(AutocompleteTimer);
 					if (!stopAutcomplete.value) {
 						if (newStart.length < 2) {
-							searchResultStore.AutocompleteResult = [];
+							searchResultStore.autocompleteResult = [];
 						}
 						if (!searchResultStore.loading) {
 							AutocompleteTimer = setTimeout(() => {
@@ -178,7 +185,7 @@ export default defineComponent({
 							}, 300); // 1000 milliseconds (1 second) delay
 						}
 					} else {
-						searchResultStore.AutocompleteResult = [];
+						searchResultStore.autocompleteResult = [];
 						stopAutcomplete.value = false;
 					}
 				}
@@ -193,6 +200,12 @@ export default defineComponent({
 			if (query !== undefined && query.length >= 2) {
 				searchResultStore.getAutocompleteResults(query);
 			}
+		};
+
+		const toggleAutocomplete = (show: boolean) => {
+			console.log(document.activeElement, 'wat');
+			console.log('autocomplete', show);
+			showAutocomplete.value = show;
 		};
 
 		const getBackgroundImage = () => {
@@ -260,6 +273,8 @@ export default defineComponent({
 			backgroundImage,
 			updateKeystrokeForAutocomplete,
 			keyStrokeEvent,
+			toggleAutocomplete,
+			showAutocomplete,
 		};
 	},
 });
@@ -299,6 +314,20 @@ input[type='search']::-webkit-search-results-decoration {
 	direction: ltr;
 	-webkit-font-feature-settings: 'liga';
 	-webkit-font-smoothing: antialiased;
+}
+
+.autocomplete-container {
+	position: relative;
+	transition: all 0.3s ease-in 0s;
+	visibility: hidden;
+	opacity: 0;
+	z-index: 500z;
+}
+
+.autocomplete-container.show {
+	visibility: visible;
+	opacity: 1;
+	transition: all 0.3s ease-out 0s;
 }
 
 #searchButton,

@@ -6,7 +6,7 @@
 			class="search-container"
 		>
 			<div class="mobile-edge edge"></div>
-			<SearchBarWrapper />
+			<SearchBar />
 		</div>
 		<Transition
 			name="fade"
@@ -50,7 +50,7 @@
 import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
+import SearchBar from '@/components/search/SearchBar.vue';
 import Facets from '@/components/search/Facets.vue';
 import PortalContent from '@/components/common/PortalContent.vue';
 import gsap from 'gsap';
@@ -62,7 +62,7 @@ export default defineComponent({
 	name: 'Search',
 	components: {
 		SearchResults,
-		SearchBarWrapper,
+		SearchBar,
 		Facets,
 		Pagination,
 		SearchOverhead,
@@ -90,7 +90,34 @@ export default defineComponent({
 				const sort = route.query.sort as string;
 				searchResultStore.setStartFromURL(start);
 				searchResultStore.setSortFromURL(sort);
-				searchResultStore.setCurrentQueryFromURL(route.query.q as string);
+				if (route.query.q) {
+					try {
+						const q = new URL(location.href).searchParams.get('q');
+						if (q !== null) {
+							searchResultStore.setCurrentQueryFromURL(q.toString());
+						}
+					} catch (error) {
+						if (error instanceof URIError) {
+							/**
+							 * Specific error: MalformedURI - aka you messsed up the query
+							 * and even worse you did it by manipulating the url directly
+							 * in the URL bar
+							 * */
+							window.dispatchEvent(
+								new CustomEvent('component-error', {
+									detail: { customError: true, message: 'malformeduri', systemError: error.message },
+								}),
+							);
+						} else {
+							// General search error happened here so message to user should be generel
+							window.dispatchEvent(
+								new CustomEvent('component-error', {
+									detail: { customError: true, message: 'searchfailed', systemError: null },
+								}),
+							);
+						}
+					}
+				}
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}

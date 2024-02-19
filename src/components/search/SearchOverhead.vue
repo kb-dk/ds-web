@@ -7,7 +7,7 @@
 						<HitCount
 							:hit-count="searchResultStore.numFound"
 							:no-hits="searchResultStore.noHits"
-							:query="searchResultStore.currentQuery !== undefined ? searchResultStore.currentQuery : ''"
+							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
 						/>
 					</div>
 					<Sort v-if="searchResultStore.searchResult.length > 0" />

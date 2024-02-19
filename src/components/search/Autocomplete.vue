@@ -8,7 +8,7 @@
 		>
 			<li
 				:key="i"
-				v-for="(item, i) in searchResultStore.AutocompleteResult"
+				v-for="(item, i) in searchResultStore.autocompleteResult"
 				role="option"
 				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 			>
@@ -24,6 +24,7 @@
 import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import router from '@/router';
+import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 
 export default defineComponent({
 	name: 'Autocomplete',
@@ -37,7 +38,7 @@ export default defineComponent({
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		const currentSelectedAutocomplete = ref(1);
+		const currentSelectedAutocomplete = ref(0);
 
 		const doAutocompleteSearch = (query: string) => {
 			router.push({ name: 'Home', query: { q: query ? query : searchResultStore.currentQuery, start: 0 } });
@@ -45,9 +46,19 @@ export default defineComponent({
 
 		watch(
 			() => props.keystroke,
-			(newe: KeyboardEvent | null, preve: KeyboardEvent | null) => {
-				if (newe) {
-					keyMovement(newe);
+			(newEvent: KeyboardEvent | null, prevEvent: KeyboardEvent | null) => {
+				if (newEvent) {
+					console.log(newEvent);
+					keyMovement(newEvent);
+				}
+			},
+		);
+
+		watch(
+			() => searchResultStore.autocompleteResult,
+			(newResult: APIAutocompleteTerm[], prevResult: APIAutocompleteTerm[]) => {
+				if (newResult !== prevResult) {
+					currentSelectedAutocomplete.value = 0;
 				}
 			},
 		);
@@ -72,12 +83,12 @@ export default defineComponent({
 			if (currentSelectedAutocomplete.value > 0) {
 				currentSelectedAutocomplete.value--;
 			} else {
-				currentSelectedAutocomplete.value = searchResultStore.AutocompleteResult.length;
+				currentSelectedAutocomplete.value = searchResultStore.autocompleteResult.length;
 			}
 		};
 
 		const moveSelectorDown = () => {
-			if (currentSelectedAutocomplete.value < searchResultStore.AutocompleteResult.length) {
+			if (currentSelectedAutocomplete.value < searchResultStore.autocompleteResult.length) {
 				currentSelectedAutocomplete.value++;
 			} else {
 				currentSelectedAutocomplete.value = 0;
@@ -86,10 +97,9 @@ export default defineComponent({
 
 		const executeOnSelector = (e: Event) => {
 			e.preventDefault();
-
 			doAutocompleteSearch(
 				currentSelectedAutocomplete.value !== 0
-					? searchResultStore.AutocompleteResult[currentSelectedAutocomplete.value].term
+					? searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term
 					: searchResultStore.currentQuery,
 			);
 		};
@@ -179,22 +189,22 @@ export default defineComponent({
 }
 
 .autocomplete ul li:hover,
-#focusSearchInput:focus + .autocomplete .hl {
+.autocomplete .hl {
 	background: #fff6c4;
 }
 
 .autocomplete ul li:hover button,
-#focusSearchInput:focus + .autocomplete .hl button {
+.autocomplete .hl button {
 	color: #002e70;
 	cursor: pointer;
 }
 
 .autocomplete ul li:hover:before,
 .autocomplete ul li:hover + li:before,
-#focusSearchInput:focus + .autocomplete .hl:before,
-#focusSearchInput:focus + .autocomplete .hl + li:before,
-#focusSearchInput:focus + .autocomplete ul li:has(> button:focus):before,
-#focusSearchInput:focus + .autocomplete ul li:has(> button:focus) + li:before {
+.autocomplete .hl:before,
+.autocomplete .hl + li:before,
+.autocomplete ul li:has(> button:focus):before,
+.autocomplete ul li:has(> button:focus) + li:before {
 	padding: 0px 0px;
 	transform: scaleX(120%);
 	z-index: 5;
