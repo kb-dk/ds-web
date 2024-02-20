@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import OpenSeadragon from 'openseadragon';
+//import OpenSeadragon from 'openseadragon';
 
 export default defineComponent({
 	name: 'DeepZoomViewer',
@@ -44,7 +44,7 @@ export default defineComponent({
 		onMounted(() => {
 			if (deepZoom.value !== null) {
 				options.id = deepZoom.value.id;
-				OpenSeadragon(options);
+				//OpenSeadragon(options);
 			}
 		});
 		return { deepZoom };
