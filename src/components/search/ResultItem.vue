@@ -25,19 +25,26 @@
 		</div>
 		<div
 			class="loading container"
-			v-if="searchResultStore.loading"
+			v-show="searchResultStore.loading"
 		>
 			<div class="shimmer"></div>
 			<div class="information">
-				<div class="placeholder-t"></div>
+				<div
+					class="placeholder-t"
+					ref="placeholderTitleRef"
+				></div>
 				<div class="placeholder-w">
-					<span></span>
-					<span></span>
+					<span
+						ref="placeholderSubtitleRefs"
+						v-for="n in 2"
+						:key="n"
+					></span>
 				</div>
 				<div class="placeholder-s">
 					<span
 						v-for="n in 15"
 						:key="n"
+						ref="placeholderSummaryRefs"
 					></span>
 				</div>
 			</div>
@@ -47,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, onMounted, ref } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -64,6 +71,11 @@ export default defineComponent({
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
+
+		const placeholderSummaryRefs = ref<HTMLElement | []>([]);
+		const placeholderSubtitleRefs = ref<HTMLElement | []>([]);
+		const placeholderTitleRef = ref<HTMLElement | null>(null);
+
 		const getImageData = () => {
 			const imageData = {} as ImageComponentType;
 			imageData.imgSrc = props.resultdata?.thumbnail;
@@ -72,7 +84,26 @@ export default defineComponent({
 			imageData.placeholder = props.placeholder;
 			return JSON.stringify(imageData);
 		};
-		return { searchResultStore, getImageData };
+
+		onMounted(() => {
+			//Title
+			if (placeholderTitleRef.value) {
+				placeholderTitleRef.value.style.width = Math.random() * 30 + 30 + '%';
+			}
+			//Subtitle
+			if (Array.isArray(placeholderSubtitleRefs.value)) {
+				placeholderSubtitleRefs.value.forEach((item: HTMLElement) => {
+					item.style.width = Math.random() * 12 + 12 + '%';
+				});
+			}
+			//Summary
+			if (Array.isArray(placeholderSummaryRefs.value)) {
+				placeholderSummaryRefs.value.forEach((item: HTMLElement) => {
+					item.style.width = Math.random() * 10 + 10 + '%';
+				});
+			}
+		});
+		return { searchResultStore, getImageData, placeholderSubtitleRefs, placeholderSummaryRefs, placeholderTitleRef };
 	},
 });
 </script>
