@@ -47,16 +47,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Facets from '@/components/search/Facets.vue';
 import PortalContent from '@/components/common/PortalContent.vue';
+import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'Search',
@@ -78,6 +80,9 @@ export default defineComponent({
 
 		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
+		const { t } = useI18n();
+
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		onMounted(() => {
 			searchResultStore.resetFilters();
@@ -103,18 +108,10 @@ export default defineComponent({
 							 * and even worse you did it by manipulating the url directly
 							 * in the URL bar
 							 * */
-							window.dispatchEvent(
-								new CustomEvent('component-error', {
-									detail: { customError: true, message: 'malformeduri', systemError: error.message },
-								}),
-							);
+							errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
 						} else {
 							// General search error happened here so message to user should be generel
-							window.dispatchEvent(
-								new CustomEvent('component-error', {
-									detail: { customError: true, message: 'searchfailed', systemError: null },
-								}),
-							);
+							errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
 						}
 					}
 				}
