@@ -142,6 +142,7 @@
 import { ref, computed, defineComponent, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
+import { LocationQueryRaw } from 'vue-router';
 import router from '@/router';
 import { useI18n } from 'vue-i18n';
 
@@ -213,33 +214,23 @@ export default defineComponent({
 			setTimeout(() => {
 				debounceMechanic.value = false;
 			}, 500);
+			let query: LocationQueryRaw = {
+				q: searchResultStore.currentQuery,
+				start: 0,
+			};
+
 			if (preliminaryFilter.value.length > 0) {
-				if (searchResultStore.sort !== null) {
-					router.push({
-						name: 'Home',
-						query: { q: searchResultStore.currentQuery, start: 0, fq: preliminaryFilter.value },
-					});
-				} else {
-					router.push({
-						name: 'Home',
-						query: {
-							q: searchResultStore.currentQuery,
-							start: 0,
-							fq: preliminaryFilter.value,
-							sort: searchResultStore.sort,
-						},
-					});
-				}
-			} else {
-				if (searchResultStore.sort !== null) {
-					router.push({ name: 'Home', query: { q: searchResultStore.currentQuery, start: 0 } });
-				} else {
-					router.push({
-						name: 'Home',
-						query: { q: searchResultStore.currentQuery, start: 0, sort: searchResultStore.sort },
-					});
-				}
+				query.fq = preliminaryFilter.value;
 			}
+
+			if (searchResultStore.sort !== null) {
+				query.sort = searchResultStore.sort;
+			}
+
+			router.push({
+				name: 'Home',
+				query: query,
+			});
 		};
 
 		const reset = () => {
