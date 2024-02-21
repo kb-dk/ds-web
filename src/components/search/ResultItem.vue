@@ -93,13 +93,13 @@ export default defineComponent({
 			//Subtitle
 			if (Array.isArray(placeholderSubtitleRefs.value)) {
 				placeholderSubtitleRefs.value.forEach((item: HTMLElement) => {
-					item.style.width = Math.random() * 12 + 12 + '%';
+					item.style.width = Math.random() * 10 + 10 + '%';
 				});
 			}
 			//Summary
 			if (Array.isArray(placeholderSummaryRefs.value)) {
 				placeholderSummaryRefs.value.forEach((item: HTMLElement) => {
-					item.style.width = Math.random() * 10 + 10 + '%';
+					item.style.width = Math.random() * 12 + 12 + '%';
 				});
 			}
 		});
