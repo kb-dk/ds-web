@@ -15,6 +15,7 @@ export interface GenericSearchResultType {
 	date_created: string;
 	description: string;
 	file_size: number;
+	file_id: string;
 	id: string;
 	identifier_local: string;
 	image_height: number;

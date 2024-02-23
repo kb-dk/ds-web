@@ -21,7 +21,9 @@
 				</div>
 				<div class="summary">{{ resultdata.description }}</div>
 			</div>
-			<div class="result-image-wrapper"><kb-imagecomponent :imagedata="getImageData()"></kb-imagecomponent></div>
+			<div class="result-image-wrapper">
+				<kb-imagecomponent :imagedata="imageData"></kb-imagecomponent>
+			</div>
 		</div>
 		<div
 			class="loading container"
@@ -54,10 +56,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref } from 'vue';
+import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
+import { APIService } from '@/api/api-service';
+
 import '@/components/common/wc-image-item';
 
 export default defineComponent({
@@ -71,21 +75,50 @@ export default defineComponent({
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
-
+		//Default imageData obj to prevent render issues
+		const imageData = ref(
+			JSON.stringify({
+				imgSrc: '',
+				altText: '',
+				imgTitle: '',
+				placeholder: undefined,
+			} as ImageComponentType),
+		);
 		const placeholderSummaryRefs = ref<HTMLElement | []>([]);
 		const placeholderSubtitleRefs = ref<HTMLElement | []>([]);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
 
 		const getImageData = () => {
-			const imageData = {} as ImageComponentType;
-			imageData.imgSrc = props.resultdata?.thumbnail;
-			imageData.altText = props.resultdata?.title;
-			imageData.imgTitle = props.resultdata?.title;
-			imageData.placeholder = props.placeholder;
-			return JSON.stringify(imageData);
+			const imageDataObj = {} as ImageComponentType;
+			imageDataObj.altText = props.resultdata?.title;
+			imageDataObj.imgTitle = props.resultdata?.title;
+
+			if (props.resultdata?.file_id) {
+				//TODO: remember to handle service error
+				APIService.getThumbnail(props.resultdata.file_id).then((thumbServiceResponse) => {
+					imageDataObj.imgSrc = thumbServiceResponse.data.default;
+					imageDataObj.placeholder = undefined;
+					imageData.value = JSON.stringify(imageDataObj);
+				});
+			} else {
+				imageDataObj.imgSrc = undefined;
+				imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+				imageData.value = JSON.stringify(imageDataObj);
+			}
 		};
 
+		//We need to watch the search result to trigger re-render of thumbmails
+		watch(
+			() => props.resultdata,
+			(newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					getImageData();
+				}
+			},
+		);
+
 		onMounted(() => {
+			getImageData();
 			//Title
 			if (placeholderTitleRef.value) {
 				placeholderTitleRef.value.style.width = Math.random() * 30 + 30 + '%';
@@ -103,7 +136,13 @@ export default defineComponent({
 				});
 			}
 		});
-		return { searchResultStore, getImageData, placeholderSubtitleRefs, placeholderSummaryRefs, placeholderTitleRef };
+		return {
+			searchResultStore,
+			imageData,
+			placeholderSubtitleRefs,
+			placeholderSummaryRefs,
+			placeholderTitleRef,
+		};
 	},
 });
 </script>

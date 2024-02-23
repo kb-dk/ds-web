@@ -42,6 +42,11 @@ module.exports = {
 				pathRewrite: { '^/ds-api/suggest/': '' },
 				changeOrigin: true,
 			},
+			'^/ds-api/thumbnails/': {
+				target: process.env.DEVEL_API_THUMBNAILS,
+				pathRewrite: { '^/ds-api/thumbnails/': '' },
+				changeOrigin: true,
+			},
 		},
 	},
 };
