@@ -4,6 +4,7 @@ import {
 	APIRecordResponseType,
 	APIMoreLikeThisResponseType,
 	APIAutocompleteResponseType,
+	APIThumbnailsResponseType,
 } from '@/types/APIResponseTypes';
 
 export function sleep(random?: boolean): Promise<void> {
@@ -35,7 +36,8 @@ export class APIServiceClient {
 					const noDelayRequest =
 						response.config.url?.includes('suggest.dictionary=dr_title_suggest') ||
 						response.config.url?.includes('record') ||
-						response.config.url?.includes('mlt');
+						response.config.url?.includes('mlt') ||
+						response.config.url?.includes('thumbnails');
 					if (!noDelayRequest) {
 						await sleep(true);
 					}
@@ -98,5 +100,9 @@ export class APIServiceClient {
 	async getMoreLikeThisRecords(id: string): Promise<APIMoreLikeThisResponseType> {
 		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		return await this.httpClient.get(encodeURI(`mlt/?q=id:"${id}"&mlt.interestingTerms=list&rows=3`));
+	}
+
+	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
+		return await this.httpClient.get(`thumbnails/?fileId=${id}&width=200&height=105`);
 	}
 }
