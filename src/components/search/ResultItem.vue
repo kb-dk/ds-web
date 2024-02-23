@@ -94,12 +94,18 @@ export default defineComponent({
 			imageDataObj.imgTitle = props.resultdata?.title;
 
 			if (props.resultdata?.file_id) {
-				//TODO: remember to handle service error
-				APIService.getThumbnail(props.resultdata.file_id).then((thumbServiceResponse) => {
-					imageDataObj.imgSrc = thumbServiceResponse.data.default;
-					imageDataObj.placeholder = undefined;
-					imageData.value = JSON.stringify(imageDataObj);
-				});
+				APIService.getThumbnail(props.resultdata.file_id)
+					.then((thumbServiceResponse) => {
+						imageDataObj.imgSrc = thumbServiceResponse.data.default;
+						imageDataObj.placeholder = undefined;
+						imageData.value = JSON.stringify(imageDataObj);
+					})
+					//Just in case the service fail - we fail silently and swoop in with the placeholder
+					.catch(() => {
+						imageDataObj.imgSrc = undefined;
+						imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+						imageData.value = JSON.stringify(imageDataObj);
+					});
 			} else {
 				imageDataObj.imgSrc = undefined;
 				imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
