@@ -191,7 +191,7 @@ export default defineComponent({
 		);
 
 		const updateKeystrokeForAutocomplete = (e: KeyboardEvent) => {
-			keyStrokeEvent.value = e as KeyboardEvent;
+			keyStrokeEvent.value = e;
 		};
 
 		const getAutocompleteResponse = (query: string) => {
@@ -200,11 +200,8 @@ export default defineComponent({
 			}
 		};
 
-		const getBackgroundImage = () => {
-			return require('@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg');
-		};
 		const backgroundImage = computed(() => {
-			return getBackgroundImage();
+			return require('@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg');
 		});
 
 		const search = () => {

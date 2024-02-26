@@ -46,7 +46,7 @@ export default defineComponent({
 
 		watch(
 			() => props.keystroke,
-			(newEvent: KeyboardEvent | null, prevEvent: KeyboardEvent | null) => {
+			(newEvent: KeyboardEvent | null) => {
 				if (newEvent) {
 					console.log(newEvent);
 					keyMovement(newEvent);
