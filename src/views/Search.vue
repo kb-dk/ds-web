@@ -6,7 +6,7 @@
 			class="search-container"
 		>
 			<div class="mobile-edge edge"></div>
-			<SearchBarWrapper />
+			<SearchBar />
 		</div>
 		<Transition
 			name="fade"
@@ -47,22 +47,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBarWrapper from '@/components/search/SearchBarWrapper.vue';
+import SearchBar from '@/components/search/SearchBar.vue';
 import Facets from '@/components/search/Facets.vue';
 import PortalContent from '@/components/common/PortalContent.vue';
+import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'Search',
 	components: {
 		SearchResults,
-		SearchBarWrapper,
+		SearchBar,
 		Facets,
 		Pagination,
 		SearchOverhead,
@@ -78,6 +80,9 @@ export default defineComponent({
 
 		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
+		const { t } = useI18n();
+
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		onMounted(() => {
 			searchResultStore.resetFilters();
@@ -90,6 +95,26 @@ export default defineComponent({
 				const sort = route.query.sort as string;
 				searchResultStore.setStartFromURL(start);
 				searchResultStore.setSortFromURL(sort);
+				if (route.query.q) {
+					try {
+						const q = new URL(location.href).searchParams.get('q');
+						if (q !== null) {
+							searchResultStore.setCurrentQueryFromURL(q.toString());
+						}
+					} catch (error) {
+						if (error instanceof URIError) {
+							/**
+							 * Specific error: MalformedURI - aka you messsed up the query
+							 * and even worse you did it by manipulating the url directly
+							 * in the URL bar
+							 * */
+							errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
+						} else {
+							// General search error happened here so message to user should be generel
+							errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
+						}
+					}
+				}
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
@@ -125,6 +150,7 @@ export default defineComponent({
 					}
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
+					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.getSearchResults(route.query.q as string);
 				}
 				if (route.query.q === undefined) {
@@ -208,7 +234,6 @@ h3 {
 
 .search-box {
 	max-width: 100%;
-	overflow: hidden;
 }
 .search-container {
 	width: 100vw;

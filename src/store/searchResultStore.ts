@@ -16,7 +16,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const spellCheck = ref({} as unknown as SpellCheckType);
 	const facetResult = ref(Object as unknown as FacetResultType);
-	const AutocompleteResult = ref([] as Array<APIAutocompleteTerm>);
+	const autocompleteResult = ref([] as Array<APIAutocompleteTerm>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const searchFired = ref(false);
 	const { t } = useI18n();
@@ -26,6 +26,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const sort = ref('');
 	const error = ref('');
 	const currentQuery = ref('');
+	const lastSearchQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const showFacets = ref(true);
@@ -61,6 +62,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const setCurrentQueryFromURL = (URLQuery: string | undefined) => {
+		if (URLQuery) {
+			currentQuery.value = URLQuery;
+		}
+	};
+
 	const setSortFromURL = (URLSort: string | undefined) => {
 		if (URLSort) {
 			sort.value = URLSort;
@@ -92,6 +99,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSpellCheck();
 		currentQuery.value = '';
 		searchFired.value = false;
+		loading.value = false;
+		console.log('reset search');
 	};
 
 	const resetResults = () => {
@@ -104,7 +113,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const resetAutocomplete = () => {
-		AutocompleteResult.value = [];
+		autocompleteResult.value = [];
 	};
 
 	const removeFilter = (filter: string) => {
@@ -113,8 +122,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const getAutocompleteResults = async (query: string) => {
 		const autocompleteReponse = await APIService.getAutocomplete(query);
-		const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
-		AutocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
+		if (!loading.value) {
+			const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
+			autocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
+		}
 	};
 
 	const responseMatchesCurrentSearch = (uuid: string): boolean => {
@@ -122,6 +133,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		lastSearchQuery.value = query;
 		resetAutocomplete();
 		let searchFilters = '';
 		if (filters.value.length > 0) {
@@ -160,7 +172,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
-			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
+			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
 				currentQuery.value = query;
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
@@ -184,12 +196,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	return {
 		searchResult,
 		facetResult,
-		AutocompleteResult,
+		autocompleteResult,
 		errorManager,
 		numFound,
 		loading,
 		error,
 		currentQuery,
+		lastSearchQuery,
 		noHits,
 		filters,
 		searchFired,
@@ -204,6 +217,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSearch,
 		setFiltersFromURL,
 		setStartFromURL,
+		setCurrentQueryFromURL,
 		resetStart,
 		setSortFromURL,
 		resetSort,

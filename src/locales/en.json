@@ -17,7 +17,12 @@
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
-     "didYouMeanCount": "({spellCheckHits} results)"
+     "didYouMeanCount": "({spellCheckHits} results)",
+     "searchInput":"search in KB",
+     "searchHere":"search here",
+     "tv":"TV",
+     "radio":"Radio",
+     "all":"All"
   },
   "record":{
      "duration":"Duration",
