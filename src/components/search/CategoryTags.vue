@@ -14,6 +14,7 @@
 					>
 						<router-link
 							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
+							:title="categoryFacets[index]?.title"
 							:to="{
 								name: 'Home',
 								query: {
@@ -149,6 +150,7 @@ h2 {
 .category-tags {
 	flex-wrap: wrap;
 	margin-top: 20px;
+	display: flex;
 }
 
 .category-tags .tag {

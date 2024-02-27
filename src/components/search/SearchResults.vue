@@ -1,20 +1,25 @@
 <template>
-	<Transition name="fade">
-		<div>
-			<div
-				class="hit-box"
-				v-for="(res, index) in searchResults"
-				:key="index"
-			>
-				<ResultItem
-					:resultdata="res"
-					:duration="getDuration(res)"
-					:starttime="getStartTime(res)"
-					:placeholder="getPlaceholderImage()"
-				></ResultItem>
+	<div
+		ref="resultContainer"
+		class="search-results fullwidth"
+	>
+		<Transition name="fade">
+			<div>
+				<div
+					class="hit-box"
+					v-for="(res, index) in searchResults"
+					:key="index"
+				>
+					<ResultItem
+						:resultdata="res"
+						:duration="getDuration(res)"
+						:starttime="getStartTime(res)"
+						:placeholder="getPlaceholderImage()"
+					></ResultItem>
+				</div>
 			</div>
-		</div>
-	</Transition>
+		</Transition>
+	</div>
 </template>
 
 <script lang="ts">
@@ -42,6 +47,7 @@ export default defineComponent({
 		const resultNr = ref(10);
 		const lastUpdate = ref(0);
 		const searchResultStore = useSearchResultStore();
+		const resultContainer = ref<HTMLElement | null>(null);
 
 		const getDuration = (resultItem: GenericSearchResultType) => {
 			return resultItem
@@ -61,6 +67,21 @@ export default defineComponent({
 		};
 		const getAltTxt = () => {
 			return 'license';
+		};
+
+		watch(
+			() => searchResultStore.showFacets,
+			() => {
+				toggleFacets();
+			},
+		);
+
+		const toggleFacets = () => {
+			if (searchResultStore.showFacets) {
+				resultContainer.value?.classList.add('fullwidth');
+			} else {
+				resultContainer.value?.classList.remove('fullwidth');
+			}
 		};
 
 		onMounted(() => {
@@ -89,6 +110,7 @@ export default defineComponent({
 			getDuration,
 			getStartTime,
 			getAltTxt,
+			resultContainer,
 			currentResults,
 			lastUpdate,
 			t,
@@ -105,5 +127,28 @@ export default defineComponent({
 	padding: 0 0 10px 0;
 	box-sizing: border-box;
 	width: 100%;
+}
+
+.search-results {
+	position: relative;
+	max-width: 100%;
+	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+}
+
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.fullwidth {
+		max-width: calc(100%);
+	}
+}
+@media (min-width: 800px) {
+	.search-results {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.fullwidth {
+		max-width: calc(100% - 330px);
+	}
 }
 </style>
