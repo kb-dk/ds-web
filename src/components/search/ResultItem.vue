@@ -1,55 +1,60 @@
 <template>
 	<div class="result-item-wrapper">
-		<div
-			class="container"
-			v-if="!searchResultStore.loading && resultdata"
+		<Transition
+			name="fade"
+			mode="out-in"
 		>
-			<div class="information">
-				<router-link
-					:to="{ path: 'record/' + resultdata.id }"
-					class="title"
-					role="link"
-				>
-					{{ resultdata.title[0] }}
-				</router-link>
-				<div class="subtitle">
-					<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
-					<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
-					<span class="when">{{ starttime }}</span>
-					<span class="material-icons icons schedule">schedule</span>
-					<span class="duration">{{ duration }}</span>
+			<div
+				class="container"
+				v-if="!searchResultStore.loading && resultdata"
+			>
+				<div class="information">
+					<router-link
+						:to="{ path: 'record/' + resultdata.id }"
+						class="title"
+						role="link"
+					>
+						{{ resultdata.title[0] }}
+					</router-link>
+					<div class="subtitle">
+						<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
+						<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
+						<span class="when">{{ starttime }}</span>
+						<span class="material-icons icons schedule">schedule</span>
+						<span class="duration">{{ duration }}</span>
+					</div>
+					<div class="summary">{{ resultdata.description }}</div>
 				</div>
-				<div class="summary">{{ resultdata.description }}</div>
+				<div class="result-image-wrapper"><kb-imagecomponent :imagedata="getImageData()"></kb-imagecomponent></div>
 			</div>
-			<div class="result-image-wrapper"><kb-imagecomponent :imagedata="getImageData()"></kb-imagecomponent></div>
-		</div>
-		<div
-			class="loading container"
-			v-show="searchResultStore.loading"
-		>
-			<div class="shimmer"></div>
-			<div class="information">
-				<div
-					class="placeholder-t"
-					ref="placeholderTitleRef"
-				></div>
-				<div class="placeholder-w">
-					<span
-						ref="placeholderSubtitleRefs"
-						v-for="n in 2"
-						:key="n"
-					></span>
+			<div
+				class="loading container"
+				v-else
+			>
+				<div class="shimmer"></div>
+				<div class="information">
+					<div
+						class="placeholder-t"
+						ref="placeholderTitleRef"
+					></div>
+					<div class="placeholder-w">
+						<span
+							ref="placeholderSubtitleRefs"
+							v-for="n in 2"
+							:key="n"
+						></span>
+					</div>
+					<div class="placeholder-s">
+						<span
+							v-for="n in 15"
+							:key="n"
+							ref="placeholderSummaryRefs"
+						></span>
+					</div>
 				</div>
-				<div class="placeholder-s">
-					<span
-						v-for="n in 15"
-						:key="n"
-						ref="placeholderSummaryRefs"
-					></span>
-				</div>
+				<div class="result-image-wrapper skeleton"></div>
 			</div>
-			<div class="result-image-wrapper skeleton"></div>
-		</div>
+		</Transition>
 	</div>
 </template>
 

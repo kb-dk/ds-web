@@ -24,13 +24,12 @@
 								v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
 								:key="index + 'facet'"
 							>
-								<kb-checkboxcomponent
+								<Checkbox
 									:fqkey="'creator_affiliation'"
 									:title="channelFacets[index]?.title"
-									:number="channelFacets[index]?.number"
-									:value="filterExists('creator_affiliation', channelFacets[index]?.title)"
-									:inslide="index"
-									:content="!searchResultStore.loading"
+									:amount="channelFacets[index]?.number.toString()"
+									:checked="filterExists('creator_affiliation', channelFacets[index]?.title)"
+									:loading="searchResultStore.loading"
 								/>
 							</div>
 						</div>
@@ -46,12 +45,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref, onUnmounted, watch } from 'vue';
+import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import CategoryTags from '@/components/search/CategoryTags.vue';
-import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
+import Checkbox from '@/components/search/Checkbox.vue';
+import { filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 
@@ -61,6 +61,7 @@ export default defineComponent({
 	name: 'Facets',
 	components: {
 		CategoryTags,
+		Checkbox,
 	},
 
 	props: {
@@ -80,7 +81,6 @@ export default defineComponent({
 
 		const lastUpdate = ref(0);
 		const route = useRoute();
-		const router = useRouter();
 
 		const { t } = useI18n();
 
@@ -93,7 +93,6 @@ export default defineComponent({
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
 			showFacets.value = true;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 25;
-			window.addEventListener('filter-update', filterUpdateHelper);
 
 			watch(
 				() => props.facetResults,
@@ -116,16 +115,6 @@ export default defineComponent({
 			);
 		});
 
-		onUnmounted(() => {
-			window.removeEventListener('filter-update', filterUpdateHelper);
-		});
-
-		const updateFilters = (e: CustomEvent) => {
-			const routeQueries = e.detail.add ? addFilter(route, e.detail.filter) : removeFilter(route, e.detail.filter);
-			routeQueries.start = 0;
-			router.push({ query: routeQueries });
-		};
-
 		watch(
 			() => searchResultStore.showFacets,
 			() => {
@@ -146,26 +135,17 @@ export default defineComponent({
 			}
 		};
 
-		const filterUpdateHelper = (e: Event) => {
-			updateFilters(e as CustomEvent);
-			window.innerWidth < 800 ? searchResultStore.toggleShowFacets(false) : null;
-		};
-
 		return {
 			showFacets,
 			currentFacets,
 			lastUpdate,
 			searchResultStore,
 			filterExists,
-			updateFilters,
 			simplifyFacets,
 			currentFacetNr,
 			channelFacets,
 			categoryFacets,
 			categoryNr,
-			createFilter,
-			addFilter,
-			removeFilter,
 			route,
 			toggleFacets,
 			facetsContainer,
