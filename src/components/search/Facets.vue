@@ -55,8 +55,6 @@ import { filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 
-import '@/components/search/wc-facet-checkbox';
-
 export default defineComponent({
 	name: 'Facets',
 	components: {
