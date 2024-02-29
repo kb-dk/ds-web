@@ -8,7 +8,11 @@
 			>
 				<div>
 					<div
-						:class="filterExists('categories', categoryFacets[index]?.title) ? 'tag active' : 'tag'"
+						:class="
+							filterExists('categories', categoryFacets[index]?.title) && !searchResultStore.loading
+								? 'tag active'
+								: 'tag'
+						"
 						v-for="(singleCategory, index) in currentCategoryNr as unknown as FacetPair[]"
 						:key="index + 'category'"
 					>
@@ -21,8 +25,8 @@
 									q: searchResultStore.currentQuery,
 									start: 0,
 									fq: filterExists('categories', categoryFacets[index]?.title)
-										? removeFilter(route, createFilter(categoryFacets[index]?.title)).fq
-										: addFilter(route, createFilter(categoryFacets[index]?.title)).fq,
+										? removeFilter(route, createTagFilter(categoryFacets[index]?.title)).fq
+										: addFilter(route, createTagFilter(categoryFacets[index]?.title)).fq,
 								},
 							}"
 						>
@@ -53,10 +57,8 @@ import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
 import { FacetPair } from '@/types/GenericRecordTypes';
-import { createFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
+import { createTagFilter, addFilter, removeFilter, filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { useI18n } from 'vue-i18n';
-
-import '@/components/search/wc-facet-checkbox';
 
 export default defineComponent({
 	name: 'CategoryTags',
@@ -98,7 +100,7 @@ export default defineComponent({
 			simplifyFacets,
 			currentCategoryNr,
 			categoryFacets,
-			createFilter,
+			createTagFilter,
 			addFilter,
 			removeFilter,
 			route,

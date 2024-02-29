@@ -2,8 +2,12 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetPair } from '@/types/GenericRecordTypes';
 
-const createFilter = (key: string) => {
+const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
+};
+
+const createAffiliationFilter = (key: string) => {
+	return `${'creator_affiliation:"' + key + '"'}`;
 };
 
 const filterExists = (key: string, title: string) => {
@@ -75,4 +79,4 @@ const simplifyFacets = (facet: Array<string>): FacetPair[] => {
 	return allPairedFacets;
 };
 
-export { createFilter, filterExists, addFilter, removeFilter, simplifyFacets };
+export { createTagFilter, createAffiliationFilter, filterExists, addFilter, removeFilter, simplifyFacets };
