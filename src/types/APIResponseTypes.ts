@@ -69,6 +69,10 @@ export interface APIMoreLikeThisResponseType {
 	};
 }
 
+export interface APIThumbnailsResponseType {
+	data: { default: string; sprite: string; thumbnails: string[] };
+}
+
 export interface APIResponseHeaderType {
 	QTime: number;
 	status: number;
