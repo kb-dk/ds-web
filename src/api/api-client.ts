@@ -32,7 +32,7 @@ export class APIServiceClient {
 		httpClient.interceptors.response.use(
 			async (response: AxiosResponse) => {
 				// add artificial delay for dev env
-				if (process.env.NODE_ENV === 'development') {
+				if (import.meta.env.NODE_ENV === 'development') {
 					const noDelayRequest =
 						response.config.url?.includes('suggest.dictionary=dr_title_suggest') ||
 						response.config.url?.includes('record') ||

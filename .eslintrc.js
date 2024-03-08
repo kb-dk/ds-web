@@ -2,6 +2,7 @@ module.exports = {
 	root: true,
 	env: {
 		node: true,
+		es2022: true,
 	},
 	extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/typescript/recommended'],
 	plugins: ['prettier'],
@@ -21,6 +22,12 @@ module.exports = {
 			files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
 			env: {
 				jest: true,
+			},
+		},
+		{
+			files: '*.html',
+			options: {
+				parser: 'html',
 			},
 		},
 		{

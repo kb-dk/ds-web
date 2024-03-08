@@ -109,12 +109,12 @@ export default defineComponent({
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
 						imageDataObj.imgSrc = undefined;
-						imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+						imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 						imageData.value = JSON.stringify(imageDataObj);
 					});
 			} else {
 				imageDataObj.imgSrc = undefined;
-				imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+				imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 				imageData.value = JSON.stringify(imageDataObj);
 			}
 		};
