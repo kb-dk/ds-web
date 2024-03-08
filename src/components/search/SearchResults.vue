@@ -63,7 +63,7 @@ export default defineComponent({
 		};
 
 		const getPlaceholderImage = () => {
-			return require('@/assets/images/No-Image-Placeholder.svg.png');
+			return new URL(`@/assets/images/No-Image-Placeholder.svg.png`, import.meta.url).href; 
 		};
 		const getAltTxt = () => {
 			return 'license';

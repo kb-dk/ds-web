@@ -7,10 +7,11 @@
     "node": "20.10.0"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "test:lh": "dotenv -e .env.local cross-var lighthouse %LIGHTHOUSE_TARGET_URL% -- --view",
     "test:full": "vue-cli-service test:unit && dotenv -e .env.local cross-var lighthouse %LIGHTHOUSE_TARGET_URL% -- --view"
   },
@@ -30,13 +31,7 @@
     "@types/openseadragon": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "@vue/cli-plugin-babel": "^5.0.8",
-    "@vue/cli-plugin-eslint": "^5.0.8",
-    "@vue/cli-plugin-router": "~5.0.8",
-    "@vue/cli-plugin-typescript": "^5.0.8",
-    "@vue/cli-plugin-unit-jest": "^5.0.8",
-    "@vue/cli-service": "^5.0.8",
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vitejs/plugin-vue": "5.0.4",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
     "@vue/test-utils": "^2.0.0-0",
@@ -48,9 +43,10 @@
     "eslint-plugin-vue": "^8.0.1",
     "lighthouse": "^11.5.0",
     "prettier": "^3.0.0",
+    "rollup-plugin-postcss-lit": "^2.1.0",
     "sass": "^1.54.0",
-    "sass-loader": "^13.0.2",
     "ts-jest": "^27.0.4",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "vite": "5.1.5"
   }
 }

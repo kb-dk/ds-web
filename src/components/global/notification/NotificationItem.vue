@@ -29,7 +29,6 @@
 import { defineComponent } from 'vue';
 import { gsap } from 'gsap';
 import { useI18n } from 'vue-i18n';
-import GSAPTween from 'gsap';
 
 export default defineComponent({
 	name: 'NotificationItem',

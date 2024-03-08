@@ -25,6 +25,9 @@ import type { MediaPlayerElement } from 'vidstack/elements';
 import 'vidstack/player';
 import 'vidstack/player/layouts';
 import 'vidstack/player/ui';
+import 'vidstack/player/styles/default/theme.css';
+import 'vidstack/player/styles/default/layouts/audio.css';
+
 
 export default defineComponent({
 	name: 'AudioPlayer',
@@ -53,8 +56,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import 'vidstack/player/styles/default/theme.css';
-@import 'vidstack/player/styles/default/layouts/audio.css';
 
 .audio-player {
 	background-color: black;
