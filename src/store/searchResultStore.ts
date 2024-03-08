@@ -30,6 +30,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const showFacets = ref(true);
+	const blockAutocomplete = ref(false);
 
 	const toggleShowFacets = (value: boolean) => {
 		showFacets.value = value;
@@ -120,12 +121,17 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
 	};
 
-	const getAutocompleteResults = async (query: string) => {
-		const autocompleteReponse = await APIService.getAutocomplete(query);
-		if (!loading.value) {
-			const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
-			autocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
-		}
+	const setBlockAutocomplete = (state: boolean) => {
+		blockAutocomplete.value = state;
+	};
+
+	const getAutocompleteResults = (query: string) => {
+		APIService.getAutocomplete(query).then((autocompleteReponse) => {
+			if (!blockAutocomplete.value) {
+				const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
+				autocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
+			}
+		});
 	};
 
 	const responseMatchesCurrentSearch = (uuid: string): boolean => {
@@ -133,6 +139,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 		resetAutocomplete();
 		let searchFilters = '';
@@ -210,6 +217,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		sort,
 		showFacets,
 		spellCheck,
+		blockAutocomplete,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -225,5 +233,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		toggleShowFacets,
 		getAutocompleteResults,
 		resetAutocomplete,
+		setBlockAutocomplete,
 	};
 });

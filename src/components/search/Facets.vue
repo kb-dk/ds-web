@@ -13,27 +13,22 @@
 
 			<div class="facet-container">
 				<div>
-					<Transition
-						name="fade"
-						mode="out-in"
-					>
-						<div>
-							<h2 class="headline">{{ t('search.channels') }}</h2>
-							<div
-								class="checkbox"
-								v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
-								:key="index + 'facet'"
-							>
-								<Checkbox
-									:fqkey="'creator_affiliation'"
-									:title="channelFacets[index]?.title"
-									:amount="channelFacets[index]?.number.toString()"
-									:checked="filterExists('creator_affiliation', channelFacets[index]?.title)"
-									:loading="searchResultStore.loading"
-								/>
-							</div>
+					<h2 class="headline">{{ t('search.channels') }}</h2>
+					<TransitionGroup name="result">
+						<div
+							class="checkbox"
+							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
+							:key="index + 'facet'"
+						>
+							<Checkbox
+								:fqkey="'creator_affiliation'"
+								:title="channelFacets[index]?.title"
+								:amount="channelFacets[index]?.number.toString()"
+								:checked="filterExists('creator_affiliation', channelFacets[index]?.title)"
+								:loading="searchResultStore.loading"
+							/>
 						</div>
-					</Transition>
+					</TransitionGroup>
 					<CategoryTags
 						:categories="categoryFacets"
 						:category-nr="categoryNr"
@@ -90,7 +85,7 @@ export default defineComponent({
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
 			showFacets.value = true;
-			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 25;
+			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
 
 			watch(
 				() => props.facetResults,
@@ -160,6 +155,7 @@ export default defineComponent({
 	transition: all 1.3s linear;
 	height: auto;
 	flex-direction: column;
+	overflow: hidden;
 }
 
 .search-facets.active {
@@ -204,7 +200,7 @@ h2 {
 	left: 0px;
 	z-index: 5;
 	background-color: white;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 100vh;
 	visibility: hidden;
 	pointer-events: none;

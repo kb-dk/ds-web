@@ -77,6 +77,7 @@ export default defineComponent({
 	line-height: 24px;
 	cursor: pointer;
 	padding: 0;
+	margin: 10px 0px;
 }
 
 .filter-button .material-icons {

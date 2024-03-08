@@ -1,6 +1,6 @@
 <template>
 	<Transition
-		name="fade"
+		name="result"
 		mode="out-in"
 	>
 		<div>
