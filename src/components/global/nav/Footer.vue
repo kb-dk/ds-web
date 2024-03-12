@@ -1,127 +1,70 @@
 <template>
 	<footer class="global-footer">
-		<nav class="container">
+		<nav v-if="currentLocaleMessages !== undefined" class="container">
 			<div class="row">
 				<div class="column">
-					<h2>Genveje</h2>
+					<h2>{{ currentLocaleMessages.column1.title }}</h2>
 					<ul>
 						<li
-							v-for="(link, index) in t('footer.column1.links')"
+							v-for="(link, index) in currentLocaleMessages.column1.links"
 							:key="index"
 						>
-							HEJ, {{ link }}
+							<a :href="link.link">{{ link.title }}</a>
 						</li>
 					</ul>
 				</div>
 				<div class="column">
-					<h2>Brug os</h2>
+					<h2>{{ currentLocaleMessages.column2.title }}</h2>
+
 					<ul>
-						<li><a href="#">For biblioteker</a></li>
-						<li><a href="#">Møder og konferencer</a></li>
-						<li><a href="#">Det Administrative Bibliotek</a></li>
-						<li><a href="#">Pligtaflevering</a></li>
-						<li><a href="#">For skoler</a></li>
+						<li
+							v-for="(link, index) in currentLocaleMessages.column2.links"
+							:key="index"
+						>
+							<a :href="link.link">{{ link.title }}</a>
+						</li>
 					</ul>
 				</div>
 				<div class="column">
-					<h2>Information</h2>
+					<h2>{{ currentLocaleMessages.column3.title }}</h2>
 					<ul>
-						<li><a href="#">Spørg biblioteket</a></li>
-						<li><a href="#">ledige stillinger</a></li>
-						<li><a href="#">Presse</a></li>
-						<li><a href="#">Privatlivs- og persondatapolitik</a></li>
-						<li><a href="#">Tilgængelighedserklæring</a></li>
-						<li><a href="#">Reglementer</a></li>
-						<li><a href="#">Driftsstatus</a></li>
+						<li
+							v-for="(link, index) in currentLocaleMessages.column3.links"
+							:key="index"
+						>
+							<a :href="link.link">{{ link.title }}</a>
+						</li>
 					</ul>
 				</div>
 
 				<div class="column">
-					<div
-						id="header-814861072"
-						class="rdl-logo rdl-logo-inverted"
-					>
-						<span class="sr-only">Kontaktinformationer</span>
-					</div>
-					<div aria-label="">
-						<p>
-							Tel:
-							<a href="tel:">(+45) 3347 4747</a>
-						</p>
-					</div>
-					<div aria-label="E-post adresse">
-						<p><a href="mailto:kb@kb.dk">kb@kb.dk</a></p>
-					</div>
-					<div aria-label="EAN nummer">
-						<p>EAN: 5798000795297</p>
-					</div>
-					<div
-						class="some-icons"
-						aria-label="Sociale mediekanaler"
-					>
-						<a
-							href="#"
-							title="facebook"
-							class="rdl-some-link"
+					<div class="rdl-logo rdl-logo-inverted">
+				<span class="sr-only">{{ t('footer.contactInfo') }}</span>
+			</div>
+				<ul>
+					<li
+							v-for="(link, index) in currentLocaleMessages.column4.links"
+							:key="index"
 						>
-							<i
-								class="rdl-icons"
-								aria-hidden="true"
-							>
-								rdl_facebook
-							</i>
-							<span class="sr-only"></span>
-						</a>
+						<a v-if="link.link":href="link.link">{{ link.title }}</a>
+						<span v-else>{{ link.title }}</span>
+					</li>
+				</ul>
+				<div class="some-icons">
+					<ul>
+						<li><a class="rdl-some-link" :href="t('some.facebook.link')"><i class="rdl-icons">rdl_facebook</i><span class="sr-only">{{ t('some.facebook.title') }}</span></a></li>
+						<li><a class="rdl-some-link" :href="t('some.instagram.link')"><i class="rdl-icons">rdl_instagram</i><span class="sr-only">{{ t('some.instagram.title') }}</span></a></li>
+						<li><a class="rdl-some-link" :href="t('some.linkedin.link')"><i class="rdl-icons">rdl_linkedin</i><span class="sr-only">{{ t('some.linkedin.title') }}</span></a></li>
+					</ul>
+			</div>
 
-						<a
-							href="#"
-							title="twitter"
-							class="rdl-some-link"
-						>
-							<i
-								class="rdl-icons"
-								aria-hidden="true"
-							>
-								rdl_twitter
-							</i>
-							<span class="sr-only"></span>
-						</a>
-
-						<a
-							href="#"
-							title="linkedIn"
-							class="rdl-some-link"
-						>
-							<i
-								class="rdl-icons"
-								aria-hidden="true"
-							>
-								rdl_linkedin
-							</i>
-							<span class="sr-only"></span>
-						</a>
-
-						<a
-							href="#"
-							title="Instagram"
-							class="rdl-some-link"
-						>
-							<i
-								class="rdl-icons"
-								aria-hidden="true"
-							>
-								rdl_instagram
-							</i>
-							<span class="sr-only"></span>
-						</a>
-					</div>
-				</div>
+			</div>
 			</div>
 		</nav>
 	</footer>
 </template>
 <script lang="ts">
-import { defineComponent, toRaw } from 'vue';
+import { defineComponent, toRaw, watch, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 interface Footer {
@@ -140,13 +83,22 @@ export default defineComponent({
 	name: 'Footer',
 	setup() {
 		const { t, messages, locale } = useI18n();
+		const currentLocaleMessages = ref(undefined as unknown as Footer);
 
-		// Type assertion to specify the type of currentLocaleMessages
-		const currentLocaleMessages: Footer = messages.value[locale.value].footer as Footer;
+		onMounted(() => {
+			currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as Footer;
+		});
 
-		console.log(toRaw(currentLocaleMessages));
+		watch(
+			() => locale.value,
+				(newLocale: string, prevLocale: string) => {
+				if (newLocale !== prevLocale) {
+					currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as Footer;
+				}
+			},
+		);
 
-		return { t };
+		return { t, currentLocaleMessages };
 	},
 });
 </script>
@@ -183,6 +135,14 @@ export default defineComponent({
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+.some-icons li {
+	display: inline-block;
+}
+
+.column a:hover {
+	text-decoration: underline;
 }
 
 .rdl-logo-inverted {
@@ -243,8 +203,8 @@ a {
 	padding-right: 12px;
 	position: relative;
 	box-sizing: border-box;
-	flex: 0 0 50%;
-	max-width: 50%;
+	flex: 0 0 100%;
+	max-width: 100%;
 	padding-bottom: 48px;
 }
 
@@ -259,6 +219,10 @@ a {
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
+	}
+	.column {
+		flex: 0 0 50%;
+		max-width: 50%;
 	}
 }
 /* MEDIA QUERY 640 */

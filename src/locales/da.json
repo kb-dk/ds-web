@@ -48,6 +48,7 @@
       "close":"Luk"
   },
   "footer": {
+    "contactInfo":"Kontaktinformationer",
     "column1": {
        "title": "Genveje",
        "links": {
@@ -136,30 +137,43 @@
        }
     },
     "column4": {
-       "links": {
-          "1": {
-             "title": "Spørg biblioteket",
-             "link": "https://www.kb.dk/spoerg-biblioteket"
-          },
-          "2": {
-             "title": "kb@kb.dk",
-             "link": "kb@kb.dk"
-          },
-          "3": {
-             "title": "Tel: (+45) 3346 4747",
-             "link": ""
-          },
-          "4": {
-             "title": "Pressekontakt",
-             "link": "https://www.kb.dk/om-os/presse"
-          },
-          "5": {
-             "title": "EAN: 5798000795297",
-             "link": ""
-          },
-          "contactInfo":"Kontaktinformationer"
-       }
+      "links": {
+         "1": {
+            "title": "Spørg biblioteket",
+            "link": "https://www.kb.dk/spoerg-biblioteket"
+         },
+         "2": {
+            "title": "kb@kb.dk",
+            "link": "mailto:kb@kb.dk"
+         },
+         "3": {
+            "title": "Tel: (+45) 3346 4747",
+            "link": ""
+         },
+         "4": {
+            "title": "Pressekontakt",
+            "link": "https://www.kb.dk/om-os/presse"
+         },
+         "5": {
+            "title": "EAN: 5798000795297",
+            "link": ""
+         }
+      }
     }
+  },
+  "some": {
+   "facebook": {
+      "title":"Følg os på Facebook",
+      "link":"https://www.facebook.com/DetKglBibliotek/"
+   },
+   "instagram": {
+      "title":"Følg os på Instagram",
+      "link":"https://www.instagram.com/detkglbibliotek/"
+   },
+   "linkedin": {
+      "title":"Følg os på LinkedIn",
+      "link":"https://www.linkedin.com/company/det-kgl-bibliotek/"
+   }
   },
   "error": {
     "record": {

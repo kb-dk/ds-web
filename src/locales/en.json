@@ -48,57 +48,50 @@
       "close":"Close"
    },
    "footer": {
+      "contactInfo":"Contact information",
       "column1": {
          "title": "Genveje",
          "links": {
             "1": {
-               "title": "Find Material",
-               "link": "https://www.kb.dk/find-materiale"
+               "title": "Find Materials",
+               "link": "https://www.kb.dk/en/find-materials"
             },
             "2": {
                "title": "Inspiration",
-               "link": "https://www.kb.dk/inspiration"
+               "link": "https://www.kb.dk/en/inspiration"
             },
             "3": {
-               "title": "Arrangementer",
-               "link": "https://www.kb.dk/arrangementer"
+               "title": "Events",
+               "link": "https://www.kb.dk/en/events"
             },
             "4": {
                "title": "Services",
-               "link": "https://www.kb.dk/services"
+               "link": "https://www.kb.dk/en/services"
             },
             "5": {
-               "title": "Besøg os",
-               "link": "https://www.kb.dk/besoeg-os"
+               "title": "Visit us",
+               "link": "https://www.kb.dk/en/visit-us"
             }
          }
       },
       "column2": {
-        "title": "Brug os",
+        "title": "Use the library",
          "links": {
             "1": {
-               "title": "For biblioteker",
-               "link": "https://forbiblioteker.kb.dk/"
+               "title": "For professionals",
+               "link": "https://pro.kb.dk/en"
             },
             "2": {
-               "title": "For professionelle",
-               "link": "https://pro.kb.dk/"
+               "title": "Meetings and conferences",
+               "link": "https://pro.kb.dk/en/meetings"
             },
             "3": {
-               "title": "Møder og konferencer",
-               "link": "https://pro.kb.dk/moeder"
+               "title": "For the central administration in Denmark",
+               "link": "https://forcentraladministrationen.kb.dk/en"
             },
             "4": {
-               "title": "For centraladministrationen",
-               "link": "https://forcentraladministrationen.kb.dk/"
-            },
-            "5": {
-               "title": "Pligtaflevering",
-               "link": "https://pro.kb.dk/pligtaflevering"
-            },
-            "6": {
-               "title": "For skoler",
-               "link": "https://forskoler.kb.dk/"
+               "title": "Legal deposit",
+               "link": "https://pro.kb.dk/en/legal-deposit"
             }
          }
       },
@@ -106,31 +99,31 @@
          "title": "Information",
          "links": {
             "1": {
-               "title": "Ledige stillinger",
-               "link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
+               "title": "Vacant positions",
+               "link": "https://www.kb.dk/en/about-us/job-and-career/vacant-positions"
             },
             "2": {
-               "title": "Reglementer",
-               "link": "https://www.kb.dk/reglementer"
+               "title": "Regulations",
+               "link": "https://www.kb.dk/en/regulations"
             },
             "3": {
-               "title": "Ophavsret",
-               "link": "https://www.kb.dk/ophavsret"
+               "title": "Copyright",
+               "link": "https://www.kb.dk/en/copyright-and-use-our-materials"
             },
             "4": {
-               "title": "Privatlivs- og persondatapolitik",
-               "link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
+               "title": "Privacy and Personal Data Protection Policy",
+               "link": "https://www.kb.dk/en/privacy-and-personal-data-protection-policy"
             },
             "5": {
-               "title": "Tilgængelighedserklæring",
+               "title": "Accessibility statement",
                "link": "https://www.kb.dk/was"
             },
             "6": {
-               "title": "Driftsstatus",
-               "link": "https://www.kb.dk/driftsstatus"
+               "title": "Service status",
+               "link": "https://www.kb.dk/en/service-status"
             },
             "7": {
-               "title": "Cookieindstillinger",
+               "title": "Cookie Settings",
                "link": ""
             }
          }
@@ -138,29 +131,42 @@
       "column4": {
          "links": {
             "1": {
-               "title": "Spørg biblioteket",
-               "link": "https://www.kb.dk/spoerg-biblioteket"
+               "title": "Ask the library",
+               "link": "https://www.kb.dk/en/ask-library"
             },
             "2": {
                "title": "kb@kb.dk",
-               "link": "kb@kb.dk"
+               "link": "mailto:kb@kb.dk"
             },
             "3": {
                "title": "Tel: (+45) 3346 4747",
                "link": ""
             },
             "4": {
-               "title": "Pressekontakt",
-               "link": "https://www.kb.dk/om-os/presse"
+               "title": "Press",
+               "link": "https://www.kb.dk/en/about-us/press"
             },
             "5": {
                "title": "EAN: 5798000795297",
                "link": ""
-            },
-            "contactInfo":"Kontaktinformationer"
+            }
          }
       }
-    },
+   },
+    "some": {
+      "facebook": {
+         "title":"Følg os på Facebook",
+         "link":"https://www.facebook.com/DetKglBibliotek/"
+      },
+      "instagram": {
+         "title":"Følg os på Instagram",
+         "link":"https://www.instagram.com/detkglbibliotek/"
+      },
+      "linkedin": {
+         "title":"Følg os på LinkedIn",
+         "link":"https://www.linkedin.com/company/det-kgl-bibliotek/"
+      }
+   },
    "error": {
       "record": {
          "loadingFailed": "The requested material could not be loaded",

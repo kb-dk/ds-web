@@ -33,7 +33,7 @@
 								class="shimmer"
 							></div>
 							<span
-								:style="categoryFacets[index] === undefined ? `width:${Math.random() * 30 + 30} px` : ''"
+								:style="categoryFacets[index] === undefined ? `width:${Math.random() * 30 + 30}px` : ''"
 								class="tag-title"
 							>
 								{{ categoryFacets[index]?.title }}
