@@ -48,7 +48,6 @@ export default defineComponent({
 			() => props.keystroke,
 			(newEvent: KeyboardEvent | null) => {
 				if (newEvent) {
-					console.log(newEvent);
 					keyMovement(newEvent);
 				}
 			},
@@ -64,6 +63,7 @@ export default defineComponent({
 		);
 
 		const keyMovement = (e: KeyboardEvent) => {
+			searchResultStore.setBlockAutocomplete(false);
 			switch (e.key) {
 				case 'ArrowDown':
 					moveSelectorDown();
@@ -130,7 +130,7 @@ export default defineComponent({
 <style scoped>
 .autocomplete {
 	position: absolute;
-	z-index: 500;
+	z-index: 5;
 	background-color: white;
 	width: 50%;
 	padding: 0px 0px;

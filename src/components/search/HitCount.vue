@@ -1,21 +1,23 @@
 <template>
 	<Transition
-		name="fade"
+		name="result"
 		mode="out-in"
 	>
-		<div v-if="!searchResultStore.loading">
-			<div
-				class="hit-count"
-				v-if="hitCount > 0 || noHits"
-			>
-				<span v-if="query !== ''">{{ $t('search.hitcount', hitCount) }} "{{ query }}"</span>
-				<span v-else></span>
+		<div v-if="searchResultStore.searchResult.length > 0">
+			<div v-if="!searchResultStore.loading">
+				<div
+					class="hit-count"
+					v-if="hitCount > 0 || noHits"
+				>
+					<span v-if="query !== ''">{{ $t('search.hitcount', hitCount) }} "{{ query }}"</span>
+					<span v-else></span>
+				</div>
 			</div>
+			<div
+				class="loading-placeholder"
+				v-else
+			></div>
 		</div>
-		<div
-			class="loading-placeholder"
-			v-else
-		></div>
 	</Transition>
 </template>
 

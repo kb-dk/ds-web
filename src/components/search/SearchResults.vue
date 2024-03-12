@@ -3,22 +3,20 @@
 		ref="resultContainer"
 		class="search-results fullwidth"
 	>
-		<Transition name="fade">
-			<div>
-				<div
-					class="hit-box"
-					v-for="(res, index) in searchResults"
-					:key="index"
-				>
-					<ResultItem
-						:resultdata="res"
-						:duration="getDuration(res)"
-						:starttime="getStartTime(res)"
-						:placeholder="getPlaceholderImage()"
-					></ResultItem>
-				</div>
+		<TransitionGroup name="result">
+			<div
+				class="hit-box"
+				v-for="(res, index) in resultNr"
+				:key="index"
+			>
+				<ResultItem
+					:resultdata="searchResults[index]"
+					:duration="searchResults[index] ? getDuration(searchResults[index]) : ''"
+					:starttime="searchResults[index] ? getStartTime(searchResults[index]) : ''"
+					:placeholder="getPlaceholderImage()"
+				></ResultItem>
 			</div>
-		</Transition>
+		</TransitionGroup>
 	</div>
 </template>
 
@@ -86,7 +84,7 @@ export default defineComponent({
 
 		onMounted(() => {
 			currentResults.value = toRaw(props.searchResults);
-			resultNr.value = 10;
+			resultNr.value = currentResults.value.length ? Math.min(currentResults.value.length, 10) : 10;
 
 			watch(
 				() => props.searchResults,

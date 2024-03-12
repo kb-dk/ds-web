@@ -10,7 +10,7 @@ import {
 export function sleep(random?: boolean): Promise<void> {
 	let sleep = 2000;
 	if (random) {
-		sleep = Math.random() * 3000 + 1000;
+		sleep = Math.random() * 1500 + 500;
 	}
 	console.log('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
 	return new Promise((resolve) => setTimeout(resolve, sleep));

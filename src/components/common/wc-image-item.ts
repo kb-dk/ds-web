@@ -31,7 +31,9 @@ class ImageComponent extends HTMLElement {
 			if (imageData.placeholder !== undefined) {
 				thumb && (thumb.src = imageData.placeholder);
 				thumb.style.backgroundColor = 'rgb(237,237,237)';
-				thumb.style.objectFit = 'contain';
+			}
+			if (imageData.imgOption !== undefined) {
+				thumb.style.objectFit = imageData.imgOption;
 			}
 			if (imageData.altText && this.shadow.querySelector('.image-item')) {
 				this.shadow.querySelector('.image-item')?.setAttribute('alt', imageData.altText);
@@ -62,7 +64,11 @@ const IMAGE_COMPONMENT_TEMPLATE = /*html*/ `
 
 const IMAGE_COMPONMENT_STYLES = /*css*/ `
 	<style>
-    .material-icons {
+		:host {
+			--image-item-scale: 1.0;
+			--image-item-hue-rotation: 0rad;
+		}
+		 .material-icons {
         font-family: 'Material Icons';
         font-weight: normal;
         font-style: normal;
@@ -76,7 +82,7 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
         direction: ltr;
         -webkit-font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
-    }
+	  }
 
 	.type-symbol {
         font-size:64px !important;
@@ -87,24 +93,28 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
     }
 
     .image-wrapper {
+				overflow: hidden;
         background: linear-gradient(45deg, #caf0fe, #fff6c4);
         width:100%;
-		height:100%;
+				height:100%;
         padding:0px;
         margin-block-start: 0em;
         margin-block-end: 0em;
         margin-inline-start: 0px;
         margin-inline-end: 0px;
         transition:all 0.3s ease-in-out 0s;
-        filter:hue-rotate(0rad);
+        filter:hue-rotate(var(--image-item-hue-rotation));
     }
 
     .image-item {
         width:100%;
         height:100%;
-        object-fit:cover;
-        transition:opacity 0.5s ease-in-out 0s;
+        object-fit: cover;
+        transition:all 0.5s ease-in-out 0s;
         opacity:0;
+				transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
+				transform-origin:center;
+				will-change: transform;
     }
 	</style>`;
 
