@@ -6,7 +6,7 @@
 		>
 			<div
 				class="container"
-				v-if="searchResultStore.loading && resultdata"
+				v-if="!searchResultStore.loading && resultdata"
 			>
 				<div class="information">
 					<router-link
