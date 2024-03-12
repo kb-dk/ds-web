@@ -172,11 +172,11 @@ export default defineComponent({
 		});
 
 		const isProduction = () => {
-			return import.meta.env.NODE_ENV === 'production';
+			return import.meta.env.MODE === 'production';
 		};
 
 		const returnCurrentEnv = () => {
-			return import.meta.env.NODE_ENV;
+			return import.meta.env.MODE;
 		};
 
 		onBeforeMount(() => {
