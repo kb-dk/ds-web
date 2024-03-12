@@ -47,6 +47,120 @@
   "notification": {
       "close":"Close"
    },
+   "footer": {
+      "column1": {
+         "title": "Genveje",
+         "links": {
+            "1": {
+               "title": "Find Material",
+               "link": "https://www.kb.dk/find-materiale"
+            },
+            "2": {
+               "title": "Inspiration",
+               "link": "https://www.kb.dk/inspiration"
+            },
+            "3": {
+               "title": "Arrangementer",
+               "link": "https://www.kb.dk/arrangementer"
+            },
+            "4": {
+               "title": "Services",
+               "link": "https://www.kb.dk/services"
+            },
+            "5": {
+               "title": "Besøg os",
+               "link": "https://www.kb.dk/besoeg-os"
+            }
+         }
+      },
+      "column2": {
+        "title": "Brug os",
+         "links": {
+            "1": {
+               "title": "For biblioteker",
+               "link": "https://forbiblioteker.kb.dk/"
+            },
+            "2": {
+               "title": "For professionelle",
+               "link": "https://pro.kb.dk/"
+            },
+            "3": {
+               "title": "Møder og konferencer",
+               "link": "https://pro.kb.dk/moeder"
+            },
+            "4": {
+               "title": "For centraladministrationen",
+               "link": "https://forcentraladministrationen.kb.dk/"
+            },
+            "5": {
+               "title": "Pligtaflevering",
+               "link": "https://pro.kb.dk/pligtaflevering"
+            },
+            "6": {
+               "title": "For skoler",
+               "link": "https://forskoler.kb.dk/"
+            }
+         }
+      },
+      "column3": {
+         "title": "Information",
+         "links": {
+            "1": {
+               "title": "Ledige stillinger",
+               "link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
+            },
+            "2": {
+               "title": "Reglementer",
+               "link": "https://www.kb.dk/reglementer"
+            },
+            "3": {
+               "title": "Ophavsret",
+               "link": "https://www.kb.dk/ophavsret"
+            },
+            "4": {
+               "title": "Privatlivs- og persondatapolitik",
+               "link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
+            },
+            "5": {
+               "title": "Tilgængelighedserklæring",
+               "link": "https://www.kb.dk/was"
+            },
+            "6": {
+               "title": "Driftsstatus",
+               "link": "https://www.kb.dk/driftsstatus"
+            },
+            "7": {
+               "title": "Cookieindstillinger",
+               "link": ""
+            }
+         }
+      },
+      "column4": {
+         "links": {
+            "1": {
+               "title": "Spørg biblioteket",
+               "link": "https://www.kb.dk/spoerg-biblioteket"
+            },
+            "2": {
+               "title": "kb@kb.dk",
+               "link": "kb@kb.dk"
+            },
+            "3": {
+               "title": "Tel: (+45) 3346 4747",
+               "link": ""
+            },
+            "4": {
+               "title": "Pressekontakt",
+               "link": "https://www.kb.dk/om-os/presse"
+            },
+            "5": {
+               "title": "EAN: 5798000795297",
+               "link": ""
+            },
+            "contactInfo":"Kontaktinformationer"
+         }
+      }
+    },
    "error": {
       "record": {
          "loadingFailed": "The requested material could not be loaded",
