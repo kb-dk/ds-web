@@ -2,7 +2,7 @@
 	<div class="container">
 		<Transition
 			mode="out-in"
-			name="fade"
+			name="result"
 		>
 			<div
 				v-if="!loading"

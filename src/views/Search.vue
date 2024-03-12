@@ -9,7 +9,7 @@
 			<SearchBar />
 		</div>
 		<Transition
-			name="fade"
+			name="result"
 			mode="out-in"
 		>
 			<!-- This is for the search results / facets / did-you-mean / pager -->
@@ -20,14 +20,21 @@
 				<SearchOverhead />
 				<div class="container">
 					<div class="row">
-						<div class="search-resultset">
+						<div
+							v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
+							class="search-resultset"
+						>
 							<Facets :facet-results="searchResultStore.facetResult" />
 							<SearchResults
 								:search-results="searchResultStore.searchResult"
 								:num-found="searchResultStore.numFound"
 							/>
 						</div>
+						<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
+							<NoHits />
+						</div>
 						<Pagination
+							v-show="searchResultStore.searchResult.length > 0"
 							:itemsPerPage="itemsPerPage"
 							:totalHits="searchResultStore.numFound"
 							:numPagesToShow="numPagesToShow"
@@ -59,6 +66,7 @@ import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import NoHits from '@/components/search/NoHits.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -69,6 +77,7 @@ export default defineComponent({
 		Pagination,
 		SearchOverhead,
 		PortalContent,
+		NoHits,
 	},
 
 	setup() {

@@ -100,7 +100,7 @@ export default defineComponent({
 		};
 
 		const getImgServerSrcURL = () => {
-			return require('@/assets/images/crown.png');
+			return new URL(`@/assets/images/crown.png`, import.meta.url).href;
 		};
 
 		const onBeforeLeave = (transitionName: string) => {
@@ -176,11 +176,11 @@ export default defineComponent({
 		});
 
 		const isProduction = () => {
-			return process.env.NODE_ENV === 'production';
+			return import.meta.env.MODE === 'production';
 		};
 
 		const returnCurrentEnv = () => {
-			return process.env.NODE_ENV;
+			return import.meta.env.MODE;
 		};
 
 		onBeforeMount(() => {
@@ -211,9 +211,29 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.result-enter-active,
+.result-leave-active {
+	transition: all 0.15s ease-in-out;
+}
+
+.result-enter {
+	transition-delay: 0.15s;
+}
+
+.result-enter-from,
+.result-leave-to {
+	opacity: 0;
+	transform: translateY(10px);
+}
+
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
 }
 
 .test-env {
@@ -237,10 +257,6 @@ export default defineComponent({
 	}
 }
 
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-}
 .from-record-to-search-enter-active,
 .from-record-to-search-leave-active {
 	position: absolute;

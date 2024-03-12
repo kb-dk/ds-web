@@ -17,6 +17,9 @@ class SpotComponent extends HTMLElement {
 			const imageData = {} as ImageComponentType;
 			//No data yet, so it's just filler
 			imageData.imgSrc = '';
+			imageData.imgOption = 'cover';
+			// Test placeholder. Should never make it into production. Should be removed when we get this ready for prod.
+			imageData.placeholder = 'https://patternlab-testing.kb.dk/assets/images/sourcesets/6/630x415px_b.jpg';
 			imageData.altText = 'alt text here';
 			imageData.imgTitle = 'title here';
 			imageData.aspect = '2/1.25';
@@ -51,7 +54,7 @@ class SpotComponent extends HTMLElement {
 const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
     <a draggable="false" class="spot-wrapper" href="#">
         <div class="spot-component">
-        <kb-imagecomponent></kb-imagecomponent>
+            <kb-imagecomponent></kb-imagecomponent>
             <div class="record-info">
                 <div class="record-metadata">
                     <div><span class="material-icons">event</span><span>DR1, 7. september 1993</span></div>
@@ -74,11 +77,12 @@ const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
 
 const SPOT_COMPONMENT_STYLES = /*css*/ `
 	<style>
+
     .record-metadata {
         padding-top:20px;
     }
 
-    a { 
+    a {
         text-decoration:none;
         color:black;
         margin-bottom:40px;
@@ -112,18 +116,19 @@ const SPOT_COMPONMENT_STYLES = /*css*/ `
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 3;
-                line-clamp: 3; 
-        -webkit-box-orient: vertical;			
+                line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 
-    a:hover .image-wrapper {
-        transform-origin:center;
-        filter:hue-rotate(3.142rad);
+    a figure {
+        background-color:red;
     }
 
-    a:hover .image-item {
-        transform:scale(1.1);
+    .spot-component:hover kb-imagecomponent {
+        --image-item-scale: 1.03;
+		--image-item-hue-rotation: 3.142rad;
     }
+
 	</style>`;
 
 customElements.define('kb-spotcomponent', SpotComponent);

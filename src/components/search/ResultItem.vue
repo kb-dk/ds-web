@@ -1,7 +1,7 @@
 <template>
 	<div class="result-item-wrapper">
 		<Transition
-			name="fade"
+			name="result"
 			mode="out-in"
 		>
 			<div
@@ -31,7 +31,10 @@
 				v-else
 				class="loading container"
 			>
-				<div class="shimmer"></div>
+				<div
+					:style="`animation-delay:${Math.random() * 2}s`"
+					class="shimmer"
+				></div>
 				<div class="information">
 					<div
 						class="placeholder-t"
@@ -48,10 +51,10 @@
 					</div>
 					<div class="placeholder-s">
 						<span
-							v-for="n in 15"
+							v-for="n in 16"
 							:key="n"
 							ref="placeholderSummaryRefs"
-							:style="`width:${Math.random() * 12 + 12 + '%'}`"
+							:style="`width:${Math.random() * 10 + 10 + '%'}`"
 						></span>
 					</div>
 				</div>
@@ -109,12 +112,13 @@ export default defineComponent({
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
 						imageDataObj.imgSrc = undefined;
-						imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+						imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 						imageData.value = JSON.stringify(imageDataObj);
 					});
 			} else {
 				imageDataObj.imgSrc = undefined;
-				imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+				imageDataObj.imgOption = 'contain';
+				imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 				imageData.value = JSON.stringify(imageDataObj);
 			}
 		};
@@ -293,7 +297,19 @@ export default defineComponent({
 
 .placeholder-s {
 	height: 60px;
-	width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px 0px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  margin-left: -3px;
+}
+
+.placeholder-s span {
+	margin: 0px 3px;
 }
 
 .result-image-wrapper.skeleton {

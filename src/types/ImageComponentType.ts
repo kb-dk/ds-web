@@ -1,4 +1,5 @@
 export interface ImageComponentType extends HTMLElement {
+	imgOption: string;
 	imgSrc: string | undefined;
 	imgTitle: string | undefined;
 	altText: string | undefined;

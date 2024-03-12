@@ -53,6 +53,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container {
+	min-height: 91px;
+}
+
 .result-options {
 	display: flex;
 	flex-wrap: wrap;
@@ -77,6 +81,7 @@ export default defineComponent({
 	line-height: 24px;
 	cursor: pointer;
 	padding: 0;
+	margin: 10px 0px;
 }
 
 .filter-button .material-icons {

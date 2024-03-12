@@ -2,17 +2,15 @@
 	<div>
 		<div class="category-tags">
 			<h2 class="headline">{{ t('search.relatedSubjects') }} ({{ currentCategoryNr }})</h2>
-			<Transition
-				name="fade"
-				mode="out-in"
-			>
-				<div>
+			<div>
+				<TransitionGroup name="result">
 					<div
 						:class="
 							filterExists('categories', categoryFacets[index]?.title) && !searchResultStore.loading
 								? 'tag active'
 								: 'tag'
 						"
+						ref="listItems"
 						v-for="(singleCategory, index) in currentCategoryNr as unknown as FacetPair[]"
 						:key="index + 'category'"
 					>
@@ -35,7 +33,7 @@
 								class="shimmer"
 							></div>
 							<span
-								:style="'width: ' + Math.ceil(Math.random() * 30 + 30) + 'px'"
+								:style="categoryFacets[index] === undefined ? `width:${Math.random() * 30 + 30} px` : ''"
 								class="tag-title"
 							>
 								{{ categoryFacets[index]?.title }}
@@ -46,8 +44,8 @@
 							{{ index < currentCategoryNr - 1 && categoryFacets.length > 0 && !searchResultStore.loading ? ',' : '' }}
 						</span>
 					</div>
-				</div>
-			</Transition>
+				</TransitionGroup>
+			</div>
 		</div>
 	</div>
 </template>
@@ -69,6 +67,7 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const listItems = ref([]);
 		const searchResultStore = useSearchResultStore();
 		const currentCategoryNr = ref(25);
 		const categoryFacets = ref([] as FacetPair[]);
@@ -78,7 +77,8 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
-			currentCategoryNr.value = categoryFacets.value.length ? categoryFacets.value.length : 25;
+			console.log(props.categories);
+			currentCategoryNr.value = categoryFacets.value.length ? Math.min(categoryFacets.value.length, 25) : 25;
 
 			watch(
 				() => props.categories,
@@ -105,6 +105,7 @@ export default defineComponent({
 			removeFilter,
 			route,
 			t,
+			listItems,
 		};
 	},
 });
@@ -190,6 +191,10 @@ h2 {
 	padding: 0px 3px;
 }
 
+.category-tags .tag.active .tag-number {
+	color: white !important;
+}
+
 .category-tags .tag.active .tag-title {
 	color: white !important;
 }
@@ -198,6 +203,7 @@ h2 {
 	pointer-events: none;
 	border: 0px solid;
 	position: relative;
+	color: transparent;
 }
 
 .tag-title,

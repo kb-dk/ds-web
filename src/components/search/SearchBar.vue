@@ -163,7 +163,6 @@ export default defineComponent({
 
 		const searchResultStore = useSearchResultStore();
 		const preliminaryFilter = ref('');
-		const stopAutcomplete = ref(false);
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
 		let AutocompleteTimer: ReturnType<typeof setTimeout>;
@@ -173,19 +172,16 @@ export default defineComponent({
 			(newStart: string, prevStart: string) => {
 				if (newStart !== prevStart) {
 					clearTimeout(AutocompleteTimer);
-					if (!stopAutcomplete.value) {
-						if (newStart.length < 2) {
-							searchResultStore.autocompleteResult = [];
-						}
-						if (!searchResultStore.loading) {
-							AutocompleteTimer = setTimeout(() => {
-								getAutocompleteResponse(newStart);
-							}, 300); // 1000 milliseconds (1 second) delay
-						}
-					} else {
+					if (newStart.length < 2) {
 						searchResultStore.autocompleteResult = [];
-						stopAutcomplete.value = false;
 					}
+					if (!searchResultStore.blockAutocomplete) {
+						AutocompleteTimer = setTimeout(() => {
+							getAutocompleteResponse(newStart);
+						}, 300); // 1000 milliseconds (1 second) delay
+					}
+				} else {
+					searchResultStore.autocompleteResult = [];
 				}
 			},
 		);
@@ -195,17 +191,17 @@ export default defineComponent({
 		};
 
 		const getAutocompleteResponse = (query: string) => {
-			if (query !== undefined && query.length >= 2) {
+			if (query !== undefined && query.length >= 2 && !searchResultStore.blockAutocomplete) {
 				searchResultStore.getAutocompleteResults(query);
 			}
 		};
 
 		const backgroundImage = computed(() => {
-			return require('@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg');
+			return new URL(`@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg`, import.meta.url).href;
 		});
 
 		const search = () => {
-			stopAutcomplete.value = true;
+			searchResultStore.resetAutocomplete();
 			clearTimeout(AutocompleteTimer);
 			debounceMechanic.value = true;
 			setTimeout(() => {
@@ -295,7 +291,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 .autocomplete-container {
 	position: relative;
-	z-index: 500z;
+	z-index: 10;
 }
 
 #searchButton,
