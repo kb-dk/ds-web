@@ -18,6 +18,7 @@ class SpotComponent extends HTMLElement {
 			//No data yet, so it's just filler
 			imageData.imgSrc = '';
 			imageData.imgOption = 'cover';
+			// Test placeholder. Should never make it into production. Should be removed when we get this ready for prod.
 			imageData.placeholder = 'https://patternlab-testing.kb.dk/assets/images/sourcesets/6/630x415px_b.jpg';
 			imageData.altText = 'alt text here';
 			imageData.imgTitle = 'title here';

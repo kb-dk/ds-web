@@ -53,6 +53,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container {
+	min-height: 91px;
+}
+
 .result-options {
 	display: flex;
 	flex-wrap: wrap;
