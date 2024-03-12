@@ -126,6 +126,7 @@ export default defineComponent({
 	},
 });
 </script>
+
 <style scoped>
 .autocomplete {
 	position: absolute;

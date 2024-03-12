@@ -6,7 +6,7 @@
 		>
 			<div
 				class="container"
-				v-if="!searchResultStore.loading && resultdata"
+				v-if="searchResultStore.loading && resultdata"
 			>
 				<div class="information">
 					<router-link
@@ -51,7 +51,7 @@
 					</div>
 					<div class="placeholder-s">
 						<span
-							v-for="n in 18"
+							v-for="n in 16"
 							:key="n"
 							ref="placeholderSummaryRefs"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
@@ -112,13 +112,13 @@ export default defineComponent({
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
 						imageDataObj.imgSrc = undefined;
-						imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+						imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 						imageData.value = JSON.stringify(imageDataObj);
 					});
 			} else {
 				imageDataObj.imgSrc = undefined;
 				imageDataObj.imgOption = 'contain';
-				imageDataObj.placeholder = require('@/assets/images/No-Image-Placeholder.svg.png');
+				imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 				imageData.value = JSON.stringify(imageDataObj);
 			}
 		};
@@ -297,7 +297,15 @@ export default defineComponent({
 
 .placeholder-s {
 	height: 60px;
-	width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px 0px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  margin-left: -3px;
 }
 
 .placeholder-s span {

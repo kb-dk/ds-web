@@ -197,7 +197,7 @@ export default defineComponent({
 		};
 
 		const backgroundImage = computed(() => {
-			return require('@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg');
+			return new URL(`@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg`, import.meta.url).href;
 		});
 
 		const search = () => {

@@ -26,6 +26,10 @@ import type { MediaPlayerElement } from 'vidstack/elements';
 import 'vidstack/player';
 import 'vidstack/player/layouts';
 import 'vidstack/player/ui';
+import 'vidstack/player/styles/default/theme.css';
+import 'vidstack/player/styles/default/layouts/video.css';
+
+
 
 export default defineComponent({
 	name: 'VideoPlayer',
@@ -54,9 +58,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import 'vidstack/player/styles/default/theme.css';
-@import 'vidstack/player/styles/default/layouts/video.css';
-
 .player {
 	aspect-ratio: 4/2;
 }
