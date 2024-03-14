@@ -247,6 +247,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 
 	.rdl-logo {
+		/* TODO: We need a better way to get images into web components. */
 		background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
 		background-position: 0;
 		background-repeat: no-repeat;

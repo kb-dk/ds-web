@@ -101,6 +101,7 @@ export default defineComponent({
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
+				console.log(recordData.value,"heres the record!");
 			}
 			if (moreLikeThis) {
 				moreLikeThisRecords.value = moreLikeThis.data.response.docs;

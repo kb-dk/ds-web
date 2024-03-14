@@ -40,6 +40,7 @@
 			</transition>
 		</router-view>
 	</div>
+	<Footer />
 </template>
 
 <script lang="ts">
@@ -50,6 +51,8 @@ import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from './utils/local-storage-wrapper';
+import Footer from '@/components/global/nav/Footer.vue';
+
 import '@/components/global/nav/wc-header-menu';
 
 export default defineComponent({
@@ -57,6 +60,7 @@ export default defineComponent({
 	components: {
 		Notifier,
 		Spinner,
+		Footer,
 	},
 	setup() {
 		const td = ref(0.4);

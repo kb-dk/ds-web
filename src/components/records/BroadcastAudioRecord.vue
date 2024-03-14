@@ -1,6 +1,7 @@
 <template>
 	<div class="broadcast-record">
-		<AudioPlayer :audio-url="recordData.contentUrl"></AudioPlayer>
+		<AudioPlayer v-if="recordData.contentUrl" :audio-url="recordData.contentUrl"></AudioPlayer>
+		<div class="no-streaming" v-else>{{  t('record.missingStreamingUrl') }}</div>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -148,6 +149,16 @@ temporary styling until patterns from design system are implemented
 .back-link {
 	width: 100%;
 	margin-bottom: 10px;
+}
+
+.no-streaming {
+	width:100%;
+	background-color:black;
+	display:flex;
+	height:300px;
+	color:white;
+	align-items: center;
+  justify-content: center;
 }
 
 .back-link a {
