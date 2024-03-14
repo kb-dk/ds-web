@@ -50,6 +50,7 @@
   },
   "footer": {
     "contactInfo":"Kontaktinformationer",
+    "cookie":"Cookieindstillinger",
     "column1": {
        "title": "Genveje",
        "links": {
@@ -130,10 +131,6 @@
           "6": {
              "title": "Driftsstatus",
              "link": "https://www.kb.dk/driftsstatus"
-          },
-          "7": {
-             "title": "Cookieindstillinger",
-             "link": ""
           }
        }
     },
