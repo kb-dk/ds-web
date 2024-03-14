@@ -66,34 +66,23 @@
 <script lang="ts">
 import { defineComponent, toRaw, watch, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-interface Footer {
-	[column: string]: {
-		title: string;
-		links: {
-			[link: string]: {
-				title: string;
-				link: string;
-			};
-		};
-	};
-}
+import { FooterType } from '@/types/FooterType';
 
 export default defineComponent({
 	name: 'Footer',
 	setup() {
 		const { t, messages, locale } = useI18n();
-		const currentLocaleMessages = ref(undefined as unknown as Footer);
+		const currentLocaleMessages = ref(undefined as unknown as FooterType);
 
 		onMounted(() => {
-			currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as Footer;
+			currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as FooterType;
 		});
 
 		watch(
 			() => locale.value,
 				(newLocale: string, prevLocale: string) => {
 				if (newLocale !== prevLocale) {
-					currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as Footer;
+					currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as FooterType;
 				}
 			},
 		);
