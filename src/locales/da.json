@@ -35,7 +35,8 @@
      "copyMessageSuccess":"Linket var successfuldt kopieret til klipboardet.",
      "copyTitleFailed":"Kopiering fejlede.",
      "copyMessageFailed":"Linket blev ikke kopieret til klipboardet. Kopier URL istedet.",
-     "moreMetadataBroadcast":"Yderligere information om udsendelsen"
+     "moreMetadataBroadcast":"Yderligere information om udsendelsen",
+     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise."
     
   },
   "duration":{
