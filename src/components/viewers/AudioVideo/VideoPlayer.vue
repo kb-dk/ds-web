@@ -1,58 +1,59 @@
 <template>
-	<!-- 	<div class="mobile-edge edge top"></div>
- -->
-	<div
-		class="video-player"
-		v-if="src"
-	>
-		<media-player
-			class="player"
-			title=""
-			:src="src"
-			ref="player"
-		>
-			<media-provider></media-provider>
-			<media-video-layout></media-video-layout>
-		</media-player>
+	 	<div class="mobile-edge edge top"></div>
+	<div class="video-player">
+	<div id="k-player" class="player" style="width: 640px;height: 360px"></div>
 	</div>
-	<!-- 	<div class="mobile-edge edge bottom"></div>
- -->
+	 	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
 import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-import type { MediaPlayerElement } from 'vidstack/elements';
-
-import 'vidstack/player';
-import 'vidstack/player/layouts';
-import 'vidstack/player/ui';
-import 'vidstack/player/styles/default/theme.css';
-import 'vidstack/player/styles/default/layouts/video.css';
-
-
 
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
 		videoUrl: String,
+		fileId: String
 	},
 	setup(props) {
-		const player = ref<MediaPlayerElement>();
-		const src = ref('');
+		const bootstrapPlayer = () =>{
+			kWidget.thumbEmbed(
+						{ targetId: "k-player", 
+							wid: "_380", 
+							uiconf_id: "23453107", 
+							flashvars:{"referenceId": props.fileId}
+						});
+					console.log(kWidget)
+ 		}
+
+		const appendScript = () => {
+			let kalturaScript = document.createElement('script')
+      kalturaScript.setAttribute('src', 'https://api.kaltura.nordu.net/p/380/sp/38000/embedIframeJs/uiconf_id/23453107/partner_id/380')
+      kalturaScript.setAttribute('id', 'kaltura-script')
+			kalturaScript.setAttribute('type', 'application/javascript')
+			kalturaScript.id = "kaltura-player-script";
+			kalturaScript.onload = () => {
+				bootstrapPlayer()
+        };
+			document.head.appendChild(kalturaScript)
+		}
+
 		onMounted(() => {
-			src.value = props.videoUrl ? props.videoUrl : '';
-			const cleanup = () => {
-				if (player.value) {
-					player.value.destroy();
-				}
+			const no_script = !document.getElementById("kaltura-player-script")
+			if (no_script) {
+				appendScript()
+			} else {
+				bootstrapPlayer()
 			};
-			// Attach cleanup to unmmount
-			onBeforeUnmount(() => {
-				cleanup();
-			});
 		});
-		return { src, player };
+		
+		onBeforeUnmount(() => {
+			if (kWidget) {
+				kWidget.destroy()
+			}
+		});
+		
 	},
 });
 </script>

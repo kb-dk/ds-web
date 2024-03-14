@@ -1,6 +1,6 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer :video-url="recordData.contentUrl"></VideoPlayer>
+		<VideoPlayer :video-url="recordData.contentUrl" :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
