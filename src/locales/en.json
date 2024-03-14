@@ -35,7 +35,9 @@
      "copyMessageSuccess":"The link was successfully copied to the clipboard.",
      "copyTitleFailed":"Copying failed.",
      "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead.",
-     "moreMetadataBroadcast":"Additional information about the broadcast"
+     "moreMetadataBroadcast":"Additional information about the broadcast",
+     "missingStreamingUrl":"We're sorry, it seems this record has no streaming URL, \n so there is nothing to show."
+
   },
   "duration":{
    "hours":"h",
@@ -46,6 +48,126 @@
 
   "notification": {
       "close":"Close"
+   },
+   "footer": {
+      "contactInfo":"Contact information",
+      "column1": {
+         "title": "Shortcuts",
+         "links": {
+            "1": {
+               "title": "Find Materials",
+               "link": "https://www.kb.dk/en/find-materials"
+            },
+            "2": {
+               "title": "Inspiration",
+               "link": "https://www.kb.dk/en/inspiration"
+            },
+            "3": {
+               "title": "Events",
+               "link": "https://www.kb.dk/en/events"
+            },
+            "4": {
+               "title": "Services",
+               "link": "https://www.kb.dk/en/services"
+            },
+            "5": {
+               "title": "Visit us",
+               "link": "https://www.kb.dk/en/visit-us"
+            }
+         }
+      },
+      "column2": {
+        "title": "Use the library",
+         "links": {
+            "1": {
+               "title": "For professionals",
+               "link": "https://pro.kb.dk/en"
+            },
+            "2": {
+               "title": "Meetings and conferences",
+               "link": "https://pro.kb.dk/en/meetings"
+            },
+            "3": {
+               "title": "For the central administration in Denmark",
+               "link": "https://forcentraladministrationen.kb.dk/en"
+            },
+            "4": {
+               "title": "Legal deposit",
+               "link": "https://pro.kb.dk/en/legal-deposit"
+            }
+         }
+      },
+      "column3": {
+         "title": "Information",
+         "links": {
+            "1": {
+               "title": "Vacant positions",
+               "link": "https://www.kb.dk/en/about-us/job-and-career/vacant-positions"
+            },
+            "2": {
+               "title": "Regulations",
+               "link": "https://www.kb.dk/en/regulations"
+            },
+            "3": {
+               "title": "Copyright",
+               "link": "https://www.kb.dk/en/copyright-and-use-our-materials"
+            },
+            "4": {
+               "title": "Privacy and Personal Data Protection Policy",
+               "link": "https://www.kb.dk/en/privacy-and-personal-data-protection-policy"
+            },
+            "5": {
+               "title": "Accessibility statement",
+               "link": "https://www.kb.dk/was"
+            },
+            "6": {
+               "title": "Service status",
+               "link": "https://www.kb.dk/en/service-status"
+            },
+            "7": {
+               "title": "Cookie Settings",
+               "link": ""
+            }
+         }
+      },
+      "column4": {
+         "links": {
+            "1": {
+               "title": "Ask the library",
+               "link": "https://www.kb.dk/en/ask-library"
+            },
+            "2": {
+               "title": "kb@kb.dk",
+               "link": "mailto:kb@kb.dk"
+            },
+            "3": {
+               "title": "Tel: (+45) 3346 4747",
+               "link": ""
+            },
+            "4": {
+               "title": "Press",
+               "link": "https://www.kb.dk/en/about-us/press"
+            },
+            "5": {
+               "title": "EAN: 5798000795297",
+               "link": ""
+            }
+         }
+      }
+   },
+    "some": {
+      "facebook": {
+         "title":"Følg os på Facebook",
+         "link":"https://www.facebook.com/DetKglBibliotek/"
+      },
+      "instagram": {
+         "title":"Følg os på Instagram",
+         "link":"https://www.instagram.com/detkglbibliotek/"
+      },
+      "linkedin": {
+         "title":"Følg os på LinkedIn",
+         "link":"https://www.linkedin.com/company/det-kgl-bibliotek/"
+      }
    },
    "error": {
       "record": {

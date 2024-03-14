@@ -18,6 +18,14 @@
   src: url('./../noway-regular-webfont.woff2') format('woff2'),
 }
 
+@font-face {
+  font-family: 'rdl-icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./../rdl-icons.ttf'),
+}
+
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;

@@ -1,6 +1,7 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer :video-url="recordData.contentUrl" :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
+		<VideoPlayer v-if="recordData.contentUrl" :video-url="recordData.contentUrl" :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
+		<div class="no-streaming" v-else>{{  t('record.missingStreamingUrl') }}</div>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -152,6 +153,16 @@ temporary styling until patterns from design system are implemented
 
 .back-link a {
 	text-decoration: none;
+}
+
+.no-streaming {
+	width:100%;
+	background-color:black;
+	display:flex;
+	height:300px;
+	color:white;
+	align-items: center;
+  justify-content: center;
 }
 
 .get-link {
