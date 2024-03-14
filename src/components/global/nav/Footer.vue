@@ -34,6 +34,7 @@
 						>
 							<a :href="link.link">{{ link.title }}</a>
 						</li>
+						<li><a href="javascript:void(0)" id="csconsentlink">{{ t('footer.cookie') }}</a></li>
 					</ul>
 				</div>
 
