@@ -398,7 +398,7 @@ nav {
 
 .content {
 	position: relative;
-	//height: 100vh;
+	min-height: 100vh;
 	background-color: white;
 	//z-index: 2;
 }

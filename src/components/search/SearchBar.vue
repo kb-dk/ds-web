@@ -530,11 +530,12 @@ input:focus {
 	display: flex;
 	width: calc(100% - 1px);
 	height: 48px;
-	margin-top: -33px;
 	margin-bottom: 22px;
 	color: white;
 	line-height: 48px;
 	justify-content: space-evenly;
+	position: absolute;
+  top: -47px;
 }
 
 .rdl-advanced-radio label,
@@ -595,7 +596,7 @@ input:focus {
 
 	.rdl-advanced-radio {
 		position: absolute;
-		top: 73px;
+		top: -40px;
 		left: 0px;
 		margin-top: unset;
 		margin-bottom: unset;
