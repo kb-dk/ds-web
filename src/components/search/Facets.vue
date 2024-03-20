@@ -84,8 +84,8 @@ export default defineComponent({
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
-			showFacets.value = true;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
+			showFacets.value = true;
 
 			watch(
 				() => props.facetResults,

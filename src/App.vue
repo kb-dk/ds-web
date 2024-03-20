@@ -40,7 +40,6 @@
 			</transition>
 		</router-view>
 	</div>
-	<Footer />
 </template>
 
 <script lang="ts">
@@ -398,7 +397,6 @@ nav {
 
 .content {
 	position: relative;
-	min-height: 100vh;
 	background-color: white;
 	//z-index: 2;
 }
@@ -407,6 +405,8 @@ nav {
 	.content {
 		display: flex;
 		justify-content: center;
+		flex-direction: column;
+    align-items: center;	
 	}
 }
 
