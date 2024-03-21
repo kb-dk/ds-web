@@ -129,6 +129,11 @@ export default defineComponent({
 				}
 				searchResultStore.getSearchResults(route.query.q as string);
 			}
+			else if(route.query.q === undefined) {
+				searchResultStore.resetSearch();
+				gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
+
+			}
 		});
 
 		onUnmounted(() => {
@@ -161,8 +166,10 @@ export default defineComponent({
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.getSearchResults(route.query.q as string);
+					document.title = t('app.titles.search') + '"' +  route.query.q + '"' + t('app.titles.suffix') as string;
 				}
 				if (route.query.q === undefined) {
+					document.title = t('app.titles.frontpage') as string;
 					searchResultStore.resetSearch();
 				}
 			},
