@@ -8,6 +8,11 @@
 
 <script lang="ts">
 import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
+/*
+* urghhh - had no choice here so bending typescript and I think the fixed linter will call me on this.
+* The solution will be to get some typing in here or silence the warning as the code works.
+*/ 
+declare const kWidget: any;
 
 export default defineComponent({
 	name: 'VideoPlayer',
@@ -17,6 +22,7 @@ export default defineComponent({
 		fileId: String
 	},
 	setup(props) {
+		
 		const bootstrapPlayer = () =>{
 			kWidget.thumbEmbed(
 						{ targetId: "k-player", 
