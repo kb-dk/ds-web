@@ -128,6 +128,7 @@ export default defineComponent({
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
 				searchResultStore.getSearchResults(route.query.q as string);
+				document.title = t('app.titles.search') + '"' +  route.query.q + '"' + t('app.titles.suffix') as string;
 			}
 			else if(route.query.q === undefined) {
 				searchResultStore.resetSearch();
