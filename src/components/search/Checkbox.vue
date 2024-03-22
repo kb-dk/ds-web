@@ -66,9 +66,27 @@ import { addFilter, removeFilter, filterExists, createAffiliationFilter } from '
 export default defineComponent({
 	name: 'Checkbox',
 	props: {
-		fqkey: { type: String, required: false },
-		title: { type: String, required: false },
-		amount: { type: String, required: false },
+		fqkey: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		title: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		amount: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
 		checked: { type: Boolean, required: false },
 		loading: { type: Boolean, required: true },
 	},

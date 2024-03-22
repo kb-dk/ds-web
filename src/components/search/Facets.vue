@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="search-facets active"
 		ref="facetsContainer"
+		class="search-facets active"
 	>
 		<div class="facet-background">
 			<button
@@ -16,9 +16,9 @@
 					<h2 class="headline">{{ t('search.channels') }}</h2>
 					<TransitionGroup name="result">
 						<div
-							class="checkbox"
 							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
 							:key="index + 'facet'"
+							class="checkbox"
 						>
 							<Checkbox
 								:fqkey="'creator_affiliation'"
@@ -69,12 +69,9 @@ export default defineComponent({
 		const channelFacets = ref([] as FacetPair[]);
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
-
 		const facetsContainer = ref<HTMLElement | null>(null);
-
 		const lastUpdate = ref(0);
 		const route = useRoute();
-
 		const { t } = useI18n();
 
 		onMounted(() => {

@@ -14,8 +14,8 @@
 		>
 			<!-- This is for the search results / facets / did-you-mean / pager -->
 			<div
-				key="1"
 				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+				key="1"
 			>
 				<SearchOverhead />
 				<div class="container">
@@ -35,17 +35,17 @@
 						</div>
 						<Pagination
 							v-show="searchResultStore.searchResult.length > 0"
-							:itemsPerPage="itemsPerPage"
-							:totalHits="searchResultStore.numFound"
-							:numPagesToShow="numPagesToShow"
+							:items-per-page="itemsPerPage"
+							:total-hits="searchResultStore.numFound"
+							:num-pages-to-show="numPagesToShow"
 						/>
 					</div>
 				</div>
 			</div>
 			<!-- This for the portal content when no search has been fired -->
 			<div
-				key="2"
 				v-else
+				key="2"
 			>
 				<PortalContent />
 			</div>

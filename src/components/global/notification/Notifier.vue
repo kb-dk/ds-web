@@ -6,8 +6,8 @@
 				name="user"
 			>
 				<NotificationItem
-					:key="item.count"
 					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === true)"
+					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
 				></NotificationItem>
@@ -19,8 +19,8 @@
 				name="passive"
 			>
 				<NotificationItem
-					:key="item.count"
 					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === false)"
+					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
 				></NotificationItem>
@@ -40,12 +40,12 @@ export default defineComponent({
 	components: {
 		NotificationItem,
 	},
-	data: () => ({}),
 
 	setup() {
 		const notificationStore = useNotificationStore();
 		return { notificationStore };
 	},
+	data: () => ({}),
 
 	created: function () {
 		window.addEventListener('notify-user', this.newNotification);

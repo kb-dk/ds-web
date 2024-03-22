@@ -29,15 +29,15 @@
 										{{ t('search.searchInput') }}
 									</label>
 									<input
+										id="focusSearchInput"
+										v-model="searchResultStore.currentQuery"
 										spellcheck="false"
 										autocomplete="off"
 										type="search"
 										:disabled="debounceMechanic ? true : false"
-										id="focusSearchInput"
 										class="form-control"
 										:placeholder="t('search.searchInput')"
 										name="simpleSearch"
-										v-model="searchResultStore.currentQuery"
 										@keydown="updateKeystrokeForAutocomplete"
 									/>
 									<Transition name="fade">
@@ -77,9 +77,9 @@
 								<div class="rdl-advanced-radio">
 									<label for="radio-btn-all">
 										<input
+											id="radio-btn-all"
 											class="selectAll"
 											type="radio"
-											id="radio-btn-all"
 											name="delimitation"
 											value="all"
 											checked
@@ -89,9 +89,9 @@
 									</label>
 									<label for="radio-btn-tv">
 										<input
+											id="radio-btn-tv"
 											class="selectTv"
 											type="radio"
-											id="radio-btn-tv"
 											name="delimitation"
 											value="tv"
 											@click="setPreliminaryFilter(delimitationOptions.tv)"
@@ -100,9 +100,9 @@
 									</label>
 									<label for="radio-btn-radio">
 										<input
+											id="radio-btn-radio"
 											class="selectRadio"
 											type="radio"
-											id="radio-btn-radio"
 											name="delimitation"
 											value="radio"
 											@click="setPreliminaryFilter(delimitationOptions.radio)"
@@ -111,9 +111,9 @@
 									</label>
 								</div>
 								<button
-									:disabled="debounceMechanic ? true : false"
-									ref="searchButton"
 									id="searchButton"
+									ref="searchButton"
+									:disabled="debounceMechanic ? true : false"
 									type="submit"
 									aria-label="search"
 									class="btn btn-primary btn-icon"

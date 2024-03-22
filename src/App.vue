@@ -13,12 +13,12 @@
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu
-			:vueRouting="true"
+			:vue-routing="true"
 			:locale="currentLocale"
 		></kb-menu>
 		<div
-			class="wipe"
 			ref="wipe"
+			class="wipe"
 		>
 			<img
 				title="Royal Danish Library"
@@ -32,9 +32,9 @@
 			<transition
 				:name="transitionName || 'fade'"
 				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				mode="out-in"
 				@before-leave="onBeforeLeave(transitionName)"
 				@before-enter="onBeforeEnter(transitionName)"
-				mode="out-in"
 			>
 				<component :is="Component" />
 			</transition>

@@ -1,6 +1,9 @@
 <template>
 	<footer class="global-footer">
-		<nav v-if="currentLocaleMessages !== undefined" class="container">
+		<nav
+			v-if="currentLocaleMessages !== undefined"
+			class="container"
+		>
 			<div class="row">
 				<div class="column">
 					<h2>{{ currentLocaleMessages.column1.title }}</h2>
@@ -39,26 +42,54 @@
 
 				<div class="column">
 					<div class="rdl-logo rdl-logo-inverted">
-				<span class="sr-only">{{ t('footer.contactInfo') }}</span>
-			</div>
-				<ul>
-					<li
+						<span class="sr-only">{{ t('footer.contactInfo') }}</span>
+					</div>
+					<ul>
+						<li
 							v-for="(link, index) in currentLocaleMessages.column4.links"
 							:key="index"
 						>
-						<a v-if="link.link":href="link.link">{{ link.title }}</a>
-						<span v-else>{{ link.title }}</span>
-					</li>
-				</ul>
-				<div class="some-icons">
-					<ul>
-						<li><a class="rdl-some-link" :href="t('some.facebook.link')"><i class="rdl-icons">rdl_facebook</i><span class="sr-only">{{ t('some.facebook.title') }}</span></a></li>
-						<li><a class="rdl-some-link" :href="t('some.instagram.link')"><i class="rdl-icons">rdl_instagram</i><span class="sr-only">{{ t('some.instagram.title') }}</span></a></li>
-						<li><a class="rdl-some-link" :href="t('some.linkedin.link')"><i class="rdl-icons">rdl_linkedin</i><span class="sr-only">{{ t('some.linkedin.title') }}</span></a></li>
+							<a
+								v-if="link.link"
+								:href="link.link"
+							>
+								{{ link.title }}
+							</a>
+							<span v-else>{{ link.title }}</span>
+						</li>
 					</ul>
-			</div>
-
-			</div>
+					<div class="some-icons">
+						<ul>
+							<li>
+								<a
+									class="rdl-some-link"
+									:href="t('some.facebook.link')"
+								>
+									<i class="rdl-icons">rdl_facebook</i>
+									<span class="sr-only">{{ t('some.facebook.title') }}</span>
+								</a>
+							</li>
+							<li>
+								<a
+									class="rdl-some-link"
+									:href="t('some.instagram.link')"
+								>
+									<i class="rdl-icons">rdl_instagram</i>
+									<span class="sr-only">{{ t('some.instagram.title') }}</span>
+								</a>
+							</li>
+							<li>
+								<a
+									class="rdl-some-link"
+									:href="t('some.linkedin.link')"
+								>
+									<i class="rdl-icons">rdl_linkedin</i>
+									<span class="sr-only">{{ t('some.linkedin.title') }}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</nav>
 	</footer>
@@ -80,7 +111,7 @@ export default defineComponent({
 
 		watch(
 			() => locale.value,
-				(newLocale: string, prevLocale: string) => {
+			(newLocale: string, prevLocale: string) => {
 				if (newLocale !== prevLocale) {
 					currentLocaleMessages.value = toRaw(messages.value[locale.value].footer) as FooterType;
 				}
