@@ -159,6 +159,9 @@ temporary styling until patterns from design system are implemented
 	color:white;
 	align-items: center;
   justify-content: center;
+	text-align: center;
+	padding:10px;
+	box-sizing: border-box;
 }
 
 .back-link a {

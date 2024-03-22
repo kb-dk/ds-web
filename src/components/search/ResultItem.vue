@@ -51,7 +51,7 @@
 					</div>
 					<div class="placeholder-s">
 						<span
-							v-for="n in 16"
+							v-for="n in 15"
 							:key="n"
 							ref="placeholderSummaryRefs"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"

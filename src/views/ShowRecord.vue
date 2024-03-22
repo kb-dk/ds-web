@@ -126,10 +126,14 @@ export default defineComponent({
 	margin-left: auto;
 	box-sizing: border-box;
 	min-height:100vh;
+	width:100%;
 }
 
 .record-container {
 	width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .record-data {
