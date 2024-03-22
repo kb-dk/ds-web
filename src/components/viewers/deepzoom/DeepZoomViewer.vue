@@ -2,9 +2,9 @@
 	<div>
 		<!--TODO: remember to create unique ID for Openseadragon element so component reuse doesn't mess up -->
 		<div
-			class="deep-zoom-viewer"
-			ref="deepZoom"
 			id="deepZoomViewer"
+			ref="deepZoom"
+			class="deep-zoom-viewer"
 		></div>
 	</div>
 </template>
@@ -16,17 +16,6 @@ import { defineComponent, onMounted, ref } from 'vue';
 export default defineComponent({
 	name: 'DeepZoomViewer',
 	components: {},
-	data() {
-		return {
-			viewer: null,
-			options: {
-				id: '',
-				prefixUrl: 'https://openseadragon.github.io/openseadragon/images/',
-				constrainDuringPan: true,
-				showNavigator: true,
-			},
-		};
-	},
 
 	setup() {
 		const deepZoom = ref<HTMLElement | null>(null);
@@ -48,6 +37,17 @@ export default defineComponent({
 			}
 		});
 		return { deepZoom };
+	},
+	data() {
+		return {
+			viewer: null,
+			options: {
+				id: '',
+				prefixUrl: 'https://openseadragon.github.io/openseadragon/images/',
+				constrainDuringPan: true,
+				showNavigator: true,
+			},
+		};
 	},
 });
 </script>

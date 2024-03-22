@@ -5,8 +5,8 @@
 			mode="out-in"
 		>
 			<div
-				class="container"
 				v-if="!searchResultStore.loading && resultdata"
+				class="container"
 			>
 				<div class="information">
 					<router-link
@@ -37,16 +37,16 @@
 				></div>
 				<div class="information">
 					<div
-						class="placeholder-t"
 						ref="placeholderTitleRef"
+						class="placeholder-t"
 						:style="`width:${Math.random() * 30 + 30 + '%'}`"
 					></div>
 					<div class="placeholder-w">
 						<span
-							ref="placeholderSubtitleRefs"
-							:style="`width:${Math.random() * 10 + 10 + '%'}`"
 							v-for="n in 2"
+							ref="placeholderSubtitleRefs"
 							:key="n"
+							:style="`width:${Math.random() * 10 + 10 + '%'}`"
 						></span>
 					</div>
 					<div class="placeholder-s">
@@ -77,10 +77,30 @@ export default defineComponent({
 	name: 'ResultItem',
 	components: {},
 	props: {
-		resultdata: { type: Object as PropType<GenericSearchResultType> },
-		duration: { type: String },
-		starttime: { type: String },
-		placeholder: { type: String },
+		resultdata: {
+			type: Object as PropType<GenericSearchResultType>,
+			default() {
+				return {};
+			},
+		},
+		duration: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		starttime: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		placeholder: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
@@ -299,15 +319,15 @@ export default defineComponent({
 
 .placeholder-s {
 	height: 60px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 5px 0px;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
-  margin-left: -3px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 5px 0px;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
+	margin-left: -3px;
 }
 
 .placeholder-s span {

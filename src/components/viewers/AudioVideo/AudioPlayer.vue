@@ -1,14 +1,14 @@
 <template>
 	<div class="mobile-edge edge top"></div>
 	<div
-		class="audio-player"
 		v-if="src"
+		class="audio-player"
 	>
 		<media-player
+			ref="player"
 			class="player"
 			title=""
 			:src="src"
-			ref="player"
 			view-type="audio"
 		>
 			<media-provider />
@@ -28,12 +28,16 @@ import 'vidstack/player/ui';
 import 'vidstack/player/styles/default/theme.css';
 import 'vidstack/player/styles/default/layouts/audio.css';
 
-
 export default defineComponent({
 	name: 'AudioPlayer',
 	components: {},
 	props: {
-		audioUrl: String,
+		audioUrl: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup(props) {
 		const player = ref<MediaPlayerElement>();
@@ -56,7 +60,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .audio-player {
 	background-color: black;
 	display: flex;

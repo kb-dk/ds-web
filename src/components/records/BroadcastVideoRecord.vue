@@ -1,7 +1,15 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer v-if="recordData.contentUrl" :video-url="recordData.contentUrl"></VideoPlayer>
-		<div class="no-streaming" v-else>{{  t('record.missingStreamingUrl') }}</div>
+		<VideoPlayer
+			v-if="recordData.contentUrl"
+			:video-url="recordData.contentUrl"
+		></VideoPlayer>
+		<div
+			v-else
+			class="no-streaming"
+		>
+			{{ t('record.missingStreamingUrl') }}
+		</div>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -22,8 +30,8 @@
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
-								:startDate="recordData.startTime"
-								:endDate="recordData.endTime"
+								:start-date="recordData.startTime"
+								:end-date="recordData.endTime"
 							></duration>
 						</span>
 					</div>
@@ -104,6 +112,13 @@ import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
+
+	components: {
+		VideoPlayer,
+		Duration,
+		GridDisplay,
+	},
+
 	props: {
 		recordData: {
 			type: Object as PropType<BroadcastRecordType>,
@@ -112,13 +127,12 @@ export default defineComponent({
 		moreLikeThisRecords: {
 			type: Array as PropType<GenericSearchResultType[]>,
 			required: false,
+			default() {
+				return [];
+			},
 		},
 	},
-	components: {
-		VideoPlayer,
-		Duration,
-		GridDisplay,
-	},
+
 	setup() {
 		const lastPath = ref('');
 		const router = useRouter();
@@ -156,13 +170,13 @@ temporary styling until patterns from design system are implemented
 }
 
 .no-streaming {
-	width:100%;
-	background-color:black;
-	display:flex;
-	height:300px;
-	color:white;
+	width: 100%;
+	background-color: black;
+	display: flex;
+	height: 300px;
+	color: white;
 	align-items: center;
-  justify-content: center;
+	justify-content: center;
 }
 
 .get-link {

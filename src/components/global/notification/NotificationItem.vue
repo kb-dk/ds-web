@@ -1,16 +1,16 @@
 <template>
 	<li
+		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
-		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 	>
 		<h3>
 			<span class="title-span">{{ notification.key ? $t(notification.title) : notification.title }}</span>
 			<button
-				class="close"
 				v-if="notification.userClose"
-				@click="close(notification)"
+				class="close"
 				:aria-label="$t('notification.close')"
+				@click="close(notification)"
 			>
 				&times;
 				<div class="close-border"></div>
@@ -18,8 +18,8 @@
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
-			ref="countdown"
 			v-if="!notification.userClose"
+			ref="countdown"
 			class="timer"
 		></div>
 	</li>
@@ -32,10 +32,6 @@ import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NotificationItem',
-	data: () => ({
-		duration: { time: 2, delay: 0 },
-		notificationAnimation: null as null | GSAPTween,
-	}),
 
 	props: {
 		notification: { type: Object, required: true },
@@ -45,6 +41,11 @@ export default defineComponent({
 		const { t } = useI18n();
 		return { t };
 	},
+	data: () => ({
+		duration: { time: 2, delay: 0 },
+		//had to do the gsap.core.Tween hack here to get the typing working - I have no idea why
+		notificationAnimation: null as null | gsap.core.Tween,
+	}),
 	mounted() {
 		const countdown: HTMLDivElement = this.$refs.countdown as HTMLDivElement;
 

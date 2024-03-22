@@ -4,7 +4,7 @@ module.exports = {
 		node: true,
 		es2022: true,
 	},
-	extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/typescript/recommended'],
+	extends: ['plugin:vue/vue3-recommended', 'eslint:recommended', '@vue/typescript/recommended', 'prettier'],
 	plugins: ['prettier'],
 	parserOptions: {
 		ecmaVersion: 2020,
@@ -25,13 +25,7 @@ module.exports = {
 			},
 		},
 		{
-			files: '*.html',
-			options: {
-				parser: 'html',
-			},
-		},
-		{
-			files: ['vue.config.js'],
+			files: ['vite.config.mts'],
 			rules: {
 				'@typescript-eslint/no-var-requires': 'off',
 			},

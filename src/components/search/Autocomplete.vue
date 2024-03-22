@@ -1,20 +1,20 @@
 <template>
 	<div class="autocomplete">
 		<ul
+			ref="autocomplete"
 			role="listbox"
 			class="autocomplete-list"
 			aria-label="autocomplete list"
-			ref="autocomplete"
 		>
 			<li
-				:key="i"
 				v-for="(item, i) in searchResultStore.autocompleteResult"
+				:key="i"
 				role="option"
 				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 			>
 				<button
-					v-html="setBold(searchResultStore.currentQuery || '', item?.term)"
 					@click="doAutocompleteSearch(item?.term)"
+					v-html="setBold(searchResultStore.currentQuery || '', item?.term)"
 				></button>
 			</li>
 		</ul>

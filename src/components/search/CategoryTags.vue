@@ -5,14 +5,14 @@
 			<div>
 				<TransitionGroup name="result">
 					<div
+						v-for="(singleCategory, index) in currentCategoryNr as unknown as FacetPair[]"
+						ref="listItems"
+						:key="index + 'category'"
 						:class="
 							filterExists('categories', categoryFacets[index]?.title) && !searchResultStore.loading
 								? 'tag active'
 								: 'tag'
 						"
-						ref="listItems"
-						v-for="(singleCategory, index) in currentCategoryNr as unknown as FacetPair[]"
-						:key="index + 'category'"
 					>
 						<router-link
 							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"

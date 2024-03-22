@@ -1,8 +1,8 @@
 <template>
 	<div class="sort">
 		<button
-			@click="revealSortingOptions"
 			:class="searchResultStore.loading ? 'sort-box disabled' : 'sort-box'"
+			@click="revealSortingOptions"
 		>
 			<span class="btn-text">
 				<span ref="currentSort">

@@ -1,9 +1,9 @@
 <template>
 	<div class="">
 		<div
-			class=""
 			v-for="(creator, index) in recordData.creator"
 			:key="index"
+			class=""
 		>
 			{{ creator.name }},
 			{{ creator.familyName }}

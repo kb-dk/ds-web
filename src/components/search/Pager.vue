@@ -1,10 +1,10 @@
 <template>
 	<div :class="searchResultStore.loading ? 'pager disabled' : 'pager'">
 		<button
-			@click="prevPage"
 			:disabled="currentPageRef === 1"
 			:title="$t('search.previousPage')"
 			:aria-label="$t('search.previousPage')"
+			@click="prevPage"
 		>
 			<i
 				class="material-icons"
@@ -18,26 +18,26 @@
 			:key="index"
 		>
 			<span
-				class="dots"
 				v-if="pageNumber === '...'"
+				class="dots"
 			>
 				{{ pageNumber }}
 			</span>
 			<button
 				v-else
-				@click="goToPage(pageNumber as number)"
 				:class="{ active: pageNumber === currentPageRef }"
 				:title="`${$t('search.page')} ${pageNumber}`"
 				:aria-label="$t('search.goToPage', Number(pageNumber))"
+				@click="goToPage(pageNumber as number)"
 			>
 				<span>{{ pageNumber }}</span>
 			</button>
 		</span>
 		<button
-			@click="nextPage"
 			:disabled="currentPageRef === totalPages"
 			:title="$t('search.nextPage')"
 			:aria-label="$t('search.nextPage')"
+			@click="nextPage"
 		>
 			<i
 				class="material-icons"

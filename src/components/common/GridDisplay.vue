@@ -21,6 +21,13 @@ import '@/components/common/wc-spot-item';
 export default defineComponent({
 	name: 'GridDisplay',
 
+	props: {
+		rowNr: { type: Number, required: true },
+		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
+		spotNr: { type: Number, required: true },
+		draggable: { type: Boolean, required: false },
+	},
+
 	data() {
 		return {
 			isDown: false,
@@ -30,13 +37,6 @@ export default defineComponent({
 			linkItems: null as null | NodeList,
 			move: false,
 		};
-	},
-
-	props: {
-		rowNr: { type: Number, required: true },
-		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
-		spotNr: { type: Number, required: true },
-		draggable: { type: Boolean, required: false },
 	},
 
 	mounted() {
