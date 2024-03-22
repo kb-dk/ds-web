@@ -169,9 +169,12 @@ h2 {
 }
 
 .global-footer {
+	width: 100%;
 	background-color: #002e70;
 	color: white;
 	padding: 36px 0 40px;
+	position: relative;
+	bottom: 0px;
 }
 
 .global-footer li {
