@@ -35,7 +35,7 @@ export default defineComponent({
 
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script')
-      kalturaScript.setAttribute('src', 'https://api.kaltura.nordu.net/p/380/sp/38000/embedIframeJs/uiconf_id/23453107/partner_id/380')
+      kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL)
       kalturaScript.setAttribute('id', 'kaltura-script')
 			kalturaScript.setAttribute('type', 'application/javascript')
 			kalturaScript.id = "kaltura-player-script";
