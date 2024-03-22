@@ -1,4 +1,11 @@
 {
+   "app": {
+      "titles": {
+         "frontpage": "DR Archive",
+         "suffix": " - DR Archive",
+         "search":" Search for"
+      }
+   },
   "search":{
      "searchbtn":"Search",
      "hitcount": "{n} result fund for | {n} results found for",

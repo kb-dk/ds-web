@@ -1,4 +1,11 @@
 {
+   "app": {
+      "titles": {
+         "frontpage": "DR Arkiv",
+         "suffix": " - DR Arkiv",
+         "search":" Søgning på "
+      }
+   },
   "search":{
      "searchbtn":"Søg",
      "hitcount": "{n} resultat fundet for | {n} resultater fundet for",

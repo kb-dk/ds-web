@@ -234,7 +234,9 @@ export default defineComponent({
 
 		const setPreliminaryFilter = (value: string) => {
 			preliminaryFilter.value = value;
-			search();
+			if (searchResultStore.currentQuery !== '' && searchResultStore.currentQuery !== undefined) {
+				search();
+			}
 		};
 
 		return {
