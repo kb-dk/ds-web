@@ -1,14 +1,12 @@
 <template>
 	<div class="app">
 		<div
-			v-if="!isProduction()"
+			v-if="isDevelopment()"
 			class="test-env"
 		>
-			<span class="w">⚠</span>
 			This is a
 			<span>{{ returnCurrentEnv() }}</span>
 			environment
-			<span class="w">⚠</span>
 		</div>
 		<Notifier></Notifier>
 		<Spinner></Spinner>
@@ -174,8 +172,8 @@ export default defineComponent({
 			}
 		});
 
-		const isProduction = () => {
-			return import.meta.env.MODE === 'production';
+		const isDevelopment = () => {
+			return import.meta.env.MODE !== 'production';
 		};
 
 		const returnCurrentEnv = () => {
@@ -202,7 +200,7 @@ export default defineComponent({
 			getImgServerSrcURL,
 			onBeforeEnter,
 			onBeforeLeave,
-			isProduction,
+			isDevelopment,
 			returnCurrentEnv,
 		};
 	},
@@ -240,19 +238,17 @@ export default defineComponent({
 	position: sticky;
 	height: 30px;
 	line-height: 30px;
-	font-size: 20px;
-	color: #002e70;
+	font-size: 16px;
+	color: white;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	z-index: 1000;
 	text-align: center;
-	background-image: radial-gradient(circle 674px at 50% 50%, rgba(139, 186, 244, 1) 3.4%, rgba(15, 51, 92, 1) 86.6%);
+	background:#002e70; 
 
-	.w,
 	span {
-		color: red;
-		font-weight: bold;
+		border-bottom:1px solid white;
 	}
 }
 
