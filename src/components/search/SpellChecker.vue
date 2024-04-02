@@ -42,5 +42,6 @@ export default defineComponent({
 .spell-check-box {
 	padding: 20px;
 	margin-top: 20px;
+	margin-bottom: 50px;
 }
 </style>
