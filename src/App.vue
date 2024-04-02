@@ -279,23 +279,23 @@ export default defineComponent({
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
-	position:relative;
+	position: relative;
 }
 
 .from-record-to-search-leave-to {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
-	position:relative;
+	position: relative;
 }
 .from-record-to-search-leave-active,
 .from-search-to-record-enter-active {
-	z-index:1000;
+	z-index: 1000;
 }
 
 .from-search-to-record-enter-active,
 .from-search-to-record-leave-active {
-	transition: all .25s linear;
+	transition: all 0.25s linear;
 	position: relative;
 }
 
@@ -417,7 +417,7 @@ nav {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-    align-items: center;	
+		align-items: center;
 	}
 }
 

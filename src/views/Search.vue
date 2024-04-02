@@ -80,7 +80,7 @@ export default defineComponent({
 		SearchOverhead,
 		PortalContent,
 		NoHits,
-		Footer
+		Footer,
 	},
 
 	setup() {
