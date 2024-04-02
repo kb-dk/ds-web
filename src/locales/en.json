@@ -51,6 +51,7 @@
    },
    "footer": {
       "contactInfo":"Contact information",
+      "cookie":"Cookie settings",
       "column1": {
          "title": "Shortcuts",
          "links": {
@@ -123,10 +124,6 @@
             "6": {
                "title": "Service status",
                "link": "https://www.kb.dk/en/service-status"
-            },
-            "7": {
-               "title": "Cookie Settings",
-               "link": ""
             }
          }
       },

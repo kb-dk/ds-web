@@ -1,14 +1,16 @@
 <template>
 	<div class="broadcast-record">
-		<VideoPlayer
-			v-if="recordData.contentUrl"
-			:video-url="recordData.contentUrl"
-		></VideoPlayer>
-		<div
-			v-else
-			class="no-streaming"
-		>
-			{{ t('record.missingStreamingUrl') }}
+		<div class="video-container">
+			<VideoPlayer
+				v-if="recordData.contentUrl"
+				:video-url="recordData.contentUrl"
+			></VideoPlayer>
+			<div
+				v-else
+				class="no-streaming"
+			>
+				{{ t('record.missingStreamingUrl') }}
+			</div>
 		</div>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
@@ -57,14 +59,14 @@
 				v-if="lastPath"
 				:to="lastPath"
 			>
-				<span class="material-icons">chevron_left</span>
+				<span class="material-icons offset">chevron_left</span>
 				Tilbage
 			</router-link>
 			<router-link
 				v-else
 				to="/"
 			>
-				<span class="material-icons">chevron_left</span>
+				<span class="material-icons offset">chevron_left</span>
 				Til forsiden
 			</router-link>
 		</div>
@@ -169,6 +171,11 @@ temporary styling until patterns from design system are implemented
 	text-decoration: none;
 }
 
+.video-container {
+	min-height: 300px;
+	width: 100%;
+}
+
 .no-streaming {
 	width: 100%;
 	background-color: black;
@@ -177,6 +184,9 @@ temporary styling until patterns from design system are implemented
 	color: white;
 	align-items: center;
 	justify-content: center;
+	text-align: center;
+	padding: 10px;
+	box-sizing: border-box;
 }
 
 .get-link {
@@ -273,6 +283,11 @@ temporary styling until patterns from design system are implemented
 
 .divider.darkblue {
 	background-color: #002e70;
+}
+
+.offset {
+	position: relative;
+	top: 6px;
 }
 
 .related-content {

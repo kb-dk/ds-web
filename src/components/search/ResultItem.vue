@@ -51,7 +51,7 @@
 					</div>
 					<div class="placeholder-s">
 						<span
-							v-for="n in 16"
+							v-for="n in 15"
 							:key="n"
 							ref="placeholderSummaryRefs"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
@@ -127,17 +127,19 @@ export default defineComponent({
 					.then((thumbServiceResponse) => {
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
+						imageDataObj.imgOption = 'cover';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
+						imageDataObj.imgOption = 'contain';
 						imageDataObj.imgSrc = undefined;
 						imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 						imageData.value = JSON.stringify(imageDataObj);
 					});
 			} else {
-				imageDataObj.imgSrc = undefined;
 				imageDataObj.imgOption = 'contain';
+				imageDataObj.imgSrc = undefined;
 				imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
 				imageData.value = JSON.stringify(imageDataObj);
 			}

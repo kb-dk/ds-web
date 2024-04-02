@@ -37,6 +37,7 @@
 						>
 							<a :href="link.link">{{ link.title }}</a>
 						</li>
+						<li><a href="javascript:void(0)" id="csconsentlink">{{ t('footer.cookie') }}</a></li>
 					</ul>
 				</div>
 
@@ -199,9 +200,12 @@ h2 {
 }
 
 .global-footer {
+	width: 100%;
 	background-color: #002e70;
 	color: white;
 	padding: 36px 0 40px;
+	position: relative;
+	bottom: 0px;
 }
 
 .global-footer li {

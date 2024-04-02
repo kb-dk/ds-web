@@ -1,25 +1,28 @@
 <template>
-	<div class="container top-offset">
-		<div class="record-data">
-			<!-- TODO handle empty response scenario -->
-			<div v-if="recordData">
-				<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
-					<BroadcastVideoRecordMetadataView
-						:more-like-this-records="moreLikeThisRecords"
-						:record-data="recordData as BroadcastRecordType"
-					/>
-				</div>
-				<div v-if="recordType === 'AudioObject'">
-					<BroadcastAudioRecordMetadataView
-						:more-like-this-records="moreLikeThisRecords"
-						:record-data="recordData as BroadcastRecordType"
-					/>
-				</div>
-				<div v-else>
-					<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
+	<div class="record-container">
+		<div class="container top-offset">
+			<div class="record-data">
+				<!-- TODO handle empty response scenario -->
+				<div v-if="recordData">
+					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
+						<BroadcastVideoRecordMetadataView
+							:more-like-this-records="moreLikeThisRecords"
+							:record-data="recordData as BroadcastRecordType"
+						/>
+					</div>
+					<div v-if="recordType === 'AudioObject'">
+						<BroadcastAudioRecordMetadataView
+							:more-like-this-records="moreLikeThisRecords"
+							:record-data="recordData as BroadcastRecordType"
+						/>
+					</div>
+					<div v-else>
+						<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
+					</div>
 				</div>
 			</div>
 		</div>
+		<Footer />
 	</div>
 </template>
 
@@ -30,7 +33,7 @@ import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
 import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVideoRecord.vue';
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
-
+import Footer from '@/components/global/nav/Footer.vue';
 import { useI18n } from 'vue-i18n';
 import { AxiosError } from 'axios';
 
@@ -47,6 +50,7 @@ export default defineComponent({
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
+		Footer
 	},
 
 	setup() {
@@ -92,6 +96,8 @@ export default defineComponent({
 		};
 
 		onMounted(async () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+
 			const route = useRoute();
 			const id = route.params.id;
 			//TODO handle array of ids if needed
@@ -119,6 +125,15 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+	min-height:100vh;
+	width:100%;
+}
+
+.record-container {
+	width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .record-data {

@@ -40,7 +40,6 @@
 			</transition>
 		</router-view>
 	</div>
-	<Footer />
 </template>
 
 <script lang="ts">
@@ -259,7 +258,6 @@ export default defineComponent({
 
 .from-record-to-search-enter-active,
 .from-record-to-search-leave-active {
-	position: absolute;
 	transition: all 0.25s linear;
 }
 
@@ -267,54 +265,66 @@ export default defineComponent({
 	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
+	position: relative;
 }
 
 .from-record-to-search-enter-to {
 	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-record-to-search-leave-from {
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
+	position:relative;
 }
 
 .from-record-to-search-leave-to {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
+	position:relative;
+}
+.from-record-to-search-leave-active,
+.from-search-to-record-enter-active {
+	z-index:1000;
 }
 
 .from-search-to-record-enter-active,
 .from-search-to-record-leave-active {
-	position: absolute;
-	transition: all 0.25s linear;
+	transition: all .25s linear;
+	position: relative;
 }
 
 .from-search-to-record-enter-from {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
+	position: absolute;
 }
 
 .from-search-to-record-enter-to {
 	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-search-to-record-leave-from {
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-search-to-record-leave-to {
 	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
+	position: relative;
 }
 
 /* This probably shouldn't be here. We need a place for global styles at some point i guess */
@@ -398,15 +408,16 @@ nav {
 
 .content {
 	position: relative;
-	//height: 100vh;
 	background-color: white;
-	//z-index: 2;
+	//z-index: 2
 }
 
 @media (min-width: 1280px) {
 	.content {
 		display: flex;
 		justify-content: center;
+		flex-direction: column;
+    align-items: center;	
 	}
 }
 
