@@ -27,7 +27,7 @@ export default defineComponent({
 			kWidget.thumbEmbed(
 						{ targetId: "k-player", 
 							wid: "_380", 
-							uiconf_id: "23453107", 
+							uiconf_id: "23454104", 
 							flashvars:{"referenceId": props.fileId}
 						});
 					console.log(kWidget)
