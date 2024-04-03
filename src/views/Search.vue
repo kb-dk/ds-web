@@ -14,8 +14,8 @@
 		>
 			<!-- This is for the search results / facets / did-you-mean / pager -->
 			<div
-				key="1"
 				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+				key="1"
 			>
 				<SearchOverhead />
 				<div class="container">
@@ -35,17 +35,17 @@
 						</div>
 						<Pagination
 							v-show="searchResultStore.searchResult.length > 0"
-							:itemsPerPage="itemsPerPage"
-							:totalHits="searchResultStore.numFound"
-							:numPagesToShow="numPagesToShow"
+							:items-per-page="itemsPerPage"
+							:total-hits="searchResultStore.numFound"
+							:num-pages-to-show="numPagesToShow"
 						/>
 					</div>
 				</div>
 			</div>
 			<!-- This for the portal content when no search has been fired -->
 			<div
-				key="2"
 				v-else
+				key="2"
 			>
 				<PortalContent />
 			</div>
@@ -80,7 +80,7 @@ export default defineComponent({
 		SearchOverhead,
 		PortalContent,
 		NoHits,
-		Footer
+		Footer,
 	},
 
 	setup() {
@@ -131,12 +131,10 @@ export default defineComponent({
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
 				}
 				searchResultStore.getSearchResults(route.query.q as string);
-				document.title = t('app.titles.search') + '"' +  route.query.q + '"' + t('app.titles.suffix') as string;
-			}
-			else if(route.query.q === undefined) {
+				document.title = (t('app.titles.search') + '"' + route.query.q + '"' + t('app.titles.suffix')) as string;
+			} else if (route.query.q === undefined) {
 				searchResultStore.resetSearch();
 				gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
-
 			}
 		});
 
@@ -170,7 +168,7 @@ export default defineComponent({
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.getSearchResults(route.query.q as string);
-					document.title = t('app.titles.search') + '"' +  route.query.q + '"' + t('app.titles.suffix') as string;
+					document.title = (t('app.titles.search') + '"' + route.query.q + '"' + t('app.titles.suffix')) as string;
 				}
 				if (route.query.q === undefined) {
 					document.title = t('app.titles.frontpage') as string;

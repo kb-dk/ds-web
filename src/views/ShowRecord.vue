@@ -50,7 +50,7 @@ export default defineComponent({
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
-		Footer
+		Footer,
 	},
 
 	setup() {
@@ -107,8 +107,8 @@ export default defineComponent({
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
-				console.log(recordData.value,"heres the record!");
-				document.title = recordData.value['name'] + t('app.titles.suffix') as string;
+				console.log(recordData.value, 'heres the record!');
+				document.title = (recordData.value['name'] + t('app.titles.suffix')) as string;
 			}
 			if (moreLikeThis) {
 				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
@@ -126,15 +126,15 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
-	min-height:100vh;
-	width:100%;
+	min-height: 100vh;
+	width: 100%;
 }
 
 .record-container {
-	width:100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .record-data {

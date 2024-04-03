@@ -6,16 +6,16 @@
 		<div v-if="searchResultStore.searchResult.length > 0">
 			<div v-if="!searchResultStore.loading">
 				<div
-					class="hit-count"
 					v-if="hitCount > 0 || noHits"
+					class="hit-count"
 				>
 					<span v-if="query !== ''">{{ $t('search.hitcount', hitCount) }} "{{ query }}"</span>
 					<span v-else></span>
 				</div>
 			</div>
 			<div
-				class="loading-placeholder"
 				v-else
+				class="loading-placeholder"
 			></div>
 		</div>
 	</Transition>

@@ -1,7 +1,15 @@
 <template>
 	<div class="broadcast-record">
-		<AudioPlayer v-if="recordData.contentUrl" :audio-url="recordData.contentUrl"></AudioPlayer>
-		<div class="no-streaming" v-else>{{  t('record.missingStreamingUrl') }}</div>
+		<AudioPlayer
+			v-if="recordData.contentUrl"
+			:audio-url="recordData.contentUrl"
+		></AudioPlayer>
+		<div
+			v-else
+			class="no-streaming"
+		>
+			{{ t('record.missingStreamingUrl') }}
+		</div>
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
@@ -22,8 +30,8 @@
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
-								:startDate="recordData.startTime"
-								:endDate="recordData.endTime"
+								:start-date="recordData.startTime"
+								:end-date="recordData.endTime"
 							></duration>
 						</span>
 					</div>
@@ -104,6 +112,13 @@ import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
+
+	components: {
+		AudioPlayer,
+		Duration,
+		GridDisplay,
+	},
+
 	props: {
 		recordData: {
 			type: Object as PropType<BroadcastRecordType>,
@@ -112,13 +127,12 @@ export default defineComponent({
 		moreLikeThisRecords: {
 			type: Array as PropType<GenericSearchResultType[]>,
 			required: false,
+			default() {
+				return [];
+			},
 		},
 	},
-	components: {
-		AudioPlayer,
-		Duration,
-		GridDisplay,
-	},
+
 	setup() {
 		const lastPath = ref('');
 		const router = useRouter();
@@ -152,15 +166,15 @@ temporary styling until patterns from design system are implemented
 }
 
 .no-streaming {
-	width:100%;
-	background-color:black;
-	display:flex;
-	height:300px;
-	color:white;
+	width: 100%;
+	background-color: black;
+	display: flex;
+	height: 300px;
+	color: white;
 	align-items: center;
-  justify-content: center;
+	justify-content: center;
 	text-align: center;
-	padding:10px;
+	padding: 10px;
 	box-sizing: border-box;
 }
 

@@ -5,9 +5,9 @@
 	>
 		<TransitionGroup name="result">
 			<div
-				class="hit-box"
 				v-for="(res, index) in resultNr"
 				:key="index"
+				class="hit-box"
 			>
 				<ResultItem
 					:resultdata="searchResults[index]"
@@ -61,7 +61,7 @@ export default defineComponent({
 		};
 
 		const getPlaceholderImage = () => {
-			return new URL(`@/assets/images/No-Image-Placeholder.svg.png`, import.meta.url).href; 
+			return new URL(`@/assets/images/No-Image-Placeholder.svg.png`, import.meta.url).href;
 		};
 		const getAltTxt = () => {
 			return 'license';

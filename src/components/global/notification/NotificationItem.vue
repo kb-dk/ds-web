@@ -1,16 +1,16 @@
 <template>
 	<li
+		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
-		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 	>
 		<h3>
 			<span class="title-span">{{ notification.key ? $t(notification.title) : notification.title }}</span>
 			<button
-				class="close"
 				v-if="notification.userClose"
-				@click="close(notification)"
+				class="close"
 				:aria-label="$t('notification.close')"
+				@click="close(notification)"
 			>
 				&times;
 				<div class="close-border"></div>
@@ -18,8 +18,8 @@
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
-			ref="countdown"
 			v-if="!notification.userClose"
+			ref="countdown"
 			class="timer"
 		></div>
 	</li>
@@ -42,7 +42,8 @@ export default defineComponent({
 		const duration = { time: 2 };
 		const countdown = ref<HTMLDivElement | null>(null);
 
-		let notificationAnimation = null as null | GSAPTween;
+		//had to do the gsap.core.Tween hack here to get the typing working - I have no idea why
+		let notificationAnimation: null | gsap.core.Tween;
 
 		onMounted(() => {
 			if (!props.notification.userClose) {

@@ -1,8 +1,8 @@
 <template>
 	<div class="spell-check-box">
 		<div
-			class="spell-check-query"
 			v-if="spellCheck?.collations && spellCheck.collations.length > 0"
+			class="spell-check-query"
 		>
 			<router-link :to="{ name: 'Home', query: { q: spellCheck?.collations[1].collationQuery, start: 0 } }">
 				{{ $t('search.didYouMean', { spellCheckQuery: spellCheck?.collations[1].collationQuery }) }}
@@ -24,7 +24,12 @@ import { SpellCheckType } from '@/types/SpellCheckType';
 export default defineComponent({
 	name: 'SpellChecker',
 	props: {
-		spellCheck: { type: Object as PropType<SpellCheckType> },
+		spellCheck: {
+			type: Object as PropType<SpellCheckType>,
+			default() {
+				return {};
+			},
+		},
 	},
 });
 </script>

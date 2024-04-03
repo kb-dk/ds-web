@@ -11,12 +11,12 @@
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu
-			:vueRouting="true"
+			:vue-routing="true"
 			:locale="currentLocale"
 		></kb-menu>
 		<div
-			class="wipe"
 			ref="wipe"
+			class="wipe"
 		>
 			<img
 				title="Royal Danish Library"
@@ -30,9 +30,9 @@
 			<transition
 				:name="transitionName || 'fade'"
 				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				mode="out-in"
 				@before-leave="onBeforeLeave(transitionName)"
 				@before-enter="onBeforeEnter(transitionName)"
-				mode="out-in"
 			>
 				<component :is="Component" />
 			</transition>
@@ -246,10 +246,10 @@ export default defineComponent({
 	width: 100%;
 	z-index: 1000;
 	text-align: center;
-	background:#002e70; 
+	background: #002e70;
 
 	span {
-		border-bottom:1px solid white;
+		border-bottom: 1px solid white;
 	}
 }
 
@@ -276,23 +276,23 @@ export default defineComponent({
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
-	position:relative;
+	position: relative;
 }
 
 .from-record-to-search-leave-to {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
-	position:relative;
+	position: relative;
 }
 .from-record-to-search-leave-active,
 .from-search-to-record-enter-active {
-	z-index:1000;
+	z-index: 1000;
 }
 
 .from-search-to-record-enter-active,
 .from-search-to-record-leave-active {
-	transition: all .25s linear;
+	transition: all 0.25s linear;
 	position: relative;
 }
 
@@ -414,7 +414,7 @@ nav {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-    align-items: center;	
+		align-items: center;
 	}
 }
 

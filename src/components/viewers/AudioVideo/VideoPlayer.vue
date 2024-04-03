@@ -2,14 +2,14 @@
 	<!-- 	<div class="mobile-edge edge top"></div>
  -->
 	<div
-		class="video-player"
 		v-if="src"
+		class="video-player"
 	>
 		<media-player
+			ref="player"
 			class="player"
 			title=""
 			:src="src"
-			ref="player"
 		>
 			<media-provider></media-provider>
 			<media-video-layout></media-video-layout>
@@ -29,13 +29,16 @@ import 'vidstack/player/ui';
 import 'vidstack/player/styles/default/theme.css';
 import 'vidstack/player/styles/default/layouts/video.css';
 
-
-
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
-		videoUrl: String,
+		videoUrl: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup(props) {
 		const player = ref<MediaPlayerElement>();
