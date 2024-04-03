@@ -67,7 +67,7 @@ export default defineComponent({
 		const wipe = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const route = useRoute();
-		const { locale } = useI18n({ useScope: 'global' });
+		const { locale, t } = useI18n({ useScope: 'global' });
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -155,6 +155,7 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
+			document.title = t('app.titles.frontpage') as string;
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
 			const storedLocale = LocalStorageWrapper.get('locale') as string;
