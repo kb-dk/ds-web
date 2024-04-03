@@ -5,7 +5,6 @@ import router from './router';
 import { provideErrorManager } from '@/components/global/error-handling/error-manager';
 
 import '@/assets/fonts/iconfont/material-icons.css';
-import 'https://cdn.cookie-script.com/s/c7fc053a5e9752d116d891949a113bae.js';
 
 /* Third party */
 import i18n from './i18n';

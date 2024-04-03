@@ -13,7 +13,7 @@
 
 			<div class="facet-container">
 				<div>
-					<h2 class="headline">{{ t('search.channels') }}</h2>
+					<h2 class="headline">{{ t('search.channels') }} ({{ currentFacetNr }})</h2>
 					<TransitionGroup name="result">
 						<div
 							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
@@ -96,7 +96,7 @@ export default defineComponent({
 						currentFacets.value = newFacets;
 						channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
 						categoryFacets.value = simplifyFacets(newFacets['categories']);
-						currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+						currentFacetNr.value = searchResultStore.loading ? 10 : Math.min(channelFacets.value.length, 10);
 						categoryNr.value = Number(categoryFacets.value.length);
 						lastUpdate.value = new Date().getTime();
 						showFacets.value = true;

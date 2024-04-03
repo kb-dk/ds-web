@@ -234,7 +234,9 @@ export default defineComponent({
 
 		const setPreliminaryFilter = (value: string) => {
 			preliminaryFilter.value = value;
-			search();
+			if (searchResultStore.currentQuery !== '' && searchResultStore.currentQuery !== undefined) {
+				search();
+			}
 		};
 
 		return {
@@ -535,7 +537,7 @@ input:focus {
 	line-height: 48px;
 	justify-content: space-evenly;
 	position: absolute;
-  top: -47px;
+	top: -47px;
 }
 
 .rdl-advanced-radio label,

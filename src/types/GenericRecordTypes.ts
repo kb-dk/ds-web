@@ -3,6 +3,7 @@ export interface GenericRecordType {
 	'@type': string;
 	id: string;
 	url: string;
+	name?: string;
 	'kb:admin_data': KBAdminDataType;
 	headline: HeadlineType[];
 	creator: CreatorType[];

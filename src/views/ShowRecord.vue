@@ -108,6 +108,7 @@ export default defineComponent({
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 				console.log(recordData.value, 'heres the record!');
+				document.title = (recordData.value['name'] + t('app.titles.suffix')) as string;
 			}
 			if (moreLikeThis) {
 				moreLikeThisRecords.value = moreLikeThis.data.response.docs;

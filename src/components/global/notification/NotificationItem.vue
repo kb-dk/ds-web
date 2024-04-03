@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { useI18n } from 'vue-i18n';
 
@@ -37,42 +37,41 @@ export default defineComponent({
 		notification: { type: Object, required: true },
 		close: { type: Function, required: true },
 	},
-	setup() {
+	setup(props) {
 		const { t } = useI18n();
-		return { t };
-	},
-	data: () => ({
-		duration: { time: 2, delay: 0 },
+		const duration = { time: 2 };
+		const countdown = ref<HTMLDivElement | null>(null);
+
 		//had to do the gsap.core.Tween hack here to get the typing working - I have no idea why
-		notificationAnimation: null as null | gsap.core.Tween,
-	}),
-	mounted() {
-		const countdown: HTMLDivElement = this.$refs.countdown as HTMLDivElement;
+		let notificationAnimation: null | gsap.core.Tween;
 
-		if (!this.notification.userClose) {
-			this.notificationAnimation = gsap.to(countdown, {
-				duration: this.duration.time,
-				width: '0%',
-				ease: 'linear',
-				onComplete: () => {
-					this.close(this.notification);
-					console.log('removing notification!', this.notification);
-				},
-			});
-		}
-	},
-	methods: {
-		pauseAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.pause();
+		onMounted(() => {
+			if (!props.notification.userClose) {
+				notificationAnimation = gsap.to(countdown.value, {
+					duration: duration.time,
+					width: '0%',
+					ease: 'linear',
+					onComplete: () => {
+						props.close(props.notification);
+						console.log('removing notification!', props.notification);
+					},
+				});
 			}
-		},
+		});
 
-		resumeAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.play();
+		const pauseAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.pause();
 			}
-		},
+		};
+
+		const resumeAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.play();
+			}
+		};
+
+		return { t, countdown, pauseAnimation, resumeAnimation };
 	},
 });
 </script>

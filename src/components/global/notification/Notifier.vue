@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, onUnmounted } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
 import NotificationItem from '@/components/global/notification/NotificationItem.vue';
 import { NotificationType } from '@/types/NotificationType';
@@ -40,36 +40,40 @@ export default defineComponent({
 	components: {
 		NotificationItem,
 	},
-
 	setup() {
 		const notificationStore = useNotificationStore();
-		return { notificationStore };
-	},
-	data: () => ({}),
 
-	created: function () {
-		window.addEventListener('notify-user', this.newNotification);
-	},
-	beforeUnmount() {
-		window.removeEventListener('notify-user', this.newNotification);
-	},
-	methods: {
-		newNotification(e: Event) {
-			this.addNotification(e as CustomEvent);
-		},
-		addNotification(e: CustomEvent) {
+		onMounted(() => {
+			window.addEventListener('notify-user', newNotification);
+
+			/* just for testing */
+			/* notificationStore.addNotification("test notitication","this is a test",false, "low", true) */
+		});
+
+		onUnmounted(() => {
+			window.removeEventListener('notify-user', newNotification);
+		});
+
+		const newNotification = (e: Event) => {
+			addNotification(e as CustomEvent);
+		};
+
+		const addNotification = (e: CustomEvent) => {
 			//this needs to be ironed out better o_O
-			this.notificationStore.addNotification(
+			notificationStore.addNotification(
 				e.detail.title,
 				e.detail.message,
 				e.detail.key !== undefined ? e.detail.key : false,
 				'low',
 				e.detail.userClose !== undefined ? e.detail.userClose : Math.random() < 0.5,
 			);
-		},
-		removeNotification(notification: NotificationType) {
-			this.notificationStore.removeNotification(notification);
-		},
+		};
+
+		const removeNotification = (notification: NotificationType) => {
+			notificationStore.removeNotification(notification);
+		};
+
+		return { notificationStore, newNotification, addNotification, removeNotification };
 	},
 });
 </script>
