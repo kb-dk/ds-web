@@ -26,52 +26,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NotificationItem',
-	data: () => ({
-		duration: { time: 2, delay: 0 },
-		notificationAnimation: null as null | GSAPTween,
-	}),
 
 	props: {
 		notification: { type: Object, required: true },
 		close: { type: Function, required: true },
 	},
-	setup() {
+	setup(props) {
 		const { t } = useI18n();
-		return { t };
-	},
-	mounted() {
-		const countdown: HTMLDivElement = this.$refs.countdown as HTMLDivElement;
+		const duration = { time: 2 };
+		const countdown = ref<HTMLDivElement | null>(null);
 
-		if (!this.notification.userClose) {
-			this.notificationAnimation = gsap.to(countdown, {
-				duration: this.duration.time,
-				width: '0%',
-				ease: 'linear',
-				onComplete: () => {
-					this.close(this.notification);
-					console.log('removing notification!', this.notification);
-				},
-			});
-		}
-	},
-	methods: {
-		pauseAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.pause();
-			}
-		},
+		let notificationAnimation = null as null | GSAPTween;
 
-		resumeAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.play();
+		onMounted(() => {
+			if (!props.notification.userClose) {
+				notificationAnimation = gsap.to(countdown.value, {
+					duration: duration.time,
+					width: '0%',
+					ease: 'linear',
+					onComplete: () => {
+						props.close(props.notification);
+						console.log('removing notification!', props.notification);
+					},
+				});
 			}
-		},
+		});
+
+		const pauseAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.pause();
+			}
+		};
+
+		const resumeAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.play();
+			}
+		};
+
+		return { t, countdown, pauseAnimation, resumeAnimation };
 	},
 });
 </script>
