@@ -4,29 +4,26 @@
 		<div
 			id="k-player"
 			class="player"
-			style="width: 1230px; height: 536px"
+			style="width: 1228px; height: 614px"
 		></div>
 	</div>
 	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
-import { onMounted, onBeforeUnmount, defineComponent } from 'vue';
+import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-// Unfortunately no typing in third party script.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const KalturaPlayer: any;
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+
+// Third party script - global variable typing and declaring.
+declare const KalturaPlayer: KalturaPlayerType;
 
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
-		videoUrl: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
 		fileId: {
 			type: String,
 			default() {
@@ -36,19 +33,24 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const bootstrapPlayer = () => {
-			try {
-				let kalturaPlayer = KalturaPlayer.setup({
-					targetId: 'k-player',
-					provider: {
-						partnerId: 380,
-						uiConfId: 23454104,
-					},
-				});
-				kalturaPlayer.loadMedia({ referenceId: props.fileId });
-			} catch (e) {
-				const errMsg = (e as Error).message;
-				console.error(errMsg);
+		const { t } = useI18n();
+		const errorManager = inject('errorManager') as ErrorManagerType;
+
+		let kalturaPlayer: PlayerType;
+
+		const handleErrorDispatch = (type: string) => {
+			switch (type) {
+				case 'loadMedia': {
+					errorManager.submitCustomError('player-error', t('error.players.video.fileInit'));
+					break;
+				}
+				case 'loadScript': {
+					errorManager.submitCustomError('player-error', t('error.players.video.playerInit'));
+					break;
+				}
+				default: {
+					errorManager.submitCustomError('player-error', t('error.players.video.generic'));
+				}
 			}
 		};
 
@@ -61,7 +63,26 @@ export default defineComponent({
 			kalturaScript.onload = () => {
 				bootstrapPlayer();
 			};
+			kalturaScript.onerror = () => {
+				handleErrorDispatch('loadScript');
+			};
 			document.head.appendChild(kalturaScript);
+		};
+
+		const bootstrapPlayer = () => {
+			try {
+				kalturaPlayer = KalturaPlayer.setup({
+					targetId: 'k-player',
+					provider: {
+						partnerId: 380,
+						uiConfId: 23454104,
+					},
+				});
+				kalturaPlayer.loadMedia({ referenceId: props.fileId });
+			} catch (e) {
+				handleErrorDispatch('');
+				console.error(e);
+			}
 		};
 
 		onMounted(() => {
@@ -75,7 +96,7 @@ export default defineComponent({
 
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
-				KalturaPlayer.destroy();
+				kalturaPlayer.destroy();
 			}
 		});
 	},

@@ -185,7 +185,13 @@
       "loadingFailed": "Materialet kunne ikke hentes",
       "notAllowed":"Du har ikke adgang til materialet"
     },
-   
+    "players":{
+      "video": {
+         "fileInit":"Noget gik galt - vi kan ikke finde denne video",
+         "playerInit":"Videoafspilleren er ikke tilgængelig i øjeblikket",
+         "generic":"Noget gik galt - vi kan ikke afspiller videoen i øjeblikket"
+      }
+   },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
   } 
