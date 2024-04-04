@@ -1,18 +1,16 @@
 <template>
 	 	<div class="mobile-edge edge top"></div>
 	<div class="video-player">
-	<div id="k-player" class="player" style="width: 640px;height: 360px"></div>
+	<div id="k-player" class="player" style="width: 1230px;height: 536px"></div>
 	</div>
 	 	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
-import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-/*
-* urghhh - had no choice here so bending typescript and I think the fixed linter will call me on this.
-* The solution will be to get some typing in here or silence the warning as the code works.
-*/ 
-declare const kWidget: any;
+import {onMounted, onBeforeUnmount, defineComponent} from 'vue';
+ 
+//Unfortunately no typing in third party script.
+declare const KalturaPlayer: any;
 
 export default defineComponent({
 	name: 'VideoPlayer',
@@ -22,15 +20,21 @@ export default defineComponent({
 		fileId: String
 	},
 	setup(props) {
-		
 		const bootstrapPlayer = () =>{
-			kWidget.thumbEmbed(
-						{ targetId: "k-player", 
-							wid: "_380", 
-							uiconf_id: "23454104", 
-							flashvars:{"referenceId": props.fileId}
-						});
-					console.log(kWidget)
+			try {
+                      let kalturaPlayer = KalturaPlayer.setup({
+                        targetId: "k-player",
+                        provider: {
+                          partnerId: 380,
+                          uiConfId: 23454104
+                        },
+												
+                      });
+							       kalturaPlayer.loadMedia({referenceId: props.fileId});
+                    } catch (e) {
+											const errMsg = (e as Error).message;
+											console.error(errMsg)
+					          }
  		}
 
 		const appendScript = () => {
@@ -55,8 +59,8 @@ export default defineComponent({
 		});
 		
 		onBeforeUnmount(() => {
-			if (kWidget) {
-				kWidget.destroy()
+			if (KalturaPlayer) {
+				KalturaPlayer.destroy()
 			}
 		});
 		
