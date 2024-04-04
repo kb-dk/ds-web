@@ -224,7 +224,7 @@ h2 {
 
 .tag-link.disabled .tag-number {
 	background-color: #383838;
-	width: 10px;
+	width: 17px;
 	height: 10px;
 	opacity: 0.5;
 	border-radius: 20px;
