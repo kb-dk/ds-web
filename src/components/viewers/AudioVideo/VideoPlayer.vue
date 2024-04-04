@@ -35,7 +35,6 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-
 		let kalturaPlayer: PlayerType;
 
 		const handleErrorDispatch = (type: string) => {
