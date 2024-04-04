@@ -1,24 +1,22 @@
 <template>
 	<div class="app">
 		<div
-			v-if="!isProduction()"
+			v-if="isDevelopment()"
 			class="test-env"
 		>
-			<span class="w">⚠</span>
 			This is a
 			<span>{{ returnCurrentEnv() }}</span>
 			environment
-			<span class="w">⚠</span>
 		</div>
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu
-			:vueRouting="true"
+			:vue-routing="true"
 			:locale="currentLocale"
 		></kb-menu>
 		<div
-			class="wipe"
 			ref="wipe"
+			class="wipe"
 		>
 			<img
 				title="Royal Danish Library"
@@ -32,15 +30,14 @@
 			<transition
 				:name="transitionName || 'fade'"
 				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				mode="out-in"
 				@before-leave="onBeforeLeave(transitionName)"
 				@before-enter="onBeforeEnter(transitionName)"
-				mode="out-in"
 			>
 				<component :is="Component" />
 			</transition>
 		</router-view>
 	</div>
-	<Footer />
 </template>
 
 <script lang="ts">
@@ -70,7 +67,7 @@ export default defineComponent({
 		const wipe = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const route = useRoute();
-		const { locale } = useI18n({ useScope: 'global' });
+		const { locale, t } = useI18n({ useScope: 'global' });
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -158,6 +155,7 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
+			document.title = t('app.titles.frontpage') as string;
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
 			const storedLocale = LocalStorageWrapper.get('locale') as string;
@@ -175,8 +173,8 @@ export default defineComponent({
 			}
 		});
 
-		const isProduction = () => {
-			return import.meta.env.MODE === 'production';
+		const isDevelopment = () => {
+			return import.meta.env.MODE !== 'production';
 		};
 
 		const returnCurrentEnv = () => {
@@ -203,7 +201,7 @@ export default defineComponent({
 			getImgServerSrcURL,
 			onBeforeEnter,
 			onBeforeLeave,
-			isProduction,
+			isDevelopment,
 			returnCurrentEnv,
 		};
 	},
@@ -241,25 +239,22 @@ export default defineComponent({
 	position: sticky;
 	height: 30px;
 	line-height: 30px;
-	font-size: 20px;
-	color: #002e70;
+	font-size: 16px;
+	color: white;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	z-index: 1000;
 	text-align: center;
-	background-image: radial-gradient(circle 674px at 50% 50%, rgba(139, 186, 244, 1) 3.4%, rgba(15, 51, 92, 1) 86.6%);
+	background: #002e70;
 
-	.w,
 	span {
-		color: red;
-		font-weight: bold;
+		border-bottom: 1px solid white;
 	}
 }
 
 .from-record-to-search-enter-active,
 .from-record-to-search-leave-active {
-	position: absolute;
 	transition: all 0.25s linear;
 }
 
@@ -267,54 +262,66 @@ export default defineComponent({
 	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
+	position: relative;
 }
 
 .from-record-to-search-enter-to {
 	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-record-to-search-leave-from {
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-record-to-search-leave-to {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
+	position: relative;
+}
+.from-record-to-search-leave-active,
+.from-search-to-record-enter-active {
+	z-index: 1000;
 }
 
 .from-search-to-record-enter-active,
 .from-search-to-record-leave-active {
-	position: absolute;
 	transition: all 0.25s linear;
+	position: relative;
 }
 
 .from-search-to-record-enter-from {
 	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
+	position: absolute;
 }
 
 .from-search-to-record-enter-to {
 	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-search-to-record-leave-from {
 	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
+	position: relative;
 }
 
 .from-search-to-record-leave-to {
 	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
+	position: relative;
 }
 
 /* This probably shouldn't be here. We need a place for global styles at some point i guess */
@@ -398,15 +405,16 @@ nav {
 
 .content {
 	position: relative;
-	//height: 100vh;
 	background-color: white;
-	//z-index: 2;
+	//z-index: 2
 }
 
 @media (min-width: 1280px) {
 	.content {
 		display: flex;
 		justify-content: center;
+		flex-direction: column;
+		align-items: center;
 	}
 }
 

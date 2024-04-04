@@ -14,6 +14,9 @@ export default defineComponent({
 	props: {
 		isoDuration: {
 			type: String as PropType<string>,
+			default() {
+				return '';
+			},
 		},
 		startDate: {
 			type: String as PropType<string>,

@@ -1,16 +1,16 @@
 <template>
 	<li
+		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
-		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
 	>
 		<h3>
 			<span class="title-span">{{ notification.key ? $t(notification.title) : notification.title }}</span>
 			<button
-				class="close"
 				v-if="notification.userClose"
-				@click="close(notification)"
+				class="close"
 				:aria-label="$t('notification.close')"
+				@click="close(notification)"
 			>
 				&times;
 				<div class="close-border"></div>
@@ -18,60 +18,60 @@
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
-			ref="countdown"
 			v-if="!notification.userClose"
+			ref="countdown"
 			class="timer"
 		></div>
 	</li>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NotificationItem',
-	data: () => ({
-		duration: { time: 2, delay: 0 },
-		notificationAnimation: null as null | GSAPTween,
-	}),
 
 	props: {
 		notification: { type: Object, required: true },
 		close: { type: Function, required: true },
 	},
-	setup() {
+	setup(props) {
 		const { t } = useI18n();
-		return { t };
-	},
-	mounted() {
-		const countdown: HTMLDivElement = this.$refs.countdown as HTMLDivElement;
+		const duration = { time: 2 };
+		const countdown = ref<HTMLDivElement | null>(null);
 
-		if (!this.notification.userClose) {
-			this.notificationAnimation = gsap.to(countdown, {
-				duration: this.duration.time,
-				width: '0%',
-				ease: 'linear',
-				onComplete: () => {
-					this.close(this.notification);
-					console.log('removing notification!', this.notification);
-				},
-			});
-		}
-	},
-	methods: {
-		pauseAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.pause();
-			}
-		},
+		//had to do the gsap.core.Tween hack here to get the typing working - I have no idea why
+		let notificationAnimation: null | gsap.core.Tween;
 
-		resumeAnimation() {
-			if (this.notificationAnimation) {
-				this.notificationAnimation.play();
+		onMounted(() => {
+			if (!props.notification.userClose) {
+				notificationAnimation = gsap.to(countdown.value, {
+					duration: duration.time,
+					width: '0%',
+					ease: 'linear',
+					onComplete: () => {
+						props.close(props.notification);
+						console.log('removing notification!', props.notification);
+					},
+				});
 			}
-		},
+		});
+
+		const pauseAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.pause();
+			}
+		};
+
+		const resumeAnimation = () => {
+			if (notificationAnimation) {
+				notificationAnimation.play();
+			}
+		};
+
+		return { t, countdown, pauseAnimation, resumeAnimation };
 	},
 });
 </script>

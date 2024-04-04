@@ -1,69 +1,83 @@
 <template>
-	 	<div class="mobile-edge edge top"></div>
+	<div class="mobile-edge edge top"></div>
 	<div class="video-player">
-	<div id="k-player" class="player" style="width: 1230px;height: 536px"></div>
+		<div
+			id="k-player"
+			class="player"
+			style="width: 1230px; height: 536px"
+		></div>
 	</div>
-	 	<div class="mobile-edge edge bottom"></div>
+	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
-import {onMounted, onBeforeUnmount, defineComponent} from 'vue';
- 
-//Unfortunately no typing in third party script.
+import { onMounted, onBeforeUnmount, defineComponent } from 'vue';
+
+// Unfortunately no typing in third party script.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const KalturaPlayer: any;
 
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
-		videoUrl: String,
-		fileId: String
+		videoUrl: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		fileId: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
+
 	setup(props) {
-		const bootstrapPlayer = () =>{
+		const bootstrapPlayer = () => {
 			try {
-                      let kalturaPlayer = KalturaPlayer.setup({
-                        targetId: "k-player",
-                        provider: {
-                          partnerId: 380,
-                          uiConfId: 23454104
-                        },
-												
-                      });
-							       kalturaPlayer.loadMedia({referenceId: props.fileId});
-                    } catch (e) {
-											const errMsg = (e as Error).message;
-											console.error(errMsg)
-					          }
- 		}
+				let kalturaPlayer = KalturaPlayer.setup({
+					targetId: 'k-player',
+					provider: {
+						partnerId: 380,
+						uiConfId: 23454104,
+					},
+				});
+				kalturaPlayer.loadMedia({ referenceId: props.fileId });
+			} catch (e) {
+				const errMsg = (e as Error).message;
+				console.error(errMsg);
+			}
+		};
 
 		const appendScript = () => {
-			let kalturaScript = document.createElement('script')
-      kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL)
-      kalturaScript.setAttribute('id', 'kaltura-script')
-			kalturaScript.setAttribute('type', 'application/javascript')
-			kalturaScript.id = "kaltura-player-script";
+			let kalturaScript = document.createElement('script');
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('id', 'kaltura-script');
+			kalturaScript.setAttribute('type', 'application/javascript');
+			kalturaScript.id = 'kaltura-player-script';
 			kalturaScript.onload = () => {
-				bootstrapPlayer()
-        };
-			document.head.appendChild(kalturaScript)
-		}
+				bootstrapPlayer();
+			};
+			document.head.appendChild(kalturaScript);
+		};
 
 		onMounted(() => {
-			const no_script = !document.getElementById("kaltura-player-script")
+			const no_script = !document.getElementById('kaltura-player-script');
 			if (no_script) {
-				appendScript()
+				appendScript();
 			} else {
-				bootstrapPlayer()
-			};
-		});
-		
-		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
-				KalturaPlayer.destroy()
+				bootstrapPlayer();
 			}
 		});
-		
+
+		onBeforeUnmount(() => {
+			if (KalturaPlayer) {
+				KalturaPlayer.destroy();
+			}
+		});
 	},
 });
 </script>

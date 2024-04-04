@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="search-facets active"
 		ref="facetsContainer"
+		class="search-facets active"
 	>
 		<div class="facet-background">
 			<button
@@ -13,12 +13,12 @@
 
 			<div class="facet-container">
 				<div>
-					<h2 class="headline">{{ t('search.channels') }}</h2>
+					<h2 class="headline">{{ t('search.channels') }} ({{ currentFacetNr }})</h2>
 					<TransitionGroup name="result">
 						<div
-							class="checkbox"
 							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
 							:key="index + 'facet'"
+							class="checkbox"
 						>
 							<Checkbox
 								:fqkey="'creator_affiliation'"
@@ -69,12 +69,9 @@ export default defineComponent({
 		const channelFacets = ref([] as FacetPair[]);
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
-
 		const facetsContainer = ref<HTMLElement | null>(null);
-
 		const lastUpdate = ref(0);
 		const route = useRoute();
-
 		const { t } = useI18n();
 
 		onMounted(() => {
@@ -84,8 +81,8 @@ export default defineComponent({
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
-			showFacets.value = true;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
+			showFacets.value = true;
 
 			watch(
 				() => props.facetResults,
@@ -99,7 +96,7 @@ export default defineComponent({
 						currentFacets.value = newFacets;
 						channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
 						categoryFacets.value = simplifyFacets(newFacets['categories']);
-						currentFacetNr.value = Math.min(channelFacets.value.length, 10);
+						currentFacetNr.value = searchResultStore.loading ? 10 : Math.min(channelFacets.value.length, 10);
 						categoryNr.value = Number(categoryFacets.value.length);
 						lastUpdate.value = new Date().getTime();
 						showFacets.value = true;
