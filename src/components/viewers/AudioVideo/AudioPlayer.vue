@@ -1,38 +1,28 @@
 <template>
 	<div class="mobile-edge edge top"></div>
-	<div
-		v-if="src"
-		class="audio-player"
-	>
-		<media-player
-			ref="player"
+	<div class="video-player">
+		<div
+			id="k-player"
 			class="player"
-			title=""
-			:src="src"
-			view-type="audio"
-		>
-			<media-provider />
-			<media-audio-layout />
-		</media-player>
+			style="width: 1228px; height: 100px"
+		></div>
 	</div>
 	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
-import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-import type { MediaPlayerElement } from 'vidstack/elements';
+import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
 
-import 'vidstack/player';
-import 'vidstack/player/layouts';
-import 'vidstack/player/ui';
-import 'vidstack/player/styles/default/theme.css';
-import 'vidstack/player/styles/default/layouts/audio.css';
-
+// Third party script - global variable typing and declaring.
+declare const KalturaPlayer: KalturaPlayerType;
 export default defineComponent({
 	name: 'AudioPlayer',
 	components: {},
 	props: {
-		audioUrl: {
+		fileId: {
 			type: String,
 			default() {
 				return '';
@@ -40,21 +30,66 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const player = ref<MediaPlayerElement>();
-		const src = ref('');
-		onMounted(() => {
-			src.value = props.audioUrl ? props.audioUrl : '';
-			const cleanup = () => {
-				if (player.value) {
-					player.value.destroy();
+		const { t } = useI18n();
+		const errorManager = inject('errorManager') as ErrorManagerType;
+		let kalturaPlayer: PlayerType;
+		const handleErrorDispatch = (type: string) => {
+			switch (type) {
+				case 'loadMedia': {
+					errorManager.submitCustomError('player-error', t('error.players.video.fileInit'));
+					break;
 				}
+				case 'loadScript': {
+					errorManager.submitCustomError('player-error', t('error.players.video.playerInit'));
+					break;
+				}
+				default: {
+					errorManager.submitCustomError('player-error', t('error.players.video.generic'));
+				}
+			}
+		};
+		const appendScript = () => {
+			let kalturaScript = document.createElement('script');
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('id', 'kaltura-script');
+			kalturaScript.setAttribute('type', 'application/javascript');
+			kalturaScript.id = 'kaltura-player-script';
+			kalturaScript.onload = () => {
+				bootstrapPlayer();
 			};
-			// Attach cleanup to unmmount
-			onBeforeUnmount(() => {
-				cleanup();
-			});
+			kalturaScript.onerror = () => {
+				handleErrorDispatch('loadScript');
+			};
+			document.head.appendChild(kalturaScript);
+		};
+		const bootstrapPlayer = () => {
+			try {
+				kalturaPlayer = KalturaPlayer.setup({
+					targetId: 'k-player',
+					provider: {
+						partnerId: 380,
+						uiConfId: 23454104,
+					},
+				});
+				kalturaPlayer.loadMedia({ referenceId: props.fileId });
+			} catch (e) {
+				handleErrorDispatch('');
+				console.error(e);
+			}
+		};
+		onMounted(() => {
+			const no_script = !document.getElementById('kaltura-player-script');
+			if (no_script) {
+				appendScript();
+			} else {
+				bootstrapPlayer();
+			}
 		});
-		return { src, player };
+		onBeforeUnmount(() => {
+			if (KalturaPlayer) {
+				kalturaPlayer.destroy();
+			}
+		});
 	},
 });
 </script>
