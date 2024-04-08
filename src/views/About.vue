@@ -19,15 +19,14 @@ export default defineComponent({
 		Footer,
 	},
 	setup() {
-		return {
-		};
+		return {};
 	},
 });
 </script>
 
 <style scoped>
 .about {
-	display:flex;
+	display: flex;
 	flex-direction: column;
 }
 .about-content {
