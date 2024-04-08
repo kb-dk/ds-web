@@ -1,61 +1,100 @@
 <template>
-	<!-- 	<div class="mobile-edge edge top"></div>
- -->
-	<div
-		v-if="src"
-		class="video-player"
-	>
-		<media-player
-			ref="player"
+	<div class="video-player-box">
+		<div
+			id="video-player"
 			class="player"
-			title=""
-			:src="src"
-		>
-			<media-provider></media-provider>
-			<media-video-layout></media-video-layout>
-		</media-player>
+		></div>
 	</div>
-	<!-- 	<div class="mobile-edge edge bottom"></div>
- -->
 </template>
 
 <script lang="ts">
-import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-import type { MediaPlayerElement } from 'vidstack/elements';
+import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import 'vidstack/player';
-import 'vidstack/player/layouts';
-import 'vidstack/player/ui';
-import 'vidstack/player/styles/default/theme.css';
-import 'vidstack/player/styles/default/layouts/video.css';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+
+// Third party script - global variable typing and declaring.
+declare const KalturaPlayer: KalturaPlayerType;
 
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
-		videoUrl: {
+		fileId: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
 	},
+
 	setup(props) {
-		const player = ref<MediaPlayerElement>();
-		const src = ref('');
-		onMounted(() => {
-			src.value = props.videoUrl ? props.videoUrl : '';
-			const cleanup = () => {
-				if (player.value) {
-					player.value.destroy();
+		const { t } = useI18n();
+		const errorManager = inject('errorManager') as ErrorManagerType;
+		let videoPlayer: PlayerType;
+
+		const handleErrorDispatch = (type: string) => {
+			switch (type) {
+				case 'loadMedia': {
+					errorManager.submitCustomError('player-error', t('error.players.video.fileInit'));
+					break;
 				}
+				case 'loadScript': {
+					errorManager.submitCustomError('player-error', t('error.players.video.playerInit'));
+					break;
+				}
+				default: {
+					errorManager.submitCustomError('player-error', t('error.players.video.generic'));
+				}
+			}
+		};
+
+		const appendScript = () => {
+			let kalturaScript = document.createElement('script');
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('id', 'kaltura-script');
+			kalturaScript.setAttribute('type', 'application/javascript');
+			kalturaScript.id = 'kaltura-player-script';
+			kalturaScript.onload = () => {
+				bootstrapPlayer();
 			};
-			// Attach cleanup to unmmount
-			onBeforeUnmount(() => {
-				cleanup();
-			});
+			kalturaScript.onerror = () => {
+				handleErrorDispatch('loadScript');
+			};
+			document.head.appendChild(kalturaScript);
+		};
+
+		const bootstrapPlayer = () => {
+			try {
+				videoPlayer = KalturaPlayer.setup({
+					targetId: 'video-player',
+					provider: {
+						partnerId: 380,
+						uiConfId: 23454104,
+					},
+				});
+				videoPlayer.loadMedia({ referenceId: props.fileId });
+			} catch (e) {
+				handleErrorDispatch('');
+				console.error(e);
+			}
+		};
+
+		onMounted(() => {
+			const no_script = !document.getElementById('kaltura-player-script');
+			if (no_script) {
+				appendScript();
+			} else {
+				bootstrapPlayer();
+			}
 		});
-		return { src, player };
+
+		onBeforeUnmount(() => {
+			if (KalturaPlayer) {
+				videoPlayer.destroy();
+			}
+		});
 	},
 });
 </script>
@@ -63,8 +102,10 @@ export default defineComponent({
 <style scoped>
 .player {
 	aspect-ratio: 4/2;
+	width: 100%;
+	height: auto;
 }
-.video-player {
+.video-player-box {
 	background-color: black;
 	display: flex;
 	justify-content: center;
@@ -83,26 +124,8 @@ export default defineComponent({
 	height: 31px;
 }
 
-.mobile-edge {
-	width: 100%;
-	position: absolute;
-	background-color: white;
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-	z-index: 3;
-	left: 0px;
-}
-
-.top {
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-}
-
-.bottom {
-	clip-path: polygon(100% 0, 100% 100%, 0 100%);
-	margin-top: -30px;
-}
-
 @media (min-width: 640px) {
-	.video-player {
+	.video-player-box {
 		margin-left: -36px;
 		width: 100vw;
 		max-width: calc(100% + 36px * 2);
@@ -110,10 +133,7 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.mobile-edge {
-		display: none;
-	}
-	.video-player {
+	.video-player-box {
 		width: 100%;
 		margin-left: 0px;
 		max-width: 100%;
