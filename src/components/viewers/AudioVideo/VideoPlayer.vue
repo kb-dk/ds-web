@@ -1,5 +1,4 @@
 <template>
-	<div class="mobile-edge edge top"></div>
 	<div class="video-player">
 		<div
 			id="k-player"
@@ -7,7 +6,6 @@
 			style="width: 1228px; height: 614px"
 		></div>
 	</div>
-	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
@@ -125,24 +123,6 @@ export default defineComponent({
 	height: 31px;
 }
 
-.mobile-edge {
-	width: 100%;
-	position: absolute;
-	background-color: white;
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-	z-index: 3;
-	left: 0px;
-}
-
-.top {
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-}
-
-.bottom {
-	clip-path: polygon(100% 0, 100% 100%, 0 100%);
-	margin-top: -30px;
-}
-
 @media (min-width: 640px) {
 	.video-player {
 		margin-left: -36px;
@@ -152,9 +132,6 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.mobile-edge {
-		display: none;
-	}
 	.video-player {
 		width: 100%;
 		margin-left: 0px;
