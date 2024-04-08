@@ -48,9 +48,7 @@ export default defineComponent({
 		const resultContainer = ref<HTMLElement | null>(null);
 
 		const getDuration = (resultItem: GenericSearchResultType) => {
-			return resultItem
-				? t('record.duration') + ': ' + formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t)
-				: '';
+			return resultItem ? formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t) : '';
 		};
 
 		const getStartTime = (resultItem: GenericSearchResultType) => {
@@ -125,8 +123,40 @@ export default defineComponent({
 	padding: 0 0 10px 0;
 	box-sizing: border-box;
 	width: 100%;
+	border-bottom: 1px solid rgba(150, 150, 150, 0.3);
+	margin-bottom: 40px;
 }
 
+.hit-box:first-of-type {
+	padding-top: 40px;
+	border-top: 1px solid rgba(150, 150, 150, 0.3);
+}
+.hit-box:first-of-type:before {
+	content: '•';
+	position: absolute;
+	height: 15px;
+	text-align: center;
+	color: rgba(150, 150, 150, 0.3);
+	background-color: white;
+	transform: translate(-50%, 0);
+	left: 50%;
+	top: calc(0px - 10px);
+	width: 20px;
+	background-color: white;
+}
+
+.hit-box:after {
+	content: '•';
+	position: absolute;
+	height: 15px;
+	text-align: center;
+	color: rgba(150, 150, 150, 0.3);
+	background-color: white;
+	transform: translate(-50%, 0);
+	left: 50%;
+	width: 20px;
+	background-color: white;
+}
 .search-results {
 	position: relative;
 	max-width: 100%;
