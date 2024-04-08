@@ -1,13 +1,10 @@
 <template>
-	<div class="mobile-edge edge top"></div>
-	<div class="video-player">
+	<div class="audio-player-box">
 		<div
-			id="k-player"
+			id="audio-player"
 			class="player"
-			style="width: 1228px; height: 100px"
 		></div>
 	</div>
-	<div class="mobile-edge edge bottom"></div>
 </template>
 
 <script lang="ts">
@@ -32,19 +29,19 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		let kalturaPlayer: PlayerType;
+		let audioPlayer: PlayerType;
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
 				case 'loadMedia': {
-					errorManager.submitCustomError('player-error', t('error.players.video.fileInit'));
+					errorManager.submitCustomError('player-error', t('error.players.audio.fileInit'));
 					break;
 				}
 				case 'loadScript': {
-					errorManager.submitCustomError('player-error', t('error.players.video.playerInit'));
+					errorManager.submitCustomError('player-error', t('error.players.audio.playerInit'));
 					break;
 				}
 				default: {
-					errorManager.submitCustomError('player-error', t('error.players.video.generic'));
+					errorManager.submitCustomError('player-error', t('error.players.audio.generic'));
 				}
 			}
 		};
@@ -64,14 +61,14 @@ export default defineComponent({
 		};
 		const bootstrapPlayer = () => {
 			try {
-				kalturaPlayer = KalturaPlayer.setup({
-					targetId: 'k-player',
+				audioPlayer = KalturaPlayer.setup({
+					targetId: 'audio-player',
 					provider: {
 						partnerId: 380,
 						uiConfId: 23454104,
 					},
 				});
-				kalturaPlayer.loadMedia({ referenceId: props.fileId });
+				audioPlayer.loadMedia({ referenceId: props.fileId });
 			} catch (e) {
 				handleErrorDispatch('');
 				console.error(e);
@@ -87,7 +84,7 @@ export default defineComponent({
 		});
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
-				kalturaPlayer.destroy();
+				audioPlayer.destroy();
 			}
 		});
 	},
@@ -95,7 +92,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.audio-player {
+.player {
+	aspect-ratio: 4/2;
+	width: 100%;
+	height: auto;
+}
+
+.audio-player-box {
 	background-color: black;
 	display: flex;
 	justify-content: center;
@@ -112,26 +115,8 @@ export default defineComponent({
 	height: 31px;
 }
 
-.mobile-edge {
-	width: 100%;
-	position: absolute;
-	background-color: white;
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-	z-index: 3;
-	left: 0px;
-}
-
-.top {
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-}
-
-.bottom {
-	clip-path: polygon(100% 0, 100% 100%, 0 100%);
-	margin-top: -30px;
-}
-
 @media (min-width: 640px) {
-	.video-player {
+	.audio-player-box {
 		margin-left: -36px;
 		width: 100vw;
 		max-width: calc(100% + 36px * 2);
@@ -139,10 +124,7 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.mobile-edge {
-		display: none;
-	}
-	.video-player {
+	.audio-player-box {
 		width: 100%;
 		margin-left: 0px;
 		max-width: 100%;

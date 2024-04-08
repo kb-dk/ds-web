@@ -178,7 +178,18 @@
          "loadingFailed": "The requested material could not be loaded",
          "notAllowed":"You are not authorized to view this material"
        },
-   
+       "players":{
+            "video": {
+               "fileInit":"Something went wrong - we can't locate this video",
+               "playerInit":"The video player is not available at the moment",
+               "generic":"Something went wrong - we can't play the video at the moment"
+            },
+            "audio": {
+               "fileInit":"Something went wrong - we can't locate this audio clip",
+               "playerInit":"The audio player is not available at the moment",
+               "generic":"Something went wrong - we can't play this audio clip at the moment"
+            }
+       },
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them"
   }

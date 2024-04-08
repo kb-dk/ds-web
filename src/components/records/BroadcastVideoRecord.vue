@@ -3,7 +3,7 @@
 		<div class="video-container">
 			<VideoPlayer
 				v-if="recordData.contentUrl"
-				:video-url="recordData.contentUrl"
+				:file-id="recordData['kb:internal']['kb:file_id']"
 			></VideoPlayer>
 			<div
 				v-else
