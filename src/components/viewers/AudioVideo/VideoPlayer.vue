@@ -1,10 +1,9 @@
 <template>
 	<div class="mobile-edge edge top"></div>
-	<div class="video-player">
+	<div class="video-player-box">
 		<div
-			id="k-player"
+			id="video-player"
 			class="player"
-			style="width: 1228px; height: 614px"
 		></div>
 	</div>
 	<div class="mobile-edge edge bottom"></div>
@@ -35,7 +34,7 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		let kalturaPlayer: PlayerType;
+		let videoPlayer: PlayerType;
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -70,14 +69,14 @@ export default defineComponent({
 
 		const bootstrapPlayer = () => {
 			try {
-				kalturaPlayer = KalturaPlayer.setup({
-					targetId: 'k-player',
+				videoPlayer = KalturaPlayer.setup({
+					targetId: 'video-player',
 					provider: {
 						partnerId: 380,
 						uiConfId: 23454104,
 					},
 				});
-				kalturaPlayer.loadMedia({ referenceId: props.fileId });
+				videoPlayer.loadMedia({ referenceId: props.fileId });
 			} catch (e) {
 				handleErrorDispatch('');
 				console.error(e);
@@ -95,7 +94,7 @@ export default defineComponent({
 
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
-				kalturaPlayer.destroy();
+				videoPlayer.destroy();
 			}
 		});
 	},
@@ -105,8 +104,10 @@ export default defineComponent({
 <style scoped>
 .player {
 	aspect-ratio: 4/2;
+	width: 100%;
+	height: auto;
 }
-.video-player {
+.video-player-box {
 	background-color: black;
 	display: flex;
 	justify-content: center;
@@ -144,7 +145,7 @@ export default defineComponent({
 }
 
 @media (min-width: 640px) {
-	.video-player {
+	.video-player-box {
 		margin-left: -36px;
 		width: 100vw;
 		max-width: calc(100% + 36px * 2);
@@ -155,7 +156,7 @@ export default defineComponent({
 	.mobile-edge {
 		display: none;
 	}
-	.video-player {
+	.video-player-box {
 		width: 100%;
 		margin-left: 0px;
 		max-width: 100%;
