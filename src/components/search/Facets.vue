@@ -76,7 +76,7 @@ export default defineComponent({
 
 		onMounted(() => {
 			window.innerWidth > 800 ? searchResultStore.toggleShowFacets(true) : searchResultStore.toggleShowFacets(false);
-
+			toggleFacets();
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
@@ -99,7 +99,6 @@ export default defineComponent({
 						currentFacetNr.value = searchResultStore.loading ? 10 : Math.min(channelFacets.value.length, 10);
 						categoryNr.value = Number(categoryFacets.value.length);
 						lastUpdate.value = new Date().getTime();
-						showFacets.value = true;
 					}
 				},
 			);
@@ -155,13 +154,6 @@ export default defineComponent({
 	overflow: hidden;
 }
 
-.search-facets.active {
-	visibility: visible;
-	pointer-events: all;
-	transform: translateX(0%);
-	width: 100%;
-}
-
 h2 {
 	font-size: 16px;
 	color: black;
@@ -204,6 +196,12 @@ h2 {
 	box-sizing: border-box;
 	padding: 40px 15% 0px 15%;
 	transform: translateX(-100%);
+}
+.search-facets.active {
+	visibility: visible;
+	pointer-events: all;
+	transform: translateX(0%);
+	width: 100%;
 }
 
 @media (min-width: 640px) {

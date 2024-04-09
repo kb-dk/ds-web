@@ -124,7 +124,7 @@ export default defineComponent({
 	box-sizing: border-box;
 	width: 100%;
 	border-bottom: 1px solid rgba(150, 150, 150, 0.3);
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 }
 
 .hit-box:first-of-type {
@@ -136,7 +136,7 @@ export default defineComponent({
 	position: absolute;
 	height: 15px;
 	text-align: center;
-	color: rgba(150, 150, 150, 0.3);
+	color: #002e70;
 	background-color: white;
 	transform: translate(-50%, 0);
 	left: 50%;
@@ -150,7 +150,7 @@ export default defineComponent({
 	position: absolute;
 	height: 15px;
 	text-align: center;
-	color: rgba(150, 150, 150, 0.3);
+	color: #002e70;
 	background-color: white;
 	transform: translate(-50%, 0);
 	left: 50%;

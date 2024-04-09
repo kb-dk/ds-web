@@ -4,28 +4,62 @@
 			name="result"
 			mode="out-in"
 		>
-			<div
-				v-if="!searchResultStore.loading && resultdata"
-				class="container"
-			>
-				<div class="information">
-					<router-link
-						:to="{ path: 'record/' + resultdata.id }"
-						class="title"
-						role="link"
-					>
-						{{ resultdata.title[0] }}
-					</router-link>
-					<div class="subtitle">
-						<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
-						<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
-						<span class="when">{{ starttime }}</span>
-						<span class="material-icons icons schedule">schedule</span>
-						<span class="duration">{{ duration }}</span>
+			<div v-if="!searchResultStore.loading && resultdata">
+				<div class="container">
+					<div class="information">
+						<router-link
+							:to="{ path: 'record/' + resultdata.id }"
+							class="title"
+							role="link"
+						>
+							{{ resultdata.title[0] }}
+						</router-link>
+						<div class="subtitle">
+							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
+							<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
+							<span class="when">{{ starttime }}</span>
+							<span class="material-icons icons schedule">schedule</span>
+							<span class="duration">{{ duration }}</span>
+						</div>
+						<div class="summary">{{ resultdata.description }}</div>
 					</div>
-					<div class="summary">{{ resultdata.description }}</div>
+					<div class="result-image-wrapper"><kb-imagecomponent :imagedata="imageData"></kb-imagecomponent></div>
 				</div>
-				<div class="result-image-wrapper"><kb-imagecomponent :imagedata="imageData"></kb-imagecomponent></div>
+				<div class="extra-features">
+					<button
+						:disabled="resultdata && resultdata?.file_id?.length > 0 ? false : true"
+						class="thumbnail-button"
+						:title="'See more thumbnails'"
+						@click="showThumbnails()"
+					>
+						<span class="material-icons">photo_library</span>
+					</button>
+				</div>
+				<div
+					ref="extraContentRef"
+					class="extra-content"
+				>
+					<ItemSlider item-class="extra-thumbnail">
+						<template #default="slotProps">
+							<router-link
+								v-for="(item, index) in thumbnailImages"
+								:key="index"
+								:to="{ path: 'record/' + resultdata.id }"
+								role="link"
+								class="extra-thumbnail"
+								v-bind="slotProps"
+							>
+								<div
+									ref="thumbnailRefs"
+									class="img-wrap"
+								>
+									<kb-imagecomponent :imagedata="thumbnailImageData[index]"></kb-imagecomponent>
+								</div>
+								<div class="img-stamp">timestamp</div>
+							</router-link>
+						</template>
+					</ItemSlider>
+				</div>
 			</div>
 			<div
 				v-else
@@ -65,17 +99,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
+import { defineComponent, PropType, onMounted, ref, watch, toRaw } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
+import ItemSlider from '@/components/search/ItemSlider.vue';
+import gsap from 'gsap';
 
 import '@/components/common/wc-image-item';
 
 export default defineComponent({
 	name: 'ResultItem',
-	components: {},
+	components: {
+		ItemSlider,
+	},
 	props: {
 		resultdata: {
 			type: Object as PropType<GenericSearchResultType>,
@@ -104,6 +142,10 @@ export default defineComponent({
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
+		const thumbnailImages = ref(10);
+		const extraContentShown = ref(false);
+		const thumbnailImageData = ref([] as string[]);
+
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
@@ -116,6 +158,8 @@ export default defineComponent({
 		const placeholderSummaryRefs = ref<HTMLElement | []>([]);
 		const placeholderSubtitleRefs = ref<HTMLElement | []>([]);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
+		const extraContentRef = ref<HTMLElement | null>(null);
+		const thumbnailRefs = ref<HTMLAnchorElement[]>([]);
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
@@ -151,9 +195,64 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					getImageData();
+					thumbnailImageData.value = [];
+					extraContentShown.value = false;
 				}
 			},
 		);
+
+		const showThumbnails = () => {
+			extraContentShown.value = !extraContentShown.value;
+			if (props.resultdata?.file_id && extraContentShown.value) {
+				if (thumbnailImageData.value.length === 0) {
+					requestExtraThumbnails();
+				}
+			}
+			if (extraContentShown.value === true) {
+				gsap.set(extraContentRef.value, {
+					visibility: 'visible',
+				});
+			}
+			gsap.to(extraContentRef.value, {
+				height: extraContentShown.value ? 'auto' : '0px',
+				opacity: extraContentShown.value ? '1' : '0',
+				duration: 0.2,
+				onComplete: () => {
+					if (extraContentShown.value === false) {
+						gsap.set(extraContentRef.value, {
+							visibility: 'hidden',
+						});
+					}
+				},
+			});
+		};
+
+		const requestExtraThumbnails = () => {
+			APIService.getExtraThumbnails(props.resultdata.file_id)
+				.then((thumbServiceResponse) => {
+					console.log(thumbServiceResponse);
+
+					const img = new Image();
+					img.src = thumbServiceResponse.data.sprite;
+					img.onload = () => {
+						thumbnailRefs.value.forEach((item) => {
+							item.style.height = img.height + 'px';
+						});
+					};
+
+					thumbnailRefs.value.forEach((item, index) => {
+						const imgData = {} as ImageComponentType;
+						imgData.imgSrc = thumbServiceResponse.data.sprite;
+						imgData.objectPos = `-${200 * index}px 0px`;
+						imgData.imgOption = 'none';
+						thumbnailImageData.value.push(JSON.stringify(imgData));
+					});
+				})
+				//Just in case the service fail - we fail silently and swoop in with the placeholder
+				.catch(() => {
+					//nay
+				});
+		};
 
 		onMounted(() => {
 			getImageData();
@@ -165,6 +264,13 @@ export default defineComponent({
 			placeholderSubtitleRefs,
 			placeholderSummaryRefs,
 			placeholderTitleRef,
+			extraContentRef,
+			showThumbnails,
+			extraContentShown,
+			thumbnailImages,
+			thumbnailRefs,
+			thumbnailImageData,
+			toRaw,
 		};
 	},
 });
@@ -172,7 +278,6 @@ export default defineComponent({
 <style scoped>
 .result-item-wrapper {
 	transition: all 0.3s linear;
-	padding-bottom: 30px;
 	overflow: hidden;
 }
 
@@ -229,7 +334,7 @@ export default defineComponent({
 	font-weight: bold;
 	color: #002e70;
 	text-overflow: ellipsis;
-	max-width: calc(100% - (200px - 60px));
+	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	width: 75ch;
@@ -362,5 +467,71 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
+}
+
+.extra-features {
+	margin-top: 10px;
+}
+
+.extra-features .material-icons {
+	font-size: 20px;
+}
+
+.thumbnail-button {
+	cursor: pointer;
+	border: 1px solid #002f702a;
+	border-radius: 0px;
+	background-color: transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #002e70;
+	transition: all 0.3s ease-in-out 0s;
+}
+
+.thumbnail-button:hover {
+	border: 1px solid #002e70;
+}
+
+.thumbnail-button:disabled:hover {
+	border: 1px solid #002f702a;
+	cursor: auto;
+}
+
+.thumbnail-button:disabled {
+	color: rgba(180, 180, 180, 1);
+}
+
+.extra-content {
+	height: 0px;
+}
+
+.extra-thumbnail {
+	flex: 0 0 200px;
+	position: relative;
+	z-index: 1;
+	object-fit: none;
+	display: flex;
+	flex-direction: column;
+	pointer-events: all;
+}
+
+.extra-thumbnail.disabled {
+	pointer-events: none;
+}
+
+.extra-thumbnail .img-wrap {
+	margin-bottom: 10px;
+	height: 105px;
+}
+
+.extra-thumbnail .img-stamp {
+	text-align: center;
+	font-size: 12px;
+}
+@media (min-width: 800px) {
+	.title {
+		max-width: calc(100% - (200px - 60px));
+	}
 }
 </style>

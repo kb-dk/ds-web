@@ -7,6 +7,9 @@ class ImageComponent extends HTMLElement {
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = IMAGE_COMPONMENT_TEMPLATE + IMAGE_COMPONMENT_STYLES;
 		const imageWrapper: HTMLDivElement | null = this.shadow.querySelector('.image-wrapper');
+		if (imageWrapper) {
+			imageWrapper.style.background = `linear-gradient(${Math.round(Math.random() * 360)}deg, #caf0fe, #002e70)`;
+		}
 		const image: HTMLImageElement | null = this.shadow.querySelector('.image-item');
 		if (image && imageWrapper) {
 			image.addEventListener('load', this.showImage);
@@ -31,6 +34,9 @@ class ImageComponent extends HTMLElement {
 			if (imageData.placeholder !== undefined) {
 				thumb && (thumb.src = imageData.placeholder);
 				thumb.style.backgroundColor = 'rgb(237,237,237)';
+			}
+			if (imageData.objectPos !== undefined) {
+				thumb.style.objectPosition = imageData.objectPos;
 			}
 			if (imageData.imgOption !== undefined) {
 				thumb.style.objectFit = imageData.imgOption;
@@ -94,7 +100,7 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
 
     .image-wrapper {
 				overflow: hidden;
-        background: linear-gradient(45deg, #caf0fe, #fff6c4);
+        background: linear-gradient(45deg, #caf0fe, #002e70);
         width:100%;
 				height:100%;
         padding:0px;
@@ -102,20 +108,31 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
         margin-block-end: 0em;
         margin-inline-start: 0px;
         margin-inline-end: 0px;
-        transition:all 0.3s ease-in-out 0s;
+        transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s;
         filter:hue-rotate(var(--image-item-hue-rotation));
+				animation: rotateGradient 2s linear infinite; /* Apply the animation */
+
     }
 
     .image-item {
         width:100%;
         height:100%;
         object-fit: cover;
-        transition:all 0.5s ease-in-out 0s;
+        transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s;
         opacity:0;
 				transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
 				transform-origin:center;
 				will-change: transform;
     }
+
+		@keyframes rotateGradient {
+			from {
+				background-position: 0% 0%;
+			}
+			to {
+				background-position: 100% 100%;
+			}
+		}
 	</style>`;
 
 customElements.define('kb-imagecomponent', ImageComponent);

@@ -244,7 +244,7 @@ export default defineComponent({
 	top: 0px;
 	left: 0px;
 	width: 100%;
-	z-index: 1000;
+	z-index: 5;
 	text-align: center;
 	background: #002e70;
 

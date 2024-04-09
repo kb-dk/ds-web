@@ -105,4 +105,8 @@ export class APIServiceClient {
 	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
 		return await this.httpClient.get(`thumbnails/?fileId=${id}&width=200&height=105`);
 	}
+
+	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
+		return await this.httpClient.get(`thumbnails/?fileId=${id}&width=200&vid_slices=10`);
+	}
 }
