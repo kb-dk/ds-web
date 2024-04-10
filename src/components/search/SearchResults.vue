@@ -42,7 +42,7 @@ export default defineComponent({
 	setup(props) {
 		const { t, locale } = useI18n();
 		const currentResults = ref([] as GenericSearchResultType[]);
-		const resultNr = ref(10);
+		const resultNr = ref(0);
 		const lastUpdate = ref(0);
 		const searchResultStore = useSearchResultStore();
 		const resultContainer = ref<HTMLElement | null>(null);
