@@ -91,4 +91,8 @@ export default defineComponent({
 .item-slider::-webkit-scrollbar {
 	width: 20px;
 }
+
+.item-slider::-webkit-scrollbar-thumb {
+	background-color: rgb(200, 200, 200);
+}
 </style>

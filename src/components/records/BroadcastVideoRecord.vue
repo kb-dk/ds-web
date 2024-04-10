@@ -1,10 +1,15 @@
 <template>
 	<div class="broadcast-record">
 		<div class="video-container">
-			<VideoPlayer
-				v-if="recordData.contentUrl"
-				:file-id="recordData['kb:internal']['kb:file_id']"
-			></VideoPlayer>
+			<div v-if="recordData.contentUrl">
+				<VideoPlayer :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
+				<AdditionalInfo
+					:id="recordData.id"
+					:open="true"
+					:file-id="recordData['kb:internal']['kb:file_id'] ? recordData['kb:internal']['kb:file_id'] : ''"
+					:duration="getTimeFromStartAndEnde(recordData.duration)"
+				></AdditionalInfo>
+			</div>
 			<div
 				v-else
 				class="no-streaming"
@@ -108,7 +113,8 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
+import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
+import { getTimeFromStartAndEnde } from '@/utils/time-utils';
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
 
@@ -119,6 +125,7 @@ export default defineComponent({
 		VideoPlayer,
 		Duration,
 		GridDisplay,
+		AdditionalInfo,
 	},
 
 	props: {
@@ -148,7 +155,7 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime };
+		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, getTimeFromStartAndEnde };
 	},
 });
 </script>

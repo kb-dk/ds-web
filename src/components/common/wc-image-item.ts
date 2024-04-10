@@ -62,6 +62,7 @@ class ImageComponent extends HTMLElement {
 const IMAGE_COMPONMENT_TEMPLATE = /*html*/ `
         <figure class="image-wrapper">
             <img
+								draggable="false"
                 loading="lazy"
                 class="image-item"
             /><span class="type-symbol material-icons"></span>
@@ -123,6 +124,12 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
 				transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
 				transform-origin:center;
 				will-change: transform;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-o-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
     }
 
 		@keyframes rotateGradient {

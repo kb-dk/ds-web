@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts">
-import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { onMounted, onBeforeUnmount, defineComponent, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { useRoute } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
 
@@ -33,6 +33,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		let videoPlayer: PlayerType;
+		const route = useRoute();
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -75,6 +76,14 @@ export default defineComponent({
 					},
 				});
 				videoPlayer.loadMedia({ referenceId: props.fileId });
+				videoPlayer.ready().then(() => {
+					if (route.query?.startAt) {
+						videoPlayer.currentTime = Number(route.query.startAt);
+					}
+					if (route.query?.autoplay) {
+						videoPlayer.play();
+					}
+				});
 			} catch (e) {
 				handleErrorDispatch('');
 				console.error(e);
@@ -88,6 +97,18 @@ export default defineComponent({
 			} else {
 				bootstrapPlayer();
 			}
+
+			watch(
+				() => route.query.startAt as string,
+				(newStartAt: string, prevStartAt: string) => {
+					if (newStartAt !== prevStartAt) {
+						if (videoPlayer) {
+							videoPlayer.currentTime = Number(route.query.startAt);
+							videoPlayer.play();
+						}
+					}
+				},
+			);
 		});
 
 		onBeforeUnmount(() => {
