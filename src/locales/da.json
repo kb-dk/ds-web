@@ -189,7 +189,12 @@
       "video": {
          "fileInit":"Noget gik galt - vi kan ikke finde denne video",
          "playerInit":"Videoafspilleren er ikke tilgængelig i øjeblikket",
-         "generic":"Noget gik galt - vi kan ikke afspiller videoen i øjeblikket"
+         "generic":"Noget gik galt - vi kan ikke afspille videoen i øjeblikket"
+      },
+      "audio": {
+         "fileInit":"Noget gik galt - vi kan ikke finde denne udsendelse",
+         "playerInit":"Audioafspilleren er ikke tilgængelig i øjeblikket",
+         "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
       }
    },
    "searchfailed":"Noget gik galt med din søgning",
