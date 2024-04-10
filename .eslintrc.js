@@ -30,5 +30,11 @@ module.exports = {
 				'@typescript-eslint/no-var-requires': 'off',
 			},
 		},
+		{
+			files: ['*.html'],
+			rules: {
+				'vue/comment-directive': 'off',
+			},
+		},
 	],
 };
