@@ -2,7 +2,7 @@
 	<div class="broadcast-record">
 		<AudioPlayer
 			v-if="recordData.contentUrl"
-			:audio-url="recordData.contentUrl"
+			:file-id="recordData['kb:internal']['kb:file_id']"
 		></AudioPlayer>
 		<div
 			v-else

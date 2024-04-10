@@ -1,36 +1,25 @@
 <template>
-	<div
-		v-if="src"
-		class="audio-player"
-	>
-		<media-player
-			ref="player"
+	<div class="audio-player-box">
+		<div
+			id="audio-player"
 			class="player"
-			title=""
-			:src="src"
-			view-type="audio"
-		>
-			<media-provider />
-			<media-audio-layout />
-		</media-player>
+		></div>
 	</div>
 </template>
 
 <script lang="ts">
-import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue';
-import type { MediaPlayerElement } from 'vidstack/elements';
+import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
 
-import 'vidstack/player';
-import 'vidstack/player/layouts';
-import 'vidstack/player/ui';
-import 'vidstack/player/styles/default/theme.css';
-import 'vidstack/player/styles/default/layouts/audio.css';
-
+// Third party script - global variable typing and declaring.
+declare const KalturaPlayer: KalturaPlayerType;
 export default defineComponent({
 	name: 'AudioPlayer',
 	components: {},
 	props: {
-		audioUrl: {
+		fileId: {
 			type: String,
 			default() {
 				return '';
@@ -38,27 +27,78 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const player = ref<MediaPlayerElement>();
-		const src = ref('');
-		onMounted(() => {
-			src.value = props.audioUrl ? props.audioUrl : '';
-			const cleanup = () => {
-				if (player.value) {
-					player.value.destroy();
+		const { t } = useI18n();
+		const errorManager = inject('errorManager') as ErrorManagerType;
+		let audioPlayer: PlayerType;
+		const handleErrorDispatch = (type: string) => {
+			switch (type) {
+				case 'loadMedia': {
+					errorManager.submitCustomError('player-error', t('error.players.audio.fileInit'));
+					break;
 				}
+				case 'loadScript': {
+					errorManager.submitCustomError('player-error', t('error.players.audio.playerInit'));
+					break;
+				}
+				default: {
+					errorManager.submitCustomError('player-error', t('error.players.audio.generic'));
+				}
+			}
+		};
+		const appendScript = () => {
+			let kalturaScript = document.createElement('script');
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('id', 'kaltura-script');
+			kalturaScript.setAttribute('type', 'application/javascript');
+			kalturaScript.id = 'kaltura-player-script';
+			kalturaScript.onload = () => {
+				bootstrapPlayer();
 			};
-			// Attach cleanup to unmmount
-			onBeforeUnmount(() => {
-				cleanup();
-			});
+			kalturaScript.onerror = () => {
+				handleErrorDispatch('loadScript');
+			};
+			document.head.appendChild(kalturaScript);
+		};
+		const bootstrapPlayer = () => {
+			try {
+				audioPlayer = KalturaPlayer.setup({
+					targetId: 'audio-player',
+					provider: {
+						partnerId: 380,
+						uiConfId: 23454104,
+					},
+				});
+				audioPlayer.loadMedia({ referenceId: props.fileId });
+			} catch (e) {
+				handleErrorDispatch('');
+				console.error(e);
+			}
+		};
+		onMounted(() => {
+			const no_script = !document.getElementById('kaltura-player-script');
+			if (no_script) {
+				appendScript();
+			} else {
+				bootstrapPlayer();
+			}
 		});
-		return { src, player };
+		onBeforeUnmount(() => {
+			if (KalturaPlayer) {
+				audioPlayer.destroy();
+			}
+		});
 	},
 });
 </script>
 
 <style scoped>
-.audio-player {
+.player {
+	aspect-ratio: 4/2;
+	width: 100%;
+	height: auto;
+}
+
+.audio-player-box {
 	background-color: black;
 	display: flex;
 	justify-content: center;
@@ -76,7 +116,7 @@ export default defineComponent({
 }
 
 @media (min-width: 640px) {
-	.video-player {
+	.audio-player-box {
 		margin-left: -36px;
 		width: 100vw;
 		max-width: calc(100% + 36px * 2);
@@ -84,7 +124,7 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.video-player {
+	.audio-player-box {
 		width: 100%;
 		margin-left: 0px;
 		max-width: 100%;
