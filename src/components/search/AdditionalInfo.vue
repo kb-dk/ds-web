@@ -144,8 +144,6 @@ export default defineComponent({
 				},
 			);
 
-			console.log(router.currentRoute.value.name, 'ROUTE BABY');
-
 			if (props.open) {
 				showThumbnails();
 			}
