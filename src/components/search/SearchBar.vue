@@ -229,6 +229,9 @@ export default defineComponent({
 		const reset = () => {
 			searchResultStore.currentQuery = '';
 			searchResultStore.loading = false;
+			setPreliminaryFilter(delimitationOptions.all);
+			const selectAll = document.querySelector('#radio-btn-all') as HTMLInputElement;
+			selectAll.checked = true;
 			router.push({ name: 'Home' });
 		};
 
