@@ -43,7 +43,7 @@ import ItemSlider from '@/components/search/ItemSlider.vue';
 import { APIService } from '@/api/api-service';
 import gsap from 'gsap';
 import { ImageComponentType } from '@/types/ImageComponentType';
-import { useRouter, RouteLocationNormalizedLoaded } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
@@ -99,14 +99,9 @@ export default defineComponent({
 			const minutes = Math.floor((seconds % 3600) / 60);
 			const remainingSeconds = seconds % 60;
 
-			const timeString =
-				hours +
-				':' +
-				(minutes < 10 ? '0' : '') +
-				minutes +
-				':' +
-				(remainingSeconds < 10 ? '0' : '') +
-				Math.round(remainingSeconds);
+			const timeStringSecond = (remainingSeconds < 10 ? '0' : '') + Math.round(remainingSeconds);
+			const timeStringMinutes = (minutes < 10 ? '0' : '') + minutes;
+			const timeString = `${hours}:${timeStringMinutes}:${timeStringSecond}`;
 			return timeString;
 		};
 

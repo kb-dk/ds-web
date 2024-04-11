@@ -34,6 +34,7 @@ export interface GenericSearchResultType {
 	startTime?: string;
 	endTime?: string;
 	duration_ms: string;
+	duration: string;
 	origin: string;
 }
 

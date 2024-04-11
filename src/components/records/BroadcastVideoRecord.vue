@@ -7,7 +7,7 @@
 					:id="recordData.id"
 					:open="true"
 					:file-id="recordData['kb:internal']['kb:file_id'] ? recordData['kb:internal']['kb:file_id'] : ''"
-					:duration="getTimeFromStartAndEnde(recordData.duration)"
+					:duration="getTimeFromStartAndEnd(recordData.duration)"
 				></AdditionalInfo>
 			</div>
 			<div
@@ -114,7 +114,7 @@ import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
-import { getTimeFromStartAndEnde } from '@/utils/time-utils';
+import { getTimeFromStartAndEnd } from '@/utils/time-utils';
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
 
@@ -155,7 +155,7 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, getTimeFromStartAndEnde };
+		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, getTimeFromStartAndEnd };
 	},
 });
 </script>

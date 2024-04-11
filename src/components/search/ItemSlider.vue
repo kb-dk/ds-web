@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+import { onUnmounted } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
@@ -20,13 +21,9 @@ export default defineComponent({
 		const isDown = ref(false);
 		const startX = ref(0);
 		const scrollLeft = ref(0);
-		const linkItems = ref(null as null | NodeList);
 		const move = ref(false);
 
 		onMounted(() => {
-			if (itemSliderRef.value) {
-				linkItems.value = itemSliderRef?.value.querySelectorAll('.' + props.itemClass);
-			}
 			if (itemSliderRef.value) {
 				itemSliderRef.value.addEventListener('mousedown', startAndCalculateOffset);
 				itemSliderRef.value.addEventListener('mouseleave', stopMovementOnParent);
@@ -34,6 +31,16 @@ export default defineComponent({
 				itemSliderRef.value.addEventListener('mousemove', calculateMovement);
 			}
 		});
+
+		onUnmounted(() => {
+			if (itemSliderRef.value) {
+				itemSliderRef.value.removeEventListener('mousedown', startAndCalculateOffset);
+				itemSliderRef.value.removeEventListener('mouseleave', stopMovementOnParent);
+				itemSliderRef.value.removeEventListener('mouseup', stopMovementOnParent);
+				itemSliderRef.value.removeEventListener('mousemove', calculateMovement);
+			}
+		});
+
 		const startAndCalculateOffset = (e: MouseEvent) => {
 			if (itemSliderRef.value) {
 				isDown.value = true;

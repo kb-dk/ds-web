@@ -70,7 +70,7 @@ function generateDurationParts(hours: number, minutes: number, seconds: number, 
 	return durationParts;
 }
 
-function getTimeFromStartAndEnde(duration: string) {
+function getTimeFromStartAndEnd(duration: string) {
 	const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
 	if (match) {
 		const hours = parseInt(match[1] || '0');
@@ -112,4 +112,4 @@ function getBroadcastTime(isoDate: string): string {
 	return new Intl.DateTimeFormat('en-GB', options).format(dateObj);
 }
 
-export { formatDuration, getBroadcastDate, getBroadcastTime, getTimeFromStartAndEnde };
+export { formatDuration, getBroadcastDate, getBroadcastTime, getTimeFromStartAndEnd };

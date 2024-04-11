@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref, watch, toRaw } from 'vue';
+import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -172,7 +172,6 @@ export default defineComponent({
 			placeholderSubtitleRefs,
 			placeholderSummaryRefs,
 			placeholderTitleRef,
-			toRaw,
 		};
 	},
 });
