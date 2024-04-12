@@ -3,7 +3,7 @@
 		<button
 			:disabled="fileId?.length > 0 ? false : true"
 			class="thumbnail-button"
-			:title="'See more thumbnails'"
+			:title="$t('search.thumbnailButton')"
 			@click="showThumbnails()"
 		>
 			<span class="material-icons">photo_library</span>
@@ -21,6 +21,7 @@
 					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true, startAt: timeStamps[index] / 1000 } }"
 					role="link"
 					class="extra-thumbnail"
+					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"
 					v-bind="slotProps"
 					:replace="router.currentRoute.value.name === 'Record' ? true : false"
 				>
@@ -30,7 +31,7 @@
 					>
 						<kb-imagecomponent :imagedata="thumbnailImageData[index]"></kb-imagecomponent>
 					</div>
-					<div class="img-stamp">{{ ConvertSecondstoShow(timeStamps[index]) }}</div>
+					<div class="img-stamp">{{ convertSecondstoShow(timeStamps[index]) }}</div>
 				</router-link>
 			</template>
 		</ItemSlider>
@@ -44,6 +45,7 @@ import { APIService } from '@/api/api-service';
 import gsap from 'gsap';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
@@ -57,6 +59,8 @@ export default defineComponent({
 		open: { type: Boolean },
 	},
 	setup(props) {
+		const { t } = useI18n();
+
 		const thumbnailImages = ref(10);
 		const extraContentShown = ref(false);
 		const thumbnailImageData = ref([] as string[]);
@@ -93,7 +97,7 @@ export default defineComponent({
 			});
 		};
 
-		const ConvertSecondstoShow = (milliseconds: number) => {
+		const convertSecondstoShow = (milliseconds: number) => {
 			const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
 			const hours = Math.floor(seconds / 3600);
 			const minutes = Math.floor((seconds % 3600) / 60);
@@ -157,8 +161,9 @@ export default defineComponent({
 			extraContentRef,
 			thumbnailRefs,
 			timeStamps,
-			ConvertSecondstoShow,
+			convertSecondstoShow,
 			router,
+			t,
 		};
 	},
 });
@@ -211,6 +216,16 @@ export default defineComponent({
 	pointer-events: all;
 	text-decoration: none;
 	color: #002e70;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	-moz-user-drag: none;
+	-ms-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
 }
 
 .extra-thumbnail.disabled {

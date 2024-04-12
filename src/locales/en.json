@@ -29,7 +29,9 @@
      "searchHere":"search here",
      "tv":"TV",
      "radio":"Radio",
-     "all":"All"
+     "all":"All",
+     "thumbnailButton":"See more thumbnails",
+     "thumbnailLink": "Thumbnail {index} at {timestamp}"
   },
   "record":{
      "duration":"Duration",
