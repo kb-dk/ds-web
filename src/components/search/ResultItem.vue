@@ -75,7 +75,6 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
-
 import '@/components/common/wc-image-item';
 
 export default defineComponent({

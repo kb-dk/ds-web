@@ -46,6 +46,7 @@ import gsap from 'gsap';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { convertSecondstoShow } from '@/utils/time-utils';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
@@ -97,18 +98,6 @@ export default defineComponent({
 			});
 		};
 
-		const convertSecondstoShow = (milliseconds: number) => {
-			const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
-			const hours = Math.floor(seconds / 3600);
-			const minutes = Math.floor((seconds % 3600) / 60);
-			const remainingSeconds = seconds % 60;
-
-			const timeStringSecond = (remainingSeconds < 10 ? '0' : '') + Math.round(remainingSeconds);
-			const timeStringMinutes = (minutes < 10 ? '0' : '') + minutes;
-			const timeString = `${hours}:${timeStringMinutes}:${timeStringSecond}`;
-			return timeString;
-		};
-
 		const requestExtraThumbnails = () => {
 			APIService.getExtraThumbnails(props.fileId)
 				.then((thumbServiceResponse) => {
@@ -128,7 +117,7 @@ export default defineComponent({
 						imgData.objectPos = `-${200 * index}px 0px`;
 						imgData.imgOption = 'none';
 						thumbnailImageData.value.push(JSON.stringify(imgData));
-						timeStamps.value.push((props.duration / 10) * index);
+						timeStamps.value.push((props.duration / 10) * index + 3000 + index * 3000);
 					});
 				})
 				//Just in case the service fail - we fail silently and swoop in with the placeholder
