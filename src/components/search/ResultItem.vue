@@ -267,6 +267,7 @@ export default defineComponent({
 	height: 105px;
 	justify-content: space-between;
 	gap: 30px;
+	padding-bottom: 20px;
 }
 
 .shimmer {
