@@ -88,3 +88,7 @@ export interface APIResponseHeaderType {
 		queryUUID?: string;
 	};
 }
+
+export interface APIAuthResponseType {
+	resp: string;
+}
