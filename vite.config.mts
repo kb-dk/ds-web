@@ -60,6 +60,11 @@ export default ({ mode }) => {
 					rewrite: (path) => path.replace(/^\/ds-api\/thumbnails\//, ''),
 					changeOrigin: true,
 				},
+				'/ds-api/bff/': {
+					target: env.DEVEL_API_BFF,
+					rewrite: (path) => path.replace(/^\/ds-api\/bff\//, ''),
+					changeOrigin: true,
+				},
 			},
 		},
 	});
