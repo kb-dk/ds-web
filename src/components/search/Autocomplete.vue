@@ -119,8 +119,8 @@ export default defineComponent({
 				const matched = str.substring(startIndex, endIndex);
 				const after = str.substring(endIndex);
 
-				const highlightedString = `${before}<span style="font-weight:bold">${matched}</span><italic> OH YES </italic>${after}`;
-				return DOMPurify.default.sanitize(highlightedString);
+				const highlightedString = `${before}<span style="font-weight:bold">${matched}</span>${after}`;
+				return DOMPurify.default.sanitize(highlightedString, { ALLOWED_TAGS: ['span'] });
 			}
 			return str;
 		};
