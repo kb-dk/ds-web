@@ -5,6 +5,7 @@ import {
 	APIMoreLikeThisResponseType,
 	APIAutocompleteResponseType,
 	APIThumbnailsResponseType,
+	APIAuthResponseType,
 } from '@/types/APIResponseTypes';
 
 export function sleep(random?: boolean): Promise<void> {
@@ -103,7 +104,11 @@ export class APIServiceClient {
 	}
 
 	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`thumbnails/?fileId=${id}&width=200&height=105`);
+		return await this.httpClient.get(`bff/v1/proxy/ds-image/kaltura/thumbnails/?fileId=${id}&width=200&height=105`);
+	}
+
+	async authenticate(): Promise<APIAuthResponseType> {
+		return await this.httpClient.get('bff/v1/authenticate/');
 	}
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {

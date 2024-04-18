@@ -200,6 +200,9 @@
          "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
       }
    },
+   "auth": {
+      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
+   },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
   } 
