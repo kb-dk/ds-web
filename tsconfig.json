@@ -19,6 +19,7 @@
       "jest",
       "vidstack/vue",
       "vite/client",
+      "dompurify"
     ],
     "paths": {
       "@/*": [
