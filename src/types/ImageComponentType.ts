@@ -4,6 +4,7 @@ export interface ImageComponentType extends HTMLElement {
 	imgTitle: string | undefined;
 	altText: string | undefined;
 	icon: string | undefined;
+	iconColor?: string | undefined;
 	aspect: string | undefined;
 	placeholder: string | undefined;
 }
