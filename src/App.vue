@@ -386,21 +386,6 @@ nav {
 	font-family: noway, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
-}
-
-#nav {
-	padding: 30px;
-	display: flex;
-}
-
-#nav a {
-	font-weight: bold;
-	color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-	color: #42b983;
 }
 
 .content {

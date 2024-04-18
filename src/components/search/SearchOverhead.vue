@@ -23,7 +23,9 @@
 							{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
 						</span>
 					</button>
-					<div class="page-count">HEJ</div>
+					<div class="page-count">
+						side {{ (Number(searchResultStore.start) + 10) / 10 }}/{{ Math.ceil(searchResultStore.numFound / 10) }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -82,6 +84,11 @@ export default defineComponent({
 .hits {
 	margin-right: auto;
 	margin-left: 0;
+}
+
+.page-count {
+	font-size: 16px;
+	//color: #000000;
 }
 
 .filter-button {
