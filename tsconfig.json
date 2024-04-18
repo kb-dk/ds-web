@@ -17,7 +17,6 @@
     "outDir": "dist",
     "types": [
       "jest",
-      "vidstack/vue",
       "vite/client",
       "dompurify"
     ],

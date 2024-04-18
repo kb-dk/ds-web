@@ -1,3 +1,5 @@
+<!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="autocomplete">
 		<ul
