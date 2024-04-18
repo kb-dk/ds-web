@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { provideErrorManager } from '@/components/global/error-handling/error-manager';
+import { useAuthStore } from '@/store/authStore';
 
 import '@/assets/fonts/iconfont/material-icons.css';
 
@@ -16,4 +17,15 @@ const app = createApp(App).use(router).use(pinia).use(i18n);
 
 //Attach to error manager globally
 provideErrorManager(app);
+
+const authStore = useAuthStore();
+// Wrapped in anonymous async function to avoid top-level 'await' to support older browsers
+(async () => {
+	try {
+		await authStore.authenticate();
+	} catch (error) {
+		console.error('error authenticating', error);
+	}
+})();
+
 app.mount('#app');
