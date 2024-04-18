@@ -12,16 +12,19 @@
 					</div>
 					<Sort v-if="searchResultStore.searchResult.length > 0" />
 				</div>
-				<button
-					v-if="searchResultStore.searchResult.length > 0"
-					class="filter-button"
-					@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
-				>
-					<span class="material-icons">tune</span>
-					<span class="filter-button-text">
-						{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
-					</span>
-				</button>
+				<div class="filter-options">
+					<button
+						v-if="searchResultStore.searchResult.length > 0"
+						class="filter-button"
+						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+					>
+						<span class="material-icons">tune</span>
+						<span class="filter-button-text">
+							{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
+						</span>
+					</button>
+					<div class="page-count">HEJ</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -64,6 +67,13 @@ export default defineComponent({
 	justify-content: flex-end;
 }
 
+.filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+}
+
 .buffer {
 	height: 20px;
 	width: 100%;
@@ -82,6 +92,8 @@ export default defineComponent({
 	cursor: pointer;
 	padding: 0;
 	margin: 10px 0px;
+	margin-right: auto;
+	margin-left: 0;
 }
 
 .filter-button .material-icons {
