@@ -3,11 +3,14 @@
       "titles": {
          "frontpage": {
             "archive":  {
-               "name": "DR Arkiv",
+               "name": "DR Archive",
                "suffix": " - DR Archive"
             }
          },
-         "search":" Search for "
+         "search":" Search for"
+      },
+      "frontPages": {
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
       }
    },
   "search":{
