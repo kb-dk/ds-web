@@ -92,11 +92,13 @@ export default defineComponent({
 
 		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
-		const { t } = useI18n();
+		const { t, locale } = useI18n();
 
 		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		onMounted(() => {
+			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
+			document.title = t('app.titles.frontpage.archive') as string;
 			searchResultStore.resetFilters();
 			if (route.query.q !== undefined) {
 				gsap.set(searchContainer.value, {
@@ -171,7 +173,7 @@ export default defineComponent({
 					document.title = (t('app.titles.search') + '"' + route.query.q + '"' + t('app.titles.suffix')) as string;
 				}
 				if (route.query.q === undefined) {
-					document.title = t('app.titles.frontpage') as string;
+					document.title = t('app.titles.frontpage.archive') as string;
 					searchResultStore.resetSearch();
 				}
 			},

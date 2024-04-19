@@ -1,7 +1,9 @@
 {
    "app": {
       "titles": {
-         "frontpage": "DR Archive",
+         "frontpage": {
+            "archive": "DR Archive"
+         },
          "suffix": " - DR Archive",
          "search":" Search for"
       }

@@ -11,7 +11,7 @@
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<kb-menu
-			:vue-routing="true"
+			:routing="true"
 			:locale="currentLocale"
 		></kb-menu>
 		<div
@@ -144,9 +144,9 @@ export default defineComponent({
 		};
 
 		router.beforeEach((to, from) => {
-			if (from.name === 'Home' && to.name === 'Record') {
+			if (from.name === 'Archive' && to.name === 'Record') {
 				transitionName.value = 'from-search-to-record';
-			} else if (from.name === 'Record' && to.name === 'Home') {
+			} else if (from.name === 'Record' && to.name === 'Archive') {
 				transitionName.value = 'from-record-to-search';
 			} else {
 				transitionName.value = 'swipe';
@@ -155,7 +155,8 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
-			document.title = t('app.titles.frontpage') as string;
+			//for now, we set the title of the app to the archive. Can be changed if we ever go portal-mode.
+			document.title = t('app.titles.frontpage.archive.name') as string;
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
 			const storedLocale = LocalStorageWrapper.get('locale') as string;
