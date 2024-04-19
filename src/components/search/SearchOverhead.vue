@@ -23,9 +23,14 @@
 							{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
 						</span>
 					</button>
-					<div class="page-count">
-						side {{ (Number(searchResultStore.start) + 10) / 10 }}/{{ Math.ceil(searchResultStore.numFound / 10) }}
-					</div>
+					<Transition name="fade">
+						<div
+							v-if="!searchResultStore.loading && searchResultStore.numFound > 0"
+							class="page-count"
+						>
+							side {{ (Number(searchResultStore.start) + 10) / 10 }}/{{ Math.ceil(searchResultStore.numFound / 10) }}
+						</div>
+					</Transition>
 				</div>
 			</div>
 		</div>
@@ -88,7 +93,6 @@ export default defineComponent({
 
 .page-count {
 	font-size: 16px;
-	//color: #000000;
 }
 
 .filter-button {
