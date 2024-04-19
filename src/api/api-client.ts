@@ -56,8 +56,8 @@ export class APIServiceClient {
 	//Search and record methods
 	async getFacetResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
 		//Temporary fix/implementation for limiting material
-		const broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
-
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
@@ -73,8 +73,8 @@ export class APIServiceClient {
 		uuid: string,
 	): Promise<APISearchResponseType> {
 		//Temporary fix/implementation for limiting material
-		const broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
-
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
@@ -90,7 +90,8 @@ export class APIServiceClient {
 
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
 		//Temporary fix/implementation for limiting material
-		const broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			encodeURI(
 				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(
