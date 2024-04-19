@@ -1,3 +1,5 @@
+<!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="autocomplete">
 		<ul
@@ -14,7 +16,7 @@
 			>
 				<button
 					@click="doAutocompleteSearch(item?.term)"
-					v-html="setBold(searchResultStore.currentQuery || '', item?.term)"
+					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
 			</li>
 		</ul>
@@ -25,6 +27,7 @@ import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import router from '@/router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
+import * as DOMPurify from 'dompurify';
 
 export default defineComponent({
 	name: 'Autocomplete',
@@ -104,7 +107,7 @@ export default defineComponent({
 			);
 		};
 
-		const setBold = (hl: string, str: string) => {
+		const setBoldAndSanitize = (hl: string, str: string) => {
 			const lowerCaseValue = hl.toLowerCase();
 			const lowerCaseStr = str.toLowerCase();
 
@@ -116,13 +119,13 @@ export default defineComponent({
 				const matched = str.substring(startIndex, endIndex);
 				const after = str.substring(endIndex);
 
-				const highlightedString = `${before}<span style="font-weight:bold">${matched}</span>${after}`;
-				return highlightedString;
+				const highlightedString = `${before}<span style="font-weight:bold">${matched}</span><italic> OH YES </italic>${after}`;
+				return DOMPurify.default.sanitize(highlightedString);
 			}
 			return str;
 		};
 
-		return { searchResultStore, setBold, doAutocompleteSearch, currentSelectedAutocomplete };
+		return { searchResultStore, setBoldAndSanitize, doAutocompleteSearch, currentSelectedAutocomplete };
 	},
 });
 </script>

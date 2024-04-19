@@ -192,7 +192,11 @@
                "playerInit":"The audio player is not available at the moment",
                "generic":"Something went wrong - we can't play this audio clip at the moment"
             }
+            
        },
+       "auth": {
+         "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later"
+      },
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them"
   }

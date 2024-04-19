@@ -23,7 +23,8 @@ class SpotComponent extends HTMLElement {
 			imageData.altText = 'alt text here';
 			imageData.imgTitle = 'title here';
 			imageData.aspect = '2/1.25';
-			imageData.icon = 'play_arrow';
+			imageData.icon = 'play_circle_filled';
+			imageData.iconColor = 'white';
 			imageComponent.setAttribute('imagedata', JSON.stringify(imageData));
 		}
 	}
@@ -40,7 +41,7 @@ class SpotComponent extends HTMLElement {
 				titleHolder && (titleHolder.innerHTML = this.data.title);
 			}
 			const symbol = this.shadow.querySelector('.type-symbol');
-			symbol && (symbol.innerHTML = 'play_arrow');
+			symbol && (symbol.innerHTML = 'play_circle_filled');
 		}
 	}
 
