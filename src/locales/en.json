@@ -2,10 +2,12 @@
    "app": {
       "titles": {
          "frontpage": {
-            "archive": "DR Archive"
+            "archive":  {
+               "name": "DR Arkiv",
+               "suffix": " - DR Archive"
+            }
          },
-         "suffix": " - DR Archive",
-         "search":" Search for"
+         "search":" Search for "
       }
    },
   "search":{
