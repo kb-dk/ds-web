@@ -88,7 +88,6 @@ export default defineComponent({
 
 .page-count {
 	font-size: 16px;
-	//color: #000000;
 }
 
 .filter-button {
