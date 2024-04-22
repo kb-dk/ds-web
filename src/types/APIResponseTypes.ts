@@ -38,7 +38,7 @@ export interface APIAutocompleteResponseType {
 			};
 		};
 		suggest: {
-			dr_title_suggest: {
+			radiotv_title_suggest: {
 				[key: string]: {
 					numFound: number;
 					suggestions: APIAutocompleteTerm[];
