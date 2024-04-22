@@ -444,8 +444,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	.row {
 		display: flex;
 		flex-wrap: wrap;
-		/* margin-left: -12px;
-		margin-right: -12px; */
 	}
 	
 	.rdl-system-messages-wrapper {
@@ -578,7 +576,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		}
 		.container {
 			display: flex;
-			/* flex-direction: column; */
 			max-width: 1150px;
 		}
 	}
