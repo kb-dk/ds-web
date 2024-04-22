@@ -81,7 +81,6 @@ export default defineComponent({
 		};
 
 		const handleShowRecordError = (err: AxiosError, type: string) => {
-			//Expand as we go but remember to add default switch case once needed
 			switch (type) {
 				case 'recordCall': {
 					const errorMsg =
@@ -100,7 +99,6 @@ export default defineComponent({
 
 			const route = useRoute();
 			const id = route.params.id;
-			//TODO handle array of ids if needed
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
 			const moreLikeThis = await getMoreLikeThisRecords(idStr);
@@ -158,8 +156,6 @@ export default defineComponent({
 		padding: 25px;
 	}
 	.container {
-		/* padding-right: 12px;
-		padding-left: 12px; */
 		max-width: 990px;
 	}
 }
