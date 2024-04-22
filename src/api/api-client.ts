@@ -13,7 +13,6 @@ export function sleep(random?: boolean): Promise<void> {
 	if (random) {
 		sleep = Math.random() * 1500 + 500;
 	}
-	console.info('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
 	return new Promise((resolve) => setTimeout(resolve, sleep));
 }
 

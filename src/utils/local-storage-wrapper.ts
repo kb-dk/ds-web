@@ -24,11 +24,9 @@ export class LocalStorageWrapper {
 		} else {
 			try {
 				localStorage.setItem(key, JSON.stringify(value));
-			} catch {
-				/* If something happens in the JSON serializer
-        there is no need to alert the user but the developer 
-        definitely needs to shape up so we log an error to the console */
-				console.error(`Error trying to set key: ${key} and value: ${value} in local storage`);
+			} catch (e) {
+				/* If something happens in the JSON serializer which is en extreme
+        edge case in this scenario - there is no need to alert the user but we fail silently*/
 			}
 		}
 	}

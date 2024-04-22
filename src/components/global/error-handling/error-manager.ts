@@ -35,8 +35,7 @@ export class ErrorManager implements ErrorManagerType {
 			// Remove error after 5 seconds
 			this.removeErrorFromHistory(error, 5000);
 		} else {
-			// If the error is in history do nothing for now
-			console.error('An error occurred but we already notified the user about it');
+			// If the error is in history do nothing for now - we already notified the user about it
 		}
 	}
 

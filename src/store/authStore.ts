@@ -18,7 +18,6 @@ export const useAuthStore = defineStore('authStore', () => {
 		try {
 			await APIService.authenticate();
 		} catch (error) {
-			console.error('Error authenticating:', error);
 			errorManager.submitCustomError('auth-error', t('error.auto.serviceFailed'));
 		}
 	};

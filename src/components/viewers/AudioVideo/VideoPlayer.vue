@@ -77,7 +77,6 @@ export default defineComponent({
 				videoPlayer.loadMedia({ referenceId: props.fileId });
 			} catch (e) {
 				handleErrorDispatch('');
-				console.error(e);
 			}
 		};
 
