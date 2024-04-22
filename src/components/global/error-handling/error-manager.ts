@@ -33,7 +33,6 @@ export class ErrorManager implements ErrorManagerType {
 			this.errorHistory.push(error);
 
 			// Remove error after 5 seconds
-			// TODO lets build a more solid error purge method...
 			this.removeErrorFromHistory(error, 5000);
 		} else {
 			// If the error is in history do nothing for now
@@ -42,7 +41,6 @@ export class ErrorManager implements ErrorManagerType {
 	}
 
 	private isErrorInHistory(error: AxiosError | string): boolean {
-		// Maybe this refactor is too compact and hard to read...
 		return this.errorHistory.some((historyError) => {
 			if (typeof historyError === 'string' && typeof error === 'string') {
 				return historyError === error;
@@ -57,14 +55,11 @@ export class ErrorManager implements ErrorManagerType {
 		if (!error1 || !error2) {
 			return false;
 		}
-		// The idea here is to compare error types and I went with
-		// code here but it could be anything
 		const isSameCode = error1.code === error2.code;
 
-		// I went with status here but the idea is to illustrate that we should check for several things
 		const isSameStatus = error1.response?.status === error2.response?.status;
 
-		// This is just to show we can compare, for more advanced use we should have a dedicated comparator
+		// Simple compare 'method' - for more advanced use we should have a dedicated comparator
 		return isSameCode && isSameStatus;
 	}
 

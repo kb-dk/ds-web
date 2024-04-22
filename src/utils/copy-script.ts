@@ -5,7 +5,6 @@ async function copyTextToClipboard(): Promise<void> {
 		copyWentOK = true;
 	} catch (err) {
 		copyWentOK = false;
-		console.log('Oops, unable to copy');
 	}
 
 	let customEvent;
