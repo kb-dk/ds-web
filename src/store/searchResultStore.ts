@@ -128,7 +128,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const getAutocompleteResults = (query: string) => {
 		APIService.getAutocomplete(query).then((autocompleteReponse) => {
 			if (!blockAutocomplete.value) {
-				const autocompleteSelectedTerm = autocompleteReponse.data.suggest.dr_title_suggest;
+				const autocompleteSelectedTerm = autocompleteReponse.data.suggest.radiotv_title_suggest;
 				autocompleteResult.value = autocompleteSelectedTerm[Object.keys(autocompleteSelectedTerm)[0]].suggestions;
 			}
 		});
