@@ -322,6 +322,26 @@ export default defineComponent({
 	font-weight: 400;
 	src: url('./assets/fonts/noway-regular-webfont.woff2') format('woff2');
 }
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Bold.ttf') format('truetype');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Italic.ttf') format('truetype');
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
 	margin: 0;
 	padding: 0;
