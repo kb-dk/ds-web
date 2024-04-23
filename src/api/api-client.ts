@@ -33,7 +33,7 @@ export class APIServiceClient {
 				// add artificial delay for dev env
 				if (import.meta.env.MODE === 'development') {
 					const noDelayRequest =
-						response.config.url?.includes('suggest.dictionary=dr_title_suggest') ||
+						response.config.url?.includes('suggest.dictionary=radiotv_title_suggest') ||
 						response.config.url?.includes('record') ||
 						response.config.url?.includes('mlt') ||
 						response.config.url?.includes('thumbnails');
@@ -89,7 +89,7 @@ export class APIServiceClient {
 		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			encodeURI(
-				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(
+				`suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
 					query,
 				)}&suggest.count=5&wt=json&fq=${broadcastLimiter}`,
 			),

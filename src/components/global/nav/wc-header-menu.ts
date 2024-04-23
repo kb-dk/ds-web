@@ -5,6 +5,7 @@ class MenuComponent extends HTMLElement {
 	lang: string;
 	translation: MenuTranslation;
 	collapsed: boolean;
+	routing: boolean | undefined;
 	constructor() {
 		super();
 		this.collapsed = true;
@@ -26,15 +27,14 @@ class MenuComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		const vueRouting = this.getAttribute('vueRouting');
 		const logo = this.shadow.querySelector('.rdl-logo');
-		if (logo && vueRouting === 'true') {
+		if (logo && this.routing === true) {
 			logo.addEventListener('click', (event) => {
-				if (vueRouting) {
+				if (this.routing) {
 					event.preventDefault();
 					window.dispatchEvent(
 						new CustomEvent('change-path', {
-							detail: { name: 'Home', query: { q: '' } },
+							detail: { name: 'Archive', query: { q: '' } },
 						}),
 					);
 					window.dispatchEvent(new Event('reset-input'));
@@ -197,7 +197,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 			<div class="row justify-content-between">
 				<div class="col logo-col">
 					<a
-						href="/"
+						href="/arkiv"
 						class="rdl-logo"
 						title="Logo of the Royal Danish Library"
 					>
