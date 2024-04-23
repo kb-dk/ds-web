@@ -51,6 +51,10 @@ class ImageComponent extends HTMLElement {
 				const iconHolder = this.shadow.querySelector('.type-symbol');
 				iconHolder && (iconHolder.textContent = imageData.icon);
 			}
+			if (imageData.iconColor) {
+				const icon = this.shadow.querySelector('.type-symbol') as HTMLElement;
+				icon && (icon.style.color = imageData.iconColor);
+			}
 			if (imageData.aspect) {
 				const imageWrapper = this.shadow.querySelector('.image-wrapper') as HTMLElement;
 				imageWrapper && (imageWrapper.style.aspectRatio = imageData.aspect);

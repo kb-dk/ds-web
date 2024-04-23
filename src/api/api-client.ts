@@ -35,7 +35,7 @@ export class APIServiceClient {
 				// add artificial delay for dev env
 				if (import.meta.env.MODE === 'development') {
 					const noDelayRequest =
-						response.config.url?.includes('suggest.dictionary=dr_title_suggest') ||
+						response.config.url?.includes('suggest.dictionary=radiotv_title_suggest') ||
 						response.config.url?.includes('record') ||
 						response.config.url?.includes('mlt') ||
 						response.config.url?.includes('thumbnails');
@@ -55,13 +55,13 @@ export class APIServiceClient {
 
 	//Search and record methods
 	async getFacetResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
-		//Temporary fix/implementation for limiting to DR material
-		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
-
+		//Temporary fix/implementation for limiting material
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				query,
-			)}&facet=true${filters}${start}${sort}&fq=${DRLimiter}&rows=0&facet.limit=25`,
+			)}&facet=true${filters}${start}${sort}&fq=${broadcastLimiter}&rows=0&facet.limit=25`,
 		);
 	}
 
@@ -72,11 +72,13 @@ export class APIServiceClient {
 		sort: string,
 		uuid: string,
 	): Promise<APISearchResponseType> {
-		//Temporary fix/implementation for limiting to DR material
-		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
-
+		//Temporary fix/implementation for limiting material
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${DRLimiter}`,
+			`search/?q=${encodeURIComponent(
+				query,
+			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${broadcastLimiter}`,
 		);
 	}
 
@@ -87,13 +89,14 @@ export class APIServiceClient {
 	}
 
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
-		//Temporary fix/implementation for limiting to DR material
-		const DRLimiter = encodeURIComponent('broadcaster:"DR"');
+		//Temporary fix/implementation for limiting material
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			encodeURI(
-				`suggest/?suggest.dictionary=dr_title_suggest&suggest.q=${encodeURIComponent(
+				`suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
 					query,
-				)}&suggest.count=5&wt=json&fq=${DRLimiter}`,
+				)}&suggest.count=5&wt=json&fq=${broadcastLimiter}`,
 			),
 		);
 	}

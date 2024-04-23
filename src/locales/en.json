@@ -1,9 +1,16 @@
 {
    "app": {
       "titles": {
-         "frontpage": "DR Archive",
-         "suffix": " - DR Archive",
+         "frontpage": {
+            "archive":  {
+               "name": "DR Archive",
+               "suffix": " - DR Archive"
+            }
+         },
          "search":" Search for"
+      },
+      "frontPages": {
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
       }
    },
   "search":{

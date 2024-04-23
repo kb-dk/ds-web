@@ -1,9 +1,16 @@
 {
    "app": {
       "titles": {
-         "frontpage": "DR Arkiv",
-         "suffix": " - DR Arkiv",
+         "frontpage": {
+            "archive":  {
+               "name": "DR Arkiv",
+               "suffix": " - DR Arkiv"
+            }
+         },
          "search":" Søgning på "
+      },
+      "frontPages": {
+         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR arkiv"
       }
    },
   "search":{

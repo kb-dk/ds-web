@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="intro">
-				<h2>Velkommen til DR's arkiv på Det Kgl. Bibliotek</h2>
+				<h2>{{ $t('app.frontPages.TVRadioDR') }}</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 					magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -26,7 +26,7 @@
 			<div class="edge blue"></div>
 
 			<div class="container">
-				<h3>Om DR Arkivet</h3>
+				<h3>Om arkivet</h3>
 				<GridDisplay
 					:draggable="false"
 					:spot-nr="3"

@@ -23,7 +23,13 @@
 						</div>
 						<div class="summary">{{ resultdata.description }}</div>
 					</div>
-					<div class="result-image-wrapper"><kb-imagecomponent :imagedata="imageData"></kb-imagecomponent></div>
+					<router-link
+						:to="{ path: 'record/' + resultdata.id }"
+						class="result-image-wrapper"
+						role="link"
+					>
+						<kb-imagecomponent :imagedata="imageData"></kb-imagecomponent>
+					</router-link>
 				</div>
 				<AdditionalInfo
 					:id="resultdata.id"
@@ -134,6 +140,8 @@ export default defineComponent({
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
+						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
 					//Just in case the service fail - we fail silently and swoop in with the placeholder

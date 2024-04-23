@@ -5,6 +5,11 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
 		name: 'Home',
+		redirect: '/arkiv',
+	},
+	{
+		path: '/arkiv',
+		name: 'Archive',
 		component: Search,
 	},
 	{
