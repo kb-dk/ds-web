@@ -12,7 +12,22 @@
 				title="Et par fif til din søgning"
 				:right="true"
 			></TiltedDivider>
-			<TextAndImage></TextAndImage>
+			<TextAndImage>
+				<template #text>
+					<div>
+						<h3>Her får du et par fif til at optimere din søgning</h3>
+						<ul>
+							<li>Et område afsat til at lære brugerene om brugen af søgefeltet</li>
+							<li>Hvad kan man og ikke mindst hvad man kan ikke søge på</li>
+							<li>Vil det være muligt at søge på en titel</li>
+							<li>Vil det være muligt at søge på en programrække</li>
+							<li>I det hele taget skal der laves en "søgeguide"</li>
+							<li>Her skal stå hvordam man bruger vores søgefelt</li>
+						</ul>
+					</div>
+				</template>
+				<template #image><div class="material-icons search-icon">search</div></template>
+			</TextAndImage>
 			<EdgedContentArea title="Led videre i vores hovedkategorier"></EdgedContentArea>
 		</div>
 	</Transition>
@@ -52,5 +67,11 @@ export default defineComponent({
 
 .no-hits-heading {
 	font-size: 36px;
+}
+
+.search-icon {
+	text-align: center;
+	font-size: 256px;
+	color: #002e70;
 }
 </style>

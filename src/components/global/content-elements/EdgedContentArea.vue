@@ -58,7 +58,7 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only 
 temporary styling until patterns from design system are implemented 
 -->
-<style scoped>
+<style lang="scss" scoped>
 .top-edge {
 	height: 5vw;
 	width: 120vw;
@@ -78,8 +78,7 @@ temporary styling until patterns from design system are implemented
 }
 
 .full-width {
-	width: 100vw;
-	background-color: green;
+	width: calc(100% + 24px);
 	height: 200px;
 	z-index: 5;
 	position: relative;
@@ -89,7 +88,6 @@ temporary styling until patterns from design system are implemented
 	height: 5vw;
 	width: 120vw;
 	left: 0px;
-	background-color: green;
 	z-index: 3;
 	transform: matrix(1, -0.03, 0.03, 1, 0, 0) translate(0%, -50%);
 	position: relative;
@@ -142,6 +140,9 @@ h3 {
 @media (min-width: 1150px) {
 	.container {
 		max-width: 1280px;
+	}
+	.full-width {
+		width: 100vw;
 	}
 }
 /* MEDIA QUERY 1280 */
