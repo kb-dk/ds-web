@@ -90,7 +90,6 @@ export default defineComponent({
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
 					currentResults.value = [];
-					console.log('results updated because of the watcher in searchResults.vue');
 					if (newResults !== prevResults) {
 						resultNr.value = newResults.length;
 						currentResults.value = newResults;

@@ -13,7 +13,6 @@ export function sleep(random?: boolean): Promise<void> {
 	if (random) {
 		sleep = Math.random() * 1500 + 500;
 	}
-	console.log('ONLY FOR DEVELOPMENT: sleeping for', sleep, 'ms');
 	return new Promise((resolve) => setTimeout(resolve, sleep));
 }
 
@@ -21,8 +20,7 @@ export class APIServiceClient {
 	constructor(private httpClient: AxiosInstance) {
 		httpClient.interceptors.request.use(
 			(config) => {
-				// We have a hook here to manipulate the request or the request header
-				// We will need this later
+				// Hook to manipulate the request or the request header
 				return config;
 			},
 			(error) => {
@@ -46,8 +44,6 @@ export class APIServiceClient {
 				return response;
 			},
 			(error: AxiosError) => {
-				// We have a hook here to handle more generel errors like e.g. network errors
-				// For now errors pass through as clean AxiosError
 				return Promise.reject(error);
 			},
 		);
@@ -83,7 +79,6 @@ export class APIServiceClient {
 	}
 
 	async getRecord(id: string): Promise<APIRecordResponseType> {
-		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
 	}
@@ -102,7 +97,6 @@ export class APIServiceClient {
 	}
 
 	async getMoreLikeThisRecords(id: string): Promise<APIMoreLikeThisResponseType> {
-		//console.info('ID hardcoded for now (doms.radio:albert-einstein.xml) - requested id -->', id);
 		return await this.httpClient.get(encodeURI(`mlt/?q=id:"${id}"&mlt.interestingTerms=list&rows=3`));
 	}
 

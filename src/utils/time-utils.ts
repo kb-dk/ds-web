@@ -87,7 +87,7 @@ function getBroadcastDate(isoDate: string, locale: string): string {
 function getBroadcastTime(isoDate: string): string {
 	const dateObj = new Date(isoDate);
 
-	// Formatting options - had to do the weird const typing...
+	// Formatting options - const typed to match DateTineFormat options param.
 	const options = {
 		hour: '2-digit' as const,
 		minute: '2-digit' as const,

@@ -87,7 +87,6 @@ export default defineComponent({
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
-					console.log('facets updated because of the watcher in searchResults.vue');
 					if (newFacets !== prevFacets) {
 						currentFacets.value = {} as FacetResultType;
 						channelFacets.value = [] as FacetPair[];
@@ -115,12 +114,10 @@ export default defineComponent({
 		const toggleFacets = () => {
 			if (searchResultStore.showFacets) {
 				facetsContainer.value?.classList.add('active');
-				//resultContainer.value?.classList.add('fullwidth');
 
 				window.document.body.classList.add('remove-body-scroll');
 			} else {
 				facetsContainer.value?.classList.remove('active');
-				//resultContainer.value?.classList.remove('fullwidth');
 				window.document.body.classList.remove('remove-body-scroll');
 			}
 		};

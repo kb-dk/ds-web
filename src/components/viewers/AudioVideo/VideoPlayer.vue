@@ -77,7 +77,6 @@ export default defineComponent({
 				videoPlayer.loadMedia({ referenceId: props.fileId });
 			} catch (e) {
 				handleErrorDispatch('');
-				console.error(e);
 			}
 		};
 
@@ -111,12 +110,8 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	/*aspect-ratio disabled - messes with the controls but now player is too high...*/
-	/*aspect-ratio: 4/2;*/
 	margin-left: 0px;
 	overflow-y: hidden;
-	/* padding-top: 31px;
-	padding-bottom: 31px; */
 	background-color: #caf0fe;
 }
 

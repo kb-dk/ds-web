@@ -42,7 +42,6 @@ export default defineComponent({
 		const duration = { time: 2 };
 		const countdown = ref<HTMLDivElement | null>(null);
 
-		//had to do the gsap.core.Tween hack here to get the typing working - I have no idea why
 		let notificationAnimation: null | gsap.core.Tween;
 
 		onMounted(() => {
@@ -53,7 +52,6 @@ export default defineComponent({
 					ease: 'linear',
 					onComplete: () => {
 						props.close(props.notification);
-						console.log('removing notification!', props.notification);
 					},
 				});
 			}
