@@ -28,7 +28,21 @@
 				</template>
 				<template #image><div class="material-icons search-icon">search</div></template>
 			</TextAndImage>
-			<EdgedContentArea title="Led videre i vores hovedkategorier"></EdgedContentArea>
+			<EdgedContentArea title="Led videre i vores hovedkategorier">
+				<template #content>
+					<div class="showcase-container">
+						<div
+							v-for="(item, index) in categories"
+							:key="index"
+							class="showcase"
+						>
+							<div class="material-icons">movie</div>
+
+							{{ item }}
+						</div>
+					</div>
+				</template>
+			</EdgedContentArea>
 			<TiltedDivider
 				title="Andre har søgt på"
 				:right="false"
@@ -39,12 +53,6 @@
 				æd / Lorem / Ipsum /
 			</div>
 			<TiltedDivider :right="true"></TiltedDivider>
-			<EdgedContentArea
-				background-color="#FFDCA4"
-				title=""
-			>
-				<template #content></template>
-			</EdgedContentArea>
 		</div>
 	</Transition>
 </template>
@@ -66,8 +74,18 @@ export default defineComponent({
 		EdgedContentArea,
 	},
 	setup() {
+		const categories = [
+			'Nyheder & aktualitet',
+			'Dokumentar',
+			'Børn & Ungdom',
+			'Kategori #4',
+			'Kategori #5',
+			'Kategori #6',
+			'Kategori #7',
+			'Kategori #8',
+		];
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
+		return { searchResultStore, categories };
 	},
 });
 </script>
@@ -91,6 +109,39 @@ export default defineComponent({
 	margin: auto;
 	width: 750px;
 	max-width: 100%;
+}
+
+.showcase-container {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	padding: 50px 0px;
+	flex-direction: row;
+	color: white;
+	flex-wrap: wrap;
+	align-content: center;
+	padding: 20px 50px;
+	box-sizing: border-box;
+}
+
+.material-icons {
+	display: block;
+	background: -webkit-linear-gradient(#eee, rgb(255, 220, 164));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 50px;
+}
+
+.showcase {
+	text-align: center;
+	width: 25%;
+	box-sizing: border-box;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	aspect-ratio: 3/1;
+	line-height: 90px;
 }
 
 .no-hits-heading {

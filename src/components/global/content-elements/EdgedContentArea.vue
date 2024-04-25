@@ -79,7 +79,7 @@ temporary styling until patterns from design system are implemented
 
 .full-width {
 	width: calc(100% + 24px);
-	height: 200px;
+	min-height: 200px;
 	z-index: 5;
 	position: relative;
 }
