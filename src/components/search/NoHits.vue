@@ -85,11 +85,12 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	text-align: center;
-	padding: 50px 200px;
 	line-height: 35px;
 	font-weight: bold;
 	width: 750px;
 	margin: auto;
+	width: 750px;
+	max-width: 100%;
 }
 
 .no-hits-heading {
