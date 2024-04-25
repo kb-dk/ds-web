@@ -9,7 +9,7 @@
 			ref="content"
 			class="full-width"
 		>
-			<div class="container">HEJHEJHEJ</div>
+			<div class="container"><slot name="content"></slot></div>
 		</div>
 		<div
 			ref="bottom"
