@@ -16,6 +16,7 @@
 			<div
 				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
 				key="1"
+				class="overall-container"
 			>
 				<SearchOverhead />
 				<div class="container">
@@ -232,6 +233,10 @@ temporary styling until patterns from design system are implemented
 
 .intro {
 	width: 100%;
+}
+
+.overall-container {
+	overflow-x: hidden;
 }
 
 h3 {

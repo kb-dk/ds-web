@@ -29,6 +29,22 @@
 				<template #image><div class="material-icons search-icon">search</div></template>
 			</TextAndImage>
 			<EdgedContentArea title="Led videre i vores hovedkategorier"></EdgedContentArea>
+			<TiltedDivider
+				title="Andre har søgt på"
+				:right="false"
+			></TiltedDivider>
+			<div class="previous-searches">
+				Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris
+				Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og
+				æd / Lorem / Ipsum /
+			</div>
+			<TiltedDivider :right="true"></TiltedDivider>
+			<EdgedContentArea
+				background-color="#FFDCA4"
+				title=""
+			>
+				<template #content></template>
+			</EdgedContentArea>
 		</div>
 	</Transition>
 </template>
@@ -63,6 +79,17 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+}
+
+.previous-searches {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	padding: 50px 200px;
+	line-height: 35px;
+	font-weight: bold;
+	width: 750px;
+	margin: auto;
 }
 
 .no-hits-heading {
