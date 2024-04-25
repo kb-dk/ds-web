@@ -52,8 +52,8 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .divider {
 	width: 100%;
-	margin-top: 30px;
-	margin-bottom: 30px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 }
 
 .bar {
