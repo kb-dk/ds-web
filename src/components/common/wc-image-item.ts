@@ -123,7 +123,7 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
         width:100%;
         height:100%;
         object-fit: cover;
-        transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s;
+        transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s, all 0.3s ease-in-out 0s;
         opacity:0;
 				transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
 				transform-origin:center;

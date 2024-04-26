@@ -29,7 +29,7 @@
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
-				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : 500"
 				mode="out-in"
 				@before-leave="onBeforeLeave(transitionName)"
 				@before-enter="onBeforeEnter(transitionName)"

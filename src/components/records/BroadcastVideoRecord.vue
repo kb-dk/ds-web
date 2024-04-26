@@ -3,12 +3,12 @@
 		<div class="video-container">
 			<div v-if="recordData.contentUrl">
 				<VideoPlayer :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
-				<AdditionalInfo
+				<!-- <AdditionalInfo
 					:id="recordData.id"
 					:open="true"
 					:file-id="recordData['kb:internal']['kb:file_id'] ? recordData['kb:internal']['kb:file_id'] : ''"
 					:duration="getTimeFromISOFormat(recordData.duration)"
-				></AdditionalInfo>
+				></AdditionalInfo> -->
 			</div>
 			<div
 				v-else
@@ -113,7 +113,7 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
+/* import AdditionalInfo from '@/components/search/AdditionalInfo.vue'; */
 import { getTimeFromISOFormat } from '@/utils/time-utils';
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
@@ -125,7 +125,7 @@ export default defineComponent({
 		VideoPlayer,
 		Duration,
 		GridDisplay,
-		AdditionalInfo,
+		/* AdditionalInfo, */
 	},
 
 	props: {

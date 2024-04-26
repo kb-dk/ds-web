@@ -86,15 +86,19 @@ function getTimeFromISOFormat(duration: string) {
 }
 
 function convertSecondstoShow(milliseconds: number): string {
-	const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
-	const hours = Math.floor(seconds / 3600);
-	const minutes = Math.floor((seconds % 3600) / 60);
-	const remainingSeconds = seconds % 60;
+	if (milliseconds) {
+		const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const remainingSeconds = seconds % 60;
 
-	const timeStringSecond = (remainingSeconds < 10 ? '0' : '') + Math.round(remainingSeconds);
-	const timeStringMinutes = (minutes < 10 ? '0' : '') + minutes;
-	const timeString = `${hours}:${timeStringMinutes}:${timeStringSecond}`;
-	return timeString;
+		const timeStringSecond = (remainingSeconds < 10 ? '0' : '') + Math.round(remainingSeconds);
+		const timeStringMinutes = (minutes < 10 ? '0' : '') + minutes;
+		const timeString = `${hours}:${timeStringMinutes}:${timeStringSecond}`;
+		return timeString;
+	} else {
+		return '';
+	}
 }
 
 function getBroadcastDate(isoDate: string, locale: string): string {

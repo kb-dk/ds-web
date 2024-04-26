@@ -119,32 +119,56 @@ export default defineComponent({
 
 <style scoped>
 .hit-box {
+	position: relative;
 	padding: 0 0 0 0;
 	box-sizing: border-box;
 	width: 100%;
 	margin-bottom: 20px;
 	transition: all 0.3s ease-in-out 0s;
-	box-shadow:
-		rgba(50, 50, 93, 0) 0px 13px 27px -5px,
-		rgba(0, 0, 0, 0) 0px 8px 16px -8px;
 }
 
 .hit-box:hover {
 	box-shadow:
-		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+		rgba(0, 0, 0, 0.09) 0px 2px 1px,
+		rgba(0, 0, 0, 0.09) 0px 4px 2px,
+		rgba(0, 0, 0, 0.09) 0px 8px 4px,
+		rgba(0, 0, 0, 0.09) 0px 16px 8px,
+		rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.hit-box:hover:after,
+.hit-box:hover:before {
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 }
 
 .hit-box:after {
+	transition: all 0.3s ease-in-out 0s;
 	content: '•';
 	position: absolute;
-	height: 15px;
+	height: 10px;
 	text-align: center;
 	color: #002e70;
-	transform: translate(-50%, 0);
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
-	width: 20px;
-	margin-top: -11px;
+	width: 10px;
+	line-height: 0.5;
+	margin-top: -5px;
+	transform-origin: center;
+	will-change: transform;
+}
+
+.hit-box:before {
+	transition: all 0.3s ease-in-out 0s;
+	content: '•';
+	position: absolute;
+	height: 10px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	top: 50%;
+	width: 10px;
+	line-height: 0.5;
+	margin-top: -5px;
 }
 
 .search-results {

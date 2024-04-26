@@ -88,10 +88,6 @@ export default defineComponent({
 	transition: all 0.3s linear 0s;
 }
 
-.item-slider.item-slider.active {
-	margin-bottom: 20px;
-}
-
 .item-slider::-webkit-scrollbar-track {
 	background-color: #002e70;
 }

@@ -15,6 +15,7 @@
 		class="extra-content"
 	>
 		<ItemSlider
+			v-if="extraContentShown"
 			bg="#002e70"
 			item-class="extra-thumbnail"
 		>
@@ -91,6 +92,7 @@ export default defineComponent({
 			gsap.to(extraContentRef.value, {
 				height: extraContentShown.value ? 'auto' : '0px',
 				opacity: extraContentShown.value ? '1' : '0',
+				marginBottom: extraContentShown.value ? '20px' : '0px',
 				duration: 0.2,
 				onComplete: () => {
 					if (extraContentShown.value === false) {
@@ -103,7 +105,6 @@ export default defineComponent({
 		};
 
 		const requestExtraThumbnails = () => {
-			console.log('THIS HAPPENED');
 			APIService.getExtraThumbnails(props.fileId)
 				.then((thumbServiceResponse) => {
 					console.log(thumbServiceResponse);
@@ -122,7 +123,6 @@ export default defineComponent({
 						imgData.objectPos = `-${200 * index}px 0px`;
 						imgData.imgOption = 'none';
 						thumbnailImageData.value.push(JSON.stringify(imgData));
-						console.log(props.duration);
 						timeStamps.value.push((props.duration / 10) * index + 3000 + index * 3000);
 					});
 				})
@@ -208,6 +208,7 @@ export default defineComponent({
 
 .extra-content {
 	height: 0px;
+	margin-bottom: 0px;
 }
 
 .extra-thumbnail {
@@ -246,5 +247,6 @@ export default defineComponent({
 	text-align: center;
 	font-size: 12px;
 	color: white;
+	height: 15px;
 }
 </style>

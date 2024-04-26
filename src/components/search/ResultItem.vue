@@ -299,6 +299,7 @@ export default defineComponent({
 	justify-content: space-between;
 	gap: 30px;
 	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
 
 .shimmer {
@@ -312,6 +313,7 @@ export default defineComponent({
 	);
 	position: absolute;
 	width: 100%;
+	max-width: 97%;
 	height: 105px;
 	mix-blend-mode: soft-light;
 	overflow: hidden;
