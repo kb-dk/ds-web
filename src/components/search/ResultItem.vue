@@ -4,7 +4,10 @@
 			name="result"
 			mode="out-in"
 		>
-			<div v-if="!searchResultStore.loading && resultdata">
+			<div
+				v-if="!searchResultStore.loading && resultdata"
+				class="outer-container"
+			>
 				<div class="container">
 					<div class="information">
 						<router-link
@@ -13,6 +16,7 @@
 							role="link"
 						>
 							{{ resultdata.title[0] }}
+							<span class="material-icons arrow">keyboard_arrow_right</span>
 						</router-link>
 						<div class="subtitle">
 							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
@@ -187,6 +191,25 @@ export default defineComponent({
 .result-item-wrapper {
 	transition: all 0.3s linear;
 	overflow: hidden;
+	border-left: 1px solid rgba(230, 230, 230, 1);
+	box-sizing: border-box;
+	padding: 20px 20px 0px 20px;
+}
+
+.result-item-wrapper:hover .arrow {
+	opacity: 1;
+}
+
+.outer-container {
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+}
+
+.arrow {
+	font-weight: bold !important;
+	top: 2px;
+	position: relative;
+	opacity: 0;
+	transition: opacity 0.1s linear 0s;
 }
 
 .material-icons {

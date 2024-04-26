@@ -2,18 +2,22 @@
 	<div class="extra-features">
 		<button
 			:disabled="fileId?.length > 0 ? false : true"
-			class="thumbnail-button"
+			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			:title="$t('search.thumbnailButton')"
 			@click="showThumbnails()"
 		>
 			<span class="material-icons">photo_library</span>
+			Thumbnails
 		</button>
 	</div>
 	<div
 		ref="extraContentRef"
 		class="extra-content"
 	>
-		<ItemSlider item-class="extra-thumbnail">
+		<ItemSlider
+			bg="#002e70"
+			item-class="extra-thumbnail"
+		>
 			<template #default="slotProps">
 				<router-link
 					v-for="(item, index) in thumbnailImages"
@@ -99,6 +103,7 @@ export default defineComponent({
 		};
 
 		const requestExtraThumbnails = () => {
+			console.log('THIS HAPPENED');
 			APIService.getExtraThumbnails(props.fileId)
 				.then((thumbServiceResponse) => {
 					console.log(thumbServiceResponse);
@@ -117,6 +122,7 @@ export default defineComponent({
 						imgData.objectPos = `-${200 * index}px 0px`;
 						imgData.imgOption = 'none';
 						thumbnailImageData.value.push(JSON.stringify(imgData));
+						console.log(props.duration);
 						timeStamps.value.push((props.duration / 10) * index + 3000 + index * 3000);
 					});
 				})
@@ -168,7 +174,7 @@ export default defineComponent({
 
 .thumbnail-button {
 	cursor: pointer;
-	border: 1px solid #002f702a;
+	border: 1px solid rgba(230, 230, 230, 1);
 	border-radius: 0px;
 	background-color: transparent;
 	display: flex;
@@ -176,6 +182,15 @@ export default defineComponent({
 	align-items: center;
 	color: #002e70;
 	transition: all 0.3s ease-in-out 0s;
+	top: 1px;
+	position: relative;
+	padding: 5px 15px;
+}
+
+.thumbnail-button.active {
+	background-color: #002e70;
+	color: white;
+	border: 1px solid #002e70;
 }
 
 .thumbnail-button:hover {
@@ -188,7 +203,7 @@ export default defineComponent({
 }
 
 .thumbnail-button:disabled {
-	color: rgba(180, 180, 180, 1);
+	color: rgb(150, 150, 150);
 }
 
 .extra-content {
@@ -224,10 +239,12 @@ export default defineComponent({
 .extra-thumbnail .img-wrap {
 	margin-bottom: 10px;
 	height: 105px;
+	margin-top: 20px;
 }
 
 .extra-thumbnail .img-stamp {
 	text-align: center;
 	font-size: 12px;
+	color: white;
 }
 </style>

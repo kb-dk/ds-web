@@ -120,29 +120,20 @@ export default defineComponent({
 
 <style scoped>
 .hit-box {
-	padding: 0 0 10px 0;
+	padding: 0 0 0 0;
 	box-sizing: border-box;
 	width: 100%;
-	border-bottom: 1px solid rgba(150, 150, 150, 0.3);
 	margin-bottom: 20px;
+	transition: all 0.3s ease-in-out 0s;
+	box-shadow:
+		rgba(50, 50, 93, 0) 0px 13px 27px -5px,
+		rgba(0, 0, 0, 0) 0px 8px 16px -8px;
 }
 
-.hit-box:first-of-type {
-	padding-top: 40px;
-	border-top: 1px solid rgba(150, 150, 150, 0.3);
-}
-.hit-box:first-of-type:before {
-	content: '•';
-	position: absolute;
-	height: 15px;
-	text-align: center;
-	color: #002e70;
-	background-color: white;
-	transform: translate(-50%, 0);
-	left: 50%;
-	top: calc(0px - 10px);
-	width: 20px;
-	background-color: white;
+.hit-box:hover {
+	box-shadow:
+		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .hit-box:after {
@@ -151,12 +142,12 @@ export default defineComponent({
 	height: 15px;
 	text-align: center;
 	color: #002e70;
-	background-color: white;
 	transform: translate(-50%, 0);
 	left: 50%;
 	width: 20px;
-	background-color: white;
+	margin-top: -11px;
 }
+
 .search-results {
 	position: relative;
 	max-width: 100%;

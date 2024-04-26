@@ -15,6 +15,7 @@ export default defineComponent({
 	name: 'ItemSlider',
 	props: {
 		itemClass: { type: String, required: true },
+		bg: { type: String, default: 'white' },
 	},
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
@@ -29,6 +30,7 @@ export default defineComponent({
 				itemSliderRef.value.addEventListener('mouseleave', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mouseup', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mousemove', calculateMovement);
+				itemSliderRef.value.style.backgroundColor = props.bg;
 			}
 		});
 
@@ -73,7 +75,6 @@ export default defineComponent({
 </script>
 <style>
 .item-slider {
-	margin-top: 20px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -84,11 +85,15 @@ export default defineComponent({
 	gap: 5px;
 	width: 100%;
 	height: 100%;
+	transition: all 0.3s linear 0s;
+}
+
+.item-slider.item-slider.active {
+	margin-bottom: 20px;
 }
 
 .item-slider::-webkit-scrollbar-track {
-	background-color: rgb(255, 255, 255);
-	margin: -6px;
+	background-color: #002e70;
 }
 
 .item-slider.active a {
@@ -96,10 +101,10 @@ export default defineComponent({
 }
 
 .item-slider::-webkit-scrollbar {
-	width: 20px;
+	height: 18px;
 }
 
 .item-slider::-webkit-scrollbar-thumb {
-	background-color: rgb(200, 200, 200);
+	background-color: rgb(255, 255, 255);
 }
 </style>

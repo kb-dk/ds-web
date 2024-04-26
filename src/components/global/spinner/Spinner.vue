@@ -2,7 +2,7 @@
 	<div>
 		<transition name="fade">
 			<div
-				v-if="!spinnerStore.spinner"
+				v-if="spinnerStore.spinner"
 				class="spinner"
 			>
 				<div class="spinner-cube"></div>
