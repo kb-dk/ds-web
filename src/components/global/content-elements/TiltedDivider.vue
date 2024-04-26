@@ -33,7 +33,6 @@ export default defineComponent({
 
 		onMounted(() => {
 			if (dividerRef.value) {
-				console.log(props);
 				if (props.right) {
 					dividerRef.value.style.transform = 'matrix(1, -0.03, 0.03, 1, 0, 0)';
 				} else {
