@@ -15,7 +15,7 @@
 				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 			>
 				<button
-					@click="doAutocompleteSearch(item?.term)"
+					@click="executeOnSelection"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
 			</li>
@@ -44,7 +44,10 @@ export default defineComponent({
 		const currentSelectedAutocomplete = ref(0);
 
 		const doAutocompleteSearch = (query: string) => {
-			router.push({ name: 'Archive', query: { q: query ? query : searchResultStore.currentQuery, start: 0 } });
+			router.push({
+				name: 'Archive',
+				query: { q: query ? query : searchResultStore.currentQuery, start: 0, fq: searchResultStore.preliminaryFilter },
+			});
 		};
 
 		watch(
@@ -75,7 +78,7 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					executeOnSelector(e);
+					executeOnSelection(e);
 					break;
 				default:
 					break;
@@ -98,13 +101,16 @@ export default defineComponent({
 			}
 		};
 
-		const executeOnSelector = (e: Event) => {
-			e.preventDefault();
-			doAutocompleteSearch(
-				currentSelectedAutocomplete.value !== 0
-					? searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term
-					: searchResultStore.currentQuery,
-			);
+		const executeOnSelection = (e: Event) => {
+			console.log(currentSelectedAutocomplete.value);
+			if (currentSelectedAutocomplete.value !== 0) {
+				e.preventDefault();
+				doAutocompleteSearch(
+					currentSelectedAutocomplete.value !== 0
+						? searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term
+						: searchResultStore.currentQuery,
+				);
+			}
 		};
 
 		const setBoldAndSanitize = (hl: string, str: string) => {
@@ -125,7 +131,13 @@ export default defineComponent({
 			return str;
 		};
 
-		return { searchResultStore, setBoldAndSanitize, doAutocompleteSearch, currentSelectedAutocomplete };
+		return {
+			searchResultStore,
+			setBoldAndSanitize,
+			doAutocompleteSearch,
+			executeOnSelection,
+			currentSelectedAutocomplete,
+		};
 	},
 });
 </script>
