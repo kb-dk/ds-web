@@ -62,7 +62,6 @@ export default defineComponent({
 			if (route.query.sort) {
 				const sortingValue = route.query.sort as string;
 				searchResultStore.setSortValue(sortingValue.split('%20')[0]);
-				//console.log(searchResultStore.sort);
 			}
 		});
 

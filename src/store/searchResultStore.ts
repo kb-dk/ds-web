@@ -101,7 +101,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
-		console.log('reset search');
 	};
 
 	const resetResults = () => {
@@ -160,8 +159,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 		try {
 			searchFired.value = true;
-			console.log('Querying Solr with query', query, 'and filters', searchFilters, start.value, sort.value);
-			//spinnerStore.toggleSpinner(true);
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
 				query,
@@ -192,8 +189,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
-				//console.log('Current search finished, we remove spinner.');
-				//spinnerStore.toggleSpinner(false);
 				loading.value = false;
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}

@@ -24,7 +24,7 @@ const authStore = useAuthStore();
 	try {
 		await authStore.authenticate();
 	} catch (error) {
-		console.error('error authenticating', error);
+		//Fail silently - user messaged from store
 	}
 })();
 

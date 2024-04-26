@@ -71,7 +71,6 @@ export default defineComponent({
 				audioPlayer.loadMedia({ referenceId: props.fileId });
 			} catch (e) {
 				handleErrorDispatch('');
-				console.error(e);
 			}
 		};
 		onMounted(() => {

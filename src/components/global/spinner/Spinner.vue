@@ -114,10 +114,6 @@ export default defineComponent({
 	75.001% {
 		transform: translateY(0px) rotateZ(0deg) scaleY(1) scaleX(1);
 	}
-	/* 80% {
-		transform: translateY(0px) rotateZ(0deg) scaleX(1.2) scaleY(0.8);
-		animation-timing-function: linear;
-	} */
 	90% {
 		transform: translateY(0px) rotateZ(0deg) scaleZ(1) scaleY(1);
 		transform-origin: center bottom;

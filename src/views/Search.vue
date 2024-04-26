@@ -163,7 +163,6 @@ export default defineComponent({
 		watch(
 			() => router.currentRoute.value,
 			(newp: RouteLocationNormalizedLoaded, prevp: RouteLocationNormalizedLoaded) => {
-				console.log('watcher in search found a change in the URL, so we do a check if we should search.');
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
 					if (checkIfSortIsChanged(newp.query.sort as string, prevp.query.sort as string)) {
 						searchResultStore.resetStart();

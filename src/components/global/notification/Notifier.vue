@@ -59,7 +59,6 @@ export default defineComponent({
 		};
 
 		const addNotification = (e: CustomEvent) => {
-			//this needs to be ironed out better o_O
 			notificationStore.addNotification(
 				e.detail.title,
 				e.detail.message,
@@ -88,7 +87,6 @@ export default defineComponent({
 .passive-enter-from,
 .passive-leave-to {
 	opacity: 0;
-	//transform: translateX(30px);
 }
 
 /* ensure leaving items are taken out of layout flow so that moving
@@ -106,7 +104,6 @@ export default defineComponent({
 .user-enter-from,
 .user-leave-to {
 	opacity: 0;
-	//transform: translateY(30px);
 }
 
 /* ensure leaving items are taken out of layout flow so that moving

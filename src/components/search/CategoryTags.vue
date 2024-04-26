@@ -77,7 +77,6 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
-			console.log(props.categories);
 			currentCategoryNr.value = categoryFacets.value.length ? Math.min(categoryFacets.value.length, 25) : 25;
 
 			watch(

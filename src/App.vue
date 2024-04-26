@@ -151,7 +151,6 @@ export default defineComponent({
 			} else {
 				transitionName.value = 'swipe';
 			}
-			console.log(transitionName.value, 'transition');
 		});
 
 		onMounted(async () => {
@@ -183,7 +182,6 @@ export default defineComponent({
 		};
 
 		onBeforeMount(() => {
-			//Remember to check for init locale once we now where to get it from
 			window.addEventListener('locale-switch', switchLocale);
 			window.addEventListener('change-path', gotoPath);
 		});
@@ -260,28 +258,24 @@ export default defineComponent({
 }
 
 .from-record-to-search-enter-from {
-	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
 
 .from-record-to-search-enter-to {
-	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
 .from-record-to-search-leave-from {
-	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
 .from-record-to-search-leave-to {
-	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
 	position: relative;
@@ -298,28 +292,24 @@ export default defineComponent({
 }
 
 .from-search-to-record-enter-from {
-	//transform: scale(0.9);
 	margin-top: 50px;
 	opacity: 0;
 	position: absolute;
 }
 
 .from-search-to-record-enter-to {
-	//transform: scale(1);
 	margin-top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
 .from-search-to-record-leave-from {
-	//transform: scale(1);
 	top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
 .from-search-to-record-leave-to {
-	//transform: scale(0.9);
 	margin-top: -50px;
 	opacity: 0;
 	position: relative;
@@ -367,7 +357,6 @@ body {
 	justify-content: center;
 	align-content: center;
 	flex-wrap: wrap;
-	//transform: translateX(-100%);
 	background-color: #002e70;
 }
 
@@ -383,7 +372,6 @@ nav {
 }
 
 #app {
-	//font-family: Avenir, Helvetica, Arial, sans-serif;
 	font-family: noway, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -392,7 +380,6 @@ nav {
 .content {
 	position: relative;
 	background-color: white;
-	//z-index: 2
 }
 
 @media (min-width: 1280px) {
