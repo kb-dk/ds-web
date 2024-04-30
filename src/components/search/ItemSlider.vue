@@ -82,10 +82,14 @@ export default defineComponent({
 	height: 0px;
 	align-items: center;
 	overflow-x: scroll;
-	gap: 5px;
+	gap: 15px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
+	padding-bottom: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	box-sizing: border-box;
 }
 
 .item-slider::-webkit-scrollbar-track {

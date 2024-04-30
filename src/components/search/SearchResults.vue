@@ -7,7 +7,7 @@
 			<div
 				v-for="(res, index) in resultNr"
 				:key="index"
-				class="hit-box"
+				:class="searchResultStore.loading ? 'hit-box' : 'hit-box data'"
 			>
 				<ResultItem
 					:resultdata="searchResults[index]"
@@ -127,22 +127,23 @@ export default defineComponent({
 	transition: all 0.3s ease-in-out 0s;
 }
 
-.hit-box:hover {
-	box-shadow:
-		rgba(0, 0, 0, 0.09) 0px 2px 1px,
-		rgba(0, 0, 0, 0.09) 0px 4px 2px,
-		rgba(0, 0, 0, 0.09) 0px 8px 4px,
-		rgba(0, 0, 0, 0.09) 0px 16px 8px,
-		rgba(0, 0, 0, 0.09) 0px 32px 16px;
+.hit-box.data:hover:after,
+.hit-box.data:hover:before {
+	background-color: transparent;
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0s;
 }
 
-.hit-box:hover:after,
-.hit-box:hover:before {
-	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+.hit-box:after,
+.hit-box:before {
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0.2s;
 }
 
 .hit-box:after {
-	transition: all 0.3s ease-in-out 0s;
 	content: '•';
 	position: absolute;
 	height: 10px;
@@ -150,25 +151,29 @@ export default defineComponent({
 	color: #002e70;
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
-	width: 10px;
+	width: 20px;
 	line-height: 0.5;
 	margin-top: -5px;
 	transform-origin: center;
 	will-change: transform;
+	background-color: white;
 }
 
 .hit-box:before {
-	transition: all 0.3s ease-in-out 0s;
+	content: '•';
 	content: '•';
 	position: absolute;
-	height: 10px;
+	height: 16px;
 	text-align: center;
 	color: #002e70;
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	top: 50%;
 	width: 10px;
-	line-height: 0.5;
+	line-height: 0.75;
 	margin-top: -5px;
+	left: 0px;
+	display: none;
+	background: white;
 }
 
 .search-results {
@@ -187,6 +192,9 @@ export default defineComponent({
 	.search-results {
 		max-width: 100%;
 		width: 100%;
+	}
+	.hit-box:before {
+		display: block;
 	}
 
 	.fullwidth {

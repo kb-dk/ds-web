@@ -1,5 +1,5 @@
 <template>
-	<div class="search-box">
+	<div class="search-and-results">
 		<!-- This is for the search bar -->
 		<div
 			ref="searchContainer"
@@ -47,7 +47,7 @@
 				v-else
 				key="2"
 			>
-				<PortalContent />
+				<PortalContent v-if="!searchResultStore.searchFired" />
 			</div>
 		</Transition>
 		<Footer />
@@ -259,7 +259,7 @@ h3 {
 	z-index: 3;
 }
 
-.search-box {
+.search-and-results {
 	max-width: 100%;
 }
 .search-container {

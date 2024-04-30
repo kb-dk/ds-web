@@ -204,15 +204,18 @@ h2 {
 	margin-bottom: 12px;
 	font-size: 20px;
 	margin-top: 0;
+	padding-left: 5px;
 }
 
 .global-footer {
 	width: 100%;
+	overflow: hidden;
 	background-color: #002e70;
 	color: white;
 	padding: 36px 0 40px;
 	position: relative;
 	bottom: 0px;
+	box-sizing: border-box;
 }
 
 .global-footer li {
@@ -227,6 +230,7 @@ a {
 
 .global-footer ul {
 	padding: 0;
+	padding-left: 5px;
 }
 
 .column {

@@ -1,5 +1,5 @@
 <template>
-	<div class="result-item-wrapper">
+	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
 		<Transition
 			name="result"
 			mode="out-in"
@@ -191,9 +191,8 @@ export default defineComponent({
 .result-item-wrapper {
 	transition: all 0.3s linear;
 	overflow: hidden;
-	border-left: 1px solid rgba(230, 230, 230, 1);
 	box-sizing: border-box;
-	padding: 20px 20px 0px 20px;
+	padding: 0;
 }
 
 .result-item-wrapper:hover .arrow {
@@ -406,6 +405,61 @@ export default defineComponent({
 @media (min-width: 800px) {
 	.title {
 		max-width: calc(100% - (200px - 60px));
+	}
+
+	.result-image-wrapper {
+		position: relative;
+		left: -20px;
+	}
+
+	.result-item-wrapper {
+		padding: 20px 0px 0px 20px;
+		border-left: 1px solid rgba(230, 230, 230, 1);
+	}
+
+	.result-item-wrapper.data:before {
+		transition: all 0.3s ease-in-out 0s;
+		content: '';
+		z-index: 0;
+		opacity: 0;
+		box-shadow:
+			rgba(0, 0, 0, 0.09) 0px 2px 1px,
+			rgba(0, 0, 0, 0.09) 0px 4px 2px,
+			rgba(0, 0, 0, 0.09) 0px 8px 4px,
+			rgba(0, 0, 0, 0.09) 0px 16px 8px,
+			rgba(0, 0, 0, 0.09) 0px 32px 16px;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: calc(100%);
+		height: calc(100%);
+		pointer-events: none;
+	}
+
+	.result-item-wrapper.data:hover:before {
+		opacity: 1;
+	}
+}
+
+@media (min-width: 1340px) {
+	.result-item-wrapper {
+		padding-right: 0px;
+	}
+	.result-image-wrapper {
+		position: relative;
+		left: 0px;
+	}
+
+	.result-item-wrapper.data:before {
+		left: 0px;
+		width: calc(100%);
+		width: calc(100% + 20px);
+		box-shadow:
+			rgba(0, 0, 0, 0.09) 0px 2px 1px,
+			rgba(0, 0, 0, 0.09) 0px 4px 2px,
+			rgba(0, 0, 0, 0.09) 0px 8px 4px,
+			rgba(0, 0, 0, 0.09) 0px 16px 8px,
+			rgba(0, 0, 0, 0.09) 0px 32px 16px;
 	}
 }
 </style>

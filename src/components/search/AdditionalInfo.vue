@@ -6,8 +6,11 @@
 			:title="$t('search.thumbnailButton')"
 			@click="showThumbnails()"
 		>
-			<span class="material-icons">photo_library</span>
+			<span class="material-icons thumbnails-icon">photo_library</span>
 			Thumbnails
+			<span :class="extraContentShown ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
+				expand_more
+			</span>
 		</button>
 	</div>
 	<div
@@ -15,7 +18,6 @@
 		class="extra-content"
 	>
 		<ItemSlider
-			v-if="extraContentShown"
 			bg="#002e70"
 			item-class="extra-thumbnail"
 		>
@@ -36,10 +38,14 @@
 					>
 						<kb-imagecomponent :imagedata="thumbnailImageData[index]"></kb-imagecomponent>
 					</div>
-					<div class="img-stamp">{{ convertSecondstoShow(timeStamps[index]) }}</div>
+					<div class="img-stamp">
+						{{ convertSecondstoShow(timeStamps[index]) }}
+						<span class="material-icons link-arrow">chevron_right</span>
+					</div>
 				</router-link>
 			</template>
 		</ItemSlider>
+		<div class="full-duration">{{ convertSecondstoShow(duration) }}</div>
 	</div>
 </template>
 
@@ -86,7 +92,7 @@ export default defineComponent({
 			}
 			if (extraContentShown.value === true) {
 				gsap.set(extraContentRef.value, {
-					visibility: 'visible',
+					display: 'block',
 				});
 			}
 			gsap.to(extraContentRef.value, {
@@ -97,7 +103,7 @@ export default defineComponent({
 				onComplete: () => {
 					if (extraContentShown.value === false) {
 						gsap.set(extraContentRef.value, {
-							visibility: 'hidden',
+							display: 'none',
 						});
 					}
 				},
@@ -172,6 +178,28 @@ export default defineComponent({
 	font-size: 20px;
 }
 
+.expand-icon {
+	transition: all 0.3s ease-in-out 0s;
+	padding-right: 5px;
+}
+
+.expand-icon.turned {
+	transform: rotateZ(180deg);
+}
+
+.link-arrow {
+	font-size: 20px;
+	top: -3px;
+	position: absolute;
+	opacity: 0;
+	transition: all 0.1s linear 0s;
+}
+
+.extra-thumbnail:hover .link-arrow {
+	opacity: 1;
+	transform: translateX(5px);
+}
+
 .thumbnail-button {
 	cursor: pointer;
 	border: 1px solid rgba(230, 230, 230, 1);
@@ -181,16 +209,25 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	color: #002e70;
-	transition: all 0.3s ease-in-out 0s;
+	transition:
+		all 0.3s ease-in-out 0s,
+		margin-bottom 0s linar 0s;
 	top: 1px;
 	position: relative;
 	padding: 5px 15px;
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.thumbnails-icon {
+	padding-right: 5px;
 }
 
 .thumbnail-button.active {
-	background-color: #002e70;
+	background-color: #001e4b;
 	color: white;
-	border: 1px solid #002e70;
+	border: 1px solid #001e4b;
+	margin-bottom: 0px;
 }
 
 .thumbnail-button:hover {
@@ -209,6 +246,38 @@ export default defineComponent({
 .extra-content {
 	height: 0px;
 	margin-bottom: 0px;
+	overflow: hidden;
+	display: none;
+	padding-bottom: 10px;
+	background-color: rgb(0, 46, 112);
+	position: relative;
+}
+
+.extra-content:after {
+	z-index: 1;
+	display: block;
+	content: '';
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 20px 5px inset;
+}
+
+.full-duration {
+	position: absolute;
+	display: inline-block;
+	right: 0px;
+	margin-top: -18px;
+	padding: 0px 2px;
+	padding-right: 10px;
+	padding-left: 6px;
+	color: white;
+	background-color: #002e70;
+	border-left: 1px solid white;
+	line-height: 17px;
 }
 
 .extra-thumbnail {
@@ -248,5 +317,24 @@ export default defineComponent({
 	font-size: 12px;
 	color: white;
 	height: 15px;
+	position: relative;
+}
+@media (min-width: 800px) {
+	.thumbnail-button {
+		width: auto;
+		margin-bottom: 0px;
+	}
+	.thumbnail-button.active {
+		margin-bottom: 0px;
+	}
+	.extra-content {
+		width: calc(100% - 20px);
+	}
+}
+
+@media (min-width: 1340px) {
+	.extra-content {
+		width: 100%;
+	}
 }
 </style>
