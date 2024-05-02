@@ -113,8 +113,6 @@ export default defineComponent({
 		const requestExtraThumbnails = () => {
 			APIService.getExtraThumbnails(props.fileId)
 				.then((thumbServiceResponse) => {
-					console.log(thumbServiceResponse);
-
 					const img = new Image();
 					img.src = thumbServiceResponse.data.sprite;
 					img.onload = () => {
