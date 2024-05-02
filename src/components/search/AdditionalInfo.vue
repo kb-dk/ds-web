@@ -24,8 +24,8 @@
 			<template #default="slotProps">
 				<router-link
 					v-for="(item, index) in thumbnailImages"
-					draggable="false"
 					:key="index"
+					draggable="false"
 					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true, startAt: timeStamps[index] / 1000 } }"
 					role="link"
 					class="extra-thumbnail"

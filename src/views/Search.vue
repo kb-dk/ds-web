@@ -93,7 +93,7 @@ export default defineComponent({
 
 		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
-		const { t, locale } = useI18n();
+		const { t } = useI18n();
 
 		const errorManager = inject('errorManager') as ErrorManagerType;
 
