@@ -30,7 +30,11 @@
 					class="result-image-wrapper"
 					role="link"
 				>
-					<kb-imagecomponent :imagedata="imageData"></kb-imagecomponent>
+					<kb-imagecomponent
+						v-if="resultdata.origin.split('.')[1] === 'tv'"
+						:imagedata="imageData"
+					></kb-imagecomponent>
+					<SoundThumbnail v-else></SoundThumbnail>
 				</router-link>
 			</div>
 			<div
@@ -76,12 +80,15 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
+import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 
 import '@/components/common/wc-image-item';
 
 export default defineComponent({
 	name: 'ResultItem',
-	components: {},
+	components: {
+		SoundThumbnail,
+	},
 	props: {
 		resultdata: {
 			type: Object as PropType<GenericSearchResultType>,
