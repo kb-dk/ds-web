@@ -7,7 +7,7 @@
 			<div
 				v-for="(res, index) in resultNr"
 				:key="index"
-				class="hit-box"
+				:class="searchResultStore.loading ? 'hit-box' : 'hit-box data'"
 			>
 				<ResultItem
 					:resultdata="searchResults[index]"
@@ -48,9 +48,7 @@ export default defineComponent({
 		const resultContainer = ref<HTMLElement | null>(null);
 
 		const getDuration = (resultItem: GenericSearchResultType) => {
-			return resultItem
-				? t('record.duration') + ': ' + formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t)
-				: '';
+			return resultItem ? formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t) : '';
 		};
 
 		const getStartTime = (resultItem: GenericSearchResultType) => {
@@ -121,9 +119,61 @@ export default defineComponent({
 
 <style scoped>
 .hit-box {
-	padding: 0 0 10px 0;
+	position: relative;
+	padding: 0 0 0 0;
 	box-sizing: border-box;
 	width: 100%;
+	margin-bottom: 20px;
+	transition: all 0.3s ease-in-out 0s;
+}
+
+.hit-box.data:hover:after,
+.hit-box.data:hover:before {
+	background-color: transparent;
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0s;
+}
+
+.hit-box:after,
+.hit-box:before {
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0.2s;
+}
+
+.hit-box:after {
+	content: '•';
+	position: absolute;
+	height: 10px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	left: 50%;
+	width: 20px;
+	line-height: 0.5;
+	margin-top: -5px;
+	transform-origin: center;
+	will-change: transform;
+	background-color: white;
+}
+
+.hit-box:before {
+	content: '•';
+	content: '•';
+	position: absolute;
+	height: 16px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	top: 50%;
+	width: 10px;
+	line-height: 0.75;
+	margin-top: -5px;
+	left: 0px;
+	display: none;
+	background: white;
 }
 
 .search-results {
@@ -142,6 +192,9 @@ export default defineComponent({
 	.search-results {
 		max-width: 100%;
 		width: 100%;
+	}
+	.hit-box:before {
+		display: block;
 	}
 
 	.fullwidth {

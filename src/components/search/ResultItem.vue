@@ -1,37 +1,45 @@
 <template>
-	<div class="result-item-wrapper">
+	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
 		<Transition
 			name="result"
 			mode="out-in"
 		>
 			<div
 				v-if="!searchResultStore.loading && resultdata"
-				class="container"
+				class="outer-container"
 			>
-				<div class="information">
+				<div class="container">
+					<div class="information">
+						<router-link
+							:to="{ path: 'record/' + resultdata.id }"
+							class="title"
+							role="link"
+						>
+							{{ resultdata.title[0] }}
+							<span class="material-icons arrow">keyboard_arrow_right</span>
+						</router-link>
+						<div class="subtitle">
+							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
+							<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
+							<span class="when">{{ starttime }}</span>
+							<span class="material-icons icons schedule">schedule</span>
+							<span class="duration">{{ duration }}</span>
+						</div>
+						<div class="summary">{{ resultdata.description }}</div>
+					</div>
 					<router-link
 						:to="{ path: 'record/' + resultdata.id }"
-						class="title"
+						class="result-image-wrapper"
 						role="link"
 					>
-						{{ resultdata.title[0] }}
+						<kb-imagecomponent :imagedata="imageData"></kb-imagecomponent>
 					</router-link>
-					<div class="subtitle">
-						<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
-						<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
-						<span class="when">{{ starttime }}</span>
-						<span class="material-icons icons schedule">schedule</span>
-						<span class="duration">{{ duration }}</span>
-					</div>
-					<div class="summary">{{ resultdata.description }}</div>
 				</div>
-				<router-link
-					:to="{ path: 'record/' + resultdata.id }"
-					class="result-image-wrapper"
-					role="link"
-				>
-					<kb-imagecomponent :imagedata="imageData"></kb-imagecomponent>
-				</router-link>
+				<AdditionalInfo
+					:id="resultdata.id"
+					:file-id="resultdata.file_id ? resultdata.file_id : ''"
+					:duration="Number(resultdata.duration_ms)"
+				></AdditionalInfo>
 			</div>
 			<div
 				v-else
@@ -76,12 +84,14 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
-
+import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
 import '@/components/common/wc-image-item';
 
 export default defineComponent({
 	name: 'ResultItem',
-	components: {},
+	components: {
+		AdditionalInfo,
+	},
 	props: {
 		resultdata: {
 			type: Object as PropType<GenericSearchResultType>,
@@ -180,8 +190,25 @@ export default defineComponent({
 <style scoped>
 .result-item-wrapper {
 	transition: all 0.3s linear;
-	padding-bottom: 30px;
 	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.result-item-wrapper:hover .arrow {
+	opacity: 1;
+}
+
+.outer-container {
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+}
+
+.arrow {
+	font-weight: bold !important;
+	top: 2px;
+	position: relative;
+	opacity: 0;
+	transition: opacity 0.1s linear 0s;
 }
 
 .material-icons {
@@ -237,7 +264,7 @@ export default defineComponent({
 	font-weight: bold;
 	color: #002e70;
 	text-overflow: ellipsis;
-	max-width: calc(100% - (200px - 60px));
+	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	width: 75ch;
@@ -270,6 +297,8 @@ export default defineComponent({
 	height: 105px;
 	justify-content: space-between;
 	gap: 30px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
 
 .shimmer {
@@ -283,6 +312,7 @@ export default defineComponent({
 	);
 	position: absolute;
 	width: 100%;
+	max-width: 97%;
 	height: 105px;
 	mix-blend-mode: soft-light;
 	overflow: hidden;
@@ -370,5 +400,66 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
+}
+
+@media (min-width: 800px) {
+	.title {
+		max-width: calc(100% - (200px - 60px));
+	}
+
+	.result-image-wrapper {
+		position: relative;
+		left: -20px;
+	}
+
+	.result-item-wrapper {
+		padding: 20px 0px 0px 20px;
+		border-left: 1px solid rgba(230, 230, 230, 1);
+	}
+
+	.result-item-wrapper.data:before {
+		transition: all 0.3s ease-in-out 0s;
+		content: '';
+		z-index: 0;
+		opacity: 0;
+		box-shadow:
+			rgba(0, 0, 0, 0.05) 0px 2px 1px,
+			rgba(0, 0, 0, 0.04) 0px 4px 2px,
+			rgba(0, 0, 0, 0.03) 0px 8px 4px,
+			rgba(0, 0, 0, 0.02) 0px 16px 8px,
+			rgba(0, 0, 0, 0.01) 0px 32px 16px;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: calc(100%);
+		height: calc(100%);
+		pointer-events: none;
+	}
+
+	.result-item-wrapper.data:hover:before {
+		opacity: 1;
+	}
+}
+
+@media (min-width: 1340px) {
+	.result-item-wrapper {
+		padding-right: 0px;
+	}
+	.result-image-wrapper {
+		position: relative;
+		left: 0px;
+	}
+
+	.result-item-wrapper.data:before {
+		left: 0px;
+		width: calc(100%);
+		width: calc(100% + 20px);
+		box-shadow:
+			rgba(0, 0, 0, 0.05) 0px 2px 1px,
+			rgba(0, 0, 0, 0.04) 0px 4px 2px,
+			rgba(0, 0, 0, 0.03) 0px 8px 4px,
+			rgba(0, 0, 0, 0.02) 0px 16px 8px,
+			rgba(0, 0, 0, 0.01) 0px 32px 16px;
+	}
 }
 </style>

@@ -24,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/record/:id',
 		name: 'Record',
 		component: () => import('../views/ShowRecord.vue'),
+		props: (route) => ({
+			id: route.params.id,
+			autoplay: route.query.autoplay || null,
+			startAt: route.query.startAt || null,
+		}),
 	},
 ];
 

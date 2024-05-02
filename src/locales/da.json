@@ -35,7 +35,10 @@
      "searchHere":"Søg her",
      "tv":"TV",
      "radio":"Radio",
-     "all":"Alt"
+     "all":"Alt",
+     "thumbnailButton":"Se flere thumbnails",
+     "thumbnailLink": "Thumbnail {index} ved {timestamp}"
+
    },
   "record":{
      "duration":"Varighed",
