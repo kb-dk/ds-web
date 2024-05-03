@@ -269,6 +269,7 @@ export default defineComponent({
 	position: absolute;
 	display: inline-block;
 	right: 0px;
+	z-index: 1;
 	margin-top: -18px;
 	padding: 0px 2px;
 	padding-right: 10px;
