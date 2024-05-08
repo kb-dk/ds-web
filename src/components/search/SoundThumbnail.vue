@@ -5,7 +5,7 @@
 				v-for="(line, index) in lines"
 				:key="index"
 				class="line"
-				:style="`height:${Math.random() * 50 + 10}%;`"
+				:style="`height:${Math.random() * 60 + 5}%;`"
 			></div>
 		</div>
 		<span class="material-icons play">play_circle_filled</span>
