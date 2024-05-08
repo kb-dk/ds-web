@@ -29,6 +29,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const lastSearchQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
+	const preliminaryFilter = ref('');
 	const showFacets = ref(true);
 	const blockAutocomplete = ref(false);
 
@@ -47,10 +48,18 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (URLFilters !== undefined) {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
-					filter !== '' ? filters.value.push(`fq=${filter}`) : null;
+					if (filter?.split(':')[0].includes('origin')) {
+						preliminaryFilter.value = filter;
+					} else {
+						filter !== '' ? filters.value.push(`fq=${filter}`) : null;
+					}
 				});
 			} else {
-				URLFilters !== '' ? filters.value.push(`fq=${URLFilters}`) : null;
+				if (URLFilters.split(':')[0].includes('origin')) {
+					filters.value.push(`fq=${URLFilters}`);
+				} else {
+					URLFilters !== '' ? filters.value.push(`fq=${URLFilters}`) : null;
+				}
 			}
 		}
 	};
@@ -84,6 +93,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const resetSort = () => {
 		sort.value = '';
 	};
+
+	const resetPreliminaryFilters = () => {
+		preliminaryFilter.value = '';
+	};
+
 	const resetSpellCheck = () => {
 		spellCheck.value = {} as SpellCheckType;
 	};
@@ -98,6 +112,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetStart();
 		resetSort();
 		resetSpellCheck();
+		resetPreliminaryFilters();
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
@@ -213,6 +228,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		showFacets,
 		spellCheck,
 		blockAutocomplete,
+		preliminaryFilter,
 		addFilter,
 		resetFilters,
 		removeFilter,

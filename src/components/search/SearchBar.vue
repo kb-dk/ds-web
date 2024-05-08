@@ -162,7 +162,6 @@ export default defineComponent({
 		};
 
 		const searchResultStore = useSearchResultStore();
-		const preliminaryFilter = ref('');
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
 		let AutocompleteTimer: ReturnType<typeof setTimeout>;
@@ -212,11 +211,11 @@ export default defineComponent({
 				start: 0,
 			};
 
-			if (preliminaryFilter.value.length > 0) {
-				query.fq = preliminaryFilter.value;
+			if (searchResultStore.preliminaryFilter !== '') {
+				query.fq = searchResultStore.preliminaryFilter;
 			}
 
-			if (searchResultStore.sort !== null) {
+			if (searchResultStore.sort !== '') {
 				query.sort = searchResultStore.sort;
 			}
 
@@ -236,7 +235,7 @@ export default defineComponent({
 		};
 
 		const setPreliminaryFilter = (value: string) => {
-			preliminaryFilter.value = value;
+			searchResultStore.preliminaryFilter = value;
 			if (searchResultStore.currentQuery !== '' && searchResultStore.currentQuery !== undefined) {
 				search();
 			}
