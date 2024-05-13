@@ -49,7 +49,7 @@
       <configuration>
         <artifacts>
           <artifact>
-            <file>${project.basedir}/test-1.0.tar.gz</file>
+            <file>${project.basedir}/dist/test-1.0.tar.gz</file>
             <type>tar.gz</type>
           </artifact>
         </artifacts>
