@@ -8,7 +8,7 @@
 
     <groupId>dk.kb.dsweb</groupId>
     <artifactId>ds-web</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
   
   
@@ -30,7 +30,7 @@
         <url>https://github.com/kb-dk/ds-web</url>
         <connection>scm:git:git@github.com:kb-dk/ds-web.git</connection>
         <developerConnection>scm:git:git@github.com:kb-dk/ds-web.git</developerConnection>     
-      <tag>ds-web-1.4</tag>
+      <tag>ds-web-1.1</tag>
   </scm>
 
   <build>
