@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+  <parent>
+      <groupId>dk.statsbiblioteket.sbprojects</groupId>
+      <artifactId>sbprojects-parent</artifactId>
+      <version>80</version>
+    </parent>
+
+    <groupId>dk.kb.dsweb</groupId>
+    <artifactId>ds-web</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+  
+  
+
+  <repositories>
+        <repository>
+            <id>sbforge-nexus</id>
+            <url>https://sbforge.org/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+  <build>
+<plugins>
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>build-helper-maven-plugin</artifactId>
+  <version>1.10</version>
+  <executions>
+    <execution>
+      <id>attach-artifacts</id>
+      <phase>package</phase>
+      <goals>
+        <goal>attach-artifact</goal>
+      </goals>
+      <configuration>
+        <artifacts>
+          <artifact>
+            <file>${project.basedir}/test-1.0.0.tar.gz</file>
+            <type>tar.gz</type>
+          </artifact>
+        </artifacts>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+</plugins>
+
+  </build>
+
+
+  <scm>
+    <tag>ds-web-1.0.0</tag>
+  </scm>
+</project>
