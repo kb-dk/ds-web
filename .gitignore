@@ -4,6 +4,7 @@ node_modules
 
 # deploy scripts
 deploy-to-test.sh
+deploy-to-prod.sh
 
 # local env files
 .env.local
