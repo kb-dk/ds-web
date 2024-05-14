@@ -1,7 +1,7 @@
 <template>
 	<div class="extra-features">
 		<button
-			:disabled="fileId?.length > 0 ? false : true"
+			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			:title="$t('search.thumbnailButton')"
 			@click="showThumbnails()"
@@ -67,6 +67,7 @@ export default defineComponent({
 	},
 	props: {
 		id: { type: String, required: true },
+		type: { type: String, required: true },
 		fileId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
