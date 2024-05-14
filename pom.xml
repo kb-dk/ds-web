@@ -8,7 +8,7 @@
 
     <groupId>dk.kb.dsweb</groupId>
     <artifactId>ds-web</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
   
   
@@ -30,56 +30,11 @@
         <url>https://github.com/kb-dk/ds-web</url>
         <connection>scm:git:git@github.com:kb-dk/ds-web.git</connection>
         <developerConnection>scm:git:git@github.com:kb-dk/ds-web.git</developerConnection>     
-      <tag>ds-web-1.1</tag>
+      <tag>ds-web-1.6</tag>
   </scm>
 
   <build>
 <plugins>
-
-<plugin>
-   <artifactId>maven-deploy-plugin</artifactId>
-   <version>3.0.0-M1</version>
-   <executions>
-      <execution>
-         <id>deploy-tar</id>
-         <goals>
-            <goal>deploy-file</goal>
-         </goals>
-         <phase>deploy</phase>
-         <configuration>
-            <file>${basedir}/test-1.0.tar.gz</file>
-            <pomFile>${basedir}/pom.xml</pomFile>
-            <url>${project.distributionManagementArtifactRepository.url}</url>
-            <repositoryId>${project.distributionManagementArtifactRepository.id}</repositoryId>
-         </configuration>
-      </execution>
-   </executions>
-</plugin>
-
-
-
-<plugin>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>build-helper-maven-plugin</artifactId>
-  <version>1.10</version>
-  <executions>
-    <execution>
-      <id>attach-artifacts</id>
-      <phase>package</phase>
-      <goals>
-        <goal>attach-artifact</goal>
-      </goals>
-      <configuration>
-        <artifacts>
-          <artifact>
-            <file>${project.build.directory}/test-1.0.tar.gz</file>
-            <type>tar.gz</type>
-          </artifact>
-        </artifacts>
-      </configuration>
-    </execution>
-  </executions>
-</plugin>
 
 
 </plugins>
