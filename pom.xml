@@ -24,13 +24,6 @@
         </repository>
     </repositories>
 
-   <scm>
-        <url>https://github.com/kb-dk/ds-web</url>
-        <connection>scm:git:git@github.com:kb-dk/ds-web.git</connection>
-        <developerConnection>scm:git:git@github.com:kb-dk/ds-web.git</developerConnection>     
-      <tag>ds-web-1.6</tag>
-  </scm>
-
   <build>
 <plugins>
 
