@@ -4,7 +4,8 @@ node_modules
 
 # deploy scripts
 deploy-to-test.sh
-deploy-to-prod.sh
+build-release-artifact.sh
+README_RELEASE_TAR.GZ.md
 
 # local env files
 .env.local
