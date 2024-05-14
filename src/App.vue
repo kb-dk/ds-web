@@ -29,7 +29,7 @@
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
-				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : undefined"
+				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : 500"
 				mode="out-in"
 				@before-leave="onBeforeLeave(transitionName)"
 				@before-enter="onBeforeEnter(transitionName)"
@@ -243,7 +243,7 @@ export default defineComponent({
 	top: 0px;
 	left: 0px;
 	width: 100%;
-	z-index: 1000;
+	z-index: 5;
 	text-align: center;
 	background: #002e70;
 
@@ -322,6 +322,26 @@ export default defineComponent({
 	font-weight: 400;
 	src: url('./assets/fonts/noway-regular-webfont.woff2') format('woff2');
 }
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Bold.ttf') format('truetype');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Italic.ttf') format('truetype');
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'LibreBaskerville';
+	src: url('./assets/fonts/LibreBaskerville-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
 	margin: 0;
 	padding: 0;

@@ -33,7 +33,8 @@ export interface GenericSearchResultType {
 	_version: number;
 	startTime?: string;
 	endTime?: string;
-	duration?: string;
+	duration_ms: string;
+	duration: string;
 	origin: string;
 }
 

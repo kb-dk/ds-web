@@ -70,6 +70,37 @@ function generateDurationParts(hours: number, minutes: number, seconds: number, 
 	return durationParts;
 }
 
+function getTimeFromISOFormat(duration: string) {
+	const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+	if (match) {
+		const hours = parseInt(match[1] || '0');
+		const minutes = parseInt(match[2] || '0');
+		const seconds = parseInt(match[3] || '0');
+
+		const totalMilliseconds = ((hours * 60 + minutes) * 60 + seconds) * 1000;
+
+		return totalMilliseconds;
+	} else {
+		return 0;
+	}
+}
+
+function convertSecondstoShow(milliseconds: number): string {
+	if (milliseconds) {
+		const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const remainingSeconds = seconds % 60;
+
+		const timeStringSecond = (remainingSeconds < 10 ? '0' : '') + Math.round(remainingSeconds);
+		const timeStringMinutes = (minutes < 10 ? '0' : '') + minutes;
+		const timeString = `${hours}:${timeStringMinutes}:${timeStringSecond}`;
+		return timeString;
+	} else {
+		return '';
+	}
+}
+
 function getBroadcastDate(isoDate: string, locale: string): string {
 	const date = new Date(isoDate);
 
@@ -97,4 +128,4 @@ function getBroadcastTime(isoDate: string): string {
 	return new Intl.DateTimeFormat('en-GB', options).format(dateObj);
 }
 
-export { formatDuration, getBroadcastDate, getBroadcastTime };
+export { formatDuration, getBroadcastDate, getBroadcastTime, getTimeFromISOFormat, convertSecondstoShow };
