@@ -8,7 +8,7 @@
 
     <groupId>dk.kb.dsweb</groupId>
     <artifactId>ds-web</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>pom</packaging>
   
   
@@ -35,7 +35,7 @@
 
   <build>
 <plugins>
-<!--
+
 <plugin>
    <artifactId>maven-deploy-plugin</artifactId>
    <version>3.0.0-M1</version>
@@ -55,7 +55,7 @@
       </execution>
    </executions>
 </plugin>
--->
+
 
 
 <plugin>
@@ -72,7 +72,7 @@
       <configuration>
         <artifacts>
           <artifact>
-            <file>${project.basedir}/test-1.0.tar.gz</file>
+            <file>${project.build.directory}/test-1.0.tar.gz</file>
             <type>tar.gz</type>
           </artifact>
         </artifacts>
