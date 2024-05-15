@@ -135,7 +135,7 @@ export default defineComponent({
 
 .time-result-item {
 	flex: 1 1 calc(25% - 20px);
-	max-width: calc(25% - 20px);
+	max-width: calc(25% - 10px);
 	box-sizing: border-box;
 }
 </style>

@@ -39,11 +39,12 @@ export default defineComponent({
 	align-items: center;
 	align-content: center;
 	flex-direction: row;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	height: 100%;
 	gap: 1px;
 	justify-content: center;
 	box-sizing: border-box;
+	overflow: hidden;
 }
 
 .play {
