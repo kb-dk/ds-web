@@ -5,7 +5,7 @@ node_modules
 # deploy scripts
 deploy-to-test.sh
 build-release-artifact.sh
-README_RELEASE_TAR.GZ.md
+README_RELEASE.md
 
 # local env files
 .env.local
