@@ -31,11 +31,12 @@ export interface GenericSearchResultType {
 	type_of_resource: string[];
 	thumbnail: string;
 	_version: number;
-	startTime?: string;
-	endTime?: string;
+	startTime: string;
+	endTime: string;
 	duration_ms: string;
 	duration: string;
 	origin: string;
+	temporal_start_year: string;
 }
 
 export interface FacetsType {

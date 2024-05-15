@@ -78,6 +78,17 @@ export class APIServiceClient {
 		);
 	}
 
+	async getTimeSearchResults(start: string, end: string, dir: string, uuid: string): Promise<APISearchResponseType> {
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
+		const timeConstraint = encodeURIComponent(`[${start} TO ${end}]`);
+		return await this.httpClient.get(
+			`search/?q=${encodeURIComponent(
+				'dr',
+			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&${dir}&fq=temporal_start_year:${timeConstraint}&rows=12`,
+		);
+	}
+
 	async getRecord(id: string): Promise<APIRecordResponseType> {
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);

@@ -8,25 +8,39 @@
 				:data="data"
 				data-label="key"
 				tooltip="always"
+				@drag-end="getTimeResults()"
 			></VueSlider>
 		</div>
-		{{ values }}
+		<div>
+			<h3>results</h3>
+			<div class="time-results">
+				<div
+					v-for="(item, index) in timeSearchStore.timeResults"
+					:key="index"
+					class="time-result-item"
+				>
+					<GridResultItem :resultdata="item"></GridResultItem>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import VueSlider from 'vue-3-slider-component';
+import GridResultItem from '@/components/common/GridResultItem.vue';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
 		VueSlider,
+		GridResultItem,
 	},
 	setup() {
+		const timeSearchStore = useTimeSearchStore();
 		const values = ref([2019, 2023]);
-		const maxValue = 1992;
-		const minValue = 2022;
 
 		const data = [
 			{ value: 2006, key: 2006 },
@@ -50,76 +64,26 @@ export default defineComponent({
 			{ value: 2024, key: 2024 },
 		];
 
-		const moveFullSlider = ref(false);
-		const lastXValue = ref(null as number | null);
-
 		onMounted(() => {
 			const slider = document.getElementsByClassName('vue-slider-process')[0];
+			timeSearchStore.getTimeSearchResults(values.value[0].toString(), values.value[1].toString());
+
 			console.log(slider);
-			slider.addEventListener('touchstart', overtakeMouseDown);
-			slider.addEventListener('touchend', overtakeMouseUp);
-			slider.addEventListener('mousedown', overtakeMouseDown);
-			slider.addEventListener('mouseup', overtakeMouseUp);
-			slider.addEventListener('mouseleave', overtakeMouseUp);
-			slider.addEventListener('mousemove', changeSlider);
-			slider.addEventListener('touchmove', changeSlider);
 		});
 
-		const overtakeMouseDown = (e: Event) => {
-			e.preventDefault();
-			e.stopPropagation();
-			moveFullSlider.value = true;
-			values.value[0] += Math.floor(Math.random() * 6 - 3);
-			console.log('down taken!');
+		const getTimeResults = () => {
+			console.log('new results please');
+			timeSearchStore.getTimeSearchResults(values.value[0].toString(), values.value[1].toString());
 		};
 
-		const overtakeMouseUp = (e: Event) => {
-			e.preventDefault();
-			e.stopPropagation();
-			moveFullSlider.value = false;
-			console.log('up taken!');
-		};
-
-		const minusSliderValues = () => {
-			/* if (sliderMin.value > minValue) {
-				sliderMax.value = sliderMax.value - 1;
-				sliderMin.value = sliderMin.value - 1;
-			} */
-		};
-
-		const plusSliderValues = () => {
-			/* if (sliderMax.value < maxValue) {
-				sliderMax.value = sliderMax.value + 1;
-				sliderMin.value = sliderMin.value + 1;
-			} */
-		};
-
-		const changeSlider = (e: Event) => {
-			//console.log(e);
-			if (moveFullSlider.value === true) {
-				console.log(e instanceof MouseEvent);
-				if (e instanceof MouseEvent) {
-					console.log('HELLO');
-					if (lastXValue.value !== null) {
-						e.clientX < lastXValue.value ? minusSliderValues() : plusSliderValues();
-					}
-					lastXValue.value = e.clientX;
-					//mouse
-				} else if (e instanceof TouchEvent) {
-					//touch
-				}
-
-				console.log('changing slider');
-			}
-		};
-
-		return { values, data };
+		return { values, data, getTimeResults, timeSearchStore };
 	},
 });
 </script>
 
 <style scroped>
 .slider-container {
+	padding-top: 40px;
 	padding-bottom: 20px;
 }
 .vue-slider-rail {
@@ -159,5 +123,19 @@ export default defineComponent({
 .vue-slider-dot-tooltip-inner-top:after {
 	border-top-color: #fff6c4 !important;
 	color: black !important;
+}
+
+.time-results {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.time-result-item {
+	flex: 1 1 calc(25% - 20px);
+	max-width: calc(25% - 20px);
+	box-sizing: border-box;
 }
 </style>
