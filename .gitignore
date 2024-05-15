@@ -4,6 +4,8 @@ node_modules
 
 # deploy scripts
 deploy-to-test.sh
+build-release-artifact.sh
+README_RELEASE_ARTIFACT.md
 
 # local env files
 .env.local
