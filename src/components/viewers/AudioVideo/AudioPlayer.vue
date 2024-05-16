@@ -64,7 +64,7 @@ export default defineComponent({
 				audioPlayer = KalturaPlayer.setup({
 					targetId: 'audio-player',
 					provider: {
-						partnerId: 380,
+						partnerId: import.meta.env.VITE_KALTURA_PARTNER_ID,
 						uiConfId: 23454104,
 					},
 				});
