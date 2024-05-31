@@ -21,7 +21,11 @@
 						{{ resultdata.title[0] }}
 					</div>
 				</router-link>
-				<div class="date">{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }}</div>
+				<div class="date">
+					{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }} ({{
+						resultdata.temporal_start_day_da
+					}}) - kl. {{ resultdata.temporal_start_hour_da }}
+				</div>
 				<div class="summary">{{ resultdata.description }}</div>
 			</div>
 			<div

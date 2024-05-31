@@ -32,7 +32,64 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		return uuid === currentSearchUUID;
 	};
 
-	const getTimeSearchResults = async (start: string, end: string) => {
+	const getMonthQueryString = (months: string[]) => {
+		let selectedMonths = '';
+		if (months.length > 0) {
+			selectedMonths = '&fq=temporal_start_month:(';
+		}
+		months.forEach((item, index) => {
+			selectedMonths += `${item}`;
+			if (index !== months.length - 1) {
+				selectedMonths += ' OR ';
+			}
+		});
+		if (months.length > 0) {
+			selectedMonths += ')';
+		}
+		return selectedMonths;
+	};
+
+	const getDayQueryString = (days: string[]) => {
+		let selectedDays = '';
+		if (days.length > 0) {
+			selectedDays = '&fq=temporal_start_day_da:(';
+		}
+		days.forEach((item, index) => {
+			selectedDays += `"${item}"`;
+			if (index !== days.length - 1) {
+				selectedDays += ' OR ';
+			}
+		});
+		if (days.length > 0) {
+			selectedDays += ')';
+		}
+		return selectedDays;
+	};
+
+	const getTimeslotQueryString = (timeslots: string[]) => {
+		let selectedDays = '';
+		if (timeslots.length > 0) {
+			selectedDays = '&fq=temporal_start_hour_da:(';
+		}
+		timeslots.forEach((item, index) => {
+			selectedDays += `${item}`;
+			if (index !== timeslots.length - 1) {
+				selectedDays += ' OR ';
+			}
+		});
+		if (timeslots.length > 0) {
+			selectedDays += ')';
+		}
+		return selectedDays;
+	};
+
+	const getTimeSearchResults = async (
+		start: string,
+		end: string,
+		months: string[],
+		days: string[],
+		timeslots: string[],
+	) => {
 		//https://stackoverflow.com/a/62359248
 		//to get a _GOOD_ uuid, we use the functionality from the createObjectURL method, that creates one, and just get that one.
 
@@ -47,9 +104,21 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 				dir.value = 'sort=score desc';
 			}
 
+			const selectedMonths = getMonthQueryString(months);
+			const selectedDays = getDayQueryString(days);
+			const selectedTImeslots = getTimeslotQueryString(timeslots);
+
 			searchFired.value = true;
 			loading.value = true;
-			const responseData = await APIService.getTimeSearchResults(start, end, dir.value, currentSearchUUID);
+			const responseData = await APIService.getTimeSearchResults(
+				start,
+				end,
+				selectedMonths,
+				selectedDays,
+				selectedTImeslots,
+				dir.value,
+				currentSearchUUID,
+			);
 
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
@@ -75,5 +144,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		timeResults,
 		setLoading,
 		getTimeSearchResults,
+		numFound,
 	};
 });

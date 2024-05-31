@@ -37,6 +37,8 @@ export interface GenericSearchResultType {
 	duration: string;
 	origin: string;
 	temporal_start_year: string;
+	temporal_start_day_da: string;
+	temporal_start_hour_da: number;
 }
 
 export interface FacetsType {
@@ -57,4 +59,5 @@ export interface FacetResultType {
 	resource_description_general: string[];
 	creator_full_name: string[];
 	subject_full_name: string[];
+	temporal_start_year: string[];
 }
