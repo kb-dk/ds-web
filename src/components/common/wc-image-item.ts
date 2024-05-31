@@ -119,25 +119,22 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
 
     }
 
-    .image-item {
-        width:calc(100% + 2px);
-        height:calc(100% + 2px);
-        object-fit: cover;
-				position: relative;
-				left: -1px;
-				top: -1px;
-        transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s, all 0.3s ease-in-out 0s;
-        opacity:0;
-				transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
-				transform-origin:center;
-				will-change: transform;
-				-webkit-user-select: none;
-				-khtml-user-select: none;
-				-moz-user-select: none;
-				-o-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-    }
+		.image-item {
+			width:100%;
+			height:100%;
+			object-fit: cover;
+			transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s, all 0.3s ease-in-out 0s;
+			opacity:0;
+			transform:scale3d(var(--image-item-scale), var(--image-item-scale) ,var(--image-item-scale));
+			transform-origin:center;
+			will-change: transform;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+	}
 
 		@keyframes rotateGradient {
 			from {
