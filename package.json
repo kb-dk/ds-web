@@ -1,6 +1,6 @@
 {
   "name": "ds-web",
-  "version": "0.2.0",
+  "version": "0.1.2",
   "private": true,
   "engines": {
     "npm": "10.2.3",
