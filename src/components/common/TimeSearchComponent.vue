@@ -169,6 +169,8 @@ export default defineComponent({
 				return t('timeSearch.allChosen');
 			} else if (chosenEntities.length === 1) {
 				return t(chosenEntities[0]) + ' ' + t('timeSearch.chosen');
+			} else if (chosenEntities.length === 0) {
+				return t('timeSearch.notApplied');
 			} else {
 				const lastMonth = chosenEntities.pop() as string;
 				const translatedEntities = chosenEntities.map((entity) => t(entity));

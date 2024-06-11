@@ -31,55 +31,21 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		return uuid === currentSearchUUID;
 	};
 
-	const getMonthQueryString = (months: string[]) => {
-		let selectedMonths = '';
-		if (months.length > 0) {
-			selectedMonths = '&fq=temporal_start_month:(';
+	const getQueryStringFromArray = (array: string[], prefix: string) => {
+		let selected = '';
+		if (array.length > 0) {
+			selected = prefix;
 		}
-		months.forEach((item, index) => {
-			selectedMonths += `${item}`;
-			if (index !== months.length - 1) {
-				selectedMonths += ' OR ';
+		array.forEach((item, index) => {
+			selected += `${item}`;
+			if (index !== array.length - 1) {
+				selected += ' OR ';
 			}
 		});
-		if (months.length > 0) {
-			selectedMonths += ')';
+		if (array.length > 0) {
+			selected += ')';
 		}
-		return selectedMonths;
-	};
-
-	const getDayQueryString = (days: string[]) => {
-		let selectedDays = '';
-		if (days.length > 0) {
-			selectedDays = '&fq=temporal_start_day_da:(';
-		}
-		days.forEach((item, index) => {
-			selectedDays += `"${item}"`;
-			if (index !== days.length - 1) {
-				selectedDays += ' OR ';
-			}
-		});
-		if (days.length > 0) {
-			selectedDays += ')';
-		}
-		return selectedDays;
-	};
-
-	const getTimeslotQueryString = (timeslots: string[]) => {
-		let selectedDays = '';
-		if (timeslots.length > 0) {
-			selectedDays = '&fq=temporal_start_hour_da:(';
-		}
-		timeslots.forEach((item, index) => {
-			selectedDays += `${item}`;
-			if (index !== timeslots.length - 1) {
-				selectedDays += ' OR ';
-			}
-		});
-		if (timeslots.length > 0) {
-			selectedDays += ')';
-		}
-		return selectedDays;
+		return selected;
 	};
 
 	const getTimeSearchResults = async (
@@ -97,9 +63,9 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		URL.revokeObjectURL(url);
 
 		try {
-			const selectedMonths = getMonthQueryString(months);
-			const selectedDays = getDayQueryString(days);
-			const selectedTImeslots = getTimeslotQueryString(timeslots);
+			const selectedMonths = getQueryStringFromArray(months, '&fq=temporal_start_month:(');
+			const selectedDays = getQueryStringFromArray(days, '&fq=temporal_start_day_da:(');
+			const selectedTImeslots = getQueryStringFromArray(timeslots, '&fq=temporal_start_hour_da:(');
 
 			searchFired.value = true;
 			loading.value = true;
