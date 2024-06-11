@@ -13,6 +13,48 @@
          "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
       }
    },
+   "frontpage": {
+      "fromTheArchive":"A selection from the archive"
+   },
+   "timeSearch": {
+      "chosenYear":"Chosen years",
+      "chosenMonths":"Chosen months",
+      "chosenDays":"Chosen days",
+      "chosenTimeslots":"Chosen timeslots",
+      "foundResults":"found results",
+      "allChosen":"All chosen",
+      "chosen":"chosen",
+      "and":"and", 
+      "months": {
+         "january": "january",
+         "february": "february",
+         "march": "march",
+         "april": "april",
+         "may": "may",
+         "june": "june",
+         "july": "july",
+         "august": "august",
+         "september": "september",
+         "october": "october",
+         "november": "november",
+         "december": "december"
+      },
+      "weekdays": {
+         "monday": "monday",
+         "tuesday": "tuesday",
+         "wednesday": "wednesday",
+         "thursday": "thursday",
+         "friday": "friday",
+         "saturday": "saturday",
+         "sunday": "sunday"
+     },
+     "timeslots": {
+         "morning":"morning",
+         "midday":"midday",
+         "evening":"evening",
+         "night":"night"
+     }
+   },
   "search":{
      "searchbtn":"Search",
      "hitcount": "{n} result fund for | {n} results found for",

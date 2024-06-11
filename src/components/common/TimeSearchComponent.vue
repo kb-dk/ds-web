@@ -1,24 +1,44 @@
 <template>
 	<div>
 		<div class="slider-container">
-			<h3>Valgte år</h3>
+			<h3>
+				{{ $t('timeSearch.chosenYears') }}
+				<span>
+					<SelectComponent
+						:current-selected="values[0]"
+						:list-items="selectYears"
+						@update-selected="updateStartYear"
+					/>
+					-
+					<SelectComponent
+						:current-selected="values[1]"
+						:list-items="selectYears"
+						@update-selected="updateEndYear"
+					/>
+				</span>
+			</h3>
 			<div
 				ref="dataContainer"
 				class="data-container"
 			></div>
-			<VueSlider
-				v-if="data.length > 0"
-				v-model="values"
-				:clickable="true"
-				:drag-on-click="true"
-				:data="data"
-				data-label="key"
-				tooltip="always"
-				@drag-end="getTimeResults()"
-			></VueSlider>
+			<Transition name="fade">
+				<VueSlider
+					v-if="data.length > 0"
+					v-model="values"
+					:clickable="true"
+					:drag-on-click="true"
+					:data="data"
+					data-label="key"
+					tooltip="always"
+					@drag-end="getTimeResults()"
+				></VueSlider>
+			</Transition>
 		</div>
 		<div class="select-container">
-			<h3>Valgte måneder</h3>
+			<h3>
+				{{ $t('timeSearch.chosenMonths') }}
+				<span class="explanation">{{ currentlySelectedValues(months) }}</span>
+			</h3>
 			<div class="month-selector">
 				<button
 					v-for="(item, index) in months"
@@ -26,13 +46,16 @@
 					:class="months[index].selected ? 'month-button selected' : 'month-button'"
 					@click="setSelected(months, index)"
 				>
-					{{ months[index].name }}
+					{{ $t(months[index].name) }}
 				</button>
 			</div>
 		</div>
 		<div class="overall-selector">
 			<div class="select-container select-days">
-				<h3>Valgte dage</h3>
+				<h3>
+					{{ $t('timeSearch.chosenDays') }}
+					<span class="explanation">{{ currentlySelectedValues(days) }}</span>
+				</h3>
 				<div class="day-selector">
 					<button
 						v-for="(item, index) in days"
@@ -40,12 +63,15 @@
 						:class="days[index].selected ? 'day-button selected' : 'day-button'"
 						@click="setSelected(days, index)"
 					>
-						{{ days[index].name }}
+						{{ $t(days[index].name) }}
 					</button>
 				</div>
 			</div>
 			<div class="select-container select-time">
-				<h3>Valgte tidspunkter</h3>
+				<h3>
+					{{ $t('timeSearch.chosenTimeslots') }}
+					<span class="explanation">{{ currentlySelectedValues(timeslots) }}</span>
+				</h3>
 				<div class="day-selector">
 					<button
 						v-for="(item, index) in timeslots"
@@ -53,13 +79,13 @@
 						:class="timeslots[index].selected ? 'time-button selected' : 'time-button'"
 						@click="setSelected(timeslots, index)"
 					>
-						{{ timeslots[index].name }}
+						{{ $t(timeslots[index].name) }}
 					</button>
 				</div>
 			</div>
 		</div>
 		<div class="result-container">
-			<h3>Resultat {{ timeSearchStore.numFound }}</h3>
+			<h3>{{ timeSearchStore.numFound }} {{ $t('timeSearch.foundResults') }}</h3>
 			<div class="time-results">
 				<div
 					v-for="(item, index) in timeSearchStore.timeResults"
@@ -80,86 +106,82 @@ import GridResultItem from '@/components/common/GridResultItem.vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { watch } from 'vue';
 import { APIService } from '@/api/api-service';
-
-interface SelectableItem {
-	name: string;
-	selected: boolean;
-}
-
-interface pointItem {
-	year: string;
-	items: number;
-	x: number;
-	y: number;
-	value?: string;
-	key?: number;
-}
-
-interface dataItem {
-	year: string;
-	items: number;
-}
-
-interface point {
-	x: number;
-	y: number;
-}
-
-interface markerData {
-	key: number;
-	value: string;
-}
+import SelectComponent from '@/components/common/SelectComponent.vue';
+import { useI18n } from 'vue-i18n';
+import { pointItem, SelectorData, markerData, dataItem, SelectableItem } from '@/types/TimeSearchTypes';
+import { createSVGCurvedLine } from '@/utils/svg-graph';
 
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
 		VueSlider,
 		GridResultItem,
+		SelectComponent,
 	},
 	setup() {
+		const { t } = useI18n();
+
 		const timeSearchStore = useTimeSearchStore();
 		const values = ref([1992, 2002]);
+		const test = ref(1992);
 		const dataContainer = ref<HTMLDivElement>();
 		const fullYearArray = ref([] as pointItem[]);
+		const startYear = ref(0);
+		const endYear = ref(0);
+
+		const selectYears = ref([] as string[]);
 
 		const days = ref([
-			{ name: 'mandag', value: 'Monday', selected: true },
-			{ name: 'tirsdag', value: 'Tuesday', selected: true },
-			{ name: 'onsdag', value: 'Wednesday', selected: true },
-			{ name: 'torsdag', value: 'Thursday', selected: true },
-			{ name: 'fredag', value: 'Friday', selected: true },
-			{ name: 'lørdag', value: 'Saturday', selected: true },
-			{ name: 'søndag', value: 'Sunday', selected: true },
+			{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: true },
+			{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: true },
+			{ name: 'timeSearch.weekdays.wednesday', value: 'Wednesday', selected: true },
+			{ name: 'timeSearch.weekdays.thursday', value: 'Thursday', selected: true },
+			{ name: 'timeSearch.weekdays.friday', value: 'Friday', selected: true },
+			{ name: 'timeSearch.weekdays.saturday', value: 'Saturday', selected: true },
+			{ name: 'timeSearch.weekdays.sunday', value: 'Sunday', selected: true },
 		]);
 		const timeslots = ref([
-			{ name: 'morgen', value: `${encodeURIComponent(`[6 TO 12]`)}`, selected: true },
-			{ name: 'middag', value: `${encodeURIComponent(`[12 TO 18]`)}`, selected: true },
-			{ name: 'aften', value: `${encodeURIComponent(`[18 TO 24]`)}`, selected: true },
-			{ name: 'nat', value: `${encodeURIComponent(`[0 TO 6]`)}`, selected: true },
+			{ name: 'timeSearch.timeslots.morning', value: `${encodeURIComponent(`[6 TO 12]`)}`, selected: true },
+			{ name: 'timeSearch.timeslots.midday', value: `${encodeURIComponent(`[12 TO 18]`)}`, selected: true },
+			{ name: 'timeSearch.timeslots.evening', value: `${encodeURIComponent(`[18 TO 24]`)}`, selected: true },
+			{ name: 'timeSearch.timeslots.night', value: `${encodeURIComponent(`[0 TO 6]`)}`, selected: true },
 		]);
 
 		const months = ref([
-			{ name: 'januar', value: '1', selected: true },
-			{ name: 'februar', value: '2', selected: true },
-			{ name: 'marts', value: '3', selected: true },
-			{ name: 'april', value: '4', selected: true },
-			{ name: 'maj', value: '5', selected: true },
-			{ name: 'juni', value: '6', selected: true },
-			{ name: 'juli', value: '7', selected: true },
-			{ name: 'august', value: '8', selected: true },
-			{ name: 'september', value: '9', selected: true },
-			{ name: 'oktober', value: '10', selected: true },
-			{ name: 'november', value: '11', selected: true },
-			{ name: 'december', value: '12', selected: true },
+			{ name: 'timeSearch.months.january', value: '1', selected: true },
+			{ name: 'timeSearch.months.february', value: '2', selected: true },
+			{ name: 'timeSearch.months.march', value: '3', selected: true },
+			{ name: 'timeSearch.months.april', value: '4', selected: true },
+			{ name: 'timeSearch.months.may', value: '5', selected: true },
+			{ name: 'timeSearch.months.june', value: '6', selected: true },
+			{ name: 'timeSearch.months.july', value: '7', selected: true },
+			{ name: 'timeSearch.months.august', value: '8', selected: true },
+			{ name: 'timeSearch.months.september', value: '9', selected: true },
+			{ name: 'timeSearch.months.october', value: '10', selected: true },
+			{ name: 'timeSearch.months.november', value: '11', selected: true },
+			{ name: 'timeSearch.months.december', value: '12', selected: true },
 		]);
+
+		const currentlySelectedValues = (selectedArray: SelectorData[]) => {
+			const manipulatedArray = [...selectedArray];
+			const chosenEntities = manipulatedArray.filter((entity) => entity.selected).map((entity) => entity.name);
+			if (chosenEntities.length === selectedArray.length) {
+				return t('timeSearch.allChosen');
+			} else if (chosenEntities.length === 1) {
+				return t(chosenEntities[0]) + ' ' + t('timeSearch.chosen');
+			} else {
+				const lastMonth = chosenEntities.pop() as string;
+				const translatedEntities = chosenEntities.map((entity) => t(entity));
+				return `${translatedEntities.join(', ')} ${t('timeSearch.and')} ${t(lastMonth)} ${t('timeSearch.chosen')}`;
+			}
+		};
 
 		const data = ref([] as markerData[]);
 
 		onMounted(() => {
-			const slider = document.getElementsByClassName('vue-slider-process')[0];
 			getTimeResults();
 
-			const initResult = APIService.getFullResultWithFacets().then((reponse) => {
+			APIService.getFullResultWithFacets().then((reponse) => {
 				const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
 				const sortedResults = [] as dataItem[];
 				resultsInYears.forEach((item, index) => {
@@ -172,14 +194,15 @@ export default defineComponent({
 					}
 				});
 				sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-				const start = Number(sortedResults[0].year);
-				const end = Number(sortedResults[sortedResults.length - 1].year);
-				for (let i = start; i <= end; i++) {
-					data.value.push({ key: i, value: i } as unknown as markerData);
+				startYear.value = Number(sortedResults[0].year);
+				endYear.value = Number(sortedResults[sortedResults.length - 1].year);
+				for (let i = startYear.value; i <= endYear.value; i++) {
+					selectYears.value.push(i.toString());
+					data.value.push({ key: i, value: i } as markerData);
 					const item = sortedResults.find((item) => item.year.includes(i.toString()));
 					const newEntry = {} as pointItem;
-					newEntry.x = Number(((100 / (end - start)) * (i - start)).toFixed(2));
-					if (item !== undefined) {
+					newEntry.x = Number(((100 / (endYear.value - startYear.value)) * (i - startYear.value)).toFixed(2));
+					if (item) {
 						newEntry.year = item.year;
 						newEntry.items = item.items;
 						newEntry.y = item.items;
@@ -191,7 +214,7 @@ export default defineComponent({
 						fullYearArray.value.push(newEntry);
 					}
 				}
-				console.log(fullYearArray);
+				//console.log(fullYearArray);
 				const svgElement = createSVGCurvedLine(fullYearArray.value);
 				if (dataContainer.value) {
 					dataContainer.value.appendChild(svgElement);
@@ -204,89 +227,39 @@ export default defineComponent({
 			timeSearchStore.getTimeSearchResults(
 				values.value[0].toString(),
 				values.value[1].toString(),
-				getSelectedMonths(),
-				getSelectedDays(),
-				getSelectedTimeslots(),
+				getSelectedFromArray(months.value),
+				getSelectedFromArray(days.value),
+				getSelectedFromArray(timeslots.value),
 			);
 		};
 
-		const getSelectedMonths = () => {
-			return months.value.filter((month) => month.selected).map((month) => month.value);
+		const updateStartYear = (val: number) => {
+			values.value[0] = Number(val);
+			if (Number(val) > values.value[1]) {
+				values.value[1] = Number(val);
+			}
+			getTimeResults();
 		};
 
-		const getSelectedDays = () => {
-			return days.value.filter((day) => day.selected).map((day) => day.value);
+		const updateEndYear = (val: number) => {
+			values.value[1] = Number(val);
+			if (Number(val) < values.value[0]) {
+				values.value[0] = Number(val);
+			}
+			getTimeResults();
 		};
 
-		const getSelectedTimeslots = () => {
-			return timeslots.value.filter((time) => time.selected).map((time) => time.value);
+		const getSelectedFromArray = (array: SelectorData[]) => {
+			return array.filter((entity) => entity.selected).map((entity) => entity.value);
 		};
 
 		const setSelected = (variable: SelectableItem[], index: number) => {
 			variable[index].selected = !variable[index].selected;
 		};
 
-		function createSVGCurvedLine(points: pointItem[]) {
-			const svgns = 'http://www.w3.org/2000/svg';
-			const svg = document.createElementNS(svgns, 'svg');
-			svg.setAttribute('height', '100%');
-			svg.setAttribute('width', '100%');
-			svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
-			svg.setAttribute('preserveAspectRatio', 'none');
-			const path = document.createElementNS(svgns, 'path');
-			path.setAttribute('fill', 'white');
-			path.setAttribute('stroke', 'white');
-			path.setAttribute('stroke-width', '1');
-			path.setAttribute('opacity', '0.3');
-
-			// Normalize y coordinates to fit within [0, 100] range
-			const yValues = points.map((point: point) => point.y);
-			const minY = Math.min(...yValues);
-			const maxY = Math.max(...yValues);
-			const rangeY = maxY - minY;
-
-			let normalizedPoints;
-
-			if (rangeY === 0) {
-				// If all y values are the same, set them to the middle of the viewBox (50)
-				normalizedPoints = points.map((point: point) => ({
-					x: point.x,
-					y: 50,
-				}));
-			} else {
-				normalizedPoints = points.map((point: point) => ({
-					x: point.x,
-					y: 100 - ((point.y - minY) / rangeY) * 100, // Invert y to flip the axis
-				}));
-			}
-			// Convert points to a smooth path data string using percentages
-			let d = `M ${normalizedPoints[0].x} ${normalizedPoints[0].y}`;
-			for (let i = 1; i < normalizedPoints.length - 1; i++) {
-				const xc = (normalizedPoints[i].x + normalizedPoints[i + 1].x) / 2;
-				const yc = (normalizedPoints[i].y + normalizedPoints[i + 1].y) / 2;
-				d += ` Q ${normalizedPoints[i].x} ${normalizedPoints[i].y}, ${xc} ${yc}`;
-			}
-			const lastX = normalizedPoints[normalizedPoints.length - 1].x;
-			const lastY = normalizedPoints[normalizedPoints.length - 1].y;
-			d += ` Q ${lastX} ${lastY}, ${lastX} ${lastY}`; // Complete the path with the last point
-
-			// Add line to the bottom-right corner of the viewBox
-			d += ` L 100 100`;
-			// Add line to the bottom-left corner of the viewBox
-			d += ` L 0 100`;
-			// Close the path
-			d += ` Z`;
-
-			path.setAttribute('d', d);
-
-			svg.appendChild(path);
-			return svg;
-		}
-
 		watch(
 			[days, months, timeslots],
 			() => {
-				console.log('change appeared!');
 				getTimeResults();
 			},
 			{ deep: true },
@@ -303,6 +276,11 @@ export default defineComponent({
 			dataContainer,
 			timeslots,
 			fullYearArray,
+			selectYears,
+			updateStartYear,
+			updateEndYear,
+			test,
+			currentlySelectedValues,
 		};
 	},
 });
@@ -366,6 +344,11 @@ export default defineComponent({
 	display: block;
 }
 
+h3 span {
+	font-size: 12px;
+	opacity: 0.6;
+}
+
 .time-results {
 	display: flex;
 	flex-direction: row;
@@ -382,6 +365,7 @@ export default defineComponent({
 }
 
 .slider-container {
+	height: 96px;
 	padding-bottom: 40px;
 	margin-bottom: 10px;
 }
@@ -429,18 +413,6 @@ h3 {
 .month-button:first-of-type:after {
 	display: none;
 }
-
-/* .day-button:after,
-.month-button:after {
-	display: block;
-	content: '';
-	width: 1px;
-	height: 50%;
-	background-color: black;
-	position: absolute;
-	top: 25%;
-	opacity: 0.2;
-} */
 
 .month-button {
 	width: calc(100% / 12);

@@ -16,7 +16,7 @@
 		<div class="time-search">
 			<TimeSearchComponent></TimeSearchComponent>
 		</div>
-		<TiltedDivider title="Udpluk fra arkivet"></TiltedDivider>
+		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
 		<div class="container">
 			<GridDisplay
 				:spot-nr="8"
