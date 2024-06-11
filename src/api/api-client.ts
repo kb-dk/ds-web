@@ -90,7 +90,6 @@ export class APIServiceClient {
 		months: string,
 		days: string,
 		timeslots: string,
-		dir: string,
 		uuid: string,
 	): Promise<APISearchResponseType> {
 		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
@@ -99,7 +98,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				'dr',
-			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&${dir}&fq=temporal_start_year:${timeConstraint}&rows=12${months}${days}${timeslots}`,
+			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&fq=temporal_start_year:${timeConstraint}&rows=12${months}${days}${timeslots}`,
 		);
 	}
 

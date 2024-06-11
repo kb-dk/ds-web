@@ -17,7 +17,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const error = ref('');
 	const { t } = useI18n();
-	const dir = ref('sort=score%2520desc');
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
 		const dateA = new Date(a.startTime).getTime();
@@ -98,12 +97,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		URL.revokeObjectURL(url);
 
 		try {
-			if (dir.value === 'sort=score desc') {
-				dir.value = 'sort=score asc';
-			} else {
-				dir.value = 'sort=score desc';
-			}
-
 			const selectedMonths = getMonthQueryString(months);
 			const selectedDays = getDayQueryString(days);
 			const selectedTImeslots = getTimeslotQueryString(timeslots);
@@ -116,7 +109,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 				selectedMonths,
 				selectedDays,
 				selectedTImeslots,
-				dir.value,
 				currentSearchUUID,
 			);
 
