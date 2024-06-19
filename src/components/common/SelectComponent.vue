@@ -71,10 +71,11 @@ export default defineComponent({
 }
 
 .select-container select {
-	font-size: 12px;
+	font-size: 20px;
 	border: 0px;
 	background-color: transparent;
 	font-family: noway, sans-serif;
+	background-color: #fafafa;
 }
 
 select option {

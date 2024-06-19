@@ -18,6 +18,7 @@
 		class="extra-content"
 	>
 		<ItemSlider
+			:padding="true"
 			bg="#002e70"
 			item-class="extra-thumbnail"
 		>

@@ -1,89 +1,134 @@
 <template>
 	<div>
+		<h1>Tidsmaskinen</h1>
 		<div class="slider-container">
-			<h3>
-				{{ $t('timeSearch.chosenYears') }}
-				<span>
-					<SelectComponent
-						:current-selected="values[0]"
-						:list-items="selectYears"
-						@update-selected="updateStartYear"
-					/>
-					-
-					<SelectComponent
-						:current-selected="values[1]"
-						:list-items="selectYears"
-						@update-selected="updateEndYear"
-					/>
-				</span>
-			</h3>
-			<div
-				ref="dataContainer"
-				class="data-container"
-			></div>
-			<Transition name="fade">
-				<VueSlider
-					v-if="data.length > 0"
-					v-model="values"
-					:clickable="true"
-					:drag-on-click="true"
-					:data="data"
-					data-label="key"
-					tooltip="always"
-					@drag-end="getTimeResults()"
-				></VueSlider>
-			</Transition>
-		</div>
-		<div class="select-container">
-			<h3>
-				{{ $t('timeSearch.chosenMonths') }}
-				<span class="explanation">{{ currentlySelectedValues(months) }}</span>
-			</h3>
-			<div class="month-selector">
-				<button
-					v-for="(item, index) in months"
-					:key="index"
-					:class="months[index].selected ? 'month-button selected' : 'month-button'"
-					@click="setSelected(months, index)"
-				>
-					{{ $t(months[index].name) }}
-				</button>
+			<div class="data-size">datamængde</div>
+			<div class="to-from-container">
+				Fra:
+				<SelectComponent
+					:current-selected="values[0]"
+					:list-items="selectYears"
+					@update-selected="updateStartYear"
+				/>
+				Til:
+				<SelectComponent
+					:current-selected="values[1]"
+					:list-items="selectYears"
+					@update-selected="updateEndYear"
+				/>
+			</div>
+			<div class="slider-whiteoff-container">
+				<div
+					ref="dataContainer"
+					class="data-container"
+				></div>
+				<div class="dotted-separator"></div>
+				<Transition name="fade">
+					<VueSlider
+						v-if="data.length > 0"
+						v-model="values"
+						:clickable="true"
+						:drag-on-click="true"
+						:data="data"
+						data-label="key"
+						tooltip="always"
+						@drag-end="getTimeResults()"
+					></VueSlider>
+				</Transition>
 			</div>
 		</div>
-		<div class="overall-selector">
-			<div class="select-container select-days">
-				<h3>
-					{{ $t('timeSearch.chosenDays') }}
-					<span class="explanation">{{ currentlySelectedValues(days) }}</span>
-				</h3>
-				<div class="day-selector">
-					<button
-						v-for="(item, index) in days"
-						:key="index"
-						:class="days[index].selected ? 'day-button selected' : 'day-button'"
-						@click="setSelected(days, index)"
-					>
-						{{ $t(days[index].name) }}
-					</button>
+		<ItemSlider
+			bg-scroll-white="true"
+			item-class="month"
+		>
+			<div class="time-selection">
+				<div class="select-container month">
+					<div class="checkbox all">
+						<span class="checkbox-title">Måneder:</span>
+						<CustomCheckbox
+							:index="0"
+							name="alle"
+							:val="true"
+							:tilted="false"
+							:update="updateAllCheckbox"
+							:parent-array="months"
+						></CustomCheckbox>
+					</div>
+					<div class="month-selector">
+						<div
+							:style="'background-image:url(' + backgroundImage + ')'"
+							class="figures"
+						></div>
+						<div class="gradient"></div>
+						<div class="all-months-items">
+							<div
+								v-for="(item, index) in months"
+								:key="index"
+								class="checkbox"
+							>
+								<CustomCheckbox
+									:index="index"
+									:name="months[index].name"
+									:val="months[index].selected"
+									:tilted="true"
+									:update="updateCheckbox"
+									:parent-array="months"
+								></CustomCheckbox>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="overall-selector">
+					<div class="select-container select-days">
+						<div class="checkbox all">
+							<span class="checkbox-title">Dage:</span>
+							<CustomCheckbox
+								:index="1"
+								name="alle"
+								:val="true"
+								:tilted="false"
+								:parent-array="days"
+								:update="updateAllCheckbox"
+							></CustomCheckbox>
+						</div>
+						<div class="all-days-items">
+							<div
+								v-for="(item, index) in days"
+								:key="index"
+								class="checkbox"
+							>
+								<CustomCheckbox
+									:index="index"
+									:name="days[index].name"
+									:val="days[index].selected"
+									:tilted="true"
+									:update="updateCheckbox"
+									:parent-array="days"
+								></CustomCheckbox>
+							</div>
+						</div>
+					</div>
+					<div class="select-container select-time">
+						<div class="all-timeslot-items">
+							<div
+								v-for="(item, index) in timeslots"
+								:key="index"
+								class="checkbox"
+							>
+								<CustomCheckbox
+									:index="index"
+									:name="timeslots[index].name"
+									:val="timeslots[index].selected"
+									:tilted="true"
+									:update="updateCheckbox"
+									:parent-array="timeslots"
+								></CustomCheckbox>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="select-container select-time">
-				<h3>
-					{{ $t('timeSearch.chosenTimeslots') }}
-					<span class="explanation">{{ currentlySelectedValues(timeslots) }}</span>
-				</h3>
-				<div class="day-selector">
-					<button
-						v-for="(item, index) in timeslots"
-						:key="index"
-						:class="timeslots[index].selected ? 'time-button selected' : 'time-button'"
-						@click="setSelected(timeslots, index)"
-					>
-						{{ $t(timeslots[index].name) }}
-					</button>
-				</div>
-			</div>
-		</div>
+		</ItemSlider>
 		<div class="result-container">
 			<h3>{{ timeSearchStore.numFound }} {{ $t('timeSearch.foundResults') }}</h3>
 			<div class="time-results">
@@ -100,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import VueSlider from 'vue-3-slider-component';
 import GridResultItem from '@/components/common/GridResultItem.vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
@@ -110,13 +155,16 @@ import SelectComponent from '@/components/common/SelectComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { pointItem, SelectorData, markerData, dataItem, SelectableItem } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
-
+import ItemSlider from '../search/ItemSlider.vue';
+import CustomCheckbox from '@/components/common/CustomCheckbox.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
 		VueSlider,
 		GridResultItem,
 		SelectComponent,
+		ItemSlider,
+		CustomCheckbox,
 	},
 	setup() {
 		const { t } = useI18n();
@@ -162,6 +210,26 @@ export default defineComponent({
 			{ name: 'timeSearch.months.december', value: '12', selected: true },
 		]);
 
+		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
+			array[index].selected = val;
+		};
+
+		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
+			if (val === true) {
+				array.forEach((item) => {
+					item.selected = true;
+				});
+			} else {
+				array.forEach((item, index) => {
+					if (index === 0) {
+						item.selected = true;
+					} else {
+						item.selected = false;
+					}
+				});
+			}
+		};
+
 		const currentlySelectedValues = (selectedArray: SelectorData[]) => {
 			const manipulatedArray = [...selectedArray];
 			const chosenEntities = manipulatedArray.filter((entity) => entity.selected).map((entity) => entity.name);
@@ -179,6 +247,10 @@ export default defineComponent({
 		};
 
 		const data = ref([] as markerData[]);
+
+		const backgroundImage = computed(() => {
+			return new URL(`@/assets/images/dr_kalender-sprite.svg`, import.meta.url).href;
+		});
 
 		onMounted(() => {
 			getTimeResults();
@@ -283,40 +355,170 @@ export default defineComponent({
 			updateEndYear,
 			test,
 			currentlySelectedValues,
+			backgroundImage,
+			updateCheckbox,
+			updateAllCheckbox,
 		};
 	},
 });
 </script>
 
-<style scroped>
+<style>
+h1 {
+	font-family: 'LibreBaskerville';
+	font-weight: 100;
+	text-transform: uppercase;
+	color: #002e70;
+	font-size: 32px;
+}
+
+.to-from-container {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 15px;
+	font-size: 20px;
+}
+
+.dotted-separator {
+	box-sizing: border-box;
+	height: 2px;
+	border-top: 2px dashed white;
+	background-color: rgb(218, 218, 218);
+}
+
+.checkbox.all {
+	width: 150px;
+	display: flex;
+	align-content: flex-start;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.all-months-items .checkbox {
+	width: calc((100% - 80px) / 12);
+	display: flex;
+	justify-content: flex-end;
+	align-content: center;
+	align-items: center;
+	flex-wrap: nowrap;
+	position: relative;
+
+	left: -25px;
+	align-content: flex-end;
+}
+
+.all-days-items .checkbox {
+	width: calc((100%) / 7);
+	display: flex;
+	justify-content: flex-end;
+	align-content: center;
+	align-items: center;
+	flex-wrap: nowrap;
+	position: relative;
+	left: -25px;
+	align-content: flex-end;
+}
+
+.checkbox-title {
+	margin-bottom: 5px;
+}
+
+.time-selection {
+	width: 100%;
+}
+
+.all-timeslot-items .checkbox {
+	width: calc((100% - 100px) / 4);
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	flex-wrap: nowrap;
+	position: relative;
+	left: -25px;
+	align-content: flex-end;
+}
+
+.slider-whiteoff-container:before,
+.slider-whiteoff-container:after {
+	content: '';
+	display: block;
+	position: absolute;
+	width: 5vw;
+	height: 100px;
+	pointer-events: none;
+	z-index: 100;
+	left: -1px;
+	background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgba(255, 255, 255, 1) 95%);
+}
+
+.slider-whiteoff-container:after {
+	right: -1px;
+	left: initial;
+	top: 35px;
+	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgba(255, 255, 255, 1) 95%);
+}
+
 .vue-slider-rail {
-	background-color: #002e70 !important;
+	background-color: white !important;
 	border-radius: 0px !important;
 }
 
 .vue-slider {
-	height: 40px !important;
+	height: 60px !important;
+	padding: 0px !important;
 }
 .vue-slider-process {
 	border-radius: 0px !important;
 	background-color: #caf0fe !important;
 	z-index: 5 !important;
 	opacity: 0.5;
+	mix-blend-mode: hue !important;
+	filter: hue-rotate(245deg) !important;
 }
 
 .vue-slider-mark-step {
 	border-radius: 0px !important;
 }
 
+.vue-slider-dot {
+	width: 8px !important;
+	border: 1px solid #002e70;
+	height: 100% !important;
+	background-color: #f7ae3b !important;
+	display: flex;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
+.vue-slider-dot-handle {
+	height: 15px !important;
+	width: 15px !important;
+	margin-top: 20px !important;
+	margin-left: -15px !important;
+	left: 10px;
+	position: relative;
+}
+
 .vue-slider-mark {
 	width: 2px !important;
-	height: 40% !important;
-	background-color: #caf0fe !important;
-	margin-bottom: 20px;
+	height: 15% !important;
+	background-color: #002e70 !important;
+	margin-bottom: 10px !important;
+	position: relative;
+	top: 92% !important;
 }
 
 .vue-slider-mark-label {
 	padding-top: 5px;
+	transform: rotateZ(-35deg) translate(-50%, -50%) !important;
+	left: -25px !important;
 }
 
 .vue-slider-dot-tooltip-inner {
@@ -344,6 +546,25 @@ export default defineComponent({
 
 .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
 	display: block;
+	color: #002e70;
+}
+
+.vue-slider-marks .vue-slider-mark:nth-child(5n) {
+	height: 50% !important;
+	top: 75% !important;
+}
+
+.vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after {
+	content: '';
+	display: block;
+	width: 20px;
+	border-top: 2px solid #002e70;
+	height: 2px;
+	left: -6px;
+	position: absolute;
+	top: calc(100%);
+	transform: rotateZ(-35deg) translate(-50%, -50%);
+	transform-origin: center;
 }
 
 h3 span {
@@ -359,17 +580,77 @@ h3 span {
 	flex-wrap: wrap;
 }
 
+.figures {
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	aspect-ratio: 1113 / 106;
+	position: relative;
+	z-index: 1;
+	top: -3px;
+}
+
+.gradient {
+	position: relative;
+	z-index: 0;
+	margin-top: -9px;
+	height: 35px;
+	background: transparent
+		linear-gradient(
+			90deg,
+			#ffffff 0%,
+			#c9f0fe 3%,
+			#c4f1ed 14%,
+			#c4f1ed 21%,
+			#f2b652 34%,
+			#f7ae3b 38%,
+			#f7ae3b 50%,
+			#c4f1ed 71%,
+			#c4f1ed 79%,
+			#c9f0fe 82%,
+			#fdfdfd 100%
+		)
+		0% 0% no-repeat padding-box;
+}
+
+.month-selector {
+	width: calc(100% - 155px);
+}
+
+.day-selector {
+	width: calc(100% - 155px);
+}
+
+.select-container.month {
+	display: flex;
+	width: 100%;
+	min-width: 1000px;
+}
+
 .select-container,
 .slider-container {
 	margin: 5px 0px;
-	padding: 5px;
-	background-color: #caf0fe56;
 }
 
 .slider-container {
 	height: 96px;
 	padding-bottom: 40px;
-	margin-bottom: 10px;
+	margin-bottom: 60px;
+	position: relative;
+}
+
+.data-size {
+	background: #c4f1ed 0% 0% no-repeat padding-box;
+	border: 1px solid #ffffff;
+	border-radius: 4px;
+	text-transform: uppercase;
+	position: absolute;
+	text-align: center;
+	letter-spacing: 0px;
+	color: #002e70;
+	padding: 2px;
+	top: 71px;
+	z-index: 101;
 }
 
 .time-result-item {
@@ -378,17 +659,51 @@ h3 span {
 	box-sizing: border-box;
 }
 
-h3 {
-	margin-top: 0px;
-	margin-bottom: 5px;
-	text-transform: uppercase;
+.overall-selector {
+	user-select: none;
+	height: 150px;
+	display: flex;
+	width: 100%;
+	min-width: 1000px;
 }
 
-.month-selector,
-.day-selector {
+.select-days {
+	width: calc(65%);
+	display: flex;
+}
+
+.select-time {
+	width: calc(35%);
+	display: flex;
+	justify-content: flex-end;
+}
+
+.all-months-items {
 	display: flex;
 	justify-content: space-between;
 	gap: 2px;
+	height: 130px;
+	position: relative;
+	margin-top: -92px;
+	z-index: 2;
+	margin-bottom: 40px;
+}
+
+.all-timeslot-items {
+	display: flex;
+	justify-content: right;
+	gap: 2px;
+	z-index: 2;
+}
+
+.all-days-items {
+	display: flex;
+	justify-content: space-between;
+	height: 130px;
+	position: relative;
+	gap: 2px;
+	z-index: 2;
+	width: calc(100% - 150px);
 }
 
 .day-button,
@@ -441,27 +756,16 @@ h3 {
 }
 
 .data-container {
-	width: 100%;
-	height: 40px;
+	width: calc(100%);
+	height: 60px;
 	overflow: hidden;
 	user-select: none;
 	pointer-events: none;
 	position: absolute;
-	z-index: 5;
-	margin-top: 7px;
-}
-
-.overall-selector {
-	display: flex;
-	gap: 10px;
-}
-
-.select-days {
-	width: 60%;
-}
-
-.select-time {
-	width: 40%;
+	z-index: 4;
+	margin-top: 2px;
+	border-bottom: 1px solid #002e70;
+	box-sizing: border-box;
 }
 
 @media (min-width: 480px) {
@@ -485,6 +789,10 @@ h3 {
 @media (min-width: 1150px) {
 	.data-container {
 		max-width: 1280px;
+	}
+
+	.figures {
+		top: 0px;
 	}
 }
 </style>
