@@ -7,7 +7,7 @@ const createTagFilter = (key: string) => {
 };
 
 const createAffiliationFilter = (key: string) => {
-	return `${'creator_affiliation:"' + key + '"'}`;
+	return `${'creator_affiliation_facet:"' + key + '"'}`;
 };
 
 const filterExists = (key: string, title: string) => {

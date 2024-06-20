@@ -21,10 +21,10 @@
 							class="checkbox"
 						>
 							<Checkbox
-								:fqkey="'creator_affiliation'"
+								:fqkey="'creator_affiliation_facet'"
 								:title="channelFacets[index]?.title"
 								:amount="channelFacets[index]?.number.toString()"
-								:checked="filterExists('creator_affiliation', channelFacets[index]?.title)"
+								:checked="filterExists('creator_affiliation_facet', channelFacets[index]?.title)"
 								:loading="searchResultStore.loading"
 							/>
 						</div>
@@ -78,7 +78,7 @@ export default defineComponent({
 			window.innerWidth > 800 ? searchResultStore.toggleShowFacets(true) : searchResultStore.toggleShowFacets(false);
 			toggleFacets();
 			currentFacets.value = props.facetResults;
-			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation']);
+			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation_facet']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
@@ -93,7 +93,7 @@ export default defineComponent({
 						categoryFacets.value = [] as FacetPair[];
 
 						currentFacets.value = newFacets;
-						channelFacets.value = simplifyFacets(newFacets['creator_affiliation']);
+						channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
 						categoryFacets.value = simplifyFacets(newFacets['categories']);
 						currentFacetNr.value = searchResultStore.loading ? 10 : Math.min(channelFacets.value.length, 10);
 						categoryNr.value = Number(categoryFacets.value.length);

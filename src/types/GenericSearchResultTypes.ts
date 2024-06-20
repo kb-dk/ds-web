@@ -51,7 +51,7 @@ export interface FacetResultType {
 	categories: string[];
 	collection: string[];
 	genre: string[];
-	creator_affiliation: string[];
+	creator_affiliation_facet: string[];
 	resource_description: string[];
 	resource_description_general: string[];
 	creator_full_name: string[];
