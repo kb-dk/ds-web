@@ -63,7 +63,7 @@
 					</div>
 					<div class="month-selector">
 						<div
-							:style="'background-image:url(' + backgroundImage + ')'"
+							:style="'background-image:url(' + figuresImage + ')'"
 							class="figures"
 						></div>
 						<div class="gradient"></div>
@@ -125,6 +125,10 @@
 					</div>
 					<div class="select-container select-time">
 						<div class="all-timeslot-items">
+							<div
+								:style="'background-image:url(' + timelapseImage + ')'"
+								class="timelapse"
+							></div>
 							<div class="time-gradient"></div>
 							<div
 								v-for="(item, index) in timeslots"
@@ -303,8 +307,12 @@ export default defineComponent({
 
 		const data = ref([] as markerData[]);
 
-		const backgroundImage = computed(() => {
+		const figuresImage = computed(() => {
 			return new URL(`@/assets/images/dr_kalender-sprite.svg`, import.meta.url).href;
+		});
+
+		const timelapseImage = computed(() => {
+			return new URL(`@/assets/images/timegoes.svg`, import.meta.url).href;
 		});
 
 		onMounted(() => {
@@ -410,7 +418,8 @@ export default defineComponent({
 			updateEndYear,
 			test,
 			currentlySelectedValues,
-			backgroundImage,
+			figuresImage,
+			timelapseImage,
 			updateCheckbox,
 			updateAllCheckbox,
 			showMonthSelection,
@@ -531,6 +540,7 @@ h1 {
 	position: relative;
 	left: -25px;
 	align-content: flex-end;
+	z-index: 3;
 }
 
 .slider-whiteoff-container:before,
@@ -784,6 +794,19 @@ h3 span {
 	margin-bottom: 40px;
 }
 
+.timelapse {
+	width: calc(100% - 184px);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	aspect-ratio: 1113 / 106;
+	position: absolute;
+	z-index: 01;
+	background-position: bottom;
+	right: 35px;
+	top: 15px;
+	height: 70px;
+}
+
 .time-gradient {
 	background: transparent
 		linear-gradient(
@@ -806,6 +829,7 @@ h3 span {
 	top: 60px;
 	right: 35px;
 	height: 36px;
+	z-index: 1;
 }
 
 .all-timeslot-items {
