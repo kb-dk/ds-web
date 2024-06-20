@@ -53,7 +53,7 @@ export default defineComponent({
 
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
-			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL_VIDEO);
 			kalturaScript.setAttribute('id', 'kaltura-script');
 			kalturaScript.setAttribute('type', 'application/javascript');
 			kalturaScript.id = 'kaltura-player-script';
@@ -72,7 +72,7 @@ export default defineComponent({
 					targetId: 'video-player',
 					provider: {
 						partnerId: import.meta.env.VITE_KALTURA_PARTNER_ID,
-						uiConfId: 23454104,
+						uiConfId: import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
 					},
 				});
 				videoPlayer.loadMedia({ referenceId: props.fileId });

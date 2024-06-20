@@ -45,7 +45,7 @@ export default defineComponent({
 
 		const doAutocompleteSearch = (query: string) => {
 			router.push({
-				name: 'Archive',
+				name: 'Home',
 				query: { q: query ? query : searchResultStore.currentQuery, start: 0, fq: searchResultStore.preliminaryFilter },
 			});
 		};
