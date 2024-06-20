@@ -32,6 +32,7 @@
 						:iso-duration="resultdata.duration"
 						:parenthesis="false"
 					></Duration>
+					&nbsp; - kl. {{ resultdata.temporal_start_hour_da }}
 				</div>
 				<router-link
 					:to="{ path: 'record/' + resultdata.id }"

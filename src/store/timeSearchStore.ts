@@ -37,7 +37,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 			selected = prefix;
 		}
 		array.forEach((item, index) => {
-			selected += `${item}`;
+			selected += encodeURIComponent(`${item}`);
 			if (index !== array.length - 1) {
 				selected += ' OR ';
 			}
@@ -65,7 +65,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		try {
 			const selectedMonths = getQueryStringFromArray(months, '&fq=temporal_start_month:(');
 			const selectedDays = getQueryStringFromArray(days, '&fq=temporal_start_day_da:(');
-			const selectedTImeslots = getQueryStringFromArray(timeslots, '&fq=temporal_start_hour_da:(');
+			const selectedTimeslots = getQueryStringFromArray(timeslots, '&fq=temporal_start_hour_da:(');
 
 			searchFired.value = true;
 			loading.value = true;
@@ -74,7 +74,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 				end,
 				selectedMonths,
 				selectedDays,
-				selectedTImeslots,
+				selectedTimeslots,
 				currentSearchUUID,
 			);
 

@@ -167,6 +167,12 @@
 					</div>
 				</div>
 			</div>
+			<router-link :to="timeSearchLink">
+				<div class="further-results">
+					<div class="recap">18 år / 256 måneder / 2352 dage</div>
+					<div class="hits">Tidsmaskinen har 20867 resultater</div>
+				</div>
+			</router-link>
 		</template>
 	</EdgedContentArea>
 </template>
@@ -208,6 +214,38 @@ export default defineComponent({
 
 		const selectYears = ref([] as string[]);
 
+		const timeSearchLink = computed(() => {
+			const dayString = days.value
+				.filter((day) => day.selected)
+				.map((day) => day.value)
+				.join(' OR ');
+
+			const monthString = months.value
+				.filter((month) => month.selected)
+				.map((month) => month.value)
+				.join(' OR ');
+
+			const timeslotString = timeslots.value
+				.filter((timeslot) => timeslot.selected)
+				.map((timeslot) => timeslot.value)
+				.join(' OR ');
+
+			return {
+				name: 'Archive',
+				query: {
+					q: '*:*',
+					start: 0,
+					rows: 10,
+					fq: [
+						encodeURIComponent(`temporal_start_year:[${values.value[0] + ' TO ' + values.value[1]}]`),
+						encodeURIComponent(`temporal_start_day_da:(${dayString})`),
+						encodeURIComponent(`temporal_start_month:(${monthString})`),
+						encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`),
+					],
+				},
+			};
+		});
+
 		const days = ref([
 			{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: true },
 			{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: true },
@@ -218,10 +256,10 @@ export default defineComponent({
 			{ name: 'timeSearch.weekdays.sunday', value: 'Sunday', selected: true },
 		]);
 		const timeslots = ref([
-			{ name: 'timeSearch.timeslots.morning', value: `${encodeURIComponent(`[6 TO 12]`)}`, selected: true },
-			{ name: 'timeSearch.timeslots.midday', value: `${encodeURIComponent(`[12 TO 18]`)}`, selected: true },
-			{ name: 'timeSearch.timeslots.evening', value: `${encodeURIComponent(`[18 TO 24]`)}`, selected: true },
-			{ name: 'timeSearch.timeslots.night', value: `${encodeURIComponent(`[0 TO 6]`)}`, selected: true },
+			{ name: 'timeSearch.timeslots.morning', value: '[6 TO 12]', selected: true },
+			{ name: 'timeSearch.timeslots.midday', value: '[12 TO 18]', selected: true },
+			{ name: 'timeSearch.timeslots.evening', value: '[18 TO 24]', selected: true },
+			{ name: 'timeSearch.timeslots.night', value: '[0 TO 6]', selected: true },
 		]);
 
 		const months = ref([
@@ -435,6 +473,7 @@ export default defineComponent({
 			showDaySelection,
 			showDayResult,
 			showMonthResult,
+			timeSearchLink,
 		};
 	},
 });
@@ -571,14 +610,14 @@ h3 .bold {
 	pointer-events: none;
 	z-index: 100;
 	left: -1px;
-	background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgba(255, 255, 255, 1) 95%);
+	background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
 }
 
 .slider-whiteoff-container:after {
 	right: -1px;
 	left: initial;
 	top: 35px;
-	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgba(255, 255, 255, 1) 95%);
+	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
 }
 
 .vue-slider-rail {
@@ -689,6 +728,7 @@ h3 .bold {
 	flex-wrap: nowrap;
 	gap: 20px;
 	flex-wrap: wrap;
+	padding-bottom: 20px;
 }
 
 .figures {
