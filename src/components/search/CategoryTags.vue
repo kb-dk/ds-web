@@ -18,7 +18,7 @@
 							:class="!searchResultStore.loading ? 'tag-link' : 'tag-link disabled'"
 							:title="categoryFacets[index]?.title"
 							:to="{
-								name: 'Archive',
+								name: 'Home',
 								query: {
 									q: searchResultStore.currentQuery,
 									start: 0,

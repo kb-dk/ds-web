@@ -34,7 +34,7 @@ class MenuComponent extends HTMLElement {
 					event.preventDefault();
 					window.dispatchEvent(
 						new CustomEvent('change-path', {
-							detail: { name: 'Archive', query: { q: '' } },
+							detail: { name: 'Home', query: { q: '' } },
 						}),
 					);
 					window.dispatchEvent(new Event('reset-input'));

@@ -220,7 +220,7 @@ export default defineComponent({
 			}
 
 			router.push({
-				name: 'Archive',
+				name: 'Home',
 				query: query,
 			});
 		};
@@ -231,7 +231,7 @@ export default defineComponent({
 			setPreliminaryFilter(delimitationOptions.all);
 			const selectAll = document.querySelector('#radio-btn-all') as HTMLInputElement;
 			selectAll.checked = true;
-			router.push({ name: 'Archive' });
+			router.push({ name: 'Home' });
 		};
 
 		const setPreliminaryFilter = (value: string) => {
