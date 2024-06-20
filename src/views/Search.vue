@@ -299,6 +299,8 @@ h3 {
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
