@@ -157,6 +157,7 @@ export default defineComponent({
 	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
+	color: #323232;
 }
 
 .grid-result-item:hover:after {
@@ -177,7 +178,7 @@ export default defineComponent({
 	margin-top: 15px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: white;
+	background-color: #fafafa;
 }
 
 .thumb-container {

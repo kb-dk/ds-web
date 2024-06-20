@@ -1,9 +1,9 @@
 <template>
 	<div class="edge-content">
-		<h3>{{ title }}</h3>
+		<h3 :class="reverse ? 'reverse' : ''">{{ title }}</h3>
 		<div
 			ref="top"
-			class="top-edge"
+			:class="getClasses('top')"
 		></div>
 		<div
 			ref="content"
@@ -13,7 +13,7 @@
 		</div>
 		<div
 			ref="bottom"
-			class="bottom-edge"
+			:class="getClasses('bottom')"
 		></div>
 	</div>
 </template>
@@ -37,6 +37,18 @@ export default defineComponent({
 				return '#002e70';
 			},
 		},
+		dottedEdges: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return true;
+			},
+		},
+		reverse: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return false;
+			},
+		},
 	},
 
 	setup(props) {
@@ -44,13 +56,20 @@ export default defineComponent({
 		const content = ref<HTMLDivElement>();
 		const bottom = ref<HTMLDivElement>();
 
+		const getClasses = (prefix: string) => {
+			let classes = `${prefix}-edge`;
+			if (props.reverse) classes = classes + ` reverse`;
+			if (props.dottedEdges) classes = classes + ` ${prefix}-dotted-border`;
+			return classes;
+		};
+
 		onMounted(() => {
 			if (top.value) top.value.style.backgroundColor = props.backgroundColor;
 			if (content.value) content.value.style.backgroundColor = props.backgroundColor;
 			if (bottom.value) bottom.value.style.backgroundColor = props.backgroundColor;
 		});
 
-		return { top, content, bottom };
+		return { top, content, bottom, getClasses };
 	},
 });
 </script>
@@ -68,13 +87,26 @@ temporary styling until patterns from design system are implemented
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0) translate(0%, 50%);
 }
 
+.top-edge.reverse {
+	transform: matrix(1, -0.03, 0.03, 1, 0, 0) translate(0%, 50%);
+}
+
 .edge-content {
 	display: flex;
 	width: 100%;
 	align-items: center;
 	padding: 50px 0px;
 	flex-direction: column;
-	color: white;
+}
+
+.top-dotted-border {
+	box-sizing: border-box;
+	border-top: 2px dashed #002e7059;
+}
+
+.bottom-dotted-border {
+	box-sizing: border-box;
+	border-bottom: 2px dashed #002e7059;
 }
 
 .full-width {
@@ -93,6 +125,10 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 }
 
+.bottom-edge.reverse {
+	transform: matrix(1, 0.03, -0.03, 1, 0, 0) translate(0%, -50%);
+}
+
 h3 {
 	margin: 0px;
 	padding: 0;
@@ -106,6 +142,10 @@ h3 {
 	top: calc(2.5vw + 5px);
 	position: relative;
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0);
+}
+
+h3.reverse {
+	transform: matrix(1, -0.03, 0.03, 1, 0, 0);
 }
 
 .container {

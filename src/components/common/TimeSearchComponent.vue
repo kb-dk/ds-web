@@ -1,167 +1,174 @@
 <template>
-	<div>
-		<h1>Tidsmaskinen</h1>
-		<div class="slider-container">
-			<div class="data-size">datamængde</div>
-			<div class="to-from-container">
-				Fra:
-				<SelectComponent
-					:current-selected="values[0]"
-					:list-items="selectYears"
-					@update-selected="updateStartYear"
-				/>
-				Til:
-				<SelectComponent
-					:current-selected="values[1]"
-					:list-items="selectYears"
-					@update-selected="updateEndYear"
-				/>
-			</div>
-			<div class="slider-whiteoff-container">
-				<div
-					ref="dataContainer"
-					class="data-container"
-				></div>
-				<div class="dotted-separator"></div>
-				<Transition name="fade">
-					<VueSlider
-						v-if="data.length > 0"
-						v-model="values"
-						:clickable="true"
-						:drag-on-click="true"
-						:data="data"
-						data-label="key"
-						tooltip="always"
-						@drag-end="getTimeResults()"
-					></VueSlider>
-				</Transition>
-			</div>
-		</div>
-		<ItemSlider
-			bg-scroll-white="true"
-			item-class="month"
-		>
-			<div class="time-selection">
-				<div class="select-container month">
-					<div class="checkbox all">
-						<span class="checkbox-title">
-							<span class="title-span">Måneder:</span>
-							<span class="info-span">
-								<span class="material-icons">event</span>
-								{{ showMonthSelection() }}
-								<span class="bold">{{ showMonthResult() }}</span>
-							</span>
-						</span>
-						<CustomCheckbox
-							:index="0"
-							name="alle"
-							:val="true"
-							:tilted="false"
-							:update="updateAllCheckbox"
-							:parent-array="months"
-						></CustomCheckbox>
-					</div>
-					<div class="month-selector">
-						<div
-							:style="'background-image:url(' + figuresImage + ')'"
-							class="figures"
-						></div>
-						<div class="gradient"></div>
-						<div class="all-months-items">
-							<div
-								v-for="(item, index) in months"
-								:key="index"
-								class="checkbox"
-							>
-								<CustomCheckbox
-									:index="index"
-									:name="months[index].name"
-									:val="months[index].selected"
-									:tilted="true"
-									:update="updateCheckbox"
-									:parent-array="months"
-								></CustomCheckbox>
-							</div>
-						</div>
-					</div>
+	<EdgedContentArea background-color="#FAFAFA">
+		<template #content>
+			<h1>Tidsmaskinen</h1>
+			<div class="slider-container">
+				<div class="data-size">datamængde</div>
+				<div class="to-from-container">
+					Fra:
+					<SelectComponent
+						:current-selected="values[0]"
+						:list-items="selectYears"
+						@update-selected="updateStartYear"
+					/>
+					Til:
+					<SelectComponent
+						:current-selected="values[1]"
+						:list-items="selectYears"
+						@update-selected="updateEndYear"
+					/>
 				</div>
-				<div class="overall-selector">
-					<div class="select-container select-days">
+				<div class="slider-whiteoff-container">
+					<div
+						ref="dataContainer"
+						class="data-container"
+					></div>
+					<div class="dotted-separator"></div>
+					<Transition name="fade">
+						<VueSlider
+							v-if="data.length > 0"
+							v-model="values"
+							:clickable="true"
+							:drag-on-click="true"
+							:data="data"
+							data-label="key"
+							tooltip="always"
+							@drag-end="getTimeResults()"
+						></VueSlider>
+					</Transition>
+				</div>
+			</div>
+			<ItemSlider
+				bg-scroll-white="true"
+				bg="#ffffff00"
+				item-class="month"
+			>
+				<div class="time-selection">
+					<div class="select-container month">
 						<div class="checkbox all">
 							<span class="checkbox-title">
-								<span class="title-span">Ugedage:</span>
+								<span class="title-span">Måneder:</span>
 								<span class="info-span">
 									<span class="material-icons">event</span>
-									{{ showDaySelection() }}
-									<span class="bold">{{ showDayResult() }}</span>
+									{{ showMonthSelection() }}
+									<span class="bold">{{ showMonthResult() }}</span>
 								</span>
 							</span>
 							<CustomCheckbox
-								:index="1"
+								:index="0"
 								name="alle"
 								:val="true"
 								:tilted="false"
-								:parent-array="days"
 								:update="updateAllCheckbox"
+								:parent-array="months"
 							></CustomCheckbox>
 						</div>
-						<div class="all-days-items">
-							<div class="day-gradient"></div>
+						<div class="month-selector">
 							<div
-								v-for="(item, index) in days"
-								:key="index"
-								class="checkbox"
-							>
-								<CustomCheckbox
-									:index="index"
-									:name="days[index].name"
-									:val="days[index].selected"
-									:tilted="true"
-									:update="updateCheckbox"
-									:parent-array="days"
-								></CustomCheckbox>
-							</div>
-						</div>
-					</div>
-					<div class="select-container select-time">
-						<div class="all-timeslot-items">
-							<div
-								:style="'background-image:url(' + timelapseImage + ')'"
-								class="timelapse"
+								:style="'background-image:url(' + figuresImage + ')'"
+								class="figures"
 							></div>
-							<div class="time-gradient"></div>
-							<div
-								v-for="(item, index) in timeslots"
-								:key="index"
-								class="checkbox"
-							>
+							<div class="gradient"></div>
+							<div class="all-months-items">
+								<div
+									v-for="(item, index) in months"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomCheckbox
+										:index="index"
+										:name="months[index].name"
+										:val="months[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="months"
+									></CustomCheckbox>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="overall-selector">
+						<div class="select-container select-days">
+							<div class="checkbox all">
+								<span class="checkbox-title">
+									<span class="title-span">Ugedage:</span>
+									<span class="info-span">
+										<span class="material-icons">event</span>
+										{{ showDaySelection() }}
+										<span class="bold">{{ showDayResult() }}</span>
+									</span>
+								</span>
 								<CustomCheckbox
-									:index="index"
-									:name="timeslots[index].name"
-									:val="timeslots[index].selected"
-									:tilted="true"
-									:update="updateCheckbox"
-									:parent-array="timeslots"
+									:index="1"
+									name="alle"
+									:val="true"
+									:tilted="false"
+									:parent-array="days"
+									:update="updateAllCheckbox"
 								></CustomCheckbox>
+							</div>
+							<div class="all-days-items">
+								<div class="day-gradient"></div>
+								<div
+									v-for="(item, index) in days"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomCheckbox
+										:index="index"
+										:name="days[index].name"
+										:val="days[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="days"
+									></CustomCheckbox>
+								</div>
+							</div>
+						</div>
+						<div class="select-container select-time">
+							<div class="all-timeslot-items">
+								<div
+									:style="'background-image:url(' + timelapseImage + ')'"
+									class="timelapse"
+								></div>
+								<div class="time-gradient"></div>
+								<div
+									v-for="(item, index) in timeslots"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomCheckbox
+										:index="index"
+										:name="timeslots[index].name"
+										:val="timeslots[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="timeslots"
+									></CustomCheckbox>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</ItemSlider>
-		<div class="result-container">
-			<h3>{{ timeSearchStore.numFound }} {{ $t('timeSearch.foundResults') }}</h3>
-			<div class="time-results">
-				<div
-					v-for="(item, index) in timeSearchStore.timeResults"
-					:key="index"
-					class="time-result-item"
-				>
-					<GridResultItem :resultdata="item"></GridResultItem>
+			</ItemSlider>
+			<div class="result-container">
+				<h3>
+					Tidsmaskinen har
+					<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
+					resultater
+				</h3>
+				<div class="time-results">
+					<div
+						v-for="(item, index) in timeSearchStore.timeResults"
+						:key="index"
+						class="time-result-item"
+					>
+						<GridResultItem :resultdata="item"></GridResultItem>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		</template>
+	</EdgedContentArea>
 </template>
 
 <script lang="ts">
@@ -177,6 +184,7 @@ import { pointItem, SelectorData, markerData, dataItem, SelectableItem } from '@
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import ItemSlider from '../search/ItemSlider.vue';
 import CustomCheckbox from '@/components/common/CustomCheckbox.vue';
+import EdgedContentArea from '../global/content-elements/EdgedContentArea.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
@@ -185,6 +193,7 @@ export default defineComponent({
 		SelectComponent,
 		ItemSlider,
 		CustomCheckbox,
+		EdgedContentArea,
 	},
 	setup() {
 		const { t } = useI18n();
@@ -521,6 +530,15 @@ h1 {
 	z-index: 5;
 }
 
+h3 {
+	color: #002e70;
+	font-weight: 100;
+}
+
+h3 .bold {
+	font-weight: bold;
+}
+
 .info-span .bold {
 	font-weight: bold;
 	padding-left: 7px;
@@ -663,11 +681,6 @@ h1 {
 	top: calc(100%);
 	transform: rotateZ(-35deg) translate(-50%, -50%);
 	transform-origin: center;
-}
-
-h3 span {
-	font-size: 12px;
-	opacity: 0.6;
 }
 
 .time-results {
