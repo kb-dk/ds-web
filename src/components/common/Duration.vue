@@ -1,6 +1,6 @@
 <template>
 	<span>
-		<span>({{ formattedDuration }})</span>
+		<span>{{ parenthesis ? '(' : '' }} {{ formattedDuration }} {{ parenthesis ? ')' : '' }}</span>
 	</span>
 </template>
 
@@ -25,6 +25,12 @@ export default defineComponent({
 		endDate: {
 			type: String as PropType<string>,
 			required: true,
+		},
+		parenthesis: {
+			type: Boolean,
+			default() {
+				return true;
+			},
 		},
 	},
 

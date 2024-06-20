@@ -98,7 +98,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				'dr',
-			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&fq=temporal_start_year:${timeConstraint}&rows=12${months}${days}${timeslots}`,
+			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&fq=temporal_start_year:${timeConstraint}&rows=8${months}${days}${timeslots}`,
 		);
 	}
 

@@ -44,7 +44,14 @@
 			<div class="time-selection">
 				<div class="select-container month">
 					<div class="checkbox all">
-						<span class="checkbox-title">Måneder:</span>
+						<span class="checkbox-title">
+							<span class="title-span">Måneder:</span>
+							<span class="info-span">
+								<span class="material-icons">event</span>
+								{{ showMonthSelection() }}
+								<span class="bold">{{ showMonthResult() }}</span>
+							</span>
+						</span>
 						<CustomCheckbox
 							:index="0"
 							name="alle"
@@ -81,7 +88,14 @@
 				<div class="overall-selector">
 					<div class="select-container select-days">
 						<div class="checkbox all">
-							<span class="checkbox-title">Dage:</span>
+							<span class="checkbox-title">
+								<span class="title-span">Ugedage:</span>
+								<span class="info-span">
+									<span class="material-icons">event</span>
+									{{ showDaySelection() }}
+									<span class="bold">{{ showDayResult() }}</span>
+								</span>
+							</span>
 							<CustomCheckbox
 								:index="1"
 								name="alle"
@@ -92,6 +106,7 @@
 							></CustomCheckbox>
 						</div>
 						<div class="all-days-items">
+							<div class="day-gradient"></div>
 							<div
 								v-for="(item, index) in days"
 								:key="index"
@@ -110,6 +125,7 @@
 					</div>
 					<div class="select-container select-time">
 						<div class="all-timeslot-items">
+							<div class="time-gradient"></div>
 							<div
 								v-for="(item, index) in timeslots"
 								:key="index"
@@ -209,6 +225,45 @@ export default defineComponent({
 			{ name: 'timeSearch.months.november', value: '11', selected: true },
 			{ name: 'timeSearch.months.december', value: '12', selected: true },
 		]);
+
+		const showMonthSelection = () => {
+			const nrMonths = months.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			return nrMonths.length + ' måneder x (' + nrYears + ') = ';
+		};
+
+		const showMonthResult = () => {
+			const nrMonths = months.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			return Number(nrMonths.length * nrYears) + ' måneder';
+		};
+
+		const showDaySelection = () => {
+			const nrMonths = months.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrDays = days.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+
+			return nrDays.length + ' dage x (' + Number(nrMonths.length * nrYears) + ') = ';
+		};
+
+		const showDayResult = () => {
+			const nrMonths = months.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrDays = days.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			return Number(nrMonths.length * nrYears * nrDays.length) + ' dage';
+		};
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
@@ -358,6 +413,10 @@ export default defineComponent({
 			backgroundImage,
 			updateCheckbox,
 			updateAllCheckbox,
+			showMonthSelection,
+			showDaySelection,
+			showDayResult,
+			showMonthResult,
 		};
 	},
 });
@@ -400,6 +459,10 @@ h1 {
 	justify-content: center;
 }
 
+.checkbox.all label {
+	width: 100px;
+}
+
 .all-months-items .checkbox {
 	width: calc((100% - 80px) / 12);
 	display: flex;
@@ -408,7 +471,7 @@ h1 {
 	align-items: center;
 	flex-wrap: nowrap;
 	position: relative;
-
+	top: 2px;
 	left: -25px;
 	align-content: flex-end;
 }
@@ -426,7 +489,32 @@ h1 {
 }
 
 .checkbox-title {
+	white-space: nowrap;
 	margin-bottom: 5px;
+	display: flex;
+}
+
+.checkbox-title .material-icons {
+	color: #002e70;
+	display: inline-block;
+}
+
+.title-span {
+	width: 150px;
+	display: inline-block;
+}
+
+.info-span {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: #002e70;
+	z-index: 5;
+}
+
+.info-span .bold {
+	font-weight: bold;
+	padding-left: 7px;
 }
 
 .time-selection {
@@ -581,6 +669,7 @@ h3 span {
 }
 
 .figures {
+	min-height: 100px;
 	width: 100%;
 	background-repeat: no-repeat;
 	background-size: 100%;
@@ -588,6 +677,7 @@ h3 span {
 	position: relative;
 	z-index: 1;
 	top: -3px;
+	background-position: bottom;
 }
 
 .gradient {
@@ -653,12 +743,6 @@ h3 span {
 	z-index: 101;
 }
 
-.time-result-item {
-	flex: 1 1 calc(25% - 20px);
-	max-width: calc(25% - 15px);
-	box-sizing: border-box;
-}
-
 .overall-selector {
 	user-select: none;
 	height: 150px;
@@ -678,6 +762,17 @@ h3 span {
 	justify-content: flex-end;
 }
 
+.day-gradient {
+	background: transparent
+		linear-gradient(270deg, #ffffff 0%, #c4f1ed 4%, #002e70 8%, #042c65 51%, #002e70 92%, #c9f0fe 94%, #ffffff 100%) 0%
+		0% no-repeat padding-box;
+	position: absolute;
+	width: calc(103%);
+	top: 54px;
+	right: -3%;
+	height: 36px;
+}
+
 .all-months-items {
 	display: flex;
 	justify-content: space-between;
@@ -689,11 +784,37 @@ h3 span {
 	margin-bottom: 40px;
 }
 
+.time-gradient {
+	background: transparent
+		linear-gradient(
+			90deg,
+			#c9f0fe 0%,
+			#c9f0fe 8%,
+			#d2dfbd 17%,
+			#f7ae3b 30%,
+			#f7ae3b 45%,
+			#c4f1ed 63%,
+			#002e70 77%,
+			#002b69 89%,
+			#001f4b 95%,
+			#001a40 100%,
+			#ffffff 100%
+		)
+		0% 0% no-repeat padding-box;
+	position: absolute;
+	width: calc(100% - 184px);
+	top: 60px;
+	right: 35px;
+	height: 36px;
+}
+
 .all-timeslot-items {
 	display: flex;
 	justify-content: right;
 	gap: 2px;
 	z-index: 2;
+	top: 7px;
+	position: relative;
 }
 
 .all-days-items {
@@ -704,6 +825,7 @@ h3 span {
 	gap: 2px;
 	z-index: 2;
 	width: calc(100% - 150px);
+	top: 7px;
 }
 
 .day-button,
@@ -768,31 +890,37 @@ h3 span {
 	box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
-	.data-container {
-		max-width: 640px;
+.time-result-item {
+	flex: 1 1 calc(100%);
+	max-width: calc(100%);
+	box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+	.time-result-item:nth-child(n + 3) {
+		display: none;
 	}
 }
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-	.data-container {
-		max-width: 990px;
+
+@media (max-width: 990px) {
+	.time-result-item:nth-child(n + 5) {
+		display: none;
+	}
+}
+
+@media (min-width: 480px) {
+	.time-result-item {
+		flex: 1 1 calc(50% - 20px);
+		max-width: calc(50% - 15px);
+		box-sizing: border-box;
 	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
-	.data-container {
-		max-width: 1150px;
-	}
-}
-/* MEDIA QUERY 1150 */
-@media (min-width: 1150px) {
-	.data-container {
-		max-width: 1280px;
-	}
-
-	.figures {
-		top: 0px;
+	.time-result-item {
+		flex: 1 1 calc(25% - 20px);
+		max-width: calc(25% - 15px);
+		box-sizing: border-box;
 	}
 }
 </style>

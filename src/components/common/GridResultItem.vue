@@ -17,15 +17,31 @@
 						></kb-imagecomponent>
 						<SoundThumbnail v-else></SoundThumbnail>
 					</div>
+				</router-link>
+				<div class="date">
+					<span class="material-icons">play_circle_filled</span>
+					{{ resultdata.creator_affiliation + ', ' }}
+					{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }}
+				</div>
+				<div class="duration">
+					<span class="material-icons">schedule</span>
+					<span>{{ $t('record.duration') }}:&nbsp;</span>
+					<Duration
+						:start-date="resultdata.startTime"
+						:end-date="resultdata.endTime"
+						:iso-duration="resultdata.duration"
+						:parenthesis="false"
+					></Duration>
+				</div>
+				<router-link
+					:to="{ path: 'record/' + resultdata.id }"
+					class="title"
+					role="link"
+				>
 					<div class="title">
 						{{ resultdata.title[0] }}
 					</div>
 				</router-link>
-				<div class="date">
-					{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }} ({{
-						resultdata.temporal_start_day_da
-					}}) - kl. {{ resultdata.temporal_start_hour_da }}
-				</div>
 				<div class="summary">{{ resultdata.description }}</div>
 			</div>
 			<div
@@ -63,17 +79,21 @@ import { APIService } from '@/api/api-service';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
+import Duration from './Duration.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'GridResultItem',
 	components: {
 		SoundThumbnail,
+		Duration,
 	},
 	props: {
 		resultdata: { type: Object as PropType<GenericSearchResultType>, required: true },
 	},
 
 	setup(props) {
+		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 
 		const imageData = ref(
@@ -133,7 +153,33 @@ export default defineComponent({
 .grid-result-item {
 	width: 100%;
 	max-width: 100%;
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	padding-bottom: 20px;
+	margin-bottom: 10px;
+	position: relative;
 }
+
+.grid-result-item:hover:after {
+	transform: translate(-50%, -0%) scale3d(1.9, 1.9, 1.9);
+}
+
+.grid-result-item:after {
+	transition: all 0.3s linear 0s;
+	content: '•';
+	position: absolute;
+	height: 10px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	left: 50%;
+	width: 20px;
+	line-height: 0.5;
+	margin-top: 15px;
+	transform-origin: center;
+	will-change: transform;
+	background-color: white;
+}
+
 .thumb-container {
 	width: 100%;
 	aspect-ratio: 4/2;
@@ -144,20 +190,34 @@ export default defineComponent({
 	border-radius: 10px;
 }
 
+.duration {
+	display: flex;
+}
+
+.date {
+	display: flex;
+	padding-top: 20px;
+	padding-bottom: 5px;
+}
+
+.date .material-icons,
+.duration .material-icons {
+	font-size: 20px;
+}
+
 .title {
-	margin-top: 5px;
-	font-size: 16px;
+	font-size: 20px;
 	font-weight: bold;
 	color: #002e70;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	max-width: 100%;
 	color: #002e70;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	text-transform: uppercase;
 	text-decoration: none;
 	position: relative;
+	padding-top: 15px;
 }
 
 .title.loading {
@@ -201,5 +261,52 @@ export default defineComponent({
 	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
 	min-height: calc(20px * 3); /* fallback for firefox */
+}
+
+@media (min-width: 480px) {
+	.container {
+		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.container {
+		max-width: 990px;
+	}
+}
+@media (min-width: 800px) {
+	.search-resultset {
+		display: flex;
+		flex-direction: row;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.mobile-edge {
+		display: none;
+	}
+	.container {
+		display: flex;
+		flex-direction: column;
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.intro {
+		width: 75%;
+	}
+	.container {
+		max-width: 1280px;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.container {
+		padding-right: 0;
+		padding-left: 0;
+	}
 }
 </style>
