@@ -749,7 +749,7 @@ h3 .bold,
 	aspect-ratio: 1113 / 106;
 	position: relative;
 	z-index: 1;
-	top: -3px;
+	top: -2px;
 	background-position: bottom;
 }
 
@@ -983,6 +983,7 @@ h3 .bold,
 }
 
 .link {
+	color: #002e70;
 	display: flex;
 	text-decoration: none;
 }
@@ -1038,6 +1039,9 @@ h3 .bold,
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
+	.figures {
+		top: 0px;
+	}
 	.time-result-item {
 		flex: 1 1 calc(25% - 20px);
 		max-width: calc(25% - 15px);
