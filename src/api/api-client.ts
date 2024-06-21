@@ -51,13 +51,8 @@ export class APIServiceClient {
 
 	//Search and record methods
 	async getFacetResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
-		//Temporary fix/implementation for limiting material
-		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
-		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
-				query,
-			)}&facet=true${filters}${start}${sort}&fq=${broadcastLimiter}&rows=0&facet.limit=25`,
+			`search/?q=${encodeURIComponent(query)}&facet=true${filters}${start}${sort}&rows=0&facet.limit=25`,
 		);
 	}
 
@@ -68,13 +63,8 @@ export class APIServiceClient {
 		sort: string,
 		uuid: string,
 	): Promise<APISearchResponseType> {
-		//Temporary fix/implementation for limiting material
-		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
-		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
-				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&fq=${broadcastLimiter}`,
+			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}`,
 		);
 	}
 
@@ -84,14 +74,11 @@ export class APIServiceClient {
 	}
 
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
-		//Temporary fix/implementation for limiting material
-		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
-		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
 		return await this.httpClient.get(
 			encodeURI(
 				`suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
 					query,
-				)}&suggest.count=5&wt=json&fq=${broadcastLimiter}`,
+				)}&suggest.count=5&wt=json`,
 			),
 		);
 	}
