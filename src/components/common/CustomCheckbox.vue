@@ -85,7 +85,21 @@ export default defineComponent({
 
 <style scoped>
 .checkbox input {
-	display: none;
+	position: absolute;
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+
+.checkbox input:focus + label {
+	outline: solid 5px #caf0fe;
+	box-shadow:
+		rgba(6, 24, 44, 0.4) 0px 0px 0px 5px,
+		rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+		rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
 .checkbox.all {

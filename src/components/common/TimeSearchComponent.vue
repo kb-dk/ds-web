@@ -167,12 +167,22 @@
 					</div>
 				</div>
 			</div>
-			<router-link :to="timeSearchLink">
-				<div class="further-results">
-					<div class="recap">18 år / 256 måneder / 2352 dage</div>
-					<div class="hits">Tidsmaskinen har 20867 resultater</div>
-				</div>
-			</router-link>
+			<div class="further-link">
+				<router-link
+					class="link"
+					:to="timeSearchLink"
+				>
+					<div class="further-results">
+						<div class="recap">{{ selectionSummary() }}</div>
+						<div class="hits">
+							Tidsmaskinen har
+							<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
+							resultater
+						</div>
+					</div>
+					<div class="material-icons">navigate_next</div>
+				</router-link>
+			</div>
 		</template>
 	</EdgedContentArea>
 </template>
@@ -206,12 +216,9 @@ export default defineComponent({
 
 		const timeSearchStore = useTimeSearchStore();
 		const values = ref([1992, 2002]);
-		const test = ref(1992);
 		const dataContainer = ref<HTMLDivElement>();
 		const fullYearArray = ref([] as pointItem[]);
-		const startYear = ref(0);
-		const endYear = ref(0);
-
+		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
 
 		const timeSearchLink = computed(() => {
@@ -277,6 +284,19 @@ export default defineComponent({
 			{ name: 'timeSearch.months.december', value: '12', selected: true },
 		]);
 
+		const selectionSummary = () => {
+			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			const nrMonths = months.value.filter((item) => {
+				return item.selected === true;
+			});
+			const nrDays = days.value.filter((item) => {
+				return item.selected === true;
+			});
+			return `${nrYears} år / ${Number(nrMonths.length * nrYears)} måneder / ${Number(
+				nrMonths.length * nrYears * nrDays.length,
+			)} dage`;
+		};
+
 		const showMonthSelection = () => {
 			const nrMonths = months.value.filter((item) => {
 				return item.selected === true;
@@ -336,24 +356,6 @@ export default defineComponent({
 			}
 		};
 
-		const currentlySelectedValues = (selectedArray: SelectorData[]) => {
-			const manipulatedArray = [...selectedArray];
-			const chosenEntities = manipulatedArray.filter((entity) => entity.selected).map((entity) => entity.name);
-			if (chosenEntities.length === selectedArray.length) {
-				return t('timeSearch.allChosen');
-			} else if (chosenEntities.length === 1) {
-				return t(chosenEntities[0]) + ' ' + t('timeSearch.chosen');
-			} else if (chosenEntities.length === 0) {
-				return t('timeSearch.notApplied');
-			} else {
-				const lastMonth = chosenEntities.pop() as string;
-				const translatedEntities = chosenEntities.map((entity) => t(entity));
-				return `${translatedEntities.join(', ')} ${t('timeSearch.and')} ${t(lastMonth)} ${t('timeSearch.chosen')}`;
-			}
-		};
-
-		const data = ref([] as markerData[]);
-
 		const figuresImage = computed(() => {
 			return new URL(`@/assets/images/dr_kalender-sprite.svg`, import.meta.url).href;
 		});
@@ -364,7 +366,6 @@ export default defineComponent({
 
 		onMounted(() => {
 			getTimeResults();
-
 			APIService.getFullResultWithFacets().then((reponse) => {
 				const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
 				const sortedResults = [] as dataItem[];
@@ -378,14 +379,14 @@ export default defineComponent({
 					}
 				});
 				sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-				startYear.value = Number(sortedResults[0].year);
-				endYear.value = Number(sortedResults[sortedResults.length - 1].year);
-				for (let i = startYear.value; i <= endYear.value; i++) {
+				const startYear = Number(sortedResults[0].year);
+				const endYear = Number(sortedResults[sortedResults.length - 1].year);
+				for (let i = startYear; i <= endYear; i++) {
 					selectYears.value.push(i.toString());
 					data.value.push({ key: i, value: i } as markerData);
 					const item = sortedResults.find((item) => item.year.includes(i.toString()));
 					const newEntry = {} as pointItem;
-					newEntry.x = Number(((100 / (endYear.value - startYear.value)) * (i - startYear.value)).toFixed(2));
+					newEntry.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
 					if (item) {
 						newEntry.year = item.year;
 						newEntry.items = item.items;
@@ -398,7 +399,6 @@ export default defineComponent({
 						fullYearArray.value.push(newEntry);
 					}
 				}
-				//console.log(fullYearArray);
 				const svgElement = createSVGCurvedLine(fullYearArray.value);
 				if (dataContainer.value) {
 					dataContainer.value.appendChild(svgElement);
@@ -437,10 +437,6 @@ export default defineComponent({
 			return array.filter((entity) => entity.selected).map((entity) => entity.value);
 		};
 
-		const setSelected = (variable: SelectableItem[], index: number) => {
-			variable[index].selected = !variable[index].selected;
-		};
-
 		watch(
 			[days, months, timeslots],
 			() => {
@@ -456,15 +452,12 @@ export default defineComponent({
 			timeSearchStore,
 			days,
 			months,
-			setSelected,
 			dataContainer,
 			timeslots,
 			fullYearArray,
 			selectYears,
 			updateStartYear,
 			updateEndYear,
-			test,
-			currentlySelectedValues,
 			figuresImage,
 			timelapseImage,
 			updateCheckbox,
@@ -474,6 +467,7 @@ export default defineComponent({
 			showDayResult,
 			showMonthResult,
 			timeSearchLink,
+			selectionSummary,
 		};
 	},
 });
@@ -496,7 +490,7 @@ h1 {
 	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
-	margin-bottom: 15px;
+	margin-bottom: 30px;
 	font-size: 20px;
 }
 
@@ -574,7 +568,8 @@ h3 {
 	font-weight: 100;
 }
 
-h3 .bold {
+h3 .bold,
+.hits .bold {
 	font-weight: bold;
 }
 
@@ -608,7 +603,7 @@ h3 .bold {
 	width: 5vw;
 	height: 100px;
 	pointer-events: none;
-	z-index: 100;
+	z-index: 5;
 	left: -1px;
 	background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
 }
@@ -650,6 +645,7 @@ h3 .bold {
 	display: flex;
 	box-sizing: border-box;
 	border-radius: 5px;
+	z-index: 6 !important;
 }
 
 .vue-slider-dot-handle {
@@ -699,6 +695,16 @@ h3 .bold {
 	display: none;
 }
 
+.vue-slider-marks .vue-slider-mark:nth-child(2n) {
+	display: none;
+}
+
+@media (min-width: 800px) {
+	.vue-slider-marks .vue-slider-mark:nth-child(2n) {
+		display: block;
+	}
+}
+
 .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
 	display: block;
 	color: #002e70;
@@ -720,6 +726,10 @@ h3 .bold {
 	top: calc(100%);
 	transform: rotateZ(-35deg) translate(-50%, -50%);
 	transform-origin: center;
+}
+
+.vue-slider-dot-tooltip-inner {
+	background: #c4f1ed 0% 0% no-repeat padding-box !important;
 }
 
 .time-results {
@@ -802,8 +812,9 @@ h3 .bold {
 	letter-spacing: 0px;
 	color: #002e70;
 	padding: 2px;
-	top: 71px;
-	z-index: 101;
+	top: 85px;
+	z-index: 6;
+	pointer-events: none;
 }
 
 .overall-selector {
@@ -965,6 +976,39 @@ h3 .bold {
 	margin-top: 2px;
 	border-bottom: 1px solid #002e70;
 	box-sizing: border-box;
+}
+
+.further-link a:visited {
+	color: #002e70;
+}
+
+.link {
+	display: flex;
+	text-decoration: none;
+}
+
+.further-link {
+	display: flex;
+	justify-content: flex-end;
+	margin-right: -50px;
+}
+
+.link:hover .material-icons {
+	transform: translateX(10px);
+}
+
+.link .material-icons {
+	transition: all 0.15s ease-in-out 0s;
+	display: flex;
+	align-items: center;
+	font-size: 60px;
+}
+
+.further-results {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .time-result-item {

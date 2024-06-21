@@ -32,7 +32,10 @@
 						:iso-duration="resultdata.duration"
 						:parenthesis="false"
 					></Duration>
-					&nbsp; - kl. {{ resultdata.temporal_start_hour_da }}
+					&nbsp;-&nbsp;
+					<span style="font-style: italic; opacity: 0.5">
+						kl. {{ resultdata.temporal_start_hour_da }} / {{ resultdata.temporal_start_day_da }}
+					</span>
 				</div>
 				<router-link
 					:to="{ path: 'record/' + resultdata.id }"
@@ -51,12 +54,16 @@
 			>
 				<div class="thumb-container loading-color"></div>
 				<div
-					:style="`width:${Math.random() * 30 + 30}%`"
-					class="title loading"
+					:style="`width:${Math.random() * 30 + 40}%`"
+					class="date loading"
 				></div>
 				<div
-					:style="`width:${Math.random() * 20 + 20}%`"
+					:style="`width:${Math.random() * 30 + 40}%`"
 					class="date loading"
+				></div>
+				<div
+					:style="`width:${Math.random() * 30 + 50}%`"
+					class="title loading"
 				></div>
 				<div class="summary loading">
 					<div
@@ -225,7 +232,8 @@ export default defineComponent({
 .title.loading {
 	background-color: rgba(170, 170, 170, 1);
 	height: 20px;
-	border-radius: 10px;
+	border-radius: 15px;
+	margin-top: 15px;
 }
 
 .summary.loading {
@@ -243,10 +251,11 @@ export default defineComponent({
 }
 
 .date.loading {
+	margin-top: 10px;
 	margin-bottom: 5px;
 	background-color: rgba(170, 170, 170, 1);
-	height: 20px;
-	border-radius: 10px;
+	height: 0px;
+	border-radius: 15px;
 }
 
 .summary {

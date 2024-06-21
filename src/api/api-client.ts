@@ -97,7 +97,7 @@ export class APIServiceClient {
 		const timeConstraint = encodeURIComponent(`[${start} TO ${end}]`);
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
-				'dr',
+				'*:*',
 			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&fq=temporal_start_year:${timeConstraint}&rows=8${months}${days}${timeslots}`,
 		);
 	}

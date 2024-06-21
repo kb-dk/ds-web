@@ -173,6 +173,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		URL.revokeObjectURL(url);
 
 		try {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
@@ -205,7 +206,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
-				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
 	};
