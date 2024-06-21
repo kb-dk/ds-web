@@ -188,19 +188,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, computed, watch } from 'vue';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { APIService } from '@/api/api-service';
+import { useI18n } from 'vue-i18n';
+import { pointItem, SelectorData, markerData, dataItem } from '@/types/TimeSearchTypes';
+import { createSVGCurvedLine } from '@/utils/svg-graph';
+import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchData';
+
 import VueSlider from 'vue-3-slider-component';
 import GridResultItem from '@/components/common/GridResultItem.vue';
-import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { watch } from 'vue';
-import { APIService } from '@/api/api-service';
 import SelectComponent from '@/components/common/SelectComponent.vue';
-import { useI18n } from 'vue-i18n';
-import { pointItem, SelectorData, markerData, dataItem, SelectableItem } from '@/types/TimeSearchTypes';
-import { createSVGCurvedLine } from '@/utils/svg-graph';
 import ItemSlider from '../search/ItemSlider.vue';
 import CustomCheckbox from '@/components/common/CustomCheckbox.vue';
 import EdgedContentArea from '../global/content-elements/EdgedContentArea.vue';
+
+import '@/assets/styles/vue-slider-styles.css';
+
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
@@ -253,86 +257,54 @@ export default defineComponent({
 			};
 		});
 
-		const days = ref([
-			{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: true },
-			{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: true },
-			{ name: 'timeSearch.weekdays.wednesday', value: 'Wednesday', selected: true },
-			{ name: 'timeSearch.weekdays.thursday', value: 'Thursday', selected: true },
-			{ name: 'timeSearch.weekdays.friday', value: 'Friday', selected: true },
-			{ name: 'timeSearch.weekdays.saturday', value: 'Saturday', selected: true },
-			{ name: 'timeSearch.weekdays.sunday', value: 'Sunday', selected: true },
-		]);
-		const timeslots = ref([
-			{ name: 'timeSearch.timeslots.morning', value: '[6 TO 12]', selected: true },
-			{ name: 'timeSearch.timeslots.midday', value: '[12 TO 18]', selected: true },
-			{ name: 'timeSearch.timeslots.evening', value: '[18 TO 24]', selected: true },
-			{ name: 'timeSearch.timeslots.night', value: '[0 TO 6]', selected: true },
-		]);
+		const getYears = () => {
+			return Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+		};
 
-		const months = ref([
-			{ name: 'timeSearch.months.january', value: '1', selected: true },
-			{ name: 'timeSearch.months.february', value: '2', selected: true },
-			{ name: 'timeSearch.months.march', value: '3', selected: true },
-			{ name: 'timeSearch.months.april', value: '4', selected: true },
-			{ name: 'timeSearch.months.may', value: '5', selected: true },
-			{ name: 'timeSearch.months.june', value: '6', selected: true },
-			{ name: 'timeSearch.months.july', value: '7', selected: true },
-			{ name: 'timeSearch.months.august', value: '8', selected: true },
-			{ name: 'timeSearch.months.september', value: '9', selected: true },
-			{ name: 'timeSearch.months.october', value: '10', selected: true },
-			{ name: 'timeSearch.months.november', value: '11', selected: true },
-			{ name: 'timeSearch.months.december', value: '12', selected: true },
-		]);
+		const getMonths = () => {
+			return months.value.filter((item) => {
+				return item.selected === true;
+			});
+		};
+
+		const getDays = () => {
+			return days.value.filter((item) => {
+				return item.selected === true;
+			});
+		};
 
 		const selectionSummary = () => {
-			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
-			const nrMonths = months.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrDays = days.value.filter((item) => {
-				return item.selected === true;
-			});
+			const nrYears = getYears();
+			const nrMonths = getMonths();
+			const nrDays = getDays();
 			return `${nrYears} år / ${Number(nrMonths.length * nrYears)} måneder / ${Number(
 				nrMonths.length * nrYears * nrDays.length,
 			)} dage`;
 		};
 
 		const showMonthSelection = () => {
-			const nrMonths = months.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			const nrYears = getYears();
+			const nrMonths = getMonths();
 			return nrMonths.length + ' måneder x (' + nrYears + ') = ';
 		};
 
 		const showMonthResult = () => {
-			const nrMonths = months.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			const nrYears = getYears();
+			const nrMonths = getMonths();
 			return Number(nrMonths.length * nrYears) + ' måneder';
 		};
 
 		const showDaySelection = () => {
-			const nrMonths = months.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrDays = days.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
-
+			const nrYears = getYears();
+			const nrMonths = getMonths();
+			const nrDays = getDays();
 			return nrDays.length + ' dage x (' + Number(nrMonths.length * nrYears) + ') = ';
 		};
 
 		const showDayResult = () => {
-			const nrMonths = months.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrDays = days.value.filter((item) => {
-				return item.selected === true;
-			});
-			const nrYears = Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
+			const nrYears = getYears();
+			const nrMonths = getMonths();
+			const nrDays = getDays();
 			return Number(nrMonths.length * nrYears * nrDays.length) + ' dage';
 		};
 
@@ -407,7 +379,6 @@ export default defineComponent({
 		});
 
 		const getTimeResults = () => {
-			console.log('new results please');
 			timeSearchStore.getTimeSearchResults(
 				values.value[0].toString(),
 				values.value[1].toString(),
@@ -613,123 +584,6 @@ h3 .bold,
 	left: initial;
 	top: 35px;
 	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
-}
-
-.vue-slider-rail {
-	background-color: white !important;
-	border-radius: 0px !important;
-}
-
-.vue-slider {
-	height: 60px !important;
-	padding: 0px !important;
-}
-.vue-slider-process {
-	border-radius: 0px !important;
-	background-color: #caf0fe !important;
-	z-index: 5 !important;
-	opacity: 0.5;
-	mix-blend-mode: hue !important;
-	filter: hue-rotate(245deg) !important;
-}
-
-.vue-slider-mark-step {
-	border-radius: 0px !important;
-}
-
-.vue-slider-dot {
-	width: 8px !important;
-	border: 1px solid #002e70;
-	height: 100% !important;
-	background-color: #f7ae3b !important;
-	display: flex;
-	box-sizing: border-box;
-	border-radius: 5px;
-	z-index: 6 !important;
-}
-
-.vue-slider-dot-handle {
-	height: 15px !important;
-	width: 15px !important;
-	margin-top: 20px !important;
-	margin-left: -15px !important;
-	left: 10px;
-	position: relative;
-}
-
-.vue-slider-mark {
-	width: 2px !important;
-	height: 15% !important;
-	background-color: #002e70 !important;
-	margin-bottom: 10px !important;
-	position: relative;
-	top: 92% !important;
-}
-
-.vue-slider-mark-label {
-	padding-top: 5px;
-	transform: rotateZ(-35deg) translate(-50%, -50%) !important;
-	left: -25px !important;
-}
-
-.vue-slider-dot-tooltip-inner {
-	background-color: #fff6c4 !important;
-	color: black !important;
-}
-
-.vue-slider-dot-tooltip-inner-bottom:after,
-.vue-slider-dot-tooltip-inner-top:after {
-	border-top-color: #fff6c4 !important;
-	color: black !important;
-}
-
-.vue-slider-marks .vue-slider-mark:first-of-type .vue-slider-mark-label {
-	left: 15px !important;
-}
-
-.vue-slider-marks .vue-slider-mark:last-of-type .vue-slider-mark-label {
-	left: -10px !important;
-}
-
-.vue-slider-marks .vue-slider-mark .vue-slider-mark-label {
-	display: none;
-}
-
-.vue-slider-marks .vue-slider-mark:nth-child(2n) {
-	display: none;
-}
-
-@media (min-width: 800px) {
-	.vue-slider-marks .vue-slider-mark:nth-child(2n) {
-		display: block;
-	}
-}
-
-.vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
-	display: block;
-	color: #002e70;
-}
-
-.vue-slider-marks .vue-slider-mark:nth-child(5n) {
-	height: 50% !important;
-	top: 75% !important;
-}
-
-.vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after {
-	content: '';
-	display: block;
-	width: 20px;
-	border-top: 2px solid #002e70;
-	height: 2px;
-	left: -6px;
-	position: absolute;
-	top: calc(100%);
-	transform: rotateZ(-35deg) translate(-50%, -50%);
-	transform-origin: center;
-}
-
-.vue-slider-dot-tooltip-inner {
-	background: #c4f1ed 0% 0% no-repeat padding-box !important;
 }
 
 .time-results {
