@@ -20,7 +20,7 @@
 						</router-link>
 						<div class="subtitle">
 							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
-							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
+							<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
 							<span class="when">{{ starttime }}</span>
 							<span class="material-icons icons schedule">schedule</span>
 							<span class="duration">{{ duration }}</span>
@@ -176,13 +176,17 @@ export default defineComponent({
 			() => props.resultdata,
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
-					getImageData();
+					if (props.resultdata.origin.split('.')[1] === 'tv') {
+						getImageData();
+					}
 				}
 			},
 		);
 
 		onMounted(() => {
-			getImageData();
+			if (props.resultdata.origin && props.resultdata.origin.split('.')[1] === 'tv') {
+				getImageData();
+			}
 		});
 
 		return {
