@@ -242,7 +242,7 @@ export default defineComponent({
 				.join(' OR ');
 
 			return {
-				name: 'Archive',
+				name: 'Home',
 				query: {
 					q: '*:*',
 					start: 0,
