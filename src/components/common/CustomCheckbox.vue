@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, watch, onMounted } from 'vue';
+import { defineComponent, ref, PropType, watch } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
 
 export default defineComponent({
