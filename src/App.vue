@@ -144,9 +144,9 @@ export default defineComponent({
 		};
 
 		router.beforeEach((to, from) => {
-			if (from.name === 'Archive' && to.name === 'Record') {
+			if (from.name === 'Home' && to.name === 'Record') {
 				transitionName.value = 'from-search-to-record';
-			} else if (from.name === 'Record' && to.name === 'Archive') {
+			} else if (from.name === 'Record' && to.name === 'Home') {
 				transitionName.value = 'from-record-to-search';
 			} else {
 				transitionName.value = 'swipe';

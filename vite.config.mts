@@ -25,7 +25,7 @@ export default ({ mode }) => {
 			},
 		},
 
-		base: env.NODE_ENV === 'production' ? '/dsweb/' : '/',
+		base: '/' + env.APP_BASE_PATH,
 
 		build: {
 			outDir: 'dist',
