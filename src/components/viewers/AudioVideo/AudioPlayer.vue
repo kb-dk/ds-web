@@ -47,7 +47,7 @@ export default defineComponent({
 		};
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
-			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL);
+			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL_AUDIO);
 			kalturaScript.setAttribute('id', 'kaltura-script');
 			kalturaScript.setAttribute('type', 'application/javascript');
 			kalturaScript.id = 'kaltura-player-script';
@@ -65,7 +65,7 @@ export default defineComponent({
 					targetId: 'audio-player',
 					provider: {
 						partnerId: import.meta.env.VITE_KALTURA_PARTNER_ID,
-						uiConfId: 23454104,
+						uiConfId: import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
 					},
 				});
 				audioPlayer.loadMedia({ referenceId: props.fileId });
