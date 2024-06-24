@@ -7,6 +7,7 @@
 		@change="updateSelection"
 	/>
 	<label
+		:title="$t(name)"
 		:class="tilted ? 'tilted' : ''"
 		:for="name + '-checkbox-' + index"
 	>
