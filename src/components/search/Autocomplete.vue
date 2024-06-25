@@ -188,6 +188,7 @@ export default defineComponent({
 	list-style-type: none;
 	padding: 0px 0px;
 	margin: 0;
+	background-color: white;
 }
 
 .autocomplete button span {
@@ -201,6 +202,7 @@ export default defineComponent({
 	overflow: hidden;
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
+	background-color: white;
 }
 
 .autocomplete ul li:hover,
