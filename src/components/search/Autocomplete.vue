@@ -15,6 +15,7 @@
 				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 			>
 				<button
+					:title="item?.term"
 					@click="executeOnSelection"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
@@ -148,11 +149,13 @@ export default defineComponent({
 	background-color: white;
 	width: 50%;
 	padding: 0px 0px;
-	border: 1px solid #f5f5f5;
-	border-top: 0px solid #f5f5f5;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
 	border-radius: 0px 0px 2px 2px;
-	margin-left: -1px;
+	margin-top: -1px;
+	margin-left: 0px;
+	width: calc(80% - 2px);
+	border: 1px solid #757575;
+	border-top: 0px solid #757575;
 }
 
 .autocomplete button {
@@ -163,6 +166,8 @@ export default defineComponent({
 	cursor: pointer;
 	text-align: left;
 	font-size: 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .autocomplete button span {
@@ -237,5 +242,36 @@ export default defineComponent({
 	top: -7px;
 	transition: all 0.2s linear 0s;
 	z-index: 0;
+}
+
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.autocomplete {
+		border: 1px solid #757575;
+		border-top: 0px;
+		width: calc(80% - 2px);
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+}
+
+@media (min-width: 800px) {
+	.autocomplete {
+		border: 1px solid #f5f5f5;
+		border-top: 0px solid #f5f5f5;
+		margin-top: -1px;
+		margin-left: -1px;
+		width: calc(50%);
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
 }
 </style>
