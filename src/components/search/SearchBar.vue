@@ -445,6 +445,7 @@ input:focus {
 	border-radius: 0px;
 }
 .rdl-advanced-search-input {
+	background-color: white;
 	margin-bottom: 32px;
 	width: 100%;
 }
