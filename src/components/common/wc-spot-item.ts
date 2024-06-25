@@ -78,7 +78,6 @@ const SPOT_COMPONMENT_TEMPLATE = /*html*/ `
 
 const SPOT_COMPONMENT_STYLES = /*css*/ `
 	<style>
-
     .record-metadata {
         padding-top:20px;
     }
@@ -87,7 +86,7 @@ const SPOT_COMPONMENT_STYLES = /*css*/ `
         text-decoration:none;
         color:black;
         margin-bottom:40px;
-        display:inline-block;
+        display:block;
         transition:all 0.3s ease-in-out 0s;
     }
 
