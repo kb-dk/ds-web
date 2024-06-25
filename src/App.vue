@@ -324,6 +324,13 @@ export default defineComponent({
 }
 
 @font-face {
+	font-family: 'noway';
+	font-style: normal;
+	font-weight: 700;
+	src: url('./assets/fonts/noway-bold-webfont.woff2') format('woff2');
+}
+
+@font-face {
 	font-family: 'LibreBaskerville';
 	src: url('./assets/fonts/LibreBaskerville-Bold.ttf') format('truetype');
 	font-weight: bold;
