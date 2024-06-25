@@ -179,6 +179,8 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link a {
+	display: flex;
+	align-items: center;
 	text-decoration: none;
 }
 
