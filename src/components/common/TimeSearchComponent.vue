@@ -615,6 +615,7 @@ h3 .bold,
 	display: flex;
 	width: 100%;
 	min-width: 1000px;
+	padding-bottom: 20px;
 }
 
 .select-container.days {
