@@ -611,7 +611,7 @@ h3 .bold,
 
 .overall-selector {
 	user-select: none;
-	height: 170px;
+	height: 150px;
 	display: flex;
 	width: 100%;
 	min-width: 1000px;
