@@ -302,20 +302,13 @@ export default defineComponent({
 				for (let i = startYear; i <= endYear; i++) {
 					selectYears.value.push(i.toString());
 					data.value.push({ key: i, value: i });
-					const item = sortedResults.find((item) => item.year.includes(i.toString()));
-					const newEntry = {} as pointItem;
-					newEntry.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
-					if (item) {
-						newEntry.year = item.year;
-						newEntry.items = item.items;
-						newEntry.y = item.items;
-						fullYearArray.value.push(newEntry);
-					} else {
-						newEntry.year = i.toString();
-						newEntry.items = 0;
-						newEntry.y = 0;
-						fullYearArray.value.push(newEntry);
-					}
+					let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+						year: i.toString(),
+						items: 0,
+					};
+					item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
+					item.y = item.items;
+					fullYearArray.value.push(item);
 				}
 				const svgElement = createSVGCurvedLine(fullYearArray.value);
 				if (dataContainer.value) {
