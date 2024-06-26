@@ -1,19 +1,20 @@
 <template>
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
-			<h1>Tidsmaskinen</h1>
+			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
 			<div class="slider-container">
-				<div class="data-size">datamængde</div>
+				<div class="data-size">{{ $t('timeSearch.data') }}:</div>
 				<div class="to-from-container">
-					Fra:
-					<SelectComponent
-						:current-selected="values[0]"
+					{{ $t('timeSearch.from') }}:
+					<CustomTimelineSelect
+						:current-selected="TimeSliderValues[0]"
 						:list-items="selectYears"
 						@update-selected="updateStartYear"
 					/>
-					Til:
-					<SelectComponent
-						:current-selected="values[1]"
+					{{ $t('timeSearch.to') }}:
+
+					<CustomTimelineSelect
+						:current-selected="TimeSliderValues[1]"
 						:list-items="selectYears"
 						@update-selected="updateEndYear"
 					/>
@@ -27,7 +28,7 @@
 					<Transition name="fade">
 						<VueSlider
 							v-if="data.length > 0"
-							v-model="values"
+							v-model="TimeSliderValues"
 							:clickable="true"
 							:drag-on-click="true"
 							:data="data"
@@ -47,21 +48,23 @@
 					<div class="select-container month">
 						<div class="checkbox all">
 							<span class="checkbox-title">
-								<span class="title-span">Måneder:</span>
+								<span class="title-span">
+									{{ $t('timeSearch.month', months.filter((obj) => obj.selected).length) }}
+								</span>
 								<span class="info-span">
 									<span class="material-icons">event</span>
-									{{ showMonthSelection() }}
-									<span class="bold">{{ showMonthResult() }}</span>
+									{{ showMonthSelection(TimeSliderValues, months, t) }}
+									<span class="bold">{{ showMonthResult(TimeSliderValues, months, t) }}</span>
 								</span>
 							</span>
-							<CustomCheckbox
+							<CustomTimelineCheckbox
 								:index="0"
-								name="alle"
+								name="timeSearch.all"
 								:val="true"
 								:tilted="false"
 								:update="updateAllCheckbox"
 								:parent-array="months"
-							></CustomCheckbox>
+							></CustomTimelineCheckbox>
 						</div>
 						<div class="month-selector">
 							<div
@@ -75,37 +78,39 @@
 									:key="index"
 									class="checkbox"
 								>
-									<CustomCheckbox
+									<CustomTimelineCheckbox
 										:index="index"
 										:name="months[index].name"
 										:val="months[index].selected"
 										:tilted="true"
 										:update="updateCheckbox"
 										:parent-array="months"
-									></CustomCheckbox>
+									></CustomTimelineCheckbox>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="overall-selector">
-						<div class="select-container select-days">
+						<div class="select-container days">
 							<div class="checkbox all">
 								<span class="checkbox-title">
-									<span class="title-span">Ugedage:</span>
+									<span class="title-span">
+										{{ $t('timeSearch.day', days.filter((obj) => obj.selected).length) }} :
+									</span>
 									<span class="info-span">
 										<span class="material-icons">event</span>
-										{{ showDaySelection() }}
-										<span class="bold">{{ showDayResult() }}</span>
+										{{ showDaySelection(TimeSliderValues, months, days, t) }}
+										<span class="bold">{{ showDayResult(TimeSliderValues, months, days, t) }}</span>
 									</span>
 								</span>
-								<CustomCheckbox
+								<CustomTimelineCheckbox
 									:index="1"
-									name="alle"
+									name="timeSearch.all"
 									:val="true"
 									:tilted="false"
 									:parent-array="days"
 									:update="updateAllCheckbox"
-								></CustomCheckbox>
+								></CustomTimelineCheckbox>
 							</div>
 							<div class="all-days-items">
 								<div class="day-gradient"></div>
@@ -114,14 +119,14 @@
 									:key="index"
 									class="checkbox"
 								>
-									<CustomCheckbox
+									<CustomTimelineCheckbox
 										:index="index"
 										:name="days[index].name"
 										:val="days[index].selected"
 										:tilted="true"
 										:update="updateCheckbox"
 										:parent-array="days"
-									></CustomCheckbox>
+									></CustomTimelineCheckbox>
 								</div>
 							</div>
 						</div>
@@ -137,14 +142,14 @@
 									:key="index"
 									class="checkbox"
 								>
-									<CustomCheckbox
+									<CustomTimelineCheckbox
 										:index="index"
 										:name="timeslots[index].name"
 										:val="timeslots[index].selected"
 										:tilted="true"
 										:update="updateCheckbox"
 										:parent-array="timeslots"
-									></CustomCheckbox>
+									></CustomTimelineCheckbox>
 								</div>
 							</div>
 						</div>
@@ -153,9 +158,9 @@
 			</ItemSlider>
 			<div class="result-container">
 				<h3>
-					Tidsmaskinen har
+					{{ $t('timeSearch.timeHits') }}
 					<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
-					resultater
+					{{ $t('timeSearch.result', timeSearchStore.numFound) }}
 				</h3>
 				<div class="time-results">
 					<div
@@ -173,11 +178,11 @@
 					:to="timeSearchLink"
 				>
 					<div class="further-results">
-						<div class="recap">{{ selectionSummary() }}</div>
+						<div class="recap">{{ selectionSummary(TimeSliderValues, months, days, t) }}</div>
 						<div class="hits">
-							Tidsmaskinen har
+							{{ $t('timeSearch.timeHits') }}
 							<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
-							resultater
+							{{ $t('timeSearch.result', timeSearchStore.numFound) }}
 						</div>
 					</div>
 					<div class="material-icons">navigate_next</div>
@@ -192,15 +197,25 @@ import { defineComponent, ref, onMounted, computed, watch } from 'vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import { useI18n } from 'vue-i18n';
-import { pointItem, SelectorData, markerData, dataItem } from '@/types/TimeSearchTypes';
+import { pointItem, markerData, dataItem } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
-import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchData';
+import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import {
+	selectionSummary,
+	showMonthSelection,
+	showMonthResult,
+	showDaySelection,
+	showDayResult,
+	updateCheckbox,
+	updateAllCheckbox,
+	getSelectedFromArray,
+} from '@/utils/time-search-utils';
 
 import VueSlider from 'vue-3-slider-component';
 import GridResultItem from '@/components/common/GridResultItem.vue';
-import SelectComponent from '@/components/common/SelectComponent.vue';
+import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 import ItemSlider from '../search/ItemSlider.vue';
-import CustomCheckbox from '@/components/common/CustomCheckbox.vue';
+import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
 import EdgedContentArea from '../global/content-elements/EdgedContentArea.vue';
 
 import '@/assets/styles/vue-slider-styles.css';
@@ -210,16 +225,16 @@ export default defineComponent({
 	components: {
 		VueSlider,
 		GridResultItem,
-		SelectComponent,
+		CustomTimelineSelect,
 		ItemSlider,
-		CustomCheckbox,
+		CustomTimelineCheckbox,
 		EdgedContentArea,
 	},
 	setup() {
 		const { t } = useI18n();
 
 		const timeSearchStore = useTimeSearchStore();
-		const values = ref([1992, 2002]);
+		const TimeSliderValues = ref([1992, 2002]);
 		const dataContainer = ref<HTMLDivElement>();
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
@@ -248,7 +263,9 @@ export default defineComponent({
 					start: 0,
 					rows: 10,
 					fq: [
-						encodeURIComponent(`temporal_start_year:[${values.value[0] + ' TO ' + values.value[1]}]`),
+						encodeURIComponent(
+							`temporal_start_year:[${TimeSliderValues.value[0] + ' TO ' + TimeSliderValues.value[1]}]`,
+						),
 						encodeURIComponent(`temporal_start_day_da:(${dayString})`),
 						encodeURIComponent(`temporal_start_month:(${monthString})`),
 						encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`),
@@ -256,77 +273,6 @@ export default defineComponent({
 				},
 			};
 		});
-
-		const getYears = () => {
-			return Number(values.value[1] - values.value[0]) === 0 ? 1 : Number(values.value[1] - values.value[0]);
-		};
-
-		const getMonths = () => {
-			return months.value.filter((item) => {
-				return item.selected === true;
-			});
-		};
-
-		const getDays = () => {
-			return days.value.filter((item) => {
-				return item.selected === true;
-			});
-		};
-
-		const selectionSummary = () => {
-			const nrYears = getYears();
-			const nrMonths = getMonths();
-			const nrDays = getDays();
-			return `${nrYears} år / ${Number(nrMonths.length * nrYears)} måneder / ${Number(
-				nrMonths.length * nrYears * nrDays.length,
-			)} dage`;
-		};
-
-		const showMonthSelection = () => {
-			const nrYears = getYears();
-			const nrMonths = getMonths();
-			return nrMonths.length + ' måneder x (' + nrYears + ') = ';
-		};
-
-		const showMonthResult = () => {
-			const nrYears = getYears();
-			const nrMonths = getMonths();
-			return Number(nrMonths.length * nrYears) + ' måneder';
-		};
-
-		const showDaySelection = () => {
-			const nrYears = getYears();
-			const nrMonths = getMonths();
-			const nrDays = getDays();
-			return nrDays.length + ' dage x (' + Number(nrMonths.length * nrYears) + ') = ';
-		};
-
-		const showDayResult = () => {
-			const nrYears = getYears();
-			const nrMonths = getMonths();
-			const nrDays = getDays();
-			return Number(nrMonths.length * nrYears * nrDays.length) + ' dage';
-		};
-
-		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			array[index].selected = val;
-		};
-
-		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			if (val === true) {
-				array.forEach((item) => {
-					item.selected = true;
-				});
-			} else {
-				array.forEach((item, index) => {
-					if (index === 0) {
-						item.selected = true;
-					} else {
-						item.selected = false;
-					}
-				});
-			}
-		};
 
 		const figuresImage = computed(() => {
 			return new URL(`@/assets/images/dr_kalender-sprite.svg`, import.meta.url).href;
@@ -355,7 +301,7 @@ export default defineComponent({
 				const endYear = Number(sortedResults[sortedResults.length - 1].year);
 				for (let i = startYear; i <= endYear; i++) {
 					selectYears.value.push(i.toString());
-					data.value.push({ key: i, value: i } as markerData);
+					data.value.push({ key: i, value: i });
 					const item = sortedResults.find((item) => item.year.includes(i.toString()));
 					const newEntry = {} as pointItem;
 					newEntry.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
@@ -380,8 +326,8 @@ export default defineComponent({
 
 		const getTimeResults = () => {
 			timeSearchStore.getTimeSearchResults(
-				values.value[0].toString(),
-				values.value[1].toString(),
+				TimeSliderValues.value[0].toString(),
+				TimeSliderValues.value[1].toString(),
 				getSelectedFromArray(months.value),
 				getSelectedFromArray(days.value),
 				getSelectedFromArray(timeslots.value),
@@ -389,23 +335,19 @@ export default defineComponent({
 		};
 
 		const updateStartYear = (val: number) => {
-			values.value[0] = Number(val);
-			if (Number(val) > values.value[1]) {
-				values.value[1] = Number(val);
+			TimeSliderValues.value[0] = Number(val);
+			if (Number(val) > TimeSliderValues.value[1]) {
+				TimeSliderValues.value[1] = Number(val);
 			}
 			getTimeResults();
 		};
 
 		const updateEndYear = (val: number) => {
-			values.value[1] = Number(val);
-			if (Number(val) < values.value[0]) {
-				values.value[0] = Number(val);
+			TimeSliderValues.value[1] = Number(val);
+			if (Number(val) < TimeSliderValues.value[0]) {
+				TimeSliderValues.value[0] = Number(val);
 			}
 			getTimeResults();
-		};
-
-		const getSelectedFromArray = (array: SelectorData[]) => {
-			return array.filter((entity) => entity.selected).map((entity) => entity.value);
 		};
 
 		watch(
@@ -417,7 +359,7 @@ export default defineComponent({
 		);
 
 		return {
-			values,
+			TimeSliderValues,
 			data,
 			getTimeResults,
 			timeSearchStore,
@@ -431,14 +373,15 @@ export default defineComponent({
 			updateEndYear,
 			figuresImage,
 			timelapseImage,
-			updateCheckbox,
-			updateAllCheckbox,
-			showMonthSelection,
-			showDaySelection,
-			showDayResult,
-			showMonthResult,
 			timeSearchLink,
 			selectionSummary,
+			showMonthSelection,
+			showMonthResult,
+			showDaySelection,
+			showDayResult,
+			updateCheckbox,
+			updateAllCheckbox,
+			t,
 		};
 	},
 });
@@ -522,6 +465,7 @@ h1 {
 }
 
 .title-span {
+	text-transform: capitalize;
 	width: 150px;
 	display: inline-block;
 }
@@ -679,7 +623,7 @@ h3 .bold,
 	min-width: 1000px;
 }
 
-.select-days {
+.select-container.days {
 	width: calc(65%);
 	display: flex;
 }

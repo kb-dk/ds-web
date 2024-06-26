@@ -89,11 +89,9 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+			loading.value = false;
 		} finally {
-			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
-				loading.value = false;
-				//window.scrollTo({ top: 0, behavior: 'smooth' });
-			}
+			loading.value = false;
 		}
 	};
 
