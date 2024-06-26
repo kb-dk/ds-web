@@ -202,6 +202,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
 			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+			noHits.value = numFound.value === 0;
+			loading.value = false;
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
