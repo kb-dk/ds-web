@@ -399,6 +399,7 @@ h1 {
 	gap: 10px;
 	margin-bottom: 30px;
 	font-size: 20px;
+	text-transform: capitalize;
 }
 
 .dotted-separator {
