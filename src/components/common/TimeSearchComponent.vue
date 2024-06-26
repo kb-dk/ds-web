@@ -489,6 +489,11 @@ h3 .bold,
 
 .time-selection {
 	width: 100%;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .all-timeslot-items .checkbox {
