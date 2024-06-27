@@ -23,7 +23,7 @@ import { defineComponent, ref, PropType, watch } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
 
 export default defineComponent({
-	name: 'CustomCheckbox',
+	name: 'CustomTimelineCheckbox',
 	props: {
 		val: {
 			type: Boolean,

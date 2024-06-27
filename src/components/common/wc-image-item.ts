@@ -104,6 +104,7 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
     }
 
     .image-wrapper {
+				position: relative;
 				overflow: hidden;
         background: linear-gradient(45deg, #caf0fe, #002e70);
         width:100%;

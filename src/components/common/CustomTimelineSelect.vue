@@ -19,7 +19,7 @@
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
 
 export default defineComponent({
-	name: 'SelectComponent',
+	name: 'CustomTimelineSelect',
 	props: {
 		listItems: {
 			type: Array as PropType<string[]>,

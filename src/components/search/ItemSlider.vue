@@ -1,7 +1,7 @@
 <template>
 	<div
 		ref="itemSliderRef"
-		:class="setClasses()"
+		:class="setSliderClasses()"
 	>
 		<slot :disable-links="move"></slot>
 	</div>
@@ -71,15 +71,21 @@ export default defineComponent({
 			}
 		};
 
-		const setClasses = () => {
+		const setSliderClasses = () => {
 			let activeClasses = 'item-slider';
-			if (move.value) activeClasses += ' active';
-			if (props.bgScrollWhite) activeClasses += ' white-scrollbar';
-			if (props.padding) activeClasses += ' padding';
-			return activeClasses;
+			if (move.value) {
+				activeClasses += ' active';
+			}
+			if (props.bgScrollWhite) {
+				activeClasses += ' white-scrollbar';
+			}
+			if (props.padding) {
+				activeClasses += ' padding';
+				return activeClasses;
+			}
 		};
 
-		return { itemSliderRef, move, setClasses };
+		return { itemSliderRef, move, setSliderClasses };
 	},
 });
 </script>
