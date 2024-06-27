@@ -327,7 +327,7 @@ export default defineComponent({
 	font-family: 'noway';
 	font-style: normal;
 	font-weight: 700;
-	src: url('./assets/fonts/noway-bold-webfont.woff2') format('woff2');
+	src: url('./assets/fonts/noway-medium-webfont.woff2') format('woff2');
 }
 
 @font-face {
