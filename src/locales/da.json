@@ -13,6 +13,56 @@
          "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR arkiv"
       }
    },
+   "frontpage": {
+      "fromTheArchive":"Et udpluk fra arkivet"
+   },
+   "timeSearch": {
+      "timeMachine":"Tidsmaskinen",
+      "year":"år | år",
+      "month":"måned | måneder",
+      "day":"Ugedag | ugedage",
+      "chosenTimeslots":"Valgte tidspunkter",
+      "foundResults":"fundne resultater",
+      "allChosen":"Alle valgt",
+      "chosen": "valgt",
+      "notApplied":"ikke i brug",
+      "and":"og", 
+      "data":"datamængde",
+      "from":"fra",
+      "to":"til",
+      "timeHits": "Tidsmaskinene har",
+      "result":"resultat | resultater",
+      "all":"alle",
+      "months": {
+         "january": "januar",
+         "february": "februar",
+         "march": "marts",
+         "april": "april",
+         "may": "maj",
+         "june": "juni",
+         "july": "juli",
+         "august": "august",
+         "september": "september",
+         "october": "oktober",
+         "november": "november",
+         "december": "december"
+      },
+      "weekdays": {
+         "monday": "mandag",
+         "tuesday": "tirsdag",
+         "wednesday": "onsdag",
+         "thursday": "torsdag",
+         "friday": "fredag",
+         "saturday": "lørdag",
+         "sunday": "søndag"
+     },
+     "timeslots": {
+         "morning":"morgen",
+         "midday":"middag",
+         "evening":"aften",
+         "night":"nat"
+     }
+   },
   "search":{
      "searchbtn":"Søg",
      "hitcount": "{n} resultat fundet for | {n} resultater fundet for",

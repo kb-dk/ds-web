@@ -1,7 +1,7 @@
 <template>
 	<div
 		ref="itemSliderRef"
-		:class="move ? 'item-slider active' : 'item-slider'"
+		:class="setSliderClasses()"
 	>
 		<slot :disable-links="move"></slot>
 	</div>
@@ -16,6 +16,8 @@ export default defineComponent({
 	props: {
 		itemClass: { type: String, required: true },
 		bg: { type: String, default: 'white' },
+		bgScrollWhite: { type: String, default: '' },
+		padding: { type: Boolean, default: false },
 	},
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
@@ -69,7 +71,21 @@ export default defineComponent({
 			}
 		};
 
-		return { itemSliderRef, move };
+		const setSliderClasses = () => {
+			let activeClasses = 'item-slider';
+			if (move.value) {
+				activeClasses += ' active';
+			}
+			if (props.bgScrollWhite) {
+				activeClasses += ' white-scrollbar';
+			}
+			if (props.padding) {
+				activeClasses += ' padding';
+				return activeClasses;
+			}
+		};
+
+		return { itemSliderRef, move, setSliderClasses };
 	},
 });
 </script>
@@ -81,15 +97,26 @@ export default defineComponent({
 	justify-content: space-evenly;
 	height: 0px;
 	align-items: center;
-	overflow-x: scroll;
+	overflow-x: auto;
 	gap: 15px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
+	box-sizing: border-box;
+}
+
+.item-slider.padding {
 	padding-left: 15px;
 	padding-right: 15px;
-	box-sizing: border-box;
+}
+
+.item-slider.white-scrollbar::-webkit-scrollbar-track {
+	background-color: #ffffff;
+}
+
+.item-slider.white-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgb(66, 66, 66);
 }
 
 .item-slider::-webkit-scrollbar-track {

@@ -13,6 +13,56 @@
          "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
       }
    },
+   "frontpage": {
+      "fromTheArchive":"A selection from the archive"
+   },
+   "timeSearch": {
+      "timeMachine":"The Timemachine",
+      "year":"year | years",
+      "month":"month | months",
+      "day":"day | days",
+      "chosenTimeslots":"Chosen timeslots",
+      "foundResults":"found results",
+      "allChosen":"All chosen",
+      "chosen":"chosen",
+      "notApplied":"not applied",
+      "and":"and", 
+      "data":"data quantity",
+      "from":"from",
+      "to":"to",
+      "timeHits": "The Timemachine has",
+      "result":"result | results",
+      "all":"all",
+      "months": {
+         "january": "January",
+         "february": "February",
+         "march": "March",
+         "april": "April",
+         "may": "May",
+         "june": "June",
+         "july": "July",
+         "august": "August",
+         "september": "September",
+         "october": "Cctober",
+         "november": "November",
+         "december": "December"
+      },
+      "weekdays": {
+         "monday": "Monday",
+         "tuesday": "Tuesday",
+         "wednesday": "Wednesday",
+         "thursday": "Thursday",
+         "friday": "Friday",
+         "saturday": "Saturday",
+         "sunday": "Sunday"
+     },
+     "timeslots": {
+         "morning":"morning",
+         "midday":"midday",
+         "evening":"evening",
+         "night":"night"
+     }
+   },
   "search":{
      "searchbtn":"Search",
      "hitcount": "{n} result fund for | {n} results found for",

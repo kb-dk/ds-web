@@ -21,6 +21,7 @@
     "gsap": "^3.12.2",
     "pinia": "^2.1.7",
     "vue": "3.4.19",
+    "vue-3-slider-component": "^1.0.0",
     "vue-i18n": "9.9.1",
     "vue-router": "4.2.5"
   },

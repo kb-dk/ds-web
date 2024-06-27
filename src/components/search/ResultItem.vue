@@ -93,6 +93,7 @@ import { APIService } from '@/api/api-service';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
 import '@/components/common/wc-image-item';
+import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 
 export default defineComponent({
 	name: 'ResultItem',
@@ -158,15 +159,11 @@ export default defineComponent({
 					})
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
-						imageDataObj.imgOption = 'contain';
-						imageDataObj.imgSrc = undefined;
-						imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
+						populateImageDataWithPlaceholder(imageDataObj);
 						imageData.value = JSON.stringify(imageDataObj);
 					});
 			} else {
-				imageDataObj.imgOption = 'contain';
-				imageDataObj.imgSrc = undefined;
-				imageDataObj.placeholder = new URL('@/assets/images/No-Image-Placeholder.svg.png', import.meta.url).href;
+				populateImageDataWithPlaceholder(imageDataObj);
 				imageData.value = JSON.stringify(imageDataObj);
 			}
 		};

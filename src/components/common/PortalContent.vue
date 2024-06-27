@@ -13,8 +13,11 @@
 				<router-link to="/about">read more</router-link>
 			</div>
 		</div>
+		<div class="time-search">
+			<TimeSearchComponent></TimeSearchComponent>
+		</div>
+		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
 		<div class="container">
-			<h3>Udpluk fra arkivet</h3>
 			<GridDisplay
 				:spot-nr="8"
 				:row-nr="4"
@@ -43,11 +46,14 @@ import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-
+import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
+import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
 		GridDisplay,
+		TimeSearchComponent,
+		TiltedDivider,
 	},
 
 	setup() {

@@ -24,18 +24,21 @@ export interface GenericSearchResultType {
 	list_of_categories: string[];
 	place_of_production: string;
 	resource_description: string;
-	creator_affiliation: string[];
+	creator_affiliation: string;
 	shelf_location: string;
 	title: string;
 	topic: string[];
 	type_of_resource: string[];
 	thumbnail: string;
 	_version: number;
-	startTime?: string;
-	endTime?: string;
+	startTime: string;
+	endTime: string;
 	duration_ms: string;
 	duration: string;
 	origin: string;
+	temporal_start_year: string;
+	temporal_start_day_da: string;
+	temporal_start_hour_da: number;
 }
 
 export interface FacetsType {
@@ -56,4 +59,5 @@ export interface FacetResultType {
 	resource_description_general: string[];
 	creator_full_name: string[];
 	subject_full_name: string[];
+	temporal_start_year: string[];
 }

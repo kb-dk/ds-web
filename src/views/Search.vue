@@ -296,16 +296,18 @@ h3 {
 
 .container {
 	text-align: left;
-	padding-right: 12px;
-	padding-left: 12px;
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 /* MEDIA QUERY 640 */

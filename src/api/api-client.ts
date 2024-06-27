@@ -56,6 +56,12 @@ export class APIServiceClient {
 		);
 	}
 
+	async getFullResultWithFacets(): Promise<APISearchResponseType> {
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
+		return await this.httpClient.get(`search/?q=*&facet=true&fq=${broadcastLimiter}&facet.limit=-1`);
+	}
+
 	async getSearchResults(
 		query: string,
 		filters: string,
@@ -65,6 +71,24 @@ export class APIServiceClient {
 	): Promise<APISearchResponseType> {
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}`,
+		);
+	}
+
+	async getTimeSearchResults(
+		start: string,
+		end: string,
+		months: string,
+		days: string,
+		timeslots: string,
+		uuid: string,
+	): Promise<APISearchResponseType> {
+		let broadcastLimiter = encodeURIComponent(import.meta.env.VITE_BROADCASTER_LIMITER);
+		broadcastLimiter = broadcastLimiter === 'undefined' ? '' : broadcastLimiter;
+		const timeConstraint = encodeURIComponent(`[${start} TO ${end}]`);
+		return await this.httpClient.get(
+			`search/?q=${encodeURIComponent(
+				'*:*',
+			)}&facet=false&queryUUID=${uuid}&fq=${broadcastLimiter}&fq=temporal_start_year:${timeConstraint}&rows=8${months}${days}${timeslots}`,
 		);
 	}
 
