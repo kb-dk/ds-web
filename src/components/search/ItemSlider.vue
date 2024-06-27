@@ -73,10 +73,16 @@ export default defineComponent({
 
 		const setSliderClasses = () => {
 			let activeClasses = 'item-slider';
-			if (move.value) activeClasses += ' active';
-			if (props.bgScrollWhite) activeClasses += ' white-scrollbar';
-			if (props.padding) activeClasses += ' padding';
-			return activeClasses;
+			if (move.value) {
+				activeClasses += ' active';
+			}
+			if (props.bgScrollWhite) {
+				activeClasses += ' white-scrollbar';
+			}
+			if (props.padding) {
+				activeClasses += ' padding';
+				return activeClasses;
+			}
 		};
 
 		return { itemSliderRef, move, setSliderClasses };
