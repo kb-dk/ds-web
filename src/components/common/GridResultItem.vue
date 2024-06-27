@@ -88,7 +88,6 @@ import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from './Duration.vue';
-import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'GridResultItem',
@@ -101,7 +100,6 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 
 		const imageData = ref(
