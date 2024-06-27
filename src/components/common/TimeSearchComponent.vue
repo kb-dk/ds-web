@@ -49,7 +49,7 @@
 						<div class="checkbox all">
 							<span class="checkbox-title">
 								<span class="title-span">
-									{{ $t('timeSearch.month', months.filter((obj) => obj.selected).length) }}
+									{{ $t('timeSearch.month', months.filter((obj) => obj.selected).length) }}:
 								</span>
 								<span class="info-span">
 									<span class="material-icons">event</span>
@@ -94,9 +94,7 @@
 						<div class="select-container days">
 							<div class="checkbox all">
 								<span class="checkbox-title">
-									<span class="title-span">
-										{{ $t('timeSearch.day', days.filter((obj) => obj.selected).length) }} :
-									</span>
+									<span class="title-span">{{ $t('timeSearch.day', days.filter((obj) => obj.selected).length) }}:</span>
 									<span class="info-span">
 										<span class="material-icons">event</span>
 										{{ showDaySelection(TimeSliderValues, months, days, t) }}
@@ -636,8 +634,8 @@ h3 .bold,
 
 .day-gradient {
 	background: transparent
-		linear-gradient(270deg, #ffffff 0%, #c4f1ed 4%, #002e70 8%, #042c65 51%, #002e70 92%, #c9f0fe 94%, #ffffff 100%) 0%
-		0% no-repeat padding-box;
+		linear-gradient(270deg, #ffffff00 0%, #c4f1ed 4%, #002e70 8%, #042c65 51%, #002e70 92%, #c9f0fe 94%, #ffffff00 100%)
+		0% 0% no-repeat padding-box;
 	position: absolute;
 	width: calc(103%);
 	top: 54px;

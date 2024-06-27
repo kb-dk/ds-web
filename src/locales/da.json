@@ -18,9 +18,9 @@
    },
    "timeSearch": {
       "timeMachine":"Tidsmaskinen",
-      "year":"year | years",
-      "month":"month | months",
-      "day":"weekday | weekdays",
+      "year":"år | år",
+      "month":"måned | måneder",
+      "day":"Ugedag | ugedage",
       "chosenTimeslots":"Valgte tidspunkter",
       "foundResults":"fundne resultater",
       "allChosen":"Alle valgt",
