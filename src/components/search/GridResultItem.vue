@@ -1,10 +1,13 @@
 <template>
-	<div class="grid-result-item">
+	<div
+		ref="gridContainer"
+		class="grid-result-item"
+	>
 		<Transition
 			name="result"
 			mode="out-in"
 		>
-			<div v-if="resultdata && !timeSearchStore.loading">
+			<div v-if="resultdata !== undefined && !loading">
 				<router-link
 					:to="{ path: 'record/' + resultdata.id }"
 					class="title"
@@ -52,6 +55,10 @@
 				v-else
 				class="loading-placeholder"
 			>
+				<div
+					:style="`animation-delay:${Math.random() * 2}s`"
+					class="shimmer"
+				></div>
 				<div class="thumb-container loading-color"></div>
 				<div
 					:style="`width:${Math.random() * 30 + 40}%`"
@@ -85,9 +92,10 @@ import { getBroadcastDate } from '@/utils/time-utils';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { useSearchResultStore } from '@/store/searchResultStore';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
-import Duration from './Duration.vue';
+import Duration from '@/components/common/Duration.vue';
 
 export default defineComponent({
 	name: 'GridResultItem',
@@ -96,12 +104,20 @@ export default defineComponent({
 		Duration,
 	},
 	props: {
-		resultdata: { type: Object as PropType<GenericSearchResultType>, required: true },
+		resultdata: {
+			type: Object as PropType<GenericSearchResultType>,
+			required: false,
+			default: undefined,
+		},
+		loading: { type: Boolean as PropType<boolean>, required: true },
+		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
 	},
 
 	setup(props) {
-		const timeSearchStore = useTimeSearchStore();
+		const gridContainer = ref<HTMLDivElement | null>(null);
 
+		const timeSearchStore = useTimeSearchStore();
+		const searchResultStore = useSearchResultStore();
 		const imageData = ref(
 			JSON.stringify({
 				imgSrc: '',
@@ -148,15 +164,20 @@ export default defineComponent({
 		);
 
 		onMounted(() => {
+			if (gridContainer.value) {
+				gridContainer.value.style.setProperty('--bg-color', props.background);
+			}
+
 			getImageData();
 		});
-		return { getBroadcastDate, imageData, timeSearchStore };
+		return { gridContainer, getBroadcastDate, imageData, timeSearchStore, searchResultStore };
 	},
 });
 </script>
 
 <style scoped>
 .grid-result-item {
+	--bg-color: #ffffff;
 	width: 100%;
 	max-width: 100%;
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
@@ -184,7 +205,7 @@ export default defineComponent({
 	margin-top: 15px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: #fafafa;
+	background-color: var(--bg-color);
 }
 
 .thumb-container {
@@ -203,7 +224,7 @@ export default defineComponent({
 
 .date {
 	display: flex;
-	padding-top: 20px;
+	padding-top: 15px;
 	padding-bottom: 5px;
 }
 
@@ -229,9 +250,42 @@ export default defineComponent({
 
 .title.loading {
 	background-color: rgba(170, 170, 170, 1);
-	height: 20px;
-	border-radius: 15px;
+	height: 15px;
+	border-radius: 10px;
 	margin-top: 15px;
+}
+
+.shimmer {
+	animation: loading 3s ease-in-out 0s infinite;
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		117deg,
+		rgba(255, 255, 255, 0) 44%,
+		rgba(255, 255, 255, 0.7455357142857143) 64%,
+		rgba(255, 255, 255, 0) 77%
+	);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	mix-blend-mode: soft-light;
+	overflow: hidden;
+	background-size: 200% 100%;
+	background-position: 200% center;
+}
+
+@keyframes loading {
+	0% {
+		background-position: 200% center;
+	}
+	20% {
+		background-position: 200% center;
+	}
+	80% {
+		background-position: 0% center;
+	}
+	100% {
+		background-position: 0% center;
+	}
 }
 
 .summary.loading {
@@ -242,7 +296,7 @@ export default defineComponent({
 
 .summary .word {
 	background-color: rgba(170, 170, 170, 1);
-	height: 16px;
+	height: 15px;
 	border-radius: 10px;
 	margin-top: 4px;
 	margin-right: 5px;

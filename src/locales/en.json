@@ -87,7 +87,8 @@
      "radio":"Radio",
      "all":"All",
      "thumbnailButton":"See more thumbnails",
-     "thumbnailLink": "Thumbnail {index} at {timestamp}"
+     "thumbnailLink": "Thumbnail {index} at {timestamp}",
+     "of":"of"
   },
   "record":{
      "duration":"Duration",

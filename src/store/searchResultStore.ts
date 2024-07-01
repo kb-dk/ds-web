@@ -25,6 +25,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const start = ref('');
 	const sort = ref('');
 	const error = ref('');
+	const rowCount = ref('10');
+	const rowOffset = ref(10);
 	const currentQuery = ref('');
 	const lastSearchQuery = ref('');
 	const noHits = ref(false);
@@ -32,6 +34,23 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const preliminaryFilter = ref('');
 	const showFacets = ref(true);
 	const blockAutocomplete = ref(false);
+	const resultGrid = ref(false);
+
+	const setStart = (value: string) => {
+		start.value = value;
+	};
+
+	const setRowOffset = (value: number) => {
+		rowOffset.value = value;
+	};
+
+	const setRowCount = (value: string) => {
+		rowCount.value = value;
+	};
+
+	const setResultGrid = (value: boolean) => {
+		resultGrid.value = value;
+	};
 
 	const toggleShowFacets = (value: boolean) => {
 		showFacets.value = value;
@@ -63,6 +82,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			}
 		}
 	};
+
+	const setRowCountFromURL = (rows: string | undefined) => {
+		if (rows) {
+			rowCount.value = rows;
+		}
+	};
+
 	const setStartFromURL = (URLStart: string | undefined) => {
 		if (URLStart) {
 			//Check if url param string is actually some kind of numeric value
@@ -179,6 +205,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			const responseData = await APIService.getSearchResults(
 				query,
 				searchFilters,
+				rowCount.value,
 				startParam as string,
 				sortParam as string,
 				currentSearchUUID,
@@ -231,6 +258,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		spellCheck,
 		blockAutocomplete,
 		preliminaryFilter,
+		resultGrid,
+		rowCount,
+		rowOffset,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -247,5 +277,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		getAutocompleteResults,
 		resetAutocomplete,
 		setBlockAutocomplete,
+		setResultGrid,
+		setRowCount,
+		setRowOffset,
+		setStart,
+		setRowCountFromURL,
 	};
 });
