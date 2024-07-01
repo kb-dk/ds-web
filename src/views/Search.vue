@@ -36,7 +36,7 @@
 						</div>
 						<Pagination
 							v-show="searchResultStore.searchResult.length > 0"
-							:items-per-page="itemsPerPage"
+							:items-per-page="Number(searchResultStore.rowCount)"
 							:total-hits="searchResultStore.numFound"
 							:num-pages-to-show="numPagesToShow"
 						/>
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch, inject } from 'vue';
+import { defineComponent, ref, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
@@ -91,7 +91,6 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 
-		const itemsPerPage = ref(10);
 		const numPagesToShow = 8;
 		const { t } = useI18n();
 
@@ -145,10 +144,6 @@ export default defineComponent({
 			}
 		});
 
-		onUnmounted(() => {
-			window.document.body.classList.remove('remove-body-scroll');
-		});
-
 		watch(
 			() => searchResultStore.searchResult.length,
 			(newn: number) => {
@@ -173,6 +168,7 @@ export default defineComponent({
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
+					searchResultStore.setRowCountFromURL(route.query.rows as string);
 					searchResultStore.getSearchResults(route.query.q as string);
 					document.title = (t('app.titles.search') +
 						'"' +
@@ -196,14 +192,14 @@ export default defineComponent({
 				newParams.query.q !== prevParams.query.q ||
 				JSON.stringify(newParams.query.fq) !== JSON.stringify(prevParams.query.fq) ||
 				newParams.query.start !== prevParams.query.start ||
-				newParams.query.sort !== prevParams.query.sort
+				newParams.query.sort !== prevParams.query.sort ||
+				newParams.query.rows !== prevParams.query.rows
 			);
 		};
 
 		return {
 			searchResultStore,
 			searchContainer,
-			itemsPerPage,
 			numPagesToShow,
 		};
 	},
@@ -290,10 +286,6 @@ h3 {
 	padding-bottom: 40px;
 }
 
-.fullwidth {
-	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-}
-
 .container {
 	text-align: left;
 	margin-right: auto;
@@ -319,7 +311,7 @@ h3 {
 @media (min-width: 800px) {
 	.search-resultset {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 	}
 }
 /* MEDIA QUERY 990 */

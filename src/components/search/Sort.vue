@@ -108,6 +108,7 @@ export default defineComponent({
 }
 
 .sort-options {
+	z-index: 1;
 	background-color: white;
 	display: flex;
 	flex-direction: column;

@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<div class="category-tags">
-			<h2 class="headline">{{ t('search.relatedSubjects') }} ({{ currentCategoryNr }})</h2>
 			<div>
 				<TransitionGroup name="result">
 					<div

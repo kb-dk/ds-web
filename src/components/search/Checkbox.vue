@@ -8,7 +8,10 @@
 				v-if="!loading"
 				class="checkbox-container"
 			>
-				<label class="label">
+				<label
+					:title="title"
+					class="label"
+				>
 					<span class="title">{{ title }}</span>
 					<span class="tag-number">{{ displayAmount(amount) }}</span>
 					<input
@@ -123,8 +126,6 @@ export default defineComponent({
 }
 
 .loading {
-	width: 100vw;
-	max-width: 100%;
 	flex-direction: row;
 	height: 25px;
 	justify-content: space-between;
@@ -185,7 +186,7 @@ export default defineComponent({
 
 .checkbox-container {
 	padding: 0px 5px;
-	justify-content: space-between;
+	text-align: left;
 }
 
 .tag-number {
@@ -201,7 +202,7 @@ export default defineComponent({
 .title {
 	font-size: 14px;
 	text-overflow: ellipsis;
-	max-width: calc(100% - 38px);
+	max-width: calc(100% - 85px);
 	white-space: nowrap;
 	overflow: hidden;
 	display: inline-block;

@@ -1,7 +1,7 @@
 <template>
 	<div
 		ref="resultContainer"
-		class="search-results fullwidth"
+		:class="searchResultStore.resultGrid ? 'search-results grid' : 'search-results'"
 	>
 		<TransitionGroup name="result">
 			<div
@@ -9,7 +9,14 @@
 				:key="index"
 				:class="searchResultStore.loading ? 'hit-box' : 'hit-box data'"
 			>
+				<GridResultItem
+					v-if="searchResultStore.resultGrid"
+					:resultdata="searchResults[index]"
+					:loading="searchResultStore.loading"
+					background="white"
+				></GridResultItem>
 				<ResultItem
+					v-else
 					:resultdata="searchResults[index]"
 					:duration="searchResults[index] ? getDuration(searchResults[index]) : ''"
 					:starttime="searchResults[index] ? getStartTime(searchResults[index]) : ''"
@@ -25,6 +32,7 @@ import { defineComponent, PropType, ref, watch, onMounted, toRaw } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import ResultItem from '@/components/search/ResultItem.vue';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useI18n } from 'vue-i18n';
 
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -33,6 +41,7 @@ export default defineComponent({
 	name: 'SearchResults',
 	components: {
 		ResultItem,
+		GridResultItem,
 	},
 	props: {
 		searchResults: { type: Object as PropType<GenericSearchResultType[]>, required: true },
@@ -43,7 +52,6 @@ export default defineComponent({
 		const { t, locale } = useI18n();
 		const currentResults = ref([] as GenericSearchResultType[]);
 		const resultNr = ref(0);
-		const lastUpdate = ref(0);
 		const searchResultStore = useSearchResultStore();
 		const resultContainer = ref<HTMLElement | null>(null);
 
@@ -65,21 +73,6 @@ export default defineComponent({
 			return 'license';
 		};
 
-		watch(
-			() => searchResultStore.showFacets,
-			() => {
-				toggleFacets();
-			},
-		);
-
-		const toggleFacets = () => {
-			if (searchResultStore.showFacets) {
-				resultContainer.value?.classList.add('fullwidth');
-			} else {
-				resultContainer.value?.classList.remove('fullwidth');
-			}
-		};
-
 		onMounted(() => {
 			currentResults.value = toRaw(props.searchResults);
 			resultNr.value = currentResults.value.length ? Math.min(currentResults.value.length, 10) : 10;
@@ -91,7 +84,16 @@ export default defineComponent({
 					if (newResults !== prevResults) {
 						resultNr.value = newResults.length;
 						currentResults.value = newResults;
-						lastUpdate.value = new Date().getTime();
+					}
+				},
+			);
+			watch(
+				() => searchResultStore.resultGrid,
+				(newBool: boolean) => {
+					if (newBool) {
+						resultNr.value = 40;
+					} else {
+						resultNr.value = 10;
 					}
 				},
 			);
@@ -107,7 +109,6 @@ export default defineComponent({
 			getAltTxt,
 			resultContainer,
 			currentResults,
-			lastUpdate,
 			t,
 			locale,
 			resultNr,
@@ -124,7 +125,6 @@ export default defineComponent({
 	box-sizing: border-box;
 	width: 100%;
 	margin-bottom: 20px;
-	transition: all 0.3s ease-in-out 0s;
 }
 
 .hit-box.data:hover:after,
@@ -182,23 +182,29 @@ export default defineComponent({
 	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
 }
 
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-	.fullwidth {
-		max-width: calc(100%);
-	}
+.search-results.grid {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 20px;
 }
+
+.search-results.grid .hit-box:before {
+	display: none;
+}
+.search-results.grid .hit-box:after {
+	display: none;
+}
+
+.search-results.grid .hit-box {
+	width: calc(25% - 15px);
+	box-sizing: border-box;
+}
+
+/* MEDIA QUERY 640 */
 @media (min-width: 800px) {
-	.search-results {
-		max-width: 100%;
-		width: 100%;
-	}
 	.hit-box:before {
 		display: block;
-	}
-
-	.fullwidth {
-		max-width: calc(100% - 330px);
 	}
 }
 </style>

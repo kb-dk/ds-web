@@ -49,7 +49,7 @@
 						<div class="checkbox all">
 							<span class="checkbox-title">
 								<span class="title-span">
-									{{ $t('timeSearch.month', months.filter((obj) => obj.selected).length) }}:
+									{{ $t('timeSearch.month', months.filter((obj: SelectorData) => obj.selected).length) }}:
 								</span>
 								<span class="info-span">
 									<span class="material-icons">event</span>
@@ -94,7 +94,9 @@
 						<div class="select-container days">
 							<div class="checkbox all">
 								<span class="checkbox-title">
-									<span class="title-span">{{ $t('timeSearch.day', days.filter((obj) => obj.selected).length) }}:</span>
+									<span class="title-span">
+										{{ $t('timeSearch.day', days.filter((obj: SelectorData) => obj.selected).length) }}:
+									</span>
 									<span class="info-span">
 										<span class="material-icons">event</span>
 										{{ showDaySelection(TimeSliderValues, months, days, t) }}
@@ -166,7 +168,11 @@
 						:key="index"
 						class="time-result-item"
 					>
-						<GridResultItem :resultdata="item"></GridResultItem>
+						<GridResultItem
+							:loading="timeSearchStore.loading"
+							:resultdata="item"
+							background="#fafafa"
+						></GridResultItem>
 					</div>
 				</div>
 			</div>
@@ -195,7 +201,7 @@ import { defineComponent, ref, onMounted, computed, watch } from 'vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import { useI18n } from 'vue-i18n';
-import { pointItem, markerData, dataItem } from '@/types/TimeSearchTypes';
+import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import {
@@ -210,7 +216,7 @@ import {
 } from '@/utils/time-search-utils';
 
 import VueSlider from 'vue-3-slider-component';
-import GridResultItem from '@/components/common/GridResultItem.vue';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 import ItemSlider from '../search/ItemSlider.vue';
 import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
@@ -240,18 +246,18 @@ export default defineComponent({
 
 		const timeSearchLink = computed(() => {
 			const dayString = days.value
-				.filter((day) => day.selected)
-				.map((day) => day.value)
+				.filter((day: SelectorData) => day.selected)
+				.map((day: SelectorData) => day.value)
 				.join(' OR ');
 
 			const monthString = months.value
-				.filter((month) => month.selected)
-				.map((month) => month.value)
+				.filter((month: SelectorData) => month.selected)
+				.map((month: SelectorData) => month.value)
 				.join(' OR ');
 
 			const timeslotString = timeslots.value
-				.filter((timeslot) => timeslot.selected)
-				.map((timeslot) => timeslot.value)
+				.filter((timeslot: SelectorData) => timeslot.selected)
+				.map((timeslot: SelectorData) => timeslot.value)
 				.join(' OR ');
 
 			return {
