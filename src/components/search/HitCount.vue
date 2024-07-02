@@ -9,7 +9,9 @@
 					v-if="hitCount > 0 || noHits"
 					class="hit-count"
 				>
-					<span v-if="query !== ''">{{ $t('search.hitcount', hitCount) }} "{{ query }}"</span>
+					<span v-if="query !== ''">
+						{{ new Intl.NumberFormat('de-DE').format(hitCount) }} {{ $t('search.hitcount', hitCount) }} "{{ query }}"
+					</span>
 					<span v-else></span>
 				</div>
 			</div>

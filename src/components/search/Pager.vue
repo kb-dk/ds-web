@@ -30,7 +30,7 @@
 				:aria-label="$t('search.goToPage', Number(pageNumber))"
 				@click="goToPage(pageNumber as number)"
 			>
-				<span>{{ pageNumber }}</span>
+				<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
 			</button>
 		</span>
 		<button

@@ -65,7 +65,7 @@
    },
   "search":{
      "searchbtn":"Søg",
-     "hitcount": "{n} resultat fundet for | {n} resultater fundet for",
+     "hitcount": " resultat fundet for | resultater fundet for",
      "nohit":"Vi fandt desværre intet match på søgningen \"{query}\"",
      "showFilters":"Vis filtre",
      "hideFilters":"Skjul filtre",
@@ -87,8 +87,8 @@
      "radio":"Radio",
      "all":"Alt",
      "thumbnailButton":"Se flere thumbnails",
-     "thumbnailLink": "Thumbnail {index} ved {timestamp}"
-
+     "thumbnailLink": "Thumbnail {index} ved {timestamp}",
+     "of":"af"
    },
   "record":{
      "duration":"Varighed",

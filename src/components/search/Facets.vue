@@ -1,19 +1,12 @@
 <template>
 	<div
 		ref="facetsContainer"
-		class="search-facets active"
+		class="search-facets"
 	>
-		<div class="facet-background">
-			<button
-				class="facet-close-button"
-				@click="searchResultStore.toggleShowFacets(false)"
-			>
-				<span class="material-icons">close</span>
-			</button>
-
-			<div class="facet-container">
-				<div>
-					<h2 class="headline">{{ t('search.channels') }} ({{ currentFacetNr }})</h2>
+		<div class="facet-container">
+			<div class="flex-container">
+				<h2 class="headline">{{ t('search.channels') }} ({{ currentFacetNr }})</h2>
+				<div class="facet-options">
 					<TransitionGroup name="result">
 						<div
 							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
@@ -29,6 +22,11 @@
 							/>
 						</div>
 					</TransitionGroup>
+				</div>
+			</div>
+			<div class="flex-container">
+				<h2 class="headline">{{ t('search.relatedSubjects') }} ({{ categoryNr }})</h2>
+				<div>
 					<CategoryTags
 						:categories="categoryFacets"
 						:category-nr="categoryNr"
@@ -49,6 +47,7 @@ import Checkbox from '@/components/search/Checkbox.vue';
 import { filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
+import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'Facets',
@@ -63,7 +62,6 @@ export default defineComponent({
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		const showFacets = ref(false);
 		const currentFacets = ref(Object as unknown as FacetResultType);
 		const currentFacetNr = ref(10);
 		const channelFacets = ref([] as FacetPair[]);
@@ -75,14 +73,11 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
-			window.innerWidth > 800 ? searchResultStore.toggleShowFacets(true) : searchResultStore.toggleShowFacets(false);
-			toggleFacets();
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation_facet']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
-			showFacets.value = true;
 
 			watch(
 				() => props.facetResults,
@@ -111,18 +106,36 @@ export default defineComponent({
 		);
 
 		const toggleFacets = () => {
-			if (searchResultStore.showFacets) {
-				facetsContainer.value?.classList.add('active');
-
-				window.document.body.classList.add('remove-body-scroll');
+			if (!searchResultStore.showFacets) {
+				gsap.to(facetsContainer.value, {
+					height: '0px',
+					duration: 0.5,
+					borderBottom: '0px solid transparent',
+					marginBottom: '0px',
+					overwrite: true,
+					onComplete: () => {
+						gsap.set(facetsContainer.value, {
+							display: 'none',
+						});
+					},
+				});
 			} else {
-				facetsContainer.value?.classList.remove('active');
-				window.document.body.classList.remove('remove-body-scroll');
+				gsap.set(facetsContainer.value, {
+					display: 'block',
+					onComplete: () => {
+						gsap.to(facetsContainer.value, {
+							height: 'auto',
+							duration: 0.5,
+							overwrite: true,
+							marginBottom: '20px',
+							borderBottom: '1px solid rgba(230, 230, 230, 1)',
+						});
+					},
+				});
 			}
 		};
 
 		return {
-			showFacets,
 			currentFacets,
 			lastUpdate,
 			searchResultStore,
@@ -142,13 +155,38 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.facet-container {
-	padding: 10px 10px;
-	display: flex;
-	transition: all 1.3s linear;
+.facet-enter-active,
+.facet-leave-active {
+	transition: opacity 0.5s ease;
+	opacity: 1;
 	height: auto;
-	flex-direction: column;
+}
+
+.facet-enter-from,
+.facet-leave-to {
+	opacity: 0;
+	height: 0%;
+}
+
+.facet-container {
+	display: flex;
+	height: auto;
+	flex-direction: row;
 	overflow: hidden;
+	flex-direction: row;
+	gap: 20px;
+	box-sizing: border-box;
+	padding: 10px 5px;
+}
+
+.facet-options {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.flex-container {
+	width: 50%;
 }
 
 h2 {
@@ -164,7 +202,9 @@ h2 {
 }
 
 .checkbox {
-	padding: 3px 0px;
+	padding: 3px 5px;
+	flex: 0 0 50%;
+	box-sizing: border-box;
 }
 
 .facet-close-button {
@@ -178,73 +218,17 @@ h2 {
 	cursor: pointer;
 }
 .search-facets {
-	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-	min-width: 0px;
 	margin-bottom: 20px;
-	position: fixed;
-	top: 0px;
-	left: 0px;
 	z-index: 5;
-	background-color: white;
-	overflow-y: auto;
-	height: 100vh;
-	visibility: hidden;
-	pointer-events: none;
+	border-bottom: 1px solid lightgrey;
 	box-sizing: border-box;
-	padding: 40px 15% 0px 15%;
-	transform: translateX(-100%);
-}
-.search-facets.active {
-	visibility: visible;
-	pointer-events: all;
-	transform: translateX(0%);
-	width: 100%;
+	background-color: rgb(250, 250, 250);
+	overflow: hidden;
 }
 
-@media (min-width: 640px) {
-	.search-facets {
-		top: 20%;
-		height: 60%;
-		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-		width: 70%;
-	}
-
-	.search-facets::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-
-	.search-facets.active {
-		width: 70%;
-	}
-}
 @media (min-width: 800px) {
-	.facet-container {
-		flex-direction: column;
-	}
-
-	.facet-background {
-		background-color: rgba(30, 30, 30, 0.1);
-	}
 	.facet-close-button {
 		display: none;
-	}
-	.search-facets {
-		position: initial;
-		background-color: initial;
-		width: 0px;
-		margin-right: 0px;
-		overflow-y: initial;
-		overflow-x: hidden;
-		padding: 0px 0px;
-		transform: translateX(0%);
-		opacity: 0;
-		box-shadow: initial;
-	}
-	.search-facets.active {
-		width: 290px;
-		margin-right: 30px;
-		min-width: 300px;
-		opacity: 1;
 	}
 }
 </style>
