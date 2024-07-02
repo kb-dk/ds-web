@@ -5,7 +5,7 @@
 	>
 		<TransitionGroup name="result">
 			<div
-				v-for="(res, index) in resultNr"
+				v-for="(res, index) in hitsToShow"
 				:key="index"
 				:class="searchResultStore.loading ? 'hit-box' : 'hit-box data'"
 			>
@@ -51,7 +51,7 @@ export default defineComponent({
 	setup(props) {
 		const { t, locale } = useI18n();
 		const currentResults = ref([] as GenericSearchResultType[]);
-		const resultNr = ref(0);
+		const hitsToShow = ref(0);
 		const searchResultStore = useSearchResultStore();
 		const resultContainer = ref<HTMLElement | null>(null);
 
@@ -75,26 +75,22 @@ export default defineComponent({
 
 		onMounted(() => {
 			currentResults.value = toRaw(props.searchResults);
-			resultNr.value = currentResults.value.length ? Math.min(currentResults.value.length, 10) : 10;
+			hitsToShow.value = currentResults.value.length ? Math.min(currentResults.value.length, 10) : 10;
 
 			watch(
 				() => props.searchResults,
 				(newResults: GenericSearchResultType[], prevResults: GenericSearchResultType[]) => {
 					currentResults.value = [];
 					if (newResults !== prevResults) {
-						resultNr.value = newResults.length;
+						hitsToShow.value = newResults.length;
 						currentResults.value = newResults;
 					}
 				},
 			);
 			watch(
 				() => searchResultStore.resultGrid,
-				(newBool: boolean) => {
-					if (newBool) {
-						resultNr.value = 40;
-					} else {
-						resultNr.value = 10;
-					}
+				(isGrid: boolean) => {
+					hitsToShow.value = isGrid ? 40 : 10;
 				},
 			);
 		});
@@ -111,7 +107,7 @@ export default defineComponent({
 			currentResults,
 			t,
 			locale,
-			resultNr,
+			hitsToShow,
 			searchResultStore,
 		};
 	},

@@ -7,7 +7,7 @@
 			name="result"
 			mode="out-in"
 		>
-			<div v-if="resultdata !== undefined && !loading">
+			<div v-if="resultdata != null && !loading">
 				<router-link
 					:to="{ path: 'record/' + resultdata.id }"
 					class="title"
