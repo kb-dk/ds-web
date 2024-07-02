@@ -1,8 +1,8 @@
 <template>
-	<div class="about">
-		<div class="about-content">
-			<h1>This is an about page</h1>
-			<p>Gotta be a loooot of stuff here later i reckon!</p>
+	<div class="not-found">
+		<div class="not-found-content">
+			<h1>404</h1>
+			<p>Whoooops!</p>
 			<router-link to="/">Go to start</router-link>
 		</div>
 		<Footer />
@@ -14,7 +14,7 @@ import { defineComponent } from 'vue';
 import Footer from '@/components/global/nav/Footer.vue';
 
 export default defineComponent({
-	name: 'About',
+	name: '404',
 	components: {
 		Footer,
 	},
@@ -25,12 +25,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.about {
+.not-found {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 }
-.about-content {
+.not-found-content {
 	width: 100%;
 	padding-left: 10vw;
 	padding-right: 10vw;
