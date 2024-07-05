@@ -67,18 +67,9 @@ export class APIServiceClient {
 		start: string,
 		sort: string,
 		uuid: string,
-		months: string,
-		days: string,
-		timeslots: string,
 	): Promise<APISearchResponseType> {
-		months === undefined ? months == '' : null;
-		days === undefined ? months == '' : null;
-		timeslots === undefined ? months == '' : null;
-
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
-				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}${months}${days}${timeslots}`,
+			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 
@@ -90,11 +81,11 @@ export class APIServiceClient {
 		timeslots: string,
 		uuid: string,
 	): Promise<APISearchResponseType> {
-		const timeConstraint = encodeURIComponent(`[${start} TO ${end}]`);
+		const timeConstraint = `&fq=temporal_start_year:${encodeURIComponent(`[${start} TO ${end}]`)}`;
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				'*:*',
-			)}&facet=false&queryUUID=${uuid}&fq=temporal_start_year:${timeConstraint}&rows=8${months}${days}${timeslots}&sort=startTime asc`,
+			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=startTime asc`,
 		);
 	}
 

@@ -46,7 +46,10 @@
 			ref="timeFacets"
 			class="time-facets"
 		>
-			<TimeSearchFilters></TimeSearchFilters>
+			<TimeSearchFilters
+				:init="false"
+				@new-search="newSearch()"
+			></TimeSearchFilters>
 		</div>
 	</div>
 </template>
@@ -55,16 +58,16 @@
 import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
-import { useRoute } from 'vue-router';
+import { LocationQueryRaw, useRoute, useRouter } from 'vue-router';
 import CategoryTags from '@/components/search/CategoryTags.vue';
 import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
 import Checkbox from '@/components/search/Checkbox.vue';
 import { filterExists, simplifyFacets } from '@/utils/filter-utils';
+import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { months, days, timeslots, timeSliderValues } from '../common/TimeSearch/TimeSearchInitValues';
-import { APIService } from '@/api/api-service';
+import { months, days, timeslots, timeSliderValues } from '@/components/common/TimeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'Facets',
@@ -88,9 +91,10 @@ export default defineComponent({
 		const facetsContainer = ref<HTMLElement | null>(null);
 		const timeFacets = ref<HTMLElement | null>(null);
 		const lastUpdate = ref(0);
-		const route = useRoute();
 		const { t } = useI18n();
 		const timeFacetsOpen = ref(false);
+		const router = useRouter();
+		const route = useRoute();
 
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
@@ -125,14 +129,50 @@ export default defineComponent({
 			},
 		);
 
-		watch(
+		/* 		watch(
 			[months, days, timeslots, timeSliderValues],
 			() => {
 				console.log('SOMETGING HAPPENED');
 				searchResultStore.getSearchResults(searchResultStore.currentQuery, true);
 			},
 			{ deep: true },
-		);
+		); */
+
+		const newSearch = () => {
+			let query: LocationQueryRaw = {
+				q: searchResultStore.currentQuery,
+				start: 0,
+				sort: `${encodeURIComponent('startTime asc')}`,
+			};
+			const dayString = days.value
+				.filter((day: SelectorData) => day.selected)
+				.map((day: SelectorData) => day.value)
+				.join(' OR ');
+
+			const monthString = months.value
+				.filter((month: SelectorData) => month.selected)
+				.map((month: SelectorData) => month.value)
+				.join(' OR ');
+
+			const timeslotString = timeslots.value
+				.filter((timeslot: SelectorData) => timeslot.selected)
+				.map((timeslot: SelectorData) => timeslot.value)
+				.join(' OR ');
+			(query.fq = [
+				encodeURIComponent(`temporal_start_year:[${timeSliderValues.value[0] + ' TO ' + timeSliderValues.value[1]}]`),
+				encodeURIComponent(`temporal_start_day_da:(${dayString})`),
+				encodeURIComponent(`temporal_start_month:(${monthString})`),
+				encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`),
+			]),
+				router.push({
+					name: 'Home',
+					query: query,
+				});
+
+			console.log(query, 'damnit');
+
+			console.log('fire!2');
+		};
 
 		const toggleTimeFacets = () => {
 			if (timeFacetsOpen.value) {
@@ -208,6 +248,7 @@ export default defineComponent({
 			timeFacets,
 			toggleTimeFacets,
 			timeFacetsOpen,
+			newSearch,
 			t,
 		};
 	},

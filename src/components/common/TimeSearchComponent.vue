@@ -2,7 +2,10 @@
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
 			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
-			<TimeSearchFilters></TimeSearchFilters>
+			<TimeSearchFilters
+				:init="true"
+				@new-search="getTimeResults(months, days, timeslots, timeSliderValues)"
+			></TimeSearchFilters>
 			<div class="result-container">
 				<h3>
 					{{ $t('timeSearch.timeHits') }}
@@ -44,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { timeSliderValues, months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
@@ -102,14 +105,6 @@ export default defineComponent({
 			};
 		});
 
-		watch(
-			[months, days, timeslots],
-			([newMonths, newDays, newTimeslots]) => {
-				getTimeResults(newMonths, newDays, newTimeslots, timeSliderValues.value);
-			},
-			{ deep: true },
-		);
-
 		return {
 			days,
 			months,
@@ -119,6 +114,7 @@ export default defineComponent({
 			timeSearchStore,
 			selectionSummary,
 			timeSliderValues,
+			getTimeResults,
 		};
 	},
 });

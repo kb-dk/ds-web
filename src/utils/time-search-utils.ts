@@ -1,6 +1,7 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { useRoute, useRouter } from 'vue-router';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
@@ -56,16 +57,16 @@ const showDaySelection = (years: number[], months: SelectorData[], days: Selecto
 	return `${nrDays.length} ${t('timeSearch.day', nrDays.length)} x (${Number(nrMonths.length * nrYears)} ${t(
 		'timeSearch.month',
 		Number(nrMonths.length * nrYears),
-	)}) = `;
+	)} x 4 weeks~) = `;
 };
 
 const showDayResult = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
 	const nrYears = getYears(years);
 	const nrMonths = getMonths(months);
 	const nrDays = getDays(days);
-	return `${Number(nrMonths.length * nrYears * nrDays.length)} ${t(
+	return `${Number(nrMonths.length * nrYears * nrDays.length * 4)} ${t(
 		'timeSearch.day',
-		Number(nrMonths.length * nrYears * nrDays.length),
+		Number(nrMonths.length * nrYears * nrDays.length * 4),
 	)}`;
 };
 
@@ -102,26 +103,6 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 	return selected;
 };
 
-const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-	array[index].selected = val;
-};
-
-const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-	if (val === true) {
-		array.forEach((item) => {
-			item.selected = true;
-		});
-	} else {
-		array.forEach((item, index) => {
-			if (index === 0) {
-				item.selected = true;
-			} else {
-				item.selected = false;
-			}
-		});
-	}
-};
-
 export {
 	getYears,
 	getMonths,
@@ -131,8 +112,6 @@ export {
 	showMonthResult,
 	showDaySelection,
 	showDayResult,
-	updateCheckbox,
-	updateAllCheckbox,
 	getSelectedFromArray,
 	getTimeResults,
 	getQueryStringFromArray,

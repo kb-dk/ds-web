@@ -31,7 +31,7 @@
 					:data="data"
 					data-label="key"
 					tooltip="always"
-					@drag-end="getTimeResults(months, days, timeslots, timeSliderValues)"
+					@drag-end="emitNewSearch()"
 				></VueSlider>
 				<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
 			</Transition>
@@ -157,7 +157,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref, watch } from 'vue';
+import { defineComponent, onMounted, computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
@@ -174,8 +174,6 @@ import {
 	showMonthResult,
 	showDaySelection,
 	showDayResult,
-	updateCheckbox,
-	updateAllCheckbox,
 	getTimeResults,
 } from '@/utils/time-search-utils';
 
@@ -188,7 +186,16 @@ export default defineComponent({
 		VueSlider,
 	},
 
-	setup() {
+	props: {
+		init: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
+	emits: ['newSearch'],
+	setup(props, { emit }) {
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const dataContainer = ref<HTMLDivElement>();
@@ -197,7 +204,9 @@ export default defineComponent({
 		const selectYears = ref([] as string[]);
 
 		onMounted(() => {
-			getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+			if (props.init) {
+				getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+			}
 			APIService.getFullResultWithFacets().then((reponse) => {
 				const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
 				const sortedResults = [] as dataItem[];
@@ -225,12 +234,15 @@ export default defineComponent({
 					fullYearArray.value.push(item);
 				}
 				const svgElement = createSVGCurvedLine(fullYearArray.value);
-				console.log(svgElement, dataContainer.value);
 				if (dataContainer.value) {
 					dataContainer.value.appendChild(svgElement);
 				}
 			});
 		});
+
+		const emitNewSearch = () => {
+			emit('newSearch', months.value, days.value, timeslots.value, timeSliderValues.value);
+		};
 
 		const updateStartYear = (val: number) => {
 			timeSliderValues.value[0] = Number(val);
@@ -238,7 +250,8 @@ export default defineComponent({
 				timeSliderValues.value[1] = Number(val);
 			}
 			//<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
-			getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+			emitNewSearch();
+			//getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
 		};
 
 		const updateEndYear = (val: number) => {
@@ -247,7 +260,31 @@ export default defineComponent({
 				timeSliderValues.value[0] = Number(val);
 			}
 			//<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
-			getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+			emitNewSearch();
+
+			//getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+		};
+
+		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
+			array[index].selected = val;
+			emitNewSearch();
+		};
+
+		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
+			if (val === true) {
+				array.forEach((item) => {
+					item.selected = true;
+				});
+			} else {
+				array.forEach((item, index) => {
+					if (index === 0) {
+						item.selected = true;
+					} else {
+						item.selected = false;
+					}
+				});
+			}
+			emitNewSearch();
 		};
 
 		const figuresImage = computed(() => {
@@ -275,11 +312,11 @@ export default defineComponent({
 			updateAllCheckbox,
 			updateEndYear,
 			updateStartYear,
-			getTimeResults,
 			figuresImage,
 			timelapseImage,
 			timeSearchStore,
 			dataContainer,
+			emitNewSearch,
 		};
 	},
 });

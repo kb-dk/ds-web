@@ -180,7 +180,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		return uuid === currentSearchUUID;
 	};
 
-	const getSearchResults = async (query: string, time?: boolean) => {
+	const getSearchResults = async (query: string) => {
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 		resetAutocomplete();
@@ -201,14 +201,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		URL.revokeObjectURL(url);
 
 		try {
-			const selectedMonths = getQueryStringFromArray(getSelectedFromArray(months.value), '&fq=temporal_start_month:(');
-			const selectedDays = getQueryStringFromArray(getSelectedFromArray(days.value), '&fq=temporal_start_day_da:(');
-			const selectedTimeslots = getQueryStringFromArray(
-				getSelectedFromArray(timeslots.value),
-				'&fq=temporal_start_hour_da:(',
-			);
-
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			//window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
@@ -218,9 +211,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 				currentSearchUUID,
-				selectedMonths,
-				selectedDays,
-				selectedTimeslots,
 			);
 			const facetData = await APIService.getFacetResults(
 				query,
