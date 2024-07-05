@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
 			startAt: route.query.startAt || null,
 		}),
 	},
+	{
+		path: '/:pathMatch(.*)*', // Catch-all route
+		name: 'NotFound',
+		component: () => import('../views/404.vue'),
+	},
 ];
 
 const router = createRouter({

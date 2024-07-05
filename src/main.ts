@@ -18,6 +18,8 @@ const app = createApp(App).use(router).use(pinia).use(i18n);
 //Attach to error manager globally
 provideErrorManager(app);
 
+app.mount('#app');
+
 const authStore = useAuthStore();
 // Wrapped in anonymous async function to avoid top-level 'await' to support older browsers
 (async () => {
@@ -27,5 +29,3 @@ const authStore = useAuthStore();
 		//Fail silently - user messaged from store
 	}
 })();
-
-app.mount('#app');
