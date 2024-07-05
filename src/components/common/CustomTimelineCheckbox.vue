@@ -103,6 +103,10 @@ export default defineComponent({
 		rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
+.checkbox.all label {
+	width: 100px;
+}
+
 .checkbox.all {
 	width: 100px;
 }

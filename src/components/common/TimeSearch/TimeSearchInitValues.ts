@@ -1,6 +1,9 @@
+import { SelectorData } from '@/types/TimeSearchTypes';
 import { ref } from 'vue';
 
-const days = ref([
+const timeSliderValues = ref<number[]>([1992, 2002]);
+
+const days = ref<SelectorData[]>([
 	{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: true },
 	{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: true },
 	{ name: 'timeSearch.weekdays.wednesday', value: 'Wednesday', selected: true },
@@ -9,14 +12,14 @@ const days = ref([
 	{ name: 'timeSearch.weekdays.saturday', value: 'Saturday', selected: true },
 	{ name: 'timeSearch.weekdays.sunday', value: 'Sunday', selected: true },
 ]);
-const timeslots = ref([
+const timeslots = ref<SelectorData[]>([
 	{ name: 'timeSearch.timeslots.morning', value: '[6 TO 12]', selected: true },
 	{ name: 'timeSearch.timeslots.midday', value: '[12 TO 18]', selected: true },
 	{ name: 'timeSearch.timeslots.evening', value: '[18 TO 24]', selected: true },
 	{ name: 'timeSearch.timeslots.night', value: '[0 TO 6]', selected: true },
 ]);
 
-const months = ref([
+const months = ref<SelectorData[]>([
 	{ name: 'timeSearch.months.january', value: '1', selected: true },
 	{ name: 'timeSearch.months.february', value: '2', selected: true },
 	{ name: 'timeSearch.months.march', value: '3', selected: true },
@@ -31,4 +34,4 @@ const months = ref([
 	{ name: 'timeSearch.months.december', value: '12', selected: true },
 ]);
 
-export { months, days, timeslots };
+export { timeSliderValues, months, days, timeslots };

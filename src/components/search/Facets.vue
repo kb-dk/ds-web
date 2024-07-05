@@ -34,6 +34,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="time-facets-toggle">
+			<button
+				:class="timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
+				@click="toggleTimeFacets()"
+			>
+				{{ timeFacetsOpen ? '-' : '+' }}
+			</button>
+		</div>
+		<div
+			ref="timeFacets"
+			class="time-facets"
+		>
+			<TimeSearchFilters></TimeSearchFilters>
+		</div>
 	</div>
 </template>
 
@@ -43,17 +57,21 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute } from 'vue-router';
 import CategoryTags from '@/components/search/CategoryTags.vue';
+import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
 import Checkbox from '@/components/search/Checkbox.vue';
 import { filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
+import { months, days, timeslots, timeSliderValues } from '../common/TimeSearch/TimeSearchInitValues';
+import { APIService } from '@/api/api-service';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
 		CategoryTags,
 		Checkbox,
+		TimeSearchFilters,
 	},
 
 	props: {
@@ -68,9 +86,11 @@ export default defineComponent({
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
 		const facetsContainer = ref<HTMLElement | null>(null);
+		const timeFacets = ref<HTMLElement | null>(null);
 		const lastUpdate = ref(0);
 		const route = useRoute();
 		const { t } = useI18n();
+		const timeFacetsOpen = ref(false);
 
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
@@ -105,14 +125,51 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			[months, days, timeslots, timeSliderValues],
+			() => {
+				console.log('SOMETGING HAPPENED');
+				searchResultStore.getSearchResults(searchResultStore.currentQuery, true);
+			},
+			{ deep: true },
+		);
+
+		const toggleTimeFacets = () => {
+			if (timeFacetsOpen.value) {
+				gsap.to(timeFacets.value, {
+					height: '0px',
+					duration: 0.5,
+					overwrite: true,
+					onComplete: () => {
+						gsap.set(timeFacets.value, {
+							display: 'none',
+						});
+					},
+				});
+			} else {
+				gsap.set(timeFacets.value, {
+					display: 'flex',
+					flexDirection: 'column',
+					onComplete: () => {
+						gsap.to(timeFacets.value, {
+							height: 'auto',
+							duration: 0.5,
+							overwrite: true,
+						});
+					},
+				});
+			}
+			timeFacetsOpen.value = !timeFacetsOpen.value;
+		};
+
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
 				gsap.to(facetsContainer.value, {
 					height: '0px',
 					duration: 0.5,
+					overwrite: true,
 					borderBottom: '0px solid transparent',
 					marginBottom: '0px',
-					overwrite: true,
 					onComplete: () => {
 						gsap.set(facetsContainer.value, {
 							display: 'none',
@@ -148,6 +205,9 @@ export default defineComponent({
 			route,
 			toggleFacets,
 			facetsContainer,
+			timeFacets,
+			toggleTimeFacets,
+			timeFacetsOpen,
 			t,
 		};
 	},
@@ -166,6 +226,74 @@ export default defineComponent({
 .facet-leave-to {
 	opacity: 0;
 	height: 0%;
+}
+
+.time-facets {
+	display: none;
+	height: 0px;
+}
+
+.time-facets-toggle {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+}
+
+.time-facet-button {
+	border: 0px solid transparent;
+	cursor: pointer;
+	background-color: transparent;
+	padding: 10px 5px;
+	width: 30px;
+	height: 30px;
+	background-color: #0a2e70;
+	color: white;
+	font-size: 24px;
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+}
+
+.time-facet-button:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	border-bottom: 10px solid #0a2e70;
+	position: absolute;
+	margin-left: -5px;
+	margin-top: -40px;
+	transition: all 0.15s ease-in-out 0s;
+	transform: scaleY(0);
+	transform-origin: bottom;
+}
+
+.time-facet-button.open:before {
+	transform: scaleY(1);
+}
+
+.time-facet-button:after {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	border-top: 10px solid #0a2e70;
+	position: absolute;
+	margin-left: -5px;
+	margin-top: 40px;
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: all 0.15s ease-in-out 0s;
+}
+
+.time-facet-button.closed:after {
+	transform: scaleY(1);
 }
 
 .facet-container {

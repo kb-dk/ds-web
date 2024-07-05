@@ -9,7 +9,9 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
-
+import { months, days, timeslots, timeSliderValues } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { getQueryStringFromArray, getSelectedFromArray } from '@/utils/time-search-utils';
+import { SelectorData } from '@/types/TimeSearchTypes';
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
 	let comparisonSearchUUID = '';
@@ -178,7 +180,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		return uuid === currentSearchUUID;
 	};
 
-	const getSearchResults = async (query: string) => {
+	const getSearchResults = async (query: string, time?: boolean) => {
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 		resetAutocomplete();
@@ -199,6 +201,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		URL.revokeObjectURL(url);
 
 		try {
+			const selectedMonths = getQueryStringFromArray(getSelectedFromArray(months.value), '&fq=temporal_start_month:(');
+			const selectedDays = getQueryStringFromArray(getSelectedFromArray(days.value), '&fq=temporal_start_day_da:(');
+			const selectedTimeslots = getQueryStringFromArray(
+				getSelectedFromArray(timeslots.value),
+				'&fq=temporal_start_hour_da:(',
+			);
+
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
@@ -209,6 +218,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 				currentSearchUUID,
+				selectedMonths,
+				selectedDays,
+				selectedTimeslots,
 			);
 			const facetData = await APIService.getFacetResults(
 				query,

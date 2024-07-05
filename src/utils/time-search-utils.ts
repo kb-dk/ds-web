@@ -1,5 +1,6 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
@@ -68,6 +69,39 @@ const showDayResult = (years: number[], months: SelectorData[], days: SelectorDa
 	)}`;
 };
 
+const getTimeResults = (
+	months: SelectorData[],
+	days: SelectorData[],
+	timeslots: SelectorData[],
+	timeSliderValues: number[],
+) => {
+	const timeSearchStore = useTimeSearchStore();
+	timeSearchStore.getTimeSearchResults(
+		timeSliderValues[0].toString(),
+		timeSliderValues[1].toString(),
+		getSelectedFromArray(months),
+		getSelectedFromArray(days),
+		getSelectedFromArray(timeslots),
+	);
+};
+
+const getQueryStringFromArray = (array: string[], prefix: string) => {
+	let selected = '';
+	if (array.length > 0) {
+		selected = prefix;
+	}
+	array.forEach((item, index) => {
+		selected += encodeURIComponent(`${item}`);
+		if (index !== array.length - 1) {
+			selected += ' OR ';
+		}
+	});
+	if (array.length > 0) {
+		selected += ')';
+	}
+	return selected;
+};
+
 const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 	array[index].selected = val;
 };
@@ -100,4 +134,6 @@ export {
 	updateCheckbox,
 	updateAllCheckbox,
 	getSelectedFromArray,
+	getTimeResults,
+	getQueryStringFromArray,
 };
