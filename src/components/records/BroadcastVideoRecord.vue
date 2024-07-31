@@ -1,7 +1,7 @@
 <template>
 	<div class="broadcast-record">
 		<div class="video-container">
-			<div v-if="recordData.contentUrl">
+			<div v-if="checkForKalturaId()">
 				<VideoPlayer :file-id="recordData['kb:internal']['kb:file_id']"></VideoPlayer>
 				<!-- <AdditionalInfo
 					:id="recordData.id"
@@ -113,7 +113,6 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-/* import AdditionalInfo from '@/components/search/AdditionalInfo.vue'; */
 import { getTimeFromISOFormat } from '@/utils/time-utils';
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
@@ -125,7 +124,6 @@ export default defineComponent({
 		VideoPlayer,
 		Duration,
 		GridDisplay,
-		/* AdditionalInfo, */
 	},
 
 	props: {
@@ -142,7 +140,7 @@ export default defineComponent({
 		},
 	},
 
-	setup() {
+	setup(props) {
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();
@@ -151,11 +149,24 @@ export default defineComponent({
 			lastPath.value = router.options.history.state.back as string;
 		});
 
+		const checkForKalturaId = () => {
+			return props.recordData.identifier.find((obj) => obj.PropertyID === 'KalturaID') !== undefined;
+		};
+
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, getTimeFromISOFormat };
+		return {
+			lastPath,
+			locale,
+			t,
+			getCurrentUrl,
+			getBroadcastDate,
+			getBroadcastTime,
+			getTimeFromISOFormat,
+			checkForKalturaId,
+		};
 	},
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div class="broadcast-record">
 		<AudioPlayer
-			v-if="recordData.contentUrl"
+			v-if="checkForKalturaId()"
 			:file-id="recordData['kb:internal']['kb:file_id']"
 		></AudioPlayer>
 		<div
@@ -133,10 +133,14 @@ export default defineComponent({
 		},
 	},
 
-	setup() {
+	setup(props) {
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();
+
+		const checkForKalturaId = () => {
+			return props.recordData.identifier.find((obj) => obj.PropertyID === 'KalturaID') !== undefined;
+		};
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
@@ -146,7 +150,7 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime };
+		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, checkForKalturaId };
 	},
 });
 </script>
