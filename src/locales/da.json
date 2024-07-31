@@ -17,7 +17,7 @@
       "fromTheArchive":"Et udpluk fra arkivet"
    },
    "timeSearch": {
-      "timeMachine":"Tidsmaskinen",
+      "timeMachine":"Brug Tiden...",
       "year":"år | år",
       "month":"måned | måneder",
       "day":"Ugedag | ugedage",
@@ -30,7 +30,7 @@
       "data":"datamængde",
       "from":"fra",
       "to":"til",
-      "timeHits": "Tidsmaskinene har",
+      "timeHits": "Du finder ",
       "result":"resultat | resultater",
       "all":"alle",
       "months": {
@@ -57,10 +57,10 @@
          "sunday": "søndag"
      },
      "timeslots": {
-         "morning":"morgen",
-         "midday":"middag",
-         "evening":"aften",
-         "night":"nat"
+         "morning":"06.00 - 12.00",
+         "midday":"12.00 - 18.00",
+         "evening":"18.00 - 24.00",
+         "night":"00.00 - 06.00"
      }
    },
   "search":{

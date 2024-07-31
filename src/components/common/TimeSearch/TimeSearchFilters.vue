@@ -33,7 +33,6 @@
 					tooltip="always"
 					@drag-end="emitNewSearch()"
 				></VueSlider>
-				<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
 			</Transition>
 		</div>
 	</div>
@@ -43,113 +42,130 @@
 		item-class="month"
 	>
 		<div class="time-selection">
-			<div class="select-container month">
-				<div class="checkbox all">
-					<span class="checkbox-title">
-						<span class="title-span">
-							{{ $t('timeSearch.month', months.filter((obj: SelectorData) => obj.selected).length) }}:
-						</span>
-						<span class="info-span">
-							<span class="material-icons">event</span>
-							{{ showMonthSelection(timeSliderValues, months, t) }}
-							<span class="bold">{{ showMonthResult(timeSliderValues, months, t) }}</span>
-						</span>
-					</span>
-					<CustomTimelineCheckbox
-						:index="0"
-						name="timeSearch.all"
-						:val="true"
-						:tilted="false"
-						:update="updateAllCheckbox"
-						:parent-array="months"
-					></CustomTimelineCheckbox>
-				</div>
-				<div class="month-selector">
-					<div
-						:style="'background-image:url(' + figuresImage + ')'"
-						class="figures"
-					></div>
-					<div class="gradient"></div>
-					<div class="all-months-items">
-						<div
-							v-for="(item, index) in months"
-							:key="index"
-							class="checkbox"
-						>
+			<div class="month-selector-expanding">
+				<TimelineHeadline
+					headline="Udvælg måneder"
+					icon="event"
+					subline="Alle måneder i perioden"
+				></TimelineHeadline>
+				<CustomExpander>
+					<div class="select-container month">
+						<div class="checkbox all">
 							<CustomTimelineCheckbox
-								:index="index"
-								:name="months[index].name"
-								:val="months[index].selected"
-								:tilted="true"
-								:update="updateCheckbox"
+								:index="0"
+								name="timeSearch.all"
+								:val="false"
+								:tilted="false"
+								:update="updateAllCheckbox"
 								:parent-array="months"
 							></CustomTimelineCheckbox>
 						</div>
+						<div class="month-selector">
+							<div
+								:style="'background-image:url(' + figuresImage + ')'"
+								class="figures"
+							></div>
+							<div class="gradient"></div>
+							<div class="all-months-items">
+								<div
+									v-for="(item, index) in months"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomTimelineCheckbox
+										:index="index"
+										:name="months[index].name"
+										:val="months[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="months"
+									></CustomTimelineCheckbox>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
+				</CustomExpander>
 			</div>
 			<div class="overall-selector">
 				<div class="select-container days">
-					<div class="checkbox all">
-						<span class="checkbox-title">
-							<span class="title-span">
-								{{ $t('timeSearch.day', days.filter((obj: SelectorData) => obj.selected).length) }}:
-							</span>
-							<span class="info-span">
-								<span class="material-icons">event</span>
-								{{ showDaySelection(timeSliderValues, months, days, t) }}
-								<span class="bold">{{ showDayResult(timeSliderValues, months, days, t) }}</span>
-							</span>
-						</span>
-						<CustomTimelineCheckbox
-							:index="1"
-							name="timeSearch.all"
-							:val="true"
-							:tilted="false"
-							:parent-array="days"
-							:update="updateAllCheckbox"
-						></CustomTimelineCheckbox>
-					</div>
-					<div class="all-days-items">
-						<div class="day-gradient"></div>
-						<div
-							v-for="(item, index) in days"
-							:key="index"
-							class="checkbox"
-						>
-							<CustomTimelineCheckbox
-								:index="index"
-								:name="days[index].name"
-								:val="days[index].selected"
-								:tilted="true"
-								:update="updateCheckbox"
-								:parent-array="days"
-							></CustomTimelineCheckbox>
+					<TimelineHeadline
+						headline="Udvælg ugedage"
+						icon="date_range"
+						subline="Alle måneder i perioden"
+					></TimelineHeadline>
+					<CustomExpander>
+						<div class="expand-container-days">
+							<div class="checkbox all">
+								<CustomTimelineCheckbox
+									:index="1"
+									name="timeSearch.all"
+									:val="false"
+									:tilted="false"
+									:parent-array="days"
+									:update="updateAllCheckbox"
+								></CustomTimelineCheckbox>
+							</div>
+							<div class="all-days-items">
+								<div class="day-gradient"></div>
+								<div
+									v-for="(item, index) in days"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomTimelineCheckbox
+										:index="index"
+										:name="days[index].name"
+										:val="days[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="days"
+									></CustomTimelineCheckbox>
+								</div>
+							</div>
 						</div>
-					</div>
+					</CustomExpander>
 				</div>
 				<div class="select-container select-time">
-					<div class="all-timeslot-items">
-						<div
-							:style="'background-image:url(' + timelapseImage + ')'"
-							class="timelapse"
-						></div>
-						<div class="time-gradient"></div>
-						<div
-							v-for="(item, index) in timeslots"
-							:key="index"
-							class="checkbox"
-						>
-							<CustomTimelineCheckbox
-								:index="index"
-								:name="timeslots[index].name"
-								:val="timeslots[index].selected"
-								:tilted="true"
-								:update="updateCheckbox"
-								:parent-array="timeslots"
-							></CustomTimelineCheckbox>
+					<TimelineHeadline
+						headline="Udvælg tidspunkt"
+						icon="schedule"
+						subline="Alle måneder i perioden"
+					></TimelineHeadline>
+					<CustomExpander>
+						<div class="expand-container-time">
+							<div class="checkbox all">
+								<CustomTimelineCheckbox
+									:index="2"
+									name="timeSearch.all"
+									:val="false"
+									:tilted="false"
+									:parent-array="timeslots"
+									:update="updateAllCheckbox"
+								></CustomTimelineCheckbox>
+							</div>
+							<div class="all-timeslot-items">
+								<div
+									:style="'background-image:url(' + timelapseImage + ')'"
+									class="timelapse"
+								></div>
+								<div class="time-gradient"></div>
+								<div
+									v-for="(item, index) in timeslots"
+									:key="index"
+									class="checkbox"
+								>
+									<CustomTimelineCheckbox
+										:index="index"
+										:name="timeslots[index].name"
+										:val="timeslots[index].selected"
+										:tilted="true"
+										:update="updateCheckbox"
+										:parent-array="timeslots"
+									></CustomTimelineCheckbox>
+								</div>
+							</div>
 						</div>
-					</div>
+					</CustomExpander>
 				</div>
 			</div>
 		</div>
@@ -168,6 +184,8 @@ import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearc
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
+import CustomExpander from '@/components/common/CustomExpander.vue';
+import TimelineHeadline from '@/components/common/TimelineHeadline.vue';
 import {
 	selectionSummary,
 	showMonthSelection,
@@ -184,6 +202,8 @@ export default defineComponent({
 		ItemSlider,
 		CustomTimelineCheckbox,
 		VueSlider,
+		CustomExpander,
+		TimelineHeadline,
 	},
 
 	props: {
@@ -249,9 +269,7 @@ export default defineComponent({
 			if (Number(val) > timeSliderValues.value[1]) {
 				timeSliderValues.value[1] = Number(val);
 			}
-			//<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
 			emitNewSearch();
-			//getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
 		};
 
 		const updateEndYear = (val: number) => {
@@ -259,10 +277,7 @@ export default defineComponent({
 			if (Number(val) < timeSliderValues.value[0]) {
 				timeSliderValues.value[0] = Number(val);
 			}
-			//<!-- THIS NEEDS TO EMIT AN EVENT INSTEAD OF SEARCHING. ALL SEARCHING IS DONE BY PARENT NOW!-->
 			emitNewSearch();
-
-			//getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
 		};
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
@@ -288,7 +303,7 @@ export default defineComponent({
 		};
 
 		const figuresImage = computed(() => {
-			return new URL(`@/assets/images/dr_kalender-sprite.svg`, import.meta.url).href;
+			return new URL(`@/assets/images/dr_kalender-sprite2.png`, import.meta.url).href;
 		});
 
 		const timelapseImage = computed(() => {
@@ -336,6 +351,11 @@ export default defineComponent({
 	text-transform: capitalize;
 }
 
+.expand-container-days,
+.expand-container-time {
+	display: flex;
+	padding-bottom: 80px;
+}
 .dotted-separator {
 	box-sizing: border-box;
 	height: 2px;
@@ -350,6 +370,7 @@ export default defineComponent({
 	flex-wrap: wrap;
 	flex-direction: column;
 	justify-content: center;
+	margin-top: 26px;
 }
 
 .all-months-items .checkbox {
@@ -428,7 +449,7 @@ h3 .bold,
 }
 
 .all-timeslot-items .checkbox {
-	width: calc((100% - 100px) / 4);
+	width: calc((100% - 150px) / 4);
 	display: flex;
 	justify-content: center;
 	align-content: center;
@@ -539,22 +560,41 @@ h3 .bold,
 
 .overall-selector {
 	user-select: none;
-	height: 150px;
 	display: flex;
-	width: 100%;
+	flex-direction: column;
+	width: calc(100%);
 	min-width: 1000px;
 	padding-bottom: 20px;
 }
 
+.month-selector-expanding {
+	border-top: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 50px;
+	min-width: 1000px;
+}
+
 .select-container.days {
-	width: calc(65%);
+	width: 100%;
 	display: flex;
+	flex-direction: column;
+	border-top: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 50px;
+	box-sizing: border-box;
 }
 
 .select-time {
-	width: calc(35%);
+	width: 100%;
 	display: flex;
-	justify-content: flex-end;
+	flex-direction: column;
+	border-top: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 50px;
+}
+
+.expand-container {
+	border-bottom: 1px solid black;
 }
 
 .day-gradient {
@@ -587,7 +627,7 @@ h3 .bold,
 	position: absolute;
 	z-index: 01;
 	background-position: bottom;
-	right: 35px;
+	right: 120px;
 	top: 15px;
 	height: 70px;
 }
@@ -610,9 +650,9 @@ h3 .bold,
 		)
 		0% 0% no-repeat padding-box;
 	position: absolute;
-	width: calc(100% - 190px);
+	width: calc(100% - 215px);
 	top: 58px;
-	right: 35px;
+	right: 143px;
 	height: 36px;
 	z-index: 1;
 }
@@ -624,6 +664,9 @@ h3 .bold,
 	z-index: 2;
 	top: 7px;
 	position: relative;
+	height: 130px;
+	width: 100%;
+	justify-content: flex-start;
 }
 
 .all-days-items {
@@ -633,7 +676,7 @@ h3 .bold,
 	position: relative;
 	gap: 2px;
 	z-index: 2;
-	width: calc(100% - 150px);
+	width: calc(100% - 200px);
 	top: 7px;
 }
 
@@ -693,5 +736,18 @@ h3 .bold,
 	margin-top: 2px;
 	border-bottom: 1px solid #002e70;
 	box-sizing: border-box;
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.overall-selector {
+		flex-direction: row;
+	}
+	.select-container.days {
+		width: calc(65% - 25px);
+		margin-right: 25px;
+	}
+	.select-container.select-time {
+		width: 35%;
+	}
 }
 </style>

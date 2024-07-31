@@ -17,7 +17,7 @@
       "fromTheArchive":"A selection from the archive"
    },
    "timeSearch": {
-      "timeMachine":"The Timemachine",
+      "timeMachine":"Use the time...",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
@@ -30,7 +30,7 @@
       "data":"data quantity",
       "from":"from",
       "to":"to",
-      "timeHits": "The Timemachine has",
+      "timeHits": "You'll find ",
       "result":"result | results",
       "all":"all",
       "months": {
@@ -57,10 +57,10 @@
          "sunday": "Sunday"
      },
      "timeslots": {
-         "morning":"morning",
-         "midday":"midday",
-         "evening":"evening",
-         "night":"night"
+      "morning":"06.00 - 12.00",
+      "midday":"12.00 - 18.00",
+      "evening":"18.00 - 24.00",
+      "night":"00.00 - 06.00"
      }
    },
   "search":{
