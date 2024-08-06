@@ -21,6 +21,7 @@
       "year":"år | år",
       "month":"måned | måneder",
       "day":"Ugedag | ugedage",
+      "timePeriods": "tidsperiode | tidsperioder",
       "chosenTimeslots":"Valgte tidspunkter",
       "foundResults":"fundne resultater",
       "allChosen":"Alle valgt",
@@ -30,7 +31,7 @@
       "data":"datamængde",
       "from":"fra",
       "to":"til",
-      "timeHits": "Du finder ",
+      "timeHits": "Der er i alt ",
       "result":"resultat | resultater",
       "all":"alle",
       "months": {
@@ -88,7 +89,9 @@
      "all":"Alt",
      "thumbnailButton":"Se flere thumbnails",
      "thumbnailLink": "Thumbnail {index} ved {timestamp}",
-     "of":"af"
+     "of":"af",
+     "startTime":"starttid"
+
    },
   "record":{
      "duration":"Varighed",

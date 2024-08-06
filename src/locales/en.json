@@ -21,6 +21,7 @@
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
+      "timePeriods": "time span",
       "chosenTimeslots":"Chosen timeslots",
       "foundResults":"found results",
       "allChosen":"All chosen",
@@ -30,7 +31,7 @@
       "data":"data quantity",
       "from":"from",
       "to":"to",
-      "timeHits": "You'll find ",
+      "timeHits": "There is in total ",
       "result":"result | results",
       "all":"all",
       "months": {
@@ -88,7 +89,8 @@
      "all":"All",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
-     "of":"of"
+     "of":"of",
+     "startTime":"Start time"
   },
   "record":{
      "duration":"Duration",

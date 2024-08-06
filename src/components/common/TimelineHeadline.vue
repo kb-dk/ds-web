@@ -1,7 +1,15 @@
 <template>
 	<div class="headline-container">
-		<div class="material-icons icon">{{ icon }}</div>
-		<div class="headline">
+		<div
+			class="material-icons icon"
+			@click="dispatchClick()"
+		>
+			{{ icon }}
+		</div>
+		<div
+			class="headline"
+			@click="dispatchClick()"
+		>
 			<h3>{{ headline }}</h3>
 			<span>{{ subline }}</span>
 		</div>
@@ -27,12 +35,23 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: true,
 		},
+		click: {
+			type: Function,
+			default() {
+				return null;
+			},
+		},
 	},
 
-	setup() {
+	setup(props) {
 		const { t } = useI18n();
 
-		return { t };
+		const dispatchClick = () => {
+			props.click !== undefined ? props.click() : null;
+			console.log('YEP');
+		};
+
+		return { t, dispatchClick };
 	},
 });
 </script>
@@ -64,7 +83,7 @@ span {
 	font-weight: 700;
 	color: #002e70;
 	background-color: #d9f5fe;
-	border: 1px solid #ffffff;
+	border: 1px solid #d9f5fe;
 	border-radius: 4px;
 	width: fit-content;
 	padding-left: 3px;
@@ -88,5 +107,12 @@ span {
 	align-items: center;
 	align-content: center;
 	height: 80px;
+	width: 100%;
+}
+
+.headline-container h3,
+.headline-container span,
+.headline-container div {
+	cursor: pointer;
 }
 </style>

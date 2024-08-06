@@ -1,7 +1,6 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { useRoute, useRouter } from 'vue-router';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
@@ -17,57 +16,18 @@ const getDays = (days: SelectorData[]) => {
 	return days.filter((item) => item.selected);
 };
 
+const getTimeslots = (timeslots: SelectorData[]) => {
+	return timeslots.filter((item) => item.selected);
+};
+
 const getSelectedFromArray = (array: SelectorData[]) => {
 	return array.filter((entity) => entity.selected).map((entity) => entity.value);
 };
 
-const selectionSummary = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${nrYears} ${t('timeSearch.year', nrYears)} / ${Number(nrMonths.length * nrYears)} ${t(
-		'timeSearch.month',
-		Number(nrMonths.length * nrYears),
-	)} / ${Number(nrMonths.length * nrYears * nrDays.length)} ${t(
-		'timeSearch.day',
-		Number(nrMonths.length * nrYears * nrDays.length),
-	)}`;
-};
-
-const showMonthSelection = (years: number[], months: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	return `${nrMonths.length} ${t('timeSearch.month', nrMonths.length)} x (${nrYears} ${t(
-		'timeSearch.year',
-		nrYears,
-	)}) = `;
-	//return nrMonths.length + ' måneder x (' + nrYears + ') = ';
-};
-
-const showMonthResult = (years: number[], months: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	return `${Number(nrMonths.length * nrYears)} ${t('timeSearch.month', Number(nrMonths.length * nrYears))}`;
-};
-
-const showDaySelection = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${nrDays.length} ${t('timeSearch.day', nrDays.length)} x (${Number(nrMonths.length * nrYears)} ${t(
-		'timeSearch.month',
-		Number(nrMonths.length * nrYears),
-	)} x 4 weeks~) = `;
-};
-
-const showDayResult = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${Number(nrMonths.length * nrYears * nrDays.length * 4)} ${t(
-		'timeSearch.day',
-		Number(nrMonths.length * nrYears * nrDays.length * 4),
-	)}`;
+const resetAllSelectorValues = (array: SelectorData[]) => {
+	array.forEach((item) => {
+		item.selected = false;
+	});
 };
 
 const getTimeResults = (
@@ -103,16 +63,40 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 	return selected;
 };
 
+const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {
+	if (getMonths(months).length === 0 || getMonths(months).length === 12) {
+		return 'alle måneder i perioden';
+	} else {
+		return `${getMonths(months).length} ${t('timeSearch.month', getMonths(months).length)}`;
+	}
+};
+
+const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
+	if (getDays(days).length === 0 || getDays(days).length === 7) {
+		return 'alle ugedage i perioden';
+	} else {
+		return `${getDays(days).length} ${t('timeSearch.day', getDays(days).length)}`;
+	}
+};
+
+const getSublineForTimeslots = (timeslots: SelectorData[], t: ComposerTranslation) => {
+	if (getTimeslots(timeslots).length === 0 || getTimeslots(timeslots).length === 4) {
+		return 'hele døgnet';
+	} else {
+		return `${getTimeslots(timeslots).length} ${t('timeSearch.timePeriods', getTimeslots(timeslots).length)}`;
+	}
+};
+
 export {
 	getYears,
 	getMonths,
 	getDays,
-	selectionSummary,
-	showMonthSelection,
-	showMonthResult,
-	showDaySelection,
-	showDayResult,
 	getSelectedFromArray,
 	getTimeResults,
 	getQueryStringFromArray,
+	getTimeslots,
+	resetAllSelectorValues,
+	getSublineForMonths,
+	getSublineForDays,
+	getSublineForTimeslots,
 };

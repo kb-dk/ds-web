@@ -158,20 +158,20 @@ export default defineComponent({
 				.filter((timeslot: SelectorData) => timeslot.selected)
 				.map((timeslot: SelectorData) => timeslot.value)
 				.join(' OR ');
-			(query.fq = [
+
+			const fqArray = [];
+			fqArray.push(
 				encodeURIComponent(`temporal_start_year:[${timeSliderValues.value[0] + ' TO ' + timeSliderValues.value[1]}]`),
-				encodeURIComponent(`temporal_start_day_da:(${dayString})`),
-				encodeURIComponent(`temporal_start_month:(${monthString})`),
-				encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`),
-			]),
+			);
+			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
+			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
+			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
+
+			(query.fq = fqArray),
 				router.push({
 					name: 'Home',
 					query: query,
 				});
-
-			console.log(query, 'damnit');
-
-			console.log('fire!2');
 		};
 
 		const toggleTimeFacets = () => {

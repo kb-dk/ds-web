@@ -3,6 +3,7 @@
 		:id="name + '-checkbox-' + index"
 		ref="checkboxRef"
 		type="checkbox"
+		:checked="val"
 		@change="updateSelection"
 	/>
 	<label
@@ -92,6 +93,7 @@ export default defineComponent({
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
+	z-index: 1;
 }
 
 .checkbox input:focus + label {
@@ -127,6 +129,7 @@ export default defineComponent({
 	transform-origin: right;
 	cursor: pointer;
 	white-space: nowrap;
+	z-index: 1;
 }
 
 .tilted {

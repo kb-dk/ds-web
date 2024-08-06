@@ -36,19 +36,18 @@
 			</Transition>
 		</div>
 	</div>
-	<ItemSlider
-		bg-scroll-white="true"
-		bg="#ffffff00"
-		item-class="month"
-	>
-		<div class="time-selection">
-			<div class="month-selector-expanding">
-				<TimelineHeadline
-					headline="Udvælg måneder"
-					icon="event"
-					subline="Alle måneder i perioden"
-				></TimelineHeadline>
-				<CustomExpander>
+	<div class="time-selection">
+		<div class="month-selector-expanding">
+			<CustomExpander
+				headline="Udvælg måneder"
+				icon="event"
+				:subline="getSublineForMonths(months, t)"
+			>
+				<ItemSlider
+					bg-scroll-white="true"
+					bg="#ffffff00"
+					item-class="month"
+				>
 					<div class="select-container month">
 						<div class="checkbox all">
 							<CustomTimelineCheckbox
@@ -84,16 +83,21 @@
 							</div>
 						</div>
 					</div>
-				</CustomExpander>
-			</div>
-			<div class="overall-selector">
-				<div class="select-container days">
-					<TimelineHeadline
-						headline="Udvælg ugedage"
-						icon="date_range"
-						subline="Alle måneder i perioden"
-					></TimelineHeadline>
-					<CustomExpander>
+				</ItemSlider>
+			</CustomExpander>
+		</div>
+		<div class="overall-selector">
+			<div class="select-container days">
+				<CustomExpander
+					headline="Udvælg ugedage"
+					icon="date_range"
+					:subline="getSublineForDays(days, t)"
+				>
+					<ItemSlider
+						bg-scroll-white="true"
+						bg="#ffffff00"
+						item-class="month"
+					>
 						<div class="expand-container-days">
 							<div class="checkbox all">
 								<CustomTimelineCheckbox
@@ -123,15 +127,20 @@
 								</div>
 							</div>
 						</div>
-					</CustomExpander>
-				</div>
-				<div class="select-container select-time">
-					<TimelineHeadline
-						headline="Udvælg tidspunkt"
-						icon="schedule"
-						subline="Alle måneder i perioden"
-					></TimelineHeadline>
-					<CustomExpander>
+					</ItemSlider>
+				</CustomExpander>
+			</div>
+			<div class="select-container select-time">
+				<CustomExpander
+					headline="Udvælg tidspunkt"
+					icon="schedule"
+					:subline="getSublineForTimeslots(timeslots, t)"
+				>
+					<ItemSlider
+						bg-scroll-white="true"
+						bg="#ffffff00"
+						item-class="month"
+					>
 						<div class="expand-container-time">
 							<div class="checkbox all">
 								<CustomTimelineCheckbox
@@ -165,11 +174,11 @@
 								</div>
 							</div>
 						</div>
-					</CustomExpander>
-				</div>
+					</ItemSlider>
+				</CustomExpander>
 			</div>
 		</div>
-	</ItemSlider>
+	</div>
 </template>
 
 <script lang="ts">
@@ -185,16 +194,13 @@ import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import TimelineHeadline from '@/components/common/TimelineHeadline.vue';
 import {
-	selectionSummary,
-	showMonthSelection,
-	showMonthResult,
-	showDaySelection,
-	showDayResult,
 	getTimeResults,
+	resetAllSelectorValues,
+	getSublineForMonths,
+	getSublineForDays,
+	getSublineForTimeslots,
 } from '@/utils/time-search-utils';
-
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
@@ -203,7 +209,6 @@ export default defineComponent({
 		CustomTimelineCheckbox,
 		VueSlider,
 		CustomExpander,
-		TimelineHeadline,
 	},
 
 	props: {
@@ -222,9 +227,12 @@ export default defineComponent({
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
-
 		onMounted(() => {
 			if (props.init) {
+				resetAllSelectorValues(months.value);
+				resetAllSelectorValues(days.value);
+				resetAllSelectorValues(timeslots.value);
+				timeSliderValues.value = [1992, 1992];
 				getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
 			}
 			APIService.getFullResultWithFacets().then((reponse) => {
@@ -318,11 +326,6 @@ export default defineComponent({
 			timeSliderValues,
 			data,
 			selectYears,
-			selectionSummary,
-			showMonthSelection,
-			showMonthResult,
-			showDaySelection,
-			showDayResult,
 			updateCheckbox,
 			updateAllCheckbox,
 			updateEndYear,
@@ -332,6 +335,9 @@ export default defineComponent({
 			timeSearchStore,
 			dataContainer,
 			emitNewSearch,
+			getSublineForMonths,
+			getSublineForDays,
+			getSublineForTimeslots,
 		};
 	},
 });
@@ -349,6 +355,16 @@ export default defineComponent({
 	margin-bottom: 30px;
 	font-size: 20px;
 	text-transform: capitalize;
+}
+
+.expand-container-days {
+	max-width: 735px;
+}
+
+.expand-container-time {
+	max-width: 410px;
+	overflow: hidden;
+	min-width: 410px;
 }
 
 .expand-container-days,
@@ -458,7 +474,6 @@ h3 .bold,
 	position: relative;
 	left: -25px;
 	align-content: flex-end;
-	z-index: 3;
 	top: -4px;
 }
 
@@ -563,22 +578,18 @@ h3 .bold,
 	display: flex;
 	flex-direction: column;
 	width: calc(100%);
-	min-width: 1000px;
 	padding-bottom: 20px;
 }
 
 .month-selector-expanding {
-	border-top: 1px solid black;
 	margin-top: 5px;
 	margin-bottom: 50px;
-	min-width: 1000px;
 }
 
 .select-container.days {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	border-top: 1px solid black;
 	margin-top: 5px;
 	margin-bottom: 50px;
 	box-sizing: border-box;
@@ -588,13 +599,8 @@ h3 .bold,
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	border-top: 1px solid black;
 	margin-top: 5px;
 	margin-bottom: 50px;
-}
-
-.expand-container {
-	border-bottom: 1px solid black;
 }
 
 .day-gradient {
@@ -738,7 +744,7 @@ h3 .bold,
 	box-sizing: border-box;
 }
 /* MEDIA QUERY 990 */
-@media (min-width: 990px) {
+@media (min-width: 1200px) {
 	.overall-selector {
 		flex-direction: row;
 	}
