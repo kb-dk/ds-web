@@ -34,6 +34,10 @@
       "timeHits": "There is in total ",
       "result":"result | results",
       "all":"all",
+      "allMonths":"all months in the period",
+      "allDays":"all weekdays in the period",
+      "allTimeslots":"all hours",
+      "selection":"A selection of the results",
       "months": {
          "january": "January",
          "february": "February",

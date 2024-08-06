@@ -34,6 +34,10 @@
       "timeHits": "Der er i alt ",
       "result":"resultat | resultater",
       "all":"alle",
+      "allMonths":"alle måneder i perioden",
+      "allDays":"alle udedage i perioden",
+      "allTimeslots":"hele døgnet",
+      "selection":"Et udpluk af resultaterne",
       "months": {
          "january": "januar",
          "february": "februar",

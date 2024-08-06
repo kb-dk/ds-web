@@ -65,7 +65,7 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 
 const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {
 	if (getMonths(months).length === 0 || getMonths(months).length === 12) {
-		return 'alle måneder i perioden';
+		return `${t('timeSearch.allMonths')}`;
 	} else {
 		return `${getMonths(months).length} ${t('timeSearch.month', getMonths(months).length)}`;
 	}
@@ -73,7 +73,7 @@ const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => 
 
 const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
 	if (getDays(days).length === 0 || getDays(days).length === 7) {
-		return 'alle ugedage i perioden';
+		return `${t('timeSearch.allDays')}`;
 	} else {
 		return `${getDays(days).length} ${t('timeSearch.day', getDays(days).length)}`;
 	}
@@ -81,7 +81,7 @@ const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
 
 const getSublineForTimeslots = (timeslots: SelectorData[], t: ComposerTranslation) => {
 	if (getTimeslots(timeslots).length === 0 || getTimeslots(timeslots).length === 4) {
-		return 'hele døgnet';
+		return `${t('timeSearch.allTimeslots')}`;
 	} else {
 		return `${getTimeslots(timeslots).length} ${t('timeSearch.timePeriods', getTimeslots(timeslots).length)}`;
 	}

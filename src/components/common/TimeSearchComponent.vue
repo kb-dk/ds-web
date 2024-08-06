@@ -8,7 +8,7 @@
 			></TimeSearchFilters>
 			<div class="result-container">
 				<div class="result-header">
-					<span>Et udpluk fra perioden</span>
+					<span class="selection-header">{{ t('timeSearch.selection') }}:</span>
 					<router-link
 						class="link"
 						:to="timeSearchLink"
@@ -168,6 +168,11 @@ h1 {
 
 .further-link a:visited {
 	color: white;
+}
+
+.selection-header {
+	color: #002e70;
+	font-size: 20px;
 }
 
 .link {
