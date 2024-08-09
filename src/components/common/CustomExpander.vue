@@ -87,14 +87,6 @@ export default defineComponent({
 			expanderOpen.value = !expanderOpen.value;
 		};
 
-		onMounted(() => {
-			console.log('mounted');
-		});
-
-		onUnmounted(() => {
-			console.log('unmounted');
-		});
-
 		return { expanderOpen, toggleExpander, expandContainer };
 	},
 });
