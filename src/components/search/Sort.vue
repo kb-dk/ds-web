@@ -1,31 +1,10 @@
 <template>
 	<div class="sort">
-		<button
-			:class="searchResultStore.loading ? 'sort-box disabled' : 'sort-box'"
-			@click="revealSortingOptions"
-		>
-			<span class="btn-text">
-				<span ref="currentSort">
-					{{
-						searchResultStore.sort !== ''
-							? t('search.sortAfter') + t('search.' + searchResultStore.sort.split('%20')[0])
-							: t('search.sortBy')
-					}}
-				</span>
-				<span :class="showSortingOptions ? 'material-icons sort-expand turn' : 'material-icons sort-expand'">
-					expand_more
-				</span>
-			</span>
-		</button>
-		<Transition name="fade">
-			<div
-				v-show="showSortingOptions"
-				class="sort-options"
-			>
-				<button @click="newSort('title_sort_da asc')">{{ t('search.title') }}</button>
-				<button @click="newSort('score desc')">{{ t('search.score') }}</button>
-			</div>
-		</Transition>
+		<span class="material-icons">sort</span>
+		<p ref="currentSort">{{ t('search.sortBy') }}:</p>
+
+		<button @click="newSort('title_sort_da asc')">{{ t('search.title') }}</button>
+		<button @click="newSort('score desc')">{{ t('search.score') }}</button>
 	</div>
 </template>
 
@@ -72,66 +51,33 @@ export default defineComponent({
 
 <style scoped>
 .sort {
-	position: relative;
-	min-width: 150px;
-	text-align: right;
-	padding-right: 5px;
-}
-.sort-box {
-	cursor: pointer;
-	background-color: transparent;
-	border: 0px;
-	height: 35px;
-	font-family: noway, sans-serif;
-	font-size: 16px;
-	padding: 6px 0px;
-}
-
-.sort-box.disabled {
-	pointer-events: none;
-	/* https://jxnblk.github.io/grays/ */
-	color: #767676;
-}
-
-.btn-text {
-	position: relative;
-	top: -5px;
-}
-.sort-expand {
-	top: 7px;
-	position: relative;
-	transition: all 0.3s linear 0s;
-}
-
-.sort-expand.turn {
-	transform: rotateX(180deg);
-}
-
-.sort-options {
-	z-index: 1;
-	background-color: white;
 	display: flex;
-	flex-direction: column;
-	height: auto;
-	overflow: hidden;
-	position: absolute;
-	width: 100%;
-	box-shadow:
-		rgba(0, 0, 0, 0.16) 0px 3px 6px,
-		rgba(0, 0, 0, 0.23) 0px 3px 6px;
+	align-items: center;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+.sort .material-icons {
+	color: #002e70;
+}
+
+.sort p {
+	margin: 0;
+	padding: 0;
+	color: #002e70;
+	height: 20px;
+	margin-left: 5px;
 }
 
 .sort-options button {
-	border: 0px;
-	background-color: transparent;
-	text-align: right;
 	font-size: 16px;
-	padding-right: 30px;
 	cursor: pointer;
-	margin-bottom: 5px;
-}
-
-.sort-options button:last-of-type {
-	margin-bottom: 0px;
+	border: 0px;
+	padding: 0px 7px;
+	background-color: white;
+	height: 20px;
+	text-align: center;
+	position: relative;
+	top: 1px;
 }
 </style>

@@ -3,37 +3,77 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<div class="facet-container">
-			<div class="flex-container">
-				<h2 class="headline">{{ t('search.channels') }} ({{ currentFacetNr }})</h2>
-				<div class="facet-options">
-					<TransitionGroup name="result">
-						<div
-							v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
-							:key="index + 'facet'"
-							class="checkbox"
+		<EdgedContentArea background-color="#FAFAFA">
+			<template #content>
+				<div class="time-facets-toggle">
+					<button
+						ref="timeFacetButton"
+						role="switch"
+						aria-checked="false"
+						filter-button
+						:class="timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
+						@click="toggleTimeFacets()"
+					>
+						<span class="material-icons first">today</span>
+						<span class="material-icons second">schedule</span>
+						Dato og tid
+						<span :class="timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
+							<span class="dot">
+								<TransitionGroup>
+									<div
+										v-if="timeFacetsOpen"
+										class="close"
+									></div>
+									<div
+										v-else
+										class="check"
+									></div>
+								</TransitionGroup>
+							</span>
+						</span>
+					</button>
+				</div>
+				<div
+					ref="timeFacets"
+					class="time-facets"
+				>
+					<TimeSearchFilters
+						:timeline="false"
+						:picker="true"
+						:init="false"
+						@new-search="newSearch()"
+					></TimeSearchFilters>
+				</div>
+				<div class="facet-container">
+					<div class="flex-container">
+						<CustomExpander
+							headline="Udvælg kanaler"
+							icon="ondemand_video"
+							:subline="`Alle kanaler`"
+							:fade="true"
 						>
-							<Checkbox
-								:fqkey="'creator_affiliation_facet'"
-								:title="channelFacets[index]?.title"
-								:amount="channelFacets[index]?.number.toString()"
-								:checked="filterExists('creator_affiliation_facet', channelFacets[index]?.title)"
-								:loading="searchResultStore.loading"
-							/>
-						</div>
-					</TransitionGroup>
+							<div class="facet-options">
+								<TransitionGroup name="result">
+									<div
+										v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
+										:key="index + 'facet'"
+										class="checkbox"
+									>
+										<Checkbox
+											:fqkey="'creator_affiliation_facet'"
+											:title="channelFacets[index]?.title"
+											:amount="channelFacets[index]?.number.toString()"
+											:checked="filterExists('creator_affiliation_facet', channelFacets[index]?.title)"
+											:loading="searchResultStore.loading"
+										/>
+									</div>
+								</TransitionGroup>
+							</div>
+						</CustomExpander>
+					</div>
 				</div>
-			</div>
-			<div class="flex-container">
-				<h2 class="headline">{{ t('search.relatedSubjects') }} ({{ categoryNr }})</h2>
-				<div>
-					<CategoryTags
-						:categories="categoryFacets"
-						:category-nr="categoryNr"
-					></CategoryTags>
-				</div>
-			</div>
-		</div>
+			</template>
+		</EdgedContentArea>
 	</div>
 </template>
 
@@ -41,19 +81,25 @@
 import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
-import { useRoute } from 'vue-router';
-import CategoryTags from '@/components/search/CategoryTags.vue';
+import { LocationQueryRaw, useRoute, useRouter } from 'vue-router';
+import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
 import Checkbox from '@/components/search/Checkbox.vue';
 import { filterExists, simplifyFacets } from '@/utils/filter-utils';
+import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
+import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import CustomExpander from '@/components/common/CustomExpander.vue';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
-		CategoryTags,
 		Checkbox,
+		TimeSearchFilters,
+		EdgedContentArea,
+		CustomExpander,
 	},
 
 	props: {
@@ -68,9 +114,13 @@ export default defineComponent({
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
 		const facetsContainer = ref<HTMLElement | null>(null);
+		const timeFacets = ref<HTMLElement | null>(null);
+		const timeFacetButton = ref<HTMLButtonElement | null>(null);
 		const lastUpdate = ref(0);
-		const route = useRoute();
 		const { t } = useI18n();
+		const timeFacetsOpen = ref(false);
+		const router = useRouter();
+		const route = useRoute();
 
 		onMounted(() => {
 			currentFacets.value = props.facetResults;
@@ -105,14 +155,80 @@ export default defineComponent({
 			},
 		);
 
+		const newSearch = () => {
+			let query: LocationQueryRaw = {
+				q: searchResultStore.currentQuery,
+				start: 0,
+				sort: `${encodeURIComponent('startTime asc')}`,
+			};
+			const dayString = days.value
+				.filter((day: SelectorData) => day.selected)
+				.map((day: SelectorData) => day.value)
+				.join(' OR ');
+
+			const monthString = months.value
+				.filter((month: SelectorData) => month.selected)
+				.map((month: SelectorData) => month.value)
+				.join(' OR ');
+
+			const timeslotString = timeslots.value
+				.filter((timeslot: SelectorData) => timeslot.selected)
+				.map((timeslot: SelectorData) => timeslot.value)
+				.join(' OR ');
+
+			const fqArray = [];
+			/* fqArray.push(
+				encodeURIComponent(`temporal_start_year:[${timeSliderValues.value[0] + ' TO ' + timeSliderValues.value[1]}]`),
+			); */
+			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
+			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
+			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
+
+			(query.fq = fqArray),
+				router.push({
+					name: 'Home',
+					query: query,
+				});
+		};
+
+		const toggleTimeFacets = () => {
+			if (timeFacetsOpen.value) {
+				console.log(timeFacets.value);
+				timeFacetButton.value?.setAttribute('aria-checked', 'false');
+				gsap.to(timeFacets.value, {
+					height: '0px',
+					duration: 0.5,
+					overwrite: true,
+					onComplete: () => {
+						gsap.set(timeFacets.value, {
+							display: 'none',
+						});
+					},
+				});
+			} else {
+				timeFacetButton.value?.setAttribute('aria-checked', 'true');
+				gsap.set(timeFacets.value, {
+					display: 'flex',
+					flexDirection: 'column',
+					onComplete: () => {
+						gsap.to(timeFacets.value, {
+							height: 'auto',
+							duration: 0.5,
+							overwrite: true,
+						});
+					},
+				});
+			}
+			timeFacetsOpen.value = !timeFacetsOpen.value;
+		};
+
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
 				gsap.to(facetsContainer.value, {
 					height: '0px',
 					duration: 0.5,
-					borderBottom: '0px solid transparent',
-					marginBottom: '0px',
 					overwrite: true,
+					opacity: 0,
 					onComplete: () => {
 						gsap.set(facetsContainer.value, {
 							display: 'none',
@@ -126,9 +242,8 @@ export default defineComponent({
 						gsap.to(facetsContainer.value, {
 							height: 'auto',
 							duration: 0.5,
+							opacity: 1,
 							overwrite: true,
-							marginBottom: '20px',
-							borderBottom: '1px solid rgba(230, 230, 230, 1)',
 						});
 					},
 				});
@@ -148,6 +263,11 @@ export default defineComponent({
 			route,
 			toggleFacets,
 			facetsContainer,
+			timeFacets,
+			toggleTimeFacets,
+			timeFacetsOpen,
+			newSearch,
+			timeFacetButton,
 			t,
 		};
 	},
@@ -168,6 +288,48 @@ export default defineComponent({
 	height: 0%;
 }
 
+.time-facets {
+	display: none;
+	height: 0px;
+	overflow: hidden;
+}
+
+.time-facets-toggle {
+	display: grid;
+	padding-bottom: 10px;
+}
+
+.first {
+	top: -2px;
+	position: relative;
+	left: 4px;
+}
+
+.second {
+	position: relative;
+	top: 2px;
+	left: -3px;
+}
+
+.time-facet-button {
+	cursor: pointer;
+	padding: 10px 5px;
+	font-size: 24px;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	box-shadow: 1px 1px 2px #00000000;
+	border: 1px solid #d9d8d8;
+	background: #ffffff;
+	color: #757575;
+	border-radius: 4px;
+	transition: all 0s linear 0s;
+}
+
+.time-facet-button.open {
+	color: #002e70;
+}
+
 .facet-container {
 	display: flex;
 	height: auto;
@@ -186,7 +348,8 @@ export default defineComponent({
 }
 
 .flex-container {
-	width: 50%;
+	width: 100%;
+	padding-bottom: 30px;
 }
 
 h2 {
@@ -203,32 +366,100 @@ h2 {
 
 .checkbox {
 	padding: 3px 5px;
-	flex: 0 0 50%;
+	flex: 0 0 25%;
 	box-sizing: border-box;
 }
 
-.facet-close-button {
-	border: 0px;
-	background-color: transparent;
-	font-size: 0px;
-	position: absolute;
-	top: 10px;
-	z-index: 25;
-	right: 10px;
-	cursor: pointer;
-}
 .search-facets {
-	margin-bottom: 20px;
-	z-index: 5;
-	border-bottom: 1px solid lightgrey;
+	z-index: 0;
 	box-sizing: border-box;
-	background-color: rgb(250, 250, 250);
-	overflow: hidden;
+	overflow-x: visible;
+	overflow-y: clip;
+	position: relative;
+	top: calc(-65px + -1.4vw);
+	height: 0px;
+	display: none;
+	opacity: 0;
 }
 
-@media (min-width: 800px) {
-	.facet-close-button {
-		display: none;
-	}
+.dark-bar {
+	width: 50px;
+	background-color: #d5d5d5;
+	height: 24px;
+	border-radius: 20px;
+	margin-left: 20px;
+	transition: all 0.1s linear 0s;
+}
+
+.dark-bar.open {
+	background-color: #002e70;
+}
+
+.dark-bar .dot {
+	width: 18px;
+	height: 18px;
+	display: block;
+	background-color: white;
+	border-radius: 15px;
+	top: 3px;
+	left: 3px;
+	position: relative;
+	transition: all 0.1s linear 0s;
+}
+
+.dark-bar.open .dot {
+	left: 29px;
+}
+
+.dark-bar .dot .close:before {
+	content: '';
+	display: block;
+	width: 7px;
+	height: 2px;
+	background-color: #002e70;
+	transform-origin: center;
+	transform: rotateZ(45deg);
+	top: 10px;
+	left: 2px;
+	position: relative;
+}
+.dark-bar .dot .close:after {
+	content: '';
+	display: block;
+	width: 12px;
+	height: 2px;
+	background-color: #002e70;
+	transform-origin: center;
+	transform: rotateZ(-45deg);
+	top: 6px;
+	position: relative;
+	left: 5px;
+}
+
+.dark-bar .dot .check:before {
+	content: '';
+	display: block;
+	width: 15px;
+	height: 2px;
+	background-color: #757575;
+	transform-origin: center;
+	transform: rotateZ(45deg);
+	top: 8px;
+	left: 1px;
+	position: relative;
+	border-radius: 15px;
+}
+.dark-bar .dot .check:after {
+	content: '';
+	display: block;
+	width: 15px;
+	height: 2px;
+	background-color: #757575;
+	transform-origin: center;
+	transform: rotateZ(-45deg);
+	top: 6px;
+	left: 1px;
+	position: relative;
+	border-radius: 15px;
 }
 </style>

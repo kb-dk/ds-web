@@ -32,7 +32,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
-	const showFacets = ref(true);
+	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
 
@@ -199,7 +199,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		URL.revokeObjectURL(url);
 
 		try {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			//window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(

@@ -3,7 +3,7 @@
 		:id="name + '-checkbox-' + index"
 		ref="checkboxRef"
 		type="checkbox"
-		checked
+		:checked="val"
 		@change="updateSelection"
 	/>
 	<label
@@ -93,6 +93,7 @@ export default defineComponent({
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
+	z-index: 1;
 }
 
 .checkbox input:focus + label {
@@ -101,6 +102,10 @@ export default defineComponent({
 		rgba(6, 24, 44, 0.4) 0px 0px 0px 5px,
 		rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
 		rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.checkbox.all label {
+	width: 100px;
 }
 
 .checkbox.all {
@@ -123,6 +128,8 @@ export default defineComponent({
 	width: auto;
 	transform-origin: right;
 	cursor: pointer;
+	white-space: nowrap;
+	z-index: 1;
 }
 
 .tilted {
@@ -130,10 +137,14 @@ export default defineComponent({
 }
 
 .checkbox input:checked ~ label {
-	background-color: #002e70;
-	color: white;
-	border: 1px solid transparent;
+	background-color: white;
+	color: #002e70;
+	border: 1px solid #002e70;
 	box-sizing: border-box;
+}
+
+.checkbox label:hover {
+	border: 1px solid #002e70;
 }
 
 .checkbox label .checkbox-square {

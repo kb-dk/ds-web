@@ -25,7 +25,6 @@
 							v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
 							class="search-resultset"
 						>
-							<Facets :facet-results="searchResultStore.facetResult" />
 							<SearchResults
 								:search-results="searchResultStore.searchResult"
 								:num-found="searchResultStore.numFound"
@@ -60,7 +59,6 @@ import { defineComponent, ref, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
-import Facets from '@/components/search/Facets.vue';
 import PortalContent from '@/components/common/PortalContent.vue';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
@@ -76,7 +74,6 @@ export default defineComponent({
 	components: {
 		SearchResults,
 		SearchBar,
-		Facets,
 		Pagination,
 		SearchOverhead,
 		PortalContent,
