@@ -134,7 +134,7 @@ export default defineComponent({
 }
 
 .display-option.active {
-	border-bottom: 1px solid #002e70;
+	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
 }
 

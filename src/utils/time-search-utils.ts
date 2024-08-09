@@ -1,5 +1,6 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
@@ -15,76 +16,74 @@ const getDays = (days: SelectorData[]) => {
 	return days.filter((item) => item.selected);
 };
 
+const getTimeslots = (timeslots: SelectorData[]) => {
+	return timeslots.filter((item) => item.selected);
+};
+
 const getSelectedFromArray = (array: SelectorData[]) => {
 	return array.filter((entity) => entity.selected).map((entity) => entity.value);
 };
 
-const selectionSummary = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${nrYears} ${t('timeSearch.year', nrYears)} / ${Number(nrMonths.length * nrYears)} ${t(
-		'timeSearch.month',
-		Number(nrMonths.length * nrYears),
-	)} / ${Number(nrMonths.length * nrYears * nrDays.length)} ${t(
-		'timeSearch.day',
-		Number(nrMonths.length * nrYears * nrDays.length),
-	)}`;
+const resetAllSelectorValues = (array: SelectorData[]) => {
+	array.forEach((item) => {
+		item.selected = false;
+	});
 };
 
-const showMonthSelection = (years: number[], months: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	return `${nrMonths.length} ${t('timeSearch.month', nrMonths.length)} x (${nrYears} ${t(
-		'timeSearch.year',
-		nrYears,
-	)}) = `;
-	//return nrMonths.length + ' måneder x (' + nrYears + ') = ';
+const getTimeResults = (
+	months: SelectorData[],
+	days: SelectorData[],
+	timeslots: SelectorData[],
+	timeSliderValues: number[],
+) => {
+	const timeSearchStore = useTimeSearchStore();
+	timeSearchStore.getTimeSearchResults(
+		timeSliderValues[0].toString(),
+		timeSliderValues[1].toString(),
+		getSelectedFromArray(months),
+		getSelectedFromArray(days),
+		getSelectedFromArray(timeslots),
+	);
 };
 
-const showMonthResult = (years: number[], months: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	return `${Number(nrMonths.length * nrYears)} ${t('timeSearch.month', Number(nrMonths.length * nrYears))}`;
+const getQueryStringFromArray = (array: string[], prefix: string) => {
+	let selected = '';
+	if (array.length > 0) {
+		selected = prefix;
+	}
+	array.forEach((item, index) => {
+		selected += encodeURIComponent(`${item}`);
+		if (index !== array.length - 1) {
+			selected += ' OR ';
+		}
+	});
+	if (array.length > 0) {
+		selected += ')';
+	}
+	return selected;
 };
 
-const showDaySelection = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${nrDays.length} ${t('timeSearch.day', nrDays.length)} x (${Number(nrMonths.length * nrYears)} ${t(
-		'timeSearch.month',
-		Number(nrMonths.length * nrYears),
-	)}) = `;
-};
-
-const showDayResult = (years: number[], months: SelectorData[], days: SelectorData[], t: ComposerTranslation) => {
-	const nrYears = getYears(years);
-	const nrMonths = getMonths(months);
-	const nrDays = getDays(days);
-	return `${Number(nrMonths.length * nrYears * nrDays.length)} ${t(
-		'timeSearch.day',
-		Number(nrMonths.length * nrYears * nrDays.length),
-	)}`;
-};
-
-const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-	array[index].selected = val;
-};
-
-const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-	if (val === true) {
-		array.forEach((item) => {
-			item.selected = true;
-		});
+const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {
+	if (getMonths(months).length === 0 || getMonths(months).length === 12) {
+		return `${t('timeSearch.allMonths')}`;
 	} else {
-		array.forEach((item, index) => {
-			if (index === 0) {
-				item.selected = true;
-			} else {
-				item.selected = false;
-			}
-		});
+		return `${getMonths(months).length} ${t('timeSearch.month', getMonths(months).length)}`;
+	}
+};
+
+const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
+	if (getDays(days).length === 0 || getDays(days).length === 7) {
+		return `${t('timeSearch.allDays')}`;
+	} else {
+		return `${getDays(days).length} ${t('timeSearch.day', getDays(days).length)}`;
+	}
+};
+
+const getSublineForTimeslots = (timeslots: SelectorData[], t: ComposerTranslation) => {
+	if (getTimeslots(timeslots).length === 0 || getTimeslots(timeslots).length === 4) {
+		return `${t('timeSearch.allTimeslots')}`;
+	} else {
+		return `${getTimeslots(timeslots).length} ${t('timeSearch.timePeriods', getTimeslots(timeslots).length)}`;
 	}
 };
 
@@ -92,12 +91,12 @@ export {
 	getYears,
 	getMonths,
 	getDays,
-	selectionSummary,
-	showMonthSelection,
-	showMonthResult,
-	showDaySelection,
-	showDayResult,
-	updateCheckbox,
-	updateAllCheckbox,
 	getSelectedFromArray,
+	getTimeResults,
+	getQueryStringFromArray,
+	getTimeslots,
+	resetAllSelectorValues,
+	getSublineForMonths,
+	getSublineForDays,
+	getSublineForTimeslots,
 };

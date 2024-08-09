@@ -81,8 +81,8 @@ export default defineComponent({
 			}
 			if (props.padding) {
 				activeClasses += ' padding';
-				return activeClasses;
 			}
+			return activeClasses;
 		};
 
 		return { itemSliderRef, move, setSliderClasses };
@@ -112,7 +112,7 @@ export default defineComponent({
 }
 
 .item-slider.white-scrollbar::-webkit-scrollbar-track {
-	background-color: #ffffff;
+	background-color: #ffffff00;
 }
 
 .item-slider.white-scrollbar::-webkit-scrollbar-thumb {
