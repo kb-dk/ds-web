@@ -102,10 +102,6 @@ export default defineComponent({
 			}
 		});
 
-		onUnmounted(() => {
-			console.log('unmounted');
-		});
-
 		return { expanderOpen, toggleExpander, expandContainer };
 	},
 });
@@ -225,6 +221,7 @@ export default defineComponent({
 }
 
 .toggle-button {
+	z-index: 5;
 	border: 0px solid transparent;
 	cursor: pointer;
 	background-color: transparent;

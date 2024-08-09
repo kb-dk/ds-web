@@ -48,7 +48,6 @@ export default defineComponent({
 
 		const dispatchClick = () => {
 			props.click !== undefined ? props.click() : null;
-			console.log('YEP');
 		};
 
 		return { t, dispatchClick };
