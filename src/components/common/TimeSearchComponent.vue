@@ -3,6 +3,7 @@
 		<template #content>
 			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
 			<TimeSearchFilters
+				:timeline="true"
 				:init="true"
 				@new-search="getTimeResults(months, days, timeslots, timeSliderValues)"
 			></TimeSearchFilters>

@@ -63,6 +63,7 @@ export default defineComponent({
 	font-size: 60px;
 	overflow: hidden;
 	color: #002e70;
+	padding-right: 10px;
 }
 
 h3 {

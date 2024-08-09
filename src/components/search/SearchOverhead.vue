@@ -10,19 +10,26 @@
 							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
 						/>
 					</div>
-					<Sort v-if="searchResultStore.searchResult.length > 0" />
+					<!-- <Sort v-if="searchResultStore.searchResult.length > 0" /> -->
 				</div>
 				<div class="filter-options">
 					<button
 						v-if="searchResultStore.searchResult.length > 0"
+						ref="toggleFacetsButton"
+						role="switch"
+						aria-checked="true"
 						class="filter-button"
-						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+						@click="toggleFacets()"
 					>
 						<span class="material-icons">tune</span>
 						<span class="filter-button-text">
-							{{ showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
+							{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
 						</span>
 					</button>
+				</div>
+				<Facets :facet-results="searchResultStore.facetResult" />
+				<div class="sort-options">
+					<Sort></Sort>
 					<div class="search-options">
 						<Transition name="fade">
 							<div
@@ -75,10 +82,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import Facets from '@/components/search/Facets.vue';
 
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
@@ -86,8 +94,9 @@ import HitCount from './HitCount.vue';
 export default defineComponent({
 	name: 'SearchOverhead',
 	components: {
-		Sort,
 		HitCount,
+		Sort,
+		Facets,
 	},
 	props: {
 		showFacets: { type: Boolean },
@@ -98,6 +107,12 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 		const { t } = useI18n();
+		const toggleFacetsButton = ref<HTMLButtonElement | null>(null);
+
+		const toggleFacets = () => {
+			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
+			toggleFacetsButton.value?.setAttribute('aria-checked', searchResultStore.showFacets.toString());
+		};
 
 		const setGridAndLoadResults = (grid: boolean) => {
 			if (searchResultStore.resultGrid !== grid) {
@@ -110,7 +125,7 @@ export default defineComponent({
 			}
 		};
 
-		return { searchResultStore, setGridAndLoadResults, t };
+		return { searchResultStore, setGridAndLoadResults, t, toggleFacets, toggleFacetsButton };
 	},
 });
 </script>
@@ -160,6 +175,11 @@ export default defineComponent({
 	justify-content: flex-end;
 }
 
+.sort-options {
+	display: flex;
+	justify-content: space-between;
+}
+
 .filter-options {
 	display: flex;
 	flex-wrap: wrap;
@@ -191,13 +211,19 @@ export default defineComponent({
 .filter-button {
 	border: 0px;
 	background-color: transparent;
-	height: 24px;
 	line-height: 24px;
 	cursor: pointer;
-	padding: 0;
+	padding: 10px 10px;
 	margin: 10px 0px;
 	margin-right: auto;
 	margin-left: 0;
+	background-color: #002e70;
+	color: white;
+	box-shadow:
+		inset 1px 1px 2px #00000000,
+		1px 1px 2px #00000029;
+	border-radius: 4px;
+	z-index: 1;
 }
 
 .filter-button .material-icons {

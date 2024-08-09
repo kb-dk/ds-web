@@ -8,7 +8,7 @@
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
-			class="expander"
+			:class="fade ? 'expander fade' : 'expander'"
 		>
 			<slot></slot>
 		</div>
@@ -48,23 +48,29 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: true,
 		},
+		fade: {
+			type: Boolean as PropType<boolean>,
+			required: false,
+			default: false,
+		},
 	},
 
-	setup() {
+	setup(props) {
 		const expanderOpen = ref(false);
 		const expandContainer = ref<HTMLElement | null>(null);
 
 		const toggleExpander = () => {
+			console.log(props.fade);
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
-					height: '0px',
+					height: props.fade ? '65px' : '0px',
 					duration: 0.5,
 					overwrite: true,
 					paddingBottom: '0px',
-					opacity: 0,
+					opacity: props.fade ? 1 : 0,
 					onComplete: () => {
 						gsap.set(expandContainer.value, {
-							display: 'none',
+							display: props.fade ? 'block' : 'none',
 							overwrite: true,
 						});
 					},
@@ -89,6 +95,11 @@ export default defineComponent({
 
 		onMounted(() => {
 			console.log('mounted');
+			if (expandContainer.value !== null) {
+				props.fade ? (expandContainer.value.style.opacity = '1') : null;
+				props.fade ? (expandContainer.value.style.height = '65px') : null;
+				props.fade ? (expandContainer.value.style.display = 'block') : null;
+			}
 		});
 
 		onUnmounted(() => {
@@ -153,6 +164,7 @@ export default defineComponent({
 	display: block;
 	width: 100%;
 	height: 1px;
+	margin-top: 1px;
 }
 
 .expand-container:after {
@@ -179,6 +191,25 @@ export default defineComponent({
 	width: 100%;
 	opacity: 0;
 	display: none;
+	position: relative;
+}
+
+.expand-container .expander.fade:before {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 30px;
+	background: linear-gradient(0deg, rgba(250, 250, 250, 1) 50%, rgba(255, 255, 255, 0) 100%);
+	position: absolute;
+	margin-top: 35px;
+	z-index: 1;
+	transition: all 0.1s linear 0.3s;
+	opacity: 1;
+}
+
+.expand-container.open .expander.fade:before {
+	opacity: 0;
+	transition: all 0.1s linear 0s;
 }
 
 .expander-toggle {
@@ -218,9 +249,7 @@ export default defineComponent({
 	border-left: 15px solid transparent;
 	border-right: 15px solid transparent;
 	border-bottom: 10px solid #0a2e70;
-	position: absolute;
-	margin-left: -5px;
-	margin-top: -40px;
+	position: relative;
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
 	transform-origin: bottom;
@@ -238,9 +267,7 @@ export default defineComponent({
 	border-left: 15px solid transparent;
 	border-right: 15px solid transparent;
 	border-top: 10px solid #0a2e70;
-	position: absolute;
-	margin-left: -5px;
-	margin-top: 40px;
+	position: relative;
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;

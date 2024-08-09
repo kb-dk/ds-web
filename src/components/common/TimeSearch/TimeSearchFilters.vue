@@ -1,5 +1,8 @@
 <template>
-	<div class="slider-container">
+	<div
+		v-if="timeline"
+		class="slider-container"
+	>
 		<div class="data-size">{{ $t('timeSearch.data') }}:</div>
 		<div class="to-from-container">
 			{{ $t('timeSearch.from') }}:
@@ -35,6 +38,18 @@
 				></VueSlider>
 			</Transition>
 		</div>
+	</div>
+	<div
+		v-if="picker"
+		class="picker-container"
+	>
+		<CustomExpander
+			headline="Vælg dato via kalender"
+			icon="event"
+			:subline="`Alle år i arkivet`"
+		>
+			<div class="picker-background"><DatePicker></DatePicker></div>
+		</CustomExpander>
 	</div>
 	<div class="time-selection">
 		<div class="month-selector-expanding">
@@ -194,6 +209,7 @@ import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
+import DatePicker from '@/components/common/TimeSearch/DatePicker.vue';
 import {
 	getTimeResults,
 	resetAllSelectorValues,
@@ -209,10 +225,23 @@ export default defineComponent({
 		CustomTimelineCheckbox,
 		VueSlider,
 		CustomExpander,
+		DatePicker,
 	},
 
 	props: {
 		init: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		timeline: {
+			type: Boolean,
+			default() {
+				return true;
+			},
+		},
+		picker: {
 			type: Boolean,
 			default() {
 				return false;
@@ -227,6 +256,7 @@ export default defineComponent({
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
+
 		onMounted(() => {
 			if (props.init) {
 				resetAllSelectorValues(months.value);
@@ -235,37 +265,39 @@ export default defineComponent({
 				timeSliderValues.value = [1992, 1992];
 				getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
 			}
-			APIService.getFullResultWithFacets().then((reponse) => {
-				const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
-				const sortedResults = [] as dataItem[];
-				resultsInYears.forEach((item, index) => {
-					if (index % 2 === 0) {
-						let nextResult = {
-							year: item,
-							items: Number(resultsInYears[index + 1]),
+			if (props.timeline) {
+				APIService.getFullResultWithFacets().then((reponse) => {
+					const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
+					const sortedResults = [] as dataItem[];
+					resultsInYears.forEach((item, index) => {
+						if (index % 2 === 0) {
+							let nextResult = {
+								year: item,
+								items: Number(resultsInYears[index + 1]),
+							};
+							sortedResults.push(nextResult);
+						}
+					});
+					sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+					const startYear = Number(sortedResults[0].year);
+					const endYear = Number(sortedResults[sortedResults.length - 1].year);
+					for (let i = startYear; i <= endYear; i++) {
+						selectYears.value.push(i.toString());
+						data.value.push({ key: i, value: i });
+						let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+							year: i.toString(),
+							items: 0,
 						};
-						sortedResults.push(nextResult);
+						item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
+						item.y = item.items;
+						fullYearArray.value.push(item);
+					}
+					const svgElement = createSVGCurvedLine(fullYearArray.value);
+					if (dataContainer.value) {
+						dataContainer.value.appendChild(svgElement);
 					}
 				});
-				sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-				const startYear = Number(sortedResults[0].year);
-				const endYear = Number(sortedResults[sortedResults.length - 1].year);
-				for (let i = startYear; i <= endYear; i++) {
-					selectYears.value.push(i.toString());
-					data.value.push({ key: i, value: i });
-					let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-						year: i.toString(),
-						items: 0,
-					};
-					item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
-					item.y = item.items;
-					fullYearArray.value.push(item);
-				}
-				const svgElement = createSVGCurvedLine(fullYearArray.value);
-				if (dataContainer.value) {
-					dataContainer.value.appendChild(svgElement);
-				}
-			});
+			}
 		});
 
 		const emitNewSearch = () => {
@@ -573,6 +605,10 @@ h3 .bold,
 	pointer-events: none;
 }
 
+.picker-container {
+	margin-bottom: 45px;
+}
+
 .overall-selector {
 	user-select: none;
 	display: flex;
@@ -729,6 +765,10 @@ h3 .bold,
 	background-color: transparent;
 	border-bottom: 2px solid #002e70;
 	color: #002e70;
+}
+
+.picker-background {
+	background-color: #d9f5fe;
 }
 
 .data-container {
