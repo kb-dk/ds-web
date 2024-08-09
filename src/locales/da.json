@@ -38,6 +38,9 @@
       "allDays":"alle udedage i perioden",
       "allTimeslots":"hele døgnet",
       "selection":"Et udpluk af resultaterne",
+      "monthHeadline":"Udvælg måneder",
+      "dayHeadline":"Udvælg udedage",
+      "timeslotHeadline":"Udvælg tidspunkter",
       "months": {
          "january": "januar",
          "february": "februar",

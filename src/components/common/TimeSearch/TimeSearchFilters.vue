@@ -39,7 +39,7 @@
 	<div class="time-selection">
 		<div class="month-selector-expanding">
 			<CustomExpander
-				headline="Udvælg måneder"
+				:headline="t('timeSearch.monthHeadline')"
 				icon="event"
 				:subline="getSublineForMonths(months, t)"
 			>
@@ -89,7 +89,7 @@
 		<div class="overall-selector">
 			<div class="select-container days">
 				<CustomExpander
-					headline="Udvælg ugedage"
+					:headline="t('timeSearch.dayHeadline')"
 					icon="date_range"
 					:subline="getSublineForDays(days, t)"
 				>
@@ -132,7 +132,7 @@
 			</div>
 			<div class="select-container select-time">
 				<CustomExpander
-					headline="Udvælg tidspunkt"
+					:headline="t('timeSearch.timeslotHeadline')"
 					icon="schedule"
 					:subline="getSublineForTimeslots(timeslots, t)"
 				>

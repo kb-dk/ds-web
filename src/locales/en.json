@@ -38,6 +38,9 @@
       "allDays":"all weekdays in the period",
       "allTimeslots":"all hours",
       "selection":"A selection of the results",
+      "monthHeadline":"Choose months",
+      "dayHeadline":"Choose weekdays",
+      "timeslotHeadline":"Choose timeslots",
       "months": {
          "january": "January",
          "february": "February",
