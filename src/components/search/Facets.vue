@@ -41,7 +41,7 @@
 						:timeline="false"
 						:picker="true"
 						:init="false"
-						@new-search="newSearch()"
+						@new-search="newSearch(true)"
 					></TimeSearchFilters>
 				</div>
 				<div class="facet-container">
@@ -89,7 +89,7 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { months, days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 
@@ -109,7 +109,7 @@ export default defineComponent({
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
 		const currentFacets = ref(Object as unknown as FacetResultType);
-		const currentFacetNr = ref(10);
+		const currentFacetNr = ref(16);
 		const channelFacets = ref([] as FacetPair[]);
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
@@ -126,7 +126,7 @@ export default defineComponent({
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation_facet']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
-			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 10) : 10;
+			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 16) : 16;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
 
 			watch(
@@ -140,7 +140,7 @@ export default defineComponent({
 						currentFacets.value = newFacets;
 						channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
 						categoryFacets.value = simplifyFacets(newFacets['categories']);
-						currentFacetNr.value = searchResultStore.loading ? 10 : Math.min(channelFacets.value.length, 10);
+						currentFacetNr.value = searchResultStore.loading ? 16 : Math.min(channelFacets.value.length, 16);
 						categoryNr.value = Number(categoryFacets.value.length);
 						lastUpdate.value = new Date().getTime();
 					}
@@ -155,11 +155,10 @@ export default defineComponent({
 			},
 		);
 
-		const newSearch = () => {
+		const newSearch = (yearSearch: boolean) => {
 			let query: LocationQueryRaw = {
 				q: searchResultStore.currentQuery,
 				start: 0,
-				sort: `${encodeURIComponent('startTime asc')}`,
 			};
 			const dayString = days.value
 				.filter((day: SelectorData) => day.selected)
@@ -177,9 +176,12 @@ export default defineComponent({
 				.join(' OR ');
 
 			const fqArray = [];
-			/* fqArray.push(
-				encodeURIComponent(`temporal_start_year:[${timeSliderValues.value[0] + ' TO ' + timeSliderValues.value[1]}]`),
-			); */
+
+			if (yearSearch) {
+				fqArray.push(
+					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
+				);
+			}
 			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
 			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;

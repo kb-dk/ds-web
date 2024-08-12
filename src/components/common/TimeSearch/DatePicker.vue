@@ -1,8 +1,7 @@
 <template>
-	<!-- <button @click="resetDays()">reset</button>-->
 	<div class="date-pickers">
 		<VueDatePicker
-			v-model="date1"
+			v-model="startDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
 			auto-apply
@@ -10,11 +9,11 @@
 			:highlight="highlightedDays"
 			text-input
 			:format="format"
-			:max-date="date2"
 			six-weeks="fair"
+			@update:model-value="newSearch()"
 		></VueDatePicker>
 		<VueDatePicker
-			v-model="date2"
+			v-model="endDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
 			auto-apply
@@ -22,20 +21,20 @@
 			:highlight="highlightedDays"
 			text-input
 			:format="format"
-			:min-date="date1"
 			six-weeks="fair"
+			@update:model-value="newSearch()"
 		></VueDatePicker>
 		<div class="from-to-display">
 			<div class="container">
 				<span>Fra:</span>
 				<div class="time">
-					{{ format(date1) }}
+					{{ format(startDate) }}
 				</div>
 			</div>
 			<div class="container">
 				<span>Til:</span>
 				<div class="time">
-					{{ format(date2) /*date2.toISOString()*/ }}
+					{{ format(endDate) /*date2.toISOString()*/ }}
 				</div>
 			</div>
 		</div>
@@ -43,24 +42,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { defineComponent, computed } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/components/common/TimeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
+import { startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'DatePicker',
 	components: {
 		VueDatePicker,
 	},
-	setup() {
-		const { t } = useI18n();
-
-		const date1 = ref(new Date());
-		const date2 = ref(new Date());
-
+	emits: ['spanUpdated'],
+	setup(props, { emit }) {
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
@@ -69,33 +64,26 @@ export default defineComponent({
 			return `${day} / ${month} / ${year}`;
 		};
 
-		onMounted(() => {
-			resetDays();
-		});
+		const newSearch = () => {
+			emit('spanUpdated');
+		};
 
 		const highlightedDays = computed((): Date[] => {
-			const timeDifference = date2.value.getTime() - date1.value.getTime();
+			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 			const highlights = [];
 			for (let i = 0; i < days; i++) {
-				highlights.push(addDays(date1.value, i));
+				highlights.push(addDays(startDate.value, i));
 			}
 			return highlights;
 		});
 
-		const resetDays = () => {
-			date1.value = new Date();
-			date1.value.setHours(0, 0, 0, 0);
-			date2.value = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-			date2.value.setHours(23, 59, 59, 999);
-		};
-
 		return {
-			date1,
-			date2,
+			startDate,
+			endDate,
 			format,
 			highlightedDays,
-			resetDays,
+			newSearch,
 		};
 	},
 });

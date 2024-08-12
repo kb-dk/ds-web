@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="timeline"
+		v-show="timeline"
 		class="slider-container"
 	>
 		<div class="data-size">{{ $t('timeSearch.data') }}:</div>
@@ -40,15 +40,16 @@
 		</div>
 	</div>
 	<div
-		v-if="picker"
+		v-show="picker"
 		class="picker-container"
 	>
 		<CustomExpander
+			ref="yearSearch"
 			headline="Vælg dato via kalender"
 			icon="event"
 			:subline="`Alle år i arkivet`"
 		>
-			<div class="picker-background"><DatePicker></DatePicker></div>
+			<div class="picker-background"><DatePicker @span-updated="emitNewSearch()"></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
@@ -197,13 +198,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref } from 'vue';
+import { defineComponent, onMounted, computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 import ItemSlider from '@/components/search/ItemSlider.vue';
 import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
-import { timeSliderValues, months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import {
+	timeSliderValues,
+	months,
+	days,
+	timeslots,
+	startDate,
+	endDate,
+} from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
@@ -238,7 +246,7 @@ export default defineComponent({
 		timeline: {
 			type: Boolean,
 			default() {
-				return true;
+				return false;
 			},
 		},
 		picker: {
@@ -256,6 +264,7 @@ export default defineComponent({
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
+		const yearSearch = ref<typeof CustomExpander>();
 
 		onMounted(() => {
 			if (props.init) {
@@ -263,7 +272,12 @@ export default defineComponent({
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = [1992, 1992];
-				getTimeResults(months.value, days.value, timeslots.value, timeSliderValues.value);
+				startDate.value.setFullYear(1992, 0, 1);
+				startDate.value.setHours(0, 0, 0, 0);
+
+				endDate.value.setFullYear(1992, 11, 31);
+				endDate.value.setHours(23, 59, 59, 999);
+				getTimeResults(true);
 			}
 			if (props.timeline) {
 				APIService.getFullResultWithFacets().then((reponse) => {
@@ -301,21 +315,32 @@ export default defineComponent({
 		});
 
 		const emitNewSearch = () => {
-			emit('newSearch', months.value, days.value, timeslots.value, timeSliderValues.value);
+			if (yearSearch.value && yearSearch.value.expanderOpen) {
+				if (props.timeline) {
+					startDate.value.setFullYear(timeSliderValues.value[0]);
+					endDate.value.setFullYear(timeSliderValues.value[1]);
+				}
+				emit('newSearch', true);
+			}
+			emit('newSearch', false);
 		};
 
 		const updateStartYear = (val: number) => {
 			timeSliderValues.value[0] = Number(val);
+			startDate.value.setFullYear(val);
 			if (Number(val) > timeSliderValues.value[1]) {
 				timeSliderValues.value[1] = Number(val);
+				endDate.value.setFullYear(val);
 			}
 			emitNewSearch();
 		};
 
 		const updateEndYear = (val: number) => {
+			endDate.value.setFullYear(val);
 			timeSliderValues.value[1] = Number(val);
 			if (Number(val) < timeSliderValues.value[0]) {
 				timeSliderValues.value[0] = Number(val);
+				startDate.value.setFullYear(val);
 			}
 			emitNewSearch();
 		};
@@ -370,6 +395,7 @@ export default defineComponent({
 			getSublineForMonths,
 			getSublineForDays,
 			getSublineForTimeslots,
+			yearSearch,
 		};
 	},
 });

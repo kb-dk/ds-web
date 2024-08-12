@@ -6,6 +6,14 @@
 			@change="updated($event)"
 		>
 			<option
+				value=""
+				disabled
+				selected
+				hidden
+			>
+				1992
+			</option>
+			<option
 				v-for="(item, index) in listItems"
 				:key="index"
 				class="single-entry"

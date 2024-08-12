@@ -13,3 +13,7 @@
 	background-color:#d9f5fe;
 	color:black;
 }
+
+.dp__cell_inner {
+	border-radius:0px;
+}

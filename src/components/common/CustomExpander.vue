@@ -60,7 +60,6 @@ export default defineComponent({
 		const expandContainer = ref<HTMLElement | null>(null);
 
 		const toggleExpander = () => {
-			console.log(props.fade);
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
 					height: props.fade ? '65px' : '0px',
@@ -114,6 +113,8 @@ export default defineComponent({
 }
 
 .expand-container {
+	z-index: 1;
+	position: relative;
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;

@@ -66,4 +66,8 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style>
+.time-search {
+	margin-bottom: 40px;
+}
+</style>

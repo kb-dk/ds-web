@@ -3,6 +3,9 @@ import { ref } from 'vue';
 
 const timeSliderValues = ref<number[]>([1992, 1992]);
 
+const startDate = ref<Date>(new Date(1992, 0, 1, 0, 0, 0)); // January 1, 1992, 00:00:00
+const endDate = ref<Date>(new Date(1992, 11, 31, 23, 59, 59)); // December 31, 1992, 23:59:59
+
 const days = ref<SelectorData[]>([
 	{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: false },
 	{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: false },
@@ -34,4 +37,4 @@ const months = ref<SelectorData[]>([
 	{ name: 'timeSearch.months.december', value: '12', selected: false },
 ]);
 
-export { timeSliderValues, months, days, timeslots };
+export { timeSliderValues, months, days, timeslots, startDate, endDate };
