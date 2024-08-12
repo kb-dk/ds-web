@@ -181,6 +181,8 @@ export default defineComponent({
 			}
 			if (searchResultStore.sort !== '') {
 				query.sort = searchResultStore.sort;
+			} else {
+				query.sort = encodeURIComponent(`score desc`);
 			}
 
 			router.push({

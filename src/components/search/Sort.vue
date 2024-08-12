@@ -2,18 +2,17 @@
 	<div class="sort">
 		<span class="material-icons">sort</span>
 		<p ref="currentSort">{{ t('search.sortBy') }}:</p>
-
-		<button
-			ref="titleRef"
-			@click="newSort('title_sort_da asc')"
-		>
-			{{ 'titel' }}
-		</button>
 		<button
 			ref="relevanceRef"
 			@click="newSort('score desc')"
 		>
 			{{ 'relevans' }}
+		</button>
+		<button
+			ref="titleRef"
+			@click="newSort('title_sort_da asc')"
+		>
+			{{ 'titel' }}
 		</button>
 		<button
 			ref="timeRef"
@@ -49,10 +48,11 @@ export default defineComponent({
 		};
 
 		watch(
-			() => route.query.sort as string | undefined,
+			() => route,
 			(newSortValue) => {
-				setCurrentActive(newSortValue);
+				setCurrentActive(newSortValue.query.sort as string);
 			},
+			{ deep: true },
 		);
 
 		const setCurrentActive = (active: string | undefined) => {
@@ -66,6 +66,8 @@ export default defineComponent({
 				decodeURIComponent(active) === 'startTime asc'
 					? timeRef.value?.classList.add('active')
 					: timeRef.value?.classList.remove('active');
+			} else {
+				relevanceRef.value?.classList.add('active');
 			}
 		};
 
@@ -81,8 +83,11 @@ export default defineComponent({
 		onMounted(() => {
 			if (route.query.sort) {
 				const sortingValue = route.query.sort as string;
-				searchResultStore.setSortValue(sortingValue.split('%20')[0]);
+				searchResultStore.setSortValue(decodeURIComponent(sortingValue));
 				setCurrentActive(route.query.sort as string);
+			} else {
+				setCurrentActive(route.query.sort as string);
+				searchResultStore.setSortValue('score desc');
 			}
 		});
 

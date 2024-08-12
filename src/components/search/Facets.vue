@@ -159,6 +159,7 @@ export default defineComponent({
 			let query: LocationQueryRaw = {
 				q: searchResultStore.currentQuery,
 				start: 0,
+				sort: yearSearch ? 'startTime asc' : '',
 			};
 			const dayString = days.value
 				.filter((day: SelectorData) => day.selected)
