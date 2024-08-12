@@ -3,13 +3,29 @@
 		<span class="material-icons">sort</span>
 		<p ref="currentSort">{{ t('search.sortBy') }}:</p>
 
-		<button @click="newSort('title_sort_da asc')">{{ t('search.title') }}</button>
-		<button @click="newSort('score desc')">{{ t('search.score') }}</button>
+		<button
+			ref="titleRef"
+			@click="newSort('title_sort_da asc')"
+		>
+			{{ 'titel' }}
+		</button>
+		<button
+			ref="relevanceRef"
+			@click="newSort('score desc')"
+		>
+			{{ 'relevans' }}
+		</button>
+		<button
+			ref="timeRef"
+			@click="newSort('startTime asc')"
+		>
+			{{ 'dato' }}
+		</button>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
@@ -24,8 +40,33 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 
+		const titleRef = ref<HTMLElement | null>();
+		const relevanceRef = ref<HTMLElement | null>();
+		const timeRef = ref<HTMLElement | null>();
+
 		const revealSortingOptions = () => {
 			showSortingOptions.value = !showSortingOptions.value;
+		};
+
+		watch(
+			() => route.query.sort as string | undefined,
+			(newSortValue) => {
+				setCurrentActive(newSortValue);
+			},
+		);
+
+		const setCurrentActive = (active: string | undefined) => {
+			if (active) {
+				decodeURIComponent(active) === 'title_sort_da asc'
+					? titleRef.value?.classList.add('active')
+					: titleRef.value?.classList.remove('active');
+				decodeURIComponent(active) === 'score desc'
+					? relevanceRef.value?.classList.add('active')
+					: relevanceRef.value?.classList.remove('active');
+				decodeURIComponent(active) === 'startTime asc'
+					? timeRef.value?.classList.add('active')
+					: timeRef.value?.classList.remove('active');
+			}
 		};
 
 		const newSort = (sortValue: string) => {
@@ -41,10 +82,11 @@ export default defineComponent({
 			if (route.query.sort) {
 				const sortingValue = route.query.sort as string;
 				searchResultStore.setSortValue(sortingValue.split('%20')[0]);
+				setCurrentActive(route.query.sort as string);
 			}
 		});
 
-		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t };
+		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t, titleRef, relevanceRef, timeRef };
 	},
 });
 </script>
@@ -55,6 +97,11 @@ export default defineComponent({
 	align-items: center;
 	padding-bottom: 20px;
 	padding-top: 20px;
+}
+
+.sort .active {
+	border-bottom: 2px solid #002e70;
+	box-sizing: border-box;
 }
 
 .sort .material-icons {
@@ -73,11 +120,13 @@ export default defineComponent({
 	font-size: 16px;
 	cursor: pointer;
 	border: 0px;
-	padding: 0px 7px;
+	margin: 0px 7px;
 	background-color: white;
 	height: 20px;
 	text-align: center;
 	position: relative;
 	top: 1px;
+	padding: 0px;
+	border-bottom: 2px solid transparent;
 }
 </style>
