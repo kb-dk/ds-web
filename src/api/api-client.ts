@@ -81,11 +81,11 @@ export class APIServiceClient {
 		timeslots: string,
 		uuid: string,
 	): Promise<APISearchResponseType> {
-		const timeConstraint = encodeURIComponent(`[${start} TO ${end}]`);
+		const timeConstraint = `&fq=temporal_start_year:${encodeURIComponent(`[${start} TO ${end}]`)}`;
 		return await this.httpClient.get(
 			`search/?q=${encodeURIComponent(
 				'*:*',
-			)}&facet=false&queryUUID=${uuid}&fq=temporal_start_year:${timeConstraint}&rows=8${months}${days}${timeslots}`,
+			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=startTime asc`,
 		);
 	}
 

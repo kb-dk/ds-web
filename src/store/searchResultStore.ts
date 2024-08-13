@@ -9,7 +9,9 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
-
+import { months, days, timeslots, timeSliderValues } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { getQueryStringFromArray, getSelectedFromArray } from '@/utils/time-search-utils';
+import { SelectorData } from '@/types/TimeSearchTypes';
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
 	let comparisonSearchUUID = '';
@@ -199,7 +201,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		URL.revokeObjectURL(url);
 
 		try {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			//window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
 			const responseData = await APIService.getSearchResults(
