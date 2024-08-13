@@ -6,19 +6,19 @@
 			ref="relevanceRef"
 			@click="newSort('score desc')"
 		>
-			{{ 'relevans' }}
+			{{ t('search.relevance') }}
 		</button>
 		<button
 			ref="titleRef"
 			@click="newSort('title_sort_da asc')"
 		>
-			{{ 'titel' }}
+			{{ t('search.title') }}
 		</button>
 		<button
 			ref="timeRef"
 			@click="newSort('startTime asc')"
 		>
-			{{ 'dato' }}
+			{{ t('search.date') }}
 		</button>
 	</div>
 </template>
