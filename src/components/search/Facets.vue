@@ -129,15 +129,6 @@ export default defineComponent({
 			},
 		);
 
-		/* 		watch(
-			[months, days, timeslots, timeSliderValues],
-			() => {
-				console.log('SOMETGING HAPPENED');
-				searchResultStore.getSearchResults(searchResultStore.currentQuery, true);
-			},
-			{ deep: true },
-		); */
-
 		const newSearch = () => {
 			let query: LocationQueryRaw = {
 				q: searchResultStore.currentQuery,
