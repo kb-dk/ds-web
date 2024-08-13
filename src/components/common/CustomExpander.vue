@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-import { onUnmounted } from 'vue';
 import { defineComponent, onMounted, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import TimelineHeadline from '@/components/common/TimelineHeadline.vue';
