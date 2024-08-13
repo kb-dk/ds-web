@@ -41,6 +41,7 @@
       "monthHeadline":"Udvælg måneder",
       "dayHeadline":"Udvælg udedage",
       "timeslotHeadline":"Udvælg tidspunkter",
+      "yearHeadline":"Vælg dato via kalender",
       "months": {
          "january": "januar",
          "february": "februar",

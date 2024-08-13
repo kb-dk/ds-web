@@ -45,9 +45,9 @@
 	>
 		<CustomExpander
 			ref="yearSearch"
-			headline="Vælg dato via kalender"
+			:headline="t('timeSearch.yearHeadline')"
 			icon="event"
-			:subline="`Alle år i arkivet`"
+			:subline="getSublineForYears(startDate, endDate, t)"
 		>
 			<div class="picker-background"><DatePicker @span-updated="emitNewSearch()"></DatePicker></div>
 		</CustomExpander>
@@ -198,7 +198,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref, watch } from 'vue';
+import { defineComponent, onMounted, computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
@@ -224,6 +224,7 @@ import {
 	getSublineForMonths,
 	getSublineForDays,
 	getSublineForTimeslots,
+	getSublineForYears,
 } from '@/utils/time-search-utils';
 export default defineComponent({
 	name: 'TimeSearchFilters',
@@ -382,6 +383,8 @@ export default defineComponent({
 			days,
 			timeslots,
 			timeSliderValues,
+			startDate,
+			endDate,
 			data,
 			selectYears,
 			updateCheckbox,
@@ -397,6 +400,7 @@ export default defineComponent({
 			getSublineForDays,
 			getSublineForTimeslots,
 			yearSearch,
+			getSublineForYears,
 		};
 	},
 });

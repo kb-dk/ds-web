@@ -41,6 +41,7 @@
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
+      "yearHeadline":"Choose dates via calendar",
       "months": {
          "january": "January",
          "february": "February",

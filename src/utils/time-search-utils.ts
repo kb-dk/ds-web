@@ -59,6 +59,23 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 	return selected;
 };
 
+const getSublineForYears = (startDate: Date, endDate: Date, t: ComposerTranslation) => {
+	const startYear = startDate.getFullYear();
+	const endYear = endDate.getFullYear();
+
+	let yearsDifference = endYear - startYear + 1;
+
+	const isBeforeStartDate =
+		endDate.getMonth() < startDate.getMonth() ||
+		(endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+
+	if (isBeforeStartDate) {
+		yearsDifference--;
+	}
+
+	return `${yearsDifference} ${t('timeSearch.year', yearsDifference)}`;
+};
+
 const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {
 	if (getMonths(months).length === 0 || getMonths(months).length === 12) {
 		return `${t('timeSearch.allMonths')}`;
@@ -95,4 +112,5 @@ export {
 	getSublineForMonths,
 	getSublineForDays,
 	getSublineForTimeslots,
+	getSublineForYears,
 };
