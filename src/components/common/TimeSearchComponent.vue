@@ -130,6 +130,7 @@ export default defineComponent({
 		);
 
 		const updateLink = () => {
+			console.log('link update!');
 			const dayString = days.value
 				.filter((day: SelectorData) => day.selected)
 				.map((day: SelectorData) => day.value)

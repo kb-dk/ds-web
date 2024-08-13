@@ -32,6 +32,12 @@
 							</span>
 						</span>
 					</button>
+					<button
+						class="reset"
+						@click="resetFilters()"
+					>
+						Ryd filtre
+					</button>
 				</div>
 				<div
 					ref="timeFacets"
@@ -155,6 +161,13 @@ export default defineComponent({
 			},
 		);
 
+		const resetFilters = () => {
+			router.push({
+				name: 'Home',
+				query: { q: searchResultStore.currentQuery },
+			});
+		};
+
 		const newSearch = (yearSearch: boolean) => {
 			let query: LocationQueryRaw = {
 				q: searchResultStore.currentQuery,
@@ -271,6 +284,7 @@ export default defineComponent({
 			timeFacetsOpen,
 			newSearch,
 			timeFacetButton,
+			resetFilters,
 			t,
 		};
 	},
@@ -298,8 +312,10 @@ export default defineComponent({
 }
 
 .time-facets-toggle {
-	display: grid;
+	display: flex;
 	padding-bottom: 10px;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .first {
@@ -365,6 +381,21 @@ h2 {
 }
 .facet-box:empty {
 	display: none;
+}
+
+.reset {
+	cursor: pointer;
+	padding: 10px 5px;
+	font-size: 24px;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
+	border: 1px solid #d9d8d8;
+	background: #ffffff;
+	color: #002e70;
+	border-radius: 4px;
+	transition: all 0s linear 0s;
 }
 
 .checkbox {

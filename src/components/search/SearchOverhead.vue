@@ -124,7 +124,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter, LocationQueryRaw } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -158,6 +158,10 @@ export default defineComponent({
 			tv: 'origin:"ds.tv"',
 			radio: 'origin:"ds.radio"',
 		};
+
+		onMounted(() => {
+			searchResultStore.showFacets = false;
+		});
 
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';

@@ -192,6 +192,7 @@ export default defineComponent({
 }
 
 .expand-container .expander.fade:before {
+	pointer-events: none;
 	content: '';
 	display: block;
 	width: 100%;

@@ -316,13 +316,14 @@ export default defineComponent({
 
 		const emitNewSearch = () => {
 			if (yearSearch.value && yearSearch.value.expanderOpen) {
+				emit('newSearch', true);
+			} else {
 				if (props.timeline) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
 					endDate.value.setFullYear(timeSliderValues.value[1]);
 				}
-				emit('newSearch', true);
+				emit('newSearch', false);
 			}
-			emit('newSearch', false);
 		};
 
 		const updateStartYear = (val: number) => {
