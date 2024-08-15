@@ -3,12 +3,12 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<div
-			ref="dataButton"
+		<button
 			class="data-size"
+			@click="toggleExplanation()"
 		>
-			{{ $t('timeSearch.data') }}:
-		</div>
+			{{ $t('timeSearch.data') }}
+		</button>
 		<div class="to-from-container">
 			{{ $t('timeSearch.from') }}:
 			<CustomTimelineSelect
@@ -25,6 +25,22 @@
 			/>
 		</div>
 		<div class="slider-whiteoff-container">
+			<Transition name="fade">
+				<div
+					v-show="expToggled"
+					class="explanation-for-data"
+				>
+					<div>
+						Datamængde viser en kurve over data vi har i arkivet lorem ipsum dolor sit amet, consectetur adipiscing
+						elit, sed do eiusmod tempor incididunt ut.
+					</div>
+					<div>
+						Der er huller i arkivet, men vi arbejder på det lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+						do eiusmod tempor incididunt ut.
+					</div>
+					<button @click="toggleExplanation()">×</button>
+				</div>
+			</Transition>
 			<div
 				ref="dataContainer"
 				class="data-container"
@@ -275,6 +291,7 @@ export default defineComponent({
 		const selectYears = ref([] as string[]);
 		const yearSearch = ref<typeof CustomExpander>();
 		const dataButton = ref<HTMLDivElement>();
+		const expToggled = ref(false);
 
 		onMounted(() => {
 			if (props.init) {
@@ -333,6 +350,10 @@ export default defineComponent({
 					});
 			}
 		});
+
+		const toggleExplanation = () => {
+			expToggled.value = !expToggled.value;
+		};
 
 		const emitNewSearch = () => {
 			if (yearSearch.value && yearSearch.value.expanderOpen) {
@@ -421,6 +442,8 @@ export default defineComponent({
 			yearSearch,
 			getSublineForYears,
 			dataButton,
+			toggleExplanation,
+			expToggled,
 		};
 	},
 });
@@ -560,6 +583,34 @@ h3 .bold,
 	top: -4px;
 }
 
+.slider-whiteoff-container {
+	position: relative;
+}
+.explanation-for-data {
+	position: absolute;
+	width: 100%;
+	height: 100px;
+	top: 0px;
+	left: 0px;
+	background-color: #c4f1ed;
+	z-index: 10;
+	border: 1px solid #002e70;
+	color: #002e70;
+	padding: 20px 40px;
+	box-sizing: border-box;
+	display: flex;
+}
+.explanation-for-data button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border: 0px;
+	background-color: transparent;
+	font-size: 25px;
+	color: #002e70;
+	cursor: pointer;
+}
+
 .slider-whiteoff-container:before,
 .slider-whiteoff-container:after {
 	content: '';
@@ -650,10 +701,10 @@ h3 .bold,
 	text-align: center;
 	letter-spacing: 0px;
 	color: #002e70;
-	padding: 2px;
-	top: 85px;
-	z-index: 6;
-	pointer-events: none;
+	padding: 3px;
+	top: 90px;
+	z-index: 10;
+	cursor: pointer;
 }
 
 .picker-container {
