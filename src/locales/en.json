@@ -41,6 +41,7 @@
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
+      "yearHeadline":"Choose dates via calendar",
       "months": {
          "january": "January",
          "february": "February",
@@ -84,7 +85,8 @@
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
      "title": "title",
-     "score": "score",
+     "relevance":"relevance",
+     "date":"date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",

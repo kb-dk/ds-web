@@ -91,7 +91,7 @@
 					></div>
 					<div
 						class="word"
-						:style="`width:90%`"
+						:style="`width:80%`"
 					></div>
 				</div>
 			</div>
@@ -328,7 +328,7 @@ export default defineComponent({
 
 .summary .word {
 	background-color: rgba(170, 170, 170, 1);
-	height: 15px;
+	height: 12px;
 	border-radius: 10px;
 	margin-top: 4px;
 	margin-right: 5px;
@@ -355,8 +355,8 @@ export default defineComponent({
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	line-height: 20px; /* fallback for firefox */
-	max-height: calc(25px * 3); /* fallback for firefox */
-	min-height: calc(25px * 3); /* fallback for firefox */
+	max-height: calc(20px * 3); /* fallback for firefox */
+	min-height: calc(20px * 3); /* fallback for firefox */
 }
 
 @media (min-width: 480px) {

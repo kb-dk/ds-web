@@ -9,9 +9,7 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
-import { months, days, timeslots, timeSliderValues } from '@/components/common/TimeSearch/TimeSearchInitValues';
-import { getQueryStringFromArray, getSelectedFromArray } from '@/utils/time-search-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
+
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
 	let comparisonSearchUUID = '';
@@ -34,7 +32,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
-	const showFacets = ref(true);
+	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
 

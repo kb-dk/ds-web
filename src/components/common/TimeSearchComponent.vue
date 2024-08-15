@@ -3,8 +3,9 @@
 		<template #content>
 			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
 			<TimeSearchFilters
+				:timeline="true"
 				:init="true"
-				@new-search="getTimeResults(months, days, timeslots, timeSliderValues)"
+				@new-search="fetchNewTimeResults()"
 			></TimeSearchFilters>
 			<div class="result-container">
 				<div class="result-header">
@@ -66,10 +67,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
-import { timeSliderValues, months, days, timeslots } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import {
+	timeSliderValues,
+	months,
+	days,
+	timeslots,
+	startDate,
+	endDate,
+} from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/TimeSearch/TimeSearchFilters.vue';
@@ -81,6 +89,7 @@ import {
 	getSublineForTimeslots,
 	getYears,
 } from '@/utils/time-search-utils';
+import { RouteLocationRaw } from 'vue-router';
 
 import '@/assets/styles/vue-slider-styles.css';
 
@@ -94,8 +103,34 @@ export default defineComponent({
 	setup() {
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
+		const timeSearchLink = ref<RouteLocationRaw>({
+			name: 'Home',
+			query: {
+				q: '*:*',
+				start: 0,
+				rows: 10,
+				fq: [],
+			},
+		});
+		const fetchNewTimeResults = () => {
+			updateLink();
+			getTimeResults(true);
+		};
 
-		const timeSearchLink = computed(() => {
+		onMounted(() => {
+			updateLink();
+		});
+
+		watch(
+			[months, days, timeslots],
+			() => {
+				updateLink();
+			},
+			{ deep: true },
+		);
+
+		const updateLink = () => {
+			console.log('link update!');
 			const dayString = days.value
 				.filter((day: SelectorData) => day.selected)
 				.map((day: SelectorData) => day.value)
@@ -112,13 +147,13 @@ export default defineComponent({
 
 			const fqArray = [];
 			fqArray.push(
-				encodeURIComponent(`temporal_start_year:[${timeSliderValues.value[0] + ' TO ' + timeSliderValues.value[1]}]`),
+				encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 			);
 			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
 			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
-			return {
+			timeSearchLink.value = {
 				name: 'Home',
 				query: {
 					q: '*:*',
@@ -127,18 +162,20 @@ export default defineComponent({
 					fq: fqArray,
 				},
 			};
-		});
+		};
 
 		return {
 			days,
 			months,
 			timeslots,
+			startDate,
+			endDate,
 			timeSearchLink,
 			t,
 			timeSearchStore,
 			timeSliderValues,
 			getYears,
-			getTimeResults,
+			fetchNewTimeResults,
 			getSublineForDays,
 			getSublineForMonths,
 			getSublineForTimeslots,
