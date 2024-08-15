@@ -57,7 +57,7 @@ export class APIServiceClient {
 	}
 
 	async getFullResultWithFacets(): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`search/?q=X I!)(=¤M!U)XYMUC&%!)%&&facet=true&facet.limit=-1`);
+		return await this.httpClient.get(`search/?q=*&facet=true&facet.limit=-1`);
 	}
 
 	async getSearchResults(
