@@ -3,7 +3,12 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<div class="data-size">{{ $t('timeSearch.data') }}:</div>
+		<div
+			ref="dataButton"
+			class="data-size"
+		>
+			{{ $t('timeSearch.data') }}:
+		</div>
 		<div class="to-from-container">
 			{{ $t('timeSearch.from') }}:
 			<CustomTimelineSelect
@@ -211,6 +216,9 @@ import {
 	timeslots,
 	startDate,
 	endDate,
+	initSliderValues,
+	initStartDate,
+	initEndDate,
 } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
@@ -266,52 +274,63 @@ export default defineComponent({
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
 		const yearSearch = ref<typeof CustomExpander>();
+		const dataButton = ref<HTMLDivElement>();
 
 		onMounted(() => {
 			if (props.init) {
 				resetAllSelectorValues(months.value);
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
-				timeSliderValues.value = [1992, 1992];
-				startDate.value.setFullYear(1992, 0, 1);
-				startDate.value.setHours(0, 0, 0, 0);
-
-				endDate.value.setFullYear(1992, 11, 31);
-				endDate.value.setHours(23, 59, 59, 999);
+				timeSliderValues.value = initSliderValues.value;
+				startDate.value.setTime(initStartDate.value.getTime());
+				endDate.value.setTime(initEndDate.value.getTime());
 				getTimeResults(true);
 			}
 			if (props.timeline) {
-				APIService.getFullResultWithFacets().then((reponse) => {
-					const resultsInYears = reponse.data.facet_counts.facet_fields.temporal_start_year;
-					const sortedResults = [] as dataItem[];
-					resultsInYears.forEach((item, index) => {
-						if (index % 2 === 0) {
-							let nextResult = {
-								year: item,
-								items: Number(resultsInYears[index + 1]),
+				APIService.getFullResultWithFacets()
+					.then((response) => {
+						const resultsInYears = response.data.facet_counts.facet_fields.temporal_start_year;
+						const sortedResults = [] as dataItem[];
+						resultsInYears.forEach((item, index) => {
+							if (index % 2 === 0) {
+								let nextResult = {
+									year: item,
+									items: Number(resultsInYears[index + 1]),
+								};
+								sortedResults.push(nextResult);
+							}
+						});
+						sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+						const startYear = Number(sortedResults[0].year);
+						const endYear = Number(sortedResults[sortedResults.length - 1].year);
+						for (let i = startYear; i <= endYear; i++) {
+							selectYears.value.push(i.toString());
+							data.value.push({ key: i, value: i });
+							let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+								year: i.toString(),
+								items: 0,
 							};
-							sortedResults.push(nextResult);
+							item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
+							item.y = item.items;
+							fullYearArray.value.push(item);
+						}
+						const svgElement = createSVGCurvedLine(fullYearArray.value);
+						if (dataContainer.value) {
+							dataContainer.value.appendChild(svgElement);
+						}
+					})
+					.catch(() => {
+						//This is purely fallback. We have no data, so we go with what we've set as fallback.
+						let startYear = 1962;
+						let endYear = 2024;
+						for (let i = startYear; i <= endYear; i++) {
+							selectYears.value.push(i.toString());
+							data.value.push({ key: i, value: i });
+						}
+						if (dataButton.value) {
+							dataButton.value.style.display = 'none';
 						}
 					});
-					sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-					const startYear = Number(sortedResults[0].year);
-					const endYear = Number(sortedResults[sortedResults.length - 1].year);
-					for (let i = startYear; i <= endYear; i++) {
-						selectYears.value.push(i.toString());
-						data.value.push({ key: i, value: i });
-						let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-							year: i.toString(),
-							items: 0,
-						};
-						item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
-						item.y = item.items;
-						fullYearArray.value.push(item);
-					}
-					const svgElement = createSVGCurvedLine(fullYearArray.value);
-					if (dataContainer.value) {
-						dataContainer.value.appendChild(svgElement);
-					}
-				});
 			}
 		});
 
@@ -401,6 +420,7 @@ export default defineComponent({
 			getSublineForTimeslots,
 			yearSearch,
 			getSublineForYears,
+			dataButton,
 		};
 	},
 });

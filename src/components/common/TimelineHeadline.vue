@@ -69,7 +69,7 @@ h3 {
 	padding: 0;
 	margin: 0;
 	height: 20px;
-	font-size: 26px;
+	font-size: 20px;
 	font-weight: 100;
 	color: #002e70;
 	height: auto;
@@ -79,7 +79,7 @@ span {
 	padding: 0;
 	margin: 0;
 	height: 20px;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 700;
 	color: #002e70;
 	background-color: #d9f5fe;
@@ -106,7 +106,7 @@ span {
 	flex-direction: row;
 	align-items: center;
 	align-content: center;
-	height: 80px;
+	height: 65px;
 	width: 100%;
 }
 

@@ -389,8 +389,8 @@ export default defineComponent({
 
 .source-facet-button {
 	cursor: pointer;
-	padding: 10px 5px;
-	font-size: 24px;
+	padding: 3px 3px;
+	font-size: 20px;
 	width: fit-content;
 	display: flex;
 	align-items: center;

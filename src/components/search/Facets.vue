@@ -332,8 +332,8 @@ export default defineComponent({
 
 .time-facet-button {
 	cursor: pointer;
-	padding: 10px 5px;
-	font-size: 24px;
+	padding: 3px 3px;
+	font-size: 20px;
 	width: fit-content;
 	display: flex;
 	align-items: center;
@@ -343,6 +343,7 @@ export default defineComponent({
 	color: #757575;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
+	height: 36px;
 }
 
 .time-facet-button.open {
@@ -385,8 +386,8 @@ h2 {
 
 .reset {
 	cursor: pointer;
-	padding: 10px 5px;
-	font-size: 24px;
+	padding: 3px 3px;
+	font-size: 20px;
 	width: fit-content;
 	display: flex;
 	align-items: center;

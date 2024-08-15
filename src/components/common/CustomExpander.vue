@@ -92,7 +92,6 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			console.log('mounted');
 			if (expandContainer.value !== null) {
 				props.fade ? (expandContainer.value.style.opacity = '1') : null;
 				props.fade ? (expandContainer.value.style.height = '65px') : null;
