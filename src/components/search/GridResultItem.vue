@@ -60,24 +60,38 @@
 					class="shimmer"
 				></div>
 				<div class="thumb-container loading-color"></div>
+				<div class="material-icons loading-icon">play_circle_filled</div>
 				<div
 					:style="`width:${Math.random() * 30 + 40}%`"
 					class="date loading"
 				></div>
-				<div
-					:style="`width:${Math.random() * 30 + 40}%`"
-					class="date loading"
-				></div>
+				<div class="date-loading-container">
+					<div class="material-icons loading-icon">schedule</div>
+					<div
+						:style="`width:${Math.random() * 20 + 20}%`"
+						class="date loading"
+					></div>
+					<div
+						:style="`width:${Math.random() * 20 + 20}%`"
+						class="date loading"
+					></div>
+				</div>
 				<div
 					:style="`width:${Math.random() * 30 + 50}%`"
 					class="title loading"
 				></div>
 				<div class="summary loading">
 					<div
-						v-for="(placeholder, index) in 15"
-						:key="`${index}-${placeholder}`"
 						class="word"
-						:style="`width:${Math.random() * 10 + 10}%`"
+						:style="`width:100%`"
+					></div>
+					<div
+						class="word"
+						:style="`width:100%`"
+					></div>
+					<div
+						class="word"
+						:style="`width:80%`"
 					></div>
 				</div>
 			</div>
@@ -185,6 +199,7 @@ export default defineComponent({
 	margin-bottom: 10px;
 	position: relative;
 	color: #323232;
+	background-color: var(--bg-color);
 }
 
 .grid-result-item:hover:after {
@@ -205,7 +220,6 @@ export default defineComponent({
 	margin-top: 15px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: var(--bg-color);
 }
 
 .thumb-container {
@@ -215,17 +229,36 @@ export default defineComponent({
 
 .loading-color {
 	background-color: rgba(170, 170, 170, 1);
-	border-radius: 10px;
+}
+
+.date-loading-container {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: row;
+	margin-top: -10px;
 }
 
 .duration {
 	display: flex;
 }
 
+.loading-icon {
+	display: inline-block;
+	margin-right: 5px;
+	font-size: 20px;
+	position: relative;
+	top: -4px;
+}
+
 .date {
 	display: flex;
-	padding-top: 15px;
+	padding-top: 12px;
 	padding-bottom: 5px;
+}
+
+.date.loading {
+	margin-right: 5px;
+	display: inline-block;
 }
 
 .date .material-icons,
@@ -249,8 +282,7 @@ export default defineComponent({
 }
 
 .title.loading {
-	background-color: rgba(170, 170, 170, 1);
-	height: 15px;
+	background-color: #002e70;
 	border-radius: 10px;
 	margin-top: 15px;
 }
@@ -296,10 +328,11 @@ export default defineComponent({
 
 .summary .word {
 	background-color: rgba(170, 170, 170, 1);
-	height: 15px;
+	height: 12px;
 	border-radius: 10px;
 	margin-top: 4px;
 	margin-right: 5px;
+	margin-bottom: 5px;
 }
 
 .date.loading {

@@ -59,24 +59,43 @@
 					<div
 						ref="placeholderTitleRef"
 						class="placeholder-t"
-						:style="`width:${Math.random() * 30 + 30 + '%'}`"
+						:style="`width:${Math.random() * 20 + 20 + '%'}`"
 					></div>
 					<div class="placeholder-w">
+						<span class="material-icons ph-icon">play_circle_filled</span>
 						<span
-							v-for="n in 2"
-							ref="placeholderSubtitleRefs"
-							:key="n"
+							class="line"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
+						></span>
+						<span class="material-icons ph-icon">schedule</span>
+						<span
+							class="line"
+							:style="`width:${Math.random() * 10 + 5 + '%'}`"
+						></span>
+						<span
+							class="line"
+							:style="`width:${Math.random() * 10 + 5 + '%'}`"
 						></span>
 					</div>
 					<div class="placeholder-s">
-						<span
-							v-for="n in 15"
-							:key="n"
-							ref="placeholderSummaryRefs"
-							:style="`width:${Math.random() * 10 + 10 + '%'}`"
-						></span>
+						<span>
+							<span
+								class="ph-span"
+								:style="`width:${Math.random() * 5 + 70 + '%'}`"
+							></span>
+						</span>
+						<span>
+							<span
+								class="ph-span"
+								:style="`width:${Math.random() * 5 + 60 + '%'}`"
+							></span>
+						</span>
 					</div>
+				</div>
+				<div class="placeholder-extra">
+					<span class="material-icons ph-icon">collections</span>
+					<span class="line"></span>
+					<span class="material-icons ph-icon">expand_more</span>
 				</div>
 				<div class="result-image-wrapper skeleton"></div>
 			</div>
@@ -94,6 +113,7 @@ import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
 import '@/components/common/wc-image-item';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'ResultItem',
@@ -129,6 +149,8 @@ export default defineComponent({
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
+		const { t } = useI18n();
+
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
@@ -138,8 +160,6 @@ export default defineComponent({
 				placeholder: undefined,
 			} as ImageComponentType),
 		);
-		const placeholderSummaryRefs = ref<HTMLElement | []>([]);
-		const placeholderSubtitleRefs = ref<HTMLElement | []>([]);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
 
 		const getImageData = () => {
@@ -189,9 +209,8 @@ export default defineComponent({
 		return {
 			searchResultStore,
 			imageData,
-			placeholderSubtitleRefs,
-			placeholderSummaryRefs,
 			placeholderTitleRef,
+			t,
 		};
 	},
 });
@@ -301,9 +320,8 @@ export default defineComponent({
 .loading {
 	width: 100vw;
 	max-width: 100%;
-	height: 105px;
+	height: 120px;
 	flex-direction: row;
-	height: 105px;
 	justify-content: space-between;
 	gap: 30px;
 	padding-bottom: 20px;
@@ -322,7 +340,7 @@ export default defineComponent({
 	position: absolute;
 	width: 100%;
 	max-width: 97%;
-	height: 105px;
+	height: 120px;
 	mix-blend-mode: soft-light;
 	overflow: hidden;
 	background-size: 200% 100%;
@@ -346,54 +364,88 @@ export default defineComponent({
 
 .placeholder-t {
 	border-radius: 105px;
-	background-color: rgba(170, 170, 170, 1);
-	height: 20px;
-	margin-bottom: 7px;
+	background-color: #002e70;
+	height: 14px;
+	margin-bottom: 15px;
 }
 
-.placeholder-w span {
+.placeholder-extra {
+	position: absolute;
+	bottom: 0px;
+	padding: 3px 5px;
+	border-top: 1px solid rgba(230, 230, 230, 1);
+	border-left: 1px solid rgba(230, 230, 230, 1);
+	border-right: 1px solid rgba(230, 230, 230, 1);
+	color: rgba(230, 230, 230, 1);
+}
+
+.placeholder-extra .ph-icon {
+	color: #757575;
+	font-size: 16px;
+}
+
+.placeholder-extra .line {
+	display: inline-block;
+	width: 50px;
+	height: 14px;
+	background-color: rgba(170, 170, 170, 1);
+	border-radius: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.placeholder-w {
+	margin-bottom: 14px;
+}
+
+.placeholder-w .line {
 	display: inline-block;
 	border-radius: 10px;
 	background-color: rgba(170, 170, 170, 1);
 	width: 30px;
-	height: 16px;
+	height: 14px;
 	width: 25%;
+	margin-right: 10px;
 }
 
 .placeholder-w span:first-of-type {
 	margin-right: 5px;
 }
 
+.ph-icon {
+	font-size: 14px;
+	padding-right: 5px;
+}
+
 .placeholder-s {
 	height: 60px;
 	width: 100%;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	flex-wrap: wrap;
-	gap: 5px 0px;
+	gap: 10px 0px;
 	justify-content: flex-start;
 	align-items: flex-start;
 	align-content: flex-start;
 	margin-left: -3px;
 }
 
-.placeholder-s span {
-	margin: 0px 3px;
-}
-
 .result-image-wrapper.skeleton {
 	background-color: rgba(170, 170, 170, 1);
-	border-radius: 10px;
 }
 
-.placeholder-s span {
-	display: inline-block;
-	border-radius: 10px;
-	background-color: rgba(170, 170, 170, 1);
+.placeholder-s > span {
+	display: block;
 	height: 14px;
-	line-height: 20px; /* fallback for firefox */
-	max-height: calc(20px); /* fallback for firefox */
-	width: 90%;
+	margin: 0px 3px;
+	width: 100%;
+}
+
+.ph-span {
+	background-color: rgba(170, 170, 170, 1);
+	border-radius: 10px;
+	display: inline-block;
+	height: 14px;
 }
 
 .summary {
@@ -422,7 +474,7 @@ export default defineComponent({
 	}
 
 	.result-item-wrapper {
-		padding: 20px 0px 0px 20px;
+		padding: 00px 0px 0px 20px;
 		border-left: 1px solid rgba(230, 230, 230, 1);
 	}
 

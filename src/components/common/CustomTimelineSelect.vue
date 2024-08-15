@@ -1,9 +1,18 @@
 <template>
 	<div class="select-container">
+		<div class="line"></div>
 		<select
 			v-model="selected"
 			@change="updated($event)"
 		>
+			<option
+				value=""
+				disabled
+				selected
+				hidden
+			>
+				1992
+			</option>
 			<option
 				v-for="(item, index) in listItems"
 				:key="index"
@@ -75,7 +84,22 @@ export default defineComponent({
 	border: 0px;
 	background-color: transparent;
 	font-family: noway, sans-serif;
-	background-color: #fafafa;
+	background-color: white;
+	border: 1px solid #002e70;
+	border-radius: 4px;
+	padding: 0px 5px;
+	color: #002e70;
+	padding-right: 10px;
+}
+
+.line {
+	display: block;
+	width: 1px;
+	height: 16px;
+	position: absolute;
+	background-color: lightgrey;
+	left: 63px;
+	top: 7px;
 }
 
 select option {

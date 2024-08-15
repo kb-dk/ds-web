@@ -74,42 +74,6 @@
 										close
 									</i>
 								</button>
-								<div class="rdl-advanced-radio">
-									<label for="radio-btn-all">
-										<input
-											id="radio-btn-all"
-											class="selectAll"
-											type="radio"
-											name="delimitation"
-											value="all"
-											checked
-											@click="setPreliminaryFilter(delimitationOptions.all)"
-										/>
-										<span class="selectAllSpan">{{ t('search.all') }}</span>
-									</label>
-									<label for="radio-btn-tv">
-										<input
-											id="radio-btn-tv"
-											class="selectTv"
-											type="radio"
-											name="delimitation"
-											value="tv"
-											@click="setPreliminaryFilter(delimitationOptions.tv)"
-										/>
-										<span class="selectTvSpan">{{ t('search.tv') }}</span>
-									</label>
-									<label for="radio-btn-radio">
-										<input
-											id="radio-btn-radio"
-											class="selectRadio"
-											type="radio"
-											name="delimitation"
-											value="radio"
-											@click="setPreliminaryFilter(delimitationOptions.radio)"
-										/>
-										<span class="selectRadioSpan">{{ t('search.radio') }}</span>
-									</label>
-								</div>
 								<button
 									id="searchButton"
 									ref="searchButton"
@@ -154,12 +118,6 @@ export default defineComponent({
 
 	setup() {
 		const { t } = useI18n();
-
-		const delimitationOptions = {
-			all: '',
-			tv: 'origin:"ds.tv"',
-			radio: 'origin:"ds.radio"',
-		};
 
 		const searchResultStore = useSearchResultStore();
 		const debounceMechanic = ref(false);
@@ -217,6 +175,8 @@ export default defineComponent({
 
 			if (searchResultStore.sort !== '') {
 				query.sort = searchResultStore.sort;
+			} else {
+				query.sort = encodeURIComponent(`score desc`);
 			}
 
 			router.push({
@@ -228,9 +188,7 @@ export default defineComponent({
 		const reset = () => {
 			searchResultStore.currentQuery = '';
 			searchResultStore.loading = false;
-			setPreliminaryFilter(delimitationOptions.all);
-			const selectAll = document.querySelector('#radio-btn-all') as HTMLInputElement;
-			selectAll.checked = true;
+			setPreliminaryFilter('');
 			router.push({ name: 'Home' });
 		};
 
@@ -245,7 +203,6 @@ export default defineComponent({
 			searchResultStore,
 			debounceMechanic,
 			setPreliminaryFilter,
-			delimitationOptions,
 			search,
 			reset,
 			t,
