@@ -52,12 +52,12 @@ export class APIServiceClient {
 	//Search and record methods
 	async getFacetResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&facet=true${filters}${start}${sort}&rows=0&facet.limit=25`,
+			`bff/v1/proxy/search/?q=${encodeURIComponent(query)}&facet=true${filters}${start}${sort}&rows=0&facet.limit=25`,
 		);
 	}
 
 	async getFullResultWithFacets(): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`search/?q=*&facet=true&facet.limit=-1`);
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1`);
 	}
 
 	async getSearchResults(
@@ -69,7 +69,9 @@ export class APIServiceClient {
 		uuid: string,
 	): Promise<APISearchResponseType> {
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}`,
+			`bff/v1/proxy/search/?q=${encodeURIComponent(
+				query,
+			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 
@@ -86,7 +88,7 @@ export class APIServiceClient {
 			timeConstraint = `&fq=startTime:${encodeURIComponent(`[${start} TO ${end}]`)}`;
 		}
 		return await this.httpClient.get(
-			`search/?q=${encodeURIComponent(
+			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				'*:*',
 			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=startTime asc`,
 		);
@@ -94,13 +96,13 @@ export class APIServiceClient {
 
 	async getRecord(id: string): Promise<APIRecordResponseType> {
 		const encodeId = encodeURIComponent(id);
-		return await this.httpClient.get(`record/${encodeId}?format=JSON-LD`);
+		return await this.httpClient.get(`bff/v1/proxy/record/${encodeId}?format=JSON-LD`);
 	}
 
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
 		return await this.httpClient.get(
 			encodeURI(
-				`suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
+				`bff/v1/proxy/suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
 					query,
 				)}&suggest.count=5&wt=json`,
 			),
@@ -108,11 +110,11 @@ export class APIServiceClient {
 	}
 
 	async getMoreLikeThisRecords(id: string): Promise<APIMoreLikeThisResponseType> {
-		return await this.httpClient.get(encodeURI(`mlt/?q=id:"${id}"&mlt.interestingTerms=list&rows=3`));
+		return await this.httpClient.get(encodeURI(`bff/v1/proxy/mlt/?q=id:"${id}"&mlt.interestingTerms=list&rows=3`));
 	}
 
 	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/ds-image/kaltura/thumbnails/?fileId=${id}&width=200&height=105`);
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&height=105`);
 	}
 
 	async authenticate(): Promise<APIAuthResponseType> {
@@ -120,6 +122,6 @@ export class APIServiceClient {
 	}
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/ds-image/kaltura/thumbnails/?fileId=${id}&width=200&vid_slices=10`);
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&vid_slices=10`);
 	}
 }
