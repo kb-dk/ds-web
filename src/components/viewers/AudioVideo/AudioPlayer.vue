@@ -19,7 +19,7 @@ export default defineComponent({
 	name: 'AudioPlayer',
 	components: {},
 	props: {
-		fileId: {
+		entryId: {
 			type: String,
 			default() {
 				return '';
@@ -68,7 +68,7 @@ export default defineComponent({
 						uiConfId: import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
 					},
 				});
-				audioPlayer.loadMedia({ referenceId: props.fileId });
+				audioPlayer.loadMedia({ entryId: props.entryId });
 			} catch (e) {
 				handleErrorDispatch('');
 			}

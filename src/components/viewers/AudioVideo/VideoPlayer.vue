@@ -21,7 +21,7 @@ export default defineComponent({
 	name: 'VideoPlayer',
 	components: {},
 	props: {
-		fileId: {
+		entryId: {
 			type: String,
 			default() {
 				return '';
@@ -75,7 +75,7 @@ export default defineComponent({
 						uiConfId: import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
 					},
 				});
-				videoPlayer.loadMedia({ referenceId: props.fileId });
+				videoPlayer.loadMedia({ entryId: props.entryId });
 				videoPlayer.ready().then(() => {
 					if (route.query?.startAt) {
 						videoPlayer.currentTime = Number(route.query.startAt);
