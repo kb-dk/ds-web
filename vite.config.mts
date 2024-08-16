@@ -35,31 +35,6 @@ export default ({ mode }) => {
 		server: {
 			port: 3000,
 			proxy: {
-				'/ds-api/search/': {
-					target: env.DEVEL_API_SEARCH,
-					rewrite: (path) => path.replace(/^\/ds-api\/search\//, ''),
-					changeOrigin: true,
-				},
-				'/ds-api/record/': {
-					target: env.DEVEL_API_RECORD,
-					rewrite: (path) => path.replace(/^\/ds-api\/record\//, ''),
-					changeOrigin: true,
-				},
-				'/ds-api/mlt/': {
-					target: env.DEVEL_API_MLT,
-					rewrite: (path) => path.replace(/^\/ds-api\/mlt\//, ''),
-					changeOrigin: true,
-				},
-				'/ds-api/suggest/': {
-					target: env.DEVEL_API_SUGGEST,
-					rewrite: (path) => path.replace(/^\/ds-api\/suggest\//, ''),
-					changeOrigin: true,
-				},
-				'/ds-api/thumbnails/': {
-					target: env.DEVEL_API_THUMBNAILS,
-					rewrite: (path) => path.replace(/^\/ds-api\/thumbnails\//, ''),
-					changeOrigin: true,
-				},
 				'/ds-api/bff/': {
 					target: env.DEVEL_API_BFF,
 					rewrite: (path) => path.replace(/^\/ds-api\/bff\//, ''),
