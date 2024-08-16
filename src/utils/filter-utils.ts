@@ -31,6 +31,7 @@ const cloneRouteQuery = (route: RouteLocationNormalizedLoaded) => {
 };
 
 const addFilter = (route: RouteLocationNormalizedLoaded, filter: string) => {
+	console.log('wat?');
 	const routeQueries = cloneRouteQuery(route);
 	const newFilter = encodeURIComponent(filter);
 

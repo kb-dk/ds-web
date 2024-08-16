@@ -65,7 +65,7 @@
 										:key="index + 'facet'"
 										class="checkbox"
 									>
-										<Checkbox
+										<SimpleCheckbox
 											:fqkey="'creator_affiliation_facet'"
 											:title="channelFacets[index]?.title"
 											:amount="channelFacets[index]?.number.toString()"
@@ -89,7 +89,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { LocationQueryRaw, useRoute, useRouter } from 'vue-router';
 import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
-import Checkbox from '@/components/search/Checkbox.vue';
+import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import { filterExists, simplifyFacets } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
@@ -102,7 +102,7 @@ import CustomExpander from '@/components/common/CustomExpander.vue';
 export default defineComponent({
 	name: 'Facets',
 	components: {
-		Checkbox,
+		SimpleCheckbox,
 		TimeSearchFilters,
 		EdgedContentArea,
 		CustomExpander,
@@ -400,7 +400,7 @@ h2 {
 }
 
 .checkbox {
-	padding: 3px 5px;
+	padding: 5px 15px;
 	flex: 0 0 25%;
 	box-sizing: border-box;
 }

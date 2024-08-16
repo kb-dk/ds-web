@@ -162,6 +162,7 @@ export default defineComponent({
 					} else {
 						searchResultStore.setStartFromURL(route.query.start as string);
 					}
+					facetsChanged(newp, prevp) ? searchResultStore.setKeepFacets(true) : searchResultStore.setKeepFacets(false);
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
@@ -182,6 +183,14 @@ export default defineComponent({
 
 		const checkIfSortIsChanged = (newSort: string, oldSort: string) => {
 			return newSort !== oldSort;
+		};
+
+		const facetsChanged = (newfq: RouteLocationNormalizedLoaded, oldfq: RouteLocationNormalizedLoaded) => {
+			if (JSON.stringify(newfq.query.fq) !== JSON.stringify(oldfq.query.fq)) {
+				return true;
+			} else {
+				return false;
+			}
 		};
 
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {

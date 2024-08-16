@@ -31,10 +31,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const lastSearchQuery = ref('');
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
+	const channelFilters = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
+	const keepFacets = ref(false);
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -62,13 +64,31 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const removeFilter = (filter: string) => {
+		filters.value.splice(filters.value.indexOf(filter), 1);
+	};
+
+	const addChannelFilter = (filter: string) => {
+		if (!channelFilters.value.includes(filter)) {
+			channelFilters.value.push(filter);
+		}
+	};
+
+	const removeChannelFilter = (filter: string) => {
+		channelFilters.value.splice(channelFilters.value.indexOf(filter), 1);
+	};
+
 	const setFiltersFromURL = (URLFilters: string[] | LocationQueryValue[] | string) => {
 		filters.value = [];
+		channelFilters.value = [];
 		if (URLFilters !== undefined) {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
 					if (filter?.split(':')[0].includes('origin')) {
 						preliminaryFilter.value = filter;
+					} else if (filter?.includes('creator_affiliation_facet')) {
+						const cleanedString = filter.replace(/[()]/g, '');
+						channelFilters.value = cleanedString.split(' OR ');
 					} else {
 						filter !== '' ? filters.value.push(`fq=${filter}`) : null;
 					}
@@ -139,6 +159,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSort();
 		resetSpellCheck();
 		resetPreliminaryFilters();
+		setKeepFacets(false);
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
@@ -157,12 +178,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		autocompleteResult.value = [];
 	};
 
-	const removeFilter = (filter: string) => {
-		filters.value.splice(filters.value.indexOf(filter), 1);
-	};
-
 	const setBlockAutocomplete = (state: boolean) => {
 		blockAutocomplete.value = state;
+	};
+
+	const setKeepFacets = (state: boolean) => {
+		keepFacets.value = state;
 	};
 
 	const getAutocompleteResults = (query: string) => {
@@ -188,6 +209,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchFilters += `&${filt}`;
 			});
 		}
+		let channelFilterString = '';
+		if (channelFilters.value.length > 0) {
+			channelFilterString = `&fq=(${channelFilters.value.join(' OR ')})`;
+		}
+		searchFilters += channelFilterString;
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 
@@ -223,7 +249,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				currentQuery.value = query;
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
-				facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
+				if (!keepFacets.value) {
+					facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
+				}
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;
 			}
@@ -282,5 +310,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowOffset,
 		setStart,
 		setRowCountFromURL,
+		setKeepFacets,
+		addChannelFilter,
+		removeChannelFilter,
 	};
 });
