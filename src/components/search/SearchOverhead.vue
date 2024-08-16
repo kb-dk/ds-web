@@ -176,18 +176,12 @@ export default defineComponent({
 			}
 			searchResultStore.preliminaryFilter = val;
 			searchResultStore.resetAutocomplete();
-			let query: LocationQueryRaw = {
-				q: searchResultStore.currentQuery,
-				start: 0,
-			};
-			if (searchResultStore.preliminaryFilter !== '') {
-				query.fq = searchResultStore.preliminaryFilter;
-			}
-			if (searchResultStore.sort !== '') {
-				query.sort = searchResultStore.sort;
-			} else {
-				query.sort = encodeURIComponent(`score desc`);
-			}
+			const query = { ...route.query };
+			console.log(route.query);
+			let filters = [] as string[];
+			query.fq !== undefined ? (filters = [...(query.fq as string[])]) : null;
+			filters = filters.filter((str) => !str.includes('origin'));
+			query.fq = filters;
 
 			router.push({
 				name: 'Home',
