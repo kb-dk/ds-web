@@ -1,0 +1,19 @@
+.dp__input_wrap {
+	display: none;
+}
+
+.dp__flex_display {
+	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+}
+
+.dp__cell_highlight_active {
+	border-radius: 0px;
+	background-color:#d9f5fe;
+	color:black;
+}
+
+.dp__cell_inner {
+	border-radius:0px;
+}

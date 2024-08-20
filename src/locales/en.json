@@ -17,10 +17,11 @@
       "fromTheArchive":"A selection from the archive"
    },
    "timeSearch": {
-      "timeMachine":"The Timemachine",
+      "timeMachine":"Use the time...",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
+      "timePeriods": "time span",
       "chosenTimeslots":"Chosen timeslots",
       "foundResults":"found results",
       "allChosen":"All chosen",
@@ -30,9 +31,17 @@
       "data":"data quantity",
       "from":"from",
       "to":"to",
-      "timeHits": "The Timemachine has",
+      "timeHits": "There is in total ",
       "result":"result | results",
       "all":"all",
+      "allMonths":"all months in the period",
+      "allDays":"all weekdays in the period",
+      "allTimeslots":"all hours",
+      "selection":"A selection of the results",
+      "monthHeadline":"Choose months",
+      "dayHeadline":"Choose weekdays",
+      "timeslotHeadline":"Choose timeslots",
+      "yearHeadline":"Choose dates via calendar",
       "months": {
          "january": "January",
          "february": "February",
@@ -57,15 +66,15 @@
          "sunday": "Sunday"
      },
      "timeslots": {
-         "morning":"morning",
-         "midday":"midday",
-         "evening":"evening",
-         "night":"night"
+      "morning":"06.00 - 12.00",
+      "midday":"12.00 - 18.00",
+      "evening":"18.00 - 24.00",
+      "night":"00.00 - 06.00"
      }
    },
   "search":{
      "searchbtn":"Search",
-     "hitcount": "{n} result fund for | {n} results found for",
+     "hitcount": " result fund for | results found for",
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
@@ -76,7 +85,8 @@
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
      "title": "title",
-     "score": "score",
+     "relevance":"relevance",
+     "date":"date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
@@ -88,7 +98,8 @@
      "all":"All",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
-     "of":"of"
+     "of":"of",
+     "startTime":"Start time"
   },
   "record":{
      "duration":"Duration",

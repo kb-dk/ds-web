@@ -97,6 +97,7 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	padding: 50px 0px;
 	flex-direction: column;
+	margin-bottom: -125px;
 }
 
 .top-dotted-border {
