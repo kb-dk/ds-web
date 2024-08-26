@@ -65,7 +65,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { addFilter, removeFilter, filterExists, createAffiliationFilter } from '@/utils/filter-utils';
+import {
+	addChannelFilter,
+	removeChannelFilter,
+	channelFilterExists,
+	createAffiliationFilter,
+} from '@/utils/filter-utils';
+import { useSearchResultStore } from '@/store/searchResultStore';
 export default defineComponent({
 	name: 'SimpleCheckbox',
 	props: {
@@ -90,18 +96,25 @@ export default defineComponent({
 				return '';
 			},
 		},
+		timeSearchActive: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			},
+		},
 		checked: { type: Boolean, required: false },
 		loading: { type: Boolean, required: true },
 	},
-	setup() {
+	setup(props) {
 		const router = useRouter();
 		const route = useRoute();
-
+		const searchResultStore = useSearchResultStore();
 		const check = (key: string | undefined, title: string | undefined) => {
 			if (title && key) {
-				const routeQueries = filterExists(key, title)
-					? removeFilter(route, createAffiliationFilter(title))
-					: addFilter(route, createAffiliationFilter(title));
+				const routeQueries = channelFilterExists(key, title, searchResultStore.channelFilters)
+					? removeChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive)
+					: addChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive);
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 			}

@@ -5,6 +5,10 @@
 			:icon="icon"
 			:subline="subline"
 			:click="toggleExpander"
+			:open="expanderOpen"
+			:item-array="itemArray"
+			:pass-update="passAlongUpdate"
+			:filter-cuttof="filterNameCutoff"
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
@@ -28,6 +32,7 @@
 import { defineComponent, onMounted, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import TimelineHeadline from '@/components/common/TimelineHeadline.vue';
+import { SelectorData } from '@/types/TimeSearchTypes';
 
 export default defineComponent({
 	name: 'CustomExpander',
@@ -38,6 +43,13 @@ export default defineComponent({
 		headline: {
 			type: String as PropType<string>,
 			required: true,
+		},
+		filterNameCutoff: {
+			type: Number as PropType<number>,
+			required: false,
+			default() {
+				return 3;
+			},
 		},
 		icon: {
 			type: String as PropType<string>,
@@ -52,11 +64,28 @@ export default defineComponent({
 			required: false,
 			default: false,
 		},
+		itemArray: {
+			type: Array as PropType<SelectorData[]>,
+			required: false,
+			default() {
+				return [] as SelectorData[];
+			},
+		},
+		updateEntity: {
+			type: Function,
+			default() {
+				return null;
+			},
+		},
 	},
 
 	setup(props) {
 		const expanderOpen = ref(false);
 		const expandContainer = ref<HTMLElement | null>(null);
+
+		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
+			props.updateEntity(parent, index, val);
+		};
 
 		const toggleExpander = () => {
 			if (expanderOpen.value) {
@@ -99,7 +128,7 @@ export default defineComponent({
 			}
 		});
 
-		return { expanderOpen, toggleExpander, expandContainer };
+		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate };
 	},
 });
 </script>

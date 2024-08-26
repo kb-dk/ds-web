@@ -68,16 +68,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value.splice(filters.value.indexOf(filter), 1);
 	};
 
-	const addChannelFilter = (filter: string) => {
-		if (!channelFilters.value.includes(filter)) {
-			channelFilters.value.push(filter);
-		}
-	};
-
-	const removeChannelFilter = (filter: string) => {
-		channelFilters.value.splice(channelFilters.value.indexOf(filter), 1);
-	};
-
 	const setFiltersFromURL = (URLFilters: string[] | LocationQueryValue[] | string) => {
 		filters.value = [];
 		channelFilters.value = [];
@@ -204,9 +194,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		lastSearchQuery.value = query;
 		resetAutocomplete();
 		let searchFilters = '';
+		let facetFilters = '';
 		if (filters.value.length > 0) {
 			filters.value.forEach((filt: string) => {
 				searchFilters += `&${filt}`;
+				facetFilters += `&${filt}`;
 			});
 		}
 		let channelFilterString = '';
@@ -214,6 +206,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			channelFilterString = `&fq=(${channelFilters.value.join(' OR ')})`;
 		}
 		searchFilters += channelFilterString;
+		if (preliminaryFilter.value) {
+			searchFilters += `&fq=${preliminaryFilter.value}`;
+			facetFilters += `&fq=${preliminaryFilter.value}`;
+		}
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 
@@ -238,7 +234,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			);
 			const facetData = await APIService.getFacetResults(
 				query,
-				searchFilters,
+				facetFilters,
 				startParam as string,
 				sortParam as string,
 			);
@@ -289,6 +285,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resultGrid,
 		rowCount,
 		rowOffset,
+		channelFilters,
+		keepFacets,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -311,7 +309,5 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setStart,
 		setRowCountFromURL,
 		setKeepFacets,
-		addChannelFilter,
-		removeChannelFilter,
 	};
 });

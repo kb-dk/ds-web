@@ -66,6 +66,8 @@
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { addFilter, removeFilter, filterExists, createAffiliationFilter } from '@/utils/filter-utils';
+import { useSearchResultStore } from '@/store/searchResultStore';
+
 export default defineComponent({
 	name: 'Checkbox',
 	props: {
@@ -96,10 +98,10 @@ export default defineComponent({
 	setup() {
 		const router = useRouter();
 		const route = useRoute();
-
+		const searchResultStore = useSearchResultStore();
 		const check = (key: string | undefined, title: string | undefined) => {
 			if (title && key) {
-				const routeQueries = filterExists(key, title)
+				const routeQueries = filterExists(key, title, searchResultStore.filters)
 					? removeFilter(route, createAffiliationFilter(title))
 					: addFilter(route, createAffiliationFilter(title));
 				routeQueries.start = 0;
