@@ -233,14 +233,14 @@
 				class="close"
 				@click="closeTimeFacets()"
 			>
-				Luk tidspunkter
+				{{ t('timeSearch.filterCloseButton') }}
 			</button>
 			<button
 				class="apply-time-facets"
 				:disabled="!timeSearchStore.newSearchReqMet"
 				@click="emitNewSearch()"
 			>
-				Apply time facets
+				{{ t('timeSearch.filterApplyButton') }}
 			</button>
 		</div>
 	</div>
@@ -263,6 +263,8 @@ import {
 	initSliderValues,
 	initStartDate,
 	initEndDate,
+	startYear,
+	endYear,
 } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
@@ -346,9 +348,9 @@ export default defineComponent({
 							}
 						});
 						sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-						timeSearchStore.setStartYear(Number(sortedResults[0].year));
-						timeSearchStore.setEndYear(Number(sortedResults[sortedResults.length - 1].year));
-						for (let i = timeSearchStore.startYear; i <= timeSearchStore.endYear; i++) {
+						startYear.value.setFullYear(Number(sortedResults[0].year));
+						endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
 							selectYears.value.push(i.toString());
 							data.value.push({ key: i, value: i });
 							let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
@@ -357,8 +359,8 @@ export default defineComponent({
 							};
 							item.x = Number(
 								(
-									(100 / (timeSearchStore.endYear - timeSearchStore.startYear)) *
-									(i - timeSearchStore.startYear)
+									(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+									(i - startYear.value.getFullYear())
 								).toFixed(2),
 							);
 							item.y = item.items;
@@ -371,7 +373,7 @@ export default defineComponent({
 					})
 					.catch(() => {
 						//This is purely fallback. We have no data, so we go with what we've set as fallback.
-						for (let i = timeSearchStore.startYear; i <= timeSearchStore.endYear; i++) {
+						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
 							selectYears.value.push(i.toString());
 							data.value.push({ key: i, value: i });
 						}
@@ -431,7 +433,6 @@ export default defineComponent({
 		};
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			console.log('sup?', array, index, val);
 			array[index].selected = val;
 			timeSearchStore.setNewSearchReqMet(true);
 			if (!props.picker) {
@@ -442,7 +443,7 @@ export default defineComponent({
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			timeSearchStore.setNewSearchReqMet(true);
 
-			if (val === true) {
+			if (val) {
 				array.forEach((item) => {
 					item.selected = true;
 				});

@@ -77,7 +77,6 @@
 							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
 						/>
 					</div>
-					<!-- <Sort v-if="searchResultStore.searchResult.length > 0" /> -->
 				</div>
 				<div class="sort-options">
 					<Sort></Sort>

@@ -16,7 +16,7 @@
 					>
 						<span class="material-icons first">today</span>
 						<span class="material-icons second">schedule</span>
-						Tidspunkter
+						{{ t('timeSearch.filterOpenButton') }}
 						<span :class="timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
 							<span class="dot">
 								<TransitionGroup>

@@ -94,6 +94,10 @@ export default defineComponent({
 		};
 
 		const formatStringForTime = (val: string) => {
+			/* 
+			if our cutoff is set to 13, we remove the .00 after the numbers, so we just get 13 - 14.
+			This is because of space issues in the design - this was the best way to solve this nicely.
+			*/
 			if (props.filterCuttof === 13) {
 				return val.replace(/.00/g, '');
 			} else {

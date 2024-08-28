@@ -63,56 +63,86 @@ const removeFilter = (route: RouteLocationNormalizedLoaded, filter: string) => {
 	return routeQueries;
 };
 
+/*
+Rather large function to add a channel filter. Since we want to use several filters with an OR operator,
+we have to put them in one string, in the fq array. We have to split up the existing one and reassemble it
+with our new one - if one exists. If it doesn't, we simply create it and push our filter into it.
+*/
 function addChannelFilter(route: RouteLocationNormalizedLoaded, newFilter: string, keepTimeFacets: boolean) {
+	// get the route and the fq array. we normalize it to an array to make sure we know what we're dealing with
 	const routeQueries = cloneRouteQuery(route);
 	let existingFq = normalizeFq(routeQueries.fq as string[] | string);
+	// if we don't need the time facets, we remove those from the array here.
 	if (keepTimeFacets === false) {
 		existingFq = removeTimeFacetsFromRoute(existingFq);
 	}
+	// If the array exists, we find the one we need- with the creator_affiliation_facets in it.
 	if (Array.isArray(existingFq)) {
 		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('creator_affiliation_facet'));
 		if (creatorAffiliationFilter) {
+			// if we can find it, we remove it from the array - and put it in again when we're done manipulating it.
 			const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
 			if (index !== -1) {
 				existingFq.splice(index, 1);
 			}
+			// we now split it up into the segments between the OR operator
 			const filters = creatorAffiliationFilter.replace(/[()]/g, '').split(' OR ');
+			// we now push the new filter into the array we just created
 			filters.push(encodeURIComponent(`${newFilter}`));
+			// and reassemble them all into a new string with the old filters and the new one.
 			const finalFilter = `(${filters.join(' OR ')})`;
 			existingFq.push(finalFilter);
 		} else {
+			// if we couldn't find the array, we simply add the new filter to the fq array.
 			existingFq.push(encodeURIComponent(`${newFilter}`));
 		}
+		// replace the routeQueries.fq with our modified array.
 		routeQueries.fq = existingFq;
 	} else {
+		// if there were no fq array in the routeQueries, we simply add one and push our filter string into it.
 		routeQueries.fq = [];
 		routeQueries.fq.push(encodeURIComponent(`${newFilter}`));
 	}
+	// return the object.
 	return routeQueries;
 }
-
+/*
+Rather large function to remove a channel filter. Since we want to use several filters with an OR operator,
+we have to put them in one string, in the fq array. We have to fish it out if it exists, and then split it up and
+remove the one we dont need anymore, and reassemble it.
+*/
 function removeChannelFilter(route: RouteLocationNormalizedLoaded, filterToRemove: string, keepTimeFacets: boolean) {
+	// get the route and the fq array. we normalize it to an array to make sure we know what we're dealing with
 	const routeQueries = cloneRouteQuery(route);
 	let existingFq = normalizeFq(routeQueries.fq as string[] | string);
+	// if we don't need the time facets, we remove those from the array here.
 	if (keepTimeFacets === false) {
 		existingFq = removeTimeFacetsFromRoute(existingFq);
 	}
+	// If the array exists, we find the one we need- with the creator_affiliation_facets in it.
 	if (Array.isArray(existingFq)) {
 		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('creator_affiliation_facet'));
 		if (creatorAffiliationFilter) {
+			// if we can find it, we remove it from the array - and put it in again when we're done manipulating it.
 			const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
 			if (index !== -1) {
 				existingFq.splice(index, 1);
 			}
+			// we now split it up into the segments between the OR operator
 			let filters = creatorAffiliationFilter.replace(/[()]/g, '').split(' OR ');
+			// remove the one we dont want
 			filters = filters.filter((filter) => filter !== encodeURIComponent(filterToRemove));
+			// reassemble it
 			const finalFilter = `(${filters.join(' OR ')})`;
+			// if there is none left, we dont re-add it. Otherwise we do.
 			if (filters.length !== 0) {
 				existingFq.push(finalFilter);
 			}
 		}
+		// put it back in the routeQueries object
 		routeQueries.fq = existingFq;
 	}
+	// return the object
 	return routeQueries;
 }
 

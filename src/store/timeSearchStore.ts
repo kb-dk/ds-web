@@ -13,9 +13,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	let comparisonSearchUUID = '';
 	const searchFired = ref(false);
 	const numFound = ref(0);
-	/* these are just the preset values. Should be updated when we got the new repo */
-	const startYear = ref(1921);
-	const endYear = ref(2022);
 	const noHits = ref(false);
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const error = ref('');
@@ -28,16 +25,8 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		return dateA > dateB ? 1 : -1;
 	};
 
-	const setStartYear = (val: number) => {
-		startYear.value = val;
-	};
-
 	const setNewSearchReqMet = (val: boolean) => {
 		newSearchReqMet.value = val;
-	};
-
-	const setEndYear = (val: number) => {
-		endYear.value = val;
 	};
 
 	const setLoading = (value: boolean) => {
@@ -114,13 +103,9 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	return {
 		loading,
 		timeResults,
-		startYear,
-		endYear,
 		setLoading,
 		getTimeSearchResults,
 		numFound,
-		setStartYear,
-		setEndYear,
 		newSearchReqMet,
 		setNewSearchReqMet,
 	};

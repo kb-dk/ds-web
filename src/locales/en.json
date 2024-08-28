@@ -42,6 +42,9 @@
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
       "yearHeadline":"Choose dates via calendar",
+      "filterOpenButton":"Moments",
+      "filterCloseButton":"Close moments",
+      "filterApplyButton":"Apply moments",
       "months": {
          "january": "January",
          "february": "February",

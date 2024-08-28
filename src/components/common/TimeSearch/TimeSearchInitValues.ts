@@ -9,6 +9,10 @@ const timeSliderValues = ref<number[]>(initSliderValues.value);
 const startDate = ref<Date>(initStartDate.value); // January 1, 1992, 00:00:00
 const endDate = ref<Date>(initEndDate.value); // December 31, 1992, 23:59:59
 
+/* these are just the preset values. Should be updated when we got the new repo */
+const startYear = ref<Date>(new Date(1921, 0, 1, 0, 0, 0));
+const endYear = ref<Date>(new Date(2022, 11, 31, 23, 59, 59));
+
 const days = ref<SelectorData[]>([
 	{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: false, index: 0 },
 	{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: false, index: 1 },
@@ -40,4 +44,16 @@ const months = ref<SelectorData[]>([
 	{ name: 'timeSearch.months.december', value: '12', selected: false, index: 11 },
 ]);
 
-export { timeSliderValues, months, days, timeslots, startDate, endDate, initSliderValues, initEndDate, initStartDate };
+export {
+	timeSliderValues,
+	months,
+	days,
+	timeslots,
+	startDate,
+	endDate,
+	initSliderValues,
+	initEndDate,
+	initStartDate,
+	startYear,
+	endYear,
+};
