@@ -58,6 +58,8 @@ class MenuComponent extends HTMLElement {
 	toggleMenu() {
 		this.shadow.querySelector('#mobileNavButton')?.setAttribute('aria-expanded', this.collapsed.toString());
 		const navigationWrapper = this.shadow.querySelector('.rdl-main-navigation-wrapper');
+		const main = this.shadow.querySelector('#mainHeader');
+		main?.classList.toggle('open');
 		if (this.collapsed) {
 			navigationWrapper?.classList.toggle('collapse');
 			navigationWrapper?.classList.toggle('show');
@@ -109,7 +111,10 @@ class MenuComponent extends HTMLElement {
 
 	createMenuElement(parent: HTMLUListElement, title: string, url: string, icon?: string, id?: string) {
 		const listElem = document.createElement('li');
-		listElem.role = 'none';
+		if (icon) {
+			listElem.classList.add(icon);
+		}
+		//listElem.role = 'none';
 		const link = document.createElement('a');
 		link.role = 'menuitem';
 		if (id) link.id = id;
@@ -149,39 +154,48 @@ type MenuTranslation = {
 const menuTranslations = {
 	da: {
 		secondary: [
-			{ title: 'Lån og aflvering', link: '#' },
-			{ title: 'Bliv bruger', link: '#' },
-			{ title: 'Om os', link: '#' },
-			{ title: 'Åbningstider', link: '#' },
-			{ title: 'Webshop', link: '#' },
+			{ title: 'Lån og aflevering', link: 'https://www.kb.dk/services/laan-og-aflevering' },
+			{ title: 'Bliv bruger', link: 'https://www.kb.dk/bliv-bruger' },
+			{ title: 'Om os', link: 'https://www.kb.dk/om-os' },
+			{ title: 'Webshop', link: 'https://webshop.kb.dk/' },
+			{ title: 'Åbningstider', link: 'https://www.kb.dk/aabningstider' },
 			{ title: 'In english', link: '#', id: 'localeSwitcher' },
-			{ title: 'Log in', link: '#', icon: 'account_circle' },
+			{
+				title: 'Login',
+				link: 'https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da',
+				icon: 'account_circle',
+			},
 		],
 		primary: [
-			{ title: 'Find materiale', link: '#' },
-			{ title: 'Inspiration', link: '#' },
-			{ title: 'Arrangementer', link: '#' },
-			{ title: 'Services', link: '#' },
-			{ title: 'Besøg os', link: '#' },
-			{ title: 'Søg', link: '#', icon: 'search' },
+			{ title: 'Find materiale', link: 'https://www.kb.dk/find-materiale' },
+			{ title: 'Inspiration', link: 'https://www.kb.dk/inspiration' },
+			{ title: 'Arrangementer', link: 'https://www.kb.dk/arrangementer' },
+			{ title: 'Services', link: 'https://www.kb.dk/services' },
+			{ title: 'Besøg os', link: 'https://www.kb.dk/besoeg-os' },
+			{ title: 'Søg', link: 'https://www.kb.dk/', icon: 'search' },
 		],
 	},
 	en: {
 		secondary: [
-			{ title: 'Collect and return', link: '#' },
-			{ title: 'New user', link: '#' },
-			{ title: 'About us', link: '#' },
-			{ title: 'Webshop', link: '#' },
+			{ title: 'Collect and return', link: 'https://www.kb.dk/en/services/loans-and-returns' },
+			{ title: 'New user', link: 'https://www.kb.dk/en/become-library-user' },
+			{ title: 'About us', link: 'https://www.kb.dk/en/about-us' },
+			{ title: 'Webshop', link: 'https://webshop.kb.dk/' },
+			{ title: 'Opening hours', link: 'https://www.kb.dk/en/opening-hours' },
 			{ title: 'På dansk', link: '#', id: 'localeSwitcher' },
-			{ title: 'Log in', link: '#', icon: 'account_circle' },
+			{
+				title: 'Login',
+				link: 'https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=en',
+				icon: 'account_circle',
+			},
 		],
 		primary: [
-			{ title: 'Find materials', link: '#' },
-			{ title: 'Inspiration', link: '#' },
-			{ title: 'Events', link: '#' },
-			{ title: 'Services', link: '#' },
-			{ title: 'Visit us', link: '#' },
-			{ title: 'Search', link: '#', icon: 'search' },
+			{ title: 'Find materials', link: 'https://www.kb.dk/en/find-materials' },
+			{ title: 'Inspiration', link: 'https://www.kb.dk/en/inspiration' },
+			{ title: 'Events', link: 'https://www.kb.dk/en/events' },
+			{ title: 'Services', link: 'https://www.kb.dk/en/services' },
+			{ title: 'Visit us', link: 'https://www.kb.dk/en/visit-us' },
+			{ title: 'Search', link: 'https://www.kb.dk/en', icon: 'search' },
 		],
 	},
 };
@@ -194,7 +208,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 >
 	<div class="header-bg-wrapper rdl-theme-bg">
 		<div class="container">
-			<div class="row justify-content-between">
+			<div class="logo-wrapper row justify-content-between">
 				<div class="col logo-col">
 					<a
 						href="/arkiv"
@@ -210,7 +224,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 							<span class="rdl-line" aria-hidden="true"></span>
 							<span class="rdl-line" aria-hidden="true"></span>
 							<span class="rdl-line" aria-hidden="true"></span>
-							<span>Menu</span>
+							<span class="menu-icon">Menu</span>
 						</button>
 					</div>
 				</div>
@@ -275,9 +289,25 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	.container {
 		display:flex;
 		justify-content: space-between;
-		padding-left:12px;
-		padding-right:12px;
 		width:100%;
+	}
+
+	.rdl-secondary-nav {
+		width:100%;
+		background-color: #96E2FD;
+		box-sizing:border-box;
+	}
+
+	.global-header.open ~ .edge.blue {
+		display:none;
+	}
+
+	.global-header.open .header-bg-wrapper {
+		padding-bottom:0px;
+	}
+
+	.rdl-primary-nav li.search {
+		display:none;
 	}
 
 	.rdl-burger {
@@ -296,6 +326,11 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		font-family: "noway",sans-serif;
 	}
 
+	.account_circle i {
+		font-size:14px !important;
+		top: 2px !important;
+	}
+
 	.rdl-burger .rdl-line {
 		width: 2rem;
 		height: 4px;
@@ -306,12 +341,24 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		float: right;
 	}
 
+	.menu-icon {
+		color: black;
+	}
+
+	.global-header.open .menu-icon {
+		font-style: italic;
+	}
+
 	.rdl-burger[aria-expanded=true] .rdl-line:nth-child(2) {
 		width: 70%;
 	}
 
 	.rdl-burger[aria-expanded=true] .rdl-line:nth-child(3) {
 		width: 40%;
+	}
+
+	.rdl-burger span{
+		margin-top:2px;
 	}
 
 	.collapse .rdl-main-navigation {
@@ -359,7 +406,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 
 	.global-header .header-bg-wrapper {
 		padding-top: 24px;
-		padding-bottom: 24px;
+		padding-bottom: 5px;
 	}
 	.global-header {
 		display: flex;
@@ -383,11 +430,12 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 
 	.nav-item.level-1 {
 		line-height: 24px;
-		margin-left: 4px;
-		margin-right: 4px;
+		letter-spacing: -0.2px;
+/* 		margin-left: 4px;
+ */		margin-right: 4px;
 		padding-bottom: 0;
-		border-bottom: 2px solid transparent;
-		display: table;
+/* 		border-bottom: 2px solid transparent;
+ */		display: table;
 		padding:13px 0px;
 		transition: border-bottom-color .3s ease-in-out;
 		white-space: nowrap;
@@ -420,15 +468,31 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		content:'add';
 	}
 
+	.rdl-primary-nav .nav-item.level-1:hover, .rdl-secondary-nav .nav-item.level-1:hover {
+		border-bottom: 2px solid #002E70;
+		transition: border-bottom-color 0.1s ease-in-out;
+}
+
+
 	.nav-item i {
 		display: inline-block;
 		position: relative;
-		top: 3px;
-		font-size: 17px;
+		top: 2px;
+		font-size: 1rem;
+		margin-left: 4px;
+		
 	}
 
 	.rdl-primary-nav, .rdl-secondary-nav {
 			list-style-type: none
+	}
+
+	.rdl-primary-nav {
+		padding-top: 24px;
+	}
+
+	.rdl-secondary-nav li:first-of-type {
+    margin-top: -5px;
 	}
 
 	.rdl-primary-nav, .rdl-secondary-nav {
@@ -436,9 +500,29 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
     	margin-top: 0;
 	}
 
+	.rdl-secondary-nav {
+		margin-top: 27px;	}
+
+	.rdl-secondary-nav:before {
+		content: '';
+		height: 25px;
+		width: 100vw;
+    position: absolute;
+    background-color: #96E2FD;
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%);
+    z-index: 3;
+    left: 0px;
+    margin-top: -38px;
+	}
+
 	.container {
 		display:flex;
 		flex-direction:column;
+	}
+
+	.logo-wrapper {
+		padding:0px 24px;
+		height: 62px;
 	}
 	
 	.row {
@@ -456,7 +540,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		display: flex;
 		align-content: center;
 		flex-wrap: wrap;
-		margin-left: 12px;
+		align-content: flex-start;
 	}
 
 	.rdl-logo {
@@ -482,6 +566,51 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 	/* MEDIA QUERY 990 */
 	@media (min-width: 990px) {
+		.rdl-primary-nav {
+			padding-top: 18px !important;
+			margin-right: -8px;
+			letter-spacing: normal;
+		}
+
+		.rdl-secondary-nav li {
+			margin-left: 4px;
+		}
+
+		.rdl-primary-nav .search a {
+			padding:0px !important;
+			margin-left:0px !important;
+		}
+
+		.rdl-primary-nav .search i {
+			margin-left: 4.5px !important;
+		}
+
+		.rdl-primary-nav li {
+			margin-left: 4px;
+		}
+
+		.rdl-secondary-nav li:first-of-type {
+			margin-top: initial;
+		}
+		.global-header.open .header-bg-wrapper {
+			padding-bottom:24px;
+		}
+
+		.rdl-secondary-nav .nav-item.level-1 {
+			margin-left: 4px;
+		}
+
+		.rdl-secondary-nav:before {
+			display:none;
+		}
+
+		.rdl-secondary-nav {
+			margin-top:initial;
+		}
+
+		.global-header.open ~ .edge.blue {
+			display: block;
+		}
 
 		.global-header .header-edge {
 			-webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5vw), 0 100%);
@@ -491,9 +620,18 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		}
 		.container {
 			flex-direction: row;
+			padding-left:12px;
+			padding-right:12px;
 		}
 		.logo-col {
-			margin-left: 0px;
+			margin-left: -3px;
+		}
+		.logo-wrapper {
+			padding-left:0px;
+			padding-right:0px;
+		}
+		.rdl-primary-nav li.search {
+			display:inline-flex;
 		}
 		
 		.rdl-main-navigation-wrapper {
@@ -509,6 +647,13 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			padding-left: 0px;
 			padding-top: 0px;
 			padding-bottom: 0px;
+			background-color:initial;
+			width:initial;
+		}
+	
+		.level-1 {
+			border-bottom: 2px solid transparent;
+			box-sizing:border-box;
 		}
 	
 		.rdl-primary-nav {
@@ -555,13 +700,16 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 
 		.rdl-primary-nav .nav-item.level-1 {
 			margin-right: 8px;
-    		margin-left: 8px;
-    		font-size: 1rem;
+    	margin-left: 8px;
+    	font-size: 1rem;
 		}
 
 		.collapse .rdl-main-navigation {
 			display:flex;
+			margin-top: -11px;
+			justify-content: flex-end;
 		}
+
 		.rdl-logo {
 			background-image: url('https://design.kb.dk/components/assets/images/logo.svg');
 			height: 69px;
@@ -577,10 +725,14 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		.container {
 			display: flex;
 			max-width: 1150px;
+			
 		}
 	}
 	/* MEDIA QUERY 1150 */
 	@media (min-width: 1150px) {
+		.global-header .search i {
+			font-size: 1.25rem;
+		}
 		.rdl-secondary-nav .nav-item.level-1 {
 			line-height: 1.5rem;
 			font-size: 0.875rem;
@@ -589,9 +741,20 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			padding-bottom: 2px;
 			font-size: 1.25rem;
 		}
+		
+		.rdl-secondary-nav {
+			margin-top: 2px;
+		}
+
 		.container {
 			max-width: 1280px;
 		}
+		.rdl-logo {
+			position: relative;
+			width: 226px;
+			height: 89px;
+			left: 3px;
+	}
 	}
 	/* MEDIA QUERY 1280 */
 	@media (min-width: 1280px) {
