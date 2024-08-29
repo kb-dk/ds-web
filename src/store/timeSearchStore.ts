@@ -17,11 +17,16 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const error = ref('');
 	const { t } = useI18n();
+	const newSearchReqMet = ref(false);
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
 		const dateA = new Date(a.startTime).getTime();
 		const dateB = new Date(b.startTime).getTime();
 		return dateA > dateB ? 1 : -1;
+	};
+
+	const setNewSearchReqMet = (val: boolean) => {
+		newSearchReqMet.value = val;
 	};
 
 	const setLoading = (value: boolean) => {
@@ -101,5 +106,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		setLoading,
 		getTimeSearchResults,
 		numFound,
+		newSearchReqMet,
+		setNewSearchReqMet,
 	};
 });

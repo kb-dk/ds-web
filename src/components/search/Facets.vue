@@ -16,7 +16,7 @@
 					>
 						<span class="material-icons first">today</span>
 						<span class="material-icons second">schedule</span>
-						Dato og tid
+						{{ t('timeSearch.filterOpenButton') }}
 						<span :class="timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
 							<span class="dot">
 								<TransitionGroup>
@@ -32,12 +32,6 @@
 							</span>
 						</span>
 					</button>
-					<button
-						class="reset"
-						@click="resetFilters()"
-					>
-						Ryd filtre
-					</button>
 				</div>
 				<div
 					ref="timeFacets"
@@ -48,6 +42,7 @@
 						:picker="true"
 						:init="false"
 						@new-search="newSearch(true)"
+						@close="toggleTimeFacets()"
 					></TimeSearchFilters>
 				</div>
 				<div class="facet-container">
@@ -61,16 +56,23 @@
 							<div class="facet-options">
 								<TransitionGroup name="result">
 									<div
-										v-for="(singleFacet, index) in currentFacetNr as unknown as FacetPair[]"
+										v-for="(singleFacet, index) in currentChannelNr as unknown as FacetPair[]"
 										:key="index + 'facet'"
 										class="checkbox"
 									>
-										<Checkbox
+										<SimpleCheckbox
 											:fqkey="'creator_affiliation_facet'"
 											:title="channelFacets[index]?.title"
 											:amount="channelFacets[index]?.number.toString()"
-											:checked="filterExists('creator_affiliation_facet', channelFacets[index]?.title)"
-											:loading="searchResultStore.loading"
+											:time-search-active="timeFacetsOpen"
+											:checked="
+												channelFilterExists(
+													'creator_affiliation_facet',
+													channelFacets[index]?.title,
+													searchResultStore.channelFilters,
+												)
+											"
+											:loading="searchResultStore.loading && !searchResultStore.keepFacets"
 										/>
 									</div>
 								</TransitionGroup>
@@ -86,23 +88,25 @@
 <script lang="ts">
 import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
-import { LocationQueryRaw, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
-import Checkbox from '@/components/search/Checkbox.vue';
-import { filterExists, simplifyFacets } from '@/utils/filter-utils';
+import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
+import { channelFilterExists, simplifyFacets, cloneRouteQuery } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { months, days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
+import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
-		Checkbox,
+		SimpleCheckbox,
 		TimeSearchFilters,
 		EdgedContentArea,
 		CustomExpander,
@@ -114,8 +118,9 @@ export default defineComponent({
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const currentFacets = ref(Object as unknown as FacetResultType);
-		const currentFacetNr = ref(16);
+		const currentChannelNr = ref(16);
 		const channelFacets = ref([] as FacetPair[]);
 		const categoryFacets = ref([] as FacetPair[]);
 		const categoryNr = ref(0);
@@ -132,7 +137,7 @@ export default defineComponent({
 			currentFacets.value = props.facetResults;
 			channelFacets.value = simplifyFacets(currentFacets.value['creator_affiliation_facet']);
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
-			currentFacetNr.value = channelFacets.value.length ? Math.min(channelFacets.value.length, 16) : 16;
+			currentChannelNr.value = channelFacets.value.length ? channelFacets.value.length : 16;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
 
 			watch(
@@ -142,11 +147,10 @@ export default defineComponent({
 						currentFacets.value = {} as FacetResultType;
 						channelFacets.value = [] as FacetPair[];
 						categoryFacets.value = [] as FacetPair[];
-
 						currentFacets.value = newFacets;
 						channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
 						categoryFacets.value = simplifyFacets(newFacets['categories']);
-						currentFacetNr.value = searchResultStore.loading ? 16 : Math.min(channelFacets.value.length, 16);
+						currentChannelNr.value = searchResultStore.loading ? 16 : channelFacets.value.length;
 						categoryNr.value = Number(categoryFacets.value.length);
 						lastUpdate.value = new Date().getTime();
 					}
@@ -161,27 +165,13 @@ export default defineComponent({
 			},
 		);
 
-		const resetFilters = () => {
-			router.push({
-				name: 'Home',
-				query: { q: searchResultStore.currentQuery },
-			});
-		};
-
 		const newSearch = (yearSearch: boolean) => {
-			let query: LocationQueryRaw = {
-				q: searchResultStore.currentQuery,
-				start: 0,
-				sort: yearSearch ? 'startTime asc' : '',
-			};
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			routeQueries.sort = yearSearch ? 'startTime asc' : '';
 			const dayString = days.value
 				.filter((day: SelectorData) => day.selected)
 				.map((day: SelectorData) => day.value)
-				.join(' OR ');
-
-			const monthString = months.value
-				.filter((month: SelectorData) => month.selected)
-				.map((month: SelectorData) => month.value)
 				.join(' OR ');
 
 			const timeslotString = timeslots.value
@@ -189,27 +179,30 @@ export default defineComponent({
 				.map((timeslot: SelectorData) => timeslot.value)
 				.join(' OR ');
 
-			const fqArray = [];
+			if (!routeQueries.fq) {
+				routeQueries.fq = [];
+			}
+
+			const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
 
 			if (yearSearch) {
-				fqArray.push(
+				existingFq.push(
 					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 				);
 			}
-			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
-			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
-			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
+			dayString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
+			timeslotString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
-			(query.fq = fqArray),
-				router.push({
-					name: 'Home',
-					query: query,
-				});
+			routeQueries.fq = existingFq;
+
+			router.push({
+				name: 'Home',
+				query: routeQueries,
+			});
 		};
 
 		const toggleTimeFacets = () => {
 			if (timeFacetsOpen.value) {
-				console.log(timeFacets.value);
 				timeFacetButton.value?.setAttribute('aria-checked', 'false');
 				gsap.to(timeFacets.value, {
 					height: '0px',
@@ -221,8 +214,16 @@ export default defineComponent({
 						});
 					},
 				});
+				const routeQueries = cloneRouteQuery(route);
+				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
+				routeQueries.fq = existingFq;
+				router.push({
+					name: 'Home',
+					query: routeQueries,
+				});
 			} else {
 				timeFacetButton.value?.setAttribute('aria-checked', 'true');
+				timeSearchStore.setNewSearchReqMet(true);
 				gsap.set(timeFacets.value, {
 					display: 'flex',
 					flexDirection: 'column',
@@ -245,6 +246,7 @@ export default defineComponent({
 					duration: 0.5,
 					overwrite: true,
 					opacity: 0,
+					marginBottom: '0px',
 					onComplete: () => {
 						gsap.set(facetsContainer.value, {
 							display: 'none',
@@ -257,6 +259,7 @@ export default defineComponent({
 					onComplete: () => {
 						gsap.to(facetsContainer.value, {
 							height: 'auto',
+							marginBottom: '-125px',
 							duration: 0.5,
 							opacity: 1,
 							overwrite: true,
@@ -270,9 +273,9 @@ export default defineComponent({
 			currentFacets,
 			lastUpdate,
 			searchResultStore,
-			filterExists,
+			channelFilterExists,
 			simplifyFacets,
-			currentFacetNr,
+			currentChannelNr,
 			channelFacets,
 			categoryFacets,
 			categoryNr,
@@ -284,7 +287,6 @@ export default defineComponent({
 			timeFacetsOpen,
 			newSearch,
 			timeFacetButton,
-			resetFilters,
 			t,
 		};
 	},
@@ -309,6 +311,7 @@ export default defineComponent({
 	display: none;
 	height: 0px;
 	overflow: hidden;
+	position: relative;
 }
 
 .time-facets-toggle {
@@ -358,7 +361,7 @@ export default defineComponent({
 	flex-direction: row;
 	gap: 20px;
 	box-sizing: border-box;
-	padding: 10px 5px;
+	padding: 0px 5px;
 }
 
 .facet-options {
@@ -384,23 +387,8 @@ h2 {
 	display: none;
 }
 
-.reset {
-	cursor: pointer;
-	padding: 3px 3px;
-	font-size: 20px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
-	border: 1px solid #d9d8d8;
-	background: #ffffff;
-	color: #002e70;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-}
-
 .checkbox {
-	padding: 3px 5px;
+	padding: 5px 15px;
 	flex: 0 0 25%;
 	box-sizing: border-box;
 }

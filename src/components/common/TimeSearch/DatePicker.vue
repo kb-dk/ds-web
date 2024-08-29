@@ -10,7 +10,8 @@
 			text-input
 			:format="format"
 			six-weeks="fair"
-			@update:model-value="newSearch()"
+			:month-change-on-scroll="false"
+			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<VueDatePicker
 			v-model="endDate"
@@ -22,7 +23,8 @@
 			text-input
 			:format="format"
 			six-weeks="fair"
-			@update:model-value="newSearch()"
+			:month-change-on-scroll="false"
+			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<div class="from-to-display">
 			<div class="container">
@@ -48,6 +50,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import '@/components/common/TimeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
 import { startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -56,6 +59,7 @@ export default defineComponent({
 	},
 	emits: ['spanUpdated'],
 	setup(props, { emit }) {
+		const timeSearchStore = useTimeSearchStore();
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
@@ -66,6 +70,10 @@ export default defineComponent({
 
 		const newSearch = () => {
 			emit('spanUpdated');
+		};
+
+		const readyForNewSearch = () => {
+			timeSearchStore.setNewSearchReqMet(true);
 		};
 
 		const highlightedDays = computed((): Date[] => {
@@ -84,6 +92,7 @@ export default defineComponent({
 			format,
 			highlightedDays,
 			newSearch,
+			readyForNewSearch,
 		};
 	},
 });

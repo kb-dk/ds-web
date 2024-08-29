@@ -8,7 +8,8 @@
 						ref="listItems"
 						:key="index + 'category'"
 						:class="
-							filterExists('categories', categoryFacets[index]?.title) && !searchResultStore.loading
+							filterExists('categories', categoryFacets[index]?.title, searchResultStore.filters) &&
+							!searchResultStore.loading
 								? 'tag active'
 								: 'tag'
 						"
@@ -21,7 +22,7 @@
 								query: {
 									q: searchResultStore.currentQuery,
 									start: 0,
-									fq: filterExists('categories', categoryFacets[index]?.title)
+									fq: filterExists('categories', categoryFacets[index]?.title, searchResultStore.filters)
 										? removeFilter(route, createTagFilter(categoryFacets[index]?.title)).fq
 										: addFilter(route, createTagFilter(categoryFacets[index]?.title)).fq,
 								},

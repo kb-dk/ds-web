@@ -74,11 +74,16 @@
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
-		<div class="month-selector-expanding">
+		<div
+			v-if="timeline"
+			class="month-selector-expanding"
+		>
 			<CustomExpander
 				:headline="t('timeSearch.monthHeadline')"
 				icon="event"
 				:subline="getSublineForMonths(months, t)"
+				:item-array="months"
+				:update-entity="updateCheckbox"
 			>
 				<ItemSlider
 					bg-scroll-white="true"
@@ -129,6 +134,8 @@
 					:headline="t('timeSearch.dayHeadline')"
 					icon="date_range"
 					:subline="getSublineForDays(days, t)"
+					:item-array="days"
+					:update-entity="updateCheckbox"
 				>
 					<ItemSlider
 						bg-scroll-white="true"
@@ -172,6 +179,9 @@
 					:headline="t('timeSearch.timeslotHeadline')"
 					icon="schedule"
 					:subline="getSublineForTimeslots(timeslots, t)"
+					:item-array="timeslots"
+					:update-entity="updateCheckbox"
+					:filter-name-cutoff="13"
 				>
 					<ItemSlider
 						bg-scroll-white="true"
@@ -215,6 +225,24 @@
 				</CustomExpander>
 			</div>
 		</div>
+		<div
+			v-if="picker"
+			class="apply-time-facets-container"
+		>
+			<button
+				class="close"
+				@click="closeTimeFacets()"
+			>
+				{{ t('timeSearch.filterCloseButton') }}
+			</button>
+			<button
+				class="apply-time-facets"
+				:disabled="!timeSearchStore.newSearchReqMet"
+				@click="emitNewSearch()"
+			>
+				{{ t('timeSearch.filterApplyButton') }}
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -235,6 +263,8 @@ import {
 	initSliderValues,
 	initStartDate,
 	initEndDate,
+	startYear,
+	endYear,
 } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
@@ -281,7 +311,7 @@ export default defineComponent({
 			},
 		},
 	},
-	emits: ['newSearch'],
+	emits: ['newSearch', 'close'],
 	setup(props, { emit }) {
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
@@ -318,16 +348,21 @@ export default defineComponent({
 							}
 						});
 						sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-						const startYear = Number(sortedResults[0].year);
-						const endYear = Number(sortedResults[sortedResults.length - 1].year);
-						for (let i = startYear; i <= endYear; i++) {
+						startYear.value.setFullYear(Number(sortedResults[0].year));
+						endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
 							selectYears.value.push(i.toString());
 							data.value.push({ key: i, value: i });
 							let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
 								year: i.toString(),
 								items: 0,
 							};
-							item.x = Number(((100 / (endYear - startYear)) * (i - startYear)).toFixed(2));
+							item.x = Number(
+								(
+									(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+									(i - startYear.value.getFullYear())
+								).toFixed(2),
+							);
 							item.y = item.items;
 							fullYearArray.value.push(item);
 						}
@@ -338,9 +373,7 @@ export default defineComponent({
 					})
 					.catch(() => {
 						//This is purely fallback. We have no data, so we go with what we've set as fallback.
-						let startYear = 1962;
-						let endYear = 2024;
-						for (let i = startYear; i <= endYear; i++) {
+						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
 							selectYears.value.push(i.toString());
 							data.value.push({ key: i, value: i });
 						}
@@ -365,6 +398,14 @@ export default defineComponent({
 				}
 				emit('newSearch', false);
 			}
+			if (yearSearch.value) {
+				const resultContainer = document.getElementsByClassName('result-options')[0];
+				resultContainer?.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+				});
+			}
+			timeSearchStore.setNewSearchReqMet(false);
 		};
 
 		const updateStartYear = (val: number) => {
@@ -387,13 +428,22 @@ export default defineComponent({
 			emitNewSearch();
 		};
 
+		const closeTimeFacets = () => {
+			emit('close');
+		};
+
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
-			emitNewSearch();
+			timeSearchStore.setNewSearchReqMet(true);
+			if (!props.picker) {
+				emitNewSearch();
+			}
 		};
 
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			if (val === true) {
+			timeSearchStore.setNewSearchReqMet(true);
+
+			if (val) {
 				array.forEach((item) => {
 					item.selected = true;
 				});
@@ -406,7 +456,9 @@ export default defineComponent({
 					}
 				});
 			}
-			emitNewSearch();
+			if (!props.picker) {
+				emitNewSearch();
+			}
 		};
 
 		const figuresImage = computed(() => {
@@ -444,6 +496,7 @@ export default defineComponent({
 			dataButton,
 			toggleExplanation,
 			expToggled,
+			closeTimeFacets,
 		};
 	},
 });
@@ -627,7 +680,7 @@ h3 .bold,
 .slider-whiteoff-container:after {
 	right: -1px;
 	left: initial;
-	top: 35px;
+	top: 0px;
 	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
 }
 
@@ -871,6 +924,86 @@ h3 .bold,
 
 .picker-background {
 	background-color: #d9f5fe;
+}
+
+.apply-time-facets-container {
+	display: flex;
+	justify-content: center;
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.apply-time-facets {
+	background-color: transparent;
+	cursor: pointer;
+	padding: 5px 7px;
+	font-size: 18px;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	box-shadow: 1px 1px 2px #00000000;
+	border: 1px solid #d9d8d8;
+	background: #002e70;
+	color: white;
+	border-radius: 4px;
+	transition: all 0s linear 0s;
+	margin-left: 10px;
+	z-index: 1;
+	position: relative;
+	overflow: hidden;
+}
+
+.apply-time-facets:disabled {
+	color: grey;
+	background-color: white;
+}
+
+.apply-time-facets:disabled:after {
+	display: none;
+}
+
+.apply-time-facets:after {
+	transform: translateX(-100%);
+	content: '';
+	display: block;
+	position: absolute;
+	width: 200%;
+	height: 100%;
+	background: linear-gradient(
+		45deg,
+		rgba(255, 255, 255, 0) 10%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 0) 80%
+	);
+	animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+	50% {
+		transform: translateX(-100%);
+		transition-property: opacity, transform;
+	}
+	100% {
+		transform: translateX(200%);
+		transition-property: opacity, transform;
+	}
+}
+
+.close {
+	cursor: pointer;
+	font-size: 18px;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	box-shadow: 1px 1px 2px #00000000;
+	border: 1px solid #d9d8d8;
+	background: rgb(250, 250, 250);
+	color: #002e70;
+	border-radius: 4px;
+	transition: all 0s linear 0s;
+	position: absolute;
+	left: 0px;
+	padding: 5px 7px;
 }
 
 .data-container {
