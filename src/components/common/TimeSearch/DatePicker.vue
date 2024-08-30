@@ -1,6 +1,7 @@
 <template>
 	<div class="date-pickers">
 		<VueDatePicker
+			ref="startDatePicker"
 			v-model="startDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
@@ -11,9 +12,14 @@
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
+			:min-date="startYear"
+			:max-date="endYear"
+			prevent-min-max-navigation
+			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<VueDatePicker
+			ref="EndDatePicker"
 			v-model="endDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
@@ -24,6 +30,10 @@
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
+			:min-date="startYear"
+			:max-date="endYear"
+			prevent-min-max-navigation
+			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<div class="from-to-display">
@@ -44,12 +54,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref, watch } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/components/common/TimeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
-import { startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { startDate, endDate, startYear, endYear } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 export default defineComponent({
@@ -59,6 +70,9 @@ export default defineComponent({
 	},
 	emits: ['spanUpdated'],
 	setup(props, { emit }) {
+		const startDatePicker = ref<DatePickerInstance>();
+		const endDatePicker = ref<DatePickerInstance>();
+
 		const timeSearchStore = useTimeSearchStore();
 		const format = (date: Date) => {
 			const day = date.getDate();
@@ -67,6 +81,17 @@ export default defineComponent({
 
 			return `${day} / ${month} / ${year}`;
 		};
+
+		watch(
+			() => timeSearchStore.timeFacetsOpen,
+			(newVal: boolean) => {
+				console.log('oooh, we saw this?', newVal);
+				if (newVal) {
+					startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
+					endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
+				}
+			},
+		);
 
 		const newSearch = () => {
 			emit('spanUpdated');
@@ -89,10 +114,14 @@ export default defineComponent({
 		return {
 			startDate,
 			endDate,
+			startYear,
+			endYear,
 			format,
 			highlightedDays,
 			newSearch,
 			readyForNewSearch,
+			startDatePicker,
+			endDatePicker,
 		};
 	},
 });
