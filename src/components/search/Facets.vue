@@ -58,7 +58,7 @@
 									<div
 										v-for="(singleFacet, index) in currentChannelNr as unknown as FacetPair[]"
 										:key="index + 'facet'"
-										class="checkbox"
+										:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
 									>
 										<SimpleCheckbox
 											:fqkey="'creator_affiliation_facet'"
@@ -389,8 +389,16 @@ h2 {
 
 .checkbox {
 	padding: 5px 15px;
-	flex: 0 0 25%;
+	flex: 0 0 100%;
 	box-sizing: border-box;
+}
+
+.checkbox.last {
+	border-right: 0px;
+}
+
+.facet-options > .checkbox:nth-of-type(2n) {
+	border-right: 0px;
 }
 
 .search-facets {
@@ -484,5 +492,25 @@ h2 {
 	left: 1px;
 	position: relative;
 	border-radius: 15px;
+}
+@media (min-width: 640px) {
+	.checkbox {
+		flex: 0 0 50%;
+	}
+	.facet-options > .checkbox:nth-of-type(2n + 1) {
+		border-right: 1px solid rgba(230, 230, 230, 1);
+	}
+}
+
+@media (min-width: 990px) {
+	.checkbox {
+		flex: 0 0 25%;
+	}
+	.facet-options > .checkbox:nth-of-type(2n) {
+		border-right: 1px solid rgba(230, 230, 230, 1);
+	}
+	.checkbox.last {
+		border-right: 0px solid rgba(255, 255, 255, 0) !important;
+	}
 }
 </style>
