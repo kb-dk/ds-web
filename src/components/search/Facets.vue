@@ -390,6 +390,7 @@ h2 {
 .checkbox {
 	padding: 5px 15px;
 	flex: 0 0 100%;
+	max-width: 100%;
 	box-sizing: border-box;
 }
 
@@ -496,6 +497,7 @@ h2 {
 @media (min-width: 640px) {
 	.checkbox {
 		flex: 0 0 50%;
+		max-width: 50%;
 	}
 	.facet-options > .checkbox:nth-of-type(2n + 1) {
 		border-right: 1px solid rgba(230, 230, 230, 1);
@@ -505,6 +507,7 @@ h2 {
 @media (min-width: 990px) {
 	.checkbox {
 		flex: 0 0 25%;
+		max-width: 25%;
 	}
 	.facet-options > .checkbox:nth-of-type(2n) {
 		border-right: 1px solid rgba(230, 230, 230, 1);
