@@ -19,7 +19,7 @@
 			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<VueDatePicker
-			ref="EndDatePicker"
+			ref="endDatePicker"
 			v-model="endDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue';
+import { defineComponent, computed, ref, watch, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -62,6 +62,8 @@ import '@/components/common/TimeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
 import { startDate, endDate, startYear, endYear } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { normalizeFq, cloneRouteQuery } from '@/utils/filter-utils';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -72,8 +74,36 @@ export default defineComponent({
 	setup(props, { emit }) {
 		const startDatePicker = ref<DatePickerInstance>();
 		const endDatePicker = ref<DatePickerInstance>();
-
 		const timeSearchStore = useTimeSearchStore();
+		const route = useRoute();
+
+		onMounted(() => {
+			const routeQueries = cloneRouteQuery(route);
+			const fq = normalizeFq(routeQueries.fq);
+			const startTimeFilter = fq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const timestamps = decodeURIComponent(startTimeFilter)
+					.replace('startTime:', '')
+					.replace(' OR ', '')
+					.replace('[', '')
+					.replace(']', '')
+					.split(' TO ');
+				setDateFromISOString(timestamps[0], startDate.value);
+				setDateFromISOString(timestamps[1], endDate.value);
+			} else {
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			}
+			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
+			endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
+		});
+
+		const setDateFromISOString = (isoDate: string, date: Date) => {
+			console.log('setting date', isoDate);
+			const existingDate = new Date(isoDate);
+			date.setTime(existingDate.getTime());
+		};
+
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
@@ -81,17 +111,6 @@ export default defineComponent({
 
 			return `${day} / ${month} / ${year}`;
 		};
-
-		watch(
-			() => timeSearchStore.timeFacetsOpen,
-			(newVal: boolean) => {
-				console.log('oooh, we saw this?', newVal);
-				if (newVal) {
-					startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
-					endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
-				}
-			},
-		);
 
 		const newSearch = () => {
 			emit('spanUpdated');
