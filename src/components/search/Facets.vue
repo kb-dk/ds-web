@@ -146,23 +146,6 @@ export default defineComponent({
 			currentChannelNr.value = channelFacets.value.length ? channelFacets.value.length : 16;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
 
-			const routeQueries = cloneRouteQuery(route);
-			const fq = normalizeFq(routeQueries.fq);
-			const startTimeFilter = fq.find((fq: string) => fq.includes('startTime'));
-			if (startTimeFilter) {
-				const timestamps = decodeURIComponent(startTimeFilter)
-					.replace('startTime:', '')
-					.replace(' OR ', '')
-					.replace('[', '')
-					.replace(']', '')
-					.split(' TO ');
-				setDateFromISOString(timestamps[0], startDate.value);
-				setDateFromISOString(timestamps[1], endDate.value);
-			} else {
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			}
-
 			watch(
 				() => props.facetResults,
 				(newFacets: FacetResultType, prevFacets: FacetResultType) => {
@@ -187,11 +170,6 @@ export default defineComponent({
 				toggleFacets();
 			},
 		);
-
-		const setDateFromISOString = (isoDate: string, date: Date) => {
-			const existingDate = new Date(isoDate);
-			date.setTime(existingDate.getTime());
-		};
 
 		const newSearch = (yearSearch: boolean) => {
 			const routeQueries = cloneRouteQuery(route);
