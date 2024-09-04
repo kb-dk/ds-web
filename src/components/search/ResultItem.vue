@@ -14,6 +14,7 @@
 							:to="{ path: 'record/' + resultdata.id }"
 							class="title"
 							role="link"
+							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
 							<span class="material-icons arrow">keyboard_arrow_right</span>
@@ -165,7 +166,7 @@ export default defineComponent({
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = props.resultdata?.title;
-			imageDataObj.imgTitle = props.resultdata?.title;
+			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : 'se materiale';
 
 			if (props.resultdata?.file_id) {
 				APIService.getThumbnail(props.resultdata.file_id)

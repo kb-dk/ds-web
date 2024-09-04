@@ -1,13 +1,18 @@
 <template>
-	<div
+	<button
 		:class="open ? 'headline-container open' : 'headline-container'"
+		:title="headline"
+		:aria-label="headline"
+		:aria-expanded="open"
 		@click="dispatchClick()"
 	>
 		<div class="material-icons icon">
 			{{ icon }}
 		</div>
 		<div class="headline">
-			<h3>{{ headline }}</h3>
+			<legend>
+				<h2>{{ headline }}</h2>
+			</legend>
 			<span>{{ subline }}</span>
 		</div>
 		<div class="selected-items">
@@ -21,7 +26,7 @@
 				<span class="close">×</span>
 			</button>
 		</div>
-	</div>
+	</button>
 </template>
 
 <script lang="ts">
@@ -119,7 +124,7 @@ export default defineComponent({
 	padding-right: 10px;
 }
 
-h3 {
+h2 {
 	padding: 0;
 	margin: 0;
 	height: 20px;
@@ -162,6 +167,8 @@ h3 {
 	align-items: flex-start;
 	padding-top: 5px;
 	flex-wrap: nowrap;
+	background-color: transparent;
+	border: 0px;
 }
 
 .headline-container.open:hover {
@@ -174,7 +181,7 @@ h3 {
 	height: 55px;
 }
 
-.headline-container h3,
+.headline-container h2,
 .headline-container span,
 .headline-container div {
 	cursor: pointer;
@@ -188,6 +195,8 @@ h3 {
 	max-width: 40%;
 	gap: 5px;
 	justify-content: flex-end;
+	max-height: 55px;
+	overflow: hidden;
 }
 
 .selected-entity {

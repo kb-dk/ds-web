@@ -10,17 +10,16 @@
 			{{ $t('timeSearch.data') }}
 		</button>
 		<div class="to-from-container">
-			{{ $t('timeSearch.from') }}:
 			<CustomTimelineSelect
 				:current-selected="timeSliderValues[0]"
 				:list-items="selectYears"
+				:label="$t('timeSearch.from')"
 				@update-selected="updateStartYear"
 			/>
-			{{ $t('timeSearch.to') }}:
-
 			<CustomTimelineSelect
 				:current-selected="timeSliderValues[1]"
 				:list-items="selectYears"
+				:label="$t('timeSearch.to')"
 				@update-selected="updateEndYear"
 			/>
 		</div>
@@ -38,7 +37,12 @@
 						Der er huller i arkivet, men vi arbejder på det lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
 						do eiusmod tempor incididunt ut.
 					</div>
-					<button @click="toggleExplanation()">×</button>
+					<button
+						ref="closeDataExplanation"
+						@click="toggleExplanation()"
+					>
+						×
+					</button>
 				</div>
 			</Transition>
 			<div
@@ -49,6 +53,7 @@
 			<Transition name="fade">
 				<VueSlider
 					v-if="data.length > 0"
+					ref="vueSliderRef"
 					v-model="timeSliderValues"
 					:clickable="true"
 					:drag-on-click="true"
@@ -78,151 +83,157 @@
 			v-if="timeline"
 			class="month-selector-expanding"
 		>
-			<CustomExpander
-				:headline="t('timeSearch.monthHeadline')"
-				icon="event"
-				:subline="getSublineForMonths(months, t)"
-				:item-array="months"
-				:update-entity="updateCheckbox"
-			>
-				<ItemSlider
-					bg-scroll-white="true"
-					bg="#ffffff00"
-					item-class="month"
+			<fieldset>
+				<CustomExpander
+					:headline="t('timeSearch.monthHeadline')"
+					icon="event"
+					:subline="getSublineForMonths(months, t)"
+					:item-array="months"
+					:update-entity="updateCheckbox"
 				>
-					<div class="select-container month">
-						<div class="checkbox all">
-							<CustomTimelineCheckbox
-								:index="0"
-								name="timeSearch.all"
-								:val="false"
-								:tilted="false"
-								:update="updateAllCheckbox"
-								:parent-array="months"
-							></CustomTimelineCheckbox>
-						</div>
-						<div class="month-selector">
-							<div
-								:style="'background-image:url(' + figuresImage + ')'"
-								class="figures"
-							></div>
-							<div class="gradient"></div>
-							<div class="all-months-items">
+					<ItemSlider
+						bg-scroll-white="true"
+						bg="#ffffff00"
+						item-class="month"
+					>
+						<div class="select-container month">
+							<div class="checkbox all">
+								<CustomTimelineCheckbox
+									:index="0"
+									name="timeSearch.all"
+									:val="false"
+									:tilted="false"
+									:update="updateAllCheckbox"
+									:parent-array="months"
+								></CustomTimelineCheckbox>
+							</div>
+							<div class="month-selector">
 								<div
-									v-for="(item, index) in months"
-									:key="index"
-									class="checkbox"
-								>
-									<CustomTimelineCheckbox
-										:index="index"
-										:name="months[index].name"
-										:val="months[index].selected"
-										:tilted="true"
-										:update="updateCheckbox"
-										:parent-array="months"
-									></CustomTimelineCheckbox>
+									:style="'background-image:url(' + figuresImage + ')'"
+									class="figures"
+								></div>
+								<div class="gradient"></div>
+								<div class="all-months-items">
+									<div
+										v-for="(item, index) in months"
+										:key="index"
+										class="checkbox"
+									>
+										<CustomTimelineCheckbox
+											:index="index"
+											:name="months[index].name"
+											:val="months[index].selected"
+											:tilted="true"
+											:update="updateCheckbox"
+											:parent-array="months"
+										></CustomTimelineCheckbox>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</ItemSlider>
-			</CustomExpander>
+					</ItemSlider>
+				</CustomExpander>
+			</fieldset>
 		</div>
 		<div class="overall-selector">
 			<div class="select-container days">
-				<CustomExpander
-					:headline="t('timeSearch.dayHeadline')"
-					icon="date_range"
-					:subline="getSublineForDays(days, t)"
-					:item-array="days"
-					:update-entity="updateCheckbox"
-				>
-					<ItemSlider
-						bg-scroll-white="true"
-						bg="#ffffff00"
-						item-class="month"
+				<fieldset>
+					<CustomExpander
+						:headline="t('timeSearch.dayHeadline')"
+						icon="date_range"
+						:subline="getSublineForDays(days, t)"
+						:item-array="days"
+						:update-entity="updateCheckbox"
 					>
-						<div class="expand-container-days">
-							<div class="checkbox all">
-								<CustomTimelineCheckbox
-									:index="1"
-									name="timeSearch.all"
-									:val="false"
-									:tilted="false"
-									:parent-array="days"
-									:update="updateAllCheckbox"
-								></CustomTimelineCheckbox>
-							</div>
-							<div class="all-days-items">
-								<div class="day-gradient"></div>
-								<div
-									v-for="(item, index) in days"
-									:key="index"
-									class="checkbox"
-								>
+						<ItemSlider
+							bg-scroll-white="true"
+							bg="#ffffff00"
+							item-class="month"
+						>
+							<div class="expand-container-days">
+								<div class="checkbox all">
 									<CustomTimelineCheckbox
-										:index="index"
-										:name="days[index].name"
-										:val="days[index].selected"
-										:tilted="true"
-										:update="updateCheckbox"
+										:index="1"
+										name="timeSearch.all"
+										:val="false"
+										:tilted="false"
 										:parent-array="days"
+										:update="updateAllCheckbox"
 									></CustomTimelineCheckbox>
 								</div>
+								<div class="all-days-items">
+									<div class="day-gradient"></div>
+									<div
+										v-for="(item, index) in days"
+										:key="index"
+										class="checkbox"
+									>
+										<CustomTimelineCheckbox
+											:index="index"
+											:name="days[index].name"
+											:val="days[index].selected"
+											:tilted="true"
+											:update="updateCheckbox"
+											:parent-array="days"
+										></CustomTimelineCheckbox>
+									</div>
+								</div>
 							</div>
-						</div>
-					</ItemSlider>
-				</CustomExpander>
+						</ItemSlider>
+					</CustomExpander>
+				</fieldset>
 			</div>
 			<div class="select-container select-time">
-				<CustomExpander
-					:headline="t('timeSearch.timeslotHeadline')"
-					icon="schedule"
-					:subline="getSublineForTimeslots(timeslots, t)"
-					:item-array="timeslots"
-					:update-entity="updateCheckbox"
-					:filter-name-cutoff="13"
-				>
-					<ItemSlider
-						bg-scroll-white="true"
-						bg="#ffffff00"
-						item-class="month"
+				<fieldset>
+					<CustomExpander
+						:headline="t('timeSearch.timeslotHeadline')"
+						icon="schedule"
+						:subline="getSublineForTimeslots(timeslots, t)"
+						:item-array="timeslots"
+						:update-entity="updateCheckbox"
+						:filter-name-cutoff="13"
 					>
-						<div class="expand-container-time">
-							<div class="checkbox all">
-								<CustomTimelineCheckbox
-									:index="2"
-									name="timeSearch.all"
-									:val="false"
-									:tilted="false"
-									:parent-array="timeslots"
-									:update="updateAllCheckbox"
-								></CustomTimelineCheckbox>
-							</div>
-							<div class="all-timeslot-items">
-								<div
-									:style="'background-image:url(' + timelapseImage + ')'"
-									class="timelapse"
-								></div>
-								<div class="time-gradient"></div>
-								<div
-									v-for="(item, index) in timeslots"
-									:key="index"
-									class="checkbox"
-								>
+						<ItemSlider
+							bg-scroll-white="true"
+							bg="#ffffff00"
+							item-class="month"
+						>
+							<div class="expand-container-time">
+								<div class="checkbox all">
 									<CustomTimelineCheckbox
-										:index="index"
-										:name="timeslots[index].name"
-										:val="timeslots[index].selected"
-										:tilted="true"
-										:update="updateCheckbox"
+										:index="2"
+										name="timeSearch.all"
+										:val="false"
+										:tilted="false"
 										:parent-array="timeslots"
+										:update="updateAllCheckbox"
 									></CustomTimelineCheckbox>
 								</div>
+								<div class="all-timeslot-items">
+									<div
+										:style="'background-image:url(' + timelapseImage + ')'"
+										class="timelapse"
+									></div>
+									<div class="time-gradient"></div>
+									<div
+										v-for="(item, index) in timeslots"
+										:key="index"
+										class="checkbox"
+									>
+										<CustomTimelineCheckbox
+											:index="index"
+											:name="timeslots[index].name"
+											:val="timeslots[index].selected"
+											:tilted="true"
+											:update="updateCheckbox"
+											:parent-array="timeslots"
+										></CustomTimelineCheckbox>
+									</div>
+								</div>
 							</div>
-						</div>
-					</ItemSlider>
-				</CustomExpander>
+						</ItemSlider>
+					</CustomExpander>
+				</fieldset>
 			</div>
 		</div>
 		<div
@@ -247,7 +258,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref } from 'vue';
+import { defineComponent, onMounted, computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
@@ -316,12 +327,14 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const dataContainer = ref<HTMLDivElement>();
+		const closeDataExplanation = ref<HTMLButtonElement>();
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
 		const yearSearch = ref<typeof CustomExpander>();
 		const dataButton = ref<HTMLDivElement>();
 		const expToggled = ref(false);
+		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
 
 		onMounted(() => {
 			if (props.init) {
@@ -384,8 +397,28 @@ export default defineComponent({
 			}
 		});
 
+		watch(
+			() => vueSliderRef.value,
+			(newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					if (newVal) {
+						console.log(document.querySelectorAll('.vue-slider-dot'));
+						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
+						dots.forEach((dot) => {
+							dot.tabIndex = -1;
+							dot.ariaLabel = 'Time selector';
+						});
+					}
+				}
+			},
+		);
+
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;
+			console.log(closeDataExplanation.value);
+			if (expToggled.value && closeDataExplanation.value !== undefined) {
+				closeDataExplanation.value.focus();
+			}
 		};
 
 		const emitNewSearch = () => {
@@ -497,6 +530,8 @@ export default defineComponent({
 			toggleExplanation,
 			expToggled,
 			closeTimeFacets,
+			vueSliderRef,
+			closeDataExplanation,
 		};
 	},
 });
@@ -598,14 +633,10 @@ export default defineComponent({
 	z-index: 5;
 }
 
-h3 {
-	color: #002e70;
-	font-weight: 100;
-}
-
-h3 .bold,
-.hits .bold {
-	font-weight: bold;
+fieldset {
+	border: 0px;
+	margin: 0px;
+	min-inline-size: auto;
 }
 
 .info-span .bold {
@@ -642,7 +673,7 @@ h3 .bold,
 .explanation-for-data {
 	position: absolute;
 	width: 100%;
-	height: 100px;
+	min-height: 100px;
 	top: 0px;
 	left: 0px;
 	background-color: #c4f1ed;
