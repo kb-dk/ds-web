@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch, onMounted } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -64,6 +64,15 @@ import { startDate, endDate, startYear, endYear } from '@/components/common/Time
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { normalizeFq, cloneRouteQuery } from '@/utils/filter-utils';
 import { useRoute } from 'vue-router';
+
+interface Highlight {
+	dates: Date[];
+	years: number[];
+	months: { month: number; year: number }[];
+	quarters: { quarter: number; year: number }[];
+	weekdays: number[];
+	options: { highlightDisabled: boolean };
+}
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -99,7 +108,6 @@ export default defineComponent({
 		});
 
 		const setDateFromISOString = (isoDate: string, date: Date) => {
-			console.log('setting date', isoDate);
 			const existingDate = new Date(isoDate);
 			date.setTime(existingDate.getTime());
 		};
@@ -120,14 +128,18 @@ export default defineComponent({
 			timeSearchStore.setNewSearchReqMet(true);
 		};
 
-		const highlightedDays = computed((): Date[] => {
+		const highlightedDays = computed(() => {
 			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 			const highlights = [];
 			for (let i = 0; i < days; i++) {
 				highlights.push(addDays(startDate.value, i));
 			}
-			return highlights;
+
+			const highlight = {} as Highlight;
+			highlight.dates = highlights;
+
+			return highlight;
 		});
 
 		return {
