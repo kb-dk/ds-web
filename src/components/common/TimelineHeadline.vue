@@ -1,28 +1,41 @@
 <template>
-	<div class="headline-container">
-		<div
-			class="material-icons icon"
-			@click="dispatchClick()"
-		>
+	<div
+		:class="open ? 'headline-container open' : 'headline-container'"
+		@click="dispatchClick()"
+	>
+		<div class="material-icons icon">
 			{{ icon }}
 		</div>
-		<div
-			class="headline"
-			@click="dispatchClick()"
-		>
+		<div class="headline">
 			<h3>{{ headline }}</h3>
 			<span>{{ subline }}</span>
+		</div>
+		<div class="selected-items">
+			<button
+				v-for="(item, index) in selectedItems"
+				:key="`${index}-${item.name}`"
+				class="selected-entity"
+				@click="handleTimeFacetRemoval(item.index, $event)"
+			>
+				<span class="entity-name">{{ formatStringForTime(t(item.name).substring(0, filterCuttof)) }}</span>
+				<span class="close">×</span>
+			</button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { SelectorData } from '@/types/TimeSearchTypes';
 
 export default defineComponent({
-	name: 'Duration',
+	name: 'TimelineHeadline',
 	props: {
+		open: {
+			type: Boolean as PropType<boolean>,
+			required: true,
+		},
 		headline: {
 			type: String as PropType<string>,
 			required: true,
@@ -41,6 +54,26 @@ export default defineComponent({
 				return null;
 			},
 		},
+		itemArray: {
+			type: Array as PropType<SelectorData[]>,
+			required: false,
+			default() {
+				return [] as SelectorData[];
+			},
+		},
+		passUpdate: {
+			type: Function,
+			default() {
+				return null;
+			},
+		},
+		filterCuttof: {
+			type: Number as PropType<number>,
+			required: false,
+			default() {
+				return 3;
+			},
+		},
 	},
 
 	setup(props) {
@@ -50,7 +83,29 @@ export default defineComponent({
 			props.click !== undefined ? props.click() : null;
 		};
 
-		return { t, dispatchClick };
+		const selectedItems = computed(() => {
+			return props.itemArray.filter((item: SelectorData) => item.selected);
+		});
+
+		const handleTimeFacetRemoval = (index: number, e: Event) => {
+			e.stopPropagation();
+			props.passUpdate(props.itemArray, index, false);
+			console.log('headline part', index);
+		};
+
+		const formatStringForTime = (val: string) => {
+			/* 
+			if our cutoff is set to 13, we remove the .00 after the numbers, so we just get 13 - 14.
+			This is because of space issues in the design - this was the best way to solve this nicely.
+			*/
+			if (props.filterCuttof === 13) {
+				return val.replace(/.00/g, '');
+			} else {
+				return val;
+			}
+		};
+
+		return { t, dispatchClick, selectedItems, handleTimeFacetRemoval, formatStringForTime };
 	},
 });
 </script>
@@ -75,7 +130,7 @@ h3 {
 	height: auto;
 }
 
-span {
+.headline span {
 	padding: 0;
 	margin: 0;
 	height: 20px;
@@ -96,23 +151,66 @@ span {
 	gap: 0px;
 }
 
-.subline {
-}
-
 .headline-container {
 	display: flex;
 	justify-content: flex-start;
 	flex-wrap: wrap;
 	flex-direction: row;
-	align-items: center;
-	align-content: center;
-	height: 65px;
+	align-content: flex-start;
+	height: 50px;
 	width: 100%;
+	transition: all 0.15s linear 0s;
+	align-items: flex-start;
+	padding-top: 5px;
+	flex-wrap: nowrap;
+}
+
+.headline-container.open:hover {
+	cursor: pointer;
+	height: 50px !important;
+}
+
+.headline-container:hover {
+	cursor: pointer;
+	height: 55px;
 }
 
 .headline-container h3,
 .headline-container span,
 .headline-container div {
 	cursor: pointer;
+}
+
+.selected-items {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-left: auto;
+	max-width: 40%;
+	gap: 5px;
+	justify-content: flex-end;
+}
+
+.selected-entity {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border: 0px;
+	border-radius: 15px;
+	background-color: #002e70;
+	color: white;
+	cursor: pointer;
+	position: relative;
+	z-index: 5;
+	white-space: pre;
+}
+
+.selected-entity .entity-name {
+	text-transform: capitalize;
+	padding-right: 5px;
+}
+
+.selected-entity .close {
+	font-size: 20px;
 }
 </style>

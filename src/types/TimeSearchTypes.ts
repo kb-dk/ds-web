@@ -31,4 +31,5 @@ export interface SelectorData {
 	name: string;
 	value: string;
 	selected: boolean;
+	index: number;
 }

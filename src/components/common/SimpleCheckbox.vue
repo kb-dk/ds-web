@@ -65,11 +65,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { addFilter, removeFilter, filterExists, createAffiliationFilter } from '@/utils/filter-utils';
+import {
+	addChannelFilter,
+	removeChannelFilter,
+	channelFilterExists,
+	createAffiliationFilter,
+} from '@/utils/filter-utils';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
 export default defineComponent({
-	name: 'Checkbox',
+	name: 'SimpleCheckbox',
 	props: {
 		fqkey: {
 			type: String,
@@ -92,18 +96,25 @@ export default defineComponent({
 				return '';
 			},
 		},
+		timeSearchActive: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			},
+		},
 		checked: { type: Boolean, required: false },
 		loading: { type: Boolean, required: true },
 	},
-	setup() {
+	setup(props) {
 		const router = useRouter();
 		const route = useRoute();
 		const searchResultStore = useSearchResultStore();
 		const check = (key: string | undefined, title: string | undefined) => {
 			if (title && key) {
-				const routeQueries = filterExists(key, title, searchResultStore.filters)
-					? removeFilter(route, createAffiliationFilter(title))
-					: addFilter(route, createAffiliationFilter(title));
+				const routeQueries = channelFilterExists(key, title, searchResultStore.channelFilters)
+					? removeChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive)
+					: addChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive);
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 			}
@@ -168,7 +179,7 @@ export default defineComponent({
 	margin: 5px 0px;
 	border-radius: 20px;
 	background-color: rgba(170, 170, 170, 1);
-	width: 35px;
+	height: 12px;
 }
 
 @keyframes loading {
@@ -209,38 +220,22 @@ export default defineComponent({
 	overflow: hidden;
 	display: inline-block;
 	text-transform: uppercase;
-	font-weight: bold;
+	color: #002e70;
 }
 
-.checkbox {
-	position: relative;
-	top: 2px;
-	float: right;
-	--active: #275efe;
-	--active-inner: #fff;
-	--focus: 2px rgba(39, 94, 254, 0.3);
-	--border: rgba(30, 30, 30, 0);
-	--border-hover: #002e70;
-	--background: rgba(30, 30, 30, 0.4);
-	--disabled: #f6f8ff;
-	--disabled-inner: #e1e6f9;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	height: 21px;
-	outline: none;
-	display: inline-block;
-	vertical-align: top;
-	position: relative;
-	margin: 0;
-	cursor: pointer;
-	border: 1px solid var(--bc, var(--border));
-	background: var(--b, var(--background));
-	transition:
-		background 0.3s,
-		border-color 0.3s,
-		box-shadow 0.2s;
-	width: 38px;
-	border-radius: 11px;
+.loading .checkbox:after {
+	border: 1px solid rgba(170, 170, 170, 1) !important;
+	background-color: rgb(255, 255, 255) !important;
+	cursor: default;
+}
+
+.loading .checkbox:checked:after {
+	background-color: rgba(170, 170, 170, 1) !important;
+}
+
+.loading .checkbox:hover:before {
+	cursor: default !important;
+	border-color: white !important;
 }
 
 .checkbox:disabled {
@@ -252,37 +247,71 @@ export default defineComponent({
 }
 
 .checkbox:disabled:hover:after {
-	background-color: #e9ecef;
+	background-color: transparent;
+	cursor: default;
+}
+
+.checkbox:disabled:hover:after {
+	cursor: default;
+	background-color: #002e70;
 }
 
 .checkbox:hover:after {
 	background-color: #caf0fe;
 }
+
+.checkbox:checked:hover:before {
+	border-color: #002e70;
+	cursor: pointer;
+}
+.checkbox:checked:hover:after {
+	border-color: rgba(170, 170, 170, 1);
+	background-color: white;
+}
+
 input:focus {
 	box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
 }
 
-.checkbox:checked {
-	--background: #002e70;
+.checkbox {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	outline: none;
+	position: relative;
+	float: right;
 }
+
 .checkbox:after {
+	cursor: pointer;
+	transition: all 0.15s linear 0s;
 	content: '';
 	display: block;
-	position: absolute;
 	width: 15px;
 	height: 15px;
-	top: 2px;
-	left: 1px;
-	background-color: #e9ecef;
-	border-radius: 180px;
-	transition: all 0.3s ease-in-out;
+	border: 1px solid #002e70;
 }
+
 .checkbox:checked:after {
-	transform: translateX(19px);
+	background-color: #002e70;
+}
+
+.checkbox:checked:before {
+	content: '';
+	display: block;
+	width: 7px;
+	height: 12px;
+	border-bottom: 2px solid white;
+	border-right: 2px solid white;
+	position: absolute;
+	top: 1px;
+	left: 5px;
+	box-sizing: border-box;
+	transform-origin: center;
+	transform: rotateZ(45deg);
 }
 
 .label {
 	cursor: pointer;
-	width: calc(100% - 38px);
+	display: block;
 }
 </style>

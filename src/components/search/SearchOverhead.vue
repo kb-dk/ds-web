@@ -2,30 +2,29 @@
 	<div class="container">
 		<div class="row">
 			<div class="hit-count">
-				<div class="result-options">
-					<div class="hits">
-						<HitCount
-							:hit-count="searchResultStore.numFound"
-							:no-hits="searchResultStore.noHits"
-							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
-						/>
-					</div>
-					<!-- <Sort v-if="searchResultStore.searchResult.length > 0" /> -->
-				</div>
 				<div :class="!searchResultStore.loading ? 'filter-options' : 'filter-options disabled'">
-					<button
-						v-if="searchResultStore.searchResult.length > 0"
-						ref="toggleFacetsButton"
-						role="switch"
-						aria-checked="true"
-						class="filter-button"
-						@click="toggleFacets()"
-					>
-						<span class="material-icons">tune</span>
-						<span class="filter-button-text">
-							{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
-						</span>
-					</button>
+					<div class="filter-buttons">
+						<button
+							ref="toggleFacetsButton"
+							role="switch"
+							aria-checked="true"
+							class="filter-button"
+							@click="toggleFacets()"
+						>
+							<span class="material-icons">tune</span>
+							<span class="filter-button-text">
+								{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
+							</span>
+						</button>
+						<button
+							v-if="searchResultStore.filters.length > 0 || searchResultStore.channelFilters.length > 0"
+							class="reset"
+							@click="resetFilters()"
+						>
+							<span>×</span>
+							Reset filtre
+						</button>
+					</div>
 					<button
 						:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
 						@click="toggleTV($event)"
@@ -70,6 +69,15 @@
 					</button>
 				</div>
 				<Facets :facet-results="searchResultStore.facetResult" />
+				<div class="result-options">
+					<div class="hits">
+						<HitCount
+							:hit-count="searchResultStore.numFound"
+							:no-hits="searchResultStore.noHits"
+							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
+						/>
+					</div>
+				</div>
 				<div class="sort-options">
 					<Sort></Sort>
 					<div class="search-options">
@@ -124,12 +132,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { useRoute, useRouter, LocationQueryRaw } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import Facets from '@/components/search/Facets.vue';
-
+import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 
@@ -163,10 +171,41 @@ export default defineComponent({
 			searchResultStore.showFacets = false;
 		});
 
+		watch(
+			() => route.query.fq,
+			(newFq) => {
+				/* 
+				we have to do this, because vue acts weird here.
+				when we have normal route changes, it seems like we get an array here,
+				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
+				Weird and breaking behavior, that we have to account for here.
+				*/
+				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
+				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
+				if (originFilter) {
+					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
+						tvToggled.value = false;
+					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
+						radioToggled.value = false;
+					}
+				}
+			},
+			{ immediate: true },
+		);
+
+		const resetFilters = () => {
+			searchResultStore.setKeepFacets(false);
+			router.push({
+				name: 'Home',
+				query: { q: searchResultStore.currentQuery },
+			});
+		};
+
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';
 			if ((tvToggled.value && radioToggled) || (!tvToggled.value && !radioToggled.value)) {
 				val = delimitationOptions.all;
+				searchResultStore.preliminaryFilter = '';
 			}
 			if (tvToggled.value && !radioToggled.value) {
 				val = delimitationOptions.tv;
@@ -174,24 +213,30 @@ export default defineComponent({
 			if (!tvToggled.value && radioToggled.value) {
 				val = delimitationOptions.radio;
 			}
-			searchResultStore.preliminaryFilter = val;
 			searchResultStore.resetAutocomplete();
-			let query: LocationQueryRaw = {
-				q: searchResultStore.currentQuery,
-				start: 0,
-			};
-			if (searchResultStore.preliminaryFilter !== '') {
-				query.fq = searchResultStore.preliminaryFilter;
-			}
-			if (searchResultStore.sort !== '') {
-				query.sort = searchResultStore.sort;
+			const routeQueries = cloneRouteQuery(route);
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			if (existingFq) {
+				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
+				if (creatorAffiliationFilter) {
+					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
+					if (index !== -1) {
+						existingFq.splice(index, 1);
+					}
+				}
+				if (val !== '') {
+					existingFq.push(encodeURIComponent(val));
+				}
+				routeQueries.fq = existingFq;
 			} else {
-				query.sort = encodeURIComponent(`score desc`);
+				if (val !== '') {
+					routeQueries.fq = [];
+					routeQueries.fq.push(encodeURIComponent(val));
+				}
 			}
-
 			router.push({
 				name: 'Home',
-				query: query,
+				query: routeQueries,
 			});
 		};
 
@@ -261,6 +306,7 @@ export default defineComponent({
 			radioToggled,
 			toggleRadio,
 			toggleTV,
+			resetFilters,
 		};
 	},
 });
@@ -313,8 +359,10 @@ export default defineComponent({
 }
 
 .sort-options {
+	position: relative;
 	display: flex;
 	justify-content: space-between;
+	z-index: 5;
 }
 
 .filter-options {
@@ -330,6 +378,7 @@ export default defineComponent({
 	color: #757575 !important;
 	background-color: rgb(250, 250, 250);
 	transition: all 0.2s linear 0s;
+	border: 1px solid #7575755e;
 }
 
 .filter-options.disabled button .dark-bar {
@@ -363,7 +412,6 @@ export default defineComponent({
 	background-color: transparent;
 	line-height: 24px;
 	cursor: pointer;
-	padding: 10px 10px;
 	margin: 10px 0px;
 	margin-right: auto;
 	margin-left: 0;
@@ -374,6 +422,8 @@ export default defineComponent({
 		1px 1px 2px #00000029;
 	border-radius: 4px;
 	z-index: 1;
+	font-size: 20px;
+	margin-right: 10px;
 }
 
 .filter-button .material-icons {
@@ -390,7 +440,7 @@ export default defineComponent({
 .source-facet-button {
 	cursor: pointer;
 	padding: 3px 3px;
-	font-size: 20px;
+	font-size: 18px;
 	width: fit-content;
 	display: flex;
 	align-items: center;
@@ -487,5 +537,39 @@ export default defineComponent({
 	left: 1px;
 	position: relative;
 	border-radius: 15px;
+}
+
+.reset {
+	cursor: pointer;
+	padding: 3px 3px;
+	font-size: 18px;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	border: 1px solid #f7ae3b;
+	background: #ffffff;
+	color: #002e70;
+	border-radius: 4px;
+	transition: all 0s linear 0s;
+	background-color: #f7ae3b;
+	max-height: 28px;
+	z-index: 1;
+	box-shadow:
+		inset 1px 1px 2px #00000000,
+		1px 1px 2px #00000029;
+}
+
+.reset span {
+	font-size: 25px;
+	padding-right: 5px;
+}
+
+.filter-buttons {
+	margin-right: auto;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	flex-wrap: nowrap;
+	flex-direction: row;
 }
 </style>

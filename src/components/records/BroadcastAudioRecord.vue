@@ -1,8 +1,8 @@
 <template>
 	<div class="broadcast-record">
 		<AudioPlayer
-			v-if="checkForKalturaId()"
-			:file-id="recordData['kb:internal']['kb:file_id']"
+			v-if="entryId !== ''"
+			:entry-id="entryId"
 		></AudioPlayer>
 		<div
 			v-else
@@ -104,6 +104,7 @@ import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { getEntryId } from '@/utils/record-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
@@ -146,11 +147,13 @@ export default defineComponent({
 			lastPath.value = router.options.history.state.back as string;
 		});
 
+		const entryId = getEntryId(props.recordData);
+
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, checkForKalturaId };
+		return { lastPath, locale, entryId, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, checkForKalturaId };
 	},
 });
 </script>

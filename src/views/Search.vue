@@ -68,6 +68,7 @@ import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import Footer from '@/components/global/nav/Footer.vue';
+import { normalizeFq } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'Search',
@@ -162,6 +163,9 @@ export default defineComponent({
 					} else {
 						searchResultStore.setStartFromURL(route.query.start as string);
 					}
+					channelFacetsChanged(newp, prevp)
+						? searchResultStore.setKeepFacets(true)
+						: searchResultStore.setKeepFacets(false);
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
@@ -182,6 +186,24 @@ export default defineComponent({
 
 		const checkIfSortIsChanged = (newSort: string, oldSort: string) => {
 			return newSort !== oldSort;
+		};
+
+		const channelFacetsChanged = (
+			newfq: RouteLocationNormalizedLoaded,
+			oldfq: RouteLocationNormalizedLoaded,
+		): boolean => {
+			const newFilter = normalizeFq(newfq.query.fq as string[] | string);
+			const oldFilter = normalizeFq(oldfq.query.fq as string[] | string);
+			const newCreatorAffiliationFilter = (newFilter as string[])?.find((fq: string) =>
+				fq.includes('creator_affiliation_facet'),
+			);
+			const oldCreatorAffiliationFilter = (oldFilter as string[])?.find((fq: string) =>
+				fq.includes('creator_affiliation_facet'),
+			);
+			if (newCreatorAffiliationFilter !== oldCreatorAffiliationFilter && newfq.query.q === oldfq.query.q) {
+				return true;
+			}
+			return false;
 		};
 
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
