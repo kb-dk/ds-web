@@ -1,26 +1,30 @@
 <template>
 	<div class="select-container">
+		<label>
+			{{ label }}:
+			<select
+				v-model="selected"
+				@change="updated($event)"
+			>
+				<option
+					value="1992"
+					disabled
+					selected
+					hidden
+				>
+					1992
+				</option>
+				<option
+					v-for="(item, index) in listItems"
+					:key="index"
+					class="single-entry"
+					:value="item"
+				>
+					{{ item }}
+				</option>
+			</select>
+		</label>
 		<div class="line"></div>
-		<select
-			v-model="selected"
-			@change="updated($event)"
-		>
-			<option
-				value=""
-				disabled
-				selected
-				hidden
-			>
-				1992
-			</option>
-			<option
-				v-for="(item, index) in listItems"
-				:key="index"
-				class="single-entry"
-			>
-				{{ item }}
-			</option>
-		</select>
 	</div>
 </template>
 
@@ -40,6 +44,12 @@ export default defineComponent({
 			type: Number,
 			default() {
 				return 0;
+			},
+		},
+		label: {
+			type: String,
+			default() {
+				return '';
 			},
 		},
 	},
@@ -92,14 +102,19 @@ export default defineComponent({
 	padding-right: 10px;
 }
 
+label {
+	padding-right: 10px;
+}
+
 .line {
 	display: block;
 	width: 1px;
 	height: 16px;
-	position: absolute;
 	background-color: lightgrey;
-	left: 63px;
 	top: 7px;
+	right: 0px;
+	position: absolute;
+	margin-right: 32px;
 }
 
 select option {

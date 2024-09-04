@@ -116,7 +116,7 @@ class MenuComponent extends HTMLElement {
 		}
 		//listElem.role = 'none';
 		const link = document.createElement('a');
-		link.role = 'menuitem';
+		listElem.role = 'menuitem';
 		if (id) link.id = id;
 		listElem.appendChild(link);
 		link.classList.add('nav-item', 'level-1');

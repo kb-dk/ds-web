@@ -424,7 +424,8 @@ nav {
 }
 
 /* custom scrollbar */
-::-webkit-scrollbar {
+/* We remove this for now. */
+/* ::-webkit-scrollbar {
 	width: 20px;
 }
 
@@ -441,5 +442,5 @@ nav {
 
 ::-webkit-scrollbar-thumb:hover {
 	background-color: rgb(160, 160, 160);
-}
+} */
 </style>

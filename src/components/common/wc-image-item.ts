@@ -121,8 +121,8 @@ const IMAGE_COMPONMENT_STYLES = /*css*/ `
     }
 
 		.image-item {
-			width:100%;
-			height:100%;
+			width: calc(100% + 1px);
+   		height: calc(100% + 1px);
 			object-fit: cover;
 			transition:opacity 0.3s ease-in-out 0s, filter 0.3s ease-in-out 0s, transform 0.3s ease-in-out 0s, all 0.3s ease-in-out 0s;
 			opacity:0;
