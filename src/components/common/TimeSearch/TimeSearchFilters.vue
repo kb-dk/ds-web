@@ -481,12 +481,8 @@ export default defineComponent({
 					item.selected = true;
 				});
 			} else {
-				array.forEach((item, index) => {
-					if (index === 0) {
-						item.selected = true;
-					} else {
-						item.selected = false;
-					}
+				array.forEach((item) => {
+					item.selected = false;
 				});
 			}
 			if (!props.picker) {
