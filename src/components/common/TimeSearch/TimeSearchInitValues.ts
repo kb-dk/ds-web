@@ -9,7 +9,7 @@ const timeSliderValues = ref<number[]>(initSliderValues.value);
 const startDate = ref<Date>(initStartDate.value); // January 1, 1992, 00:00:00
 const endDate = ref<Date>(initEndDate.value); // December 31, 1992, 23:59:59
 
-/* these are just the preset values. Should be updated when we got the new repo */
+/* these are just the preset values. Should be updated when we got the new index in solr */
 const startYear = ref<Date>(new Date(1921, 0, 1, 0, 0, 0));
 const endYear = ref<Date>(new Date(2022, 11, 31, 23, 59, 59));
 

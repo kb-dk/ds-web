@@ -18,11 +18,16 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const error = ref('');
 	const { t } = useI18n();
 	const newSearchReqMet = ref(false);
+	const timeFacetsOpen = ref(false);
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
 		const dateA = new Date(a.startTime).getTime();
 		const dateB = new Date(b.startTime).getTime();
 		return dateA > dateB ? 1 : -1;
+	};
+
+	const setTimeFacetsOpen = (val: boolean) => {
+		timeFacetsOpen.value = val;
 	};
 
 	const setNewSearchReqMet = (val: boolean) => {
@@ -108,5 +113,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		numFound,
 		newSearchReqMet,
 		setNewSearchReqMet,
+		timeFacetsOpen,
+		setTimeFacetsOpen,
 	};
 });

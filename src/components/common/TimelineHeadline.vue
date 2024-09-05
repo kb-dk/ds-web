@@ -90,7 +90,6 @@ export default defineComponent({
 		const handleTimeFacetRemoval = (index: number, e: Event) => {
 			e.stopPropagation();
 			props.passUpdate(props.itemArray, index, false);
-			console.log('headline part', index);
 		};
 
 		const formatStringForTime = (val: string) => {
