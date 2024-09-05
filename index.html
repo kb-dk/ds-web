@@ -15,10 +15,20 @@
 			rel="icon"
 			href="/favicon.ico"
 		/>
-		<title>DR Arkiv</title>
+		<title>DR Arkivet</title>
 		<!-- Meta Tags for SEO -->
 		<meta
 			name="description"
+			content="Det Kgl. Biblioteks DR-arkiv."
+		/>
+		<link
+			rel="alternate"
+			hreflang="en"
+			href="https://www.kb.dk/find-materiale/dr-arkivet/?locale=en"
+		/>
+		<meta
+			name="description"
+			lang="en"
 			content="The Royal Danish Library's archive for Danish Television."
 		/>
 		<meta
@@ -77,18 +87,33 @@
 
 		<!-- Structured Data (JSON-LD) -->
 		<script type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				"url": "https://www.kb.dk/find-materiale/dr-arkivet",
-				"name": "DR-arkivet",
-				"description": "An archive for Danish Television",
-				"potentialAction": {
-					"@type": "SearchAction",
-					"target": "https://www.kb.dk/find-materiale/dr-arkivet/?q={search_term_string}",
-					"query-input": "required name=search_term_string"
+				{
+					"@context": "https://schema.org",
+					"@type": "WebSite",
+					"url": "https://www.kb.dk/find-materiale/dr-arkivet",
+					"name": {
+						"en":"DR Archive",
+						"da":"DR Arkivet",
+					},
+					"description": {
+						"en":"An archive for Danish Television",
+						"da":"Det Kgl. Biblioteks DR arkiv",
+					}
+					"potentialAction": [
+			  {
+			    "@type": "SearchAction",
+			    "target": "https://www.kb.dk/find-materiale/dr-arkivet/?locale=en&q={search_term_string}",
+			    "query-input": "required name=search_term_string",
+			    "inLanguage": "en"
+			  },
+			  {
+			    "@type": "SearchAction",
+			    "target": "https://www.kb.dk/find-materiale/dr-arkivet/?locale=da&q={search_term_string}",
+			    "query-input": "required name=search_term_string",
+			    "inLanguage": "da"
+			  }
+			]
 				}
-			}
 		</script>
 	</head>
 	<body class="default front-page theme-blue">
