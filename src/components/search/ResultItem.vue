@@ -15,6 +15,7 @@
 							class="title"
 							role="link"
 							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link-${resultdata.id}`, 0)"
+							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
 							<span class="material-icons arrow">keyboard_arrow_right</span>
@@ -168,7 +169,7 @@ export default defineComponent({
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = props.resultdata?.title;
-			imageDataObj.imgTitle = props.resultdata?.title;
+			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
 			if (props.resultdata?.file_id) {
 				APIService.getThumbnail(props.resultdata.file_id)
