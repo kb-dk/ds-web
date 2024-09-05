@@ -45,6 +45,7 @@
 				<div class="divider darkblue"></div>
 				<button
 					class="get-link"
+					:data-testid="addTestDataEnrichment('button', 'broadcast-audio', 'copy-link', 0)"
 					@click="getCurrentUrl()"
 				>
 					<span class="material-icons">link</span>
@@ -56,6 +57,7 @@
 			<router-link
 				v-if="lastPath"
 				:to="lastPath"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
 				Tilbage
@@ -63,6 +65,7 @@
 			<router-link
 				v-else
 				to="/"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
 				Til forsiden
@@ -107,6 +110,7 @@ import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
@@ -153,7 +157,17 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, entryId, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, checkForKalturaId };
+		return {
+			lastPath,
+			locale,
+			entryId,
+			t,
+			getCurrentUrl,
+			getBroadcastDate,
+			getBroadcastTime,
+			checkForKalturaId,
+			addTestDataEnrichment,
+		};
 	},
 });
 </script>
