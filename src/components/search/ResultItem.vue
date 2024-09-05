@@ -14,6 +14,7 @@
 							:to="{ path: 'record/' + resultdata.id }"
 							class="title"
 							role="link"
+							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link-${resultdata.id}`, 0)"
 						>
 							{{ resultdata.title[0] }}
 							<span class="material-icons arrow">keyboard_arrow_right</span>
@@ -31,6 +32,7 @@
 						:to="{ path: 'record/' + resultdata.id }"
 						class="result-image-wrapper"
 						role="link"
+						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link-${resultdata.id}`, 0)"
 					>
 						<kb-imagecomponent
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
@@ -114,6 +116,7 @@ import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
 import '@/components/common/wc-image-item';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'ResultItem',
@@ -211,6 +214,7 @@ export default defineComponent({
 			imageData,
 			placeholderTitleRef,
 			t,
+			addTestDataEnrichment,
 		};
 	},
 });

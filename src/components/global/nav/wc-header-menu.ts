@@ -123,7 +123,7 @@ class MenuComponent extends HTMLElement {
 		link.classList.add('nav-item', 'level-1');
 		link.textContent = title;
 		link.href = url;
-		link.setAttribute('data-testid', addTestDataEnrichment('link', title, 0));
+		link.setAttribute('data-testid', addTestDataEnrichment('link', 'topmenu', title, 0));
 		if (icon) {
 			const iconElem = document.createElement('i');
 			iconElem.classList.add('material-icons');
@@ -216,14 +216,14 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 						href="/arkiv"
 						class="rdl-logo"
 						title="Logo of the Royal Danish Library"
-						data-testid="link-logo-0"
+						data-testid="link-topmenu-logo-0"
 					>
 						<span class="sr-only"></span>
 					</a>
 				</div>
 				<div class="col-auto d-lg-none burger-col">
 					<div id="mobileNavToggle">
-						<button data-testid="button-menu-toggle-0" id="mobileNavButton" class="btn rdl-burger collapsed" data-toggle="collapse" data-target="#mobileNavigation" aria-expanded="false" aria-controls="mobileNavigation" aria-label="Åbn eller luk navigation" aria-pressed="false">
+						<button data-testid="button-topmenu-menu-toggle-0" id="mobileNavButton" class="btn rdl-burger collapsed" data-toggle="collapse" data-target="#mobileNavigation" aria-expanded="false" aria-controls="mobileNavigation" aria-label="Åbn eller luk navigation" aria-pressed="false">
 							<span class="rdl-line" aria-hidden="true"></span>
 							<span class="rdl-line" aria-hidden="true"></span>
 							<span class="rdl-line" aria-hidden="true"></span>

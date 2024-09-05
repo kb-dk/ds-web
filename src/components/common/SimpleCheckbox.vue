@@ -20,6 +20,7 @@
 						type="checkbox"
 						class="checkbox"
 						:checked="checked"
+						:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
 						@change="check(fqkey, title)"
 					/>
 				</label>
@@ -72,6 +73,8 @@ import {
 	createAffiliationFilter,
 } from '@/utils/filter-utils';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'SimpleCheckbox',
 	props: {
@@ -95,6 +98,10 @@ export default defineComponent({
 			default() {
 				return '';
 			},
+		},
+		number: {
+			type: Number,
+			required: true,
 		},
 		timeSearchActive: {
 			type: Boolean,
@@ -124,7 +131,7 @@ export default defineComponent({
 			return value ? `(${value})` : '';
 		};
 
-		return { check, displayAmount };
+		return { check, displayAmount, addTestDataEnrichment };
 	},
 });
 </script>

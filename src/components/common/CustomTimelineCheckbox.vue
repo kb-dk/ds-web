@@ -4,6 +4,7 @@
 		ref="checkboxRef"
 		type="checkbox"
 		:checked="val"
+		:data-testid="addTestDataEnrichment('input', 'timeline-checkbox', name, index)"
 		@change="updateSelection"
 	/>
 	<label
@@ -21,6 +22,7 @@
 <script lang="ts">
 import { defineComponent, ref, PropType, watch } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'CustomTimelineCheckbox',
@@ -79,7 +81,7 @@ export default defineComponent({
 			props.update(props.parentArray, props.index, target.checked);
 		};
 
-		return { updateSelection, checkboxRef, checkboxLabelRef };
+		return { updateSelection, checkboxRef, checkboxLabelRef, addTestDataEnrichment };
 	},
 });
 </script>

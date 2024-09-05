@@ -1,5 +1,5 @@
-const addTestDataEnrichment = (type: string, title: string, index: number) => {
-	return `${santizeAndSimplify(type)}-${santizeAndSimplify(title)}-${index}`;
+const addTestDataEnrichment = (type: string, component: string, title: string, index: number) => {
+	return `${santizeAndSimplify(type)}-${santizeAndSimplify(component)}-${santizeAndSimplify(title)}-${index}`;
 };
 
 const santizeAndSimplify = (str: string) => {

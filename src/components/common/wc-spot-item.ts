@@ -36,6 +36,7 @@ class SpotComponent extends HTMLElement {
 	connectedCallback() {
 		//TODO: We're waiting for real data here
 		if (this.data) {
+			console.log(this.data);
 			if (this.data.title) {
 				const titleHolder = this.shadow.querySelector('.record-title');
 				titleHolder && (titleHolder.innerHTML = this.data.title);

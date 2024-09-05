@@ -9,6 +9,7 @@
 							role="switch"
 							aria-checked="true"
 							class="filter-button"
+							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
 							@click="toggleFacets()"
 						>
 							<span class="material-icons">tune</span>
@@ -19,6 +20,7 @@
 						<button
 							v-if="searchResultStore.filters.length > 0 || searchResultStore.channelFilters.length > 0"
 							class="reset"
+							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
 							@click="resetFilters()"
 						>
 							<span>×</span>
@@ -27,6 +29,7 @@
 					</div>
 					<button
 						:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
+						:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-tv', 0)"
 						@click="toggleTV($event)"
 					>
 						<span class="material-icons second">play_circle_filled</span>
@@ -48,6 +51,7 @@
 					</button>
 					<button
 						:class="radioToggled ? 'source-facet-button open' : 'source-facet-button'"
+						:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-radio', 0)"
 						@click="toggleRadio($event)"
 					>
 						<span class="material-icons second">volume_up</span>
@@ -107,6 +111,7 @@
 									  ? 'display-option list'
 									  : 'display-option list active'
 							"
+							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-list', 0)"
 							@click="setGridAndLoadResults(false)"
 						>
 							<span class="material-icons">toc</span>
@@ -120,6 +125,7 @@
 									  : 'display-option grid'
 							"
 							class="display-option grid"
+							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-grid', 0)"
 							@click="setGridAndLoadResults(true)"
 						>
 							<span class="material-icons">apps</span>
@@ -140,6 +146,7 @@ import Facets from '@/components/search/Facets.vue';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -307,6 +314,7 @@ export default defineComponent({
 			toggleRadio,
 			toggleTV,
 			resetFilters,
+			addTestDataEnrichment,
 		};
 	},
 });

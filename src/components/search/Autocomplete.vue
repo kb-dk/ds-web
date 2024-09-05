@@ -16,7 +16,7 @@
 			>
 				<button
 					:title="item?.term"
-					:data-testid="addTestDataEnrichment('button', `autocomplete-${item.term}`, i)"
+					:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
 					@click="executeOnSelection"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>

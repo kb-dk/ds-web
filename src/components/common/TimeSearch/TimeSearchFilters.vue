@@ -5,6 +5,7 @@
 	>
 		<button
 			class="data-size"
+			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 			@click="toggleExplanation()"
 		>
 			{{ $t('timeSearch.data') }}
@@ -231,6 +232,7 @@
 		>
 			<button
 				class="close"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'close-time-facets', 0)"
 				@click="closeTimeFacets()"
 			>
 				{{ t('timeSearch.filterCloseButton') }}
@@ -238,6 +240,7 @@
 			<button
 				class="apply-time-facets"
 				:disabled="!timeSearchStore.newSearchReqMet"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
 				{{ t('timeSearch.filterApplyButton') }}
@@ -280,6 +283,8 @@ import {
 	getSublineForTimeslots,
 	getSublineForYears,
 } from '@/utils/time-search-utils';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
@@ -497,6 +502,7 @@ export default defineComponent({
 			toggleExplanation,
 			expToggled,
 			closeTimeFacets,
+			addTestDataEnrichment,
 		};
 	},
 });
