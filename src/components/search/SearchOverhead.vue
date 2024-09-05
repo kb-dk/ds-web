@@ -11,7 +11,7 @@
 							class="filter-button"
 							@click="toggleFacets()"
 						>
-							<span class="material-icons">tune</span>
+							<span class="material-icons">{{ !searchResultStore.showFacets ? 'tune' : 'close' }}</span>
 							<span class="filter-button-text">
 								{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
 							</span>
@@ -25,48 +25,50 @@
 							Reset filtre
 						</button>
 					</div>
-					<button
-						:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
-						@click="toggleTV($event)"
-					>
-						<span class="material-icons second">play_circle_filled</span>
-						TV
-						<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
-							<span class="dot">
-								<TransitionGroup>
-									<div
-										v-if="tvToggled"
-										class="close"
-									></div>
-									<div
-										v-else
-										class="check"
-									></div>
-								</TransitionGroup>
+					<div class="type-toggles">
+						<button
+							:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
+							@click="toggleTV($event)"
+						>
+							<span class="material-icons second">play_circle_filled</span>
+							TV
+							<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
+								<span class="dot">
+									<TransitionGroup>
+										<div
+											v-if="tvToggled"
+											class="close"
+										></div>
+										<div
+											v-else
+											class="check"
+										></div>
+									</TransitionGroup>
+								</span>
 							</span>
-						</span>
-					</button>
-					<button
-						:class="radioToggled ? 'source-facet-button open' : 'source-facet-button'"
-						@click="toggleRadio($event)"
-					>
-						<span class="material-icons second">volume_up</span>
-						RADIO
-						<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
-							<span class="dot">
-								<TransitionGroup>
-									<div
-										v-if="radioToggled"
-										class="close"
-									></div>
-									<div
-										v-else
-										class="check"
-									></div>
-								</TransitionGroup>
+						</button>
+						<button
+							:class="radioToggled ? 'source-facet-button open' : 'source-facet-button'"
+							@click="toggleRadio($event)"
+						>
+							<span class="material-icons second">volume_up</span>
+							RADIO
+							<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
+								<span class="dot">
+									<TransitionGroup>
+										<div
+											v-if="radioToggled"
+											class="close"
+										></div>
+										<div
+											v-else
+											class="check"
+										></div>
+									</TransitionGroup>
+								</span>
 							</span>
-						</span>
-					</button>
+						</button>
+					</div>
 				</div>
 				<Facets :facet-results="searchResultStore.facetResult" />
 				<div class="result-options">
@@ -314,7 +316,6 @@ export default defineComponent({
 
 <style scoped>
 .display-option {
-	color: #002e70;
 	background-color: transparent;
 	border: 0px;
 	cursor: pointer;
@@ -322,17 +323,26 @@ export default defineComponent({
 	width: 30px;
 	height: 30px;
 	border-bottom: 1px solid transparent;
+	color: grey;
 }
 
 .display-option.list {
 	position: relative;
 	margin-left: 30px;
 	margin-right: 5px;
+	padding-left: 2px;
 }
 
 .display-option.active {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
+	color: #002e70;
+}
+
+.display-option.list,
+.display-option.grid {
+	top: 2px;
+	position: relative;
 }
 
 .display-option.loading {
@@ -341,13 +351,21 @@ export default defineComponent({
 }
 
 .display-option.list span {
-	font-size: 32px;
+	font-size: 35px;
 	position: relative;
-	top: -2px;
+	top: -5px;
+	left: -5px;
 }
 
 .container {
 	min-height: 91px;
+}
+
+.type-toggles {
+	display: flex;
+	gap: 10px;
+	width: 100%;
+	padding-bottom: 25px;
 }
 
 .result-options {
@@ -355,7 +373,10 @@ export default defineComponent({
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: flex-end;
-	height: 47px;
+	min-height: 47px;
+	z-index: 1;
+	position: relative;
+	padding-top: 25px;
 }
 
 .sort-options {
@@ -363,6 +384,7 @@ export default defineComponent({
 	display: flex;
 	justify-content: space-between;
 	z-index: 5;
+	flex-direction: column-reverse;
 }
 
 .filter-options {
@@ -370,6 +392,7 @@ export default defineComponent({
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: flex-end;
+	flex-direction: column-reverse;
 }
 
 .filter-options.disabled button {
@@ -399,7 +422,10 @@ export default defineComponent({
 .search-options {
 	display: flex;
 	flex-direction: row;
+	justify-content: flex-end;
 	align-items: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .page-count {
@@ -450,7 +476,6 @@ export default defineComponent({
 	color: #757575;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
-	margin-left: 10px;
 	z-index: 1;
 }
 
@@ -571,5 +596,30 @@ export default defineComponent({
 	align-content: center;
 	flex-wrap: nowrap;
 	flex-direction: row;
+}
+
+@media (min-width: 640px) {
+	.filter-options {
+		flex-direction: row;
+	}
+	.type-toggles {
+		width: auto;
+		padding-bottom: 0px;
+	}
+
+	.source-facet-button {
+		width: auto;
+	}
+	.sort-options {
+		flex-direction: row;
+	}
+	.search-options {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.result-options {
+		padding-top: 0px;
+	}
 }
 </style>
