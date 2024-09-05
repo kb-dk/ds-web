@@ -409,9 +409,10 @@ export default defineComponent({
 					if (newVal) {
 						console.log(document.querySelectorAll('.vue-slider-dot'));
 						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
-						dots.forEach((dot) => {
+						dots.forEach((dot, index) => {
 							dot.tabIndex = -1;
 							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
 						});
 					}
 				}
