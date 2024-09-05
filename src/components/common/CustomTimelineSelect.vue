@@ -4,6 +4,7 @@
 			{{ label }}:
 			<select
 				v-model="selected"
+				:data-testid="addTestDataEnrichment('select', 'timeline-select', `${label}-select`, 0)"
 				@change="updated($event)"
 			>
 				<option
