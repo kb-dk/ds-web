@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'CustomTimelineSelect',
@@ -65,7 +66,7 @@ export default defineComponent({
 			},
 		);
 
-		return { selected, updated };
+		return { selected, updated, addTestDataEnrichment };
 	},
 });
 </script>
