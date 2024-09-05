@@ -137,22 +137,26 @@
          "title": "Shortcuts",
          "links": {
             "1": {
+               "title": "Mediestream",
+               "link": "https://www2.statsbiblioteket.dk/mediestream/"
+            },
+            "2": {
                "title": "Find Materials",
                "link": "https://www.kb.dk/en/find-materials"
             },
-            "2": {
+            "3": {
                "title": "Inspiration",
                "link": "https://www.kb.dk/en/inspiration"
             },
-            "3": {
+            "4": {
                "title": "Events",
                "link": "https://www.kb.dk/en/events"
             },
-            "4": {
+            "5": {
                "title": "Services",
                "link": "https://www.kb.dk/en/services"
             },
-            "5": {
+            "6": {
                "title": "Visit us",
                "link": "https://www.kb.dk/en/visit-us"
             }
@@ -162,20 +166,28 @@
         "title": "Use the library",
          "links": {
             "1": {
-               "title": "For professionals",
-               "link": "https://pro.kb.dk/en"
+             "title": "Mediestream",
+             "link": "https://www2.statsbiblioteket.dk/mediestream/"
             },
             "2": {
-               "title": "Meetings and conferences",
-               "link": "https://pro.kb.dk/en/meetings"
+               "title": "Digital collections",
+               "link": "http://www5.kb.dk/editions/any/2009/jul/editions/da/"
             },
             "3": {
-               "title": "For the central administration in Denmark",
-               "link": "https://forcentraladministrationen.kb.dk/en"
+               "title": "Danish sound",
+               "link": "https://dansklyd.statsbiblioteket.dk/"
             },
             "4": {
-               "title": "Legal deposit",
-               "link": "https://pro.kb.dk/en/legal-deposit"
+               "title": "The Radio- and TV-collection",
+               "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
+            },
+            "5": {
+               "title": "Guide to radio- og TV-broadcast",
+               "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+            },
+            "6": {
+               "title": "The Library system",
+               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
             }
          }
       },
