@@ -7,12 +7,12 @@
 				@change="updated($event)"
 			>
 				<option
-					value="1992"
+					:value="startTime"
 					disabled
 					selected
 					hidden
 				>
-					1992
+					{{ startTime }}
 				</option>
 				<option
 					v-for="(item, index) in listItems"
@@ -30,6 +30,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
+import { initStartDate } from './TimeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'CustomTimelineSelect',
@@ -57,7 +58,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		const selected = ref('');
-
+		const startTime = initStartDate.value.getFullYear();
 		const updated = (e: Event | null) => {
 			if (e && e.target instanceof HTMLSelectElement) {
 				emit('updateSelected', e.target.value);
@@ -75,7 +76,7 @@ export default defineComponent({
 			},
 		);
 
-		return { selected, updated };
+		return { selected, updated, startTime };
 	},
 });
 </script>

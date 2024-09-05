@@ -108,6 +108,7 @@
   "record":{
      "duration":"Varighed",
      "noBroadcastData":"Ingen sendetid",
+     "seeMaterial":"See material",
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
