@@ -16,6 +16,7 @@
 			>
 				<button
 					:title="item?.term"
+					:data-testid="addTestDataEnrichment('button', `autocomplete-${item.term}`, i)"
 					@click="executeOnSelection"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
@@ -29,6 +30,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import router from '@/router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import * as DOMPurify from 'dompurify';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Autocomplete',
@@ -137,6 +139,7 @@ export default defineComponent({
 			doAutocompleteSearch,
 			executeOnSelection,
 			currentSelectedAutocomplete,
+			addTestDataEnrichment,
 		};
 	},
 });
