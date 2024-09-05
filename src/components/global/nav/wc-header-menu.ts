@@ -285,6 +285,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		background-color:#caf0fe;
 		clip-path: polygon(0 0, 0 100%, 100% 0);
 		z-index: 3;
+		margin-top: -1px;
 	}
 	a {
 		font-weight: 700;

@@ -65,7 +65,7 @@ export default defineComponent({
 	width: 100%;
 }
 .hit-count {
-	font-size: 36px;
+	font-size: 24px;
 }
 
 .loading-placeholder {
@@ -79,5 +79,10 @@ export default defineComponent({
 	border-radius: 15px;
 	background-color: rgba(170, 170, 170, 1);
 	height: 30px;
+}
+@media (min-width: 640px) {
+	.hit-count {
+		font-size: 36px;
+	}
 }
 </style>

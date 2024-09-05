@@ -21,7 +21,7 @@
 						</router-link>
 						<div class="subtitle">
 							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
-							<span class="where">{{ resultdata.creator_affiliation[0] + ',' }}</span>
+							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
 							<span class="when">{{ starttime }}</span>
 							<span class="material-icons icons schedule">schedule</span>
 							<span class="duration">{{ duration }}</span>
@@ -152,6 +152,8 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 
+		console.log(props.resultdata);
+
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
@@ -275,7 +277,7 @@ export default defineComponent({
 .container {
 	display: flex;
 	flex-direction: row;
-	height: 105px;
+	height: 175px;
 	justify-content: space-between;
 	gap: 30px;
 	width: 100%;
@@ -308,6 +310,7 @@ export default defineComponent({
 
 .result-image-wrapper {
 	width: 200px;
+	height: 105px;
 }
 
 .where,
@@ -462,9 +465,24 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
+	position: absolute;
+	top: 110px;
+}
+
+@media (min-width: 640px) {
 }
 
 @media (min-width: 800px) {
+	.container {
+		height: 105px;
+	}
+	.result-image-wrapper {
+		height: initial;
+	}
+	.summary {
+		position: initial;
+		top: 0px;
+	}
 	.title {
 		max-width: calc(100% - (200px - 60px));
 	}
