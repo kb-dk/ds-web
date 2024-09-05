@@ -13,6 +13,7 @@
 		<kb-menu
 			:routing="true"
 			:locale="currentLocale"
+			:page="$route.name"
 		></kb-menu>
 		<div
 			ref="wipe"
@@ -68,6 +69,7 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 		const { locale, t } = useI18n({ useScope: 'global' });
+		console.log(route);
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
