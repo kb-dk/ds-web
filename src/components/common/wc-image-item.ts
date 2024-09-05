@@ -45,7 +45,7 @@ class ImageComponent extends HTMLElement {
 				this.shadow.querySelector('.image-item')?.setAttribute('alt', imageData.altText);
 			}
 			if (imageData.imgTitle && this.shadow.querySelector('.image-item')) {
-				this.querySelector('.image-item')?.setAttribute('title', imageData.imgTitle);
+				this.shadow.querySelector('.image-item')?.setAttribute('title', imageData.imgTitle);
 			}
 			if (imageData.icon) {
 				const iconHolder = this.shadow.querySelector('.type-symbol');

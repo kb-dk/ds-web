@@ -107,6 +107,7 @@
   "record":{
      "duration":"Duration",
      "noBroadcastData":"No air date",
+     "seeMaterial":"Se materiale",
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
