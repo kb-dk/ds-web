@@ -193,7 +193,7 @@ export default defineComponent({
 }
 
 .search-results.grid .hit-box {
-	width: calc(25% - 15px);
+	width: calc(100%);
 	box-sizing: border-box;
 }
 
@@ -201,6 +201,19 @@ export default defineComponent({
 @media (min-width: 800px) {
 	.hit-box:before {
 		display: block;
+	}
+}
+@media (min-width: 640px) {
+	.search-results.grid .hit-box {
+		width: calc(50% - 15px);
+		box-sizing: border-box;
+	}
+}
+
+@media (min-width: 990px) {
+	.search-results.grid .hit-box {
+		width: calc(25% - 15px);
+		box-sizing: border-box;
 	}
 }
 </style>
