@@ -13,6 +13,7 @@
 		<kb-menu
 			:routing="true"
 			:locale="currentLocale"
+			:page="$route.name"
 		></kb-menu>
 		<div
 			ref="wipe"
