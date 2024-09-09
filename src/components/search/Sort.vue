@@ -1,7 +1,7 @@
 <template>
 	<div class="sort">
 		<span class="material-icons">sort</span>
-		<p ref="currentSort">{{ t('search.sortBy') }}:</p>
+		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
@@ -116,6 +116,7 @@ export default defineComponent({
 	align-items: center;
 	padding-bottom: 20px;
 	padding-top: 20px;
+	justify-content: space-between;
 }
 
 .sort .active {
@@ -125,6 +126,10 @@ export default defineComponent({
 
 .sort .material-icons {
 	color: #002e70;
+}
+
+.sort-by {
+	margin-right: auto !important;
 }
 
 .sort p {
@@ -147,5 +152,13 @@ export default defineComponent({
 	top: 1px;
 	padding: 0px;
 	border-bottom: 2px solid transparent;
+}
+@media (min-width: 640px) {
+	.sort-by {
+		margin-right: initial;
+	}
+	.sort {
+		justify-content: initial;
+	}
 }
 </style>

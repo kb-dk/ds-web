@@ -193,14 +193,30 @@ export default defineComponent({
 }
 
 .search-results.grid .hit-box {
-	width: calc(25% - 15px);
+	width: calc(100%);
 	box-sizing: border-box;
 }
 
 /* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.search-results.grid .hit-box {
+		width: calc(50% - 15px);
+		box-sizing: border-box;
+	}
+}
+
+/* MEDIA QUERY 800 */
 @media (min-width: 800px) {
 	.hit-box:before {
 		display: block;
+	}
+}
+
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.search-results.grid .hit-box {
+		width: calc(25% - 15px);
+		box-sizing: border-box;
 	}
 }
 </style>

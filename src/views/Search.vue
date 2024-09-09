@@ -268,6 +268,7 @@ h3 {
 	background-color: white;
 	clip-path: polygon(100% 0, 0 0, 0 100%);
 	z-index: 3;
+	top: -1px;
 }
 
 .edge.blue {

@@ -16,7 +16,7 @@
 					>
 						<span class="material-icons first">today</span>
 						<span class="material-icons second">schedule</span>
-						{{ t('timeSearch.filterOpenButton') }}
+						<span class="toggle-time-text">{{ t('timeSearch.filterOpenButton') }}</span>
 						<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
 							<span class="dot">
 								<TransitionGroup>
@@ -344,7 +344,7 @@ export default defineComponent({
 	cursor: pointer;
 	padding: 3px 3px;
 	font-size: 20px;
-	width: fit-content;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	box-shadow: 1px 1px 2px #00000000;
@@ -354,6 +354,11 @@ export default defineComponent({
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	height: 36px;
+	background-color: #caf0fe;
+}
+
+.toggle-time-text {
+	margin-right: auto;
 }
 
 .time-facet-button.open {
@@ -502,6 +507,9 @@ h2 {
 	border-radius: 15px;
 }
 @media (min-width: 640px) {
+	.time-facet-button {
+		width: fit-content;
+	}
 	.checkbox {
 		flex: 0 0 50%;
 		max-width: 50%;
