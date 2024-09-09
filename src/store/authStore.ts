@@ -27,9 +27,10 @@ export const useAuthStore = defineStore('authStore', () => {
 	const isAuthenticating = ref(false); // Lock to prevent multiple authentication calls
 
 	const authenticate = async () => {
-		// Check if authentication is already in progress (omitted the if brackets on purpose here:) )
-		if (isAuthenticating.value) return;
-
+		// Check if authentication is already in progress
+		if (isAuthenticating.value) {
+			return;
+		}
 		// set flag (and lock) for indicating 'authentication' is in progress
 		isAuthenticating.value = true;
 
