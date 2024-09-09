@@ -4,18 +4,21 @@
 		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
 			@click="newSort('score desc')"
 		>
 			{{ t('search.relevance') }}
 		</button>
 		<button
 			ref="titleRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
 			@click="newSort('title_sort_da asc')"
 		>
 			{{ t('search.title') }}
 		</button>
 		<button
 			ref="timeRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
 			@click="newSort('startTime asc')"
 		>
 			{{ t('search.date') }}
@@ -29,6 +32,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
 import { onMounted } from 'vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Sort',
@@ -91,7 +95,17 @@ export default defineComponent({
 			}
 		});
 
-		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t, titleRef, relevanceRef, timeRef };
+		return {
+			revealSortingOptions,
+			showSortingOptions,
+			newSort,
+			searchResultStore,
+			t,
+			titleRef,
+			relevanceRef,
+			timeRef,
+			addTestDataEnrichment,
+		};
 	},
 });
 </script>

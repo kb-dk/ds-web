@@ -46,6 +46,7 @@
 				<div class="divider darkblue"></div>
 				<button
 					class="get-link"
+					:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
 					@click="getCurrentUrl()"
 				>
 					<span class="material-icons">link</span>
@@ -57,6 +58,7 @@
 			<router-link
 				v-if="lastPath"
 				:to="lastPath"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
 				Tilbage
@@ -64,6 +66,7 @@
 			<router-link
 				v-else
 				to="/"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
 				Til forsiden
@@ -111,6 +114,7 @@ import { getTimeFromISOFormat } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -159,6 +163,7 @@ export default defineComponent({
 			getBroadcastTime,
 			getTimeFromISOFormat,
 			entryId,
+			addTestDataEnrichment,
 		};
 	},
 });

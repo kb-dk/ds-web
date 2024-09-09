@@ -38,6 +38,7 @@
 										class="form-control"
 										:placeholder="t('search.searchInput')"
 										name="simpleSearch"
+										:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
 										@keydown="updateKeystrokeForAutocomplete"
 									/>
 									<Transition name="fade">
@@ -65,6 +66,7 @@
 									type="button"
 									aria-label="reset"
 									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
 									@click="reset()"
 								>
 									<i
@@ -81,6 +83,7 @@
 									type="submit"
 									aria-label="search"
 									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
 									@submit="search()"
 								>
 									<span class="d-none d-search-inline-flex searchSpan">{{ t('search.searchbtn') }}</span>
@@ -109,6 +112,7 @@ import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
 import router from '@/router';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Searchbar',
@@ -209,6 +213,7 @@ export default defineComponent({
 			backgroundImage,
 			updateKeystrokeForAutocomplete,
 			keyStrokeEvent,
+			addTestDataEnrichment,
 		};
 	},
 });

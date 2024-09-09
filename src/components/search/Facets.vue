@@ -65,6 +65,7 @@
 											:title="channelFacets[index]?.title"
 											:amount="channelFacets[index]?.number.toString()"
 											:time-search-active="timeSearchStore.timeFacetsOpen"
+											:number="index"
 											:checked="
 												channelFilterExists(
 													'creator_affiliation_facet',

@@ -5,6 +5,7 @@
 	>
 		<button
 			class="data-size"
+			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 			@click="toggleExplanation()"
 		>
 			{{ $t('timeSearch.data') }}
@@ -242,6 +243,7 @@
 		>
 			<button
 				class="close"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'close-time-facets', 0)"
 				@click="closeTimeFacets()"
 			>
 				{{ t('timeSearch.filterCloseButton') }}
@@ -249,6 +251,7 @@
 			<button
 				class="apply-time-facets"
 				:disabled="!timeSearchStore.newSearchReqMet"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
 				{{ t('timeSearch.filterApplyButton') }}
@@ -291,6 +294,8 @@ import {
 	getSublineForTimeslots,
 	getSublineForYears,
 } from '@/utils/time-search-utils';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
@@ -402,11 +407,11 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					if (newVal) {
-						console.log(document.querySelectorAll('.vue-slider-dot'));
 						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
-						dots.forEach((dot) => {
+						dots.forEach((dot, index) => {
 							dot.tabIndex = -1;
 							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
 						});
 					}
 				}
@@ -415,7 +420,6 @@ export default defineComponent({
 
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;
-			console.log(closeDataExplanation.value);
 			if (expToggled.value && closeDataExplanation.value !== undefined) {
 				closeDataExplanation.value.focus();
 			}
@@ -526,6 +530,7 @@ export default defineComponent({
 			toggleExplanation,
 			expToggled,
 			closeTimeFacets,
+			addTestDataEnrichment,
 			vueSliderRef,
 			closeDataExplanation,
 		};

@@ -10,7 +10,12 @@
 					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
 					est laborum.
 				</p>
-				<router-link to="/about">read more</router-link>
+				<router-link
+					:data-testid="addTestDataEnrichment('link', 'about', `read-more`, 0)"
+					to="/about"
+				>
+					read more
+				</router-link>
 			</div>
 		</div>
 		<div class="time-search">
@@ -48,6 +53,7 @@ import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
@@ -61,7 +67,7 @@ export default defineComponent({
 		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
 		const searchResultStore = useSearchResultStore();
 
-		return { searchResultStore, mockdata1, mockdata2 };
+		return { searchResultStore, mockdata1, mockdata2, addTestDataEnrichment };
 	},
 });
 </script>

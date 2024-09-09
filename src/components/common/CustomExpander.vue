@@ -20,6 +20,7 @@
 		<div class="expander-toggle">
 			<button
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
+				:data-testid="addTestDataEnrichment('button', 'custom-expander', `${headline}-status-toggle`, 0)"
 				:title="expanderOpen ? 'Close options' : 'Open options'"
 				@click="toggleExpander()"
 			>
@@ -35,6 +36,7 @@ import { defineComponent, onMounted, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import TimelineHeadline from '@/components/common/TimelineHeadline.vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'CustomExpander',
@@ -131,7 +133,7 @@ export default defineComponent({
 			}
 		});
 
-		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate, headlineRef };
+		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate, addTestDataEnrichment, headlineRef };
 	},
 });
 </script>

@@ -4,6 +4,7 @@
 			{{ label }}:
 			<select
 				v-model="selected"
+				:data-testid="addTestDataEnrichment('select', 'timeline-select', `${label}-select`, 0)"
 				@change="updated($event)"
 			>
 				<option
@@ -30,6 +31,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { initStartDate } from './TimeSearch/TimeSearchInitValues';
 
 export default defineComponent({
@@ -76,7 +78,7 @@ export default defineComponent({
 			},
 		);
 
-		return { selected, updated, startTime };
+		return { selected, updated, addTestDataEnrichment, startTime };
 	},
 });
 </script>

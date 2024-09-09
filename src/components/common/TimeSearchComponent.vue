@@ -13,6 +13,7 @@
 					<router-link
 						class="link"
 						:to="timeSearchLink"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 					>
 						<div class="hits">
 							{{ $t('timeSearch.timeHits') }}
@@ -50,6 +51,7 @@
 					<router-link
 						class="link"
 						:to="timeSearchLink"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
 					>
 						<div class="further-results">
 							<div class="hits">
@@ -90,6 +92,7 @@ import {
 	getYears,
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
 
@@ -178,6 +181,7 @@ export default defineComponent({
 			getSublineForDays,
 			getSublineForMonths,
 			getSublineForTimeslots,
+			addTestDataEnrichment,
 		};
 	},
 });
