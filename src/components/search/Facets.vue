@@ -99,14 +99,7 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import {
-	days,
-	timeslots,
-	startDate,
-	endDate,
-	startYear,
-	endYear,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';

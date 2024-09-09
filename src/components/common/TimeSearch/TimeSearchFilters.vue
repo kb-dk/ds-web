@@ -670,6 +670,7 @@ fieldset {
 
 .slider-whiteoff-container {
 	position: relative;
+	display: none;
 }
 .explanation-for-data {
 	position: absolute;
@@ -771,13 +772,14 @@ fieldset {
 }
 
 .slider-container {
-	height: 96px;
-	padding-bottom: 40px;
-	margin-bottom: 60px;
+	height: 60px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 	position: relative;
 }
 
 .data-size {
+	display: none;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 1px solid #ffffff;
 	border-radius: 4px;
@@ -1061,6 +1063,20 @@ fieldset {
 	}
 	.select-container.select-time {
 		width: 35%;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.slider-whiteoff-container {
+		display: block;
+	}
+	.data-size {
+		display: block;
+	}
+	.slider-container {
+		height: 96px;
+		padding-bottom: 40px;
+		margin-bottom: 60px;
 	}
 }
 </style>
