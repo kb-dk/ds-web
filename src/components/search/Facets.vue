@@ -11,17 +11,17 @@
 						role="switch"
 						aria-checked="false"
 						filter-button
-						:class="timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
+						:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
 						@click="toggleTimeFacets()"
 					>
 						<span class="material-icons first">today</span>
 						<span class="material-icons second">schedule</span>
 						{{ t('timeSearch.filterOpenButton') }}
-						<span :class="timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
+						<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
 							<span class="dot">
 								<TransitionGroup>
 									<div
-										v-if="timeFacetsOpen"
+										v-if="timeSearchStore.timeFacetsOpen"
 										class="close"
 									></div>
 									<div
@@ -64,7 +64,7 @@
 											:fqkey="'creator_affiliation_facet'"
 											:title="channelFacets[index]?.title"
 											:amount="channelFacets[index]?.number.toString()"
-											:time-search-active="timeFacetsOpen"
+											:time-search-active="timeSearchStore.timeFacetsOpen"
 											:checked="
 												channelFilterExists(
 													'creator_affiliation_facet',
@@ -98,7 +98,14 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import {
+	days,
+	timeslots,
+	startDate,
+	endDate,
+	startYear,
+	endYear,
+} from '@/components/common/TimeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
@@ -129,7 +136,6 @@ export default defineComponent({
 		const timeFacetButton = ref<HTMLButtonElement | null>(null);
 		const lastUpdate = ref(0);
 		const { t } = useI18n();
-		const timeFacetsOpen = ref(false);
 		const router = useRouter();
 		const route = useRoute();
 
@@ -202,7 +208,7 @@ export default defineComponent({
 		};
 
 		const toggleTimeFacets = () => {
-			if (timeFacetsOpen.value) {
+			if (timeSearchStore.timeFacetsOpen) {
 				timeFacetButton.value?.setAttribute('aria-checked', 'false');
 				gsap.to(timeFacets.value, {
 					height: '0px',
@@ -236,7 +242,7 @@ export default defineComponent({
 					},
 				});
 			}
-			timeFacetsOpen.value = !timeFacetsOpen.value;
+			timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen);
 		};
 
 		const toggleFacets = () => {
@@ -284,9 +290,9 @@ export default defineComponent({
 			facetsContainer,
 			timeFacets,
 			toggleTimeFacets,
-			timeFacetsOpen,
 			newSearch,
 			timeFacetButton,
+			timeSearchStore,
 			t,
 		};
 	},

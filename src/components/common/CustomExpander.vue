@@ -1,6 +1,7 @@
 <template>
 	<div :class="expanderOpen ? 'expand-container open' : 'expand-container'">
 		<TimelineHeadline
+			ref="headlineRef"
 			:headline="headline"
 			:icon="icon"
 			:subline="subline"
@@ -19,6 +20,7 @@
 		<div class="expander-toggle">
 			<button
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
+				:title="expanderOpen ? 'Close options' : 'Open options'"
 				@click="toggleExpander()"
 			>
 				{{ expanderOpen ? '-' : '+' }}
@@ -82,7 +84,7 @@ export default defineComponent({
 	setup(props) {
 		const expanderOpen = ref(false);
 		const expandContainer = ref<HTMLElement | null>(null);
-
+		const headlineRef = ref();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
 			props.updateEntity(parent, index, val);
 		};
@@ -107,6 +109,7 @@ export default defineComponent({
 					display: 'block',
 					overwrite: true,
 					onComplete: () => {
+						headlineRef.value.$el.focus();
 						gsap.to(expandContainer.value, {
 							height: 'auto',
 							duration: 0.5,
@@ -128,7 +131,7 @@ export default defineComponent({
 			}
 		});
 
-		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate };
+		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate, headlineRef };
 	},
 });
 </script>

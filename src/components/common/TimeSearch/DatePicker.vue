@@ -1,6 +1,7 @@
 <template>
 	<div class="date-pickers">
 		<VueDatePicker
+			ref="startDatePicker"
 			v-model="startDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
@@ -11,9 +12,14 @@
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
+			:min-date="startYear"
+			:max-date="endYear"
+			prevent-min-max-navigation
+			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<VueDatePicker
+			ref="endDatePicker"
 			v-model="endDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
@@ -24,6 +30,10 @@
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
+			:min-date="startYear"
+			:max-date="endYear"
+			prevent-min-max-navigation
+			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
 		></VueDatePicker>
 		<div class="from-to-display">
@@ -44,13 +54,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/components/common/TimeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
-import { startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { startDate, endDate, startYear, endYear } from '@/components/common/TimeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { normalizeFq, cloneRouteQuery } from '@/utils/filter-utils';
+import { useRoute } from 'vue-router';
+
+interface Highlight {
+	dates: Date[];
+	years: number[];
+	months: { month: number; year: number }[];
+	quarters: { quarter: number; year: number }[];
+	weekdays: number[];
+	options: { highlightDisabled: boolean };
+}
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -59,7 +81,37 @@ export default defineComponent({
 	},
 	emits: ['spanUpdated'],
 	setup(props, { emit }) {
+		const startDatePicker = ref<DatePickerInstance>();
+		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
+		const route = useRoute();
+
+		onMounted(() => {
+			const routeQueries = cloneRouteQuery(route);
+			const fq = normalizeFq(routeQueries.fq);
+			const startTimeFilter = fq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const timestamps = decodeURIComponent(startTimeFilter)
+					.replace('startTime:', '')
+					.replace(' OR ', '')
+					.replace('[', '')
+					.replace(']', '')
+					.split(' TO ');
+				setDateFromISOString(timestamps[0], startDate.value);
+				setDateFromISOString(timestamps[1], endDate.value);
+			} else {
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			}
+			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
+			endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
+		});
+
+		const setDateFromISOString = (isoDate: string, date: Date) => {
+			const existingDate = new Date(isoDate);
+			date.setTime(existingDate.getTime());
+		};
+
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
@@ -76,23 +128,31 @@ export default defineComponent({
 			timeSearchStore.setNewSearchReqMet(true);
 		};
 
-		const highlightedDays = computed((): Date[] => {
+		const highlightedDays = computed(() => {
 			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 			const highlights = [];
 			for (let i = 0; i < days; i++) {
 				highlights.push(addDays(startDate.value, i));
 			}
-			return highlights;
+
+			const highlight = {} as Highlight;
+			highlight.dates = highlights;
+
+			return highlight;
 		});
 
 		return {
 			startDate,
 			endDate,
+			startYear,
+			endYear,
 			format,
 			highlightedDays,
 			newSearch,
 			readyForNewSearch,
+			startDatePicker,
+			endDatePicker,
 		};
 	},
 });

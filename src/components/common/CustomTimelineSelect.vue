@@ -1,31 +1,36 @@
 <template>
 	<div class="select-container">
+		<label>
+			{{ label }}:
+			<select
+				v-model="selected"
+				@change="updated($event)"
+			>
+				<option
+					:value="startTime"
+					disabled
+					selected
+					hidden
+				>
+					{{ startTime }}
+				</option>
+				<option
+					v-for="(item, index) in listItems"
+					:key="index"
+					class="single-entry"
+					:value="item"
+				>
+					{{ item }}
+				</option>
+			</select>
+		</label>
 		<div class="line"></div>
-		<select
-			v-model="selected"
-			@change="updated($event)"
-		>
-			<option
-				value=""
-				disabled
-				selected
-				hidden
-			>
-				1992
-			</option>
-			<option
-				v-for="(item, index) in listItems"
-				:key="index"
-				class="single-entry"
-			>
-				{{ item }}
-			</option>
-		</select>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
+import { initStartDate } from './TimeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'CustomTimelineSelect',
@@ -42,12 +47,18 @@ export default defineComponent({
 				return 0;
 			},
 		},
+		label: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	emits: ['updateSelected'],
 
 	setup(props, { emit }) {
 		const selected = ref('');
-
+		const startTime = initStartDate.value.getFullYear();
 		const updated = (e: Event | null) => {
 			if (e && e.target instanceof HTMLSelectElement) {
 				emit('updateSelected', e.target.value);
@@ -65,7 +76,7 @@ export default defineComponent({
 			},
 		);
 
-		return { selected, updated };
+		return { selected, updated, startTime };
 	},
 });
 </script>
@@ -92,14 +103,19 @@ export default defineComponent({
 	padding-right: 10px;
 }
 
+label {
+	padding-right: 10px;
+}
+
 .line {
 	display: block;
 	width: 1px;
 	height: 16px;
-	position: absolute;
 	background-color: lightgrey;
-	left: 63px;
 	top: 7px;
+	right: 0px;
+	position: absolute;
+	margin-right: 32px;
 }
 
 select option {

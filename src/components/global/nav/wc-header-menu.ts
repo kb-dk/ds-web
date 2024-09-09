@@ -23,7 +23,7 @@ class MenuComponent extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['locale'];
+		return ['locale', 'page'];
 	}
 
 	connectedCallback() {
@@ -47,6 +47,14 @@ class MenuComponent extends HTMLElement {
 		if (name === 'locale') {
 			this.lang = newValue;
 			this.createFullHeaderMenu();
+		}
+		if (name === 'page') {
+			if (oldValue) {
+				this.shadow.querySelector('.header-bg-wrapper')?.classList.remove(oldValue.toLowerCase());
+			}
+			if (newValue) {
+				this.shadow.querySelector('.header-bg-wrapper')?.classList.add(newValue.toLowerCase());
+			}
 		}
 	}
 
@@ -116,7 +124,7 @@ class MenuComponent extends HTMLElement {
 		}
 		//listElem.role = 'none';
 		const link = document.createElement('a');
-		link.role = 'menuitem';
+		listElem.role = 'menuitem';
 		if (id) link.id = id;
 		listElem.appendChild(link);
 		link.classList.add('nav-item', 'level-1');
@@ -566,6 +574,10 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 	/* MEDIA QUERY 990 */
 	@media (min-width: 990px) {
+		.header-bg-wrapper.record {
+			margin-bottom:60px !important;
+		}
+
 		.rdl-primary-nav {
 			padding-top: 18px !important;
 			margin-right: -8px;
@@ -730,6 +742,9 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 	/* MEDIA QUERY 1150 */
 	@media (min-width: 1150px) {
+		.header-bg-wrapper.record {
+			margin-bottom:100px !important;
+		}
 		.global-header .search i {
 			font-size: 1.25rem;
 		}

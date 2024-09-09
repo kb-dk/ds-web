@@ -167,6 +167,7 @@ export default defineComponent({
 		max-width: 1150px;
 	}
 	.top-offset {
+		top: -58px;
 		margin-left: 24px;
 		margin-right: 24px;
 	}
