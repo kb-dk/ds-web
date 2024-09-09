@@ -407,7 +407,6 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					if (newVal) {
-						console.log(document.querySelectorAll('.vue-slider-dot'));
 						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
 						dots.forEach((dot, index) => {
 							dot.tabIndex = -1;
@@ -421,7 +420,6 @@ export default defineComponent({
 
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;
-			console.log(closeDataExplanation.value);
 			if (expToggled.value && closeDataExplanation.value !== undefined) {
 				closeDataExplanation.value.focus();
 			}
