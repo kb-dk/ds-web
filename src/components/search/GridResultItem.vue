@@ -12,7 +12,7 @@
 					:to="{ path: 'record/' + resultdata.id }"
 					class="link-title"
 					role="link"
-					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link-${resultdata.id}`, 0)"
+					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
 				>
 					<div class="thumb-container">
 						<kb-imagecomponent
@@ -119,6 +119,10 @@ export default defineComponent({
 			type: Object as PropType<GenericSearchResultType>,
 			required: false,
 			default: undefined,
+		},
+		index: {
+			type: Number as PropType<number>,
+			required: true,
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: '#ffffff' },

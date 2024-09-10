@@ -13,6 +13,7 @@
 					v-if="searchResultStore.resultGrid"
 					:resultdata="searchResults[index]"
 					:loading="searchResultStore.loading"
+					:index="index"
 					background="white"
 				></GridResultItem>
 				<ResultItem
@@ -21,6 +22,7 @@
 					:duration="searchResults[index] ? getDuration(searchResults[index]) : ''"
 					:starttime="searchResults[index] ? getStartTime(searchResults[index]) : ''"
 					:placeholder="getPlaceholderImage()"
+					:index="index"
 				></ResultItem>
 			</div>
 		</TransitionGroup>
