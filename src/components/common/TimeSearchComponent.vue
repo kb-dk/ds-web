@@ -32,6 +32,7 @@
 						<GridResultItem
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
+							:index="index"
 							background="#ffffff"
 						></GridResultItem>
 					</div>
