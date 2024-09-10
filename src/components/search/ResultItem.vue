@@ -48,6 +48,7 @@
 					:type="resultdata.origin.split('.')[1]"
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:duration="Number(resultdata.duration_ms)"
+					:nr="index"
 				></AdditionalInfo>
 			</div>
 			<div

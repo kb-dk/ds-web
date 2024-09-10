@@ -4,7 +4,7 @@
 			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			:title="$t('search.thumbnailButton')"
-			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, 0)"
+			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
 			@click="showThumbnails()"
 		>
 			<span class="material-icons thumbnails-icon">photo_library</span>
@@ -75,6 +75,7 @@ export default defineComponent({
 		fileId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
+		nr: { type: Number, required: true },
 	},
 	setup(props) {
 		const { t } = useI18n();
