@@ -204,6 +204,9 @@ export default defineComponent({
 
 		const resetFilters = () => {
 			searchResultStore.setKeepFacets(false);
+			searchResultStore.preliminaryFilter = '';
+			tvToggled.value = true;
+			radioToggled.value = true;
 			router.push({
 				name: 'Home',
 				query: { q: searchResultStore.currentQuery },
@@ -212,7 +215,7 @@ export default defineComponent({
 
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';
-			if ((tvToggled.value && radioToggled) || (!tvToggled.value && !radioToggled.value)) {
+			if ((tvToggled.value && radioToggled.value) || (!tvToggled.value && !radioToggled.value)) {
 				val = delimitationOptions.all;
 				searchResultStore.preliminaryFilter = '';
 			}

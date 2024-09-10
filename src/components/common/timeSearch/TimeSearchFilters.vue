@@ -279,13 +279,13 @@ import {
 	initEndDate,
 	startYear,
 	endYear,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import DatePicker from '@/components/common/TimeSearch/DatePicker.vue';
+import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
 	getTimeResults,
 	resetAllSelectorValues,

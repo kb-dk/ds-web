@@ -18,8 +18,14 @@
 				</router-link>
 			</div>
 		</div>
+		<div class="categories">
+			<SkewedFoldable bg="red"><HeadCategories /></SkewedFoldable>
+		</div>
+		<div class="date-picker">
+			<SkewedFoldable bg="blue"><DayPicker /></SkewedFoldable>
+		</div>
 		<div class="time-search">
-			<TimeSearchComponent></TimeSearchComponent>
+			<SkewedFoldable bg="blue"><TimeSearchComponent /></SkewedFoldable>
 		</div>
 		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
 		<div class="container">
@@ -54,12 +60,19 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
+import HeadCategories from '@/components/common/HeadCategories.vue';
+import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
+
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
 		GridDisplay,
 		TimeSearchComponent,
 		TiltedDivider,
+		DayPicker,
+		HeadCategories,
+		SkewedFoldable,
 	},
 
 	setup() {
