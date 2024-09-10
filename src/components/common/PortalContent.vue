@@ -19,13 +19,28 @@
 			</div>
 		</div>
 		<div class="categories">
-			<SkewedFoldable bg="red"><HeadCategories /></SkewedFoldable>
+			<SkewedFoldable
+				:left="true"
+				bg="red"
+			>
+				<HeadCategories />
+			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
-			<SkewedFoldable bg="blue"><DayPicker /></SkewedFoldable>
+			<SkewedFoldable
+				:left="false"
+				bg="blue"
+			>
+				<DayPicker />
+			</SkewedFoldable>
 		</div>
 		<div class="time-search">
-			<SkewedFoldable bg="blue"><TimeSearchComponent /></SkewedFoldable>
+			<SkewedFoldable
+				:left="true"
+				bg="green"
+			>
+				<TimeSearchComponent />
+			</SkewedFoldable>
 		</div>
 		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
 		<div class="container">
@@ -88,5 +103,22 @@ export default defineComponent({
 <style>
 .time-search {
 	margin-bottom: -70px;
+}
+
+.categories,
+.date-picker,
+.time-search {
+	position: relative;
+	margin-top: -17px;
+}
+
+.categories {
+	z-index: 1;
+}
+.date-picker {
+	z-index: 2;
+}
+.time-search {
+	z-index: 3;
 }
 </style>

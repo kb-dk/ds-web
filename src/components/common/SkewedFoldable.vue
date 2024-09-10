@@ -48,6 +48,11 @@ export default defineComponent({
 .content:hover {
 	height: auto;
 }
+
+.foldable-container {
+	width: 100%;
+}
+
 .edge.top {
 	width: 100%;
 	position: relative;
