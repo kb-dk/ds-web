@@ -281,7 +281,7 @@ export default defineComponent({
 				detail: {
 					title: 'Der skal være valgt et materiale',
 					message: 'Der skal være valgt mindst et materiale for at få et søgeresultat.',
-					key: true,
+					key: false,
 					severity: 'low',
 					userClose: false,
 				},

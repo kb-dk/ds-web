@@ -160,8 +160,6 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 
-		console.log(props.resultdata);
-
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
