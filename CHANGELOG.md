@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.1] - 2024-09-12
+### Added
+
+### Changed
+Bumped:
+- vue from 3.4.19 to 3.5.4
+- vue-router from 4.2.5 to 4.4.4
+- pinia from 2.1.7 to 2.2.2
+- axios from 1.6.2 to 1.7.7
+    
+- Fix bug in error message when deselecting both radio and tv 'radio buttons' in search result
+- Remove console.log in ResultItem.vue
+
+
+
 ## [1.0.0] - 2024-09-09
 ### Added
 - Handling for authentication cookie supplied by BFF
