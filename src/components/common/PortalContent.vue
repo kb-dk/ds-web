@@ -20,24 +20,35 @@
 		</div>
 		<div class="categories">
 			<SkewedFoldable
+				:title="'Kategorier'"
 				:left="true"
-				bg="red"
+				bg="#002e70"
+				text="white"
+				icon="schedule"
+				:subtitle="'subtitle, yay'"
 			>
 				<HeadCategories />
 			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
+				:title="'Kategorier'"
 				:left="false"
-				bg="blue"
+				bg="#caf0fe"
+				icon="schedule"
+				:subtitle="'subtitle, yay'"
 			>
 				<DayPicker />
 			</SkewedFoldable>
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
+				:title="'Kategorier'"
 				:left="true"
-				bg="green"
+				bg="#fafafa"
+				icon="schedule"
+				:subtitle="'subtitle, yay'"
+				:fullwidth="true"
 			>
 				<TimeSearchComponent />
 			</SkewedFoldable>
@@ -100,7 +111,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .time-search {
 	margin-bottom: -70px;
 }
@@ -110,9 +121,12 @@ export default defineComponent({
 .time-search {
 	position: relative;
 	margin-top: -17px;
+	width: calc(100% + 24px);
+	margin-left: -12px;
 }
 
 .categories {
+	margin-top: 40px !important;
 	z-index: 1;
 }
 .date-picker {
@@ -120,5 +134,20 @@ export default defineComponent({
 }
 .time-search {
 	z-index: 3;
+	margin-bottom: 40px !important;
+}
+
+@media (min-width: 990px) {
+	.categories,
+	.date-picker,
+	.time-search {
+		width: 100%;
+		margin-left: 0px;
+	}
+
+	.time-search {
+		display: grid;
+		justify-content: center;
+	}
 }
 </style>

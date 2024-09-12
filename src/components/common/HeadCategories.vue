@@ -1,9 +1,5 @@
 <template>
-	<div class="categories">
-		<div class="title">
-			<span class="material-icons">schedule</span>
-			<h2>Kategorier</h2>
-		</div>
+	<div class="head-categories">
 		<div class="category-grid">
 			<div
 				v-for="(entity, i) in categories"
