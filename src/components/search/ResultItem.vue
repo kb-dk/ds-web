@@ -14,7 +14,7 @@
 							:to="{ path: 'record/' + resultdata.id }"
 							class="title"
 							role="link"
-							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link-${resultdata.id}`, 0)"
+							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
 							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
@@ -33,7 +33,7 @@
 						:to="{ path: 'record/' + resultdata.id }"
 						class="result-image-wrapper"
 						role="link"
-						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link-${resultdata.id}`, 0)"
+						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
 					>
 						<kb-imagecomponent
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
@@ -48,6 +48,7 @@
 					:type="resultdata.origin.split('.')[1]"
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:duration="Number(resultdata.duration_ms)"
+					:nr="index"
 				></AdditionalInfo>
 			</div>
 			<div
@@ -137,6 +138,10 @@ export default defineComponent({
 			default() {
 				return '';
 			},
+		},
+		index: {
+			type: Number,
+			required: true,
 		},
 		starttime: {
 			type: String,
