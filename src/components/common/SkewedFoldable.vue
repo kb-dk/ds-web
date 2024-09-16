@@ -8,13 +8,18 @@
 			:class="left ? 'edge top left' : 'edge top'"
 		></div>
 		<div
+			:id="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
 			ref="contentRef"
 			:style="`background-color:${bg}; color:${text}`"
 			:class="alwaysExpand ? 'content' : 'content hide'"
 		>
 			<button
+				ref="primaryButtonRef"
 				class="mobile-title"
 				:data-testid="addTestDataEnrichment('button', 'skewed-foldable', `btn-toggle-${title}`, 0)"
+				:aria-label="title"
+				:aria-expanded="foldableOpen"
+				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
 				@click="toggleContent()"
 			>
 				<div class="icon">
@@ -53,13 +58,25 @@
 			:style="`background-color:${bg}`"
 			:class="getBottomClasses()"
 		></div>
+		<div class="foldable-toggle">
+			<button
+				:class="foldableOpen ? 'toggle-button open' : 'toggle-button closed'"
+				:data-testid="addTestDataEnrichment('button', 'skewed-foldable', `${title}-status-toggle`, 0)"
+				:title="foldableOpen ? 'Close' : 'Open'"
+				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
+				:aria-expanded="foldableOpen"
+				@click="toggleContent()"
+			>
+				{{ foldableOpen ? '-' : '+' }}
+			</button>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import gsap from 'gsap';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'SkewedFoldable',
@@ -80,6 +97,7 @@ export default defineComponent({
 		const foldableRef = ref<HTMLElement | null>(null);
 		const contentRef = ref<HTMLElement | null>(null);
 		const slotRef = ref<HTMLElement | null>(null);
+		const primaryButtonRef = ref<HTMLButtonElement | null>(null);
 
 		const foldableOpen = ref(false);
 
@@ -116,6 +134,9 @@ export default defineComponent({
 					ease: 'none',
 				});
 			} else {
+				if (primaryButtonRef.value !== null) {
+					primaryButtonRef.value.focus();
+				}
 				gsap.set(slotRef.value, {
 					display: 'flex',
 					overwrite: true,
@@ -137,7 +158,17 @@ export default defineComponent({
 			foldableOpen.value = !foldableOpen.value;
 		};
 
-		return { foldableRef, contentRef, toggleContent, slotRef, getBottomClasses, addTestDataEnrichment };
+		return {
+			foldableRef,
+			contentRef,
+			toggleContent,
+			slotRef,
+			getBottomClasses,
+			addTestDataEnrichment,
+			foldableOpen,
+			primaryButtonRef,
+			santizeAndSimplify,
+		};
 	},
 });
 </script>
@@ -268,6 +299,71 @@ h1 {
 	box-shadow:
 		rgba(0, 0, 0, 0.16) 0px 3px 6px,
 		rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.foldable-toggle {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: -70px;
+}
+
+.toggle-button {
+	z-index: 5;
+	border: 0px solid transparent;
+	cursor: pointer;
+	background-color: transparent;
+	padding: 10px 5px;
+	width: 16px;
+	height: 16px;
+	background-color: #0a2e70;
+	color: white;
+	font-size: 16px;
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	margin-top: 30px;
+}
+
+.toggle-button:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 6px solid #0a2e70;
+	position: relative;
+	transition: all 0.15s ease-in-out 0s;
+	transform: scaleY(0);
+	transform-origin: bottom;
+	top: -1px;
+}
+
+.toggle-button.open:before {
+	transform: scaleY(1);
+}
+
+.toggle-button:after {
+	left: 0px;
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 6px solid #0a2e70;
+	position: relative;
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: all 0.15s ease-in-out 0s;
+	top: 1px;
+}
+
+.toggle-button.closed:after {
+	transform: scaleY(1);
 }
 
 @media (min-width: 990px) {
