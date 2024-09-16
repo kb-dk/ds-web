@@ -2,6 +2,7 @@ import { GenericSearchResultType, FacetsType } from './GenericSearchResultTypes'
 import { GenericRecordType } from './GenericRecordTypes';
 import { BroadcastRecordType } from './BroadcastRecordType';
 import { SpellCheckType } from './SpellCheckType';
+import { AxiosRequestConfig } from 'axios';
 
 export interface APISearchResponseType {
 	data: {
@@ -91,4 +92,8 @@ export interface APIResponseHeaderType {
 
 export interface APIAuthResponseType {
 	resp: string;
+}
+
+export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+	_retryCount?: number;
 }
