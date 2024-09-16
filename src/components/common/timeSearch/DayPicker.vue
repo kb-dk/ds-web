@@ -27,6 +27,7 @@
 				class="single-day-link"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
+				@click="moveToSearchPage()"
 			>
 				<span>Vis indhold</span>
 				<div class="link-arrow"></div>
@@ -39,7 +40,7 @@
 import { defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import { startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { startYear, endYear, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
@@ -74,6 +75,16 @@ export default defineComponent({
 				fq: [],
 			},
 		});
+
+		const moveToSearchPage = () => {
+			startDate.value.setFullYear(selectedDate.value.getFullYear());
+			startDate.value.setMonth(selectedDate.value.getMonth());
+			startDate.value.setDate(selectedDate.value.getDate());
+
+			endDate.value.setFullYear(selectedDate.value.getFullYear());
+			endDate.value.setMonth(selectedDate.value.getMonth());
+			endDate.value.setDate(selectedDate.value.getDate());
+		};
 
 		const updateSeeMoreLink = () => {
 			singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
@@ -111,6 +122,7 @@ export default defineComponent({
 			specificDayLink,
 			addTestDataEnrichment,
 			updateSeeMoreLink,
+			moveToSearchPage,
 		};
 	},
 });
