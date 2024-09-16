@@ -155,8 +155,6 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 
-		console.log(props.resultdata);
-
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
@@ -478,7 +476,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 105px;
+		height: 120px;
 	}
 	.result-image-wrapper {
 		height: initial;

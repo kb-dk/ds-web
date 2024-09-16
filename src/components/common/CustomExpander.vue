@@ -229,7 +229,7 @@ export default defineComponent({
 	display: block;
 	width: 100%;
 	height: 30px;
-	background: linear-gradient(0deg, rgba(250, 250, 250, 1) 50%, rgba(255, 255, 255, 0) 100%);
+	background: linear-gradient(0deg, rgba(250, 250, 250, 1) 20%, rgba(255, 255, 255, 0) 100%);
 	position: absolute;
 	margin-top: 35px;
 	z-index: 1;

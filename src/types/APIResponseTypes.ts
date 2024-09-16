@@ -92,3 +92,8 @@ export interface APIResponseHeaderType {
 export interface APIAuthResponseType {
 	resp: string;
 }
+
+export interface facetItem {
+	name: string;
+	number: number;
+}

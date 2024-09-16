@@ -1,7 +1,7 @@
 <template>
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
-			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
+			<h1 class="headline">{{ $t('timeSearch.timeMachine') }}</h1>
 			<TimeSearchFilters
 				:timeline="true"
 				:init="true"
@@ -223,6 +223,8 @@ h1 {
 	padding: 2px 5px;
 	flex-direction: row-reverse;
 	font-size: 16px;
+	position: relative;
+	left: -10px;
 }
 
 .link-arrow {
@@ -297,6 +299,10 @@ h1 {
 	box-sizing: border-box;
 }
 
+.headline {
+	display: none;
+}
+
 @media (max-width: 480px) {
 	.time-result-item:nth-child(n + 3) {
 		display: none;
@@ -325,6 +331,15 @@ h1 {
 		flex: 1 1 calc(25% - 20px);
 		max-width: calc(25% - 15px);
 		box-sizing: border-box;
+	}
+	.headline {
+		display: block;
+	}
+}
+
+@media (min-width: 1280px) {
+	.link {
+		left: 0px;
 	}
 }
 </style>

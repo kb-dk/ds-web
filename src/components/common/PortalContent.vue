@@ -21,34 +21,44 @@
 		<div class="categories">
 			<SkewedFoldable
 				:title="'Kategorier'"
-				:left="true"
+				:left="false"
 				bg="#002e70"
 				text="white"
-				icon="schedule"
-				:subtitle="'subtitle, yay'"
+				icon="category"
+				:subtitle="'Vælg, hvilken kategori du gerne vil søge i.'"
+				:fullwidth="true"
+				:shadow-bottom="true"
 			>
 				<HeadCategories />
 			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
-				:title="'Kategorier'"
-				:left="false"
+				:title="'Brug Kalenderen...'"
+				:left="true"
 				bg="#caf0fe"
-				icon="schedule"
-				:subtitle="'subtitle, yay'"
+				icon="event"
+				:subtitle="'Vælg en dato, du gerne vil se indhold fra.'"
+				:fullwidth="true"
+				text="#0a2e70"
+				:always-expand="true"
+				:dashed-bottom="true"
+				:shadow-bottom="true"
 			>
 				<DayPicker />
 			</SkewedFoldable>
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
-				:title="'Kategorier'"
-				:left="true"
+				:title="'Brug tiden...'"
+				:left="false"
 				bg="#fafafa"
+				text="#0a2e70"
 				icon="schedule"
-				:subtitle="'subtitle, yay'"
+				:subtitle="`Vælg, hvilket tidsrum i DR's sendeflader, du vil søge i.`"
 				:fullwidth="true"
+				:dashed-bottom="true"
+				:shadow-bottom="false"
 			>
 				<TimeSearchComponent />
 			</SkewedFoldable>
@@ -120,20 +130,20 @@ export default defineComponent({
 .date-picker,
 .time-search {
 	position: relative;
-	margin-top: -17px;
+	margin-top: -6.1vw;
 	width: calc(100% + 24px);
 	margin-left: -12px;
 }
 
 .categories {
 	margin-top: 40px !important;
-	z-index: 1;
+	z-index: 3;
 }
 .date-picker {
 	z-index: 2;
 }
 .time-search {
-	z-index: 3;
+	z-index: 1;
 	margin-bottom: 40px !important;
 }
 
@@ -145,7 +155,9 @@ export default defineComponent({
 		margin-left: 0px;
 	}
 
-	.time-search {
+	.time-search,
+	.categories,
+	.date-picker {
 		display: grid;
 		justify-content: center;
 	}

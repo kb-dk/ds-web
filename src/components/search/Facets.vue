@@ -3,7 +3,10 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<EdgedContentArea background-color="#FAFAFA">
+		<EdgedContentArea
+			:lines="true"
+			background-color="#FAFAFA"
+		>
 			<template #content>
 				<div class="time-facets-toggle">
 					<button

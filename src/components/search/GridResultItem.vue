@@ -24,7 +24,7 @@
 					<div class="date">
 						<span class="material-icons">play_circle_filled</span>
 						{{ resultdata.creator_affiliation + ', ' }}
-						{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }}
+						{{ starttime }}
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
@@ -37,7 +37,7 @@
 						></Duration>
 						&nbsp;-&nbsp;
 						<span style="font-style: italic; opacity: 0.5">
-							kl. {{ resultdata.temporal_start_hour_da }} / {{ resultdata.temporal_start_day_da }}
+							{{ resultdata.temporal_start_day_da }}
 						</span>
 					</div>
 
@@ -119,6 +119,12 @@ export default defineComponent({
 			type: Object as PropType<GenericSearchResultType>,
 			required: false,
 			default: undefined,
+		},
+		starttime: {
+			type: String,
+			default() {
+				return '';
+			},
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: '#ffffff' },

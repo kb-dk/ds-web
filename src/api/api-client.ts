@@ -114,7 +114,7 @@ export class APIServiceClient {
 	}
 
 	async getFullResultWithFacets(): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1`);
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0`);
 	}
 
 	async getSearchResults(

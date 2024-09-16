@@ -10,26 +10,35 @@
 		<div
 			ref="contentRef"
 			:style="`background-color:${bg}; color:${text}`"
-			class="content"
+			:class="alwaysExpand ? 'content' : 'content hide'"
 		>
 			<button
 				class="mobile-title"
+				:data-testid="addTestDataEnrichment('button', 'skewed-foldable', `btn-toggle-${title}`, 0)"
 				@click="toggleContent()"
 			>
-				<div clas="icon">
-					<span class="material-icons">{{ icon }}</span>
+				<div class="icon">
+					<span
+						:style="`color:${text}`"
+						class="material-icons"
+					>
+						{{ icon }}
+					</span>
 				</div>
-				<div class="headline">
-					<h2>{{ title }}</h2>
+				<div
+					:style="`color:${text}`"
+					class="headline"
+				>
+					<h1>{{ title }}</h1>
 					<span>{{ subtitle }}</span>
 				</div>
 			</button>
 			<div :class="fullwidth ? 'responsive-title fullw' : 'responsive-title'">
-				<div clas="icon">
+				<div class="icon">
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h2>{{ title }}</h2>
+					<h1>{{ title }}</h1>
 					<span>{{ subtitle }}</span>
 				</div>
 			</div>
@@ -42,7 +51,7 @@
 		</div>
 		<div
 			:style="`background-color:${bg}`"
-			:class="left ? 'edge bottom left' : 'edge bottom'"
+			:class="getBottomClasses()"
 		></div>
 	</div>
 </template>
@@ -50,6 +59,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import gsap from 'gsap';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'SkewedFoldable',
@@ -60,10 +70,11 @@ export default defineComponent({
 		subtitle: { type: String, default: '' },
 		icon: { type: String, default: 'schedule' },
 		fullwidth: { type: Boolean, default: false },
-		left: {
-			type: Boolean,
-			default: false,
-		},
+		alwaysExpand: { type: Boolean, default: false },
+		left: { type: Boolean, default: false },
+		showHeadlineInDesktop: { type: Boolean, default: true },
+		dashedBottom: { type: Boolean, default: false },
+		shadowBottom: { type: Boolean, default: false },
 	},
 	setup(props) {
 		const foldableRef = ref<HTMLElement | null>(null);
@@ -72,13 +83,25 @@ export default defineComponent({
 
 		const foldableOpen = ref(false);
 
+		const getBottomClasses = () => {
+			let classes = 'edge bottom';
+			if (props.left) {
+				classes += ' left';
+			}
+			if (props.dashedBottom) {
+				classes += ' dotted';
+			}
+			if (props.shadowBottom) {
+				classes += ' shadow';
+			}
+			return classes;
+		};
+
 		const toggleContent = () => {
 			if (foldableOpen.value) {
-				gsap.to(contentRef.value, {
+				gsap.to(slotRef.value, {
 					duration: 0.5,
-					height: '70px',
-					overwrite: true,
-					ease: 'none',
+					opacity: 0,
 					onComplete: () => {
 						gsap.set(slotRef.value, {
 							overwrite: true,
@@ -86,11 +109,21 @@ export default defineComponent({
 						});
 					},
 				});
+				gsap.to(contentRef.value, {
+					duration: 0.5,
+					height: '90px',
+					overwrite: true,
+					ease: 'none',
+				});
 			} else {
 				gsap.set(slotRef.value, {
 					display: 'flex',
 					overwrite: true,
 					onComplete: () => {
+						gsap.to(slotRef.value, {
+							opacity: 1,
+							duration: 0.5,
+						});
 						//contentRef.value.$el.focus();
 						gsap.to(contentRef.value, {
 							height: 'auto',
@@ -104,13 +137,13 @@ export default defineComponent({
 			foldableOpen.value = !foldableOpen.value;
 		};
 
-		return { foldableRef, contentRef, toggleContent, slotRef };
+		return { foldableRef, contentRef, toggleContent, slotRef, getBottomClasses, addTestDataEnrichment };
 	},
 });
 </script>
 <style scoped>
 .content {
-	height: 70px;
+	height: 90px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
@@ -118,9 +151,16 @@ export default defineComponent({
 	align-items: flex-start;
 	flex-direction: column;
 	overflow-x: hidden;
+	z-index: 1;
+	padding-bottom: 25px;
+}
+
+.dotted {
+	border-bottom: 1px dashed rgb(160, 160, 160);
 }
 
 .slot {
+	opacity: 0;
 	display: none;
 	width: 100%;
 	justify-content: center;
@@ -129,7 +169,13 @@ export default defineComponent({
 }
 
 .foldable-container {
+	font-family: noway, sans-serif;
 	max-width: 100vw;
+}
+
+h1 {
+	font-family: noway, sans-serif;
+	font-weight: 100;
 }
 
 .content .responsive-title {
@@ -143,7 +189,7 @@ export default defineComponent({
 	justify-content: flex-start;
 }
 
-.content .headline h2 {
+.content .headline h1 {
 	padding: 0px;
 	margin: 0px;
 }
@@ -155,6 +201,11 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	margin: 15px 0px;
+}
+
+.icon .material-icons {
+	font-size: 48px;
 }
 
 .content .responsive-title {
@@ -162,70 +213,124 @@ export default defineComponent({
 	background-color: transparent;
 	width: 100%;
 	align-items: center;
+	margin: 15px 0px;
 }
 
 .edge.top {
-	width: 100%;
+	width: 110%;
 	position: relative;
 	background-color: #caf0fe;
-	clip-path: polygon(0 0, 0% 100%, 100% 100%);
-	z-index: 3;
-	height: 15px;
-	top: 1px;
+	z-index: 0;
+	height: 6vw;
+	left: -5%;
+	top: 3vw;
+	transform: rotateZ(2deg);
+	transform-origin: center bottom;
 }
 
 .edge.top.left {
-	width: 100%;
+	width: 110%;
 	position: relative;
 	background-color: #caf0fe;
-	clip-path: polygon(100% 0, 0% 100%, 100% 100%);
-	z-index: 3;
-	height: 15px;
-	top: 1px;
+	z-index: 0;
+	height: 6vw;
+	left: -5%;
+	top: 3vw;
+	transform: rotateZ(-2deg);
+	transform-origin: center bottom;
 }
 
 .edge.bottom {
-	width: 100%;
+	width: 110%;
 	position: relative;
 	background-color: #caf0fe;
-	clip-path: polygon(100% 0, 0 0, 0 100%);
-	z-index: 3;
-	height: 15px;
-	top: -1px;
+	z-index: 0;
+	height: 6vw;
+	left: -5%;
+	top: -3vw;
+	transform: rotateZ(-2deg);
+	transform-origin: center top;
 }
 .edge.bottom.left {
-	width: 100%;
+	width: 110%;
 	position: relative;
 	background-color: #caf0fe;
-	clip-path: polygon(100% 0, 0 0, 100% 100%);
-	z-index: 3;
-	height: 15px;
-	top: -1px;
+	z-index: 0;
+	height: 6vw;
+	left: -5%;
+	top: -3vw;
+	transform: rotateZ(2deg);
+	transform-origin: center top;
 }
+
+.edge.bottom.shadow {
+	box-sizing: border-box;
+	box-shadow:
+		rgba(0, 0, 0, 0.16) 0px 3px 6px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
 @media (min-width: 990px) {
-	.content {
+	h1 {
+		font-family: 'LibreBaskerville';
+		font-weight: 100;
+		text-transform: uppercase;
+		font-size: 32px;
+	}
+	.content.hide {
 		height: auto !important;
 		align-items: center;
 	}
+	.content {
+		align-items: center;
+	}
+	.hide .slot {
+		opacity: 1 !important;
+	}
 	.slot {
+		opacity: 0;
 		display: flex !important;
+		width: calc(100vw - 14px);
+	}
+	.hide .responsive-title {
+		display: none !important;
 	}
 	.content .mobile-title {
+		padding: 0;
+		max-width: 1150px;
+		align-items: center;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+	}
+
+	.content .mobile-title .icon {
+		width: 50%;
+	}
+
+	.content .mobile-title .icon .material-icons {
+		position: absolute;
+		font-size: 85px;
+		top: 0px;
+	}
+
+	.content.hide .mobile-title {
 		display: none;
 	}
 	.content .responsive-title {
-		display: flex;
-		max-width: 1150px;
-		padding-left: 12px;
-		padding-right: 12px;
+		display: none;
 	}
 	.content .responsive-title.fullw {
-		width: calc(100% - 24px);
+	}
+	.content.hide .responsive-title {
+		display: flex;
 	}
 }
 /* MEDIA QUERY 1150 */
 @media (min-width: 1150px) {
 	.content .responsive-title {
+		max-width: 1280px;
+	}
+	.content .mobile-title {
 		max-width: 1280px;
 	}
 }

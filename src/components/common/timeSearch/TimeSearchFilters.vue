@@ -544,7 +544,7 @@ export default defineComponent({
 	flex-direction: row;
 	align-content: center;
 	flex-wrap: nowrap;
-	justify-content: flex-start;
+	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 30px;
@@ -635,6 +635,7 @@ export default defineComponent({
 }
 
 fieldset {
+	padding: 0px;
 	border: 0px;
 	margin: 0px;
 	min-inline-size: auto;
@@ -958,6 +959,7 @@ fieldset {
 
 .picker-background {
 	background-color: #d9f5fe;
+	margin-top: 15px;
 }
 
 .apply-time-facets-container {
@@ -1077,6 +1079,12 @@ fieldset {
 		height: 96px;
 		padding-bottom: 40px;
 		margin-bottom: 60px;
+	}
+}
+
+@media (min-width: 990px) {
+	.to-from-container {
+		justify-content: flex-start;
 	}
 }
 </style>

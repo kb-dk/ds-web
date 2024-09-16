@@ -7,7 +7,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -25,7 +24,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -127,7 +125,11 @@ export default defineComponent({
 		const readyForNewSearch = () => {
 			timeSearchStore.setNewSearchReqMet(true);
 		};
-
+		/*
+		 * We're not using this right now - its _VERY_ heavy.
+		 * If we at some point want it, its just :highlight="highlightedDays"
+		 * in the picker.
+		 */
 		const highlightedDays = computed(() => {
 			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
