@@ -13,7 +13,7 @@
 					},
 				}"
 				class="category-item"
-				:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-link`, i)"
+				:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
 			>
 				{{ entity.name }}
 				<span class="number">{{ entity.number }}</span>
