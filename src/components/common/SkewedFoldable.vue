@@ -367,6 +367,10 @@ h1 {
 }
 
 @media (min-width: 990px) {
+	.toggle-button {
+		display: none;
+	}
+
 	h1 {
 		font-family: 'LibreBaskerville';
 		font-weight: 100;
