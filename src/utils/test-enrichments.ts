@@ -10,4 +10,4 @@ const santizeAndSimplify = (str: string) => {
 		.replace(/[^a-z0-9-]/g, ''); // Remove any non-alphanumeric chars except hyphens
 };
 
-export { addTestDataEnrichment };
+export { addTestDataEnrichment, santizeAndSimplify };

@@ -141,7 +141,7 @@ export default defineComponent({
 .top-offset {
 	position: relative;
 	background: white;
-	top: -20px;
+	top: -6vw;
 	z-index: 3;
 }
 /* MEDIA QUERY 480 */
@@ -167,7 +167,7 @@ export default defineComponent({
 		max-width: 1150px;
 	}
 	.top-offset {
-		top: -58px;
+		top: -6vw;
 		margin-left: 24px;
 		margin-right: 24px;
 	}

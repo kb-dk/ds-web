@@ -7,6 +7,7 @@ class MenuComponent extends HTMLElement {
 	translation: MenuTranslation;
 	collapsed: boolean;
 	routing: boolean | undefined;
+	searchfieldopen: boolean;
 	constructor() {
 		super();
 		this.collapsed = true;
@@ -14,6 +15,7 @@ class MenuComponent extends HTMLElement {
 		this.lang = 'da';
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.innerHTML = MENU_COMPONENT_TEMPLATE + MENU_COMPONMENT_STYLES;
+		this.searchfieldopen = true;
 
 		const menuButton = this.shadow.querySelector('#mobileNavButton');
 		if (menuButton) {
@@ -21,27 +23,18 @@ class MenuComponent extends HTMLElement {
 		}
 
 		this.createFullHeaderMenu();
+		const searchMobileToggle: HTMLButtonElement | null | undefined = this.shadow.querySelector(
+			'#mobileMainSearchButton',
+		) as HTMLButtonElement;
+		searchMobileToggle
+			? searchMobileToggle.addEventListener('click', (e) => {
+					this.dispatchToggleSearchfield(e);
+			  })
+			: null;
 	}
 
 	static get observedAttributes() {
 		return ['locale', 'page'];
-	}
-
-	connectedCallback() {
-		const logo = this.shadow.querySelector('.rdl-logo');
-		if (logo && this.routing === true) {
-			logo.addEventListener('click', (event) => {
-				if (this.routing) {
-					event.preventDefault();
-					window.dispatchEvent(
-						new CustomEvent('change-path', {
-							detail: { name: 'Home', query: { q: '' } },
-						}),
-					);
-					window.dispatchEvent(new Event('reset-input'));
-				}
-			});
-		}
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -62,6 +55,29 @@ class MenuComponent extends HTMLElement {
 	dispatchLocaleSwitch(e: Event) {
 		window.dispatchEvent(new Event('locale-switch'));
 		e.preventDefault();
+	}
+
+	dispatchToggleSearchfield(e: Event) {
+		window.dispatchEvent(new Event('toggle-search'));
+		e.preventDefault();
+		const searchToggle: HTMLSpanElement | null | undefined = this.shadow
+			.querySelector('#searchToggle')
+			?.querySelector('span');
+		const mobileSearchToggle: HTMLSpanElement | null | undefined = this.shadow
+			.querySelector('#mobileMainSearchButton')
+			?.querySelector('span');
+		this.searchfieldopen = !this.searchfieldopen;
+		if (this.searchfieldopen) {
+			searchToggle && (searchToggle.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
+			searchToggle && searchToggle.classList.add('cursive');
+			mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
+			mobileSearchToggle && mobileSearchToggle.classList.add('cursive');
+		} else {
+			searchToggle && (searchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
+			searchToggle && searchToggle.classList.remove('cursive');
+			mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
+			mobileSearchToggle && mobileSearchToggle.classList.remove('cursive');
+		}
 	}
 
 	toggleMenu() {
@@ -105,6 +121,27 @@ class MenuComponent extends HTMLElement {
 						this.dispatchLocaleSwitch(e);
 				  })
 				: null;
+			const searchToggle: HTMLSpanElement | null | undefined = this.shadow
+				.querySelector('#searchToggle')
+				?.querySelector('span');
+			searchToggle && searchToggle.classList.add('cursive');
+			searchToggle
+				? searchToggle.addEventListener('click', (e) => {
+						this.dispatchToggleSearchfield(e);
+				  })
+				: null;
+
+			const mobileSearchToggle: HTMLSpanElement | null | undefined = this.shadow
+				.querySelector('#mobileMainSearchButton')
+				?.querySelector('span');
+
+			if (this.searchfieldopen) {
+				mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
+				mobileSearchToggle && mobileSearchToggle.classList.add('cursive');
+			} else {
+				mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
+				mobileSearchToggle && mobileSearchToggle.classList.remove('cursive');
+			}
 		}
 	}
 
@@ -124,13 +161,21 @@ class MenuComponent extends HTMLElement {
 			listElem.classList.add(icon);
 		}
 		//listElem.role = 'none';
-		const link = document.createElement('a');
+		let link;
+		if (id) {
+			link = document.createElement('button');
+			link.id = id;
+			const titlespan = document.createElement('span');
+			titlespan.textContent = title;
+			link.appendChild(titlespan);
+		} else {
+			link = document.createElement('a');
+			link.href = url;
+			link.textContent = title;
+		}
 		listElem.role = 'menuitem';
-		if (id) link.id = id;
 		listElem.appendChild(link);
 		link.classList.add('nav-item', 'level-1');
-		link.textContent = title;
-		link.href = url;
 		link.setAttribute('data-testid', addTestDataEnrichment('link', 'topmenu', title, 0));
 		if (icon) {
 			const iconElem = document.createElement('i');
@@ -182,7 +227,7 @@ const menuTranslations = {
 			{ title: 'Arrangementer', link: 'https://www.kb.dk/arrangementer' },
 			{ title: 'Services', link: 'https://www.kb.dk/services' },
 			{ title: 'Besøg os', link: 'https://www.kb.dk/besoeg-os' },
-			{ title: 'Søg', link: 'https://www.kb.dk/', icon: 'search' },
+			{ title: 'Luk', link: '#', icon: 'search', id: 'searchToggle' },
 		],
 	},
 	en: {
@@ -205,7 +250,7 @@ const menuTranslations = {
 			{ title: 'Events', link: 'https://www.kb.dk/en/events' },
 			{ title: 'Services', link: 'https://www.kb.dk/en/services' },
 			{ title: 'Visit us', link: 'https://www.kb.dk/en/visit-us' },
-			{ title: 'Search', link: 'https://www.kb.dk/en', icon: 'search' },
+			{ title: 'Close', link: '#', icon: 'search', id: 'searchToggle' },
 		],
 	},
 };
@@ -221,14 +266,21 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 			<div class="logo-wrapper row justify-content-between">
 				<div class="col logo-col">
 					<a
-						href="/arkiv"
+						href="https://www.kb.dk"
 						class="rdl-logo"
 						title="Logo of the Royal Danish Library"
 						data-testid="link-topmenu-logo-0"
 					>
-						<span class="sr-only"></span>
+						<span class="sr-only">Royal Danish Library Logo</span>
 					</a>
 				</div>
+				<div class="col-auto d-lg-none search-col" role="search">
+						<button data-testid="button-topmenu-searchfield-toggle-0" id="mobileMainSearchButton" type="button" class="icon-button search-button d-lg-none" data-toggle="collapse" data-target="#mainSearch" aria-expanded="false" aria-controls="mainSearch" aria-label="">
+								<i class="material-icons " aria-hidden="true">search</i>
+
+							<span class="search-label cursive" aria-hidden="true">Luk</span>
+						</button>
+					</div>
 				<div class="col-auto d-lg-none burger-col">
 					<div id="mobileNavToggle">
 						<button data-testid="button-topmenu-menu-toggle-0" id="mobileNavButton" class="btn rdl-burger collapsed" data-toggle="collapse" data-target="#mobileNavigation" aria-expanded="false" aria-controls="mobileNavigation" aria-label="Åbn eller luk navigation" aria-pressed="false">
@@ -254,21 +306,27 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 		</div>
 	</div>
 </header>
-<div class="edge blue"></div>
 </div>
 
 `;
 
 const MENU_COMPONMENT_STYLES = /*css*/ `
 	<style>
-	.edge {
-		height:31px;
-	}
 
 	.overall-header {
 		position:relative;
 		z-index:2;
-		margin-bottom:50px;
+	}
+
+	.search-label {
+
+	}
+
+	.search-button {
+		display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
 	}
 
 	.rdl-logo {
@@ -280,15 +338,8 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		display: inline-block;
 		height: 32px;
 		width: 138px;
-	}
-
-	.edge.blue {
-		width:100%;
-		position:absolute;
-		background-color:#caf0fe;
-		clip-path: polygon(0 0, 0 100%, 100% 0);
-		z-index: 3;
-		margin-top: -1px;
+		position:relative;
+		z-index:1;
 	}
 	a {
 		font-weight: 700;
@@ -296,6 +347,28 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		text-decoration:none;
 		font-family: noway,sans-serif;
 		text-transform:uppercase;
+	}
+
+	.sr-only {
+		position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+	}
+
+	.rdl-secondary-nav button, .rdl-primary-nav button {
+		font-weight: 700;
+    color: #002e70;
+    text-decoration: none;
+    font-family: noway, sans-serif;
+    text-transform: uppercase;
+		font-size: 20px;
+		cursor:pointer;
 	}
 
 	.container {
@@ -310,16 +383,38 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		box-sizing:border-box;
 	}
 
-	.global-header.open ~ .edge.blue {
-		display:none;
-	}
-
 	.global-header.open .header-bg-wrapper {
 		padding-bottom:0px;
 	}
 
 	.rdl-primary-nav li.search {
 		display:none;
+	}
+
+	.cursive {
+		font-style: italic;
+	}
+
+	.search-col button {
+		background-color: transparent;
+    border: 0px;
+		color: #002E70 !important;
+		margin-right: 15px;
+		cursor:pointer;
+	}
+
+	.search-col .material-icons {
+		font-size: 2.125rem;
+    margin-top: -2px;
+    margin-bottom: -1px;
+	}
+
+	.search-col span {
+		font-size:12px;
+		text-transform: uppercase;
+    font-family: "noway", sans-serif;
+		position: relative;
+    color: black;
 	}
 
 	.rdl-burger {
@@ -418,7 +513,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 
 	.global-header .header-bg-wrapper {
 		padding-top: 24px;
-		padding-bottom: 5px;
+		padding-bottom: 10px;
 	}
 	.global-header {
 		display: flex;
@@ -553,6 +648,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		align-content: center;
 		flex-wrap: wrap;
 		align-content: flex-start;
+		flex-grow: 1;
 	}
 
 	.rdl-logo {
@@ -579,7 +675,11 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	/* MEDIA QUERY 990 */
 	@media (min-width: 990px) {
 		.header-bg-wrapper.record {
-			margin-bottom:60px !important;
+			margin-bottom:0px !important;
+		}
+
+		.search-col {
+			display:none;
 		}
 
 		.rdl-primary-nav {
@@ -624,10 +724,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			margin-top:initial;
 		}
 
-		.global-header.open ~ .edge.blue {
-			display: block;
-		}
-
 		.global-header .header-edge {
 			-webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5vw), 0 100%);
 			clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5vw), 0 100%);
@@ -641,6 +737,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		}
 		.logo-col {
 			margin-left: -3px;
+			flex-grow: 1;
 		}
 		.logo-wrapper {
 			padding-left:0px;
@@ -732,9 +829,6 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			width: 174px;
 		}
 
-		.edge.blue {
-			top:unset;
-		}
 		.overall-header {
 			margin-bottom:0px;
 		}
@@ -747,7 +841,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	/* MEDIA QUERY 1150 */
 	@media (min-width: 1150px) {
 		.header-bg-wrapper.record {
-			margin-bottom:100px !important;
+			margin-bottom:0px !important;
 		}
 		.global-header .search i {
 			font-size: 1.25rem;

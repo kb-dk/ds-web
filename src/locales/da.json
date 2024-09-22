@@ -16,6 +16,13 @@
    "frontpage": {
       "fromTheArchive":"Et udpluk fra arkivet"
    },
+   "breadcrumb": {
+      "frontpage":"Forside",
+      "findMaterials": "Find materiale",
+      "drArchive": "DR-Arkivet",
+      "search":"Søgning",
+      "record": "Fuldpost"
+   },
    "timeSearch": {
       "timeMachine":"Brug Tiden...",
       "year":"år | år",
@@ -35,11 +42,11 @@
       "result":"resultat | resultater",
       "all":"alle",
       "allMonths":"alle måneder i perioden",
-      "allDays":"alle udedage i perioden",
+      "allDays":"alle ugedage i perioden",
       "allTimeslots":"hele døgnet",
       "selection":"Et udpluk af resultaterne",
       "monthHeadline":"Udvælg måneder",
-      "dayHeadline":"Udvælg udedage",
+      "dayHeadline":"Udvælg ugedage",
       "timeslotHeadline":"Udvælg tidspunkter",
       "yearHeadline":"Vælg dato via kalender",
       "filterOpenButton":"Tidspunkter",
@@ -102,8 +109,20 @@
      "thumbnailButton":"Se flere thumbnails",
      "thumbnailLink": "Thumbnail {index} ved {timestamp}",
      "of":"af",
-     "startTime":"starttid"
-
+     "startTime":"starttid",
+     "portals": {
+         "drArchive":"DR Arkivet",
+         "booksAndMaterials":"Bøger og tidskrifter",
+         "kbdk":"Søg på kb.dk",
+         "webshop":"Webshop",
+         "seeAllMaterials":"Se alt materiale"
+      },
+      "placeholders": {
+         "drArchive":"Søg i  DR arkiv",
+         "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
+         "kbdk":"Søg i hjemmesiden",
+         "webshop":"Søg i webshoppen"
+      }
    },
   "record":{
      "duration":"Varighed",
