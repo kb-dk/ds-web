@@ -277,7 +277,6 @@ export default defineComponent({
 
 		onMounted(() => {
 			window.addEventListener('toggle-search', toggleSearchField);
-			console.log(locale);
 		});
 
 		onUnmounted(() => {
@@ -395,7 +394,7 @@ export default defineComponent({
 			searchResultStore.currentQuery = '';
 			searchResultStore.loading = false;
 			setPreliminaryFilter('');
-			router.push({ name: 'Search' });
+			router.push({ name: 'Home' });
 		};
 
 		const setPreliminaryFilter = (value: string) => {

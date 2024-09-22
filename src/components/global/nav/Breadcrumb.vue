@@ -10,7 +10,10 @@
 				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
 			</a>
 			/
-			<router-link :to="{ name: 'Home' }">
+			<router-link
+				:to="{ name: 'Home' }"
+				@click="emptyQuery()"
+			>
 				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
 			</router-link>
 			<span v-if="$route.name === 'Search'">
@@ -43,6 +46,7 @@ import { defineComponent, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRouter } from 'vue-router';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'Breadcrumb',
@@ -50,12 +54,20 @@ export default defineComponent({
 		const { t } = useI18n();
 		const router = useRouter();
 		const lastPath = ref('');
+		const searchResultStore = useSearchResultStore();
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
 
-		return { t, addTestDataEnrichment, lastPath };
+		const emptyQuery = () => {
+			searchResultStore.currentQuery = '';
+			searchResultStore.loading = false;
+			searchResultStore.preliminaryFilter = '';
+			searchResultStore.resetSearch();
+		};
+
+		return { t, addTestDataEnrichment, lastPath, emptyQuery };
 	},
 });
 </script>
