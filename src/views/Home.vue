@@ -1,10 +1,8 @@
 <template>
 	<div class="home-container">
-		<div class="container">
+		<div>
 			<Hero />
-			<div>
-				<PortalContent />
-			</div>
+			<PortalContent />
 		</div>
 		<Footer />
 	</div>

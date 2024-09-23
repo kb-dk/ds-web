@@ -78,17 +78,15 @@
 										class="btn dropdown-toggle btn-outline-primary"
 										data-toggle="dropdown"
 										role="combobox"
-										aria-owns="bs-select-1"
 										aria-haspopup="listbox"
 										aria-expanded="false"
-										title="DR Archive"
+										title="Select portal"
 										aria-controls="searchbar-select-portal"
 										@click="togglePortalSelector()"
 									>
 										<div class="filter-option">
 											<div class="filter-option-inner">
 												<div class="filter-option-inner-inner">
-													<span class="sr-only"></span>
 													{{ t(`search.portals.${selectedPortal}`) }}
 												</div>
 											</div>
@@ -102,91 +100,71 @@
 											id="bs-select-1"
 											class="inner show"
 											role="listbox"
-											tabindex="-1"
-											aria-activedescendant="bs-select-1-0"
+											tabindex="1"
 										>
 											<ul
 												class="dropdown-menu-inner inner show"
 												role="presentation"
 												style="margin-top: 0px; margin-bottom: 0px"
 											>
-												<li class="selected active">
+												<li
+													role="option"
+													class="selected active"
+												>
 													<button
-														id="bs-select-1-0"
 														type="button"
-														role="option"
-														class="dropdown-item active selected"
-														tabindex="0"
-														aria-setsize="4"
-														aria-posinset="1"
-														aria-selected="true"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[0].name}`)"
 														@click="selectPortal(0)"
 													>
 														<span class="text">
-															<span class="sr-only"></span>
 															{{ t(`search.portals.${selectorValues[0].name}`) }}
 														</span>
 													</button>
 												</li>
-												<li>
+												<li role="option">
 													<button
-														id="bs-select-1-0"
 														type="button"
-														role="option"
-														class="dropdown-item active selected"
-														tabindex="0"
-														aria-setsize="4"
-														aria-posinset="1"
-														aria-selected="true"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[1].name}`)"
 														@click="selectPortal(1)"
 													>
 														<span class="text">
-															<span class="sr-only"></span>
 															{{ t(`search.portals.${selectorValues[1].name}`) }}
 														</span>
 													</button>
 												</li>
-												<li>
+												<li role="option">
 													<button
-														id="bs-select-1-1"
 														type="button"
-														role="option"
 														class="dropdown-item"
-														tabindex="0"
+														:title="t(`search.portals.${selectorValues[2].name}`)"
 														@click="selectPortal(2)"
 													>
 														<span class="text">
-															<span class="sr-only"></span>
 															{{ t(`search.portals.${selectorValues[2].name}`) }}
 														</span>
 													</button>
 												</li>
-												<li>
+												<li role="option">
 													<button
-														id="bs-select-1-2"
 														type="button"
-														role="option"
 														class="dropdown-item"
-														tabindex="0"
+														:title="t(`search.portals.${selectorValues[3].name}`)"
 														@click="selectPortal(3)"
 													>
 														<span class="text">
-															<span class="sr-only"></span>
 															{{ t(`search.portals.${selectorValues[3].name}`) }}
 														</span>
 													</button>
 												</li>
-												<li>
+												<li role="option">
 													<a
-														id="bs-select-1-3"
-														type="button"
-														role="option"
+														:title="t(`search.portals.${selectorValues[4].name}`)"
 														class="dropdown-item"
-														tabindex="0"
 														:href="'https://www.kb.dk/find-materiale'"
 													>
 														<span class="text">
-															<span class="sr-only"></span>
 															{{ t(`search.portals.${selectorValues[4].name}`) }}
 														</span>
 													</a>

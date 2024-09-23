@@ -32,7 +32,7 @@ export default defineComponent({
 	height: 400px;
 	display: flex;
 	justify-content: center;
-	margin-top: -85px;
+	margin-top: -6vw;
 	margin-bottom: 85px;
 }
 

@@ -60,23 +60,33 @@ class MenuComponent extends HTMLElement {
 	dispatchToggleSearchfield(e: Event) {
 		window.dispatchEvent(new Event('toggle-search'));
 		e.preventDefault();
-		const searchToggle: HTMLSpanElement | null | undefined = this.shadow
+		const searchToggle: HTMLButtonElement | null | undefined = this.shadow.querySelector(
+			'#searchToggle',
+		) as HTMLButtonElement;
+		const mobileSearchToggle: HTMLButtonElement | null | undefined = this.shadow.querySelector(
+			'#mobileMainSearchButton',
+		) as HTMLButtonElement;
+		const searchToggleSpan: HTMLSpanElement | null | undefined = this.shadow
 			.querySelector('#searchToggle')
 			?.querySelector('span');
-		const mobileSearchToggle: HTMLSpanElement | null | undefined = this.shadow
+		const mobileSearchToggleSpan: HTMLSpanElement | null | undefined = this.shadow
 			.querySelector('#mobileMainSearchButton')
 			?.querySelector('span');
 		this.searchfieldopen = !this.searchfieldopen;
 		if (this.searchfieldopen) {
-			searchToggle && (searchToggle.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
-			searchToggle && searchToggle.classList.add('cursive');
-			mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
-			mobileSearchToggle && mobileSearchToggle.classList.add('cursive');
+			searchToggle.setAttribute('aria-expanded', 'true');
+			mobileSearchToggle.setAttribute('aria-expanded', 'true');
+			searchToggleSpan && (searchToggleSpan.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
+			searchToggleSpan && searchToggleSpan.classList.add('cursive');
+			mobileSearchToggleSpan && (mobileSearchToggleSpan.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
+			mobileSearchToggleSpan && mobileSearchToggleSpan.classList.add('cursive');
 		} else {
-			searchToggle && (searchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
-			searchToggle && searchToggle.classList.remove('cursive');
-			mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
-			mobileSearchToggle && mobileSearchToggle.classList.remove('cursive');
+			searchToggle.setAttribute('aria-expanded', 'false');
+			mobileSearchToggle.setAttribute('aria-expanded', 'false');
+			searchToggleSpan && (searchToggleSpan.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
+			searchToggleSpan && searchToggleSpan.classList.remove('cursive');
+			mobileSearchToggleSpan && (mobileSearchToggleSpan.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
+			mobileSearchToggleSpan && mobileSearchToggleSpan.classList.remove('cursive');
 		}
 	}
 
@@ -168,6 +178,9 @@ class MenuComponent extends HTMLElement {
 			const titlespan = document.createElement('span');
 			titlespan.textContent = title;
 			link.appendChild(titlespan);
+			if (id === 'searchToggle') {
+				link.setAttribute('aria-expanded', 'true');
+			}
 		} else {
 			link = document.createElement('a');
 			link.href = url;
@@ -275,7 +288,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 					</a>
 				</div>
 				<div class="col-auto d-lg-none search-col" role="search">
-						<button data-testid="button-topmenu-searchfield-toggle-0" id="mobileMainSearchButton" type="button" class="icon-button search-button d-lg-none" data-toggle="collapse" data-target="#mainSearch" aria-expanded="false" aria-controls="mainSearch" aria-label="">
+						<button data-testid="button-topmenu-searchfield-toggle-0" id="mobileMainSearchButton" type="button" class="icon-button search-button d-lg-none" data-toggle="collapse" data-target="#mainSearch" aria-expanded="true" aria-controls="mainSearch" aria-label="">
 								<i class="material-icons " aria-hidden="true">search</i>
 
 							<span class="search-label cursive" aria-hidden="true">Luk</span>
