@@ -42,10 +42,10 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
@@ -55,10 +55,18 @@ export default defineComponent({
 		const router = useRouter();
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
+		const route = useRoute();
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
+
+		watch(
+			() => route.path,
+			() => {
+				lastPath.value = router.options.history.state.back as string;
+			},
+		);
 
 		const emptyQuery = () => {
 			searchResultStore.currentQuery = '';
