@@ -161,14 +161,10 @@ export default defineComponent({
 			//for now, we set the title of the app to the archive. Can be changed if we ever go portal-mode.
 			document.title = t('app.titles.frontpage.archive.name') as string;
 
-			console.log('requesting ids');
 			// we try to get the kaltura conf id's here. we got some backup ones from aegis, and they're
 			// fallback if we can't get these. But if the bff backend has some, we use them instead
 
-			Promise.race([
-				APIService.getKalturaConfIds(),
-				new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out, we default')), 5000)),
-			])
+			Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 100))])
 				.then((response) => {
 					const typedResponse = response as APIAuthMessagesType; // Assert the correct type
 					authStore.partnerId = typedResponse.data.partnerId;
@@ -177,11 +173,9 @@ export default defineComponent({
 					authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
 					authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
 					authStore.kalturaIdFetchExecuted = true;
-					console.log('went well, we got ids');
 				})
 				.catch(() => {
 					authStore.kalturaIdFetchExecuted = true;
-					console.log('service crapped out, we got nothing');
 				});
 
 			await router.isReady();
