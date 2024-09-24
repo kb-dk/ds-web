@@ -164,7 +164,7 @@ export default defineComponent({
 			// we try to get the kaltura conf id's here. we got some backup ones from aegis, and they're
 			// fallback if we can't get these. But if the bff backend has some, we use them instead
 
-			Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 100))])
+			Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
 				.then((response) => {
 					const typedResponse = response as APIAuthMessagesType; // Assert the correct type
 					authStore.partnerId = typedResponse.data.partnerId;
