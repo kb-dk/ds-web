@@ -7,6 +7,7 @@ import {
 	APIAutocompleteResponseType,
 	APIThumbnailsResponseType,
 	APIAuthResponseType,
+	APIAuthMessagesType,
 	// Extend AxiosRequestConfig to include _retryCount to keep TypeScript happy
 	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
@@ -206,6 +207,10 @@ export class APIServiceClient {
 
 	async authenticate(): Promise<APIAuthResponseType> {
 		return await this.httpClient.get('bff/v1/authenticate/');
+	}
+
+	async getKalturaConfIds(): Promise<APIAuthMessagesType> {
+		return await this.httpClient.get('bff/v1/messages/');
 	}
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {

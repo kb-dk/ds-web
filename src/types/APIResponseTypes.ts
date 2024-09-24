@@ -97,3 +97,13 @@ export interface APIAuthResponseType {
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 	_retryCount?: number;
 }
+
+export interface APIAuthMessagesType {
+	data: {
+		streamingBaseUrlVideo: string;
+		AudioUiConfId: string;
+		videoUiConfId: string;
+		partnerId: string;
+		streamingBaseUrlAudio: string;
+	};
+}
