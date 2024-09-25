@@ -2,16 +2,23 @@
 	<div class="bg-container">
 		<div class="breadcrumb container">
 			<span class="material-icons home">home</span>
-			<a href="https://www.kb.dk">
+			<a
+				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
+				href="https://www.kb.dk"
+			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
 			</a>
 			/
-			<a href="https://www.kb.dk/find-materiale">
+			<a
+				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
+				href="https://www.kb.dk/find-materiale"
+			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
 			</a>
 			/
 			<router-link
 				:to="{ name: 'Home' }"
+				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
 				@click="emptyQuery()"
 			>
 				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
@@ -22,6 +29,7 @@
 			</span>
 			<router-link
 				v-if="$route.name === 'Record' && lastPath"
+				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
 			>
 				<span>/</span>
@@ -30,6 +38,7 @@
 			<router-link
 				v-if="$route.name === 'Record' && !lastPath"
 				:to="{ name: 'Search' }"
+				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-empty', 4)"
 			>
 				<span>/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>

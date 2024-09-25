@@ -82,6 +82,7 @@
 										aria-expanded="false"
 										title="Select portal"
 										aria-controls="searchbar-select-portal"
+										:data-testid="addTestDataEnrichment('button', 'portal', 'select-portal-toggle', 0)"
 										@click="togglePortalSelector()"
 									>
 										<div class="filter-option">
@@ -115,6 +116,7 @@
 														type="button"
 														class="dropdown-item"
 														:title="t(`search.portals.${selectorValues[0].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'drarchive', 0)"
 														@click="selectPortal(0)"
 													>
 														<span class="text">
@@ -127,6 +129,7 @@
 														type="button"
 														class="dropdown-item"
 														:title="t(`search.portals.${selectorValues[1].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'primo', 0)"
 														@click="selectPortal(1)"
 													>
 														<span class="text">
@@ -139,6 +142,7 @@
 														type="button"
 														class="dropdown-item"
 														:title="t(`search.portals.${selectorValues[2].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'kbdk', 0)"
 														@click="selectPortal(2)"
 													>
 														<span class="text">
@@ -151,6 +155,7 @@
 														type="button"
 														class="dropdown-item"
 														:title="t(`search.portals.${selectorValues[3].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'webshop', 0)"
 														@click="selectPortal(3)"
 													>
 														<span class="text">
@@ -163,6 +168,7 @@
 														:title="t(`search.portals.${selectorValues[4].name}`)"
 														class="dropdown-item"
 														:href="'https://www.kb.dk/find-materiale'"
+														:data-testid="addTestDataEnrichment('link', 'portal', 'all-materials', 0)"
 													>
 														<span class="text">
 															{{ t(`search.portals.${selectorValues[4].name}`) }}
@@ -219,7 +225,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const { t, locale } = useI18n();
+		const { t } = useI18n();
 		const visibleSearchfield = ref(true);
 		const searchResultStore = useSearchResultStore();
 		const debounceMechanic = ref(false);
@@ -774,6 +780,10 @@ input:focus {
 	text-rendering: optimizeLegibility;
 	-moz-osx-font-smoothing: grayscale;
 	font-feature-settings: 'liga';
+}
+
+.dropdown-menu-inner li:last-child {
+	border-top: 1px solid #d6d6d6;
 }
 
 .filter-option {

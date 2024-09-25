@@ -131,10 +131,13 @@ class MenuComponent extends HTMLElement {
 						this.dispatchLocaleSwitch(e);
 				  })
 				: null;
-			const searchToggle: HTMLSpanElement | null | undefined = this.shadow
+			const searchToggle: HTMLButtonElement | null | undefined = this.shadow.querySelector(
+				'#searchToggle',
+			) as HTMLButtonElement;
+			const searchToggleSpan: HTMLSpanElement | null | undefined = this.shadow
 				.querySelector('#searchToggle')
 				?.querySelector('span');
-			searchToggle && searchToggle.classList.add('cursive');
+			searchToggleSpan && searchToggleSpan.classList.add('cursive');
 			searchToggle
 				? searchToggle.addEventListener('click', (e) => {
 						this.dispatchToggleSearchfield(e);
