@@ -19,7 +19,7 @@
 			<router-link
 				:to="{ name: 'Home' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
-				@click="emptyQuery()"
+				@click="searchResultStore.resetSearch()"
 			>
 				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
 			</router-link>
@@ -77,14 +77,7 @@ export default defineComponent({
 			},
 		);
 
-		const emptyQuery = () => {
-			searchResultStore.currentQuery = '';
-			searchResultStore.loading = false;
-			searchResultStore.preliminaryFilter = '';
-			searchResultStore.resetSearch();
-		};
-
-		return { t, addTestDataEnrichment, lastPath, emptyQuery };
+		return { t, addTestDataEnrichment, lastPath, searchResultStore };
 	},
 });
 </script>
