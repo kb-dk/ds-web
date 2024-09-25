@@ -3,7 +3,7 @@
 		ref="dividerRef"
 		class="divider"
 	>
-		<h3>{{ title }}</h3>
+		<h2>{{ title }}</h2>
 		<div class="bar"></div>
 	</div>
 </template>
@@ -61,7 +61,7 @@ temporary styling until patterns from design system are implemented
 	background-color: #002e70;
 }
 
-h3 {
+h2 {
 	margin: 0px;
 	padding: 0;
 	text-align: center;

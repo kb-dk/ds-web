@@ -1,24 +1,52 @@
 <template>
 	<div class="head-categories">
-		<div class="container category-grid">
-			<router-link
-				v-for="(entity, i) in categories"
-				:key="i"
-				:to="{
-					name: 'Home',
-					query: {
-						q: '*:*',
-						start: 0,
-						fq: [encodeURIComponent(`genre:${entity.name}`)],
-					},
-				}"
-				class="category-item"
-				:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
+		<Transition
+			mode="out-in"
+			name="fade"
+		>
+			<div v-if="categoriesLoaded">
+				<div class="container category-grid">
+					<router-link
+						v-for="(entity, i) in categories"
+						:key="i"
+						:to="{
+							name: 'Home',
+							query: {
+								q: '*:*',
+								start: 0,
+								fq: [encodeURIComponent(`genre:${entity.name}`)],
+							},
+						}"
+						class="category-item"
+						:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
+					>
+						{{ entity.name }}
+						<span class="number">{{ entity.number }}</span>
+					</router-link>
+				</div>
+			</div>
+			<div
+				v-else
+				class="container"
 			>
-				{{ entity.name }}
-				<span class="number">{{ entity.number }}</span>
-			</router-link>
-		</div>
+				<div class="container category-grid">
+					<div
+						v-for="i in 12"
+						:key="i"
+						class="category-item"
+					>
+						<span
+							:style="`width:${Math.random() * 30 + 30}%`"
+							class="loading"
+						></span>
+						<span
+							:style="`width:${Math.random() * 3 + 3}%`"
+							class="loading number"
+						></span>
+					</div>
+				</div>
+			</div>
+		</Transition>
 	</div>
 </template>
 <script lang="ts">
@@ -33,6 +61,7 @@ export default defineComponent({
 	setup() {
 		const { t } = useI18n();
 		const categories = ref([] as facetItem[]);
+		const categoriesLoaded = ref(false);
 
 		onMounted(() => {
 			APIService.getFullResultWithFacets().then((response) => {
@@ -46,11 +75,11 @@ export default defineComponent({
 						categories.value.push(category);
 					}
 				});
+				categoriesLoaded.value = true;
 			});
-			console.log(categories);
 		});
 
-		return { t, categories, addTestDataEnrichment };
+		return { t, categories, addTestDataEnrichment, categoriesLoaded };
 	},
 });
 </script>
@@ -59,6 +88,18 @@ export default defineComponent({
 	display: flex;
 	width: calc(100vw - 14px);
 	justify-content: center;
+}
+
+.loading {
+	height: 26px;
+	background-color: rgba(170, 170, 170, 1);
+	border-radius: 15px;
+}
+
+.loading.number {
+	height: 3px;
+	margin-bottom: 4px;
+	margin-right: 4px;
 }
 
 .category-grid {
@@ -93,7 +134,7 @@ export default defineComponent({
 	position: absolute;
 	bottom: 0px;
 	right: 0;
-	font-size: 12px;
+	font-size: 12px !important;
 	padding: 5px;
 }
 
