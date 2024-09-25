@@ -78,6 +78,8 @@ class MenuComponent extends HTMLElement {
 			mobileSearchToggle.setAttribute('aria-expanded', 'true');
 			searchToggleSpan && (searchToggleSpan.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
 			searchToggleSpan && searchToggleSpan.classList.add('cursive');
+			searchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Luk søgefelt' : 'Close searchfield');
+			mobileSearchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Luk søgefelt' : 'Close searchfield');
 			mobileSearchToggleSpan && (mobileSearchToggleSpan.innerHTML = this.lang === 'da' ? 'Luk' : 'Close');
 			mobileSearchToggleSpan && mobileSearchToggleSpan.classList.add('cursive');
 		} else {
@@ -85,6 +87,8 @@ class MenuComponent extends HTMLElement {
 			mobileSearchToggle.setAttribute('aria-expanded', 'false');
 			searchToggleSpan && (searchToggleSpan.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
 			searchToggleSpan && searchToggleSpan.classList.remove('cursive');
+			searchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Åben søgefelt' : 'Open searchfield');
+			mobileSearchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Åben søgefelt' : 'Open searchfield');
 			mobileSearchToggleSpan && (mobileSearchToggleSpan.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
 			mobileSearchToggleSpan && mobileSearchToggleSpan.classList.remove('cursive');
 		}
@@ -154,6 +158,8 @@ class MenuComponent extends HTMLElement {
 			} else {
 				mobileSearchToggle && (mobileSearchToggle.innerHTML = this.lang === 'da' ? 'Søg' : 'Search');
 				mobileSearchToggle && mobileSearchToggle.classList.remove('cursive');
+				searchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Luk søgefelt' : 'Close searchfield');
+				mobileSearchToggle?.setAttribute('aria-label', this.lang === 'da' ? 'Luk søgefelt' : 'Close searchfield');
 			}
 		}
 	}
@@ -291,7 +297,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 					</a>
 				</div>
 				<div class="col-auto d-lg-none search-col" role="search">
-						<button data-testid="button-topmenu-searchfield-toggle-0" id="mobileMainSearchButton" type="button" class="icon-button search-button d-lg-none" data-toggle="collapse" data-target="#mainSearch" aria-expanded="true" aria-controls="mainSearch" aria-label="">
+						<button data-testid="button-topmenu-searchfield-toggle-0" id="mobileMainSearchButton" type="button" class="icon-button search-button d-lg-none" data-toggle="collapse" aria-expanded="true" aria-label="Luk søgefelt">
 								<i class="material-icons " aria-hidden="true">search</i>
 
 							<span class="search-label cursive" aria-hidden="true">Luk</span>
