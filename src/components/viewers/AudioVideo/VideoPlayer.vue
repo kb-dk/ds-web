@@ -104,7 +104,6 @@ export default defineComponent({
 					(newVal: boolean) => {
 						if (newVal === true) {
 							setupPlayer();
-							console.log(authStore.streamingBaseUrlVideo);
 						}
 					},
 				);
