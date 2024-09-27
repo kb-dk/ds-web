@@ -139,6 +139,7 @@ export default defineComponent({
 			categoryFacets.value = simplifyFacets(currentFacets.value['categories']);
 			currentChannelNr.value = channelFacets.value.length ? channelFacets.value.length : 16;
 			categoryNr.value = categoryFacets.value.length ? Number(categoryFacets.value.length) : 0;
+			timeSearchStore.timeFacetsOpen = false;
 
 			watch(
 				() => props.facetResults,
