@@ -157,9 +157,6 @@ export default defineComponent({
 		Sort,
 		Facets,
 	},
-	props: {
-		showFacets: { type: Boolean },
-	},
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
@@ -177,7 +174,7 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			searchResultStore.showFacets = false;
+			searchResultStore.toggleShowFacets(false);
 		});
 
 		watch(
@@ -197,6 +194,9 @@ export default defineComponent({
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
 						radioToggled.value = false;
 					}
+				} else {
+					tvToggled.value = true;
+					radioToggled.value = true;
 				}
 			},
 			{ immediate: true },
@@ -212,7 +212,7 @@ export default defineComponent({
 
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';
-			if ((tvToggled.value && radioToggled) || (!tvToggled.value && !radioToggled.value)) {
+			if ((tvToggled.value && radioToggled.value) || (!tvToggled.value && !radioToggled.value)) {
 				val = delimitationOptions.all;
 				searchResultStore.preliminaryFilter = '';
 			}
