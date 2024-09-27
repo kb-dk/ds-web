@@ -12,8 +12,6 @@
 import { defineComponent, ref } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import PortalContent from '@/components/common/PortalContent.vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
 import Footer from '@/components/global/nav/Footer.vue';
 import Hero from '@/components/search/Hero.vue';
 

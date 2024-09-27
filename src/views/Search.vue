@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, inject } from 'vue';
+import { defineComponent, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
