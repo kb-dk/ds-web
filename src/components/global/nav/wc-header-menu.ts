@@ -630,7 +630,9 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 	}
 
 	.rdl-secondary-nav {
-		margin-top: 27px;	}
+		margin-top: 27px;
+		margin-bottom: 32px;
+	}
 
 	.rdl-secondary-nav:before {
 		content: '';
@@ -643,6 +645,19 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
     left: 0px;
     margin-top: -38px;
 	}
+
+	.rdl-secondary-nav:after {
+		content: '';
+    height: 25px;
+    width: 100vw;
+    position: absolute;
+    background-color: #96E2FD;
+    z-index: 3;
+    left: 0px;
+    margin-top: 12px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+	}
+
 
 	.container {
 		display:flex;
