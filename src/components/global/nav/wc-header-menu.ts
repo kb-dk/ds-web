@@ -753,12 +753,13 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 			margin-left: 4px;
 		}
 
-		.rdl-secondary-nav:before {
+		.rdl-secondary-nav:before, .rdl-secondary-nav:after {
 			display:none;
 		}
 
 		.rdl-secondary-nav {
 			margin-top:initial;
+			margin-bottom:initial;
 		}
 
 		.global-header .header-edge {
