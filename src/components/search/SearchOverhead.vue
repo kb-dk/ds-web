@@ -204,9 +204,9 @@ export default defineComponent({
 
 		const resetFilters = () => {
 			searchResultStore.setKeepFacets(false);
+			searchResultStore.resetSearch();
 			router.push({
 				name: 'Home',
-				query: { q: searchResultStore.currentQuery },
 			});
 		};
 
