@@ -1,49 +1,61 @@
 <template>
-	<div class="bg-container">
+	<div :class="`bg-container ${currentPage}`">
 		<div class="breadcrumb container">
-			<span class="material-icons home">home</span>
+			<span class="material-icons home-icon">home</span>
+			<span class="material-icons back-arrow">chevron_left</span>
 			<a
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
 				href="https://www.kb.dk"
+				class="level-1"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
+				<span class="line">/</span>
 			</a>
-			/
 			<a
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
 				href="https://www.kb.dk/find-materiale"
+				class="level-2"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
+				<span class="line">/</span>
 			</a>
-			/
 			<router-link
 				:to="{ name: 'Home' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
+				class="level-3"
 				@click="searchResultStore.resetSearch()"
 			>
 				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
 			</router-link>
-			<span v-if="$route.name === 'Search'">
-				<span>/</span>
+			<span
+				v-if="$route.name === 'Search'"
+				class="level-4"
+			>
+				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</span>
 			<router-link
 				v-if="$route.name === 'Record' && lastPath"
+				class="level-5"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
 			>
-				<span>/</span>
+				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</router-link>
 			<router-link
 				v-if="$route.name === 'Record' && !lastPath"
+				class="level-5"
 				:to="{ name: 'Search' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-empty', 4)"
 			>
-				<span>/</span>
+				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</router-link>
-			<span v-if="$route.name === 'Record'">
+			<span
+				v-if="$route.name === 'Record'"
+				class="level-6"
+			>
 				<span>/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
@@ -51,7 +63,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue';
+import { defineComponent, ref, onMounted, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRouter, useRoute } from 'vue-router';
@@ -66,6 +78,15 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
 
+		const currentPage = computed(() => {
+			let page = route.name as string;
+			if (page) {
+				return page.toLowerCase();
+			} else {
+				return '';
+			}
+		});
+
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
@@ -77,7 +98,7 @@ export default defineComponent({
 			},
 		);
 
-		return { t, addTestDataEnrichment, lastPath, searchResultStore };
+		return { t, addTestDataEnrichment, lastPath, searchResultStore, currentPage };
 	},
 });
 </script>
@@ -93,7 +114,40 @@ export default defineComponent({
 	font-size: 16px;
 }
 
-.home {
+.level-1,
+.level-2,
+.level-3,
+.level-4,
+.level-5,
+.level-6 {
+	display: none;
+}
+
+.home .level-2,
+.home .level-3 {
+	display: initial;
+}
+
+.record .level-5,
+.record .level-6 {
+	display: initial;
+}
+
+.record .level-5 .line {
+	display: none;
+}
+
+.search .level-3,
+.search .level-4 {
+	display: initial;
+}
+
+.home-icon {
+	display: none;
+	font-size: 18px;
+}
+
+.back-arrow {
 	font-size: 18px;
 }
 
@@ -118,11 +172,15 @@ export default defineComponent({
 }
 
 .breadcrumb-title {
-	padding: 0px 0px;
+	padding: 0px 4px;
 	text-decoration: none;
 	margin: 0px 2px;
 	color: black;
 	font-size: 12px;
+}
+
+.record .breadcrumb-title.level-4 {
+	display: initial;
 }
 
 .container {
@@ -166,6 +224,27 @@ export default defineComponent({
 	.container {
 		display: flex;
 		max-width: 1150px;
+	}
+
+	.back-arrow {
+		display: none;
+	}
+
+	.level-1,
+	.level-2,
+	.level-3,
+	.level-4,
+	.level-5,
+	.level-6 {
+		display: initial;
+	}
+
+	.line {
+		display: initial !important;
+	}
+
+	.home-icon {
+		display: block;
 	}
 }
 /* MEDIA QUERY 1150 */
