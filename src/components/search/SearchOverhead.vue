@@ -204,9 +204,9 @@ export default defineComponent({
 
 		const resetFilters = () => {
 			searchResultStore.setKeepFacets(false);
+			searchResultStore.resetSearch();
 			router.push({
 				name: 'Home',
-				query: { q: searchResultStore.currentQuery },
 			});
 		};
 
@@ -341,6 +341,11 @@ export default defineComponent({
 	padding-left: 2px;
 }
 
+.hit-count {
+	z-index: 0;
+	position: relative;
+}
+
 .display-option.active {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
@@ -382,7 +387,7 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-end;
 	min-height: 47px;
-	z-index: 1;
+	z-index: 0;
 	position: relative;
 	padding-top: 25px;
 }
@@ -391,7 +396,7 @@ export default defineComponent({
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	z-index: 5;
+	z-index: 0;
 	flex-direction: column-reverse;
 }
 
@@ -401,6 +406,8 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-end;
 	flex-direction: column-reverse;
+	z-index: 1;
+	position: relative;
 }
 
 .filter-options.disabled button {

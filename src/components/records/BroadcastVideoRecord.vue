@@ -65,7 +65,7 @@
 			</router-link>
 			<router-link
 				v-else
-				to="/"
+				:to="{ name: 'Home' }"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>

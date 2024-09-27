@@ -10,21 +10,7 @@
 		</div>
 		<Notifier></Notifier>
 		<Spinner></Spinner>
-		<kb-menu
-			:routing="true"
-			:locale="currentLocale"
-			:page="$route.name"
-		></kb-menu>
-		<div
-			ref="wipe"
-			class="wipe"
-		>
-			<img
-				title="Royal Danish Library"
-				alt="Logo of the Royal Danish Library"
-				:src="getImgServerSrcURL()"
-			/>
-		</div>
+		<Header :locale="currentLocale"></Header>
 	</div>
 	<div class="content">
 		<router-view v-slot="{ Component }">
@@ -39,6 +25,16 @@
 			</transition>
 		</router-view>
 	</div>
+	<div
+		ref="wipe"
+		class="wipe"
+	>
+		<img
+			title="Royal Danish Library"
+			alt="Logo of the Royal Danish Library"
+			:src="getImgServerSrcURL()"
+		/>
+	</div>
 </template>
 
 <script lang="ts">
@@ -50,6 +46,7 @@ import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from './utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
+import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
 import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
@@ -61,6 +58,7 @@ export default defineComponent({
 		Notifier,
 		Spinner,
 		Footer,
+		Header,
 	},
 	setup() {
 		const td = ref(0.4);
@@ -148,10 +146,18 @@ export default defineComponent({
 		};
 
 		router.beforeEach((to, from) => {
-			if (from.name === 'Home' && to.name === 'Record') {
+			if (from.name === 'Search' && to.name === 'Record') {
 				transitionName.value = 'from-search-to-record';
+			} else if (from.name === 'Record' && to.name === 'Search') {
+				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Home' && to.name === 'Search') {
+				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Search' && to.name === 'Home') {
+				transitionName.value = 'from-record-to-search';
 			} else if (from.name === 'Record' && to.name === 'Home') {
 				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Home' && to.name === 'Record') {
+				transitionName.value = 'from-search-to-record';
 			} else {
 				transitionName.value = 'swipe';
 			}
@@ -237,6 +243,10 @@ export default defineComponent({
 
 .result-enter {
 	transition-delay: 0.15s;
+}
+
+.app {
+	position: relative;
 }
 
 .result-enter-from,

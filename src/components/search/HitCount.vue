@@ -66,6 +66,8 @@ export default defineComponent({
 }
 .hit-count {
 	font-size: 24px;
+	position: relative;
+	z-index: 0;
 }
 
 .loading-placeholder {

@@ -1,55 +1,42 @@
 <template>
-	<div class="search-and-results">
-		<!-- This is for the search bar -->
-		<div
-			ref="searchContainer"
-			class="search-container"
-		>
-			<div class="mobile-edge edge"></div>
-			<SearchBar />
-		</div>
-		<Transition
-			name="result"
-			mode="out-in"
-		>
-			<!-- This is for the search results / facets / did-you-mean / pager -->
-			<div
-				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
-				key="1"
-				class="overall-container"
+	<div class="search-container">
+		<div class="search-and-results">
+			<Transition
+				name="result"
+				mode="out-in"
 			>
-				<SearchOverhead />
-				<div class="container">
-					<div class="row">
-						<div
-							v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
-							class="search-resultset"
-						>
-							<SearchResults
-								:search-results="searchResultStore.searchResult"
-								:num-found="searchResultStore.numFound"
+				<!-- This is for the search results / facets / did-you-mean / pager -->
+				<div
+					v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+					key="1"
+					class="overall-container"
+				>
+					<SearchOverhead />
+					<div class="container">
+						<div class="row">
+							<div
+								v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
+								class="search-resultset"
+							>
+								<SearchResults
+									:search-results="searchResultStore.searchResult"
+									:num-found="searchResultStore.numFound"
+								/>
+							</div>
+							<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
+								<NoHits />
+							</div>
+							<Pagination
+								v-show="searchResultStore.searchResult.length > 0"
+								:items-per-page="Number(searchResultStore.rowCount)"
+								:total-hits="searchResultStore.numFound"
+								:num-pages-to-show="numPagesToShow"
 							/>
 						</div>
-						<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
-							<NoHits />
-						</div>
-						<Pagination
-							v-show="searchResultStore.searchResult.length > 0"
-							:items-per-page="Number(searchResultStore.rowCount)"
-							:total-hits="searchResultStore.numFound"
-							:num-pages-to-show="numPagesToShow"
-						/>
 					</div>
 				</div>
-			</div>
-			<!-- This for the portal content when no search has been fired -->
-			<div
-				v-else
-				key="2"
-			>
-				<PortalContent v-if="!searchResultStore.searchFired" />
-			</div>
-		</Transition>
+			</Transition>
+		</div>
 		<Footer />
 	</div>
 </template>
@@ -58,10 +45,7 @@
 import { defineComponent, ref, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBar from '@/components/search/SearchBar.vue';
-import PortalContent from '@/components/common/PortalContent.vue';
 import { useI18n } from 'vue-i18n';
-import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
@@ -74,17 +58,13 @@ export default defineComponent({
 	name: 'Search',
 	components: {
 		SearchResults,
-		SearchBar,
 		Pagination,
 		SearchOverhead,
-		PortalContent,
 		NoHits,
 		Footer,
 	},
 
 	setup() {
-		const searchContainer = ref<HTMLElement | null>(null);
-
 		const searchResultStore = useSearchResultStore();
 		const router = useRouter();
 		const route = useRoute();
@@ -99,9 +79,6 @@ export default defineComponent({
 			document.title = t('app.titles.frontpage.archive.name') as string;
 			searchResultStore.resetFilters();
 			if (route.query.q !== undefined) {
-				gsap.set(searchContainer.value, {
-					height: '300px',
-				});
 				const routeFacetQueries = route.query.fq;
 				const start = route.query.start as string;
 				const sort = route.query.sort as string;
@@ -138,20 +115,8 @@ export default defineComponent({
 					t('app.titles.frontpage.archive.suffix')) as string;
 			} else if (route.query.q === undefined) {
 				searchResultStore.resetSearch();
-				gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
 			}
 		});
-
-		watch(
-			() => searchResultStore.searchResult.length,
-			(newn: number) => {
-				if (newn > 0) {
-					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
-				} else {
-					gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
-				}
-			},
-		);
 
 		// Watch the url param and update search results if it changes
 		watch(
@@ -218,7 +183,6 @@ export default defineComponent({
 
 		return {
 			searchResultStore,
-			searchContainer,
 			numPagesToShow,
 		};
 	},
@@ -284,26 +248,12 @@ h3 {
 	max-width: 100%;
 }
 .search-container {
-	width: 100vw;
-	max-width: 100%;
-	height: 500px;
+	width: 100%;
 }
 
-.search-container.big {
-	height: 500px;
-}
-
-.search-container.small {
-	height: 300px;
-}
 .search-resultset {
 	display: flex;
 	flex-direction: column;
-}
-
-.hit-count {
-	padding-top: 40px;
-	padding-bottom: 40px;
 }
 
 .container {
