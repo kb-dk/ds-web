@@ -44,18 +44,18 @@ export default defineComponent({
 		this.linkItems = document.querySelectorAll('.related-record');
 		if (this.slidingElement) {
 			this.slidingElement.addEventListener('mousedown', this.startAndCalculateOffset);
-			this.slidingElement.addEventListener('touchstart', this.startAndCalculateOffset);
+			this.slidingElement.addEventListener('touchstart', this.startAndCalculateOffset, { passive: true });
 			this.slidingElement.addEventListener('mouseleave', this.stopMovementOnParent);
-			this.slidingElement.addEventListener('touchend', this.stopMovementOnParent);
+			this.slidingElement.addEventListener('touchend', this.stopMovementOnParent, { passive: true });
 			this.slidingElement.addEventListener('mouseup', this.stopMovementOnParent);
 			this.slidingElement.addEventListener('mousemove', this.calculateMovement);
-			this.slidingElement.addEventListener('touchmove', this.calculateMovement);
+			this.slidingElement.addEventListener('touchmove', this.calculateMovement, { passive: true });
 
 			this.linkItems.forEach((element) => {
 				element.addEventListener('mousedown', this.stopMovement);
-				element.addEventListener('touchstart', this.stopMovement);
+				element.addEventListener('touchstart', this.stopMovement, { passive: true });
 				element.addEventListener('mousemove', this.startMovement);
-				element.addEventListener('touchmove', this.startMovement);
+				element.addEventListener('touchmove', this.startMovement, { passive: true });
 				element.addEventListener('click', this.preventClickIfMovement);
 			});
 		}
