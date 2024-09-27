@@ -14,6 +14,13 @@ export const useAuthStore = defineStore('authStore', () => {
 	 * It works all other places as they are called/initiated later in the app flow
 	 **/
 	const { t } = i18n.global;
+	//video and audio streaming variables
+	const kalturaIdFetchExecuted = ref(false);
+	const partnerId = ref('');
+	const audioUiConfId = ref('');
+	const videoUiConfId = ref('');
+	const streamingBaseUrlAudio = ref('');
+	const streamingBaseUrlVideo = ref('');
 
 	//Session time (in millis) - currently 36 hours
 	const sessionTime = 129600000;
@@ -60,5 +67,11 @@ export const useAuthStore = defineStore('authStore', () => {
 	return {
 		authenticate,
 		isAuthenticating,
+		partnerId,
+		audioUiConfId,
+		videoUiConfId,
+		streamingBaseUrlAudio,
+		streamingBaseUrlVideo,
+		kalturaIdFetchExecuted,
 	};
 });

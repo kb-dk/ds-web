@@ -12,6 +12,7 @@ import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+import { useAuthStore } from '@/store/authStore';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
@@ -30,6 +31,8 @@ export default defineComponent({
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		let audioPlayer: PlayerType;
+		const authStore = useAuthStore();
+
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
 				case 'loadMedia': {
@@ -47,7 +50,12 @@ export default defineComponent({
 		};
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
-			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL_AUDIO);
+			kalturaScript.setAttribute(
+				'src',
+				authStore.streamingBaseUrlAudio !== ''
+					? authStore.streamingBaseUrlAudio
+					: import.meta.env.VITE_KALTURA_BASE_URL_AUDIO,
+			);
 			kalturaScript.setAttribute('id', 'kaltura-script');
 			kalturaScript.setAttribute('type', 'application/javascript');
 			kalturaScript.id = 'kaltura-player-script';
@@ -64,8 +72,9 @@ export default defineComponent({
 				audioPlayer = KalturaPlayer.setup({
 					targetId: 'audio-player',
 					provider: {
-						partnerId: import.meta.env.VITE_KALTURA_PARTNER_ID,
-						uiConfId: import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
+						partnerId: authStore.partnerId !== '' ? authStore.partnerId : import.meta.env.VITE_KALTURA_PARTNER_ID,
+						uiConfId:
+							authStore.audioUiConfId !== '' ? authStore.audioUiConfId : import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
 					},
 				});
 				audioPlayer.loadMedia({ entryId: props.entryId });
