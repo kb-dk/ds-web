@@ -16,6 +16,13 @@
    "frontpage": {
       "fromTheArchive":"A selection from the archive"
    },
+   "breadcrumb": {
+      "frontpage":"Frontpage",
+      "findMaterials": "Find materials",
+      "drArchive": "DR-archive",
+      "search":"Search",
+      "record": "Fullpost"
+   },
    "timeSearch": {
       "timeMachine":"Use the time...",
       "year":"year | years",
@@ -102,7 +109,21 @@
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "of":"of",
-     "startTime":"Start time"
+     "startTime":"Start time",
+     "portals": {
+         "drArchive":"DR Archive",
+         "booksAndMaterials":"Books and journals",
+         "kbdk":"Search kb.dk",
+         "webshop":"Webshop",
+         "seeAllMaterials":"See all materials"
+      },
+      "placeholders": {
+         "drArchive":"Search DR Archive",
+         "booksAndMaterials":"Search title, author, journal, database etc. ",
+         "kbdk":"Search on website",
+         "webshop":"Search in our webshop",
+         "seeAllMaterials":"See all materials"
+      }
   },
   "record":{
      "duration":"Duration",

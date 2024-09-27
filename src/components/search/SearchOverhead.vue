@@ -157,9 +157,6 @@ export default defineComponent({
 		Sort,
 		Facets,
 	},
-	props: {
-		showFacets: { type: Boolean },
-	},
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
@@ -177,7 +174,7 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			searchResultStore.showFacets = false;
+			searchResultStore.toggleShowFacets(false);
 		});
 
 		watch(
@@ -197,6 +194,9 @@ export default defineComponent({
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
 						radioToggled.value = false;
 					}
+				} else {
+					tvToggled.value = true;
+					radioToggled.value = true;
 				}
 			},
 			{ immediate: true },
@@ -204,12 +204,11 @@ export default defineComponent({
 
 		const resetFilters = () => {
 			searchResultStore.setKeepFacets(false);
-			searchResultStore.preliminaryFilter = '';
 			tvToggled.value = true;
 			radioToggled.value = true;
+			searchResultStore.resetSearch();
 			router.push({
 				name: 'Home',
-				query: { q: searchResultStore.currentQuery },
 			});
 		};
 
@@ -344,6 +343,11 @@ export default defineComponent({
 	padding-left: 2px;
 }
 
+.hit-count {
+	z-index: 0;
+	position: relative;
+}
+
 .display-option.active {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
@@ -385,7 +389,7 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-end;
 	min-height: 47px;
-	z-index: 1;
+	z-index: 0;
 	position: relative;
 	padding-top: 25px;
 }
@@ -394,7 +398,7 @@ export default defineComponent({
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	z-index: 5;
+	z-index: 0;
 	flex-direction: column-reverse;
 }
 
@@ -404,6 +408,8 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-end;
 	flex-direction: column-reverse;
+	z-index: 1;
+	position: relative;
 }
 
 .filter-options.disabled button {

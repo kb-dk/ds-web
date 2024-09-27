@@ -4,6 +4,15 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2024-09-26
+### Added
+- Added messages service call to bff for kaltura ids on app start.
+
+## [1.0.2] - 2024-09-17
+### Added
+
+### Changed
+- Fix bug where website would go into an infinite authenticate loop when authentication returned 200 but all other requests through bff subsequently returned 401
 
 ## [1.0.1] - 2024-09-12
 ### Added
@@ -17,8 +26,6 @@ Bumped:
     
 - Fix bug in error message when deselecting both radio and tv 'radio buttons' in search result
 - Remove console.log in ResultItem.vue
-
-
 
 ## [1.0.0] - 2024-09-09
 ### Added

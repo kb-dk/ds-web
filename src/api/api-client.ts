@@ -7,6 +7,9 @@ import {
 	APIAutocompleteResponseType,
 	APIThumbnailsResponseType,
 	APIAuthResponseType,
+	APIAuthMessagesType,
+	// Extend AxiosRequestConfig to include _retryCount to keep TypeScript happy
+	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
 
 // Generic sleep function used for both 'authenticate retries' and 'articial latency in dev environment'
@@ -18,6 +21,7 @@ export class APIServiceClient {
 	private pendingRequests: (() => Promise<unknown>)[] = [];
 	private maxRetries = 2;
 	private retryDelay = 2000;
+	private pendingRequestRetryCount = 0;
 
 	constructor(private httpClient: AxiosInstance) {
 		httpClient.interceptors.request.use(
@@ -47,15 +51,27 @@ export class APIServiceClient {
 			},
 			// This turned out to be a somewhat complex error handler but hopefully the comments will help
 			async (error: AxiosError) => {
+				const config = error.config as CustomAxiosRequestConfig;
 				// If server throws 401 we know something is up with the users authorization and we try to help
 				if (error.response?.status === 401) {
 					const authStore = useAuthStore();
-					const config = error.config;
 
 					// I threw this check in just in case but it shouldn't happen
 					if (!config) {
 						return Promise.reject(error);
 					}
+
+					// Track retry count for this request
+					if (!config._retryCount) {
+						config._retryCount = 0;
+					}
+
+					// Stop retrying if we've hit the maximum retry limit
+					if (config._retryCount >= this.maxRetries) {
+						return Promise.reject(error);
+					}
+
+					config._retryCount += 1;
 
 					// We store the original request so we can use it later
 					const originalRequest = () => this.httpClient.request(config as AxiosRequestConfig);
@@ -68,19 +84,34 @@ export class APIServiceClient {
 					}
 
 					try {
-						// Try to authenticate
+						// Try to authenticate just in case it's a stale session or bad cookie
 						await this.handleAuthenticationWithRetry(authStore);
 
 						/** A bit complex here but what is happening is in short:
 						 *  Retry all pending requests after successful authentication (thats all
 						 * 	the map((req) => req() business) and subsequently clear the queue.
 						 *  After that we give the original request a go.
+						 *  If we somehow get into a scenario where the retries fail we stop retrying
+						 *  after 3 times.
 						 * 	If the auth call fails, we clear the pending requests queue and reject
 						 *  with an error.
 						 */
-						await Promise.all(this.pendingRequests.map((req) => req()));
-						this.pendingRequests = [];
-						return originalRequest();
+
+						// Retry the pending requests but stop after a certain number of retries to prevent infinite retry loop
+						if (this.pendingRequestRetryCount < this.maxRetries) {
+							this.pendingRequestRetryCount += 1;
+
+							await Promise.all(this.pendingRequests.map((req) => req()));
+							this.pendingRequests = [];
+
+							// Retry the original request that triggered the 401
+							return originalRequest();
+
+							// If all allowed retry attempts fail we clear the queue and stop further attempts
+						} else {
+							this.pendingRequests = [];
+							return Promise.reject(error);
+						}
 					} catch (authError) {
 						this.pendingRequests = [];
 						return Promise.reject(authError);
@@ -96,10 +127,10 @@ export class APIServiceClient {
 		for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
 			try {
 				await authStore.authenticate();
-				return; // Exit if authentication is successful
+				return;
 			} catch (error) {
 				if (attempt < this.maxRetries) {
-					await sleep(this.retryDelay); // Wait before retrying via the generic sleep method
+					await sleep(this.retryDelay);
 				} else {
 					throw error; // Throw error if all retries fail and we are dead in the water
 				}
@@ -176,6 +207,10 @@ export class APIServiceClient {
 
 	async authenticate(): Promise<APIAuthResponseType> {
 		return await this.httpClient.get('bff/v1/authenticate/');
+	}
+
+	async getKalturaConfIds(): Promise<APIAuthMessagesType> {
+		return await this.httpClient.get('bff/v1/messages/');
 	}
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
