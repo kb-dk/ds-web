@@ -155,6 +155,18 @@ export default defineComponent({
 	text-decoration: none;
 }
 
+.breadcrumb a:hover span {
+	color: #002e70;
+}
+
+.breadcrumb a:hover .line {
+	color: black;
+}
+
+.breadcrumb a:hover .highlighted {
+	color: white;
+}
+
 .breadcrumb a:visited {
 	color: black;
 }
