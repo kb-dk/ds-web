@@ -14,7 +14,7 @@
 							query: {
 								q: '*:*',
 								start: 0,
-								fq: [encodeURIComponent(`genre:${entity.name}`)],
+								fq: [encodeURIComponent(`genre:${quotation(entity.name)}`)],
 							},
 						}"
 						class="category-item"
@@ -64,13 +64,17 @@ export default defineComponent({
 		const categories = ref([] as facetItem[]);
 		const categoriesLoaded = ref(false);
 
+		const quotation = (name: string) => {
+			return `"${name}"`;
+		};
+
 		onMounted(() => {
 			APIService.getFullResultWithFacets().then((response) => {
 				const categoryArray = response.data.facet_counts.facet_fields.genre;
 				categoryArray.forEach((item, index) => {
 					if (index % 2 === 0) {
 						let category = {
-							name: item,
+							name: `${item}`,
 							number: categoryArray[index + 1],
 						} as unknown as facetItem;
 						categories.value.push(category);
@@ -80,7 +84,7 @@ export default defineComponent({
 			});
 		});
 
-		return { t, categories, addTestDataEnrichment, categoriesLoaded };
+		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation };
 	},
 });
 </script>
