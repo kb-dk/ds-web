@@ -250,6 +250,7 @@ h1 {
 
 .icon .material-icons {
 	font-size: 48px;
+	padding-right: 10px;
 }
 
 .content .responsive-title {
@@ -323,7 +324,7 @@ h1 {
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	margin-top: -70px;
+	margin-top: -55px;
 }
 
 .toggle-button {
@@ -411,6 +412,10 @@ h1 {
 	}
 	.hide .responsive-title {
 		display: none !important;
+	}
+
+	.content .headline {
+		padding: 0px 4px;
 	}
 	.content .mobile-title {
 		padding: 0;

@@ -115,6 +115,7 @@ export default defineComponent({
 .portal-container {
 	position: relative;
 	margin-top: -100px !important;
+	align-items: center;
 }
 
 .categories,
