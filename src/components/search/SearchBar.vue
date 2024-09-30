@@ -332,7 +332,7 @@ export default defineComponent({
 				query !== undefined &&
 				query.length >= 2 &&
 				!searchResultStore.blockAutocomplete &&
-				selectedPortal.value === 'drarchive'
+				selectedPortal.value === 'drArchive'
 			) {
 				searchResultStore.getAutocompleteResults(query);
 			}

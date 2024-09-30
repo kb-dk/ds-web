@@ -49,7 +49,7 @@ export default defineComponent({
 		const doAutocompleteSearch = (query: string) => {
 			router.push({
 				name: 'Search',
-				query: { q: query ? query : searchResultStore.currentQuery, start: 0, fq: searchResultStore.preliminaryFilter },
+				query: { q: query ? query : searchResultStore.currentQuery, start: 0 },
 			});
 		};
 
@@ -57,6 +57,7 @@ export default defineComponent({
 			() => props.keystroke,
 			(newEvent: KeyboardEvent | null) => {
 				if (newEvent) {
+					console.log('HEJ');
 					keyMovement(newEvent);
 				}
 			},
