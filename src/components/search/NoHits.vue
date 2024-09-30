@@ -28,7 +28,10 @@
 				</template>
 				<template #image><div class="material-icons search-icon">search</div></template>
 			</TextAndImage>
-			<EdgedContentArea title="Led videre i vores hovedkategorier">
+			<EdgedContentArea
+				:lines="true"
+				title="Led videre i vores hovedkategorier"
+			>
 				<template #content>
 					<div class="showcase-container">
 						<div
