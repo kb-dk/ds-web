@@ -22,6 +22,7 @@
 					>
 						{{ entity.name }}
 						<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
+						<span class="category-image trophy"></span>
 					</router-link>
 				</div>
 			</div>
@@ -88,6 +89,7 @@ export default defineComponent({
 	display: flex;
 	width: calc(100vw - 14px);
 	justify-content: center;
+	padding-top: 25px;
 }
 
 .loading {
@@ -137,6 +139,15 @@ export default defineComponent({
 	background-color: #c4f1ed;
 }
 
+.category-image {
+	transition: all 0.25s linear 0s;
+	color: #c4f1ed;
+}
+
+.category-item:hover .category-image {
+	transform: rotateZ(25deg);
+}
+
 .category-item .number {
 	position: absolute;
 	bottom: -16px;
@@ -146,6 +157,16 @@ export default defineComponent({
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid #002e70;
 	border-radius: 4px;
+}
+
+.trophy {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	z-index: 20;
+	top: -21px;
+	left: -1px;
+	background-image: url('@/assets/icons/trophy.svg');
 }
 
 .container {
