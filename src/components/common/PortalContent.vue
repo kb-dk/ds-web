@@ -46,7 +46,10 @@
 				<TimeSearchComponent />
 			</SkewedFoldable>
 		</div>
-		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
+		<TiltedDivider
+			:right="false"
+			:title="$t('frontpage.fromTheArchive')"
+		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
 				:spot-nr="8"
