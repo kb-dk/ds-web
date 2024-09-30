@@ -1,23 +1,5 @@
 <template>
-	<div class="container">
-		<div class="row">
-			<div class="intro">
-				<h2>{{ $t('app.frontPages.TVRadioDR') }}</h2>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-					est laborum.
-				</p>
-				<router-link
-					:data-testid="addTestDataEnrichment('link', 'about', `read-more`, 0)"
-					to="/about"
-				>
-					read more
-				</router-link>
-			</div>
-		</div>
+	<div class="portal-container container">
 		<div class="categories">
 			<SkewedFoldable
 				:title="'Kategorier'"
@@ -28,6 +10,7 @@
 				:subtitle="'Vælg, hvilken kategori du gerne vil søge i.'"
 				:fullwidth="true"
 				:shadow-bottom="true"
+				:shadow-top="true"
 			>
 				<HeadCategories />
 			</SkewedFoldable>
@@ -126,6 +109,11 @@ export default defineComponent({
 	margin-bottom: -70px;
 }
 
+.portal-container {
+	position: relative;
+	margin-top: -100px !important;
+}
+
 .categories,
 .date-picker,
 .time-search {
@@ -136,7 +124,6 @@ export default defineComponent({
 }
 
 .categories {
-	margin-top: 40px !important;
 	z-index: 3;
 }
 .date-picker {
@@ -160,6 +147,19 @@ export default defineComponent({
 	.date-picker {
 		display: grid;
 		justify-content: center;
+	}
+}
+
+@media (min-width: 2000px) {
+	.date-picker,
+	.time-search {
+		margin-top: -3vw;
+	}
+}
+@media (min-width: 4000px) {
+	.date-picker,
+	.time-search {
+		margin-top: -1.5vw;
 	}
 }
 </style>

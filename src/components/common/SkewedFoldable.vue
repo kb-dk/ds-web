@@ -5,7 +5,7 @@
 	>
 		<div
 			:style="`background-color:${bg}`"
-			:class="left ? 'edge top left' : 'edge top'"
+			:class="getTopClasses()"
 		></div>
 		<div
 			:id="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
@@ -92,6 +92,7 @@ export default defineComponent({
 		showHeadlineInDesktop: { type: Boolean, default: true },
 		dashedBottom: { type: Boolean, default: false },
 		shadowBottom: { type: Boolean, default: false },
+		shadowTop: { type: Boolean, default: false },
 	},
 	setup(props) {
 		const foldableRef = ref<HTMLElement | null>(null);
@@ -110,6 +111,17 @@ export default defineComponent({
 				classes += ' dotted';
 			}
 			if (props.shadowBottom) {
+				classes += ' shadow';
+			}
+			return classes;
+		};
+
+		const getTopClasses = () => {
+			let classes = 'edge top';
+			if (props.left) {
+				classes += ' left';
+			}
+			if (props.shadowTop) {
 				classes += ' shadow';
 			}
 			return classes;
@@ -168,6 +180,7 @@ export default defineComponent({
 			foldableOpen,
 			primaryButtonRef,
 			santizeAndSimplify,
+			getTopClasses,
 		};
 	},
 });
@@ -232,7 +245,7 @@ h1 {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
-	margin: 15px 0px;
+	margin: 15px 12px;
 }
 
 .icon .material-icons {
@@ -245,6 +258,10 @@ h1 {
 	width: 100%;
 	align-items: center;
 	margin: 15px 0px;
+}
+
+.edge.top.shadow {
+	box-shadow: rgba(0, 0, 0, 0.45) 0px -14px 8px -11px;
 }
 
 .edge.top {
@@ -440,6 +457,54 @@ h1 {
 	.content .responsive-title {
 		/* padding-right: 0;
 		padding-left: 0; */
+	}
+}
+@media (min-width: 2000px) {
+	.edge.top {
+		transform: rotateZ(1deg) !important;
+		top: 1.5vw;
+		height: 4vw;
+	}
+
+	.edge.top.left {
+		transform: rotateZ(-1deg) !important;
+		top: 1.5vw;
+		height: 4vw;
+	}
+
+	.edge.bottom {
+		transform: rotateZ(-1deg) !important;
+		top: -1.5vw;
+		height: 4vw;
+	}
+	.edge.bottom.left {
+		transform: rotateZ(1deg) !important;
+		top: -1.5vw;
+		height: 4vw;
+	}
+}
+@media (min-width: 4000px) {
+	.edge.top {
+		transform: rotateZ(0deg) !important;
+		top: 0.75vw;
+		height: 2vw;
+	}
+
+	.edge.top.left {
+		transform: rotateZ(0deg) !important;
+		top: 0.75vw;
+		height: 2vw;
+	}
+
+	.edge.bottom {
+		transform: rotateZ(0deg) !important;
+		top: -0.75vw;
+		height: 2vw;
+	}
+	.edge.bottom.left {
+		transform: rotateZ(0deg) !important;
+		top: -0.75vw;
+		height: 2vw;
 	}
 }
 </style>

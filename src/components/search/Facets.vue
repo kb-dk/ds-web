@@ -417,7 +417,7 @@ h2 {
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: calc(-65px + -1.4vw);
+	top: calc(-60px + -2vw);
 	height: 0px;
 	display: none;
 	opacity: 0;

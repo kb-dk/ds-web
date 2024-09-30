@@ -21,7 +21,7 @@
 						:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
 					>
 						{{ entity.name }}
-						<span class="number">{{ entity.number }}</span>
+						<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
 					</router-link>
 				</div>
 			</div>
@@ -104,16 +104,18 @@ export default defineComponent({
 
 .category-grid {
 	display: flex;
-	gap: 10px;
+	gap: 30px 10px;
 	flex-wrap: wrap;
 	justify-content: center;
 	min-height: 200px;
+	box-sizing: border-box;
 }
 
 .category-item {
-	background: #d9f5fe 0% 0% no-repeat padding-box;
-	box-shadow: 0px 0px 10px #d9f5fe66;
-	border: 1px solid #d9f5fe;
+	background: #ffffff 0% 0% no-repeat padding-box;
+	box-shadow: 2px 2px 4px #75757500;
+	border: 2px solid #ffffff;
+	border-radius: 4px;
 	color: black;
 	width: 100%;
 	padding: 10px 5px;
@@ -128,14 +130,22 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	font-size: 20px;
+	transition: all 0.3s linear 0s;
+}
+
+.category-item:hover {
+	background-color: #c4f1ed;
 }
 
 .category-item .number {
 	position: absolute;
-	bottom: 0px;
-	right: 0;
+	bottom: -16px;
+	right: 8px;
 	font-size: 12px !important;
 	padding: 5px;
+	background: #c4f1ed 0% 0% no-repeat padding-box;
+	border: 2px solid #002e70;
+	border-radius: 4px;
 }
 
 .container {
@@ -161,7 +171,7 @@ export default defineComponent({
 @media (min-width: 990px) {
 	.category-grid {
 		padding: 0px 5px;
-		gap: 15px 40px;
+		gap: 45px 40px;
 		justify-content: flex-start;
 	}
 
@@ -171,6 +181,7 @@ export default defineComponent({
 	}
 	.category-item {
 		width: calc(25% - 30px);
+		flex: 0 0 calc(25% - 30px);
 		margin: 0px 0px;
 	}
 }
@@ -178,9 +189,6 @@ export default defineComponent({
 @media (min-width: 1150px) {
 	.container {
 		max-width: 1280px;
-	}
-	.full-width {
-		width: 100vw;
 	}
 }
 /* MEDIA QUERY 1280 */
