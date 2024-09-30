@@ -200,7 +200,7 @@ export default defineComponent({
 			routeQueries.fq = existingFq;
 
 			router.push({
-				name: 'Home',
+				name: 'Search',
 				query: routeQueries,
 			});
 		};
@@ -222,7 +222,7 @@ export default defineComponent({
 				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
 				routeQueries.fq = existingFq;
 				router.push({
-					name: 'Home',
+					name: 'Search',
 					query: routeQueries,
 				});
 			} else {

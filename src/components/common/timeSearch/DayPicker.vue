@@ -67,7 +67,7 @@ export default defineComponent({
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
-			name: 'Home',
+			name: 'Search',
 			query: {
 				q: '*:*',
 				start: 0,
@@ -103,7 +103,7 @@ export default defineComponent({
 			);
 
 			specificDayLink.value = {
-				name: 'Home',
+				name: 'Search',
 				query: {
 					q: '*:*',
 					start: 0,

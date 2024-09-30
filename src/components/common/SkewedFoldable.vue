@@ -377,7 +377,7 @@ h1 {
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: 1px;
+	top: 0px;
 }
 
 .toggle-button.closed:after {

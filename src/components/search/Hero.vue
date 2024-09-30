@@ -69,6 +69,8 @@ h1 span {
 	text-transform: uppercase;
 	font-family: 'LibreBaskerville';
 	font-size: 49px;
+	position: relative;
+	top: -1px;
 }
 
 h1 {

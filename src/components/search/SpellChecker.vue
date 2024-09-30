@@ -4,7 +4,7 @@
 			v-if="spellCheck?.collations && spellCheck.collations.length > 0"
 			class="spell-check-query"
 		>
-			<router-link :to="{ name: 'Home', query: { q: spellCheck?.collations[1].collationQuery, start: 0 } }">
+			<router-link :to="{ name: 'Search', query: { q: spellCheck?.collations[1].collationQuery, start: 0 } }">
 				{{ $t('search.didYouMean', { spellCheckQuery: spellCheck?.collations[1].collationQuery }) }}
 				{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[1].hits.toString() }) }}
 			</router-link>

@@ -80,10 +80,7 @@
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
-		<div
-			v-if="timeline"
-			class="month-selector-expanding"
-		>
+		<div class="month-selector-expanding">
 			<fieldset>
 				<CustomExpander
 					:headline="t('timeSearch.monthHeadline')"

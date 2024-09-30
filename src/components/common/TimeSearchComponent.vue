@@ -108,7 +108,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const timeSearchLink = ref<RouteLocationRaw>({
-			name: 'Home',
+			name: 'Search',
 			query: {
 				q: '*:*',
 				start: 0,
@@ -157,7 +157,7 @@ export default defineComponent({
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
 			timeSearchLink.value = {
-				name: 'Home',
+				name: 'Search',
 				query: {
 					q: '*:*',
 					start: 0,

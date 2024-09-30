@@ -10,7 +10,7 @@
 						v-for="(entity, i) in categories"
 						:key="i"
 						:to="{
-							name: 'Home',
+							name: 'Search',
 							query: {
 								q: '*:*',
 								start: 0,

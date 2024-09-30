@@ -246,7 +246,7 @@ export default defineComponent({
 				}
 			}
 			router.push({
-				name: 'Home',
+				name: 'Search',
 				query: routeQueries,
 			});
 		};
