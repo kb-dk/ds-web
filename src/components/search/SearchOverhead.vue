@@ -206,9 +206,11 @@ export default defineComponent({
 			searchResultStore.setKeepFacets(false);
 			tvToggled.value = true;
 			radioToggled.value = true;
+			let q = searchResultStore.currentQuery;
 			searchResultStore.resetSearch();
 			router.push({
-				name: 'Home',
+				name: 'Search',
+				query: { q: q },
 			});
 		};
 

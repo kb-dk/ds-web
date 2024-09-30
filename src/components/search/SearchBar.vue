@@ -1037,7 +1037,7 @@ input:focus {
 		border: none;
 		display: block;
 		width: 100%;
-		font-size: 1rem;
+		font-size: 1.01rem;
 		font-weight: 400;
 		line-height: 1.5;
 		color: #495057;
