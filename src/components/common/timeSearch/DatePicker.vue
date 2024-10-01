@@ -7,7 +7,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -25,7 +24,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -58,9 +56,9 @@ import { defineComponent, computed, ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import '@/components/common/TimeSearch/custom-datepicker.css';
+import '@/components/common/timeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
-import { startDate, endDate, startYear, endYear } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { normalizeFq, cloneRouteQuery } from '@/utils/filter-utils';
 import { useRoute } from 'vue-router';
@@ -127,7 +125,11 @@ export default defineComponent({
 		const readyForNewSearch = () => {
 			timeSearchStore.setNewSearchReqMet(true);
 		};
-
+		/*
+		 * We're not using this right now - its _VERY_ heavy.
+		 * If we at some point want it, its just :highlight="highlightedDays"
+		 * in the picker.
+		 */
 		const highlightedDays = computed(() => {
 			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));

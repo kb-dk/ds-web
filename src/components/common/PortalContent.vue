@@ -1,27 +1,55 @@
 <template>
-	<div class="container">
-		<div class="row">
-			<div class="intro">
-				<h2>{{ $t('app.frontPages.TVRadioDR') }}</h2>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-					est laborum.
-				</p>
-				<router-link
-					:data-testid="addTestDataEnrichment('link', 'about', `read-more`, 0)"
-					to="/about"
-				>
-					read more
-				</router-link>
-			</div>
+	<div class="portal-container container">
+		<div class="categories">
+			<SkewedFoldable
+				:title="'Kategorier'"
+				:left="false"
+				bg="#002e70"
+				text="white"
+				icon="category"
+				:subtitle="'Vælg, hvilken kategori du gerne vil søge i.'"
+				:fullwidth="true"
+				:shadow-bottom="true"
+				:shadow-top="true"
+			>
+				<HeadCategories />
+			</SkewedFoldable>
+		</div>
+		<div class="date-picker">
+			<SkewedFoldable
+				:title="'Brug Kalenderen...'"
+				:left="true"
+				bg="#caf0fe"
+				icon="event"
+				:subtitle="'Vælg en dato, du gerne vil se indhold fra.'"
+				:fullwidth="true"
+				text="#0a2e70"
+				:always-expand="true"
+				:dashed-bottom="true"
+				:shadow-bottom="true"
+			>
+				<DayPicker />
+			</SkewedFoldable>
 		</div>
 		<div class="time-search">
-			<TimeSearchComponent></TimeSearchComponent>
+			<SkewedFoldable
+				:title="'Brug tiden...'"
+				:left="false"
+				bg="#fafafa"
+				text="#0a2e70"
+				icon="schedule"
+				:subtitle="`Vælg, hvilket tidsrum i DR's sendeflader, du vil søge i.`"
+				:fullwidth="true"
+				:dashed-bottom="true"
+				:shadow-bottom="false"
+			>
+				<TimeSearchComponent />
+			</SkewedFoldable>
 		</div>
-		<TiltedDivider :title="$t('frontpage.fromTheArchive')"></TiltedDivider>
+		<TiltedDivider
+			:right="false"
+			:title="$t('frontpage.fromTheArchive')"
+		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
 				:spot-nr="8"
@@ -54,12 +82,19 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
+import HeadCategories from '@/components/common/HeadCategories.vue';
+import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
+
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
 		GridDisplay,
 		TimeSearchComponent,
 		TiltedDivider,
+		DayPicker,
+		HeadCategories,
+		SkewedFoldable,
 	},
 
 	setup() {
@@ -72,8 +107,63 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .time-search {
 	margin-bottom: -70px;
+}
+
+.portal-container {
+	position: relative;
+	margin-top: -100px !important;
+	align-items: center;
+}
+
+.categories,
+.date-picker,
+.time-search {
+	position: relative;
+	margin-top: -6.1vw;
+	width: calc(100% + 24px);
+	margin-left: -12px;
+}
+
+.categories {
+	z-index: 3;
+}
+.date-picker {
+	z-index: 2;
+}
+.time-search {
+	z-index: 1;
+	margin-bottom: 40px !important;
+}
+
+@media (min-width: 990px) {
+	.categories,
+	.date-picker,
+	.time-search {
+		width: 100%;
+		margin-left: 0px;
+	}
+
+	.time-search,
+	.categories,
+	.date-picker {
+		display: grid;
+		justify-content: center;
+	}
+}
+
+@media (min-width: 2000px) {
+	.date-picker,
+	.time-search {
+		margin-top: -3vw;
+	}
+}
+@media (min-width: 4000px) {
+	.date-picker,
+	.time-search {
+		margin-top: -1.5vw;
+	}
 }
 </style>

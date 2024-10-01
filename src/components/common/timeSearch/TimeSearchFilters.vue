@@ -80,10 +80,7 @@
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
-		<div
-			v-if="timeline"
-			class="month-selector-expanding"
-		>
+		<div class="month-selector-expanding">
 			<fieldset>
 				<CustomExpander
 					:headline="t('timeSearch.monthHeadline')"
@@ -279,13 +276,13 @@ import {
 	initEndDate,
 	startYear,
 	endYear,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import DatePicker from '@/components/common/TimeSearch/DatePicker.vue';
+import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
 	getTimeResults,
 	resetAllSelectorValues,
@@ -544,7 +541,7 @@ export default defineComponent({
 	flex-direction: row;
 	align-content: center;
 	flex-wrap: nowrap;
-	justify-content: flex-start;
+	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 30px;
@@ -635,6 +632,7 @@ export default defineComponent({
 }
 
 fieldset {
+	padding: 0px;
 	border: 0px;
 	margin: 0px;
 	min-inline-size: auto;
@@ -958,6 +956,7 @@ fieldset {
 
 .picker-background {
 	background-color: #d9f5fe;
+	margin-top: 15px;
 }
 
 .apply-time-facets-container {
@@ -1077,6 +1076,12 @@ fieldset {
 		height: 96px;
 		padding-bottom: 40px;
 		margin-bottom: 60px;
+	}
+}
+
+@media (min-width: 990px) {
+	.to-from-container {
+		justify-content: flex-start;
 	}
 }
 </style>

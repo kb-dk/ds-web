@@ -162,6 +162,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const resetFilters = () => {
 		filters.value = [];
 		facetResult.value = {} as FacetResultType;
+		channelFilters.value = [];
 	};
 
 	const resetAutocomplete = () => {
@@ -190,6 +191,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
+		if (currentQuery.value === '*:*') {
+			currentQuery.value = '';
+		}
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 		resetAutocomplete();
@@ -242,7 +246,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
-				currentQuery.value = query;
+				query !== '*:*' ? (currentQuery.value = query) : null;
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
 				if (!keepFacets.value) {

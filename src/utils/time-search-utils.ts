@@ -1,7 +1,7 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { months, days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { months, days, timeslots, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0

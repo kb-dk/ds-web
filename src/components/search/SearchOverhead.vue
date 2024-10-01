@@ -204,10 +204,20 @@ export default defineComponent({
 
 		const resetFilters = () => {
 			searchResultStore.setKeepFacets(false);
+			tvToggled.value = true;
+			radioToggled.value = true;
+			let q = searchResultStore.currentQuery;
 			searchResultStore.resetSearch();
-			router.push({
-				name: 'Home',
-			});
+			if (q !== '') {
+				router.push({
+					name: 'Search',
+					query: { q: q },
+				});
+			} else {
+				router.push({
+					name: 'Search',
+				});
+			}
 		};
 
 		const setDelimitationFilterAndExecute = () => {
@@ -244,7 +254,7 @@ export default defineComponent({
 				}
 			}
 			router.push({
-				name: 'Home',
+				name: 'Search',
 				query: routeQueries,
 			});
 		};

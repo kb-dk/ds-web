@@ -32,7 +32,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { initStartDate } from './TimeSearch/TimeSearchInitValues';
+import { initStartDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'CustomTimelineSelect',

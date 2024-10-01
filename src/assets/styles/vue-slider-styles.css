@@ -40,6 +40,43 @@
 	position: relative;
 }
 
+.vue-slider-dot-handle:before {
+	content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  border-left: 2px solid #002e70;
+  border-top: 2px solid #002e70;
+  transform: rotateZ(-45deg);
+  position: relative;
+  top: 3px;
+  left: -8px;
+	transition: all 0.1s linear 0s;
+	opacity:0;
+}
+
+.vue-slider-dot-handle:after {
+	content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  border-left: 2px solid #002e70;
+  border-top: 2px solid #002e70;
+  transform: rotateZ(135deg);
+  position: relative;
+	top: -5px;
+	left: 16px;
+	transition: all 0.1s linear 0s;
+	opacity:0;
+}
+
+
+.vue-slider-dot-handle:hover:before, .vue-slider-dot-handle:hover:after {
+	opacity:1;
+}
+
 .vue-slider-mark {
 	width: 2px !important;
 	height: 15% !important;

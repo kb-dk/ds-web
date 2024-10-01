@@ -31,7 +31,7 @@
 										type="search"
 										:disabled="debounceMechanic ? true : false"
 										class="form-control"
-										:placeholder="t(`search.placeholders.${selectedPortal}`)"
+										:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholders.${selectedPortal}`)"
 										name="simpleSearch"
 										:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
 										@keydown="updateKeystrokeForAutocomplete"
@@ -332,7 +332,7 @@ export default defineComponent({
 				query !== undefined &&
 				query.length >= 2 &&
 				!searchResultStore.blockAutocomplete &&
-				selectedPortal.value === 'drarchive'
+				selectedPortal.value === 'drArchive'
 			) {
 				searchResultStore.getAutocompleteResults(query);
 			}
@@ -1037,7 +1037,7 @@ input:focus {
 		border: none;
 		display: block;
 		width: 100%;
-		font-size: 1rem;
+		font-size: 1.01rem;
 		font-weight: 400;
 		line-height: 1.5;
 		color: #495057;

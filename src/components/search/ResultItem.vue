@@ -481,7 +481,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 105px;
+		height: 120px;
 	}
 	.result-image-wrapper {
 		height: initial;

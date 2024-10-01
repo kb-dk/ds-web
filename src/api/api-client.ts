@@ -145,7 +145,7 @@ export class APIServiceClient {
 	}
 
 	async getFullResultWithFacets(): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1`);
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0`);
 	}
 
 	async getSearchResults(
@@ -190,9 +190,7 @@ export class APIServiceClient {
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
 		return await this.httpClient.get(
 			encodeURI(
-				`bff/v1/proxy/suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${encodeURIComponent(
-					query,
-				)}&suggest.count=5&wt=json`,
+				`bff/v1/proxy/suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${query}&suggest.count=5&wt=json`,
 			),
 		);
 	}

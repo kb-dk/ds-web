@@ -3,7 +3,10 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<EdgedContentArea background-color="#FAFAFA">
+		<EdgedContentArea
+			:lines="true"
+			background-color="#FAFAFA"
+		>
 			<template #content>
 				<div class="time-facets-toggle">
 					<button
@@ -92,14 +95,14 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter } from 'vue-router';
-import TimeSearchFilters from '../common/TimeSearch/TimeSearchFilters.vue';
+import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import { channelFilterExists, simplifyFacets, cloneRouteQuery } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { days, timeslots, startDate, endDate } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { days, timeslots, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
@@ -197,7 +200,7 @@ export default defineComponent({
 			routeQueries.fq = existingFq;
 
 			router.push({
-				name: 'Home',
+				name: 'Search',
 				query: routeQueries,
 			});
 		};
@@ -219,7 +222,7 @@ export default defineComponent({
 				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
 				routeQueries.fq = existingFq;
 				router.push({
-					name: 'Home',
+					name: 'Search',
 					query: routeQueries,
 				});
 			} else {
@@ -414,7 +417,7 @@ h2 {
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: calc(-65px + -1.4vw);
+	top: calc(-60px + -2vw);
 	height: 0px;
 	display: none;
 	opacity: 0;

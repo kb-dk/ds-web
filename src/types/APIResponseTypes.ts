@@ -94,6 +94,10 @@ export interface APIAuthResponseType {
 	resp: string;
 }
 
+export interface facetItem {
+	name: string;
+	number: number;
+}
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 	_retryCount?: number;
 }

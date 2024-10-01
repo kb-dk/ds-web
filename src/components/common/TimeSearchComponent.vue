@@ -1,7 +1,7 @@
 <template>
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
-			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
+			<h1 class="headline">{{ $t('timeSearch.timeMachine') }}</h1>
 			<TimeSearchFilters
 				:timeline="true"
 				:init="true"
@@ -80,11 +80,11 @@ import {
 	timeslots,
 	startDate,
 	endDate,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
-import TimeSearchFilters from '@/components/common/TimeSearch/TimeSearchFilters.vue';
-import EdgedContentArea from '../global/content-elements/EdgedContentArea.vue';
+import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getTimeResults,
 	getSublineForDays,
@@ -108,7 +108,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const timeSearchLink = ref<RouteLocationRaw>({
-			name: 'Home',
+			name: 'Search',
 			query: {
 				q: '*:*',
 				start: 0,
@@ -157,7 +157,7 @@ export default defineComponent({
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
 			timeSearchLink.value = {
-				name: 'Home',
+				name: 'Search',
 				query: {
 					q: '*:*',
 					start: 0,
@@ -224,6 +224,8 @@ h1 {
 	padding: 2px 5px;
 	flex-direction: row-reverse;
 	font-size: 16px;
+	position: relative;
+	left: -10px;
 }
 
 .link-arrow {
@@ -298,6 +300,10 @@ h1 {
 	box-sizing: border-box;
 }
 
+.headline {
+	display: none;
+}
+
 @media (max-width: 480px) {
 	.time-result-item:nth-child(n + 3) {
 		display: none;
@@ -326,6 +332,15 @@ h1 {
 		flex: 1 1 calc(25% - 20px);
 		max-width: calc(25% - 15px);
 		box-sizing: border-box;
+	}
+	.headline {
+		display: block;
+	}
+}
+
+@media (min-width: 1280px) {
+	.link {
+		left: 0px;
 	}
 }
 </style>

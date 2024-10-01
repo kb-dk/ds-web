@@ -43,4 +43,19 @@ export default defineComponent({
 	top: calc(-4vw);
 	z-index: 1;
 }
+
+@media (min-width: 2000px) {
+	.edge.top {
+		height: 4vw;
+		top: -2vw;
+		transform: rotateZ(-1deg) !important;
+	}
+}
+@media (min-width: 4000px) {
+	.edge.top {
+		top: -1vw;
+		height: 2vw;
+		transform: rotateZ(0deg) !important;
+	}
+}
 </style>

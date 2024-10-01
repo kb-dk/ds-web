@@ -233,7 +233,7 @@ h2 {
 	overflow: hidden;
 	background-color: #002e70;
 	color: white;
-	padding: 36px 0 40px;
+	padding: 36px 0 0px;
 	position: relative;
 	bottom: 0px;
 	box-sizing: border-box;
@@ -293,6 +293,9 @@ a {
 		flex: 0 0 25%;
 		max-width: 25%;
 		padding-bottom: 0px;
+	}
+	.global-footer {
+		padding: 36px 0 40px;
 	}
 	.container {
 		max-width: 1150px;
