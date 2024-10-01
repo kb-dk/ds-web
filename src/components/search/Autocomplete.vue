@@ -18,6 +18,8 @@
 					:title="item?.term"
 					:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
 					@click="executeOnSelection"
+					@mouseenter="updateSelectedElement(i + 1)"
+					@mouseleave="updateSelectedElement(0)"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
 			</li>
@@ -57,7 +59,6 @@ export default defineComponent({
 			() => props.keystroke,
 			(newEvent: KeyboardEvent | null) => {
 				if (newEvent) {
-					console.log('HEJ');
 					keyMovement(newEvent);
 				}
 			},
@@ -72,6 +73,10 @@ export default defineComponent({
 			},
 		);
 
+		const updateSelectedElement = (n: number) => {
+			currentSelectedAutocomplete.value = n;
+		};
+
 		const keyMovement = (e: KeyboardEvent) => {
 			searchResultStore.setBlockAutocomplete(false);
 			switch (e.key) {
@@ -82,7 +87,7 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					executeOnSelection(e);
+					//executeOnSelection(e);
 					break;
 				default:
 					break;
@@ -106,6 +111,7 @@ export default defineComponent({
 		};
 
 		const executeOnSelection = (e: Event) => {
+			console.log(e);
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
 				doAutocompleteSearch(
@@ -141,6 +147,7 @@ export default defineComponent({
 			executeOnSelection,
 			currentSelectedAutocomplete,
 			addTestDataEnrichment,
+			updateSelectedElement,
 		};
 	},
 });
@@ -205,8 +212,8 @@ export default defineComponent({
 }
 
 .autocomplete ul li {
-	height: 25px;
-	padding: 7px 10px;
+	height: 39px;
+	padding: 0px 10px;
 	transition: all 0.2s linear 0s;
 	overflow: hidden;
 	text-wrap: nowrap;
@@ -243,7 +250,6 @@ export default defineComponent({
 	border-top: 1px solid rgb(229, 228, 226);
 	height: 1px;
 	position: relative;
-	top: -7px;
 	transition: all 0.2s linear 0s;
 	z-index: 0;
 }

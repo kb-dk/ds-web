@@ -31,7 +31,7 @@
 										type="search"
 										:disabled="debounceMechanic ? true : false"
 										class="form-control"
-										:placeholder="t(`search.placeholders.${selectedPortal}`)"
+										:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholders.${selectedPortal}`)"
 										name="simpleSearch"
 										:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
 										@keydown="updateKeystrokeForAutocomplete"

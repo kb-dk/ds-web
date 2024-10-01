@@ -208,10 +208,16 @@ export default defineComponent({
 			radioToggled.value = true;
 			let q = searchResultStore.currentQuery;
 			searchResultStore.resetSearch();
-			router.push({
-				name: 'Search',
-				query: { q: q },
-			});
+			if (q !== '') {
+				router.push({
+					name: 'Search',
+					query: { q: q },
+				});
+			} else {
+				router.push({
+					name: 'Search',
+				});
+			}
 		};
 
 		const setDelimitationFilterAndExecute = () => {
