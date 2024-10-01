@@ -111,7 +111,6 @@ export default defineComponent({
 		};
 
 		const executeOnSelection = (e: Event) => {
-			console.log(e);
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
 				doAutocompleteSearch(

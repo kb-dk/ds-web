@@ -51,7 +51,6 @@ export default defineComponent({
 		VueDatePicker,
 	},
 	setup() {
-		const { t } = useI18n();
 		const singleDatePicker = ref<DatePickerInstance>();
 		const selectedDate = ref(new Date(1992, 0, 1, 0, 0, 0));
 
