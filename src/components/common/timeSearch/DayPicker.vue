@@ -38,7 +38,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import { startYear, endYear, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
