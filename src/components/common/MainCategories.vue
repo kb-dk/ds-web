@@ -51,7 +51,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { APIService } from '@/api/api-service';
@@ -66,7 +66,6 @@ export default defineComponent({
 		const categoriesLoaded = ref(false);
 
 		const quotation = (name: string) => {
-			console.log(santizeAndSimplify(name));
 			return `"${name}"`;
 		};
 
