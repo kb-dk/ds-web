@@ -12,7 +12,7 @@
 				:shadow-bottom="true"
 				:shadow-top="true"
 			>
-				<HeadCategories />
+				<MainCategories />
 			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
@@ -83,7 +83,7 @@ import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
-import HeadCategories from '@/components/common/HeadCategories.vue';
+import MainCategories from '@/components/common/MainCategories.vue';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 
 export default defineComponent({
@@ -93,7 +93,7 @@ export default defineComponent({
 		TimeSearchComponent,
 		TiltedDivider,
 		DayPicker,
-		HeadCategories,
+		MainCategories,
 		SkewedFoldable,
 	},
 

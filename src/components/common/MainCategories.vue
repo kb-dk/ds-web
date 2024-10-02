@@ -22,7 +22,7 @@
 					>
 						{{ entity.name }}
 						<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
-						<span class="category-image trophy"></span>
+						<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
 					</router-link>
 				</div>
 			</div>
@@ -51,13 +51,14 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { APIService } from '@/api/api-service';
 import { facetItem } from '@/types/APIResponseTypes';
+
 export default defineComponent({
-	name: 'HeadCategories',
+	name: 'MainCategories',
 
 	setup() {
 		const { t } = useI18n();
@@ -65,6 +66,7 @@ export default defineComponent({
 		const categoriesLoaded = ref(false);
 
 		const quotation = (name: string) => {
+			console.log(santizeAndSimplify(name));
 			return `"${name}"`;
 		};
 
@@ -84,7 +86,7 @@ export default defineComponent({
 			});
 		});
 
-		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation };
+		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation, santizeAndSimplify };
 	},
 });
 </script>
@@ -146,10 +148,19 @@ export default defineComponent({
 .category-image {
 	transition: all 0.25s linear 0s;
 	color: #c4f1ed;
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	z-index: 20;
+	top: -21px;
+	left: -1px;
+	background-image: url('@/assets/icons/default/diverse.svg');
+	filter: hue-rotate(5);
 }
 
 .category-item:hover .category-image {
 	transform: rotateZ(25deg);
+	background-image: url('@/assets/icons/cyan/diverse-cyan.svg');
 }
 
 .category-item .number {
@@ -163,14 +174,72 @@ export default defineComponent({
 	border-radius: 4px;
 }
 
-.trophy {
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	z-index: 20;
-	top: -21px;
-	left: -1px;
-	background-image: url('@/assets/icons/trophy.svg');
+.diverse {
+	background-image: url('@/assets/icons/default/diverse.svg');
+}
+.dokumentar {
+	background-image: url('@/assets/icons/default/dokumentar.svg');
+}
+.fiktion {
+	background-image: url('@/assets/icons/default/fiktion.svg');
+}
+.kultur-og-oplysning {
+	background-image: url('@/assets/icons/default/kultur.svg');
+}
+.livsstil {
+	background-image: url('@/assets/icons/default/livsstil.svg');
+}
+.musik {
+	background-image: url('@/assets/icons/default/musik.svg');
+}
+.nyheder-politik-og-samfund {
+	background-image: url('@/assets/icons/default/nyheder.svg');
+}
+.sport {
+	background-image: url('@/assets/icons/default/sport.svg');
+}
+.underholdning {
+	background-image: url('@/assets/icons/default/underholdning.svg');
+}
+.videnskab-og-natur {
+	background-image: url('@/assets/icons/default/videnskab.svg');
+}
+.brn-og-unge {
+	background-image: url('@/assets/icons/default/born.svg');
+}
+
+.category-item:hover .diverse {
+	background-image: url('@/assets/icons/cyan/diverse-cyan.svg');
+}
+.category-item:hover .dokumentar {
+	background-image: url('@/assets/icons/cyan/dokumentar-cyan.svg');
+}
+.category-item:hover .fiktion {
+	background-image: url('@/assets/icons/cyan/fiktion-cyan.svg');
+}
+.category-item:hover .kultur-og-oplysning {
+	background-image: url('@/assets/icons/cyan/kultur-cyan.svg');
+}
+.category-item:hover .livsstil {
+	background-image: url('@/assets/icons/cyan/livsstil-cyan.svg');
+}
+.category-item:hover .musik {
+	background-image: url('@/assets/icons/cyan/musik-cyan.svg');
+}
+.category-item:hover .nyheder-politik-og-samfund {
+	background-image: url('@/assets/icons/cyan/nyheder-cyan.svg');
+}
+.category-item:hover .sport {
+	background-image: url('@/assets/icons/cyan/sport-cyan.svg');
+}
+.category-item:hover .underholdning {
+	background-image: url('@/assets/icons/cyan/underholdning-cyan.svg');
+}
+.category-item:hover .videnskab-og-natur {
+	background-image: url('@/assets/icons/cyan/videnskab-cyan.svg');
+}
+.category-item:hover .brn-og-unge {
+	background-image: url('@/assets/icons/cyan/born-cyan.svg');
 }
 
 .container {
