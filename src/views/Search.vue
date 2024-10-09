@@ -128,9 +128,7 @@ export default defineComponent({
 					} else {
 						searchResultStore.setStartFromURL(route.query.start as string);
 					}
-					channelFacetsChanged(newp, prevp)
-						? searchResultStore.setKeepFacets(true)
-						: searchResultStore.setKeepFacets(false);
+					channelFacetsChanged(newp, prevp);
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
@@ -153,10 +151,7 @@ export default defineComponent({
 			return newSort !== oldSort;
 		};
 
-		const channelFacetsChanged = (
-			newfq: RouteLocationNormalizedLoaded,
-			oldfq: RouteLocationNormalizedLoaded,
-		): boolean => {
+		const channelFacetsChanged = (newfq: RouteLocationNormalizedLoaded, oldfq: RouteLocationNormalizedLoaded) => {
 			const newFilter = normalizeFq(newfq.query.fq as string[] | string);
 			const oldFilter = normalizeFq(oldfq.query.fq as string[] | string);
 			const newCreatorAffiliationFilter = (newFilter as string[])?.find((fq: string) =>
@@ -165,10 +160,16 @@ export default defineComponent({
 			const oldCreatorAffiliationFilter = (oldFilter as string[])?.find((fq: string) =>
 				fq.includes('creator_affiliation_facet'),
 			);
+			const newGenreFilter = (newFilter as string[])?.find((fq: string) => fq.includes('genre'));
+			const oldGenreFilter = (oldFilter as string[])?.find((fq: string) => fq.includes('genre'));
+
 			if (newCreatorAffiliationFilter !== oldCreatorAffiliationFilter && newfq.query.q === oldfq.query.q) {
-				return true;
+				searchResultStore.setKeepChannels(false);
+				searchResultStore.setKeepGenre(false);
+			} else if (newGenreFilter !== oldGenreFilter && newfq.query.q === oldfq.query.q) {
+				searchResultStore.setKeepGenre(false);
+				searchResultStore.setKeepChannels(false);
 			}
-			return false;
 		};
 
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {

@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('authStore', () => {
 	const videoUiConfId = ref('');
 	const streamingBaseUrlAudio = ref('');
 	const streamingBaseUrlVideo = ref('');
-
+	const firstAuthDone = ref(false);
 	//Session time (in millis) - currently 36 hours
 	const sessionTime = 129600000;
 
@@ -48,6 +48,7 @@ export const useAuthStore = defineStore('authStore', () => {
 			errorManager.submitCustomError('auth-error', t('error.auth.serviceFailed'));
 		} finally {
 			isAuthenticating.value = false; // Release the authentication lock/flag in all cases
+			firstAuthDone.value = true;
 		}
 	};
 
@@ -66,6 +67,7 @@ export const useAuthStore = defineStore('authStore', () => {
 
 	return {
 		authenticate,
+		firstAuthDone,
 		isAuthenticating,
 		partnerId,
 		audioUiConfId,

@@ -74,7 +74,7 @@
 						</button>
 					</div>
 				</div>
-				<Facets :facet-results="searchResultStore.facetResult" />
+				<Facets />
 				<div class="result-options">
 					<div class="hits">
 						<HitCount
@@ -203,7 +203,8 @@ export default defineComponent({
 		);
 
 		const resetFilters = () => {
-			searchResultStore.setKeepFacets(false);
+			searchResultStore.setKeepChannels(false);
+			searchResultStore.setKeepGenre(false);
 			tvToggled.value = true;
 			radioToggled.value = true;
 			let q = searchResultStore.currentQuery;

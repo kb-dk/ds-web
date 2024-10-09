@@ -74,3 +74,9 @@ export interface FacetPair {
 	title: string;
 	number: string;
 }
+
+export interface EnhancedFacetPair {
+	title: string;
+	number: string;
+	currentNr: string;
+}

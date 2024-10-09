@@ -151,7 +151,7 @@ export default defineComponent({
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	border-bottom: 2px dashed rgba(0, 46, 112, 0.3490196078);
+	/* border-bottom: 2px dashed rgba(0, 46, 112, 0.3490196078); */
 	background: linear-gradient(
 		90deg,
 		rgba(255, 255, 255, 0) 0%,
@@ -194,6 +194,7 @@ export default defineComponent({
 	width: 100%;
 	height: 1px;
 	margin-top: 1px;
+	opacity: 0.3;
 }
 
 .expand-container:after {
@@ -204,14 +205,14 @@ export default defineComponent({
 	position: relative;
 	bottom: 0px;
 	height: 10px;
-	opacity: 1;
+	opacity: 0.5;
 	z-index: -1;
 	background: radial-gradient(ellipse at bottom, #b6b5b5b0 0%, #dfdfdfb0 40%, #ffffff00 70%);
 }
 
 .expand-container.open:after {
 	transition: all 0.2s ease-in 0s;
-	opacity: 0;
+	opacity: 0.2;
 }
 
 .expander {

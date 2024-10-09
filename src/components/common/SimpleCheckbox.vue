@@ -1,77 +1,51 @@
 <template>
-	<div class="container">
-		<Transition
-			mode="out-in"
-			name="result"
+	<div :class="amount === '0' ? 'checkbox-container disabled' : 'checkbox-container'">
+		<label
+			:title="title"
+			class="label"
 		>
-			<div
-				v-if="!loading"
-				class="checkbox-container"
+			<span class="title">{{ title }}</span>
+			<Transition
+				mode="out-in"
+				name="result"
 			>
-				<label
-					:title="title"
-					class="label"
+				<span
+					v-if="!loading"
+					class="tag-number"
 				>
-					<span class="title">{{ title }}</span>
-					<span class="tag-number">{{ displayAmount(amount) }}</span>
-					<input
-						role="checkbox"
-						tabindex="0"
-						type="checkbox"
-						class="checkbox"
-						:checked="checked"
-						:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
-						@change="check(fqkey, title)"
-					/>
-				</label>
-			</div>
-			<div
-				v-else
-				class="loading"
-			>
-				<div
-					:style="`animation-delay:${Math.random() * 2}s`"
-					class="shimmer"
-				></div>
-				<div class="name">
+					{{ displayAmount(amount) }}
+				</span>
+				<span
+					v-else
+					class="tag-number loading"
+				>
+					<div
+						:style="`animation-delay:${Math.random() * 2}s`"
+						class="shimmer"
+					></div>
 					<span
-						:style="`width:${Math.random() * 15 + 20}px`"
+						:style="`width:${Math.random() * 15 + 10}px`"
 						class="text"
 					></span>
-					<span
-						:style="`width:${Math.random() * 15 + 20}px`"
-						class="text"
-					></span>
-					<span
-						:style="`width:${Math.random() * 15 + 20}px`"
-						class="text"
-					></span>
-				</div>
-				<label>
-					loading
-					<input
-						disabled
-						role="checkbox"
-						tabindex="0"
-						:checked="checked"
-						type="checkbox"
-						class="checkbox"
-					/>
-				</label>
-			</div>
-		</Transition>
+				</span>
+			</Transition>
+			<input
+				role="checkbox"
+				type="checkbox"
+				class="checkbox"
+				:disabled="amount === '0' && !checked"
+				:checked="checked"
+				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
+				@change="check(fqkey, title)"
+			/>
+		</label>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import {
-	addChannelFilter,
-	removeChannelFilter,
-	channelFilterExists,
-	createAffiliationFilter,
-} from '@/utils/filter-utils';
+import { addChannelFilter, removeChannelFilter, channelFilterExists, createFilter } from '@/utils/filter-utils';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
@@ -120,8 +94,18 @@ export default defineComponent({
 		const check = (key: string | undefined, title: string | undefined) => {
 			if (title && key) {
 				const routeQueries = channelFilterExists(key, title, searchResultStore.channelFilters)
-					? removeChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive)
-					: addChannelFilter(route, createAffiliationFilter(title), props.timeSearchActive);
+					? removeChannelFilter(
+							route,
+							createFilter(title, 'creator_affiliation_facet'),
+							props.timeSearchActive,
+							'creator_affiliation_facet',
+					  )
+					: addChannelFilter(
+							route,
+							createFilter(title, 'creator_affiliation_facet'),
+							props.timeSearchActive,
+							'creator_affiliation_facet',
+					  );
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 			}
@@ -182,11 +166,13 @@ export default defineComponent({
 	user-select: none;
 }
 
-.loading .name .text {
+.text {
 	margin: 5px 0px;
-	border-radius: 20px;
+	margin-left: 5px;
+	border-radius: 5px;
 	background-color: rgba(170, 170, 170, 1);
 	height: 12px;
+	display: inline-block;
 }
 
 @keyframes loading {
@@ -209,6 +195,16 @@ export default defineComponent({
 	text-align: left;
 }
 
+.checkbox-container.disabled .label {
+	cursor: default;
+}
+
+.checkbox-container.disabled .title,
+.checkbox-container.disabled .tag-number {
+	color: rgb(177, 177, 177) !important;
+	font-weight: normal;
+}
+
 .tag-number {
 	font-size: 10px;
 	color: #383838;
@@ -217,6 +213,15 @@ export default defineComponent({
 	vertical-align: bottom;
 	line-height: 24px;
 	height: 100%;
+}
+
+.loading.tag-number {
+	height: 25px;
+}
+
+.checkbox-container.disabled .loading.tag-number .text {
+	background-color: rgb(177, 177, 177) !important;
+	opacity: 0.5;
 }
 
 .title {
@@ -228,6 +233,7 @@ export default defineComponent({
 	display: inline-block;
 	text-transform: uppercase;
 	color: #002e70;
+	font-weight: bold;
 }
 
 .loading .checkbox:after {
@@ -286,6 +292,15 @@ input:focus {
 	outline: none;
 	position: relative;
 	float: right;
+}
+
+.checkbox-container.disabled .checkbox:after {
+	border: 1px solid rgb(145, 145, 145);
+}
+
+.checkbox-container.disabled .checkbox:hover:after {
+	cursor: default;
+	background-color: rgb(255, 255, 255);
 }
 
 .checkbox:after {

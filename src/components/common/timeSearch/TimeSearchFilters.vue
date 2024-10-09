@@ -4,6 +4,7 @@
 		class="slider-container"
 	>
 		<button
+			ref="dataButton"
 			class="data-size"
 			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 			@click="toggleExplanation()"
@@ -280,7 +281,6 @@ import {
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
@@ -292,6 +292,7 @@ import {
 	getSublineForYears,
 } from '@/utils/time-search-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'TimeSearchFilters',
@@ -337,6 +338,7 @@ export default defineComponent({
 		const dataButton = ref<HTMLDivElement>();
 		const expToggled = ref(false);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
+		const searchResultStore = useSearchResultStore();
 
 		onMounted(() => {
 			if (props.init) {
@@ -349,53 +351,59 @@ export default defineComponent({
 				getTimeResults(true);
 			}
 			if (props.timeline) {
-				APIService.getFullResultWithFacets()
-					.then((response) => {
-						const resultsInYears = response.data.facet_counts.facet_fields.temporal_start_year;
-						const sortedResults = [] as dataItem[];
-						resultsInYears.forEach((item, index) => {
-							if (index % 2 === 0) {
-								let nextResult = {
-									year: item,
-									items: Number(resultsInYears[index + 1]),
+				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+					selectYears.value.push(i.toString());
+					data.value.push({ key: i, value: i });
+				}
+				if (dataButton.value) {
+					dataButton.value.style.display = 'none';
+				}
+				watch(
+					() => searchResultStore.firstBackendFetchExecuted,
+					(newVal: boolean) => {
+						if (newVal) {
+							data.value = [];
+							selectYears.value = [];
+							const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
+							const sortedResults = [] as dataItem[];
+							resultsInYears.forEach((item, index) => {
+								if (index % 2 === 0) {
+									let nextResult = {
+										year: item,
+										items: Number(resultsInYears[index + 1]),
+									};
+									sortedResults.push(nextResult);
+								}
+							});
+							sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+							startYear.value.setFullYear(Number(sortedResults[0].year));
+							endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+							for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+								selectYears.value.push(i.toString());
+								data.value.push({ key: i, value: i });
+								let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+									year: i.toString(),
+									items: 0,
 								};
-								sortedResults.push(nextResult);
+								item.x = Number(
+									(
+										(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+										(i - startYear.value.getFullYear())
+									).toFixed(2),
+								);
+								item.y = item.items;
+								fullYearArray.value.push(item);
 							}
-						});
-						sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-						startYear.value.setFullYear(Number(sortedResults[0].year));
-						endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
-						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-							selectYears.value.push(i.toString());
-							data.value.push({ key: i, value: i });
-							let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-								year: i.toString(),
-								items: 0,
-							};
-							item.x = Number(
-								(
-									(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
-									(i - startYear.value.getFullYear())
-								).toFixed(2),
-							);
-							item.y = item.items;
-							fullYearArray.value.push(item);
+							const svgElement = createSVGCurvedLine(fullYearArray.value);
+							if (dataContainer.value) {
+								dataContainer.value.appendChild(svgElement);
+							}
+							if (dataButton.value) {
+								dataButton.value.style.display = 'block';
+							}
 						}
-						const svgElement = createSVGCurvedLine(fullYearArray.value);
-						if (dataContainer.value) {
-							dataContainer.value.appendChild(svgElement);
-						}
-					})
-					.catch(() => {
-						//This is purely fallback. We have no data, so we go with what we've set as fallback.
-						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-							selectYears.value.push(i.toString());
-							data.value.push({ key: i, value: i });
-						}
-						if (dataButton.value) {
-							dataButton.value.style.display = 'none';
-						}
-					});
+					},
+				);
 			}
 		});
 
