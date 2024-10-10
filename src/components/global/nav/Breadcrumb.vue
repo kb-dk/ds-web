@@ -20,7 +20,7 @@
 				<span class="line">/</span>
 			</a>
 			<router-link
-				:to="{ name: 'Home' }"
+				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
 				class="level-3"
 				@click="searchResultStore.resetSearch()"
