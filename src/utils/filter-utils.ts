@@ -68,7 +68,7 @@ Rather large function to add a channel filter. Since we want to use several filt
 we have to put them in one string, in the fq array. We have to split up the existing one and reassemble it
 with our new one - if one exists. If it doesn't, we simply create it and push our filter into it.
 */
-function addChannelFilter(
+function addChannelOrCategoryFilter(
 	route: RouteLocationNormalizedLoaded,
 	newFilter: string,
 	keepTimeFacets: boolean,
@@ -116,7 +116,7 @@ Rather large function to remove a channel filter. Since we want to use several f
 we have to put them in one string, in the fq array. We have to fish it out if it exists, and then split it up and
 remove the one we dont need anymore, and reassemble it.
 */
-function removeChannelFilter(
+function removeChannelOrCategoryFilter(
 	route: RouteLocationNormalizedLoaded,
 	filterToRemove: string,
 	keepTimeFacets: boolean,
@@ -207,8 +207,8 @@ export {
 	addFilter,
 	removeFilter,
 	simplifyFacets,
-	addChannelFilter,
-	removeChannelFilter,
+	addChannelOrCategoryFilter,
+	removeChannelOrCategoryFilter,
 	cloneRouteQuery,
 	normalizeFq,
 	removeTimeFacetsFromRoute,

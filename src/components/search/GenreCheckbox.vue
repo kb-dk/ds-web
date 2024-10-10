@@ -50,7 +50,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { addChannelFilter, removeChannelFilter, channelFilterExists, createFilter } from '@/utils/filter-utils';
+import {
+	addChannelOrCategoryFilter,
+	removeChannelOrCategoryFilter,
+	channelFilterExists,
+	createFilter,
+} from '@/utils/filter-utils';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 
@@ -99,8 +104,8 @@ export default defineComponent({
 		const check = (key: string | undefined, title: string | undefined) => {
 			if (title && key) {
 				const routeQueries = channelFilterExists(key, title, searchResultStore.categoryFilters)
-					? removeChannelFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre')
-					: addChannelFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre');
+					? removeChannelOrCategoryFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre')
+					: addChannelOrCategoryFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre');
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 			}
