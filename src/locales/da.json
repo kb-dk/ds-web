@@ -295,6 +295,13 @@
       "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
    },
    "searchfailed":"Noget gik galt med din søgning",
-   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
+   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm",
+    "wrongUrl": {
+      "header": "Vi kan desværre ikke finde siden som du søger :(",
+      "text": "Det er ærgerligt fordi vi har faktisk 25.000 TB websider på lager",
+      "altHeader": "Måske leder du efter",
+      "frontPage": "Forsiden af DR-arkivet",
+      "kbPage": "Forsiden af Det Kgl. Bibliotek"
+    }
   } 
 }

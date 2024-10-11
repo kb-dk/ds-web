@@ -290,6 +290,13 @@
          "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later"
       },
    "searchfailed":"The search request could not be performed",
-   "malformeduri": "Something went wrong with your search terms - try to change some of them"
+   "malformeduri": "Something went wrong with your search terms - try to change some of them",
+   "wrongUrl": {
+      "header": "Sadly we can not find the page you're looking for :(",
+      "text": "It is unfortunate because we got 25.000 TB websites in storage",
+      "altHeader": "Maybe you're looking for",
+      "frontPage": "Frontpage of DR Archive",
+      "kbPage": "Frontpage of the Royal Danish Library"
+   }
   }
 }

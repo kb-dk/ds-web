@@ -5,27 +5,29 @@
 			<div class="imageContainer">
 				<img
 					class="wrongUrlImage"
+					title="KB 404"
+					alt="Image of KB 404 status"
 					:src="getImgServerSrcURL()"
 				/>
 			</div>
 			<div>
-				<h1>Vi kan desværre ikke finde siden som du søger :(</h1>
-				<p>Det er ærgerligt fordi vi har faktisk 25.000 TB websider på lager</p>
-				<h2>Måske du leder efter</h2>
+				<h1>{{ t('error.wrongUrl.header') }}</h1>
+				<p>{{ t('error.wrongUrl.text') }}</p>
+				<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
 				<div>
 					<a
 						class="btn-light btn"
 						href="/find-materiale/dr-arkivet/"
 						role="button"
 					>
-						Forsiden af DR-arkivet
+						{{ t('error.wrongUrl.frontPage') }}
 					</a>
 					<a
 						class="btn-light btn"
 						href="https://www.kb.dk"
 						role="button"
 					>
-						Forsiden af Det Kgl. Bibliotek
+						{{ t('error.wrongUrl.kbPage') }}
 					</a>
 				</div>
 			</div>
@@ -38,6 +40,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Footer from '@/components/global/nav/Footer.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: '404',
@@ -45,10 +48,11 @@ export default defineComponent({
 		Footer,
 	},
 	setup() {
+		const { t } = useI18n();
 		const getImgServerSrcURL = () => {
 			return new URL(`@/assets/images/404.svg`, import.meta.url).href;
 		};
-		return { getImgServerSrcURL };
+		return { getImgServerSrcURL, t };
 	},
 });
 </script>
