@@ -140,7 +140,7 @@ export class APIServiceClient {
 	//Search and record methods
 	async getFacetResults(query: string, filters: string, start: string, sort: string): Promise<APISearchResponseType> {
 		return await this.httpClient.get(
-			`bff/v1/proxy/search/?q=${encodeURIComponent(query)}&facet=true${filters}${start}${sort}&rows=0&facet.limit=25`,
+			`bff/v1/proxy/search/?q=${encodeURIComponent(query)}&facet=true${filters}${start}${sort}&rows=0&facet.limit=-1`,
 		);
 	}
 

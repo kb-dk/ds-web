@@ -243,6 +243,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (preliminaryFilter.value) {
 			searchFilters += `&fq=${preliminaryFilter.value}`;
 			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
+			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
 		}
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
