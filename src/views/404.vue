@@ -10,7 +10,7 @@
 					:src="getImgServerSrcURL()"
 				/>
 			</div>
-			<div>
+			<div class="not-found-details">
 				<h1>{{ t('error.wrongUrl.header') }}</h1>
 				<p>{{ t('error.wrongUrl.text') }}</p>
 				<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
@@ -76,6 +76,11 @@ export default defineComponent({
 	z-index: 1;
 	color: white;
 	display: flex;
+	flex-direction: row;
+}
+.not-found-details {
+	display: flex;
+	flex-direction: column;
 }
 .edge-top {
 	width: 110%;
@@ -89,8 +94,8 @@ export default defineComponent({
 	z-index: -1;
 }
 .wrongUrlImage {
-	max-width: 30em;
-	max-height: 30em;
+	display: flex;
+	flex-direction: column;
 }
 .btn {
 	display: inline-block;
@@ -132,6 +137,7 @@ export default defineComponent({
 }
 .imageContainer {
 	display: flex;
+	flex-direction: column;
 	width: 500px;
 }
 .edge-bottom {
@@ -144,5 +150,41 @@ export default defineComponent({
 	transform-origin: center bottom;
 	top: calc(-4vw);
 	z-index: 1;
+}
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.not-found-content {
+		display: flex;
+		flex-direction: column;
+		max-width: 640px;
+		min-height: 80vh;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.not-found-content {
+		display: flex;
+		flex-direction: row;
+		max-width: 990px;
+		min-height: 60vh;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.not-found-content {
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.not-found-content {
+		max-width: 100%;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.not-found-content {
+		width: 100%;
+	}
 }
 </style>
