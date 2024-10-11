@@ -75,7 +75,7 @@
 												:time-search-active="timeSearchStore.timeFacetsOpen"
 												:number="index"
 												:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
-												:loading="searchResultStore.loading && !searchResultStore.keepGenre"
+												:loading="searchResultStore.loading"
 											/>
 										</div>
 									</TransitionGroup>
@@ -114,7 +114,7 @@
 													searchResultStore.channelFilters,
 												)
 											"
-											:loading="searchResultStore.loading && !searchResultStore.keepChannels"
+											:loading="searchResultStore.loading"
 										/>
 									</div>
 								</TransitionGroup>

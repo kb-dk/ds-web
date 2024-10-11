@@ -40,8 +40,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
-	const keepChannels = ref(false);
-	const keepGenre = ref(false);
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -163,8 +161,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSort();
 		resetSpellCheck();
 		resetPreliminaryFilters();
-		setKeepGenre(false);
-		setKeepChannels(false);
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
@@ -187,14 +183,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const setBlockAutocomplete = (state: boolean) => {
 		blockAutocomplete.value = state;
-	};
-
-	const setKeepGenre = (state: boolean) => {
-		keepGenre.value = state;
-	};
-
-	const setKeepChannels = (state: boolean) => {
-		keepChannels.value = state;
 	};
 
 	const getAutocompleteResults = (query: string) => {
@@ -287,13 +275,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				query !== '*:*' ? (currentQuery.value = query) : null;
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
-				//if (!keepGenre.value) {
 				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
-				//}
-				//if (!keepChannels.value) {
 				facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
 					.creator_affiliation_facet as string[];
-				//}
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;
 			}
@@ -305,8 +289,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
-				setKeepChannels(false);
-				setKeepGenre(false);
 			}
 		}
 	};
@@ -337,8 +319,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		rowOffset,
 		channelFilters,
 		categoryFilters,
-		keepChannels,
-		keepGenre,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -360,7 +340,5 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowOffset,
 		setStart,
 		setRowCountFromURL,
-		setKeepChannels,
-		setKeepGenre,
 	};
 });
