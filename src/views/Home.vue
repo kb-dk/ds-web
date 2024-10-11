@@ -30,7 +30,6 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		onMounted(() => {
-			console.log('mounted!');
 			searchResultStore.resetSearch();
 			document.title = t('app.titles.frontpage.archive.name') as string;
 		});
