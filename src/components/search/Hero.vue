@@ -2,8 +2,8 @@
 	<div class="hero-container">
 		<div class="container">
 			<h1>
-				<span class="subtitle">Det Kgl. Biblioteks</span>
-				<span class="headline">DR-Arkiv</span>
+				<span class="subtitle"><span class="text">Det Kgl. Biblioteks</span></span>
+				<span class="headline"><span class="text">DR-Arkiv</span></span>
 			</h1>
 		</div>
 		<img
@@ -13,6 +13,21 @@
 			loading="lazy"
 			class="bg-image"
 		/>
+		<img
+			:src="backgroundImage"
+			title="search background"
+			alt="Image of the Royal Danish Library"
+			loading="lazy"
+			class="bg-image cyan"
+		/>
+		<img
+			:src="backgroundImage"
+			title="search background"
+			alt="Image of the Royal Danish Library"
+			loading="lazy"
+			class="bg-image magenta"
+		/>
+		<div class="noise"></div>
 	</div>
 </template>
 <script>
@@ -42,12 +57,16 @@ export default defineComponent({
 	align-items: center;
 }
 
-h1 span {
+h1 .headline,
+h1 .subtitle {
 	display: block;
 	font-weight: 100;
 	background-color: white;
 	width: fit-content;
 	padding: 0px 10px;
+}
+.noise {
+	background-image: url('@/assets/images/noise.png');
 }
 
 .container {
