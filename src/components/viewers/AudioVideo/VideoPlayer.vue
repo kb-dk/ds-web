@@ -89,9 +89,9 @@ export default defineComponent({
 				videoPlayer.loadMedia({ entryId: props.entryId }).then(() => {
 					document
 						.querySelector('.playkit-pre-playback-play-button')
-						?.setAttribute('test-id', 'player-kaltura-playbutton-0');
+						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
 				});
-				document.querySelector('#video-player')?.setAttribute('test-id', 'video-player-kaltura-container-0');
+				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.ready().then(() => {
 					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
 				});
