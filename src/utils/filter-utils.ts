@@ -4,8 +4,8 @@ const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
 };
 
-const createAffiliationFilter = (key: string) => {
-	return `${'creator_affiliation_facet:"' + key + '"'}`;
+const createFilter = (key: string, facet: string) => {
+	return `${facet}:"${key}"`;
 };
 
 const filterExists = (key: string, title: string, parent: string[]) => {
@@ -68,7 +68,12 @@ Rather large function to add a channel filter. Since we want to use several filt
 we have to put them in one string, in the fq array. We have to split up the existing one and reassemble it
 with our new one - if one exists. If it doesn't, we simply create it and push our filter into it.
 */
-function addChannelFilter(route: RouteLocationNormalizedLoaded, newFilter: string, keepTimeFacets: boolean) {
+function addChannelOrCategoryFilter(
+	route: RouteLocationNormalizedLoaded,
+	newFilter: string,
+	keepTimeFacets: boolean,
+	facet: string,
+) {
 	// get the route and the fq array. we normalize it to an array to make sure we know what we're dealing with
 	const routeQueries = cloneRouteQuery(route);
 	let existingFq = normalizeFq(routeQueries.fq as string[] | string);
@@ -78,7 +83,7 @@ function addChannelFilter(route: RouteLocationNormalizedLoaded, newFilter: strin
 	}
 	// If the array exists, we find the one we need- with the creator_affiliation_facets in it.
 	if (Array.isArray(existingFq)) {
-		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('creator_affiliation_facet'));
+		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes(facet));
 		if (creatorAffiliationFilter) {
 			// if we can find it, we remove it from the array - and put it in again when we're done manipulating it.
 			const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
@@ -111,7 +116,12 @@ Rather large function to remove a channel filter. Since we want to use several f
 we have to put them in one string, in the fq array. We have to fish it out if it exists, and then split it up and
 remove the one we dont need anymore, and reassemble it.
 */
-function removeChannelFilter(route: RouteLocationNormalizedLoaded, filterToRemove: string, keepTimeFacets: boolean) {
+function removeChannelOrCategoryFilter(
+	route: RouteLocationNormalizedLoaded,
+	filterToRemove: string,
+	keepTimeFacets: boolean,
+	facet: string,
+) {
 	// get the route and the fq array. we normalize it to an array to make sure we know what we're dealing with
 	const routeQueries = cloneRouteQuery(route);
 	let existingFq = normalizeFq(routeQueries.fq as string[] | string);
@@ -121,7 +131,7 @@ function removeChannelFilter(route: RouteLocationNormalizedLoaded, filterToRemov
 	}
 	// If the array exists, we find the one we need- with the creator_affiliation_facets in it.
 	if (Array.isArray(existingFq)) {
-		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('creator_affiliation_facet'));
+		const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes(facet));
 		if (creatorAffiliationFilter) {
 			// if we can find it, we remove it from the array - and put it in again when we're done manipulating it.
 			const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
@@ -191,14 +201,14 @@ const simplifyFacets = (facet: Array<string>): FacetPair[] => {
 
 export {
 	createTagFilter,
-	createAffiliationFilter,
+	createFilter,
 	filterExists,
 	channelFilterExists,
 	addFilter,
 	removeFilter,
 	simplifyFacets,
-	addChannelFilter,
-	removeChannelFilter,
+	addChannelOrCategoryFilter,
+	removeChannelOrCategoryFilter,
 	cloneRouteQuery,
 	normalizeFq,
 	removeTimeFacetsFromRoute,

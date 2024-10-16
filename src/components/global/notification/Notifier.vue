@@ -64,7 +64,7 @@ export default defineComponent({
 				e.detail.message,
 				e.detail.key !== undefined ? e.detail.key : false,
 				'low',
-				e.detail.userClose !== undefined ? e.detail.userClose : Math.random() < 0.5,
+				e.detail.userClose !== undefined ? e.detail.userClose : false,
 			);
 		};
 

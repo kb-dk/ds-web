@@ -38,19 +38,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted } from 'vue';
+import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
-import { LocalStorageWrapper } from './utils/local-storage-wrapper';
+import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
 import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
 import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType } from '@/types/APIResponseTypes';
+import { useSearchResultStore } from '@/store/searchResultStore';
+import { APISearchResponseType } from '@/types/APIResponseTypes';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'App',
@@ -70,6 +73,8 @@ export default defineComponent({
 		const route = useRoute();
 		const { locale, t } = useI18n({ useScope: 'global' });
 		const authStore = useAuthStore();
+		const searchResultStore = useSearchResultStore();
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -169,20 +174,41 @@ export default defineComponent({
 
 			// we try to get the kaltura conf id's here. we got some backup ones from aegis, and they're
 			// fallback if we can't get these. But if the bff backend has some, we use them instead
+			watch(
+				() => authStore.firstAuthDone,
+				(newVal: boolean) => {
+					if (newVal) {
+						Promise.race([
+							APIService.getFullResultWithFacets(),
+							new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+						])
+							.then((response) => {
+								const typedResponse = response as APISearchResponseType;
+								searchResultStore.initFacets = typedResponse.data.facet_counts;
+								searchResultStore.firstBackendFetchExecuted = true;
+							})
+							.catch(() => {
+								errorManager.submitCustomError('solr-error', t('error.backend.solr.notResponsive'));
+								searchResultStore.firstBackendFetchExecuted = true;
+							});
 
-			Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
-				.then((response) => {
-					const typedResponse = response as APIAuthMessagesType; // Assert the correct type
-					authStore.partnerId = typedResponse.data.partnerId;
-					authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
-					authStore.videoUiConfId = typedResponse.data.videoUiConfId;
-					authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
-					authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
-					authStore.kalturaIdFetchExecuted = true;
-				})
-				.catch(() => {
-					authStore.kalturaIdFetchExecuted = true;
-				});
+						Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
+							.then((response) => {
+								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+								authStore.partnerId = typedResponse.data.partnerId;
+								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
+								authStore.videoUiConfId = typedResponse.data.videoUiConfId;
+								authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
+								authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
+								authStore.kalturaIdFetchExecuted = true;
+							})
+							.catch(() => {
+								errorManager.submitCustomError('bff-error', t('error.backend.bff.notResponsive'));
+								authStore.kalturaIdFetchExecuted = true;
+							});
+					}
+				},
+			);
 
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');

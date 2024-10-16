@@ -74,7 +74,7 @@
 						</button>
 					</div>
 				</div>
-				<Facets :facet-results="searchResultStore.facetResult" />
+				<Facets />
 				<div class="result-options">
 					<div class="hits">
 						<HitCount
@@ -203,19 +203,18 @@ export default defineComponent({
 		);
 
 		const resetFilters = () => {
-			searchResultStore.setKeepFacets(false);
 			tvToggled.value = true;
 			radioToggled.value = true;
-			let q = searchResultStore.currentQuery;
+			let qs = searchResultStore.currentQuery;
 			searchResultStore.resetSearch();
-			if (q !== '') {
+			if (qs !== '') {
 				router.push({
 					name: 'Search',
-					query: { q: q },
+					query: { q: qs },
 				});
 			} else {
 				router.push({
-					name: 'Search',
+					name: 'Home',
 				});
 			}
 		};
