@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, inject } from 'vue';
+import { defineComponent, onMounted, ref, inject, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
@@ -43,6 +43,7 @@ import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { useSpinnerStore } from '@/store/spinnerStore';
+import { useAuthStore } from '@/store/authStore';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -60,6 +61,8 @@ export default defineComponent({
 		const moreLikeThisRecords = ref<Array<GenericSearchResultType>>([]);
 		const { t } = useI18n();
 		const spinnerStore = useSpinnerStore();
+		const authStore = useAuthStore();
+		const route = useRoute();
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -94,10 +97,7 @@ export default defineComponent({
 			}
 		};
 
-		onMounted(async () => {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
-
-			const route = useRoute();
+		const buildContentFromReponse = async () => {
 			const id = route.params.id;
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
@@ -109,6 +109,23 @@ export default defineComponent({
 			}
 			if (moreLikeThis) {
 				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+			}
+		};
+
+		onMounted(async () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+
+			if (authStore.firstAuthDone) {
+				buildContentFromReponse();
+			} else {
+				watch(
+					() => authStore.firstAuthDone,
+					(newVal: boolean) => {
+						if (newVal) {
+							buildContentFromReponse();
+						}
+					},
+				);
 			}
 		});
 

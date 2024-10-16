@@ -84,6 +84,7 @@
 						/>
 					</div>
 				</div>
+				<div><CurrentFilters /></div>
 				<div class="sort-options">
 					<Sort></Sort>
 					<div class="search-options">
@@ -149,6 +150,7 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import CurrentFilters from '@/components/search/CurrentFilters.vue';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -156,6 +158,7 @@ export default defineComponent({
 		HitCount,
 		Sort,
 		Facets,
+		CurrentFilters,
 	},
 
 	setup() {
