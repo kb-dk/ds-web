@@ -52,7 +52,6 @@ import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import Footer from '@/components/global/nav/Footer.vue';
-import { normalizeFq } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'Search',
