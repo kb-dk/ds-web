@@ -54,7 +54,11 @@
 							<CustomExpander
 								headline="Udvælg kategorier"
 								icon="category"
-								:subline="`Alle kategorier`"
+								:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
+								:item-array="genreArray"
+								:update-entity="updateFacet"
+								:use-headline-translation="false"
+								:facet-type="'genre'"
 							>
 								<fieldset
 									v-if="searchResultStore.firstBackendFetchExecuted"
@@ -62,19 +66,21 @@
 								>
 									<TransitionGroup name="result">
 										<div
-											v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre)"
+											v-for="(singleFacet, index) in genreArray"
 											:key="index + 'genre'"
 											class="genre"
 										>
 											<GenreCheckbox
 												:fqkey="'genre'"
-												:title="singleFacet.title"
+												:title="singleFacet.name"
 												:amount="
-													categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
+													categoryFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'
 												"
 												:time-search-active="timeSearchStore.timeFacetsOpen"
 												:number="index"
-												:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
+												:parent-array="genreArray"
+												:update="updateCheckbox"
+												:checked="channelFilterExists('genre', singleFacet.name, searchResultStore.categoryFilters)"
 												:loading="searchResultStore.loading"
 											/>
 										</div>
@@ -85,8 +91,13 @@
 						<CustomExpander
 							headline="Udvælg kanaler"
 							icon="ondemand_video"
-							:subline="`Alle kanaler`"
+							:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
 							:fade="true"
+							:item-array="channelsArray"
+							:update-entity="updateFacet"
+							:filter-name-cutoff="5"
+							:use-headline-translation="false"
+							:facet-type="'creator_affiliation_facet'"
 						>
 							<fieldset
 								v-if="searchResultStore.firstBackendFetchExecuted"
@@ -94,23 +105,22 @@
 							>
 								<TransitionGroup name="result">
 									<div
-										v-for="(singleFacet, index) in simplifyFacets(
-											searchResultStore.initFacets.facet_fields.creator_affiliation_facet,
-										)"
+										v-for="(singleFacet, index) in channelsArray"
 										:key="`${index}-facet-${lastUpdate}`"
 										:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
 									>
 										<SimpleCheckbox
 											:key="`channelCheckbox-${lastUpdate}-${index}`"
 											:fqkey="'creator_affiliation_facet'"
-											:title="singleFacet.title"
-											:amount="channelFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
-											:time-search-active="timeSearchStore.timeFacetsOpen"
+											:title="singleFacet.name"
+											:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
 											:number="index"
+											:parent-array="channelsArray"
+											:update="updateCheckbox"
 											:checked="
 												channelFilterExists(
 													'creator_affiliation_facet',
-													singleFacet.title,
+													singleFacet.name,
 													searchResultStore.channelFilters,
 												)
 											"
@@ -135,7 +145,15 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter } from 'vue-router';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
-import { channelFilterExists, simplifyFacets, cloneRouteQuery } from '@/utils/filter-utils';
+import {
+	channelFilterExists,
+	simplifyFacets,
+	cloneRouteQuery,
+	extendFacetPairToSelectorData,
+	addChannelOrCategoryFilter,
+	removeChannelOrCategoryFilter,
+	createFilter,
+} from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
@@ -170,6 +188,62 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 
+		const channelsArray = ref([] as SelectorData[]);
+		const genreArray = ref([] as SelectorData[]);
+
+		if (searchResultStore.firstBackendFetchExecuted) {
+			channelsArray.value = extendFacetPairToSelectorData(
+				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
+			);
+			genreArray.value = extendFacetPairToSelectorData(simplifyFacets(searchResultStore.initFacets.facet_fields.genre));
+		} else {
+			watch(
+				() => searchResultStore.firstBackendFetchExecuted,
+				(newVal: boolean) => {
+					if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
+						channelsArray.value = extendFacetPairToSelectorData(
+							simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
+						);
+						genreArray.value = extendFacetPairToSelectorData(
+							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+						);
+					}
+				},
+			);
+		}
+
+		const updateCheckbox = (
+			array: SelectorData[],
+			index: number,
+			val: boolean,
+			title: string,
+			key: string,
+			filterArray: string[],
+		) => {
+			if (title && key) {
+				const routeQueries = channelFilterExists(key, title, filterArray)
+					? removeChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key)
+					: addChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key);
+				routeQueries.start = 0;
+				router.push({ query: routeQueries });
+				array[index].selected = val;
+			}
+		};
+
+		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string, allTranslationKey: string) => {
+			if (
+				dataArray.filter((item) => item.selected).length === 0 ||
+				dataArray.filter((item) => item.selected).length === dataArray.length
+			) {
+				return `${t(allTranslationKey)}`;
+			} else {
+				return `${dataArray.filter((item) => item.selected).length} ${t(
+					translationKey,
+					dataArray.filter((item) => item.selected).length,
+				)}`;
+			}
+		};
+
 		onMounted(() => {
 			timeSearchStore.timeFacetsOpen = false;
 
@@ -194,6 +268,18 @@ export default defineComponent({
 				toggleFacets();
 			},
 		);
+
+		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
+			array[index].selected = val;
+			const routeQueries = removeChannelOrCategoryFilter(
+				route,
+				createFilter(array[index].name, key),
+				timeSearchStore.timeFacetsOpen,
+				key,
+			);
+			routeQueries.start = 0;
+			router.push({ query: routeQueries });
+		};
 
 		const newSearch = (yearSearch: boolean) => {
 			const routeQueries = cloneRouteQuery(route);
@@ -322,6 +408,11 @@ export default defineComponent({
 			timeFacetButton,
 			timeSearchStore,
 			t,
+			channelsArray,
+			genreArray,
+			updateFacet,
+			updateCheckbox,
+			getSublineForFacets,
 		};
 	},
 });

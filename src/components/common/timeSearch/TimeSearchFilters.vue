@@ -358,52 +358,21 @@ export default defineComponent({
 				if (dataButton.value) {
 					dataButton.value.style.display = 'none';
 				}
-				watch(
-					() => searchResultStore.firstBackendFetchExecuted,
-					(newVal: boolean) => {
-						if (newVal) {
-							data.value = [];
-							selectYears.value = [];
-							const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
-							const sortedResults = [] as dataItem[];
-							resultsInYears.forEach((item, index) => {
-								if (index % 2 === 0) {
-									let nextResult = {
-										year: item,
-										items: Number(resultsInYears[index + 1]),
-									};
-									sortedResults.push(nextResult);
-								}
-							});
-							sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-							startYear.value.setFullYear(Number(sortedResults[0].year));
-							endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
-							for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-								selectYears.value.push(i.toString());
-								data.value.push({ key: i, value: i });
-								let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-									year: i.toString(),
-									items: 0,
-								};
-								item.x = Number(
-									(
-										(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
-										(i - startYear.value.getFullYear())
-									).toFixed(2),
-								);
-								item.y = item.items;
-								fullYearArray.value.push(item);
+				if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
+					constructSVG();
+				} else {
+					watch(
+						() => searchResultStore.firstBackendFetchExecuted,
+						(newVal: boolean) => {
+							if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
+								constructSVG();
+							} else {
+								/* TODO: Error here! */
+								console.log('failed.');
 							}
-							const svgElement = createSVGCurvedLine(fullYearArray.value);
-							if (dataContainer.value) {
-								dataContainer.value.appendChild(svgElement);
-							}
-							if (dataButton.value) {
-								dataButton.value.style.display = 'block';
-							}
-						}
-					},
-				);
+						},
+					);
+				}
 			}
 		});
 
@@ -422,6 +391,48 @@ export default defineComponent({
 				}
 			},
 		);
+
+		const constructSVG = () => {
+			data.value = [];
+			selectYears.value = [];
+			const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
+			const sortedResults = [] as dataItem[];
+			resultsInYears.forEach((item, index) => {
+				if (index % 2 === 0) {
+					let nextResult = {
+						year: item,
+						items: Number(resultsInYears[index + 1]),
+					};
+					sortedResults.push(nextResult);
+				}
+			});
+			sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+			startYear.value.setFullYear(Number(sortedResults[0].year));
+			endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.value.push(i.toString());
+				data.value.push({ key: i, value: i });
+				let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+					year: i.toString(),
+					items: 0,
+				};
+				item.x = Number(
+					(
+						(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+						(i - startYear.value.getFullYear())
+					).toFixed(2),
+				);
+				item.y = item.items;
+				fullYearArray.value.push(item);
+			}
+			const svgElement = createSVGCurvedLine(fullYearArray.value);
+			if (dataContainer.value) {
+				dataContainer.value.appendChild(svgElement);
+			}
+			if (dataButton.value) {
+				dataButton.value.style.display = 'block';
+			}
+		};
 
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;

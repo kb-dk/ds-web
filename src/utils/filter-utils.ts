@@ -1,5 +1,6 @@
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { FacetPair } from '@/types/GenericRecordTypes';
+import { SelectorData } from '@/types/TimeSearchTypes';
 const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
 };
@@ -199,6 +200,24 @@ const simplifyFacets = (facet: Array<string>): FacetPair[] => {
 	return allPairedFacets;
 };
 
+const extendFacetPairToSelectorData = (facets: FacetPair[]): SelectorData[] => {
+	if (facets === undefined) {
+		return [];
+	} else {
+		const na = [] as SelectorData[];
+		facets.forEach((item, i) => {
+			const no = {
+				name: item.title,
+				value: item.number,
+				index: i,
+				selected: false,
+			} as SelectorData;
+			na.push(no);
+		});
+		return na;
+	}
+};
+
 export {
 	createTagFilter,
 	createFilter,
@@ -212,4 +231,5 @@ export {
 	cloneRouteQuery,
 	normalizeFq,
 	removeTimeFacetsFromRoute,
+	extendFacetPairToSelectorData,
 };

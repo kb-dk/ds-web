@@ -16,6 +16,12 @@
    "frontpage": {
       "fromTheArchive":"A selection from the archive"
    },
+   "facets" : {
+      "allGenres": "all categories",
+      "genres": "category | categories",
+      "allChannels":"all channels",
+      "channels":"channel | channels"
+   },
    "breadcrumb": {
       "frontpage":"Frontpage",
       "findMaterials": "Find materials",
