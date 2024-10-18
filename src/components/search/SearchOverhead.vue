@@ -18,7 +18,11 @@
 							</span>
 						</button>
 						<button
-							v-if="searchResultStore.filters.length > 0 || searchResultStore.channelFilters.length > 0"
+							v-if="
+								searchResultStore.filters.length > 0 ||
+								searchResultStore.channelFilters.length > 0 ||
+								searchResultStore.categoryFilters.length > 0
+							"
 							class="reset"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
 							@click="resetFilters()"
