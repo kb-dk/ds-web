@@ -365,7 +365,6 @@ export default defineComponent({
 								constructSVG();
 							} else {
 								/* TODO: Error here! */
-								console.log('failed.');
 							}
 						},
 					);
