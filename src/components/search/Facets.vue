@@ -158,12 +158,20 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import { days, months, timeslots, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
+import {
+	days,
+	months,
+	timeslots,
+	startDate,
+	endDate,
+	startYear,
+	endYear,
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
-
+import { resetAllSelectorValues } from '@/utils/time-search-utils';
 export default defineComponent({
 	name: 'Facets',
 	components: {
@@ -246,7 +254,10 @@ export default defineComponent({
 
 		onMounted(() => {
 			timeSearchStore.timeFacetsOpen = false;
-
+			const startHolder = new Date(startYear.value.getTime());
+			const endHolder = new Date(endYear.value.getTime());
+			startDate.value = startHolder;
+			endDate.value = endHolder;
 			watch(
 				() => searchResultStore.facetResult,
 				(newFacets: FacetResultType) => {
@@ -338,6 +349,7 @@ export default defineComponent({
 				});
 				const routeQueries = cloneRouteQuery(route);
 				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
+				removeAllTimeFilters();
 				routeQueries.fq = existingFq;
 				router.push({
 					name: 'Search',
@@ -359,6 +371,16 @@ export default defineComponent({
 				});
 			}
 			timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen);
+		};
+
+		const removeAllTimeFilters = () => {
+			resetAllSelectorValues(days.value);
+			resetAllSelectorValues(months.value);
+			resetAllSelectorValues(timeslots.value);
+			const startHolder = new Date(startYear.value.getTime());
+			const endHolder = new Date(endYear.value.getTime());
+			startDate.value = startHolder;
+			endDate.value = endHolder;
 		};
 
 		const toggleFacets = () => {

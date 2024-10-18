@@ -273,8 +273,6 @@ import {
 	startDate,
 	endDate,
 	initSliderValues,
-	initStartDate,
-	initEndDate,
 	startYear,
 	endYear,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
@@ -346,8 +344,7 @@ export default defineComponent({
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = initSliderValues.value;
-				startDate.value.setTime(initStartDate.value.getTime());
-				endDate.value.setTime(initEndDate.value.getTime());
+
 				getTimeResults(true);
 			}
 			if (props.timeline) {
