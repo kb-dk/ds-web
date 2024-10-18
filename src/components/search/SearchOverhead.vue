@@ -435,6 +435,11 @@ export default defineComponent({
 	background-color: #757575 !important;
 }
 
+.filter-options.disabled button .dark-bar .close:before,
+.filter-options.disabled button .dark-bar .close:after {
+	background-color: #757575 !important;
+}
+
 .buffer {
 	height: 20px;
 	width: 100%;

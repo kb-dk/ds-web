@@ -20,7 +20,11 @@
       "allGenres": "all categories",
       "genres": "category | categories",
       "allChannels":"all channels",
-      "channels":"channel | channels"
+      "channels":"channel | channels",
+      "chosen":"chosen",
+      "reset":"reset"
+
+
    },
    "breadcrumb": {
       "frontpage":"Frontpage",

@@ -99,7 +99,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				} else if (str.split(':')[0].includes('genre')) {
 					categoryFilters.value.push(`${str}`);
 				} else {
-					str !== '' ? filters.value.push(`fq=${str}`) : null;
+					str !== '' ? filters.value.push(`fq=${encodeURIComponent(str)}`) : null;
 				}
 			}
 		}

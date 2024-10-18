@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
@@ -52,6 +53,7 @@ import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import Footer from '@/components/global/nav/Footer.vue';
+import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'Search',
@@ -65,6 +67,7 @@ export default defineComponent({
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const router = useRouter();
 		const route = useRoute();
 
@@ -105,7 +108,12 @@ export default defineComponent({
 				}
 				if (routeFacetQueries) {
 					searchResultStore.setFiltersFromURL(routeFacetQueries);
+					timeSearchStore.setFiltersFromUrl(routeFacetQueries);
+				} else {
+					startDate.value.setTime(startYear.value.getTime());
+					endDate.value.setTime(endYear.value.getTime());
 				}
+
 				searchResultStore.getSearchResults(route.query.q as string);
 				document.title = (t('app.titles.search') +
 					'"' +
@@ -132,6 +140,8 @@ export default defineComponent({
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.setRowCountFromURL(route.query.rows as string);
 					searchResultStore.getSearchResults(route.query.q as string);
+					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
+
 					document.title = (t('app.titles.search') +
 						'"' +
 						route.query.q +
