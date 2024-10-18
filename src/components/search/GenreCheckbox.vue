@@ -40,7 +40,7 @@
 				:disabled="amount === '0' && !checked"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'genre-checkbox', title, number)"
-				@change="check(fqkey, title)"
+				@change="updateSelection(!checked, title, fqkey)"
 			/>
 		</label>
 		<span :class="`category-image ${santizeAndSimplify(title)}`"></span>
@@ -48,16 +48,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import {
-	addChannelOrCategoryFilter,
-	removeChannelOrCategoryFilter,
-	channelFilterExists,
-	createFilter,
-} from '@/utils/filter-utils';
-import { useSearchResultStore } from '@/store/searchResultStore';
+import { defineComponent, PropType } from 'vue';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
+import { SelectorData } from '@/types/TimeSearchTypes';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'GenreCheckbox',
@@ -87,30 +81,23 @@ export default defineComponent({
 			type: Number,
 			required: true,
 		},
-		timeSearchActive: {
-			type: Boolean,
-			required: false,
-			default() {
-				return false;
-			},
-		},
 		checked: { type: Boolean, required: false },
 		loading: { type: Boolean, required: true },
+		update: {
+			type: Function,
+			default() {
+				return null;
+			},
+		},
+		parentArray: {
+			type: Array as PropType<SelectorData[]>,
+			default() {
+				return [] as SelectorData[];
+			},
+		},
 	},
 	setup(props) {
-		const router = useRouter();
-		const route = useRoute();
 		const searchResultStore = useSearchResultStore();
-		const check = (key: string | undefined, title: string | undefined) => {
-			if (title && key) {
-				const routeQueries = channelFilterExists(key, title, searchResultStore.categoryFilters)
-					? removeChannelOrCategoryFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre')
-					: addChannelOrCategoryFilter(route, createFilter(title, 'genre'), props.timeSearchActive, 'genre');
-				routeQueries.start = 0;
-				router.push({ query: routeQueries });
-			}
-		};
-
 		const getStyles = () => {
 			let classes = 'category-item';
 			if (props.checked) {
@@ -126,7 +113,11 @@ export default defineComponent({
 			return value ? `${Number(value).toLocaleString('de-DE')}` : '0';
 		};
 
-		return { check, displayAmount, addTestDataEnrichment, santizeAndSimplify, getStyles };
+		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
+			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.categoryFilters);
+		};
+
+		return { updateSelection, displayAmount, addTestDataEnrichment, santizeAndSimplify, getStyles };
 	},
 });
 </script>
