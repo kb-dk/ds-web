@@ -74,7 +74,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
 					if (typeof filter === 'string') {
-						console.log(decodeURIComponent(filter));
 						if (filter.includes('startTime')) {
 							const splitYears = decodeURIComponent(filter)
 								.replace('startTime:', '')
@@ -100,16 +99,12 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 					startDate.value = startHolder;
 					endDate.value = endHolder;
 				}
-			} else {
-				const str = decodeURIComponent(URLFilters);
-				console.log(str, 'eh?');
 			}
 			setNewSearchReqMet(false);
 		}
 	};
 
 	const setYearTimes = (firstYear: string, lastYear: string) => {
-		console.log(firstYear, lastYear);
 		const facetStartDate = new Date(firstYear);
 		const facetEndDate = new Date(lastYear);
 		startDate.value.setTime(facetStartDate.getTime());
