@@ -19,6 +19,7 @@
 						class="btn-light btn"
 						href="/find-materiale/dr-arkivet/"
 						role="button"
+						:data-testid="addTestDataEnrichment('button', '404', 'link-to-home')"
 					>
 						{{ t('error.wrongUrl.frontPage') }}
 					</a>
@@ -26,13 +27,13 @@
 						class="btn-light btn"
 						href="https://www.kb.dk"
 						role="button"
+						:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb')"
 					>
 						{{ t('error.wrongUrl.kbPage') }}
 					</a>
 				</div>
 			</div>
 		</div>
-		<div class="edge-bottom"></div>
 		<Footer />
 	</div>
 </template>
@@ -41,6 +42,7 @@
 import { defineComponent } from 'vue';
 import Footer from '@/components/global/nav/Footer.vue';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: '404',
@@ -54,6 +56,7 @@ export default defineComponent({
 		};
 		return { getImgServerSrcURL, t };
 	},
+	methods: { addTestDataEnrichment },
 });
 </script>
 
@@ -94,8 +97,9 @@ export default defineComponent({
 	z-index: -1;
 }
 .wrongUrlImage {
-	display: flex;
-	flex-direction: column;
+	min-width: 400px;
+	max-width: 400px;
+	margin-top: 14px;
 }
 .btn {
 	display: inline-block;
@@ -138,7 +142,7 @@ export default defineComponent({
 .imageContainer {
 	display: flex;
 	flex-direction: column;
-	width: 500px;
+	margin-right: 50px;
 }
 .edge-bottom {
 	width: 110%;
@@ -151,28 +155,34 @@ export default defineComponent({
 	top: calc(-4vw);
 	z-index: 1;
 }
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
+/* MEDIA QUERY 450 */
+@media (min-width: 450px) {
 	.not-found-content {
 		display: flex;
 		flex-direction: column;
 		max-width: 640px;
 		min-height: 80vh;
 	}
+	.imageContainer {
+		min-height: 20%;
+	}
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.not-found-content {
-		display: flex;
-		flex-direction: row;
 		max-width: 990px;
-		min-height: 60vh;
 	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.not-found-content {
+		display: flex;
 		max-width: 1150px;
+		flex-direction: row;
+		min-height: 40vh;
+	}
+	.imageContainer {
+		min-height: 100%;
 	}
 }
 /* MEDIA QUERY 1150 */
