@@ -19,7 +19,7 @@
 						class="btn-light btn"
 						href="/find-materiale/dr-arkivet/"
 						role="button"
-						:data-testid="addTestDataEnrichment('button', '404', 'link-to-home')"
+						:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
 					>
 						{{ t('error.wrongUrl.frontPage') }}
 					</a>
@@ -27,7 +27,7 @@
 						class="btn-light btn"
 						href="https://www.kb.dk"
 						role="button"
-						:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb')"
+						:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
 					>
 						{{ t('error.wrongUrl.kbPage') }}
 					</a>
@@ -176,6 +176,7 @@ export default defineComponent({
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.not-found-content {
+		justify-content: space-between;
 		display: flex;
 		max-width: 1150px;
 		flex-direction: row;
