@@ -13,36 +13,70 @@
 			loading="lazy"
 			class="bg-image"
 		/>
-		<img
-			:src="backgroundImage"
-			title="search background"
-			alt="Image of the Royal Danish Library"
-			loading="lazy"
-			class="bg-image cyan"
-		/>
-		<img
-			:src="backgroundImage"
-			title="search background"
-			alt="Image of the Royal Danish Library"
-			loading="lazy"
-			class="bg-image magenta"
-		/>
+		<div
+			ref="overlayRef"
+			class="gray-overlay"
+			@mousemove="handleMouseMove"
+		></div>
+		<div
+			ref="overlayRef"
+			class="hue-overlay"
+		></div>
 		<div class="noise"></div>
+		<svg class="svg-noise">
+			<filter
+				id="noise"
+				x="0%"
+				y="0%"
+				width="100%"
+				height="150%"
+			>
+				<feTurbulence
+					baseFrequency="0.00001 0.2"
+					result="NOISE"
+				/>
+			</filter>
+
+			<rect
+				x="0"
+				y="0"
+				width="100%"
+				height="100%"
+				filter="url(#noise)"
+			></rect>
+		</svg>
 	</div>
 </template>
-<script>
-import { defineComponent, computed } from 'vue';
+<script lang="ts">
+import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
 	name: 'Hero',
 
 	setup() {
+		const overlayRef = ref<HTMLElement | null>(null);
+
 		const backgroundImage = computed(() => {
-			return new URL(`@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg`, import.meta.url).href;
+			return new URL(`@/assets/images/rgb_hero_dr.svg`, import.meta.url).href;
 		});
+
+		const handleMouseMove = (e: MouseEvent) => {
+			if (overlayRef.value) {
+				const { left, top } = overlayRef.value.getBoundingClientRect();
+
+				// Calculate the mouse position relative to the div
+				const x = Math.round(e.clientX - left);
+				const y = Math.round(e.clientY - top);
+
+				console.log(x, y);
+				overlayRef.value.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0) 0%, rgba(243, 243, 243, 0.3) 35%)`;
+			}
+		};
 
 		return {
 			backgroundImage,
+			overlayRef,
+			handleMouseMove,
 		};
 	},
 });
@@ -56,6 +90,9 @@ export default defineComponent({
 	margin-bottom: 6vw;
 	align-items: center;
 }
+h1 {
+	pointer-events: none;
+}
 
 h1 .headline,
 h1 .subtitle {
@@ -64,9 +101,13 @@ h1 .subtitle {
 	background-color: white;
 	width: fit-content;
 	padding: 0px 10px;
+	pointer-events: all;
 }
+
 .noise {
+	pointer-events: none;
 	background-image: url('@/assets/images/noise.png');
+	transition: all 0.2s ease-in-out 0s;
 }
 
 .container {
@@ -92,6 +133,47 @@ h1 .subtitle {
 	top: -1px;
 }
 
+.hue-overlay:hover ~ .noise {
+	opacity: 0;
+}
+
+.hue-overlay {
+	width: 100vw;
+	height: 100%;
+	position: absolute;
+	opacity: 0;
+	background: linear-gradient(40deg, #c1f0f6 0%, #e0bbe4 20%, #ffd7b5 40%, #ffd1dc 60%, #e0bbe4 80%, #c1f0f6 100%);
+	/* 	background: linear-gradient(40deg, #93ff41 0%, #c3e9ff 20%, #000000 40%, #ffffff 60%, #c3e9ff 80%, #93ff41 100%);
+ */
+	background-size: 500% 100%; /* Adjust the size to match the animation */
+	animation: gradientLoop 5s linear infinite;
+	transition: all 0.2s ease-in-out 0s;
+}
+
+.hue-overlay:hover {
+	mix-blend-mode: hard-light;
+	opacity: 0.7;
+	animation-play-state: running; /* Start animation on hover */
+}
+
+.svg-noise rect {
+	opacity: 0;
+	transition: all 0.2s ease-in-out 0s;
+}
+
+.hue-overlay:hover ~ .svg-noise rect {
+	opacity: 1;
+}
+
+@keyframes gradientLoop {
+	0% {
+		background-position: 500% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 h1 {
 	position: relative;
 	z-index: 1;
@@ -102,6 +184,70 @@ h1 {
 	height: 100%;
 	object-fit: cover;
 	position: absolute;
+}
+
+.svg-noise {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	mix-blend-mode: screen;
+	animation: noiseVerticalEffect 0.1s infinite;
+	pointer-events: none;
+}
+
+.gray-overlay {
+	width: 100vw;
+	height: 100%;
+	object-fit: cover;
+	position: absolute;
+	transition: all 3s linear 0.2s;
+}
+
+.noise {
+	background-image: url('@/assets/images/noise.png');
+	width: 100vw;
+	height: 100%;
+	object-fit: cover;
+	position: absolute;
+	mix-blend-mode: overlay;
+	opacity: 1;
+	animation: noiseEffect 0.1s infinite;
+	filter: grayscale(1);
+}
+
+@keyframes noiseEffect {
+	0% {
+		background-position: 0px 0px;
+	}
+	25% {
+		background-position: 5px -5px;
+	}
+	50% {
+		background-position: -5px 5px;
+	}
+	75% {
+		background-position: -5px -5px;
+	}
+	100% {
+		background-position: 5px 5px;
+	}
+}
+@keyframes noiseVerticalEffect {
+	0% {
+		top: -15px;
+	}
+	25% {
+		top: 10px;
+	}
+	50% {
+		top: 13px;
+	}
+	75% {
+		top: -16px;
+	}
+	100% {
+		top: 10px;
+	}
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
