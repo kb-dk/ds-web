@@ -11,7 +11,7 @@
 				<div class="container">
 					<div class="information">
 						<router-link
-							:to="{ path: 'record/' + resultdata.id }"
+							:to="{ path: 'post/' + resultdata.id }"
 							class="title"
 							role="link"
 							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
@@ -30,7 +30,7 @@
 						<div class="summary">{{ resultdata.description }}</div>
 					</div>
 					<router-link
-						:to="{ path: 'record/' + resultdata.id }"
+						:to="{ path: 'post/' + resultdata.id }"
 						class="result-image-wrapper"
 						role="link"
 						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
