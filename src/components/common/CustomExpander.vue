@@ -174,10 +174,10 @@ export default defineComponent({
 	top: 12px;
 	background: linear-gradient(
 		90deg,
-		rgba(250, 250, 250, 1) 0%,
+		rgba(250, 250, 250, 0) 0%,
 		rgba(255, 255, 255, 0) 5%,
 		rgba(255, 255, 255, 0) 95%,
-		rgba(250, 250, 250, 1) 100%
+		rgba(250, 250, 250, 0) 100%
 	);
 }
 
@@ -193,7 +193,6 @@ export default defineComponent({
 	display: block;
 	width: 100%;
 	height: 1px;
-	margin-top: 1px;
 	opacity: 0.3;
 }
 
