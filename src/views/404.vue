@@ -15,7 +15,7 @@
 					<h1>{{ t('error.wrongUrl.header') }}</h1>
 					<p>{{ t('error.wrongUrl.text') }}</p>
 					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
-					<div>
+					<div class="extra-suggest">
 						<a
 							class="btn-light btn"
 							href="/find-materiale/dr-arkivet/"
@@ -68,6 +68,19 @@ export default defineComponent({
 	flex-direction: column;
 	width: 100%;
 }
+
+.not-found-content {
+	align-items: center;
+	padding: 0px 12px;
+}
+
+.extra-suggest {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding-bottom: 40px;
+}
+
 .not-found-container {
 	box-sizing: border-box;
 	background-color: #002e70;
@@ -93,7 +106,6 @@ export default defineComponent({
 	z-index: -1;
 }
 .wrongUrlImage {
-	min-width: 400px;
 	max-width: 400px;
 	margin-top: 14px;
 }
@@ -156,7 +168,10 @@ export default defineComponent({
 		display: flex;
 		flex-direction: column;
 		max-width: 640px;
-		min-height: 80vh;
+		margin-bottom: 40px;
+	}
+	.wrongUrlImage {
+		min-width: 400px;
 	}
 	.imageContainer {
 		min-height: 20%;
@@ -166,6 +181,9 @@ export default defineComponent({
 @media (min-width: 640px) {
 	.not-found-content {
 		max-width: 990px;
+	}
+	.extra-suggest {
+		flex-direction: row;
 	}
 }
 /* MEDIA QUERY 990 */
