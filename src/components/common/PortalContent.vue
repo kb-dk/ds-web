@@ -128,7 +128,7 @@ export default defineComponent({
 }
 
 .categories {
-	z-index: 3;
+	/* z-index: 3; */
 }
 .date-picker {
 	z-index: 2;

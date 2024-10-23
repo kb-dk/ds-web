@@ -1,11 +1,5 @@
 <template>
 	<div class="hero-container">
-		<div class="container">
-			<h1>
-				<span class="subtitle"><span class="text">Det Kgl. Biblioteks</span></span>
-				<span class="headline"><span class="text">DR-Arkiv</span></span>
-			</h1>
-		</div>
 		<img
 			:src="backgroundImage"
 			title="search background"
@@ -45,6 +39,34 @@
 				filter="url(#noise)"
 			></rect>
 		</svg>
+		<div class="container">
+			<h1>
+				<span class="subtitle"><span class="text">Det Kgl. Biblioteks</span></span>
+				<span class="headline"><span class="text">DR-Arkiv</span></span>
+			</h1>
+			<div class="hero-info">
+				<div class="info">
+					<h2>Vi er nået 35%...</h2>
+					<p>
+						I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende
+						både nyere og ældre udsendelser, så arkivet bliver større og større
+					</p>
+					<div class="process-bar">
+						<div class="progress">
+							<div class="color-part"></div>
+						</div>
+					</div>
+					<div class="link-container">
+						<a
+							class="link"
+							href="https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+						>
+							Læs mere om DR-arkivet
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -89,6 +111,7 @@ export default defineComponent({
 	margin-top: -120px;
 	margin-bottom: 6vw;
 	align-items: center;
+	z-index: 3;
 }
 h1 {
 	pointer-events: none;
@@ -113,6 +136,64 @@ h1 .subtitle {
 .container {
 	width: 100%;
 	margin-left: 12px;
+	flex-direction: column;
+	display: flex;
+	height: 100%;
+}
+
+.hero-info {
+	max-width: 400px;
+	position: relative;
+	z-index: 0;
+	height: 100%;
+	bottom: 0px;
+	display: flex;
+	align-items: flex-end;
+	border-top: 2px solid white;
+}
+
+.info {
+	margin-bottom: calc(70px - 3vw);
+}
+
+.hero-info h2,
+.hero-info p,
+.hero-info .link-container {
+	background-color: rgba(255, 255, 255, 0.8);
+	padding: 5px 25px;
+	font-family: 'noway';
+	font-weight: 100;
+	color: #0a2e70;
+}
+
+.hero-info h2 {
+	font-size: 26px;
+}
+
+.hero-info p {
+	font-size: 16px;
+}
+
+.hero-info h2,
+.hero-info p {
+	margin: 0;
+}
+
+.hero-info .link-container {
+	display: block;
+	padding-bottom: 50px;
+}
+
+.link-container .link {
+	background-color: #0a2e70;
+	width: 100%;
+	color: white;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 18px;
+	padding: 5px 0px;
+	border-radius: 3px;
 }
 
 .subtitle {
@@ -268,8 +349,10 @@ h1 {
 	}
 	.container {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		max-width: 1150px;
+		justify-content: space-between;
+		align-items: center;
 	}
 }
 /* MEDIA QUERY 1150 */
