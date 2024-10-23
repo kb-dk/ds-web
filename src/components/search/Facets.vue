@@ -15,7 +15,7 @@
 						aria-checked="false"
 						filter-button
 						:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
-						@click="toggleTimeFacets()"
+						@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 					>
 						<span class="material-icons first">today</span>
 						<span class="material-icons second">schedule</span>
@@ -45,7 +45,7 @@
 						:picker="true"
 						:init="false"
 						@new-search="newSearch(true)"
-						@close="toggleTimeFacets()"
+						@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 					></TimeSearchFilters>
 				</div>
 				<div class="facet-container">
@@ -280,6 +280,14 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			() => timeSearchStore.timeFacetsOpen,
+			() => {
+				console.log('yay!', timeSearchStore.timeFacetsOpen);
+				toggleTimeFacets();
+			},
+		);
+
 		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
 			array[index].selected = val;
 			const routeQueries = removeChannelOrCategoryFilter(
@@ -335,7 +343,7 @@ export default defineComponent({
 		};
 
 		const toggleTimeFacets = () => {
-			if (timeSearchStore.timeFacetsOpen) {
+			if (!timeSearchStore.timeFacetsOpen) {
 				timeFacetButton.value?.setAttribute('aria-checked', 'false');
 				gsap.to(timeFacets.value, {
 					height: '0px',
@@ -370,7 +378,6 @@ export default defineComponent({
 					},
 				});
 			}
-			timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen);
 		};
 
 		const removeAllTimeFilters = () => {
@@ -425,7 +432,6 @@ export default defineComponent({
 			toggleFacets,
 			facetsContainer,
 			timeFacets,
-			toggleTimeFacets,
 			newSearch,
 			timeFacetButton,
 			timeSearchStore,
