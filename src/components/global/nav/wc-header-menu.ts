@@ -868,6 +868,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 		}
 
 		.overall-header {
+			z-index: 5;
 			margin-bottom:0px;
 		}
 		.container {

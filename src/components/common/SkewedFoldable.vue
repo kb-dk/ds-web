@@ -195,7 +195,7 @@ export default defineComponent({
 	align-items: flex-start;
 	flex-direction: column;
 	overflow-x: hidden;
-	z-index: 1;
+	z-index: 4;
 	padding-bottom: 25px;
 }
 
@@ -275,6 +275,7 @@ h1 {
 	top: 3vw;
 	transform: rotateZ(2deg);
 	transform-origin: center bottom;
+	z-index: 3;
 }
 
 .edge.top.left {
@@ -299,6 +300,7 @@ h1 {
 	top: -3vw;
 	transform: rotateZ(-2deg);
 	transform-origin: center top;
+	z-index: 3;
 }
 .edge.bottom.left {
 	width: 110%;

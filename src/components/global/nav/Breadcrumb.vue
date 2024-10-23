@@ -178,7 +178,7 @@ export default defineComponent({
 }
 
 .bg-container {
-	z-index: 2;
+	z-index: 5;
 	background-color: #caf0fe;
 	position: relative;
 }
