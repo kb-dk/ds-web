@@ -92,7 +92,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				});
 			} else {
 				const str = URLFilters;
-				console.log(str.split('%3A')[0]);
 				if (str.split('%3A')[0].includes('origin')) {
 					filters.value.push(`fq=${str}`);
 				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
