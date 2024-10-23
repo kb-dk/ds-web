@@ -1,36 +1,38 @@
 <template>
 	<div class="not-found">
 		<div class="edge-top"></div>
-		<div class="not-found-content">
-			<div class="imageContainer">
-				<img
-					class="wrongUrlImage"
-					title="KB 404"
-					alt="Image of KB 404 status"
-					:src="getImgServerSrcURL()"
-				/>
-			</div>
-			<div class="not-found-details">
-				<h1>{{ t('error.wrongUrl.header') }}</h1>
-				<p>{{ t('error.wrongUrl.text') }}</p>
-				<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
-				<div>
-					<a
-						class="btn-light btn"
-						href="/find-materiale/dr-arkivet/"
-						role="button"
-						:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
-					>
-						{{ t('error.wrongUrl.frontPage') }}
-					</a>
-					<a
-						class="btn-light btn"
-						href="https://www.kb.dk"
-						role="button"
-						:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
-					>
-						{{ t('error.wrongUrl.kbPage') }}
-					</a>
+		<div class="not-found-container">
+			<div class="not-found-content">
+				<div class="imageContainer">
+					<img
+						class="wrongUrlImage"
+						title="KB 404"
+						alt="Image of KB 404 status"
+						:src="getImgServerSrcURL()"
+					/>
+				</div>
+				<div class="not-found-details">
+					<h1>{{ t('error.wrongUrl.header') }}</h1>
+					<p>{{ t('error.wrongUrl.text') }}</p>
+					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
+					<div>
+						<a
+							class="btn-light btn"
+							href="/find-materiale/dr-arkivet/"
+							role="button"
+							:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
+						>
+							{{ t('error.wrongUrl.frontPage') }}
+						</a>
+						<a
+							class="btn-light btn"
+							href="https://www.kb.dk"
+							role="button"
+							:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
+						>
+							{{ t('error.wrongUrl.kbPage') }}
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -66,20 +68,14 @@ export default defineComponent({
 	flex-direction: column;
 	width: 100%;
 }
-.not-found-content {
-	padding-left: 10vw;
-	padding-right: 10vw;
+.not-found-container {
 	box-sizing: border-box;
-	min-height: 50vh;
 	background-color: #002e70;
 	position: relative;
-	width: 110%;
-	height: 6vw;
 	top: calc(-6vw);
 	z-index: 1;
 	color: white;
-	display: flex;
-	flex-direction: row;
+	width: 100%;
 }
 .not-found-details {
 	display: flex;
@@ -142,7 +138,6 @@ export default defineComponent({
 .imageContainer {
 	display: flex;
 	flex-direction: column;
-	margin-right: 50px;
 }
 .edge-bottom {
 	width: 110%;
@@ -181,6 +176,10 @@ export default defineComponent({
 		max-width: 1150px;
 		flex-direction: row;
 		min-height: 40vh;
+		padding-right: 12px;
+		padding-left: 12px;
+		margin-right: auto;
+		margin-left: auto;
 	}
 	.imageContainer {
 		min-height: 100%;
@@ -190,12 +189,20 @@ export default defineComponent({
 @media (min-width: 1150px) {
 	.not-found-content {
 		max-width: 100%;
+		padding-right: 12px;
+		padding-left: 12px;
+		margin-right: auto;
+		margin-left: auto;
 	}
 }
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.not-found-content {
-		width: 100%;
+		max-width: 1280px;
+		padding-right: 12px;
+		padding-left: 12px;
+		margin-right: auto;
+		margin-left: auto;
 	}
 }
 </style>
