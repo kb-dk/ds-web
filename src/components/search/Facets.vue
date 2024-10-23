@@ -283,7 +283,6 @@ export default defineComponent({
 		watch(
 			() => timeSearchStore.timeFacetsOpen,
 			() => {
-				console.log('yay!', timeSearchStore.timeFacetsOpen);
 				toggleTimeFacets();
 			},
 		);
