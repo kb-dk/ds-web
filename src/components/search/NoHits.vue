@@ -9,6 +9,7 @@
 				{{ $t('search.nohitSubtitle') }}
 			</div>
 			<EdgedContentArea
+				v-if="searchResultStore.spellCheck.suggestions.length > 0"
 				:lines="true"
 				:dotted-edges="false"
 				background-color="#c4f1ed"
@@ -42,7 +43,8 @@
 			</TextAndImage>
 			<EdgedContentArea
 				:lines="true"
-				title="Led videre i vores hovedkategorier"
+				:title="$t('search.mainCategories')"
+				class="main-categories-header"
 			>
 				<template #content>
 					<div class="showcase-container">

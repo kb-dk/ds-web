@@ -88,6 +88,7 @@
     "nohit": "Vi fandt desværre intet match på søgningen \"{query}\"",
     "nohitSubtitle": "Vi beklager at du ikke kunne finde det du søgte efter. Arkivet er under udvikling og har udfordringer med at få søgeoplevelsen tidssvarende, men vi har nogle fif til at optimere på søgningen.",
     "tipsTitle": "Et par fif til din søgning",
+    "mainCategories": "led videre i vores hovedkategorier",
     "showFilters": "Vis filtre",
     "hideFilters": "Skjul filtre",
     "nextPage": "Næste side",

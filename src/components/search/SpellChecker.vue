@@ -10,8 +10,12 @@
 				class="spell-check-collations"
 			>
 				<router-link :to="{ name: 'Search', query: { q: spellCheck?.collations[index].collationQuery, start: 0 } }">
-					{{ `"${spellCheck?.collations[index].collationQuery}"` }}
-					{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[index].hits.toString() }) }}
+					<div class="spell-check-suggestion">
+						{{ `"${spellCheck?.collations[index].collationQuery}"` }}
+					</div>
+					<div class="spell-check-suggestion">
+						{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[index].hits.toString() }) }}
+					</div>
 				</router-link>
 			</div>
 		</div>
@@ -49,5 +53,10 @@ export default defineComponent({
 	padding: 20px;
 	margin-top: 20px;
 	margin-bottom: 50px;
+}
+
+.spell-check-suggestion {
+	display: inline-flex;
+	margin-right: 30px;
 }
 </style>

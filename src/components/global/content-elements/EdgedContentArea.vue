@@ -171,6 +171,13 @@ h3.reverse {
 	margin-left: auto;
 	box-sizing: border-box;
 }
+/* MEDIA QUERY 450 */
+@media (min-width: 450px) {
+	h3 {
+		font: normal normal normal 49px/50px Libre Baskerville;
+		font-size: 40px;
+	}
+}
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -181,6 +188,10 @@ h3.reverse {
 @media (min-width: 640px) {
 	.container {
 		max-width: 990px;
+	}
+	h3 {
+		font: normal normal normal 49px/68px Libre Baskerville;
+		font-size: 48px;
 	}
 }
 /* MEDIA QUERY 990 */

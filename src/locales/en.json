@@ -88,6 +88,7 @@
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
      "nohitSubtitle": "We are sorry we couldn't find what you were looking for. The archive is under development and has issues getting the search experience modernised. But we got some tips to optimize the search.",
      "tipsTitle": "A few tips for your search",
+     "mainCategories": "Look further in our main categories",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
      "nextPage":"Next page",
