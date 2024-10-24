@@ -1,18 +1,19 @@
 <template>
 	<div class="spell-check-box">
 		<div
-			v-if="spellCheck?.collations && spellCheck.collations.length > 0"
+			v-for="(collation, index) in spellCheck?.collations"
+			:key="collation"
 			class="spell-check-query"
 		>
-			<router-link :to="{ name: 'Search', query: { q: spellCheck?.collations[1].collationQuery, start: 0 } }">
-				{{ $t('search.didYouMean', { spellCheckQuery: spellCheck?.collations[1].collationQuery }) }}
-				{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[1].hits.toString() }) }}
-			</router-link>
-		</div>
-		<div class="spell-check-caption">
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-			magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+			<div
+				v-if="index % 2 !== 0"
+				class="spell-check-collations"
+			>
+				<router-link :to="{ name: 'Search', query: { q: spellCheck?.collations[index].collationQuery, start: 0 } }">
+					{{ `"${spellCheck?.collations[index].collationQuery}"` }}
+					{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[index].hits.toString() }) }}
+				</router-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,7 +41,7 @@ export default defineComponent({
 	font-weight: bold;
 }
 
-.spell-check-caption {
+.spell-check-collations {
 	margin-top: 10px;
 }
 

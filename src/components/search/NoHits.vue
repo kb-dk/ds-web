@@ -5,11 +5,23 @@
 	>
 		<div>
 			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
-			<div class="no-hits">
-				<SpellChecker :spell-check="searchResultStore.spellCheck" />
+			<div class="no-hits-heading-subtitle">
+				{{ $t('search.nohitSubtitle') }}
 			</div>
+			<EdgedContentArea
+				:lines="true"
+				:dotted-edges="false"
+				background-color="#c4f1ed"
+			>
+				<template #content>
+					<h2>{{ $t('search.maybeYouMeant') }}</h2>
+					<div class="no-hits">
+						<SpellChecker :spell-check="searchResultStore.spellCheck" />
+					</div>
+				</template>
+			</EdgedContentArea>
 			<TiltedDivider
-				title="Et par fif til din søgning"
+				:title="$t('search.tipsTitle')"
 				:right="true"
 			></TiltedDivider>
 			<TextAndImage>
@@ -34,15 +46,7 @@
 			>
 				<template #content>
 					<div class="showcase-container">
-						<div
-							v-for="(item, index) in categories"
-							:key="index"
-							class="showcase"
-						>
-							<div class="material-icons">movie</div>
-
-							{{ item }}
-						</div>
+						<MainCategories></MainCategories>
 					</div>
 				</template>
 			</EdgedContentArea>
@@ -67,10 +71,12 @@ import SpellChecker from '@/components/search/SpellChecker.vue';
 import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import MainCategories from '@/components/common/MainCategories.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
+		MainCategories,
 		SpellChecker,
 		TiltedDivider,
 		TextAndImage,
@@ -93,12 +99,8 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.no-hits {
-	background-color: #e8e8e8;
-	padding-right: 12px;
-	padding-left: 12px;
-	margin-right: auto;
-	margin-left: auto;
+.no-hits * {
+	padding: 0;
 	box-sizing: border-box;
 }
 
@@ -150,7 +152,10 @@ export default defineComponent({
 .no-hits-heading {
 	font-size: 36px;
 }
-
+.no-hits-heading-subtitle {
+	margin-top: 10px;
+	max-width: 70%;
+}
 .search-icon {
 	text-align: center;
 	font-size: 256px;

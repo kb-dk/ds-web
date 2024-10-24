@@ -1,300 +1,302 @@
 {
-   "app": {
-      "titles": {
-         "frontpage": {
-            "archive":  {
-               "name": "DR Arkiv",
-               "suffix": " - DR Arkiv"
-            }
-         },
-         "search":" Søgning på "
+  "app": {
+    "titles": {
+      "frontpage": {
+        "archive": {
+          "name": "DR Arkiv",
+          "suffix": " - DR Arkiv"
+        }
       },
-      "frontPages": {
-         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR arkiv"
-      }
-   },
-   "frontpage": {
-      "fromTheArchive":"Et udpluk fra arkivet"
-   },
-   "breadcrumb": {
-      "frontpage":"Forside",
-      "findMaterials": "Find materiale",
-      "drArchive": "DR-Arkivet",
-      "search":"Søgning",
-      "record": "Fuldpost"
-   },
-   "timeSearch": {
-      "timeMachine":"Brug Tiden...",
-      "year":"år | år",
-      "month":"måned | måneder",
-      "day":"Ugedag | ugedage",
-      "timePeriods": "tidsperiode | tidsperioder",
-      "chosenTimeslots":"Valgte tidspunkter",
-      "foundResults":"fundne resultater",
-      "allChosen":"Alle valgt",
-      "chosen": "valgt",
-      "notApplied":"ikke i brug",
-      "and":"og", 
-      "data":"datamængde",
-      "from":"fra",
-      "to":"til",
-      "timeHits": "Der er i alt ",
-      "result":"resultat | resultater",
-      "all":"alle",
-      "allMonths":"alle måneder i perioden",
-      "allDays":"alle ugedage i perioden",
-      "allTimeslots":"hele døgnet",
-      "selection":"Et udpluk af resultaterne",
-      "monthHeadline":"Udvælg måneder",
-      "dayHeadline":"Udvælg ugedage",
-      "timeslotHeadline":"Udvælg tidspunkter",
-      "yearHeadline":"Vælg dato via kalender",
-      "filterOpenButton":"Tidspunkter",
-      "filterCloseButton":"Luk tidspunkter",
-      "filterApplyButton":"Anvend tidspunkter",
-      "months": {
-         "january": "januar",
-         "february": "februar",
-         "march": "marts",
-         "april": "april",
-         "may": "maj",
-         "june": "juni",
-         "july": "juli",
-         "august": "august",
-         "september": "september",
-         "october": "oktober",
-         "november": "november",
-         "december": "december"
-      },
-      "weekdays": {
-         "monday": "mandag",
-         "tuesday": "tirsdag",
-         "wednesday": "onsdag",
-         "thursday": "torsdag",
-         "friday": "fredag",
-         "saturday": "lørdag",
-         "sunday": "søndag"
-     },
-     "timeslots": {
-         "morning":"06.00 - 12.00",
-         "midday":"12.00 - 18.00",
-         "evening":"18.00 - 24.00",
-         "night":"00.00 - 06.00"
-     }
-   },
-  "search":{
-     "searchbtn":"Søg",
-     "hitcount": " resultat fundet for | resultater fundet for",
-     "nohit":"Vi fandt desværre intet match på søgningen \"{query}\"",
-     "showFilters":"Vis filtre",
-     "hideFilters":"Skjul filtre",
-     "nextPage":"Næste side",
-     "previousPage":"Forrige side",
-     "page": "Side",
-     "goToPage":"Gå til side {n}",
-     "sortAfter":"Sorteret efter ",
-     "sortBy": "Sorter efter",
-     "title": "titel",
-     "relevance":"relevans",
-     "date":"dato",
-     "channels":"Kanaler",
-     "relatedSubjects":"Relaterede emner",
-     "didYouMean": "Mente du \"{spellCheckQuery}\"?",
-     "didYouMeanCount": "({spellCheckHits} resultater)",
-     "searchInput":"Søg på KB",
-     "searchHere":"Søg her",
-     "tv":"TV",
-     "radio":"Radio",
-     "all":"Alt",
-     "thumbnailButton":"Se flere thumbnails",
-     "thumbnailLink": "Thumbnail {index} ved {timestamp}",
-     "of":"af",
-     "startTime":"starttid",
-     "portals": {
-         "drArchive":"DR Arkivet",
-         "booksAndMaterials":"Bøger og tidskrifter",
-         "kbdk":"Søg på kb.dk",
-         "webshop":"Webshop",
-         "seeAllMaterials":"Se alt materiale"
-      },
-      "placeholders": {
-         "drArchive":"Søg i  DR arkiv",
-         "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
-         "kbdk":"Søg i hjemmesiden",
-         "webshop":"Søg i webshoppen"
-      }
-   },
-  "record":{
-     "duration":"Varighed",
-     "noBroadcastData":"Ingen sendetid",
-     "seeMaterial":"See material",
-     "timestamp":"kl. ",
-     "title":"Titel",
-     "genre":"Genre",
-     "copy": "Kopier henvisning til dette indhold",
-     "copyTitleSuccess":"Kopiering successfuld.",
-     "copyMessageSuccess":"Linket var successfuldt kopieret til klipboardet.",
-     "copyTitleFailed":"Kopiering fejlede.",
-     "copyMessageFailed":"Linket blev ikke kopieret til klipboardet. Kopier URL istedet.",
-     "moreMetadataBroadcast":"Yderligere information om udsendelsen",
-     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise."
-    
+      "search": " Søgning på "
+    },
+    "frontPages": {
+      "TVRadioDR": "Velkommen til Det Kgl. Biblioteks DR arkiv"
+    }
   },
-  "duration":{
-   "hours":"t",
-   "minutes":"min",
-   "seconds":"sek",
-   "unknown":"Ukendt længde"
+  "frontpage": {
+    "fromTheArchive": "Et udpluk fra arkivet"
+  },
+  "breadcrumb": {
+    "frontpage": "Forside",
+    "findMaterials": "Find materiale",
+    "drArchive": "DR-Arkivet",
+    "search": "Søgning",
+    "record": "Fuldpost"
+  },
+  "timeSearch": {
+    "timeMachine": "Brug Tiden...",
+    "year": "år | år",
+    "month": "måned | måneder",
+    "day": "Ugedag | ugedage",
+    "timePeriods": "tidsperiode | tidsperioder",
+    "chosenTimeslots": "Valgte tidspunkter",
+    "foundResults": "fundne resultater",
+    "allChosen": "Alle valgt",
+    "chosen": "valgt",
+    "notApplied": "ikke i brug",
+    "and": "og",
+    "data": "datamængde",
+    "from": "fra",
+    "to": "til",
+    "timeHits": "Der er i alt ",
+    "result": "resultat | resultater",
+    "all": "alle",
+    "allMonths": "alle måneder i perioden",
+    "allDays": "alle ugedage i perioden",
+    "allTimeslots": "hele døgnet",
+    "selection": "Et udpluk af resultaterne",
+    "monthHeadline": "Udvælg måneder",
+    "dayHeadline": "Udvælg ugedage",
+    "timeslotHeadline": "Udvælg tidspunkter",
+    "yearHeadline": "Vælg dato via kalender",
+    "filterOpenButton": "Tidspunkter",
+    "filterCloseButton": "Luk tidspunkter",
+    "filterApplyButton": "Anvend tidspunkter",
+    "months": {
+      "january": "januar",
+      "february": "februar",
+      "march": "marts",
+      "april": "april",
+      "may": "maj",
+      "june": "juni",
+      "july": "juli",
+      "august": "august",
+      "september": "september",
+      "october": "oktober",
+      "november": "november",
+      "december": "december"
+    },
+    "weekdays": {
+      "monday": "mandag",
+      "tuesday": "tirsdag",
+      "wednesday": "onsdag",
+      "thursday": "torsdag",
+      "friday": "fredag",
+      "saturday": "lørdag",
+      "sunday": "søndag"
+    },
+    "timeslots": {
+      "morning": "06.00 - 12.00",
+      "midday": "12.00 - 18.00",
+      "evening": "18.00 - 24.00",
+      "night": "00.00 - 06.00"
+    }
+  },
+  "search": {
+    "searchbtn": "Søg",
+    "hitcount": " resultat fundet for | resultater fundet for",
+    "nohit": "Vi fandt desværre intet match på søgningen \"{query}\"",
+    "nohitSubtitle": "Vi beklager at du ikke kunne finde det du søgte efter. Arkivet er under udvikling og har udfordringer med at få søgeoplevelsen tidssvarende, men vi har nogle fif til at optimere på søgningen.",
+    "tipsTitle": "Et par fif til din søgning",
+    "showFilters": "Vis filtre",
+    "hideFilters": "Skjul filtre",
+    "nextPage": "Næste side",
+    "previousPage": "Forrige side",
+    "page": "Side",
+    "goToPage": "Gå til side {n}",
+    "sortAfter": "Sorteret efter ",
+    "sortBy": "Sorter efter",
+    "title": "titel",
+    "relevance": "relevans",
+    "date": "dato",
+    "channels": "Kanaler",
+    "relatedSubjects": "Relaterede emner",
+    "didYouMean": "Mente du \"{spellCheckQuery}\"?",
+    "didYouMeanCount": "({spellCheckHits} resultater)",
+    "maybeYouMeant": "Måske mente du?",
+    "searchInput": "Søg på KB",
+    "searchHere": "Søg her",
+    "tv": "TV",
+    "radio": "Radio",
+    "all": "Alt",
+    "thumbnailButton": "Se flere thumbnails",
+    "thumbnailLink": "Thumbnail {index} ved {timestamp}",
+    "of": "af",
+    "startTime": "starttid",
+    "portals": {
+      "drArchive": "DR Arkivet",
+      "booksAndMaterials": "Bøger og tidskrifter",
+      "kbdk": "Søg på kb.dk",
+      "webshop": "Webshop",
+      "seeAllMaterials": "Se alt materiale"
+    },
+    "placeholders": {
+      "drArchive": "Søg i  DR arkiv",
+      "booksAndMaterials": "Søg på titel, forfatter, tidsskrift, database etc.",
+      "kbdk": "Søg i hjemmesiden",
+      "webshop": "Søg i webshoppen"
+    }
+  },
+  "record": {
+    "duration": "Varighed",
+    "noBroadcastData": "Ingen sendetid",
+    "seeMaterial": "See material",
+    "timestamp": "kl. ",
+    "title": "Titel",
+    "genre": "Genre",
+    "copy": "Kopier henvisning til dette indhold",
+    "copyTitleSuccess": "Kopiering successfuld.",
+    "copyMessageSuccess": "Linket var successfuldt kopieret til klipboardet.",
+    "copyTitleFailed": "Kopiering fejlede.",
+    "copyMessageFailed": "Linket blev ikke kopieret til klipboardet. Kopier URL istedet.",
+    "moreMetadataBroadcast": "Yderligere information om udsendelsen",
+    "missingStreamingUrl": "Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise."
+  },
+  "duration": {
+    "hours": "t",
+    "minutes": "min",
+    "seconds": "sek",
+    "unknown": "Ukendt længde"
   },
   "notification": {
-      "close":"Luk"
+    "close": "Luk"
   },
   "footer": {
-    "contactInfo":"Kontaktinformationer",
-    "cookie":"Cookieindstillinger",
+    "contactInfo": "Kontaktinformationer",
+    "cookie": "Cookieindstillinger",
     "column1": {
-       "title": "Genveje",
-       "links": {
-          "1": {
-             "title": "Find Materiale",
-             "link": "https://www.kb.dk/find-materiale"
-          },
-          "2": {
-             "title": "Inspiration",
-             "link": "https://www.kb.dk/inspiration"
-          },
-          "3": {
-             "title": "Arrangementer",
-             "link": "https://www.kb.dk/arrangementer"
-          },
-          "4": {
-             "title": "Services",
-             "link": "https://www.kb.dk/services"
-          },
-          "5": {
-             "title": "Besøg os",
-             "link": "https://www.kb.dk/besoeg-os"
-          }
-       }
+      "title": "Genveje",
+      "links": {
+        "1": {
+          "title": "Find Materiale",
+          "link": "https://www.kb.dk/find-materiale"
+        },
+        "2": {
+          "title": "Inspiration",
+          "link": "https://www.kb.dk/inspiration"
+        },
+        "3": {
+          "title": "Arrangementer",
+          "link": "https://www.kb.dk/arrangementer"
+        },
+        "4": {
+          "title": "Services",
+          "link": "https://www.kb.dk/services"
+        },
+        "5": {
+          "title": "Besøg os",
+          "link": "https://www.kb.dk/besoeg-os"
+        }
+      }
     },
     "column2": {
       "title": "Brug os",
-       "links": {
-          "1": {
-             "title": "For biblioteker",
-             "link": "https://forbiblioteker.kb.dk/"
-          },
-          "2": {
-             "title": "For professionelle",
-             "link": "https://pro.kb.dk/"
-          },
-          "3": {
-             "title": "Møder og konferencer",
-             "link": "https://pro.kb.dk/moeder"
-          },
-          "4": {
-             "title": "For centraladministrationen",
-             "link": "https://forcentraladministrationen.kb.dk/"
-          },
-          "5": {
-             "title": "Pligtaflevering",
-             "link": "https://pro.kb.dk/pligtaflevering"
-          },
-          "6": {
-             "title": "For skoler",
-             "link": "https://forskoler.kb.dk/"
-          }
-       }
+      "links": {
+        "1": {
+          "title": "For biblioteker",
+          "link": "https://forbiblioteker.kb.dk/"
+        },
+        "2": {
+          "title": "For professionelle",
+          "link": "https://pro.kb.dk/"
+        },
+        "3": {
+          "title": "Møder og konferencer",
+          "link": "https://pro.kb.dk/moeder"
+        },
+        "4": {
+          "title": "For centraladministrationen",
+          "link": "https://forcentraladministrationen.kb.dk/"
+        },
+        "5": {
+          "title": "Pligtaflevering",
+          "link": "https://pro.kb.dk/pligtaflevering"
+        },
+        "6": {
+          "title": "For skoler",
+          "link": "https://forskoler.kb.dk/"
+        }
+      }
     },
     "column3": {
-       "title": "Information",
-       "links": {
-          "1": {
-             "title": "Ledige stillinger",
-             "link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
-          },
-          "2": {
-             "title": "Reglementer",
-             "link": "https://www.kb.dk/reglementer"
-          },
-          "3": {
-             "title": "Ophavsret",
-             "link": "https://www.kb.dk/ophavsret"
-          },
-          "4": {
-             "title": "Privatlivs- og persondatapolitik",
-             "link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
-          },
-          "5": {
-             "title": "Tilgængelighedserklæring",
-             "link": "https://www.kb.dk/was"
-          },
-          "6": {
-             "title": "Driftsstatus",
-             "link": "https://www.kb.dk/driftsstatus"
-          }
-       }
+      "title": "Information",
+      "links": {
+        "1": {
+          "title": "Ledige stillinger",
+          "link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
+        },
+        "2": {
+          "title": "Reglementer",
+          "link": "https://www.kb.dk/reglementer"
+        },
+        "3": {
+          "title": "Ophavsret",
+          "link": "https://www.kb.dk/ophavsret"
+        },
+        "4": {
+          "title": "Privatlivs- og persondatapolitik",
+          "link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
+        },
+        "5": {
+          "title": "Tilgængelighedserklæring",
+          "link": "https://www.kb.dk/was"
+        },
+        "6": {
+          "title": "Driftsstatus",
+          "link": "https://www.kb.dk/driftsstatus"
+        }
+      }
     },
     "column4": {
       "links": {
-         "1": {
-            "title": "Spørg biblioteket",
-            "link": "https://www.kb.dk/spoerg-biblioteket"
-         },
-         "2": {
-            "title": "kb@kb.dk",
-            "link": "mailto:kb@kb.dk"
-         },
-         "3": {
-            "title": "Tel: (+45) 3346 4747",
-            "link": ""
-         },
-         "4": {
-            "title": "Pressekontakt",
-            "link": "https://www.kb.dk/om-os/presse"
-         },
-         "5": {
-            "title": "EAN: 5798000795297",
-            "link": ""
-         }
+        "1": {
+          "title": "Spørg biblioteket",
+          "link": "https://www.kb.dk/spoerg-biblioteket"
+        },
+        "2": {
+          "title": "kb@kb.dk",
+          "link": "mailto:kb@kb.dk"
+        },
+        "3": {
+          "title": "Tel: (+45) 3346 4747",
+          "link": ""
+        },
+        "4": {
+          "title": "Pressekontakt",
+          "link": "https://www.kb.dk/om-os/presse"
+        },
+        "5": {
+          "title": "EAN: 5798000795297",
+          "link": ""
+        }
       }
     }
   },
   "some": {
-   "facebook": {
-      "title":"Følg os på Facebook",
-      "link":"https://www.facebook.com/DetKglBibliotek/"
-   },
-   "instagram": {
-      "title":"Følg os på Instagram",
-      "link":"https://www.instagram.com/detkglbibliotek/"
-   },
-   "linkedin": {
-      "title":"Følg os på LinkedIn",
-      "link":"https://www.linkedin.com/company/det-kgl-bibliotek/"
-   }
+    "facebook": {
+      "title": "Følg os på Facebook",
+      "link": "https://www.facebook.com/DetKglBibliotek/"
+    },
+    "instagram": {
+      "title": "Følg os på Instagram",
+      "link": "https://www.instagram.com/detkglbibliotek/"
+    },
+    "linkedin": {
+      "title": "Følg os på LinkedIn",
+      "link": "https://www.linkedin.com/company/det-kgl-bibliotek/"
+    }
   },
   "error": {
     "record": {
       "loadingFailed": "Materialet kunne ikke hentes",
-      "notAllowed":"Du har ikke adgang til materialet"
+      "notAllowed": "Du har ikke adgang til materialet"
     },
-    "players":{
+    "players": {
       "video": {
-         "fileInit":"Noget gik galt - vi kan ikke finde denne video",
-         "playerInit":"Videoafspilleren er ikke tilgængelig i øjeblikket",
-         "generic":"Noget gik galt - vi kan ikke afspille videoen i øjeblikket"
+        "fileInit": "Noget gik galt - vi kan ikke finde denne video",
+        "playerInit": "Videoafspilleren er ikke tilgængelig i øjeblikket",
+        "generic": "Noget gik galt - vi kan ikke afspille videoen i øjeblikket"
       },
       "audio": {
-         "fileInit":"Noget gik galt - vi kan ikke finde denne udsendelse",
-         "playerInit":"Audioafspilleren er ikke tilgængelig i øjeblikket",
-         "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
+        "fileInit": "Noget gik galt - vi kan ikke finde denne udsendelse",
+        "playerInit": "Audioafspilleren er ikke tilgængelig i øjeblikket",
+        "generic": "Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
       }
-   },
-   "auth": {
-      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
-   },
-   "searchfailed":"Noget gik galt med din søgning",
-   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
-  } 
+    },
+    "auth": {
+      "serviceFailed": "Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
+    },
+    "searchfailed": "Noget gik galt med din søgning",
+    "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
+  }
 }
