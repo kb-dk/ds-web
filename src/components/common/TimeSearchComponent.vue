@@ -198,6 +198,7 @@ h1 {
 }
 
 .result-container {
+	width: 100%;
 	padding-top: 25px;
 }
 
@@ -242,6 +243,7 @@ h1 {
 }
 
 .further-recap {
+	width: 100%;
 	display: flex;
 	justify-content: flex-end;
 }
@@ -301,6 +303,7 @@ h1 {
 }
 
 .headline {
+	width: 100%;
 	display: none;
 }
 
