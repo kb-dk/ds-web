@@ -154,6 +154,9 @@ export default defineComponent({
 .no-hits-heading {
 	font-size: 36px;
 }
+h2 {
+	margin: 0;
+}
 .no-hits-heading-subtitle {
 	margin-top: 10px;
 	max-width: 70%;
