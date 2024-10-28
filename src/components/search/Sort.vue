@@ -1,21 +1,24 @@
 <template>
 	<div class="sort">
 		<span class="material-icons">sort</span>
-		<p ref="currentSort">{{ t('search.sortBy') }}:</p>
+		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
 			@click="newSort('score desc')"
 		>
 			{{ t('search.relevance') }}
 		</button>
 		<button
 			ref="titleRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
 			@click="newSort('title_sort_da asc')"
 		>
 			{{ t('search.title') }}
 		</button>
 		<button
 			ref="timeRef"
+			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
 			@click="newSort('startTime asc')"
 		>
 			{{ t('search.date') }}
@@ -29,6 +32,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
 import { onMounted } from 'vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Sort',
@@ -91,7 +95,17 @@ export default defineComponent({
 			}
 		});
 
-		return { revealSortingOptions, showSortingOptions, newSort, searchResultStore, t, titleRef, relevanceRef, timeRef };
+		return {
+			revealSortingOptions,
+			showSortingOptions,
+			newSort,
+			searchResultStore,
+			t,
+			titleRef,
+			relevanceRef,
+			timeRef,
+			addTestDataEnrichment,
+		};
 	},
 });
 </script>
@@ -102,6 +116,7 @@ export default defineComponent({
 	align-items: center;
 	padding-bottom: 20px;
 	padding-top: 20px;
+	justify-content: space-between;
 }
 
 .sort .active {
@@ -111,6 +126,10 @@ export default defineComponent({
 
 .sort .material-icons {
 	color: #002e70;
+}
+
+.sort-by {
+	margin-right: auto !important;
 }
 
 .sort p {
@@ -133,5 +152,13 @@ export default defineComponent({
 	top: 1px;
 	padding: 0px;
 	border-bottom: 2px solid transparent;
+}
+@media (min-width: 640px) {
+	.sort-by {
+		margin-right: initial;
+	}
+	.sort {
+		justify-content: initial;
+	}
 }
 </style>

@@ -13,6 +13,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+import { useAuthStore } from '@/store/authStore';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
@@ -34,6 +35,7 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		let videoPlayer: PlayerType;
 		const route = useRoute();
+		const authStore = useAuthStore();
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -53,7 +55,12 @@ export default defineComponent({
 
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
-			kalturaScript.setAttribute('src', import.meta.env.VITE_KALTURA_BASE_URL_VIDEO);
+			kalturaScript.setAttribute(
+				'src',
+				authStore.streamingBaseUrlVideo !== ''
+					? authStore.streamingBaseUrlVideo
+					: import.meta.env.VITE_KALTURA_BASE_URL_VIDEO,
+			);
 			kalturaScript.setAttribute('id', 'kaltura-script');
 			kalturaScript.setAttribute('type', 'application/javascript');
 			kalturaScript.id = 'kaltura-player-script';
@@ -70,19 +77,23 @@ export default defineComponent({
 			try {
 				videoPlayer = KalturaPlayer.setup({
 					targetId: 'video-player',
+					playback: {
+						autoplay: route.query?.autoplay ? true : false,
+					},
 					provider: {
-						partnerId: import.meta.env.VITE_KALTURA_PARTNER_ID,
-						uiConfId: import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
+						partnerId: authStore.partnerId !== '' ? authStore.partnerId : import.meta.env.VITE_KALTURA_PARTNER_ID,
+						uiConfId:
+							authStore.videoUiConfId !== '' ? authStore.videoUiConfId : import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
 					},
 				});
-				videoPlayer.loadMedia({ entryId: props.entryId });
+				videoPlayer.loadMedia({ entryId: props.entryId }).then(() => {
+					document
+						.querySelector('.playkit-pre-playback-play-button')
+						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+				});
+				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.ready().then(() => {
-					if (route.query?.startAt) {
-						videoPlayer.currentTime = Number(route.query.startAt);
-					}
-					if (route.query?.autoplay) {
-						videoPlayer.play();
-					}
+					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
 				});
 			} catch (e) {
 				handleErrorDispatch('');
@@ -90,11 +101,17 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			const no_script = !document.getElementById('kaltura-player-script');
-			if (no_script) {
-				appendScript();
+			if (authStore.kalturaIdFetchExecuted === false) {
+				watch(
+					() => authStore.kalturaIdFetchExecuted as boolean,
+					(newVal: boolean) => {
+						if (newVal === true) {
+							setupPlayer();
+						}
+					},
+				);
 			} else {
-				bootstrapPlayer();
+				setupPlayer();
 			}
 
 			watch(
@@ -109,6 +126,15 @@ export default defineComponent({
 				},
 			);
 		});
+
+		const setupPlayer = () => {
+			const no_script = !document.getElementById('kaltura-player-script');
+			if (no_script) {
+				appendScript();
+			} else {
+				bootstrapPlayer();
+			}
+		};
 
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {

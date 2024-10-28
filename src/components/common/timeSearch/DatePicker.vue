@@ -7,7 +7,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -17,6 +16,7 @@
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
+			@update-month-year="startHandleMonthYear"
 		></VueDatePicker>
 		<VueDatePicker
 			ref="endDatePicker"
@@ -25,7 +25,6 @@
 			:enable-time-picker="false"
 			auto-apply
 			no-today
-			:highlight="highlightedDays"
 			text-input
 			:format="format"
 			six-weeks="fair"
@@ -35,6 +34,7 @@
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			@update:model-value="readyForNewSearch()"
+			@update-month-year="endHandleMonthYear"
 		></VueDatePicker>
 		<div class="from-to-display">
 			<div class="container">
@@ -54,16 +54,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from 'vue';
+import { defineComponent, computed, ref, onMounted, watch } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import '@/components/common/TimeSearch/custom-datepicker.css';
+import '@/components/common/timeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
-import { startDate, endDate, startYear, endYear } from '@/components/common/TimeSearch/TimeSearchInitValues';
+import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { normalizeFq, cloneRouteQuery } from '@/utils/filter-utils';
-import { useRoute } from 'vue-router';
 
 interface Highlight {
 	dates: Date[];
@@ -72,6 +70,12 @@ interface Highlight {
 	quarters: { quarter: number; year: number }[];
 	weekdays: number[];
 	options: { highlightDisabled: boolean };
+}
+
+interface MonthYearEvent {
+	instance: number;
+	month: number;
+	year: number;
 }
 
 export default defineComponent({
@@ -84,33 +88,21 @@ export default defineComponent({
 		const startDatePicker = ref<DatePickerInstance>();
 		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
-		const route = useRoute();
 
 		onMounted(() => {
-			const routeQueries = cloneRouteQuery(route);
-			const fq = normalizeFq(routeQueries.fq);
-			const startTimeFilter = fq.find((fq: string) => fq.includes('startTime'));
-			if (startTimeFilter) {
-				const timestamps = decodeURIComponent(startTimeFilter)
-					.replace('startTime:', '')
-					.replace(' OR ', '')
-					.replace('[', '')
-					.replace(']', '')
-					.split(' TO ');
-				setDateFromISOString(timestamps[0], startDate.value);
-				setDateFromISOString(timestamps[1], endDate.value);
-			} else {
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			}
 			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
 			endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
 		});
 
-		const setDateFromISOString = (isoDate: string, date: Date) => {
-			const existingDate = new Date(isoDate);
-			date.setTime(existingDate.getTime());
-		};
+		watch(
+			() => timeSearchStore.timeFacetsOpen,
+			(newVal: boolean) => {
+				if (!newVal) {
+					startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
+					endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
+				}
+			},
+		);
 
 		const format = (date: Date) => {
 			const day = date.getDate();
@@ -120,6 +112,37 @@ export default defineComponent({
 			return `${day} / ${month} / ${year}`;
 		};
 
+		/* This way might seem weird to update the endDate,
+		 *  However, this is the only way to force an reactive update to the variable,
+		 * so we also get an update in the template. Weird, but this is the way.
+		 */
+		const endHandleMonthYear = ({ month, year }: MonthYearEvent) => {
+			const holder = new Date(endDate.value.getTime());
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			endDate.value = holder;
+			if (endDate.value.getTime() !== endYear.value.getTime()) {
+				timeSearchStore.setNewSearchReqMet(true);
+			} else {
+				timeSearchStore.setNewSearchReqMet(false);
+			}
+			//endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
+		};
+
+		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
+			const holder = new Date(startDate.value.getTime());
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			startDate.value = holder;
+			if (startDate.value.getTime() !== startYear.value.getTime()) {
+				timeSearchStore.setNewSearchReqMet(true);
+			} else {
+				timeSearchStore.setNewSearchReqMet(false);
+			}
+			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
+		};
 		const newSearch = () => {
 			emit('spanUpdated');
 		};
@@ -127,7 +150,11 @@ export default defineComponent({
 		const readyForNewSearch = () => {
 			timeSearchStore.setNewSearchReqMet(true);
 		};
-
+		/*
+		 * We're not using this right now - its _VERY_ heavy.
+		 * If we at some point want it, its just :highlight="highlightedDays"
+		 * in the picker.
+		 */
 		const highlightedDays = computed(() => {
 			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
 			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
@@ -153,6 +180,8 @@ export default defineComponent({
 			readyForNewSearch,
 			startDatePicker,
 			endDatePicker,
+			endHandleMonthYear,
+			startHandleMonthYear,
 		};
 	},
 });

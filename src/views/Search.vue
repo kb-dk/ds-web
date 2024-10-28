@@ -1,91 +1,72 @@
 <template>
-	<div class="search-and-results">
-		<!-- This is for the search bar -->
-		<div
-			ref="searchContainer"
-			class="search-container"
-		>
-			<div class="mobile-edge edge"></div>
-			<SearchBar />
-		</div>
-		<Transition
-			name="result"
-			mode="out-in"
-		>
-			<!-- This is for the search results / facets / did-you-mean / pager -->
-			<div
-				v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
-				key="1"
-				class="overall-container"
+	<div class="search-container">
+		<div class="search-and-results">
+			<Transition
+				name="result"
+				mode="out-in"
 			>
-				<SearchOverhead />
-				<div class="container">
-					<div class="row">
-						<div
-							v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
-							class="search-resultset"
-						>
-							<SearchResults
-								:search-results="searchResultStore.searchResult"
-								:num-found="searchResultStore.numFound"
+				<!-- This is for the search results / facets / did-you-mean / pager -->
+				<div
+					v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+					key="1"
+					class="overall-container"
+				>
+					<SearchOverhead />
+					<div class="container">
+						<div class="row">
+							<div
+								v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
+								class="search-resultset"
+							>
+								<SearchResults
+									:search-results="searchResultStore.searchResult"
+									:num-found="searchResultStore.numFound"
+								/>
+							</div>
+							<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
+								<NoHits />
+							</div>
+							<Pagination
+								v-show="searchResultStore.searchResult.length > 0"
+								:items-per-page="Number(searchResultStore.rowCount)"
+								:total-hits="searchResultStore.numFound"
+								:num-pages-to-show="numPagesToShow"
 							/>
 						</div>
-						<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
-							<NoHits />
-						</div>
-						<Pagination
-							v-show="searchResultStore.searchResult.length > 0"
-							:items-per-page="Number(searchResultStore.rowCount)"
-							:total-hits="searchResultStore.numFound"
-							:num-pages-to-show="numPagesToShow"
-						/>
 					</div>
 				</div>
-			</div>
-			<!-- This for the portal content when no search has been fired -->
-			<div
-				v-else
-				key="2"
-			>
-				<PortalContent v-if="!searchResultStore.searchFired" />
-			</div>
-		</Transition>
+			</Transition>
+		</div>
 		<Footer />
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, inject } from 'vue';
+import { defineComponent, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
-import SearchBar from '@/components/search/SearchBar.vue';
-import PortalContent from '@/components/common/PortalContent.vue';
 import { useI18n } from 'vue-i18n';
-import gsap from 'gsap';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import Footer from '@/components/global/nav/Footer.vue';
-import { normalizeFq } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'Search',
 	components: {
 		SearchResults,
-		SearchBar,
 		Pagination,
 		SearchOverhead,
-		PortalContent,
 		NoHits,
 		Footer,
 	},
 
 	setup() {
-		const searchContainer = ref<HTMLElement | null>(null);
-
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const router = useRouter();
 		const route = useRoute();
 
@@ -97,61 +78,56 @@ export default defineComponent({
 		onMounted(() => {
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
 			document.title = t('app.titles.frontpage.archive.name') as string;
-			searchResultStore.resetFilters();
-			if (route.query.q !== undefined) {
-				gsap.set(searchContainer.value, {
-					height: '300px',
-				});
-				const routeFacetQueries = route.query.fq;
-				const start = route.query.start as string;
-				const sort = route.query.sort as string;
-				searchResultStore.setStartFromURL(start);
-				searchResultStore.setSortFromURL(sort);
-				if (route.query.q) {
-					try {
-						const q = new URL(location.href).searchParams.get('q');
-						if (q !== null) {
-							searchResultStore.setCurrentQueryFromURL(q.toString());
-						}
-					} catch (error) {
-						if (error instanceof URIError) {
-							/**
-							 * Specific error: MalformedURI - aka you messsed up the query
-							 * and even worse you did it by manipulating the url directly
-							 * in the URL bar
-							 * */
-							errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
-						} else {
-							// General search error happened here so message to user should be generel
-							errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
-						}
-					}
-				}
-				if (routeFacetQueries) {
-					searchResultStore.setFiltersFromURL(routeFacetQueries);
-				}
-				searchResultStore.getSearchResults(route.query.q as string);
+			const pastPage = router.options.history.state.back as string;
+			if (pastPage && pastPage.startsWith('/post/')) {
 				document.title = (t('app.titles.search') +
 					'"' +
 					route.query.q +
 					'"' +
 					t('app.titles.frontpage.archive.suffix')) as string;
-			} else if (route.query.q === undefined) {
-				searchResultStore.resetSearch();
-				gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
+				searchResultStore.loading = false;
+			} else {
+				searchResultStore.resetFilters();
+				if (route.query.q !== undefined) {
+					const routeFacetQueries = route.query.fq;
+					const start = route.query.start as string;
+					const sort = route.query.sort as string;
+					searchResultStore.setStartFromURL(start);
+					searchResultStore.setSortFromURL(sort);
+					if (route.query.q) {
+						try {
+							const q = new URL(location.href).searchParams.get('q');
+							if (q !== null) {
+								searchResultStore.setCurrentQueryFromURL(q.toString());
+							}
+						} catch (error) {
+							if (error instanceof URIError) {
+								/**
+								 * Specific error: MalformedURI - aka you messsed up the query
+								 * and even worse you did it by manipulating the url directly
+								 * in the URL bar
+								 * */
+								errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
+							} else {
+								// General search error happened here so message to user should be generel
+								errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
+							}
+						}
+					}
+					if (routeFacetQueries) {
+						searchResultStore.setFiltersFromURL(routeFacetQueries);
+					}
+					searchResultStore.getSearchResults(route.query.q as string);
+					document.title = (t('app.titles.search') +
+						'"' +
+						route.query.q +
+						'"' +
+						t('app.titles.frontpage.archive.suffix')) as string;
+				} else if (route.query.q === undefined) {
+					searchResultStore.resetSearch();
+				}
 			}
 		});
-
-		watch(
-			() => searchResultStore.searchResult.length,
-			(newn: number) => {
-				if (newn > 0) {
-					gsap.to(searchContainer.value, { height: '300px', duration: '0.4' });
-				} else {
-					gsap.to(searchContainer.value, { height: '500px', duration: '0.4' });
-				}
-			},
-		);
 
 		// Watch the url param and update search results if it changes
 		watch(
@@ -163,14 +139,13 @@ export default defineComponent({
 					} else {
 						searchResultStore.setStartFromURL(route.query.start as string);
 					}
-					channelFacetsChanged(newp, prevp)
-						? searchResultStore.setKeepFacets(true)
-						: searchResultStore.setKeepFacets(false);
 					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.setRowCountFromURL(route.query.rows as string);
 					searchResultStore.getSearchResults(route.query.q as string);
+					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
+
 					document.title = (t('app.titles.search') +
 						'"' +
 						route.query.q +
@@ -188,24 +163,6 @@ export default defineComponent({
 			return newSort !== oldSort;
 		};
 
-		const channelFacetsChanged = (
-			newfq: RouteLocationNormalizedLoaded,
-			oldfq: RouteLocationNormalizedLoaded,
-		): boolean => {
-			const newFilter = normalizeFq(newfq.query.fq as string[] | string);
-			const oldFilter = normalizeFq(oldfq.query.fq as string[] | string);
-			const newCreatorAffiliationFilter = (newFilter as string[])?.find((fq: string) =>
-				fq.includes('creator_affiliation_facet'),
-			);
-			const oldCreatorAffiliationFilter = (oldFilter as string[])?.find((fq: string) =>
-				fq.includes('creator_affiliation_facet'),
-			);
-			if (newCreatorAffiliationFilter !== oldCreatorAffiliationFilter && newfq.query.q === oldfq.query.q) {
-				return true;
-			}
-			return false;
-		};
-
 		const checkParamUpdate = (newParams: RouteLocationNormalizedLoaded, prevParams: RouteLocationNormalizedLoaded) => {
 			return (
 				newParams.query.q !== prevParams.query.q ||
@@ -218,7 +175,6 @@ export default defineComponent({
 
 		return {
 			searchResultStore,
-			searchContainer,
 			numPagesToShow,
 		};
 	},
@@ -268,6 +224,7 @@ h3 {
 	background-color: white;
 	clip-path: polygon(100% 0, 0 0, 0 100%);
 	z-index: 3;
+	top: -1px;
 }
 
 .edge.blue {
@@ -283,26 +240,12 @@ h3 {
 	max-width: 100%;
 }
 .search-container {
-	width: 100vw;
-	max-width: 100%;
-	height: 500px;
+	width: 100%;
 }
 
-.search-container.big {
-	height: 500px;
-}
-
-.search-container.small {
-	height: 300px;
-}
 .search-resultset {
 	display: flex;
 	flex-direction: column;
-}
-
-.hit-count {
-	padding-top: 40px;
-	padding-bottom: 40px;
 }
 
 .container {

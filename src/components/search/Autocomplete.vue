@@ -16,7 +16,10 @@
 			>
 				<button
 					:title="item?.term"
+					:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
 					@click="executeOnSelection"
+					@mouseenter="updateSelectedElement(i + 1)"
+					@mouseleave="updateSelectedElement(0)"
 					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
 				></button>
 			</li>
@@ -29,6 +32,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import router from '@/router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import * as DOMPurify from 'dompurify';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Autocomplete',
@@ -46,8 +50,8 @@ export default defineComponent({
 
 		const doAutocompleteSearch = (query: string) => {
 			router.push({
-				name: 'Home',
-				query: { q: query ? query : searchResultStore.currentQuery, start: 0, fq: searchResultStore.preliminaryFilter },
+				name: 'Search',
+				query: { q: query ? query : searchResultStore.currentQuery, start: 0 },
 			});
 		};
 
@@ -69,6 +73,10 @@ export default defineComponent({
 			},
 		);
 
+		const updateSelectedElement = (n: number) => {
+			currentSelectedAutocomplete.value = n;
+		};
+
 		const keyMovement = (e: KeyboardEvent) => {
 			searchResultStore.setBlockAutocomplete(false);
 			switch (e.key) {
@@ -79,7 +87,7 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					executeOnSelection(e);
+					//executeOnSelection(e);
 					break;
 				default:
 					break;
@@ -137,6 +145,8 @@ export default defineComponent({
 			doAutocompleteSearch,
 			executeOnSelection,
 			currentSelectedAutocomplete,
+			addTestDataEnrichment,
+			updateSelectedElement,
 		};
 	},
 });
@@ -201,8 +211,8 @@ export default defineComponent({
 }
 
 .autocomplete ul li {
-	height: 25px;
-	padding: 7px 10px;
+	height: 39px;
+	padding: 0px 10px;
 	transition: all 0.2s linear 0s;
 	overflow: hidden;
 	text-wrap: nowrap;
@@ -239,7 +249,6 @@ export default defineComponent({
 	border-top: 1px solid rgb(229, 228, 226);
 	height: 1px;
 	position: relative;
-	top: -7px;
 	transition: all 0.2s linear 0s;
 	z-index: 0;
 }

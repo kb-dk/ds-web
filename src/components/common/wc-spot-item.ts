@@ -1,5 +1,6 @@
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/components/common/wc-image-item';
 
@@ -40,6 +41,19 @@ class SpotComponent extends HTMLElement {
 				const titleHolder = this.shadow.querySelector('.record-title');
 				titleHolder && (titleHolder.innerHTML = this.data.title);
 			}
+			const link = this.shadow.querySelector('.spot-wrapper') as HTMLAnchorElement;
+			link && (link.href = '/find-materiale/dr-arkivet/record/' + this.data.id);
+			link &&
+				link.setAttribute('data-testid', addTestDataEnrichment('link', 'spot-component', `link-${this.data.id}`, 0));
+			/* link?.addEventListener('click', (event) => {
+				console.log('clicked!');
+				event.preventDefault();
+				window.dispatchEvent(
+					new CustomEvent('change-path', {
+						detail: { path: this.data ? this.data.id : '' },
+					}),
+				);
+			}); */
 			const symbol = this.shadow.querySelector('.type-symbol');
 			symbol && (symbol.innerHTML = 'play_circle_filled');
 		}

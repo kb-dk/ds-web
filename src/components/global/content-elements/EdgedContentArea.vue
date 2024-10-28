@@ -1,5 +1,5 @@
 <template>
-	<div class="edge-content">
+	<div :class="lines ? 'edge-content lines' : 'edge-content'">
 		<h3 :class="reverse ? 'reverse' : ''">{{ title }}</h3>
 		<div
 			ref="top"
@@ -49,6 +49,12 @@ export default defineComponent({
 				return false;
 			},
 		},
+		lines: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return false;
+			},
+		},
 	},
 
 	setup(props) {
@@ -60,6 +66,7 @@ export default defineComponent({
 			let classes = `${prefix}-edge`;
 			if (props.reverse) classes = classes + ` reverse`;
 			if (props.dottedEdges) classes = classes + ` ${prefix}-dotted-border`;
+			if (!props.lines) classes = classes + ` removed`;
 			return classes;
 		};
 
@@ -87,6 +94,10 @@ temporary styling until patterns from design system are implemented
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0) translate(0%, 50%);
 }
 
+.removed {
+	display: none;
+}
+
 .top-edge.reverse {
 	transform: matrix(1, -0.03, 0.03, 1, 0, 0) translate(0%, 50%);
 }
@@ -95,8 +106,12 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	width: 100%;
 	align-items: center;
-	padding: 50px 0px;
+	padding: 0px 0px;
 	flex-direction: column;
+}
+
+.edge-content.lines {
+	padding: 50px 0px;
 }
 
 .top-dotted-border {
@@ -155,6 +170,9 @@ h3.reverse {
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
@@ -174,6 +192,9 @@ h3.reverse {
 		display: flex;
 		flex-direction: column;
 		max-width: 1150px;
+	}
+	.edge-content.lines {
+		padding: 50px 0px;
 	}
 }
 /* MEDIA QUERY 1150 */

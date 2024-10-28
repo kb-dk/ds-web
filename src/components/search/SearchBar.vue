@@ -1,17 +1,12 @@
 <template>
 	<div class="search-box">
-		<img
-			:src="backgroundImage"
-			title="search background"
-			alt="Image of the Royal Danish Library"
-			loading="lazy"
-			class="bg-image"
-		/>
 		<div class="search-container">
 			<div class="container main-12">
 				<div class="row">
 					<div class="col">
 						<form
+							ref="searchFormRef"
+							class="searchform"
 							action=" "
 							method=" "
 							role="search"
@@ -36,8 +31,9 @@
 										type="search"
 										:disabled="debounceMechanic ? true : false"
 										class="form-control"
-										:placeholder="t('search.searchInput')"
+										:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholders.${selectedPortal}`)"
 										name="simpleSearch"
+										:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
 										@keydown="updateKeystrokeForAutocomplete"
 									/>
 									<Transition name="fade">
@@ -65,6 +61,7 @@
 									type="button"
 									aria-label="reset"
 									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
 									@click="reset()"
 								>
 									<i
@@ -74,6 +71,114 @@
 										close
 									</i>
 								</button>
+								<div class="dropdown bootstrap-select">
+									<button
+										ref="selectButtonRef"
+										type="button"
+										class="btn dropdown-toggle btn-outline-primary"
+										data-toggle="dropdown"
+										role="combobox"
+										aria-haspopup="listbox"
+										aria-expanded="false"
+										title="Select portal"
+										aria-controls="searchbar-select-portal"
+										:data-testid="addTestDataEnrichment('button', 'portal', 'select-portal-toggle', 0)"
+										@click="togglePortalSelector()"
+									>
+										<div class="filter-option">
+											<div class="filter-option-inner">
+												<div class="filter-option-inner-inner">
+													{{ t(`search.portals.${selectedPortal}`) }}
+												</div>
+											</div>
+										</div>
+									</button>
+									<div
+										:class="showPortalSelector ? 'dropdown-menu select-show' : 'dropdown-menu'"
+										style=""
+									>
+										<div
+											id="bs-select-1"
+											class="inner show"
+											role="listbox"
+											tabindex="1"
+										>
+											<ul
+												class="dropdown-menu-inner inner show"
+												role="presentation"
+												style="margin-top: 0px; margin-bottom: 0px"
+											>
+												<li
+													role="option"
+													class="selected active"
+												>
+													<button
+														type="button"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[0].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'drarchive', 0)"
+														@click="selectPortal(0)"
+													>
+														<span class="text">
+															{{ t(`search.portals.${selectorValues[0].name}`) }}
+														</span>
+													</button>
+												</li>
+												<li role="option">
+													<button
+														type="button"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[1].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'primo', 0)"
+														@click="selectPortal(1)"
+													>
+														<span class="text">
+															{{ t(`search.portals.${selectorValues[1].name}`) }}
+														</span>
+													</button>
+												</li>
+												<li role="option">
+													<button
+														type="button"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[2].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'kbdk', 0)"
+														@click="selectPortal(2)"
+													>
+														<span class="text">
+															{{ t(`search.portals.${selectorValues[2].name}`) }}
+														</span>
+													</button>
+												</li>
+												<li role="option">
+													<button
+														type="button"
+														class="dropdown-item"
+														:title="t(`search.portals.${selectorValues[3].name}`)"
+														:data-testid="addTestDataEnrichment('button', 'portal', 'webshop', 0)"
+														@click="selectPortal(3)"
+													>
+														<span class="text">
+															{{ t(`search.portals.${selectorValues[3].name}`) }}
+														</span>
+													</button>
+												</li>
+												<li role="option">
+													<a
+														:title="t(`search.portals.${selectorValues[4].name}`)"
+														class="dropdown-item"
+														:href="'https://www.kb.dk/find-materiale'"
+														:data-testid="addTestDataEnrichment('link', 'portal', 'all-materials', 0)"
+													>
+														<span class="text">
+															{{ t(`search.portals.${selectorValues[4].name}`) }}
+														</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
 								<button
 									id="searchButton"
 									ref="searchButton"
@@ -81,6 +186,7 @@
 									type="submit"
 									aria-label="search"
 									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
 									@submit="search()"
 								>
 									<span class="d-none d-search-inline-flex searchSpan">{{ t('search.searchbtn') }}</span>
@@ -98,17 +204,20 @@
 				</div>
 			</div>
 		</div>
-		<div class="edge white"></div>
 	</div>
 </template>
 
 <script lang="ts">
-import { ref, computed, defineComponent, watch } from 'vue';
+import { ref, defineComponent, watch, onMounted, onUnmounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
 import router from '@/router';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import gsap from 'gsap';
+import { PortalSelectItem } from '@/types/SearchBarTypes';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 export default defineComponent({
 	name: 'Searchbar',
@@ -118,11 +227,47 @@ export default defineComponent({
 
 	setup() {
 		const { t } = useI18n();
-
+		const visibleSearchfield = ref(true);
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
 		let AutocompleteTimer: ReturnType<typeof setTimeout>;
+		const searchFormRef = ref<HTMLFormElement | null>(null);
+		const showPortalSelector = ref(false);
+		const selectedPortal = ref('drArchive');
+		const selectButtonRef = ref<HTMLButtonElement | null>(null);
+		const selectorValues: PortalSelectItem[] = [
+			{
+				name: 'drArchive',
+				destination: '',
+			},
+			{
+				name: 'booksAndMaterials',
+				destination:
+					'https://soeg.kb.dk/discovery/search?query=any,contains,sq&tab=Everything&search_scope=MyInst_and_CI&vid=45KBDK_KGL:KGL&lang=',
+			},
+			{
+				name: 'kbdk',
+				destination: 'https://www.kb.dk/search/site?search_api_fulltext=sq&search_type=kbdk',
+			},
+			{
+				name: 'webshop',
+				destination: 'https://webshop.kb.dk/?s=sq&post_type=product',
+			},
+			{
+				name: 'seeAllMaterials',
+				destination: '',
+			},
+		];
+
+		onMounted(() => {
+			window.addEventListener('toggle-search', toggleSearchField);
+		});
+
+		onUnmounted(() => {
+			window.removeEventListener('toggle-search', toggleSearchField);
+		});
 
 		watch(
 			() => searchResultStore.currentQuery,
@@ -143,46 +288,93 @@ export default defineComponent({
 			},
 		);
 
+		const toggleSearchField = () => {
+			if (visibleSearchfield.value) {
+				gsap.to(searchFormRef.value, {
+					height: '0px',
+					duration: 0.5,
+					overwrite: true,
+					opacity: 1,
+					overflow: 'hidden',
+					onComplete: () => {
+						gsap.set(searchFormRef.value, {
+							display: 'none',
+							overwrite: true,
+						});
+					},
+				});
+			} else {
+				gsap.set(searchFormRef.value, {
+					display: 'block',
+					overwrite: true,
+					onComplete: () => {
+						gsap.to(searchFormRef.value, {
+							height: 'auto',
+							duration: 0.5,
+							overwrite: true,
+							opacity: 1,
+							onComplete: () => {
+								gsap.set(searchFormRef.value, {
+									overflow: 'visible',
+								});
+							},
+						});
+					},
+				});
+			}
+			visibleSearchfield.value = !visibleSearchfield.value;
+		};
+
 		const updateKeystrokeForAutocomplete = (e: KeyboardEvent) => {
 			keyStrokeEvent.value = e;
 		};
 
 		const getAutocompleteResponse = (query: string) => {
-			if (query !== undefined && query.length >= 2 && !searchResultStore.blockAutocomplete) {
+			if (
+				query !== undefined &&
+				query.length >= 2 &&
+				!searchResultStore.blockAutocomplete &&
+				selectedPortal.value === 'drArchive'
+			) {
 				searchResultStore.getAutocompleteResults(query);
 			}
 		};
 
-		const backgroundImage = computed(() => {
-			return new URL(`@/assets/images/_Den_Sorte_Diamant-Laura_Stamer-min.jpg`, import.meta.url).href;
-		});
-
 		const search = () => {
-			searchResultStore.resetAutocomplete();
-			clearTimeout(AutocompleteTimer);
-			debounceMechanic.value = true;
-			setTimeout(() => {
-				debounceMechanic.value = false;
-			}, 500);
-			let query: LocationQueryRaw = {
-				q: searchResultStore.currentQuery,
-				start: 0,
-			};
+			if (selectedPortal.value === 'drArchive') {
+				searchResultStore.resetAutocomplete();
+				clearTimeout(AutocompleteTimer);
+				debounceMechanic.value = true;
+				setTimeout(() => {
+					debounceMechanic.value = false;
+				}, 500);
+				let query: LocationQueryRaw = {
+					q: searchResultStore.currentQuery,
+					start: 0,
+				};
 
-			if (searchResultStore.preliminaryFilter !== '') {
-				query.fq = searchResultStore.preliminaryFilter;
-			}
+				if (searchResultStore.preliminaryFilter !== '') {
+					query.fq = searchResultStore.preliminaryFilter;
+				}
 
-			if (searchResultStore.sort !== '') {
-				query.sort = searchResultStore.sort;
+				if (searchResultStore.sort !== '') {
+					query.sort = searchResultStore.sort;
+				} else {
+					query.sort = encodeURIComponent(`score desc`);
+				}
+				timeSearchStore.setTimeFacetsOpen(false);
+
+				router.push({
+					name: 'Search',
+					query: query,
+				});
 			} else {
-				query.sort = encodeURIComponent(`score desc`);
+				let URL = selectorValues.find((item) => item.name === selectedPortal.value)?.destination;
+				if (URL) {
+					URL = URL.replace(/sq/g, encodeURIComponent(searchResultStore.currentQuery));
+					window.location.href = URL;
+				}
 			}
-
-			router.push({
-				name: 'Home',
-				query: query,
-			});
 		};
 
 		const reset = () => {
@@ -199,6 +391,16 @@ export default defineComponent({
 			}
 		};
 
+		const togglePortalSelector = () => {
+			showPortalSelector.value = !showPortalSelector.value;
+		};
+
+		const selectPortal = (selected: number) => {
+			selectedPortal.value = selectorValues[selected].name;
+			togglePortalSelector();
+			(document.querySelector('#focusSearchInput') as HTMLInputElement)?.focus();
+		};
+
 		return {
 			searchResultStore,
 			debounceMechanic,
@@ -206,9 +408,16 @@ export default defineComponent({
 			search,
 			reset,
 			t,
-			backgroundImage,
 			updateKeystrokeForAutocomplete,
 			keyStrokeEvent,
+			addTestDataEnrichment,
+			searchFormRef,
+			togglePortalSelector,
+			showPortalSelector,
+			selectPortal,
+			selectButtonRef,
+			selectedPortal,
+			selectorValues,
 		};
 	},
 });
@@ -279,24 +488,18 @@ input[type='search']::-webkit-search-results-decoration {
 	display: block;
 }
 
+.searchform {
+	overflow: visible;
+}
+
 .search-box {
 	height: 100%;
 	position: relative;
-}
-
-.bg-image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	position: absolute;
+	z-index: 5;
 }
 
 .btn-icon i {
 	margin-left: auto;
-}
-
-.edge {
-	height: 31px;
 }
 
 .locked input {
@@ -304,23 +507,15 @@ input[type='search']::-webkit-search-results-decoration {
 	cursor: default;
 }
 
-.edge.white {
-	width: 100%;
-	position: absolute;
-	background-color: white;
-	clip-path: polygon(0 0, 0 100%, 100% 100%);
-	margin-top: -30px;
-}
-
 .search-container {
 	display: flex;
 	height: 100%;
-	background-image: url('https://design.kb.dk/components/assets/images/sourcesets/2/1280x560px_a.jpg');
 	align-content: center;
 	justify-content: center;
 	align-items: center;
 	background-size: cover;
 	background-position: center;
+	background-color: #caf0fe;
 }
 
 .btn-icon {
@@ -506,6 +701,211 @@ input:focus {
 .d-none {
 	display: none;
 }
+
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+	box-shadow: 0 0 0 0.2rem rgba(0, 46, 112, 0.5);
+}
+
+.bootstrap-select {
+	width: auto;
+	min-width: 220px;
+	margin-bottom: 0;
+	position: relative;
+	vertical-align: middle;
+
+	width: 100%;
+	border: 1px solid black;
+	height: 48px;
+	margin-bottom: 26px;
+	border-radius: 0.25rem;
+}
+
+.selectpicker {
+	position: absolute !important;
+	bottom: 0;
+	left: 50%;
+	display: block !important;
+	width: 0.5px !important;
+	height: 100% !important;
+	padding: 0 !important;
+	opacity: 0 !important;
+	border: none;
+	z-index: 0 !important;
+}
+
+.dropdown-toggle {
+	position: relative;
+	width: 100%;
+	text-align: right;
+	white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 2px;
+	padding: 0.375rem 0.75rem;
+	height: 3rem;
+	font-size: 1rem;
+	line-height: 2.25rem;
+	margin-bottom: 0;
+	padding: 20px 12px;
+	height: 72px;
+	border: none;
+	background: white;
+	font-family: 'noway', sans-serif;
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #002e70;
+
+	width: 100%;
+	padding: 6px 12px;
+	height: auto;
+}
+
+.dropdown-toggle::after {
+	vertical-align: middle;
+	margin-left: 1rem;
+	border: none;
+	content: 'expand_more';
+	font-family: 'Material Icons', serif;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: 'liga';
+}
+
+.dropdown-menu-inner li:last-child {
+	border-top: 1px solid #d6d6d6;
+}
+
+.filter-option {
+	position: static;
+	top: 0;
+	left: 0;
+	float: left;
+	height: 100%;
+	width: 100%;
+	text-align: left;
+	overflow: hidden;
+	flex: 0 1 auto;
+}
+
+.dropdown-item {
+	display: block;
+	width: 100%;
+	padding: 0.75rem 0.75rem;
+	clear: both;
+	font-weight: 400;
+	color: #171717;
+	text-align: inherit;
+	text-decoration: none;
+	white-space: nowrap;
+	background-color: transparent;
+	border: 0;
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 5;
+	display: none;
+	float: left;
+	min-width: 10rem;
+	padding: 0 0;
+	margin: 0.125rem 0 0;
+	font-size: 1rem;
+	color: #212529;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 0.125rem;
+	min-width: 100%;
+}
+
+.dropdown-menu-inner {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 5;
+	float: left;
+	min-width: 10rem;
+	padding: 0 0;
+	margin: 0.125rem 0 0;
+	font-size: 1rem;
+	color: #212529;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #f5f5f5;
+	border-radius: 0.125rem;
+	min-width: 100%;
+	margin-left: -2px;
+	top: -2px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.dropdown-menu-inner button,
+.dropdown-menu-inner a {
+	font-family: 'noway', sans-serif;
+	font-size: 16px;
+	transition: all 0.3s linear 0s;
+}
+
+.dropdown-menu-inner button:hover,
+.dropdown-menu-inner a:hover {
+	color: #002e70;
+	background-color: #f2f4f8;
+	cursor: pointer;
+}
+
+.dropdown-menu.select-show {
+	display: block;
+}
+#bs-select-1-3 {
+	border-top: 1px solid #d6d6d6;
+}
+
+#bs-select-1-3:after {
+	content: 'link';
+	float: right;
+	line-height: 1.5rem;
+	font-family: 'Material Icons';
+	font-size: 24px;
+	transform: translate(-100%, 0px);
+}
+
+.bootstrap-select .dropdown-menu li {
+	position: relative;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+.bootstrap-select .dropdown-menu.inner {
+	position: static;
+	float: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	border-radius: 0;
+	box-shadow: none;
+}
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -521,6 +921,21 @@ input:focus {
 	.container {
 		max-width: 990px;
 	}
+
+	.bootstrap-select {
+		width: calc(50% - 10px);
+		box-sizing: border-box;
+	}
+
+	.dropdown-toggle {
+		height: 46px;
+	}
+
+	#searchButton {
+		width: calc(50% - 10px);
+		box-sizing: border-box;
+		height: 48px;
+	}
 }
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
@@ -531,6 +946,26 @@ input:focus {
 		margin-top: initial;
 		position: initial;
 		width: 48px;
+	}
+
+	#searchButton {
+		width: auto;
+		height: auto;
+	}
+
+	.dropdown-toggle {
+		height: 72px;
+		padding: 20px 12px;
+	}
+
+	.dropdown-menu {
+		top: 71px;
+	}
+
+	.bootstrap-select {
+		border: 0px;
+		margin-bottom: 0px;
+		width: auto;
 	}
 
 	.btn-icon i {
@@ -605,7 +1040,7 @@ input:focus {
 		border: none;
 		display: block;
 		width: 100%;
-		font-size: 1rem;
+		font-size: 1.01rem;
 		font-weight: 400;
 		line-height: 1.5;
 		color: #495057;

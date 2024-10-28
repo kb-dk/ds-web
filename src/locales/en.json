@@ -16,6 +16,23 @@
    "frontpage": {
       "fromTheArchive":"A selection from the archive"
    },
+   "facets" : {
+      "allGenres": "all categories",
+      "genres": "category | categories",
+      "allChannels":"all channels",
+      "channels":"channel | channels",
+      "chosen":"chosen",
+      "reset":"reset"
+
+
+   },
+   "breadcrumb": {
+      "frontpage":"Frontpage",
+      "findMaterials": "Find materials",
+      "drArchive": "DR-archive",
+      "search":"Search",
+      "record": "Fullpost"
+   },
    "timeSearch": {
       "timeMachine":"Use the time...",
       "year":"year | years",
@@ -42,9 +59,9 @@
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
       "yearHeadline":"Choose dates via calendar",
-      "filterOpenButton":"Moments",
+      "filterOpenButton":"Date, periods and moments",
       "filterCloseButton":"Close moments",
-      "filterApplyButton":"Apply moments",
+      "filterApplyButton":"Apply",
       "months": {
          "january": "January",
          "february": "February",
@@ -102,7 +119,21 @@
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "of":"of",
-     "startTime":"Start time"
+     "startTime":"Start time",
+     "portals": {
+         "drArchive":"DR Archive",
+         "booksAndMaterials":"Books and journals",
+         "kbdk":"Search kb.dk",
+         "webshop":"Webshop",
+         "seeAllMaterials":"See all materials"
+      },
+      "placeholders": {
+         "drArchive":"Search DR Archive",
+         "booksAndMaterials":"Search title, author, journal, database etc. ",
+         "kbdk":"Search on website",
+         "webshop":"Search in our webshop",
+         "seeAllMaterials":"See all materials"
+      }
   },
   "record":{
      "duration":"Duration",
@@ -281,6 +312,13 @@
          "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later"
       },
    "searchfailed":"The search request could not be performed",
-   "malformeduri": "Something went wrong with your search terms - try to change some of them"
+   "malformeduri": "Something went wrong with your search terms - try to change some of them",
+   "wrongUrl": {
+      "header": "Sadly we can not find the page you're looking for :(",
+      "text": "It is unfortunate because we got 25.000 TB websites in storage",
+      "altHeader": "Maybe you're looking for",
+      "frontPage": "Frontpage of DR Archive",
+      "kbPage": "Frontpage of the Royal Danish Library"
+   }
   }
 }

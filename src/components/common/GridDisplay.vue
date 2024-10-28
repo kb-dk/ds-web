@@ -44,13 +44,18 @@ export default defineComponent({
 		this.linkItems = document.querySelectorAll('.related-record');
 		if (this.slidingElement) {
 			this.slidingElement.addEventListener('mousedown', this.startAndCalculateOffset);
+			this.slidingElement.addEventListener('touchstart', this.startAndCalculateOffset, { passive: true });
 			this.slidingElement.addEventListener('mouseleave', this.stopMovementOnParent);
+			this.slidingElement.addEventListener('touchend', this.stopMovementOnParent, { passive: true });
 			this.slidingElement.addEventListener('mouseup', this.stopMovementOnParent);
 			this.slidingElement.addEventListener('mousemove', this.calculateMovement);
+			this.slidingElement.addEventListener('touchmove', this.calculateMovement, { passive: true });
 
 			this.linkItems.forEach((element) => {
 				element.addEventListener('mousedown', this.stopMovement);
+				element.addEventListener('touchstart', this.stopMovement, { passive: true });
 				element.addEventListener('mousemove', this.startMovement);
+				element.addEventListener('touchmove', this.startMovement, { passive: true });
 				element.addEventListener('click', this.preventClickIfMovement);
 			});
 		}
@@ -60,13 +65,18 @@ export default defineComponent({
 		this.linkItems = document.querySelectorAll('.related-record');
 		if (this.slidingElement) {
 			this.slidingElement.removeEventListener('mousedown', this.startAndCalculateOffset);
+			this.slidingElement.removeEventListener('touchstart', this.startAndCalculateOffset);
 			this.slidingElement.removeEventListener('mouseleave', this.stopMovementOnParent);
+			this.slidingElement.removeEventListener('touchend', this.stopMovementOnParent);
 			this.slidingElement.removeEventListener('mouseup', this.stopMovementOnParent);
 			this.slidingElement.removeEventListener('mousemove', this.calculateMovement);
+			this.slidingElement.removeEventListener('touchmove', this.calculateMovement);
 
 			this.linkItems.forEach((element) => {
 				element.removeEventListener('mousedown', this.stopMovement);
+				element.removeEventListener('touchstart', this.stopMovement);
 				element.removeEventListener('mousemove', this.startMovement);
+				element.removeEventListener('touchmove', this.startMovement);
 				element.removeEventListener('click', this.preventClickIfMovement);
 			});
 		}
@@ -85,10 +95,14 @@ export default defineComponent({
 			}
 		},
 
-		startAndCalculateOffset(e: MouseEvent) {
+		startAndCalculateOffset(e: MouseEvent | TouchEvent) {
 			if (this.slidingElement) {
 				this.isDown = true;
-				this.startX = e.pageX - this.slidingElement.offsetLeft;
+				if (e instanceof TouchEvent) {
+					this.startX = e.touches[0].pageX - this.slidingElement.offsetLeft;
+				} else if (e instanceof MouseEvent) {
+					this.startX = e.pageX - this.slidingElement.offsetLeft;
+				}
 				this.scrollLeft = this.slidingElement.scrollLeft;
 			}
 		},
@@ -97,13 +111,21 @@ export default defineComponent({
 				this.isDown = false;
 			}
 		},
-		calculateMovement(e: MouseEvent) {
+		calculateMovement(e: MouseEvent | TouchEvent) {
 			if (this.slidingElement) {
 				if (!this.isDown) {
 					return;
 				}
 				e.preventDefault();
-				const x = e.pageX - this.slidingElement.offsetLeft;
+
+				let x: number;
+				if (e instanceof TouchEvent) {
+					x = e.touches[0].pageX - this.slidingElement.offsetLeft;
+				} else if (e instanceof MouseEvent) {
+					x = e.pageX - this.slidingElement.offsetLeft;
+				} else {
+					return;
+				}
 				this.slidingElement.scrollLeft = this.scrollLeft - (x - this.startX);
 			}
 		},

@@ -12,7 +12,12 @@
 							v-for="(link, index) in currentLocaleMessages.column1.links"
 							:key="index"
 						>
-							<a :href="link.link">{{ link.title }}</a>
+							<a
+								:href="link.link"
+								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column1`, Number(index))"
+							>
+								{{ link.title }}
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -24,7 +29,12 @@
 							v-for="(link, index) in currentLocaleMessages.column2.links"
 							:key="index"
 						>
-							<a :href="link.link">{{ link.title }}</a>
+							<a
+								:href="link.link"
+								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column2`, Number(index))"
+							>
+								{{ link.title }}
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -35,12 +45,18 @@
 							v-for="(link, index) in currentLocaleMessages.column3.links"
 							:key="index"
 						>
-							<a :href="link.link">{{ link.title }}</a>
+							<a
+								:href="link.link"
+								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column3`, Number(index))"
+							>
+								{{ link.title }}
+							</a>
 						</li>
 						<li>
 							<a
 								id="csconsentlink"
 								href="javascript:void(0)"
+								:data-testid="addTestDataEnrichment('link', 'footer', `cookie-column4`, 0)"
 							>
 								{{ t('footer.cookie') }}
 							</a>
@@ -60,6 +76,7 @@
 							<a
 								v-if="link.link"
 								:href="link.link"
+								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
 							>
 								{{ link.title }}
 							</a>
@@ -72,6 +89,7 @@
 								<a
 									class="rdl-some-link"
 									:href="t('some.facebook.link')"
+									:data-testid="addTestDataEnrichment('link', 'footer', `facebook-column4`, 0)"
 								>
 									<i class="rdl-icons">rdl_facebook</i>
 									<span class="sr-only">{{ t('some.facebook.title') }}</span>
@@ -81,6 +99,7 @@
 								<a
 									class="rdl-some-link"
 									:href="t('some.instagram.link')"
+									:data-testid="addTestDataEnrichment('link', 'footer', `instagram-column4`, 0)"
 								>
 									<i class="rdl-icons">rdl_instagram</i>
 									<span class="sr-only">{{ t('some.instagram.title') }}</span>
@@ -90,6 +109,7 @@
 								<a
 									class="rdl-some-link"
 									:href="t('some.linkedin.link')"
+									:data-testid="addTestDataEnrichment('link', 'footer', `linkedin-column4`, 0)"
 								>
 									<i class="rdl-icons">rdl_linkedin</i>
 									<span class="sr-only">{{ t('some.linkedin.title') }}</span>
@@ -106,6 +126,7 @@
 import { defineComponent, toRaw, watch, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FooterType } from '@/types/FooterType';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Footer',
@@ -126,7 +147,7 @@ export default defineComponent({
 			},
 		);
 
-		return { t, currentLocaleMessages };
+		return { t, currentLocaleMessages, addTestDataEnrichment };
 	},
 });
 </script>
@@ -212,7 +233,7 @@ h2 {
 	overflow: hidden;
 	background-color: #002e70;
 	color: white;
-	padding: 36px 0 40px;
+	padding: 36px 0 0px;
 	position: relative;
 	bottom: 0px;
 	box-sizing: border-box;
@@ -272,6 +293,9 @@ a {
 		flex: 0 0 25%;
 		max-width: 25%;
 		padding-bottom: 0px;
+	}
+	.global-footer {
+		padding: 36px 0 40px;
 	}
 	.container {
 		max-width: 1150px;

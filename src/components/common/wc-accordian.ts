@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 class AccordionComponent extends HTMLElement {
 	shadow: ShadowRoot;
@@ -35,6 +36,8 @@ class AccordionComponent extends HTMLElement {
 			const container = this.shadow.querySelector('.rdl-accordion-item');
 			container && container.classList.add('first');
 		}
+		const btn = this.shadow.querySelector('.rdl-accordion-trigger');
+		btn && btn.setAttribute('data-testid', addTestDataEnrichment('link', 'accordian', `title-${this.title}`, 0));
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {

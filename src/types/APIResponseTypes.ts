@@ -2,6 +2,7 @@ import { GenericSearchResultType, FacetsType } from './GenericSearchResultTypes'
 import { GenericRecordType } from './GenericRecordTypes';
 import { BroadcastRecordType } from './BroadcastRecordType';
 import { SpellCheckType } from './SpellCheckType';
+import { AxiosRequestConfig } from 'axios';
 
 export interface APISearchResponseType {
 	data: {
@@ -91,4 +92,22 @@ export interface APIResponseHeaderType {
 
 export interface APIAuthResponseType {
 	resp: string;
+}
+
+export interface facetItem {
+	name: string;
+	number: number;
+}
+export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+	_retryCount?: number;
+}
+
+export interface APIAuthMessagesType {
+	data: {
+		streamingBaseUrlVideo: string;
+		AudioUiConfId: string;
+		videoUiConfId: string;
+		partnerId: string;
+		streamingBaseUrlAudio: string;
+	};
 }

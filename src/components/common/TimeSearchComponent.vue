@@ -1,7 +1,7 @@
 <template>
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
-			<h1>{{ $t('timeSearch.timeMachine') }}</h1>
+			<h1 class="headline">{{ $t('timeSearch.timeMachine') }}</h1>
 			<TimeSearchFilters
 				:timeline="true"
 				:init="true"
@@ -13,6 +13,7 @@
 					<router-link
 						class="link"
 						:to="timeSearchLink"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 					>
 						<div class="hits">
 							{{ $t('timeSearch.timeHits') }}
@@ -31,6 +32,7 @@
 						<GridResultItem
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
+							:index="index"
 							background="#ffffff"
 						></GridResultItem>
 					</div>
@@ -50,6 +52,7 @@
 					<router-link
 						class="link"
 						:to="timeSearchLink"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
 					>
 						<div class="further-results">
 							<div class="hits">
@@ -77,11 +80,11 @@ import {
 	timeslots,
 	startDate,
 	endDate,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
-import TimeSearchFilters from '@/components/common/TimeSearch/TimeSearchFilters.vue';
-import EdgedContentArea from '../global/content-elements/EdgedContentArea.vue';
+import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getTimeResults,
 	getSublineForDays,
@@ -90,6 +93,7 @@ import {
 	getYears,
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
 
@@ -104,7 +108,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const timeSearchLink = ref<RouteLocationRaw>({
-			name: 'Home',
+			name: 'Search',
 			query: {
 				q: '*:*',
 				start: 0,
@@ -153,7 +157,7 @@ export default defineComponent({
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
 			timeSearchLink.value = {
-				name: 'Home',
+				name: 'Search',
 				query: {
 					q: '*:*',
 					start: 0,
@@ -178,6 +182,7 @@ export default defineComponent({
 			getSublineForDays,
 			getSublineForMonths,
 			getSublineForTimeslots,
+			addTestDataEnrichment,
 		};
 	},
 });
@@ -193,6 +198,7 @@ h1 {
 }
 
 .result-container {
+	width: 100%;
 	padding-top: 25px;
 }
 
@@ -219,6 +225,8 @@ h1 {
 	padding: 2px 5px;
 	flex-direction: row-reverse;
 	font-size: 16px;
+	position: relative;
+	left: -10px;
 }
 
 .link-arrow {
@@ -235,6 +243,7 @@ h1 {
 }
 
 .further-recap {
+	width: 100%;
 	display: flex;
 	justify-content: flex-end;
 }
@@ -293,6 +302,11 @@ h1 {
 	box-sizing: border-box;
 }
 
+.headline {
+	width: 100%;
+	display: none;
+}
+
 @media (max-width: 480px) {
 	.time-result-item:nth-child(n + 3) {
 		display: none;
@@ -321,6 +335,15 @@ h1 {
 		flex: 1 1 calc(25% - 20px);
 		max-width: calc(25% - 15px);
 		box-sizing: border-box;
+	}
+	.headline {
+		display: block;
+	}
+}
+
+@media (min-width: 1280px) {
+	.link {
+		left: 0px;
 	}
 }
 </style>

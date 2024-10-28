@@ -9,9 +9,10 @@
 		>
 			<div v-if="resultdata != null && !loading">
 				<router-link
-					:to="{ path: 'record/' + resultdata.id }"
-					class="title"
+					:to="{ path: 'post/' + resultdata.id }"
+					class="link-title"
 					role="link"
+					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
 				>
 					<div class="thumb-container">
 						<kb-imagecomponent
@@ -20,36 +21,31 @@
 						></kb-imagecomponent>
 						<SoundThumbnail v-else></SoundThumbnail>
 					</div>
-				</router-link>
-				<div class="date">
-					<span class="material-icons">play_circle_filled</span>
-					{{ resultdata.creator_affiliation + ', ' }}
-					{{ resultdata.startTime ? getBroadcastDate(resultdata.startTime, 'da') : '' }}
-				</div>
-				<div class="duration">
-					<span class="material-icons">schedule</span>
-					<span>{{ $t('record.duration') }}:&nbsp;</span>
-					<Duration
-						:start-date="resultdata.startTime"
-						:end-date="resultdata.endTime"
-						:iso-duration="resultdata.duration"
-						:parenthesis="false"
-					></Duration>
-					&nbsp;-&nbsp;
-					<span style="font-style: italic; opacity: 0.5">
-						kl. {{ resultdata.temporal_start_hour_da }} / {{ resultdata.temporal_start_day_da }}
-					</span>
-				</div>
-				<router-link
-					:to="{ path: 'record/' + resultdata.id }"
-					class="title"
-					role="link"
-				>
+					<div class="date">
+						<span class="material-icons">play_circle_filled</span>
+						{{ resultdata.creator_affiliation + ', ' }}
+						{{ starttime }}
+					</div>
+					<div class="duration">
+						<span class="material-icons">schedule</span>
+						<span>{{ $t('record.duration') }}:&nbsp;</span>
+						<Duration
+							:start-date="resultdata.startTime"
+							:end-date="resultdata.endTime"
+							:iso-duration="resultdata.duration"
+							:parenthesis="false"
+						></Duration>
+						&nbsp;-&nbsp;
+						<span style="font-style: italic; opacity: 0.5">
+							{{ resultdata.temporal_start_day_da }}
+						</span>
+					</div>
+
 					<div class="title">
 						{{ resultdata.title[0] }}
 					</div>
+					<div class="summary">{{ resultdata.description }}</div>
 				</router-link>
-				<div class="summary">{{ resultdata.description }}</div>
 			</div>
 			<div
 				v-else
@@ -110,6 +106,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from '@/components/common/Duration.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'GridResultItem',
@@ -122,6 +119,16 @@ export default defineComponent({
 			type: Object as PropType<GenericSearchResultType>,
 			required: false,
 			default: undefined,
+		},
+		starttime: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		index: {
+			type: Number as PropType<number>,
+			required: true,
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
@@ -184,7 +191,7 @@ export default defineComponent({
 
 			getImageData();
 		});
-		return { gridContainer, getBroadcastDate, imageData, timeSearchStore, searchResultStore };
+		return { gridContainer, getBroadcastDate, imageData, timeSearchStore, searchResultStore, addTestDataEnrichment };
 	},
 });
 </script>
@@ -204,6 +211,12 @@ export default defineComponent({
 
 .grid-result-item:hover:after {
 	transform: translate(-50%, -0%) scale3d(1.9, 1.9, 1.9);
+}
+
+.link-title {
+	font-size: 14px;
+	text-decoration: none;
+	color: black;
 }
 
 .grid-result-item:after {

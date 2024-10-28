@@ -4,6 +4,7 @@
 			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			:title="$t('search.thumbnailButton')"
+			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
 			@click="showThumbnails()"
 		>
 			<span class="material-icons thumbnails-icon">photo_library</span>
@@ -33,6 +34,7 @@
 					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"
 					v-bind="slotProps"
 					:replace="router.currentRoute.value.name === 'Record' ? true : false"
+					:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, index)"
 				>
 					<div
 						ref="thumbnailRefs"
@@ -60,6 +62,7 @@ import { ImageComponentType } from '@/types/ImageComponentType';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { convertSecondstoShow } from '@/utils/time-utils';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
@@ -72,6 +75,7 @@ export default defineComponent({
 		fileId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
+		nr: { type: Number, required: true },
 	},
 	setup(props) {
 		const { t } = useI18n();
@@ -166,6 +170,7 @@ export default defineComponent({
 			convertSecondstoShow,
 			router,
 			t,
+			addTestDataEnrichment,
 		};
 	},
 });

@@ -45,6 +45,7 @@
 				<div class="divider darkblue"></div>
 				<button
 					class="get-link"
+					:data-testid="addTestDataEnrichment('button', 'broadcast-audio', 'copy-link', 0)"
 					@click="getCurrentUrl()"
 				>
 					<span class="material-icons">link</span>
@@ -56,6 +57,7 @@
 			<router-link
 				v-if="lastPath"
 				:to="lastPath"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
 				Tilbage
@@ -63,21 +65,13 @@
 			<router-link
 				v-else
 				to="/"
+				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
 				Til forsiden
 			</router-link>
 		</div>
 		<div class="extra-record-data">
-			<div class="accordion">
-				<kb-accordion
-					first="true"
-					:title="t('record.moreMetadataBroadcast')"
-					expanded="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet quam felis. Curabitur dui augue, auctor eu sodales sit amet, porta vel dolor. Ut libero purus, malesuada ut tincidunt non, auctor nec magna. Quisque interdum, libero vitae varius tempor, ipsum sapien tempor tellus, et aliquet ex enim in neque. Donec lacinia justo urna, et imperdiet tellus sodales sit amet. Nulla nec aliquam nunc. Nam pretium suscipit posuere. Pellentesque tincidunt auctor mattis.
-					
-Mauris non ligula a urna dapibus egestas eget at sem. Sed ac nulla ex. Cras quis ligula at nulla tincidunt consequat. Aliquam arcu est, malesuada non sapien at, malesuada tempus nulla. Etiam faucibus condimentum leo, eget euismod eros cursus fermentum. Fusce eget arcu non nulla vulputate aliquet eget id velit. Integer ipsum tellus, tempus quis elementum id, dictum vitae libero. Nullam at convallis lectus. Morbi pellentesque eget nisi id tempor."
-				></kb-accordion>
-			</div>
 			<div
 				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
 				class="related-content"
@@ -107,8 +101,8 @@ import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
-import '@/components/common/wc-accordian';
 import '@/components/common/wc-spot-item';
 
 export default defineComponent({
@@ -153,7 +147,17 @@ export default defineComponent({
 			copyTextToClipboard();
 		};
 
-		return { lastPath, locale, entryId, t, getCurrentUrl, getBroadcastDate, getBroadcastTime, checkForKalturaId };
+		return {
+			lastPath,
+			locale,
+			entryId,
+			t,
+			getCurrentUrl,
+			getBroadcastDate,
+			getBroadcastTime,
+			checkForKalturaId,
+			addTestDataEnrichment,
+		};
 	},
 });
 </script>

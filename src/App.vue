@@ -10,20 +10,7 @@
 		</div>
 		<Notifier></Notifier>
 		<Spinner></Spinner>
-		<kb-menu
-			:routing="true"
-			:locale="currentLocale"
-		></kb-menu>
-		<div
-			ref="wipe"
-			class="wipe"
-		>
-			<img
-				title="Royal Danish Library"
-				alt="Logo of the Royal Danish Library"
-				:src="getImgServerSrcURL()"
-			/>
-		</div>
+		<Header :locale="currentLocale"></Header>
 	</div>
 	<div class="content">
 		<router-view v-slot="{ Component }">
@@ -38,19 +25,35 @@
 			</transition>
 		</router-view>
 	</div>
+	<div
+		ref="wipe"
+		class="wipe"
+	>
+		<img
+			title="Royal Danish Library"
+			alt="Logo of the Royal Danish Library"
+			:src="getImgServerSrcURL()"
+		/>
+	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted } from 'vue';
+import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
-import { LocalStorageWrapper } from './utils/local-storage-wrapper';
+import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
-
+import Header from '@/components/search/Header.vue';
+import { useAuthStore } from '@/store/authStore';
 import '@/components/global/nav/wc-header-menu';
+import { APIService } from '@/api/api-service';
+import { APIAuthMessagesType } from '@/types/APIResponseTypes';
+import { useSearchResultStore } from '@/store/searchResultStore';
+import { APISearchResponseType } from '@/types/APIResponseTypes';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'App',
@@ -58,6 +61,7 @@ export default defineComponent({
 		Notifier,
 		Spinner,
 		Footer,
+		Header,
 	},
 	setup() {
 		const td = ref(0.4);
@@ -68,6 +72,9 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 		const { locale, t } = useI18n({ useScope: 'global' });
+		const authStore = useAuthStore();
+		const searchResultStore = useSearchResultStore();
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -144,10 +151,18 @@ export default defineComponent({
 		};
 
 		router.beforeEach((to, from) => {
-			if (from.name === 'Home' && to.name === 'Record') {
+			if (from.name === 'Search' && to.name === 'Record') {
 				transitionName.value = 'from-search-to-record';
+			} else if (from.name === 'Record' && to.name === 'Search') {
+				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Home' && to.name === 'Search') {
+				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Search' && to.name === 'Home') {
+				transitionName.value = 'from-record-to-search';
 			} else if (from.name === 'Record' && to.name === 'Home') {
 				transitionName.value = 'from-record-to-search';
+			} else if (from.name === 'Home' && to.name === 'Record') {
+				transitionName.value = 'from-search-to-record';
 			} else {
 				transitionName.value = 'swipe';
 			}
@@ -156,6 +171,45 @@ export default defineComponent({
 		onMounted(async () => {
 			//for now, we set the title of the app to the archive. Can be changed if we ever go portal-mode.
 			document.title = t('app.titles.frontpage.archive.name') as string;
+
+			// we try to get the kaltura conf id's here. we got some backup ones from aegis, and they're
+			// fallback if we can't get these. But if the bff backend has some, we use them instead
+			watch(
+				() => authStore.firstAuthDone,
+				(newVal: boolean) => {
+					if (newVal) {
+						Promise.race([
+							APIService.getFullResultWithFacets(),
+							new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+						])
+							.then((response) => {
+								const typedResponse = response as APISearchResponseType;
+								searchResultStore.initFacets = typedResponse.data.facet_counts;
+								searchResultStore.firstBackendFetchExecuted = true;
+							})
+							.catch(() => {
+								errorManager.submitCustomError('solr-error', t('error.backend.solr.notResponsive'));
+								searchResultStore.firstBackendFetchExecuted = true;
+							});
+
+						Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
+							.then((response) => {
+								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+								authStore.partnerId = typedResponse.data.partnerId;
+								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
+								authStore.videoUiConfId = typedResponse.data.videoUiConfId;
+								authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
+								authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
+								authStore.kalturaIdFetchExecuted = true;
+							})
+							.catch(() => {
+								errorManager.submitCustomError('bff-error', t('error.backend.bff.notResponsive'));
+								authStore.kalturaIdFetchExecuted = true;
+							});
+					}
+				},
+			);
+
 			await router.isReady();
 			const hasLocaleParam = Object.prototype.hasOwnProperty.call(route.query, 'locale');
 			const storedLocale = LocalStorageWrapper.get('locale') as string;
@@ -215,6 +269,10 @@ export default defineComponent({
 
 .result-enter {
 	transition-delay: 0.15s;
+}
+
+.app {
+	position: relative;
 }
 
 .result-enter-from,

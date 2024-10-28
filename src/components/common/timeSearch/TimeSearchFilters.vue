@@ -4,7 +4,9 @@
 		class="slider-container"
 	>
 		<button
+			ref="dataButton"
 			class="data-size"
+			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 			@click="toggleExplanation()"
 		>
 			{{ $t('timeSearch.data') }}
@@ -79,10 +81,7 @@
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
-		<div
-			v-if="timeline"
-			class="month-selector-expanding"
-		>
+		<div class="month-selector-expanding">
 			<fieldset>
 				<CustomExpander
 					:headline="t('timeSearch.monthHeadline')"
@@ -241,17 +240,13 @@
 			class="apply-time-facets-container"
 		>
 			<button
-				class="close"
-				@click="closeTimeFacets()"
-			>
-				{{ t('timeSearch.filterCloseButton') }}
-			</button>
-			<button
 				class="apply-time-facets"
 				:disabled="!timeSearchStore.newSearchReqMet"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
 				{{ t('timeSearch.filterApplyButton') }}
+				<span class="material-icons">search</span>
 			</button>
 		</div>
 	</div>
@@ -272,17 +267,14 @@ import {
 	startDate,
 	endDate,
 	initSliderValues,
-	initStartDate,
-	initEndDate,
 	startYear,
 	endYear,
-} from '@/components/common/TimeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { APIService } from '@/api/api-service';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import DatePicker from '@/components/common/TimeSearch/DatePicker.vue';
+import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
 	getTimeResults,
 	resetAllSelectorValues,
@@ -291,6 +283,9 @@ import {
 	getSublineForTimeslots,
 	getSublineForYears,
 } from '@/utils/time-search-utils';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { useSearchResultStore } from '@/store/searchResultStore';
+
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
@@ -335,6 +330,7 @@ export default defineComponent({
 		const dataButton = ref<HTMLDivElement>();
 		const expToggled = ref(false);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
+		const searchResultStore = useSearchResultStore();
 
 		onMounted(() => {
 			if (props.init) {
@@ -342,58 +338,31 @@ export default defineComponent({
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = initSliderValues.value;
-				startDate.value.setTime(initStartDate.value.getTime());
-				endDate.value.setTime(initEndDate.value.getTime());
+
 				getTimeResults(true);
 			}
 			if (props.timeline) {
-				APIService.getFullResultWithFacets()
-					.then((response) => {
-						const resultsInYears = response.data.facet_counts.facet_fields.temporal_start_year;
-						const sortedResults = [] as dataItem[];
-						resultsInYears.forEach((item, index) => {
-							if (index % 2 === 0) {
-								let nextResult = {
-									year: item,
-									items: Number(resultsInYears[index + 1]),
-								};
-								sortedResults.push(nextResult);
+				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+					selectYears.value.push(i.toString());
+					data.value.push({ key: i, value: i });
+				}
+				if (dataButton.value) {
+					dataButton.value.style.display = 'none';
+				}
+				if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
+					constructSVG();
+				} else {
+					watch(
+						() => searchResultStore.firstBackendFetchExecuted,
+						(newVal: boolean) => {
+							if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
+								constructSVG();
+							} else {
+								/* TODO: Error here! */
 							}
-						});
-						sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-						startYear.value.setFullYear(Number(sortedResults[0].year));
-						endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
-						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-							selectYears.value.push(i.toString());
-							data.value.push({ key: i, value: i });
-							let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-								year: i.toString(),
-								items: 0,
-							};
-							item.x = Number(
-								(
-									(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
-									(i - startYear.value.getFullYear())
-								).toFixed(2),
-							);
-							item.y = item.items;
-							fullYearArray.value.push(item);
-						}
-						const svgElement = createSVGCurvedLine(fullYearArray.value);
-						if (dataContainer.value) {
-							dataContainer.value.appendChild(svgElement);
-						}
-					})
-					.catch(() => {
-						//This is purely fallback. We have no data, so we go with what we've set as fallback.
-						for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-							selectYears.value.push(i.toString());
-							data.value.push({ key: i, value: i });
-						}
-						if (dataButton.value) {
-							dataButton.value.style.display = 'none';
-						}
-					});
+						},
+					);
+				}
 			}
 		});
 
@@ -402,20 +371,61 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					if (newVal) {
-						console.log(document.querySelectorAll('.vue-slider-dot'));
 						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
-						dots.forEach((dot) => {
+						dots.forEach((dot, index) => {
 							dot.tabIndex = -1;
 							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
 						});
 					}
 				}
 			},
 		);
 
+		const constructSVG = () => {
+			data.value = [];
+			selectYears.value = [];
+			const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
+			const sortedResults = [] as dataItem[];
+			resultsInYears.forEach((item, index) => {
+				if (index % 2 === 0) {
+					let nextResult = {
+						year: item,
+						items: Number(resultsInYears[index + 1]),
+					};
+					sortedResults.push(nextResult);
+				}
+			});
+			sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+			startYear.value.setFullYear(Number(sortedResults[0].year));
+			endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.value.push(i.toString());
+				data.value.push({ key: i, value: i });
+				let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+					year: i.toString(),
+					items: 0,
+				};
+				item.x = Number(
+					(
+						(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+						(i - startYear.value.getFullYear())
+					).toFixed(2),
+				);
+				item.y = item.items;
+				fullYearArray.value.push(item);
+			}
+			const svgElement = createSVGCurvedLine(fullYearArray.value);
+			if (dataContainer.value) {
+				dataContainer.value.appendChild(svgElement);
+			}
+			if (dataButton.value) {
+				dataButton.value.style.display = 'block';
+			}
+		};
+
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;
-			console.log(closeDataExplanation.value);
 			if (expToggled.value && closeDataExplanation.value !== undefined) {
 				closeDataExplanation.value.focus();
 			}
@@ -481,12 +491,8 @@ export default defineComponent({
 					item.selected = true;
 				});
 			} else {
-				array.forEach((item, index) => {
-					if (index === 0) {
-						item.selected = true;
-					} else {
-						item.selected = false;
-					}
+				array.forEach((item) => {
+					item.selected = false;
 				});
 			}
 			if (!props.picker) {
@@ -530,6 +536,7 @@ export default defineComponent({
 			toggleExplanation,
 			expToggled,
 			closeTimeFacets,
+			addTestDataEnrichment,
 			vueSliderRef,
 			closeDataExplanation,
 		};
@@ -543,7 +550,7 @@ export default defineComponent({
 	flex-direction: row;
 	align-content: center;
 	flex-wrap: nowrap;
-	justify-content: flex-start;
+	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 30px;
@@ -634,6 +641,7 @@ export default defineComponent({
 }
 
 fieldset {
+	padding: 0px;
 	border: 0px;
 	margin: 0px;
 	min-inline-size: auto;
@@ -669,6 +677,7 @@ fieldset {
 
 .slider-whiteoff-container {
 	position: relative;
+	display: none;
 }
 .explanation-for-data {
 	position: absolute;
@@ -745,7 +754,7 @@ fieldset {
 			#c4f1ed 71%,
 			#c4f1ed 79%,
 			#c9f0fe 82%,
-			#fdfdfd 100%
+			#fdfdfd00 100%
 		)
 		0% 0% no-repeat padding-box;
 }
@@ -770,13 +779,15 @@ fieldset {
 }
 
 .slider-container {
-	height: 96px;
-	padding-bottom: 40px;
-	margin-bottom: 60px;
+	height: 60px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 	position: relative;
+	width: 100%;
 }
 
 .data-size {
+	display: none;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 1px solid #ffffff;
 	border-radius: 4px;
@@ -954,7 +965,7 @@ fieldset {
 }
 
 .picker-background {
-	background-color: #d9f5fe;
+	margin-top: 15px;
 }
 
 .apply-time-facets-container {
@@ -978,10 +989,14 @@ fieldset {
 	color: white;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
-	margin-left: 10px;
 	z-index: 1;
 	position: relative;
 	overflow: hidden;
+	width: 100%;
+	height: 45px;
+	display: flex;
+	justify-content: center;
+	gap: 15px;
 }
 
 .apply-time-facets:disabled {
@@ -1006,7 +1021,7 @@ fieldset {
 		rgba(255, 255, 255, 1) 50%,
 		rgba(255, 255, 255, 0) 80%
 	);
-	animation: shine 4s ease-in-out infinite;
+	animation: shine 6s ease-in-out infinite;
 }
 
 @keyframes shine {
@@ -1018,23 +1033,6 @@ fieldset {
 		transform: translateX(200%);
 		transition-property: opacity, transform;
 	}
-}
-
-.close {
-	cursor: pointer;
-	font-size: 18px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	box-shadow: 1px 1px 2px #00000000;
-	border: 1px solid #d9d8d8;
-	background: rgb(250, 250, 250);
-	color: #002e70;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-	position: absolute;
-	left: 0px;
-	padding: 5px 7px;
 }
 
 .data-container {
@@ -1060,6 +1058,26 @@ fieldset {
 	}
 	.select-container.select-time {
 		width: 35%;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.slider-whiteoff-container {
+		display: block;
+	}
+	.data-size {
+		display: block;
+	}
+	.slider-container {
+		height: 96px;
+		padding-bottom: 40px;
+		margin-bottom: 60px;
+	}
+}
+
+@media (min-width: 990px) {
+	.to-from-container {
+		justify-content: flex-start;
 	}
 }
 </style>
