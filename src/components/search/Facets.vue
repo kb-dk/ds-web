@@ -80,6 +80,8 @@
 													:number="index"
 													:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
 													:loading="searchResultStore.loading"
+													:update="updateCheckbox"
+													:parent-array="genreArray"
 												/>
 											</div>
 										</TransitionGroup>
