@@ -85,6 +85,7 @@ export default defineComponent({
 					route.query.q +
 					'"' +
 					t('app.titles.frontpage.archive.suffix')) as string;
+				searchResultStore.loading = false;
 			} else {
 				searchResultStore.resetFilters();
 				if (route.query.q !== undefined) {
