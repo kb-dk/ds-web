@@ -374,7 +374,6 @@ fieldset {
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100vw;
-	background-color: white;
 }
 
 .first {
