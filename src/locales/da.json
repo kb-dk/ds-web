@@ -57,9 +57,9 @@
       "dayHeadline":"Udvælg ugedage",
       "timeslotHeadline":"Udvælg tidspunkter",
       "yearHeadline":"Vælg dato via kalender",
-      "filterOpenButton":"Tidspunkter",
+      "filterOpenButton":"Dato, periode og tidspunkter",
       "filterCloseButton":"Luk tidspunkter",
-      "filterApplyButton":"Anvend tidspunkter",
+      "filterApplyButton":"Anvend",
       "months": {
          "january": "januar",
          "february": "februar",

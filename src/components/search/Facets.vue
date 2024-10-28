@@ -3,84 +3,127 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<EdgedContentArea
-			:lines="true"
-			background-color="#FAFAFA"
-		>
-			<template #content>
-				<div class="time-facets-toggle">
-					<button
-						ref="timeFacetButton"
-						role="switch"
-						aria-checked="false"
-						filter-button
-						:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
-						@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
+		<div class="search-facets-flex">
+			<EdgedContentArea
+				:lines="true"
+				background-color="#FAFAFA"
+			>
+				<template #content>
+					<div class="time-facets-toggle">
+						<div class="container">
+							<button
+								ref="timeFacetButton"
+								role="switch"
+								aria-checked="false"
+								filter-button
+								:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
+								@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
+							>
+								<span class="material-icons first">today</span>
+								<span class="toggle-time-text">{{ t('timeSearch.filterOpenButton') }}</span>
+								<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
+									<span class="dot">
+										<TransitionGroup>
+											<div
+												v-if="timeSearchStore.timeFacetsOpen"
+												class="close"
+											></div>
+											<div
+												v-else
+												class="check"
+											></div>
+										</TransitionGroup>
+									</span>
+								</span>
+							</button>
+						</div>
+					</div>
+					<div
+						ref="timeFacets"
+						class="time-facets"
 					>
-						<span class="material-icons first">today</span>
-						<span class="material-icons second">schedule</span>
-						<span class="toggle-time-text">{{ t('timeSearch.filterOpenButton') }}</span>
-						<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
-							<span class="dot">
-								<TransitionGroup>
-									<div
-										v-if="timeSearchStore.timeFacetsOpen"
-										class="close"
-									></div>
-									<div
-										v-else
-										class="check"
-									></div>
-								</TransitionGroup>
-							</span>
-						</span>
-					</button>
-				</div>
-				<div
-					ref="timeFacets"
-					class="time-facets"
-				>
-					<TimeSearchFilters
-						:timeline="false"
-						:picker="true"
-						:init="false"
-						@new-search="newSearch(true)"
-						@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
-					></TimeSearchFilters>
-				</div>
-				<div class="facet-container">
-					<div class="flex-container">
-						<div class="category-container">
+						<div class="container">
+							<TimeSearchFilters
+								:timeline="false"
+								:picker="true"
+								:init="false"
+								@new-search="newSearch(true)"
+								@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
+							></TimeSearchFilters>
+						</div>
+					</div>
+					<div class="facet-container">
+						<div class="flex-container">
+							<div class="category-container">
+								<CustomExpander
+									headline="Udvælg kategorier"
+									icon="category"
+									:subline="`Alle kategorier`"
+								>
+									<fieldset
+										v-if="searchResultStore.firstBackendFetchExecuted"
+										class="genre-facets"
+									>
+										<TransitionGroup name="result">
+											<div
+												v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre)"
+												:key="index + 'genre'"
+												class="genre"
+											>
+												<GenreCheckbox
+													:fqkey="'genre'"
+													:title="singleFacet.title"
+													:amount="
+														categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
+													"
+													:time-search-active="timeSearchStore.timeFacetsOpen"
+													:number="index"
+													:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
+													:loading="searchResultStore.loading"
+												/>
+											</div>
+										</TransitionGroup>
+									</fieldset>
+								</CustomExpander>
+							</div>
 							<CustomExpander
-								headline="Udvælg kategorier"
-								icon="category"
-								:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
-								:item-array="genreArray"
+								headline="Udvælg kanaler"
+								icon="ondemand_video"
+								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
+								:fade="true"
+								:item-array="channelsArray"
 								:update-entity="updateFacet"
+								:filter-name-cutoff="5"
 								:use-headline-translation="false"
-								:facet-type="'genre'"
+								:facet-type="'creator_affiliation_facet'"
 							>
 								<fieldset
 									v-if="searchResultStore.firstBackendFetchExecuted"
-									class="genre-facets"
+									class="facet-options"
 								>
 									<TransitionGroup name="result">
 										<div
-											v-for="(singleFacet, index) in genreArray"
-											:key="index + 'genre'"
-											class="genre"
+											v-for="(singleFacet, index) in channelsArray"
+											:key="`${index}-facet-${lastUpdate}`"
+											:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
 										>
-											<GenreCheckbox
-												:fqkey="'genre'"
+											<SimpleCheckbox
+												:key="`channelCheckbox-${lastUpdate}-${index}`"
+												:fqkey="'creator_affiliation_facet'"
 												:title="singleFacet.name"
 												:amount="
-													categoryFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'
+													channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'
 												"
-												:time-search-active="timeSearchStore.timeFacetsOpen"
 												:number="index"
-												:parent-array="genreArray"
+												:parent-array="channelsArray"
 												:update="updateCheckbox"
-												:checked="channelFilterExists('genre', singleFacet.name, searchResultStore.categoryFilters)"
+												:checked="
+													channelFilterExists(
+														'creator_affiliation_facet',
+														singleFacet.name,
+														searchResultStore.channelFilters,
+													)
+												"
 												:loading="searchResultStore.loading"
 											/>
 										</div>
@@ -88,52 +131,10 @@
 								</fieldset>
 							</CustomExpander>
 						</div>
-						<CustomExpander
-							headline="Udvælg kanaler"
-							icon="ondemand_video"
-							:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-							:fade="true"
-							:item-array="channelsArray"
-							:update-entity="updateFacet"
-							:filter-name-cutoff="5"
-							:use-headline-translation="false"
-							:facet-type="'creator_affiliation_facet'"
-						>
-							<fieldset
-								v-if="searchResultStore.firstBackendFetchExecuted"
-								class="facet-options"
-							>
-								<TransitionGroup name="result">
-									<div
-										v-for="(singleFacet, index) in channelsArray"
-										:key="`${index}-facet-${lastUpdate}`"
-										:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
-									>
-										<SimpleCheckbox
-											:key="`channelCheckbox-${lastUpdate}-${index}`"
-											:fqkey="'creator_affiliation_facet'"
-											:title="singleFacet.name"
-											:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
-											:number="index"
-											:parent-array="channelsArray"
-											:update="updateCheckbox"
-											:checked="
-												channelFilterExists(
-													'creator_affiliation_facet',
-													singleFacet.name,
-													searchResultStore.channelFilters,
-												)
-											"
-											:loading="searchResultStore.loading"
-										/>
-									</div>
-								</TransitionGroup>
-							</fieldset>
-						</CustomExpander>
 					</div>
-				</div>
-			</template>
-		</EdgedContentArea>
+				</template>
+			</EdgedContentArea>
+		</div>
 	</div>
 </template>
 
@@ -453,6 +454,10 @@ export default defineComponent({
 	height: auto;
 }
 
+.container {
+	width: 100%;
+}
+
 .facet-enter-from,
 .facet-leave-to {
 	opacity: 0;
@@ -464,6 +469,8 @@ export default defineComponent({
 	height: 0px;
 	overflow: hidden;
 	position: relative;
+	width: 100vw;
+	background-color: #d9f5fe;
 }
 
 fieldset {
@@ -478,27 +485,29 @@ fieldset {
 	padding-bottom: 10px;
 	flex-direction: row;
 	justify-content: space-between;
+	width: 100%;
 }
 
 .first {
-	top: -2px;
+	top: 0px;
 	position: relative;
-	left: 4px;
-}
-
-.second {
-	position: relative;
-	top: 2px;
-	left: -3px;
+	left: -1px;
+	font-size: 40px;
 }
 
 .category-container {
 	margin-bottom: 45px;
 }
 
+.search-facets-flex {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .time-facet-button {
 	cursor: pointer;
-	padding: 3px 3px;
+	padding: 3px 8px;
 	font-size: 20px;
 	width: 100%;
 	display: flex;
@@ -509,11 +518,11 @@ fieldset {
 	color: #757575;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
-	height: 36px;
-	background-color: #caf0fe;
+	height: 50px;
 }
 
 .toggle-time-text {
+	padding-left: 7px;
 	margin-right: auto;
 }
 
@@ -524,9 +533,8 @@ fieldset {
 .facet-container {
 	display: flex;
 	height: auto;
-	flex-direction: row;
+	flex-direction: column;
 	overflow: hidden;
-	flex-direction: row;
 	gap: 20px;
 	box-sizing: border-box;
 	padding: 0px 5px;
@@ -580,6 +588,8 @@ h2 {
 	height: 0px;
 	display: none;
 	opacity: 0;
+	align-items: center;
+	justify-content: center;
 }
 
 .dark-bar {
@@ -687,6 +697,9 @@ h2 {
 		width: calc(50% - 10px);
 		margin: 0px;
 	}
+	.container {
+		max-width: 640px;
+	}
 }
 
 @media (min-width: 640px) {
@@ -704,6 +717,9 @@ h2 {
 		width: calc(50% - 15px);
 		flex: 0 0 calc(50% - 15px);
 		margin: 0px 0px;
+	}
+	.container {
+		max-width: 990px;
 	}
 }
 
@@ -728,11 +744,24 @@ h2 {
 		flex: 0 0 calc(25% - 30px);
 		margin: 0px 0px;
 	}
+	.container {
+		max-width: 1150px;
+	}
+}
+@media (min-width: 1150px) {
+	.container {
+		max-width: 1280px;
+	}
 }
 
 @media (min-width: 1280px) {
 	.genre-facets {
 		padding: 0px;
+	}
+	.container {
+		margin: auto;
+		padding-right: 0;
+		padding-left: 0;
 	}
 }
 </style>

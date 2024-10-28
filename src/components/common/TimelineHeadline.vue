@@ -164,7 +164,7 @@ h2 {
 	font-weight: 700;
 	color: #002e70;
 	background-color: #d9f5fe;
-	border: 1px solid #d9f5fe;
+	border: 1px solid white;
 	border-radius: 4px;
 	width: fit-content;
 	padding-left: 3px;
