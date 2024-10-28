@@ -485,7 +485,7 @@ fieldset {
 	padding-bottom: 10px;
 	flex-direction: row;
 	justify-content: space-between;
-	width: 100vw;
+	width: 100%;
 }
 
 .first {
