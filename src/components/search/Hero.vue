@@ -9,36 +9,10 @@
 		/>
 		<div
 			ref="overlayRef"
-			class="gray-overlay"
-			@mousemove="handleMouseMove"
-		></div>
-		<div
-			ref="overlayRef"
 			class="hue-overlay"
 		></div>
+		<div class="bluify"></div>
 		<div class="noise"></div>
-		<svg class="svg-noise">
-			<filter
-				id="noise"
-				x="0%"
-				y="0%"
-				width="100%"
-				height="150%"
-			>
-				<feTurbulence
-					baseFrequency="0.00001 0.2"
-					result="NOISE"
-				/>
-			</filter>
-
-			<rect
-				x="0"
-				y="0"
-				width="100%"
-				height="100%"
-				filter="url(#noise)"
-			></rect>
-		</svg>
 		<div class="container">
 			<h1>
 				<span class="subtitle"><span class="text">Det Kgl. Biblioteks</span></span>
@@ -46,11 +20,13 @@
 			</h1>
 			<div class="hero-info">
 				<div class="info">
-					<h2>Vi er nået 35%...</h2>
-					<p>
-						I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende
-						både nyere og ældre udsendelser, så arkivet bliver større og større
-					</p>
+					<div class="progress-headline">
+						<h2>Vi er nået 35%...</h2>
+						<p>
+							I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende
+							både nyere og ældre udsendelser, så arkivet bliver større og større
+						</p>
+					</div>
 					<div class="process-bar">
 						<div class="progress">
 							<div class="color-part"></div>
@@ -112,6 +88,7 @@ export default defineComponent({
 	margin-bottom: 6vw;
 	align-items: center;
 	z-index: 3;
+	transition: all 0.5s linear 0s;
 }
 h1 {
 	pointer-events: none;
@@ -141,6 +118,10 @@ h1 .subtitle {
 	height: 100%;
 }
 
+.progress-headline {
+	background-color: white;
+}
+
 .hero-info {
 	max-width: 400px;
 	position: relative;
@@ -148,18 +129,25 @@ h1 .subtitle {
 	height: 100%;
 	bottom: 0px;
 	display: flex;
-	align-items: flex-end;
-	border-top: 2px solid white;
+	border-left: 2px solid white;
+	border-right: 2px solid white;
+
+	background-color: rgba(255, 255, 255, 0.5);
+	margin-right: 12px;
+	box-sizing: border-box;
 }
 
 .info {
-	margin-bottom: calc(70px - 3vw);
+	height: 100%;
+	display: flex;
+	/* margin-bottom: calc(70px - 3vw); */
+	flex-direction: column;
+	justify-content: center;
 }
 
 .hero-info h2,
 .hero-info p,
 .hero-info .link-container {
-	background-color: rgba(255, 255, 255, 0.8);
 	padding: 5px 25px;
 	font-family: 'noway';
 	font-weight: 100;
@@ -214,45 +202,24 @@ h1 .subtitle {
 	top: -1px;
 }
 
-.hue-overlay:hover ~ .noise {
-	opacity: 0;
-}
-
 .hue-overlay {
 	width: 100vw;
 	height: 100%;
 	position: absolute;
-	opacity: 0;
 	background: linear-gradient(40deg, #c1f0f6 0%, #e0bbe4 20%, #ffd7b5 40%, #ffd1dc 60%, #e0bbe4 80%, #c1f0f6 100%);
-	/* 	background: linear-gradient(40deg, #93ff41 0%, #c3e9ff 20%, #000000 40%, #ffffff 60%, #c3e9ff 80%, #93ff41 100%);
- */
-	background-size: 500% 100%; /* Adjust the size to match the animation */
-	animation: gradientLoop 5s linear infinite;
+	background-size: 100% 100%;
 	transition: all 0.2s ease-in-out 0s;
+	mix-blend-mode: difference;
+	opacity: 0.2;
 }
 
-.hue-overlay:hover {
-	mix-blend-mode: hard-light;
-	opacity: 0.7;
-	animation-play-state: running; /* Start animation on hover */
-}
-
-.svg-noise rect {
-	opacity: 0;
-	transition: all 0.2s ease-in-out 0s;
-}
-
-.hue-overlay:hover ~ .svg-noise rect {
-	opacity: 1;
-}
-
-@keyframes gradientLoop {
-	0% {
-		background-position: 500% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+.bluify {
+	width: 100vw;
+	height: 100%;
+	position: absolute;
+	background-size: 100% 100%;
+	background: radial-gradient(circle, rgba(0, 46, 112, 0) 0%, rgba(0, 46, 112, 0.1) 30%, rgba(0, 46, 112, 0.7) 100%);
+	pointer-events: none;
 }
 
 h1 {
@@ -265,6 +232,12 @@ h1 {
 	height: 100%;
 	object-fit: cover;
 	position: absolute;
+	animation: hueRotate 5s infinite;
+	transition: all 0.5s linear 0s;
+}
+
+.hero-container:hover {
+	background-color: #0a2e70;
 }
 
 .svg-noise {
@@ -286,48 +259,72 @@ h1 {
 
 .noise {
 	background-image: url('@/assets/images/noise.png');
-	width: 100vw;
-	height: 100%;
+	position: fixed;
+	top: -50%;
+	left: -50%;
+	right: -50%;
+	bottom: -50%;
+	width: 200%;
+	height: 200%;
 	object-fit: cover;
 	position: absolute;
 	mix-blend-mode: overlay;
-	opacity: 1;
+	opacity: 0.5;
 	animation: noiseEffect 0.1s infinite;
 	filter: grayscale(1);
 }
 
-@keyframes noiseEffect {
+@keyframes hueRotate {
 	0% {
-		background-position: 0px 0px;
-	}
-	25% {
-		background-position: 5px -5px;
-	}
-	50% {
-		background-position: -5px 5px;
-	}
-	75% {
-		background-position: -5px -5px;
+		filter: hue-rotate(0deg) grayscale(0.5);
 	}
 	100% {
-		background-position: 5px 5px;
+		filter: hue-rotate(360deg) grayscale(0.5);
 	}
 }
-@keyframes noiseVerticalEffect {
+
+@keyframes hueRotateHover {
 	0% {
-		top: -15px;
-	}
-	25% {
-		top: 10px;
-	}
-	50% {
-		top: 13px;
-	}
-	75% {
-		top: -16px;
+		filter: hue-rotate(0deg) grayscale(0);
 	}
 	100% {
-		top: 10px;
+		filter: hue-rotate(360deg) grayscale(0);
+	}
+}
+
+@keyframes noiseEffect {
+	0% {
+		transform: translate(0, 0);
+	}
+	10% {
+		transform: translate(-5%, -5%);
+	}
+	20% {
+		transform: translate(-10%, 5%);
+	}
+	30% {
+		transform: translate(5%, -10%);
+	}
+	40% {
+		transform: translate(-5%, 15%);
+	}
+	50% {
+		transform: translate(-10%, 5%);
+	}
+	60% {
+		transform: translate(15%, 0);
+	}
+	70% {
+		transform: translate(0, 10%);
+	}
+	80% {
+		transform: translate(-15%, 0);
+	}
+	90% {
+		transform: translate(10%, 5%);
+	}
+	100% {
+		transform: translate(5%, 0);
 	}
 }
 /* MEDIA QUERY 480 */
@@ -368,6 +365,9 @@ h1 {
 		padding-left: 0;
 		width: 100%;
 		margin-left: initial;
+	}
+	.hero-info {
+		margin-right: 0px;
 	}
 }
 </style>
