@@ -495,7 +495,7 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	height: 100%;
 	position: relative;
-	z-index: 5;
+	z-index: 6;
 }
 
 .btn-icon i {
