@@ -16,6 +16,14 @@
    "frontpage": {
       "fromTheArchive":"Et udpluk fra arkivet"
    },
+   "facets" : {
+      "allGenres": "alle kategorier",
+      "genres": "kategori | kategorier",
+      "allChannels":"alle kanaler",
+      "channels":"kanal | kanaler",
+      "chosen":"udvalgt",
+      "reset":"nulstil"
+   },
    "breadcrumb": {
       "frontpage":"Forside",
       "findMaterials": "Find materiale",

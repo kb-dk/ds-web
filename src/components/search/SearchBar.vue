@@ -217,6 +217,7 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import { PortalSelectItem } from '@/types/SearchBarTypes';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 export default defineComponent({
 	name: 'Searchbar',
@@ -228,6 +229,7 @@ export default defineComponent({
 		const { t } = useI18n();
 		const visibleSearchfield = ref(true);
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
 		let AutocompleteTimer: ReturnType<typeof setTimeout>;
@@ -360,6 +362,7 @@ export default defineComponent({
 				} else {
 					query.sort = encodeURIComponent(`score desc`);
 				}
+				timeSearchStore.setTimeFacetsOpen(false);
 
 				router.push({
 					name: 'Search',

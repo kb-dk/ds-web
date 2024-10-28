@@ -44,7 +44,7 @@ export class APIServiceClient {
 						response.config.url?.includes('mlt') ||
 						response.config.url?.includes('thumbnails');
 					if (!noDelayRequest) {
-						await sleep(2000);
+						await sleep(250);
 					}
 				}
 				return response;

@@ -18,7 +18,11 @@
 							</span>
 						</button>
 						<button
-							v-if="searchResultStore.filters.length > 0 || searchResultStore.channelFilters.length > 0"
+							v-if="
+								searchResultStore.filters.length > 0 ||
+								searchResultStore.channelFilters.length > 0 ||
+								searchResultStore.categoryFilters.length > 0
+							"
 							class="reset"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
 							@click="resetFilters()"
@@ -84,6 +88,7 @@
 						/>
 					</div>
 				</div>
+				<div><CurrentFilters /></div>
 				<div class="sort-options">
 					<Sort></Sort>
 					<div class="search-options">
@@ -149,6 +154,7 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import CurrentFilters from '@/components/search/CurrentFilters.vue';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -156,6 +162,7 @@ export default defineComponent({
 		HitCount,
 		Sort,
 		Facets,
+		CurrentFilters,
 	},
 
 	setup() {
@@ -429,6 +436,11 @@ export default defineComponent({
 }
 
 .filter-options.disabled button .dark-bar {
+	background-color: #757575 !important;
+}
+
+.filter-options.disabled button .dark-bar .close:before,
+.filter-options.disabled button .dark-bar .close:after {
 	background-color: #757575 !important;
 }
 

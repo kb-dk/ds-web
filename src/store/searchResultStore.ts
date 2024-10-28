@@ -78,12 +78,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (URLFilters !== undefined) {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
-					if (filter?.split(':')[0].includes('origin')) {
+					if (filter?.split('%3A')[0].includes('origin')) {
 						preliminaryFilter.value = filter;
-					} else if (filter?.includes('creator_affiliation_facet')) {
+					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						channelFilters.value = cleanedString.split(' OR ');
-					} else if (filter?.includes('genre')) {
+					} else if (filter?.split('%3A')[0].includes('genre')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						categoryFilters.value = cleanedString.split(' OR ');
 					} else {
@@ -91,13 +91,15 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 					}
 				});
 			} else {
-				const str = decodeURIComponent(URLFilters);
-				if (str.split(':')[0].includes('origin')) {
+				const str = URLFilters;
+				if (str.split('%3A')[0].includes('origin')) {
 					filters.value.push(`fq=${str}`);
-				} else if (str.split(':')[0].includes('creator_affiliation_facet')) {
-					channelFilters.value.push(`${str}`);
-				} else if (str.split(':')[0].includes('genre')) {
-					categoryFilters.value.push(`${str}`);
+				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
+					const cleanedString = str.replace(/[()]/g, '');
+					channelFilters.value = cleanedString.split(' OR ');
+				} else if (str.split('%3A')[0].includes('genre')) {
+					const cleanedString = str.replace(/[()]/g, '');
+					categoryFilters.value = cleanedString.split(' OR ');
 				} else {
 					str !== '' ? filters.value.push(`fq=${str}`) : null;
 				}

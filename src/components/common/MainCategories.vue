@@ -84,14 +84,27 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			if (searchResultStore.firstBackendFetchExecuted) {
+			if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 				constructGenre();
 			} else {
 				watch(
 					() => searchResultStore.firstBackendFetchExecuted,
 					(newVal: boolean) => {
-						if (newVal) {
+						if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
 							constructGenre();
+						} else {
+							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
+							const customEvent = new CustomEvent('notify-user', {
+								detail: {
+									title: 'Backend svarer ikke.',
+									message:
+										'De bagvedliggende applikationer svarer ikke, så det er ikke muligt at søge pt. \n \n Prøv igen senere.',
+									key: false,
+									severity: 'low',
+									userClose: true,
+								},
+							});
+							window.dispatchEvent(customEvent);
 						}
 					},
 				);
