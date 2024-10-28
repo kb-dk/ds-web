@@ -201,18 +201,14 @@
              "link": "http://www5.kb.dk/editions/any/2009/jul/editions/da/"
           },
           "3": {
-             "title": "Dansk lyd",
-             "link": "https://dansklyd.statsbiblioteket.dk/"
-          },
-          "4": {
              "title": "Radio- og TV-samlingen",
              "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
           },
-          "5": {
-             "title": "Guide til radio- og TV-udsendelser",
+          "4": {
+             "title": "Find danske radio- og tv udsendelser",
              "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
           },
-          "6": {
+          "5": {
              "title": "Bibliotekssystemet",
              "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
           }
@@ -239,7 +235,7 @@
           },
           "5": {
              "title": "Tilgængelighedserklæring",
-             "link": "https://www.kb.dk/was"
+             "link": "https://www.was.digst.dk/kb-dk"
           },
           "6": {
              "title": "Driftsstatus",
@@ -258,7 +254,7 @@
             "link": "mailto:kb@kb.dk"
          },
          "3": {
-            "title": "Tel: (+45) 3346 4747",
+            "title": "Tel: (+45) 33 47 47 47",
             "link": ""
          },
          "4": {
