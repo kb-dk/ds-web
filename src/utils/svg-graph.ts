@@ -45,6 +45,7 @@ function createSVGCurvedLine(points: pointItem[]) {
 	const lastX = normalizedPoints[normalizedPoints.length - 1].x;
 	const lastY = normalizedPoints[normalizedPoints.length - 1].y;
 	d += ` Q ${lastX} ${lastY}, ${lastX} ${lastY}`; // Complete the path with the last point
+	d += ` L ${lastX} 100 L 0 100 Z`; // Line to bottom-right, then bottom-left, and close
 
 	path.setAttribute('d', d);
 

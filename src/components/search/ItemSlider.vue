@@ -94,7 +94,7 @@ export default defineComponent({
 	position: relative;
 	overflow: hidden;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: flex-start;
 	height: 0px;
 	align-items: center;
 	overflow-x: auto;

@@ -77,20 +77,23 @@ export default defineComponent({
 			try {
 				videoPlayer = KalturaPlayer.setup({
 					targetId: 'video-player',
+					playback: {
+						autoplay: route.query?.autoplay ? true : false,
+					},
 					provider: {
 						partnerId: authStore.partnerId !== '' ? authStore.partnerId : import.meta.env.VITE_KALTURA_PARTNER_ID,
 						uiConfId:
 							authStore.videoUiConfId !== '' ? authStore.videoUiConfId : import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
 					},
 				});
-				videoPlayer.loadMedia({ entryId: props.entryId });
+				videoPlayer.loadMedia({ entryId: props.entryId }).then(() => {
+					document
+						.querySelector('.playkit-pre-playback-play-button')
+						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+				});
+				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.ready().then(() => {
-					if (route.query?.startAt) {
-						videoPlayer.currentTime = Number(route.query.startAt);
-					}
-					if (route.query?.autoplay) {
-						videoPlayer.play();
-					}
+					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
 				});
 			} catch (e) {
 				handleErrorDispatch('');

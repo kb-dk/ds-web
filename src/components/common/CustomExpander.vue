@@ -10,6 +10,7 @@
 			:item-array="itemArray"
 			:pass-update="passAlongUpdate"
 			:filter-cuttof="filterNameCutoff"
+			:use-translation="useHeadlineTranslation"
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
@@ -75,10 +76,24 @@ export default defineComponent({
 				return [] as SelectorData[];
 			},
 		},
+		facetType: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
 		updateEntity: {
 			type: Function,
 			default() {
 				return null;
+			},
+		},
+		useHeadlineTranslation: {
+			type: Boolean,
+			required: false,
+			default() {
+				return true;
 			},
 		},
 	},
@@ -88,7 +103,7 @@ export default defineComponent({
 		const expandContainer = ref<HTMLElement | null>(null);
 		const headlineRef = ref();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
-			props.updateEntity(parent, index, val);
+			props.updateEntity(parent, index, val, props.facetType);
 		};
 
 		const toggleExpander = () => {
@@ -151,7 +166,7 @@ export default defineComponent({
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	border-bottom: 2px dashed rgba(0, 46, 112, 0.3490196078);
+	/* border-bottom: 2px dashed rgba(0, 46, 112, 0.3490196078); */
 	background: linear-gradient(
 		90deg,
 		rgba(255, 255, 255, 0) 0%,
@@ -174,10 +189,10 @@ export default defineComponent({
 	top: 12px;
 	background: linear-gradient(
 		90deg,
-		rgba(250, 250, 250, 1) 0%,
+		rgba(250, 250, 250, 0) 0%,
 		rgba(255, 255, 255, 0) 5%,
 		rgba(255, 255, 255, 0) 95%,
-		rgba(250, 250, 250, 1) 100%
+		rgba(250, 250, 250, 0) 100%
 	);
 }
 
@@ -193,7 +208,7 @@ export default defineComponent({
 	display: block;
 	width: 100%;
 	height: 1px;
-	margin-top: 1px;
+	opacity: 0.3;
 }
 
 .expand-container:after {
@@ -204,14 +219,14 @@ export default defineComponent({
 	position: relative;
 	bottom: 0px;
 	height: 10px;
-	opacity: 1;
+	opacity: 0.5;
 	z-index: -1;
 	background: radial-gradient(ellipse at bottom, #b6b5b5b0 0%, #dfdfdfb0 40%, #ffffff00 70%);
 }
 
 .expand-container.open:after {
 	transition: all 0.2s ease-in 0s;
-	opacity: 0;
+	opacity: 0.2;
 }
 
 .expander {

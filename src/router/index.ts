@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../views/About.vue'),
 	},
 	{
-		path: '/record/:id',
+		path: '/post/:id',
 		name: 'Record',
 		component: () => import('../views/ShowRecord.vue'),
 		props: (route) => ({

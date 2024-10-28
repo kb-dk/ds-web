@@ -16,6 +16,14 @@
    "frontpage": {
       "fromTheArchive":"Et udpluk fra arkivet"
    },
+   "facets" : {
+      "allGenres": "alle kategorier",
+      "genres": "kategori | kategorier",
+      "allChannels":"alle kanaler",
+      "channels":"kanal | kanaler",
+      "chosen":"udvalgt",
+      "reset":"nulstil"
+   },
    "breadcrumb": {
       "frontpage":"Forside",
       "findMaterials": "Find materiale",
@@ -49,9 +57,9 @@
       "dayHeadline":"Udvælg ugedage",
       "timeslotHeadline":"Udvælg tidspunkter",
       "yearHeadline":"Vælg dato via kalender",
-      "filterOpenButton":"Tidspunkter",
+      "filterOpenButton":"Dato, periode og tidspunkter",
       "filterCloseButton":"Luk tidspunkter",
-      "filterApplyButton":"Anvend tidspunkter",
+      "filterApplyButton":"Anvend",
       "months": {
          "january": "januar",
          "february": "februar",
@@ -155,23 +163,27 @@
     "column1": {
        "title": "Genveje",
        "links": {
-          "1": {
+         "1": {
+             "title": "Om DR-arkivet",
+             "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+          },
+          "2": {
              "title": "Find Materiale",
              "link": "https://www.kb.dk/find-materiale"
           },
-          "2": {
+          "3": {
              "title": "Inspiration",
              "link": "https://www.kb.dk/inspiration"
           },
-          "3": {
+          "4": {
              "title": "Arrangementer",
              "link": "https://www.kb.dk/arrangementer"
           },
-          "4": {
+          "5": {
              "title": "Services",
              "link": "https://www.kb.dk/services"
           },
-          "5": {
+          "6": {
              "title": "Besøg os",
              "link": "https://www.kb.dk/besoeg-os"
           }
@@ -181,28 +193,24 @@
       "title": "Brug os",
        "links": {
           "1": {
-             "title": "For biblioteker",
-             "link": "https://forbiblioteker.kb.dk/"
+             "title": "Mediestream",
+             "link": "https://www2.statsbiblioteket.dk/mediestream/"
           },
           "2": {
-             "title": "For professionelle",
-             "link": "https://pro.kb.dk/"
+             "title": "Digitale samlinger",
+             "link": "http://www5.kb.dk/editions/any/2009/jul/editions/da/"
           },
           "3": {
-             "title": "Møder og konferencer",
-             "link": "https://pro.kb.dk/moeder"
+             "title": "Radio- og TV-samlingen",
+             "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
           },
           "4": {
-             "title": "For centraladministrationen",
-             "link": "https://forcentraladministrationen.kb.dk/"
+             "title": "Find danske radio- og tv udsendelser",
+             "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
           },
           "5": {
-             "title": "Pligtaflevering",
-             "link": "https://pro.kb.dk/pligtaflevering"
-          },
-          "6": {
-             "title": "For skoler",
-             "link": "https://forskoler.kb.dk/"
+             "title": "Bibliotekssystemet",
+             "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
           }
        }
     },
@@ -227,7 +235,7 @@
           },
           "5": {
              "title": "Tilgængelighedserklæring",
-             "link": "https://www.kb.dk/was"
+             "link": "https://www.was.digst.dk/kb-dk"
           },
           "6": {
              "title": "Driftsstatus",
@@ -246,7 +254,7 @@
             "link": "mailto:kb@kb.dk"
          },
          "3": {
-            "title": "Tel: (+45) 3346 4747",
+            "title": "Tel: (+45) 33 47 47 47",
             "link": ""
          },
          "4": {
@@ -295,6 +303,13 @@
       "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
    },
    "searchfailed":"Noget gik galt med din søgning",
-   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm"
+   "malformeduri": "Noget gik galt med parameterne til din søgning - prøv at ændre din søgeterm",
+    "wrongUrl": {
+      "header": "Vi kan desværre ikke finde siden som du søger :(",
+      "text": "Det er ærgerligt fordi vi har faktisk 25.000 TB websider på lager",
+      "altHeader": "Måske leder du efter",
+      "frontPage": "Forsiden af DR-arkivet",
+      "kbPage": "Forsiden af Det Kgl. Bibliotek"
+    }
   } 
 }

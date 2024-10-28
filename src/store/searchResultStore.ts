@@ -9,10 +9,13 @@ import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
+import { FacetsType } from '@/types/GenericSearchResultTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
 	let comparisonSearchUUID = '';
+	const firstBackendFetchExecuted = ref(false);
+	const initFacets = ref({} as FacetsType);
 	const searchResult = ref([] as Array<GenericSearchResultType>);
 	const spellCheck = ref({} as unknown as SpellCheckType);
 	const facetResult = ref(Object as unknown as FacetResultType);
@@ -32,11 +35,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const channelFilters = ref([] as Array<string>);
+	const categoryFilters = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
-	const keepFacets = ref(false);
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -71,23 +74,34 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const setFiltersFromURL = (URLFilters: string[] | LocationQueryValue[] | string) => {
 		filters.value = [];
 		channelFilters.value = [];
+		categoryFilters.value = [];
 		if (URLFilters !== undefined) {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
-					if (filter?.split(':')[0].includes('origin')) {
+					if (filter?.split('%3A')[0].includes('origin')) {
 						preliminaryFilter.value = filter;
-					} else if (filter?.includes('creator_affiliation_facet')) {
+					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						channelFilters.value = cleanedString.split(' OR ');
+					} else if (filter?.split('%3A')[0].includes('genre')) {
+						const cleanedString = filter.replace(/[()]/g, '');
+						categoryFilters.value = cleanedString.split(' OR ');
 					} else {
 						filter !== '' ? filters.value.push(`fq=${filter}`) : null;
 					}
 				});
 			} else {
-				if (URLFilters.split(':')[0].includes('origin')) {
-					filters.value.push(`fq=${URLFilters}`);
+				const str = URLFilters;
+				if (str.split('%3A')[0].includes('origin')) {
+					filters.value.push(`fq=${str}`);
+				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
+					const cleanedString = str.replace(/[()]/g, '');
+					channelFilters.value = cleanedString.split(' OR ');
+				} else if (str.split('%3A')[0].includes('genre')) {
+					const cleanedString = str.replace(/[()]/g, '');
+					categoryFilters.value = cleanedString.split(' OR ');
 				} else {
-					URLFilters !== '' ? filters.value.push(`fq=${URLFilters}`) : null;
+					str !== '' ? filters.value.push(`fq=${str}`) : null;
 				}
 			}
 		}
@@ -149,7 +163,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSort();
 		resetSpellCheck();
 		resetPreliminaryFilters();
-		setKeepFacets(false);
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
@@ -163,6 +176,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filters.value = [];
 		facetResult.value = {} as FacetResultType;
 		channelFilters.value = [];
+		categoryFilters.value = [];
 	};
 
 	const resetAutocomplete = () => {
@@ -171,10 +185,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const setBlockAutocomplete = (state: boolean) => {
 		blockAutocomplete.value = state;
-	};
-
-	const setKeepFacets = (state: boolean) => {
-		keepFacets.value = state;
 	};
 
 	const getAutocompleteResults = (query: string) => {
@@ -198,21 +208,32 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		lastSearchQuery.value = query;
 		resetAutocomplete();
 		let searchFilters = '';
-		let facetFilters = '';
+		let presetGenreFilters = '';
+		let presetChannelFilters = '';
 		if (filters.value.length > 0) {
 			filters.value.forEach((filt: string) => {
 				searchFilters += `&${filt}`;
-				facetFilters += `&${filt}`;
+				presetGenreFilters += `&${filt}`;
+				presetChannelFilters += `&${filt}`;
 			});
 		}
 		let channelFilterString = '';
 		if (channelFilters.value.length > 0) {
 			channelFilterString = `&fq=(${channelFilters.value.join(' OR ')})`;
+			presetGenreFilters += `&fq=(${channelFilters.value.join(' OR ')})`;
 		}
 		searchFilters += channelFilterString;
+
+		let categoryFilterString = '';
+		if (categoryFilters.value.length > 0) {
+			categoryFilterString = `&fq=(${categoryFilters.value.join(' OR ')})`;
+			presetChannelFilters += `&fq=(${categoryFilters.value.join(' OR ')})`;
+		}
+		searchFilters += categoryFilterString;
 		if (preliminaryFilter.value) {
 			searchFilters += `&fq=${preliminaryFilter.value}`;
-			facetFilters += `&fq=${preliminaryFilter.value}`;
+			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
+			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
 		}
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
@@ -236,9 +257,16 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 				currentSearchUUID,
 			);
-			const facetData = await APIService.getFacetResults(
+			const facetGenreData = await APIService.getFacetResults(
 				query,
-				facetFilters,
+				presetGenreFilters,
+				startParam as string,
+				sortParam as string,
+			);
+
+			const facetChannelData = await APIService.getFacetResults(
+				query,
+				presetChannelFilters,
 				startParam as string,
 				sortParam as string,
 			);
@@ -249,9 +277,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				query !== '*:*' ? (currentQuery.value = query) : null;
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
-				if (!keepFacets.value) {
-					facetResult.value = facetData.data.facet_counts.facet_fields as FacetResultType;
-				}
+				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
+				facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
+					.creator_affiliation_facet as string[];
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;
 			}
@@ -268,6 +296,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	return {
+		firstBackendFetchExecuted,
+		initFacets,
 		searchResult,
 		facetResult,
 		autocompleteResult,
@@ -290,7 +320,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		rowCount,
 		rowOffset,
 		channelFilters,
-		keepFacets,
+		categoryFilters,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -312,6 +342,5 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowOffset,
 		setStart,
 		setRowCountFromURL,
-		setKeepFacets,
 	};
 });

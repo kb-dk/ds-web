@@ -16,6 +16,16 @@
    "frontpage": {
       "fromTheArchive":"A selection from the archive"
    },
+   "facets" : {
+      "allGenres": "all categories",
+      "genres": "category | categories",
+      "allChannels":"all channels",
+      "channels":"channel | channels",
+      "chosen":"chosen",
+      "reset":"reset"
+
+
+   },
    "breadcrumb": {
       "frontpage":"Frontpage",
       "findMaterials": "Find materials",
@@ -49,9 +59,9 @@
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
       "yearHeadline":"Choose dates via calendar",
-      "filterOpenButton":"Moments",
+      "filterOpenButton":"Date, periods and moments",
       "filterCloseButton":"Close moments",
-      "filterApplyButton":"Apply moments",
+      "filterApplyButton":"Apply",
       "months": {
          "january": "January",
          "february": "February",
@@ -153,29 +163,33 @@
    },
    "footer": {
       "contactInfo":"Contact information",
-      "cookie":"Cookie settings",
+      "cookie":"Cookie Settings",
       "column1": {
          "title": "Shortcuts",
          "links": {
             "1": {
-               "title": "Find Materials",
-               "link": "https://www.kb.dk/en/find-materials"
+               "title": "About the DR archive",
+               "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
             },
             "2": {
-               "title": "Inspiration",
-               "link": "https://www.kb.dk/en/inspiration"
+               "title": "Find materials",
+               "link": "https://www.kb.dk/find-materiale"
             },
             "3": {
-               "title": "Events",
-               "link": "https://www.kb.dk/en/events"
+               "title": "Inspiration",
+               "link": "https://www.kb.dk/inspiration"
             },
             "4": {
-               "title": "Services",
-               "link": "https://www.kb.dk/en/services"
+               "title": "Events",
+               "link": "https://www.kb.dk/arrangementer"
             },
             "5": {
+               "title": "Services",
+               "link": "https://www.kb.dk/services"
+            },
+            "6": {
                "title": "Visit us",
-               "link": "https://www.kb.dk/en/visit-us"
+               "link": "https://www.kb.dk/besoeg-os"
             }
          }
       },
@@ -183,20 +197,24 @@
         "title": "Use the library",
          "links": {
             "1": {
-               "title": "For professionals",
-               "link": "https://pro.kb.dk/en"
+             "title": "Mediestream",
+             "link": "https://www2.statsbiblioteket.dk/mediestream/"
             },
             "2": {
-               "title": "Meetings and conferences",
-               "link": "https://pro.kb.dk/en/meetings"
+               "title": "Digital collections",
+               "link": "http://www5.kb.dk/editions/any/2009/jul/editions/da/"
             },
             "3": {
-               "title": "For the central administration in Denmark",
-               "link": "https://forcentraladministrationen.kb.dk/en"
+               "title": "The Radio- and TV collection",
+               "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
             },
             "4": {
-               "title": "Legal deposit",
-               "link": "https://pro.kb.dk/en/legal-deposit"
+               "title": "Find Danish radio and TV programmes",
+               "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+            },
+            "5": {
+               "title": "The Library system",
+               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
             }
          }
       },
@@ -221,7 +239,7 @@
             },
             "5": {
                "title": "Accessibility statement",
-               "link": "https://www.kb.dk/was"
+               "link": "https://www.was.digst.dk/kb-dk"
             },
             "6": {
                "title": "Service status",
@@ -240,11 +258,11 @@
                "link": "mailto:kb@kb.dk"
             },
             "3": {
-               "title": "Tel: (+45) 3346 4747",
+               "title": "Tel: (+45) 33 47 47 47",
                "link": ""
             },
             "4": {
-               "title": "Press",
+               "title": "Press contact",
                "link": "https://www.kb.dk/en/about-us/press"
             },
             "5": {
@@ -290,6 +308,13 @@
          "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later"
       },
    "searchfailed":"The search request could not be performed",
-   "malformeduri": "Something went wrong with your search terms - try to change some of them"
+   "malformeduri": "Something went wrong with your search terms - try to change some of them",
+   "wrongUrl": {
+      "header": "Sadly we can not find the page you're looking for :(",
+      "text": "It is unfortunate because we got 25.000 TB websites in storage",
+      "altHeader": "Maybe you're looking for",
+      "frontPage": "Frontpage of DR Archive",
+      "kbPage": "Frontpage of the Royal Danish Library"
+   }
   }
 }

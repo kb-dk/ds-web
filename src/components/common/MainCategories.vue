@@ -51,12 +51,11 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
-import { APIService } from '@/api/api-service';
 import { facetItem } from '@/types/APIResponseTypes';
-
+import { useSearchResultStore } from '@/store/searchResultStore';
 export default defineComponent({
 	name: 'MainCategories',
 
@@ -64,25 +63,52 @@ export default defineComponent({
 		const { t } = useI18n();
 		const categories = ref([] as facetItem[]);
 		const categoriesLoaded = ref(false);
+		const searchResultStore = useSearchResultStore();
 
 		const quotation = (name: string) => {
 			return `"${name}"`;
 		};
 
-		onMounted(() => {
-			APIService.getFullResultWithFacets().then((response) => {
-				const categoryArray = response.data.facet_counts.facet_fields.genre;
-				categoryArray.forEach((item, index) => {
-					if (index % 2 === 0) {
-						let category = {
-							name: `${item}`,
-							number: categoryArray[index + 1],
-						} as unknown as facetItem;
-						categories.value.push(category);
-					}
-				});
-				categoriesLoaded.value = true;
+		const constructGenre = () => {
+			const categoryArray = searchResultStore.initFacets.facet_fields.genre;
+			categoryArray.forEach((item, index) => {
+				if (index % 2 === 0) {
+					let category = {
+						name: `${item}`,
+						number: categoryArray[index + 1],
+					} as unknown as facetItem;
+					categories.value.push(category);
+				}
 			});
+			categoriesLoaded.value = true;
+		};
+
+		onMounted(() => {
+			if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
+				constructGenre();
+			} else {
+				watch(
+					() => searchResultStore.firstBackendFetchExecuted,
+					(newVal: boolean) => {
+						if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
+							constructGenre();
+						} else {
+							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
+							const customEvent = new CustomEvent('notify-user', {
+								detail: {
+									title: 'Backend svarer ikke.',
+									message:
+										'De bagvedliggende applikationer svarer ikke, så det er ikke muligt at søge pt. \n \n Prøv igen senere.',
+									key: false,
+									severity: 'low',
+									userClose: true,
+								},
+							});
+							window.dispatchEvent(customEvent);
+						}
+					},
+				);
+			}
 		});
 
 		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation, santizeAndSimplify };

@@ -344,7 +344,7 @@ h1 {
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-	margin-top: 30px;
+	margin-top: calc(35px - 1.5vw);
 }
 
 .toggle-button:before {

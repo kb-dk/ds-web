@@ -9,11 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import PortalContent from '@/components/common/PortalContent.vue';
 import Footer from '@/components/global/nav/Footer.vue';
 import Hero from '@/components/search/Hero.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'Home',
@@ -26,6 +27,12 @@ export default defineComponent({
 	setup() {
 		const searchContainer = ref<HTMLElement | null>(null);
 		const searchResultStore = useSearchResultStore();
+		const { t } = useI18n();
+
+		onMounted(() => {
+			searchResultStore.resetSearch();
+			document.title = t('app.titles.frontpage.archive.name') as string;
+		});
 
 		return {
 			searchResultStore,

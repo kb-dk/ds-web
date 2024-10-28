@@ -9,7 +9,7 @@
 		>
 			<div v-if="resultdata != null && !loading">
 				<router-link
-					:to="{ path: 'record/' + resultdata.id }"
+					:to="{ path: 'post/' + resultdata.id }"
 					class="link-title"
 					role="link"
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
