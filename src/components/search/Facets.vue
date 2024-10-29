@@ -56,7 +56,7 @@
 						<div class="flex-container">
 							<div class="category-container">
 								<CustomExpander
-									headline="Udvælg kategorier"
+									headline="Vælg kategorier"
 									icon="category"
 									:subline="`Alle kategorier`"
 								>
@@ -89,7 +89,7 @@
 								</CustomExpander>
 							</div>
 							<CustomExpander
-								headline="Udvælg kanaler"
+								headline="Vælg kanaler"
 								icon="ondemand_video"
 								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
 								:fade="true"
