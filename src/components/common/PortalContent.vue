@@ -17,7 +17,7 @@
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
-				:title="'Brug Kalenderen...'"
+				:title="'Søg via dato'"
 				:left="true"
 				bg="#caf0fe"
 				icon="event"
@@ -33,12 +33,12 @@
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
-				:title="'Brug tiden...'"
+				:title="'Søg via periode'"
 				:left="false"
 				bg="#fafafa"
 				text="#0a2e70"
 				icon="schedule"
-				:subtitle="`Vælg, hvilket tidsrum i DR's sendeflader, du vil søge i.`"
+				:subtitle="`Vælg hvilket tidsrum i DR's sendeflader, du vil søge i.`"
 				:fullwidth="true"
 				:dashed-bottom="true"
 				:shadow-bottom="false"
@@ -46,6 +46,7 @@
 				<TimeSearchComponent />
 			</SkewedFoldable>
 		</div>
+		<!--		TODO title with danish month text -->
 		<TiltedDivider
 			:right="false"
 			:title="$t('frontpage.fromTheArchive')"

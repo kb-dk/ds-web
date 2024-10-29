@@ -32,12 +32,12 @@
 					class="explanation-for-data"
 				>
 					<div>
-						Datamængde viser en kurve over data vi har i arkivet lorem ipsum dolor sit amet, consectetur adipiscing
-						elit, sed do eiusmod tempor incididunt ut.
+						Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der
+						meget materiale, og i andre er der kun lidt eller ingenting.
 					</div>
 					<div>
-						Der er huller i arkivet, men vi arbejder på det lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut.
+						Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil
+						kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser.
 					</div>
 					<button
 						ref="closeDataExplanation"

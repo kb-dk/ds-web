@@ -28,7 +28,7 @@
 							@click="resetFilters()"
 						>
 							<span>×</span>
-							Reset filtre
+							Nulstil filtre
 						</button>
 					</div>
 					<div class="type-toggles">
