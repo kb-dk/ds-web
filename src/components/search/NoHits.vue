@@ -15,26 +15,32 @@
 			<TextAndImage>
 				<template #text>
 					<div>
-						<h3>Her får du et par fif til at optimere din søgning</h3>
+						<h3>Måske kan du forbedre din søgning med en af disse metoder</h3>
 						<ul>
-							<li>Prøv med færre eller andre søgeord</li>
 							<li>
-								Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a
-								<br />
-								Så søger du både på Sonia og Sonja
+								<div>Prøv med færre eller andre søgeord</div>
 							</li>
 							<li>
-								Prøv at skrive * i slutningen af et ord, eksempelvis skov*
-								<br />
-								Så søger du på skov, skovens, skovtur og så videre.
+								<div>
+									Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a
+								</div>
+								<div>Så søger du både på Sonia og Sonja</div>
 							</li>
 							<li>
-								Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår
-								udsendelsen blev sendt
+								<div>Prøv at skrive * i slutningen af et ord, eksempelvis skov*</div>
+								<div>Så søger du på skov, skovens, skovtur og så videre</div>
 							</li>
 							<li>
-								Læs mere om
-								<a href="">søgetips</a>
+								<div>
+									Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår
+									udsendelsen blev sendt
+								</div>
+							</li>
+							<li>
+								<div>
+									Læs mere om
+									<a href="">søgetips</a>
+								</div>
 							</li>
 						</ul>
 					</div>
