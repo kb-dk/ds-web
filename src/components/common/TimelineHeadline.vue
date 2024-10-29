@@ -20,11 +20,23 @@
 			<button
 				v-for="(item, index) in selectedItems"
 				:key="`${index}-${item.name}`"
+				:title="item.name"
 				class="selected-entity"
 				:data-testid="addTestDataEnrichment('button', 'timeline-headline', `${headline}-small-status-toggle`, 0)"
 				@click="handleTimeFacetRemoval(item.index, $event)"
 			>
-				<span class="entity-name">{{ formatStringForTime(t(item.name).substring(0, filterCuttof)) }}</span>
+				<span
+					v-if="useTranslation"
+					class="entity-name"
+				>
+					{{ formatStringForTime(t(item.name).substring(0, filterCuttof)) }}
+				</span>
+				<span
+					v-else
+					class="entity-name"
+				>
+					{{ formatStringForTime(item.name.substring(0, filterCuttof)) }}
+				</span>
 				<span class="close">×</span>
 			</button>
 		</div>
@@ -80,6 +92,13 @@ export default defineComponent({
 			required: false,
 			default() {
 				return 3;
+			},
+		},
+		useTranslation: {
+			type: Boolean as PropType<boolean>,
+			required: false,
+			default() {
+				return true;
 			},
 		},
 	},
@@ -145,7 +164,7 @@ h2 {
 	font-weight: 700;
 	color: #002e70;
 	background-color: #d9f5fe;
-	border: 1px solid #d9f5fe;
+	border: 1px solid white;
 	border-radius: 4px;
 	width: fit-content;
 	padding-left: 3px;

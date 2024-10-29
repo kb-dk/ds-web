@@ -17,7 +17,7 @@
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
-				:title="'Brug Kalenderen...'"
+				:title="'Søg via dato'"
 				:left="true"
 				bg="#caf0fe"
 				icon="event"
@@ -33,12 +33,12 @@
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
-				:title="'Brug tiden...'"
+				:title="'Søg via periode'"
 				:left="false"
 				bg="#fafafa"
 				text="#0a2e70"
 				icon="schedule"
-				:subtitle="`Vælg, hvilket tidsrum i DR's sendeflader, du vil søge i.`"
+				:subtitle="`Vælg hvilket tidsrum i DR's sendeflader, du vil søge i.`"
 				:fullwidth="true"
 				:dashed-bottom="true"
 				:shadow-bottom="false"
@@ -48,7 +48,11 @@
 		</div>
 		<TiltedDivider
 			:right="false"
-			:title="$t('frontpage.fromTheArchive')"
+			:title="
+				$t('frontpage.fromTheArchive', {
+					month: new Date().toLocaleString(currentLocale, { month: 'long' }),
+				})
+			"
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
@@ -75,7 +79,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
@@ -85,6 +89,9 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -101,8 +108,21 @@ export default defineComponent({
 		const mockdata1 = ['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[];
 		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
 		const searchResultStore = useSearchResultStore();
-
-		return { searchResultStore, mockdata1, mockdata2, addTestDataEnrichment };
+		const currentLocale = ref('da-dk');
+		const { locale, t } = useI18n({ useScope: 'global' });
+		watch(
+			() => locale.value,
+			(newVal: string) => {
+				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
+			},
+		);
+		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment };
+	},
+	methods: {
+		useRoute,
+		router() {
+			return router;
+		},
 	},
 });
 </script>

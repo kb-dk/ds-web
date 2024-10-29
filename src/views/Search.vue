@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, watch, inject } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
@@ -65,6 +66,7 @@ export default defineComponent({
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
+		const timeSearchStore = useTimeSearchStore();
 		const router = useRouter();
 		const route = useRoute();
 
@@ -76,44 +78,54 @@ export default defineComponent({
 		onMounted(() => {
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
 			document.title = t('app.titles.frontpage.archive.name') as string;
-			searchResultStore.resetFilters();
-			if (route.query.q !== undefined) {
-				const routeFacetQueries = route.query.fq;
-				const start = route.query.start as string;
-				const sort = route.query.sort as string;
-				searchResultStore.setStartFromURL(start);
-				searchResultStore.setSortFromURL(sort);
-				if (route.query.q) {
-					try {
-						const q = new URL(location.href).searchParams.get('q');
-						if (q !== null) {
-							searchResultStore.setCurrentQueryFromURL(q.toString());
-						}
-					} catch (error) {
-						if (error instanceof URIError) {
-							/**
-							 * Specific error: MalformedURI - aka you messsed up the query
-							 * and even worse you did it by manipulating the url directly
-							 * in the URL bar
-							 * */
-							errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
-						} else {
-							// General search error happened here so message to user should be generel
-							errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
-						}
-					}
-				}
-				if (routeFacetQueries) {
-					searchResultStore.setFiltersFromURL(routeFacetQueries);
-				}
-				searchResultStore.getSearchResults(route.query.q as string);
+			const pastPage = router.options.history.state.back as string;
+			if (pastPage && pastPage.startsWith('/post/')) {
 				document.title = (t('app.titles.search') +
 					'"' +
 					route.query.q +
 					'"' +
 					t('app.titles.frontpage.archive.suffix')) as string;
-			} else if (route.query.q === undefined) {
-				searchResultStore.resetSearch();
+				searchResultStore.loading = false;
+			} else {
+				searchResultStore.resetFilters();
+				if (route.query.q !== undefined) {
+					const routeFacetQueries = route.query.fq;
+					const start = route.query.start as string;
+					const sort = route.query.sort as string;
+					searchResultStore.setStartFromURL(start);
+					searchResultStore.setSortFromURL(sort);
+					if (route.query.q) {
+						try {
+							const q = new URL(location.href).searchParams.get('q');
+							if (q !== null) {
+								searchResultStore.setCurrentQueryFromURL(q.toString());
+							}
+						} catch (error) {
+							if (error instanceof URIError) {
+								/**
+								 * Specific error: MalformedURI - aka you messsed up the query
+								 * and even worse you did it by manipulating the url directly
+								 * in the URL bar
+								 * */
+								errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
+							} else {
+								// General search error happened here so message to user should be generel
+								errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
+							}
+						}
+					}
+					if (routeFacetQueries) {
+						searchResultStore.setFiltersFromURL(routeFacetQueries);
+					}
+					searchResultStore.getSearchResults(route.query.q as string);
+					document.title = (t('app.titles.search') +
+						'"' +
+						route.query.q +
+						'"' +
+						t('app.titles.frontpage.archive.suffix')) as string;
+				} else if (route.query.q === undefined) {
+					searchResultStore.resetSearch();
+				}
 			}
 		});
 
@@ -132,6 +144,8 @@ export default defineComponent({
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.setRowCountFromURL(route.query.rows as string);
 					searchResultStore.getSearchResults(route.query.q as string);
+					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
+
 					document.title = (t('app.titles.search') +
 						'"' +
 						route.query.q +

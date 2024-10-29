@@ -32,12 +32,12 @@
 					class="explanation-for-data"
 				>
 					<div>
-						Datamængde viser en kurve over data vi har i arkivet lorem ipsum dolor sit amet, consectetur adipiscing
-						elit, sed do eiusmod tempor incididunt ut.
+						Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der
+						meget materiale, og i andre er der kun lidt eller ingenting.
 					</div>
 					<div>
-						Der er huller i arkivet, men vi arbejder på det lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut.
+						Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil
+						kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser.
 					</div>
 					<button
 						ref="closeDataExplanation"
@@ -240,19 +240,13 @@
 			class="apply-time-facets-container"
 		>
 			<button
-				class="close"
-				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'close-time-facets', 0)"
-				@click="closeTimeFacets()"
-			>
-				{{ t('timeSearch.filterCloseButton') }}
-			</button>
-			<button
 				class="apply-time-facets"
 				:disabled="!timeSearchStore.newSearchReqMet"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
 				{{ t('timeSearch.filterApplyButton') }}
+				<span class="material-icons">search</span>
 			</button>
 		</div>
 	</div>
@@ -273,8 +267,6 @@ import {
 	startDate,
 	endDate,
 	initSliderValues,
-	initStartDate,
-	initEndDate,
 	startYear,
 	endYear,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
@@ -346,8 +338,7 @@ export default defineComponent({
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = initSliderValues.value;
-				startDate.value.setTime(initStartDate.value.getTime());
-				endDate.value.setTime(initEndDate.value.getTime());
+
 				getTimeResults(true);
 			}
 			if (props.timeline) {
@@ -358,52 +349,20 @@ export default defineComponent({
 				if (dataButton.value) {
 					dataButton.value.style.display = 'none';
 				}
-				watch(
-					() => searchResultStore.firstBackendFetchExecuted,
-					(newVal: boolean) => {
-						if (newVal) {
-							data.value = [];
-							selectYears.value = [];
-							const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
-							const sortedResults = [] as dataItem[];
-							resultsInYears.forEach((item, index) => {
-								if (index % 2 === 0) {
-									let nextResult = {
-										year: item,
-										items: Number(resultsInYears[index + 1]),
-									};
-									sortedResults.push(nextResult);
-								}
-							});
-							sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
-							startYear.value.setFullYear(Number(sortedResults[0].year));
-							endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
-							for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-								selectYears.value.push(i.toString());
-								data.value.push({ key: i, value: i });
-								let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
-									year: i.toString(),
-									items: 0,
-								};
-								item.x = Number(
-									(
-										(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
-										(i - startYear.value.getFullYear())
-									).toFixed(2),
-								);
-								item.y = item.items;
-								fullYearArray.value.push(item);
+				if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
+					constructSVG();
+				} else {
+					watch(
+						() => searchResultStore.firstBackendFetchExecuted,
+						(newVal: boolean) => {
+							if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
+								constructSVG();
+							} else {
+								/* TODO: Error here! */
 							}
-							const svgElement = createSVGCurvedLine(fullYearArray.value);
-							if (dataContainer.value) {
-								dataContainer.value.appendChild(svgElement);
-							}
-							if (dataButton.value) {
-								dataButton.value.style.display = 'block';
-							}
-						}
-					},
-				);
+						},
+					);
+				}
 			}
 		});
 
@@ -422,6 +381,48 @@ export default defineComponent({
 				}
 			},
 		);
+
+		const constructSVG = () => {
+			data.value = [];
+			selectYears.value = [];
+			const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
+			const sortedResults = [] as dataItem[];
+			resultsInYears.forEach((item, index) => {
+				if (index % 2 === 0) {
+					let nextResult = {
+						year: item,
+						items: Number(resultsInYears[index + 1]),
+					};
+					sortedResults.push(nextResult);
+				}
+			});
+			sortedResults.sort((a: dataItem, b: dataItem) => Number(a.year) - Number(b.year));
+			startYear.value.setFullYear(Number(sortedResults[0].year));
+			endYear.value.setFullYear(Number(sortedResults[sortedResults.length - 1].year));
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.value.push(i.toString());
+				data.value.push({ key: i, value: i });
+				let item = (sortedResults.find((item) => item.year.includes(i.toString())) as pointItem) || {
+					year: i.toString(),
+					items: 0,
+				};
+				item.x = Number(
+					(
+						(100 / (endYear.value.getFullYear() - startYear.value.getFullYear())) *
+						(i - startYear.value.getFullYear())
+					).toFixed(2),
+				);
+				item.y = item.items;
+				fullYearArray.value.push(item);
+			}
+			const svgElement = createSVGCurvedLine(fullYearArray.value);
+			if (dataContainer.value) {
+				dataContainer.value.appendChild(svgElement);
+			}
+			if (dataButton.value) {
+				dataButton.value.style.display = 'block';
+			}
+		};
 
 		const toggleExplanation = () => {
 			expToggled.value = !expToggled.value;
@@ -753,7 +754,7 @@ fieldset {
 			#c4f1ed 71%,
 			#c4f1ed 79%,
 			#c9f0fe 82%,
-			#fdfdfd 100%
+			#fdfdfd00 100%
 		)
 		0% 0% no-repeat padding-box;
 }
@@ -782,6 +783,7 @@ fieldset {
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	position: relative;
+	width: 100%;
 }
 
 .data-size {
@@ -963,7 +965,6 @@ fieldset {
 }
 
 .picker-background {
-	background-color: #d9f5fe;
 	margin-top: 15px;
 }
 
@@ -988,10 +989,14 @@ fieldset {
 	color: white;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
-	margin-left: 10px;
 	z-index: 1;
 	position: relative;
 	overflow: hidden;
+	width: 100%;
+	height: 45px;
+	display: flex;
+	justify-content: center;
+	gap: 15px;
 }
 
 .apply-time-facets:disabled {
@@ -1016,7 +1021,7 @@ fieldset {
 		rgba(255, 255, 255, 1) 50%,
 		rgba(255, 255, 255, 0) 80%
 	);
-	animation: shine 4s ease-in-out infinite;
+	animation: shine 6s ease-in-out infinite;
 }
 
 @keyframes shine {
@@ -1028,23 +1033,6 @@ fieldset {
 		transform: translateX(200%);
 		transition-property: opacity, transform;
 	}
-}
-
-.close {
-	cursor: pointer;
-	font-size: 18px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	box-shadow: 1px 1px 2px #00000000;
-	border: 1px solid #d9d8d8;
-	background: rgb(250, 250, 250);
-	color: #002e70;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-	position: absolute;
-	left: 0px;
-	padding: 5px 7px;
 }
 
 .data-container {

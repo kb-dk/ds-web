@@ -170,6 +170,9 @@ h3.reverse {
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {

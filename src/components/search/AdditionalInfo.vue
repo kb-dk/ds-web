@@ -8,7 +8,7 @@
 			@click="showThumbnails()"
 		>
 			<span class="material-icons thumbnails-icon">photo_library</span>
-			Thumbnails
+			Oversigt
 			<span :class="extraContentShown ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
 				expand_more
 			</span>

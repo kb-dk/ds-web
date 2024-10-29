@@ -10,6 +10,7 @@
 			:item-array="itemArray"
 			:pass-update="passAlongUpdate"
 			:filter-cuttof="filterNameCutoff"
+			:use-translation="useHeadlineTranslation"
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
@@ -75,10 +76,24 @@ export default defineComponent({
 				return [] as SelectorData[];
 			},
 		},
+		facetType: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
 		updateEntity: {
 			type: Function,
 			default() {
 				return null;
+			},
+		},
+		useHeadlineTranslation: {
+			type: Boolean,
+			required: false,
+			default() {
+				return true;
 			},
 		},
 	},
@@ -88,7 +103,7 @@ export default defineComponent({
 		const expandContainer = ref<HTMLElement | null>(null);
 		const headlineRef = ref();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
-			props.updateEntity(parent, index, val);
+			props.updateEntity(parent, index, val, props.facetType);
 		};
 
 		const toggleExpander = () => {
@@ -174,10 +189,10 @@ export default defineComponent({
 	top: 12px;
 	background: linear-gradient(
 		90deg,
-		rgba(250, 250, 250, 1) 0%,
+		rgba(250, 250, 250, 0) 0%,
 		rgba(255, 255, 255, 0) 5%,
 		rgba(255, 255, 255, 0) 95%,
-		rgba(250, 250, 250, 1) 100%
+		rgba(250, 250, 250, 0) 100%
 	);
 }
 
@@ -193,7 +208,6 @@ export default defineComponent({
 	display: block;
 	width: 100%;
 	height: 1px;
-	margin-top: 1px;
 	opacity: 0.3;
 }
 
