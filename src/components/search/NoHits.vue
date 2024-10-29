@@ -9,7 +9,7 @@
 				<SpellChecker :spell-check="searchResultStore.spellCheck" />
 			</div>
 			<TiltedDivider
-				title="Et par fif til din søgning"
+				title="Gode råd til din søgning"
 				:right="true"
 			></TiltedDivider>
 			<TextAndImage>
@@ -17,12 +17,25 @@
 					<div>
 						<h3>Her får du et par fif til at optimere din søgning</h3>
 						<ul>
-							<li>Et område afsat til at lære brugerene om brugen af søgefeltet</li>
-							<li>Hvad kan man og ikke mindst hvad man kan ikke søge på</li>
-							<li>Vil det være muligt at søge på en titel</li>
-							<li>Vil det være muligt at søge på en programrække</li>
-							<li>I det hele taget skal der laves en "søgeguide"</li>
-							<li>Her skal stå hvordam man bruger vores søgefelt</li>
+							<li>Prøv med færre eller andre søgeord</li>
+							<li>
+								Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a
+								<br />
+								Så søger du både på Sonia og Sonja
+							</li>
+							<li>
+								Prøv at skrive * i slutningen af et ord, eksempelvis skov*
+								<br />
+								Så søger du på skov, skovens, skovtur og så videre.
+							</li>
+							<li>
+								Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår
+								udsendelsen blev sendt
+							</li>
+							<li>
+								Læs mere om
+								<a href="">søgetips</a>
+							</li>
 						</ul>
 					</div>
 				</template>

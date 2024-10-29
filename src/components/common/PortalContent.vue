@@ -46,10 +46,14 @@
 				<TimeSearchComponent />
 			</SkewedFoldable>
 		</div>
-		<!--		TODO title with danish month text -->
+		<!--		TODO title month dynamic with locals -->
 		<TiltedDivider
 			:right="false"
-			:title="$t('frontpage.fromTheArchive')"
+			:title="
+				$t('frontpage.fromTheArchive', {
+					month: new Date().toLocaleString('da-dk', { month: 'long' }),
+				})
+			"
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
@@ -86,6 +90,8 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -104,6 +110,12 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 
 		return { searchResultStore, mockdata1, mockdata2, addTestDataEnrichment };
+	},
+	methods: {
+		useRoute,
+		router() {
+			return router;
+		},
 	},
 });
 </script>
