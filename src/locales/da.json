@@ -86,7 +86,7 @@
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
      "nohit":"Vi fandt desværre intet match på søgningen \"{query}\"",
-     "nohitSubtitle": "Vi beklager at du ikke kunne finde det du søgte efter. Arkivet er under udvikling og har udfordringer med at få søgeoplevelsen tidssvarende, men vi har nogle fif til at optimere på søgningen.",
+     "nohitSubtitle": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. \nDet er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger. Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet. \nLæs mere om, hvad arkivet indeholder [Link til Om-siden: https://www.kb.dk/find-materiale/tjenester/dr-arkivet]\n\nVi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart.\n\nNedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre.",
      "tipsTitle": "Et par fif til din søgning",
      "mainCategories": "led videre i vores hovedkategorier",
      "showFilters":"Vis filtre",
