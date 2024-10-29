@@ -337,7 +337,7 @@ const MENU_COMPONMENT_STYLES = /*css*/ `
 
 	.overall-header {
 		position:relative;
-		z-index:2;
+		z-index:4;
 	}
 
 	.search-label {

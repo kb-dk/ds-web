@@ -21,16 +21,24 @@
 			<div class="hero-info">
 				<div class="info">
 					<div class="progress-headline">
-						<h2>Vi er nået 35%...</h2>
+						<h2>Vi er nået {{ currentProgress }}%...</h2>
 						<p>
 							I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende
-							både nyere og ældre udsendelser, så arkivet bliver større og større
+							både nyere og ældre udsendelser, så arkivet bliver større og større.
 						</p>
 					</div>
 					<div class="process-bar">
-						<div class="progress">
-							<div class="color-part"></div>
+						<div
+							:style="`left:${currentProgress}%`"
+							class="procentage"
+						>
+							{{ currentProgress }}%
 						</div>
+						<div
+							v-for="i in 20"
+							:key="i"
+							:class="progress(i)"
+						></div>
 					</div>
 					<div class="link-container">
 						<a
@@ -53,7 +61,7 @@ export default defineComponent({
 
 	setup() {
 		const overlayRef = ref<HTMLElement | null>(null);
-
+		const currentProgress = ref(35);
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.svg`, import.meta.url).href;
 		});
@@ -71,10 +79,25 @@ export default defineComponent({
 			}
 		};
 
+		const progress = (index: number) => {
+			const maxRange = 20;
+			let programaticallyThreshold = Math.round((maxRange / 100) * currentProgress.value);
+			console.log(programaticallyThreshold);
+			if (index < programaticallyThreshold) return 'step darkblue';
+			if (index === programaticallyThreshold) return 'step darkblue';
+			if (index === programaticallyThreshold + 1) return 'step blue';
+			if (index === programaticallyThreshold + 2) return 'step lightblue';
+			if (index === programaticallyThreshold + 3) return 'step grey';
+			if (index === programaticallyThreshold + 4) return 'step lightgrey';
+			if (index > programaticallyThreshold + 4) return 'step white';
+		};
+
 		return {
 			backgroundImage,
 			overlayRef,
 			handleMouseMove,
+			progress,
+			currentProgress,
 		};
 	},
 });
@@ -82,16 +105,64 @@ export default defineComponent({
 <style scoped>
 .hero-container {
 	position: relative;
-	height: 400px;
+	height: 700px;
 	display: flex;
 	margin-top: -120px;
 	margin-bottom: 6vw;
 	align-items: center;
 	z-index: 3;
-	transition: all 0.5s linear 0s;
+	overflow: hidden;
+	transition: background-color 0.5s linear 0s;
 }
 h1 {
 	pointer-events: none;
+}
+
+.process-bar {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 30px;
+	display: flex;
+	padding: 5px 25px;
+}
+
+.procentage {
+	position: absolute;
+	text-align: center;
+	transform: translate(-50%, 0%);
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.step {
+	width: 5%;
+	height: 100%;
+	box-sizing: border-box;
+	border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.step.darkblue {
+	background-color: #0a2e70;
+}
+.step.blue {
+	background-color: #002e70cc;
+}
+
+.step.lightblue {
+	background-color: #002e7066;
+}
+
+.step.grey {
+	background-color: #ffffff66;
+}
+
+.step.lightgrey {
+	background-color: #ffffffcc;
+}
+
+.step.white {
+	background-color: white;
 }
 
 h1 .headline,
@@ -112,28 +183,26 @@ h1 .subtitle {
 
 .container {
 	width: 100%;
-	margin-left: 12px;
-	flex-direction: column;
 	display: flex;
-	height: 100%;
+	flex-direction: column;
+	align-items: flex-start;
+	height: 80%;
+	justify-content: space-evenly;
 }
 
 .progress-headline {
 	background-color: white;
+	margin: 24px 12px;
 }
 
 .hero-info {
-	max-width: 400px;
+	max-width: 100%;
 	position: relative;
 	z-index: 0;
-	height: 100%;
-	bottom: 0px;
 	display: flex;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
-
-	background-color: rgba(255, 255, 255, 0.5);
-	margin-right: 12px;
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	background-color: rgba(255, 255, 255, 0.35);
 	box-sizing: border-box;
 }
 
@@ -155,11 +224,15 @@ h1 .subtitle {
 }
 
 .hero-info h2 {
-	font-size: 26px;
+	font-size: 18px;
+}
+
+h1 {
+	margin-left: 12px;
 }
 
 .hero-info p {
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .hero-info h2,
@@ -169,7 +242,6 @@ h1 .subtitle {
 
 .hero-info .link-container {
 	display: block;
-	padding-bottom: 50px;
 }
 
 .link-container .link {
@@ -181,14 +253,20 @@ h1 .subtitle {
 	text-decoration: none;
 	font-size: 18px;
 	padding: 5px 0px;
-	border-radius: 3px;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	justify-content: center;
+	border: 1px solid white;
 }
 
 .subtitle {
 	text-align: center;
 	letter-spacing: 0px;
 	color: #0b0d0a;
-	font-size: 24px;
+	font-size: 16px;
 }
 
 .headline {
@@ -197,7 +275,7 @@ h1 .subtitle {
 	color: #0b0d0a;
 	text-transform: uppercase;
 	font-family: 'LibreBaskerville';
-	font-size: 49px;
+	font-size: 28px;
 	position: relative;
 	top: -1px;
 }
@@ -233,28 +311,10 @@ h1 {
 	object-fit: cover;
 	position: absolute;
 	animation: hueRotate 5s infinite;
-	transition: all 0.5s linear 0s;
 }
 
 .hero-container:hover {
 	background-color: #0a2e70;
-}
-
-.svg-noise {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	mix-blend-mode: screen;
-	animation: noiseVerticalEffect 0.1s infinite;
-	pointer-events: none;
-}
-
-.gray-overlay {
-	width: 100vw;
-	height: 100%;
-	object-fit: cover;
-	position: absolute;
-	transition: all 3s linear 0.2s;
 }
 
 .noise {
@@ -339,6 +399,51 @@ h1 {
 		max-width: 990px;
 	}
 }
+
+/* MEDIA QUERY 800 */
+@media (min-width: 800px) {
+	.container {
+		flex-direction: row;
+		margin-left: 12px;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+	}
+
+	h1 {
+		margin-left: 0px;
+	}
+
+	.hero-info h2 {
+		font-size: 26px;
+	}
+
+	.hero-info p {
+		font-size: 16px;
+	}
+
+	.hero-info {
+		max-width: 400px;
+		position: relative;
+		z-index: 0;
+		height: 100%;
+		bottom: 0px;
+		display: flex;
+		border-left: 2px solid white;
+		border-right: 2px solid white;
+		background-color: rgba(255, 255, 255, 0.5);
+		margin-right: 12px;
+		box-sizing: border-box;
+	}
+
+	.headline {
+		font-size: 49px;
+	}
+	.subtitle {
+		font-size: 24px;
+	}
+}
+
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.hero-container {
