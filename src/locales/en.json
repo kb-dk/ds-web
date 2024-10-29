@@ -14,7 +14,7 @@
       }
    },
    "frontpage": {
-      "fromTheArchive":"A selection from the archive"
+      "fromTheArchive":"{month} month on DR through time"
    },
    "facets" : {
       "allGenres": "all categories",
