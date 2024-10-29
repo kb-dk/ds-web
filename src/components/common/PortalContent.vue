@@ -46,12 +46,11 @@
 				<TimeSearchComponent />
 			</SkewedFoldable>
 		</div>
-		<!--		TODO title month dynamic with locals -->
 		<TiltedDivider
 			:right="false"
 			:title="
 				$t('frontpage.fromTheArchive', {
-					month: new Date().toLocaleString('da-dk', { month: 'long' }),
+					month: new Date().toLocaleString(currentLocale, { month: 'long' }),
 				})
 			"
 		></TiltedDivider>
@@ -80,7 +79,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
@@ -92,6 +91,7 @@ import MainCategories from '@/components/common/MainCategories.vue';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -108,8 +108,15 @@ export default defineComponent({
 		const mockdata1 = ['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[];
 		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
 		const searchResultStore = useSearchResultStore();
-
-		return { searchResultStore, mockdata1, mockdata2, addTestDataEnrichment };
+		const currentLocale = ref('da-dk');
+		const { locale, t } = useI18n({ useScope: 'global' });
+		watch(
+			() => locale.value,
+			(newVal: string) => {
+				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
+			},
+		);
+		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment };
 	},
 	methods: {
 		useRoute,
