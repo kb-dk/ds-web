@@ -56,9 +56,9 @@
 						<div class="flex-container">
 							<div class="category-container">
 								<CustomExpander
-									headline="Vælg kategorier"
+									:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
 									icon="category"
-									:subline="`Alle kategorier`"
+									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
 								>
 									<fieldset
 										v-if="searchResultStore.firstBackendFetchExecuted"
@@ -89,7 +89,7 @@
 								</CustomExpander>
 							</div>
 							<CustomExpander
-								headline="Vælg kanaler"
+								:headline="$t('facets.choose') + ' ' + $t('facets.channels', 2)"
 								icon="ondemand_video"
 								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
 								:fade="true"

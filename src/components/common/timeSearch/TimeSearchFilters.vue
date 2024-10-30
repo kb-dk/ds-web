@@ -32,12 +32,10 @@
 					class="explanation-for-data"
 				>
 					<div>
-						Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der
-						meget materiale, og i andre er der kun lidt eller ingenting.
+						{{ $t('search.dataQuantity.firstPart') }}
 					</div>
 					<div>
-						Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil
-						kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser.
+						{{ $t('search.dataQuantity.secondPart') }}
 					</div>
 					<button
 						ref="closeDataExplanation"
