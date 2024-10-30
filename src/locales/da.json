@@ -5,7 +5,8 @@
             "archive":  {
                "name": "DR Arkiv",
                "suffix": " - DR Arkiv"
-            }
+            },
+           "about": "Om"
          },
          "search":" Søgning på "
       },
@@ -17,12 +18,13 @@
       "fromTheArchive":"{month} måned på DR gennem tiden"
    },
    "facets" : {
-      "allGenres": "alle kategorier",
+      "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
       "allChannels":"Alle kanaler",
       "channels":"kanal | kanaler",
       "chosen":"Valgt",
-      "reset":"nulstil"
+      "reset":"nulstil",
+     "choose": "Vælg"
    },
    "breadcrumb": {
       "frontpage":"Forside",
@@ -33,6 +35,7 @@
    },
    "timeSearch": {
       "timeMachine":"Søg via periode",
+     "searchDate": "Søg via dato",
       "year":"år | år",
       "month":"måned | måneder",
       "day":"ugedag | ugedage",
@@ -53,6 +56,8 @@
       "allDays":"Alle ugedage i perioden",
       "allTimeslots":"Hele døgnet",
       "selection":"Et udpluk af resultaterne",
+     "dateSubtitle": "Vælg en dato, du gerne vil se indhold fra.",
+     "timeMachineSubtitle": "Vælg hvilket tidsrum i DR's sendeflader, du vil søge i.",
       "monthHeadline":"Vælg måneder",
       "dayHeadline":"Vælg ugedage",
       "timeslotHeadline":"Vælg tidspunkter",
@@ -114,10 +119,15 @@
      "tv":"TV",
      "radio":"Radio",
      "all":"Alt",
+    "thumbnail": "Oversigt",
      "thumbnailButton":"Se billede-oversigt",
      "thumbnailLink": "Billede {index} ved {timestamp}",
      "of":"af",
      "startTime":"starttid",
+    "dataQuantity":{
+      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er dermeget materiale, og i andre er der kun lidt eller ingenting.",
+      "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
+    },
      "portals": {
          "drArchive":"DR Arkivet",
          "booksAndMaterials":"Bøger og tidskrifter",
@@ -130,7 +140,21 @@
          "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
-      }
+      },
+    "searchGuide": {
+      "title":"Gode råd til din søgning",
+      "subtitle": "Måske kan du forbedre din søgning med en af disse metoder",
+      "first": "Prøv med færre eller andre søgeord",
+      "second": {
+        "line1": "Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a",
+        "line2": "Så søger du både på Sonia og Sonja"
+      },
+      "third": {
+        "line1": "Prøv at skrive * i slutningen af et ord, eksempelvis skov*",
+        "line2": "Så søger du på skov, skovens, skovtur og så videre"
+      },
+      "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt"
+    }
    },
   "record":{
      "duration":"Varighed",
