@@ -82,7 +82,6 @@ export default defineComponent({
 		const progress = (index: number) => {
 			const maxRange = 20;
 			let programaticallyThreshold = Math.round((maxRange / 100) * currentProgress.value);
-			console.log(programaticallyThreshold);
 			if (index < programaticallyThreshold) return 'step darkblue';
 			if (index === programaticallyThreshold) return 'step darkblue';
 			if (index === programaticallyThreshold + 1) return 'step blue';
