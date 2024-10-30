@@ -436,6 +436,10 @@ h1 {
 		box-sizing: border-box;
 	}
 
+	.hero-container {
+		height: 500px;
+	}
+
 	.headline {
 		font-size: 49px;
 	}
