@@ -347,7 +347,7 @@ export default defineComponent({
 					data.value.push({ key: i, value: i });
 				}
 				if (dataButton.value) {
-					dataButton.value.style.display = 'none';
+					dataButton.value.classList.remove('display-data-button');
 				}
 				if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 					constructSVG();
@@ -420,7 +420,7 @@ export default defineComponent({
 				dataContainer.value.appendChild(svgElement);
 			}
 			if (dataButton.value) {
-				dataButton.value.style.display = 'block';
+				dataButton.value.classList.add('display-data-button');
 			}
 		};
 
@@ -919,6 +919,10 @@ fieldset {
 	top: 7px;
 }
 
+.display-data-button {
+	display: none;
+}
+
 .day-button,
 .month-button,
 .time-button {
@@ -1066,6 +1070,10 @@ fieldset {
 		display: block;
 	}
 	.data-size {
+		display: block;
+	}
+
+	.display-data-button {
 		display: block;
 	}
 	.slider-container {
