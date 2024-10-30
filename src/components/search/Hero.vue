@@ -7,10 +7,7 @@
 			loading="lazy"
 			class="bg-image"
 		/>
-		<div
-			ref="overlayRef"
-			class="hue-overlay"
-		></div>
+		<div class="hue-overlay"></div>
 		<div class="bluify"></div>
 		<div class="noise"></div>
 		<div class="container">
@@ -64,25 +61,11 @@ export default defineComponent({
 	name: 'Hero',
 
 	setup() {
-		const overlayRef = ref<HTMLElement | null>(null);
 		const currentProgress = ref(35);
 		const { t } = useI18n();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.svg`, import.meta.url).href;
 		});
-
-		const handleMouseMove = (e: MouseEvent) => {
-			if (overlayRef.value) {
-				const { left, top } = overlayRef.value.getBoundingClientRect();
-
-				// Calculate the mouse position relative to the div
-				const x = Math.round(e.clientX - left);
-				const y = Math.round(e.clientY - top);
-
-				console.log(x, y);
-				overlayRef.value.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0) 0%, rgba(243, 243, 243, 0.3) 35%)`;
-			}
-		};
 
 		const progress = (index: number) => {
 			const maxRange = 20;
@@ -98,8 +81,6 @@ export default defineComponent({
 
 		return {
 			backgroundImage,
-			overlayRef,
-			handleMouseMove,
 			progress,
 			currentProgress,
 			t,
@@ -178,12 +159,6 @@ h1 .subtitle {
 	width: fit-content;
 	padding: 0px 10px;
 	pointer-events: all;
-}
-
-.noise {
-	pointer-events: none;
-	background-image: url('@/assets/images/noise.png');
-	transition: all 0.2s ease-in-out 0s;
 }
 
 .container {
@@ -292,7 +267,6 @@ h1 {
 	position: absolute;
 	background: linear-gradient(40deg, #c1f0f6 0%, #e0bbe4 20%, #ffd7b5 40%, #ffd1dc 60%, #e0bbe4 80%, #c1f0f6 100%);
 	background-size: 100% 100%;
-	transition: all 0.2s ease-in-out 0s;
 	mix-blend-mode: difference;
 	opacity: 0.2;
 }
@@ -346,15 +320,6 @@ h1 {
 	}
 	100% {
 		filter: hue-rotate(360deg) grayscale(0.5);
-	}
-}
-
-@keyframes hueRotateHover {
-	0% {
-		filter: hue-rotate(0deg) grayscale(0);
-	}
-	100% {
-		filter: hue-rotate(360deg) grayscale(0);
 	}
 }
 
