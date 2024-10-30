@@ -260,6 +260,7 @@ h1 {
 	box-sizing: border-box;
 	justify-content: center;
 	border: 1px solid white;
+	margin-bottom: 15px;
 }
 
 .subtitle {
