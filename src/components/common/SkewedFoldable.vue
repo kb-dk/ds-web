@@ -220,6 +220,11 @@ export default defineComponent({
 h1 {
 	font-family: noway, sans-serif;
 	font-weight: 100;
+	text-transform: lowercase;
+}
+
+h1::first-letter {
+	text-transform: capitalize;
 }
 
 .content .responsive-title {

@@ -20,6 +20,7 @@
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
+      "genresSubtitle": "Choose which category you would like to search in",
       "allChannels":"all channels",
       "channels":"channel | channels",
       "chosen":"chosen",
@@ -102,6 +103,7 @@
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
+     "resetFilters": "Reset filters",
      "nextPage":"Next page",
      "previousPage":"Previous page",
      "page": "Page",
