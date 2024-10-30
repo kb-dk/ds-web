@@ -3,12 +3,14 @@
 		<div class="categories">
 			<SkewedFoldable
 				:left="false"
+				:title="$t('facets.genres', 2)"
 				bg="#002e70"
 				text="white"
 				icon="category"
 				:fullwidth="true"
 				:shadow-bottom="true"
 				:shadow-top="true"
+				:subtitle="$t('facets.genresSubtitle')"
 			>
 				<MainCategories />
 			</SkewedFoldable>

@@ -20,6 +20,7 @@
    "facets" : {
       "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
+     "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
       "allChannels":"Alle kanaler",
       "channels":"kanal | kanaler",
       "chosen":"Valgt",
@@ -101,6 +102,7 @@
      "nohit":"Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",
      "showFilters":"Vis filtre",
      "hideFilters":"Skjul filtre",
+    "resetFilters": "Nulstil filtre",
      "nextPage":"Næste side",
      "previousPage":"Forrige side",
      "page": "Side",
