@@ -83,7 +83,7 @@ export default defineComponent({
 	props: {
 		bg: { type: String, default: 'white' },
 		text: { type: String, default: 'black' },
-		title: { type: String, default: 'Title' },
+		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
 		icon: { type: String, default: 'schedule' },
 		fullwidth: { type: Boolean, default: false },
