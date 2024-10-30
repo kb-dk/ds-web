@@ -35,10 +35,10 @@
 							:iso-duration="resultdata.duration"
 							:parenthesis="false"
 						></Duration>
-						&nbsp;-&nbsp;
+						<!-- &nbsp;-&nbsp;
 						<span style="font-style: italic; opacity: 0.5">
 							{{ resultdata.temporal_start_day_da }}
-						</span>
+						</span> -->
 					</div>
 
 					<div class="title">
