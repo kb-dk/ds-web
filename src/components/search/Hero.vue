@@ -15,16 +15,19 @@
 		<div class="noise"></div>
 		<div class="container">
 			<h1>
-				<span class="subtitle"><span class="text">Det Kgl. Biblioteks</span></span>
-				<span class="headline"><span class="text">DR-Arkiv</span></span>
+				<span class="subtitle">
+					<span class="text">{{ t('hero.subtitle') }}</span>
+				</span>
+				<span class="headline">
+					<span class="text">{{ t('hero.title') }}</span>
+				</span>
 			</h1>
 			<div class="hero-info">
 				<div class="info">
 					<div class="progress-headline">
-						<h2>Vi er nået {{ currentProgress }}%...</h2>
+						<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
 						<p>
-							I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende
-							både nyere og ældre udsendelser, så arkivet bliver større og større.
+							{{ t('hero.explanation') }}
 						</p>
 					</div>
 					<div class="process-bar">
@@ -45,7 +48,7 @@
 							class="link"
 							href="https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
 						>
-							Læs mere om DR-arkivet
+							{{ t('hero.link') }}
 						</a>
 					</div>
 				</div>
@@ -55,6 +58,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'Hero',
@@ -62,6 +66,7 @@ export default defineComponent({
 	setup() {
 		const overlayRef = ref<HTMLElement | null>(null);
 		const currentProgress = ref(35);
+		const { t } = useI18n();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.svg`, import.meta.url).href;
 		});
@@ -97,6 +102,7 @@ export default defineComponent({
 			handleMouseMove,
 			progress,
 			currentProgress,
+			t,
 		};
 	},
 });
