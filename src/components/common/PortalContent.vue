@@ -116,7 +116,7 @@ export default defineComponent({
 				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
 			},
 		);
-		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment };
+		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment, t };
 	},
 	methods: {
 		useRoute,
