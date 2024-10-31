@@ -239,6 +239,21 @@ h1 {
 	display: block;
 	text-align: center;
 	text-decoration: none;
+	font-size: 18px;
+	padding: 5px 0px;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	justify-content: center;
+	border: 1px solid white;
+	margin-bottom: 15px;
+}
+.subtitle {
+	text-align: center;
+	letter-spacing: 0px;
+	color: #0b0d0a;
 	font-size: 16px;
 }
 
