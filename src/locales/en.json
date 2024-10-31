@@ -167,7 +167,10 @@
            "line1": "Try writing * at the end of a word, for example skov*",
            "line2": "Then you'll search for skov, skovens, skovtur and so on"
         },
-        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent"
+        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent",
+        "readMore": "Read more about",
+        "searchTips": "search tips",
+        "link": ""
      }
   },
   "record":{

@@ -8,7 +8,12 @@
 			<div class="no-hits-heading-subtitle">
 				{{ $t('search.nohitSubtitle.firstPart') }}
 				{{ $t('search.nohitSubtitle.readMore') }}
-				<a :href="$t('search.nohitSubtitle.link')">{{ $t('search.nohitSubtitle.contains') }}</a>
+				<a
+					:href="$t('search.nohitSubtitle.link')"
+					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
+				>
+					{{ $t('search.nohitSubtitle.contains') }}
+				</a>
 				{{ $t('search.nohitSubtitle.lastPart') }}
 			</div>
 			<EdgedContentArea
@@ -29,7 +34,7 @@
 				:title="$t('search.searchGuide.title')"
 				:right="true"
 			></TiltedDivider>
-			<TextAndImage>
+			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
 						<h3>{{ $t('search.searchGuide.subtitle') }}</h3>
@@ -54,8 +59,13 @@
 							</li>
 							<li>
 								<div>
-									Læs mere om
-									<a href="">søgetips</a>
+									{{ $t('search.searchGuide.readMore') }}
+									<a
+										:href="$t('search.searchGuide.link')"
+										:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-search-tips', 0)"
+									>
+										{{ $t('search.searchGuide.searchTips') }}
+									</a>
 								</div>
 							</li>
 						</ul>
@@ -86,6 +96,7 @@ import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vu
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'NoHits',
@@ -110,6 +121,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore, categories };
 	},
+	methods: { addTestDataEnrichment },
 });
 </script>
 <style scoped>

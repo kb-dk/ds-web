@@ -165,7 +165,10 @@
         "line1": "Prøv at skrive * i slutningen af et ord, eksempelvis skov*",
         "line2": "Så søger du på skov, skovens, skovtur og så videre"
       },
-      "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt"
+      "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt",
+      "readMore": "Læs mere om",
+      "searchTips": "søgetips",
+      "link": ""
     }
    },
   "record":{

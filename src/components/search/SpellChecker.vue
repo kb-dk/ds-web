@@ -9,7 +9,10 @@
 				v-if="index % 2 !== 0"
 				class="spell-check-collations"
 			>
-				<router-link :to="{ name: 'Search', query: { q: spellCheck?.collations[index].collationQuery, start: 0 } }">
+				<router-link
+					:to="{ name: 'Search', query: { q: spellCheck?.collations[index].collationQuery, start: 0 } }"
+					:data-testid="addTestDataEnrichment('link', 'SpellChecker', 'link-to-search-suggestion', index - 1)"
+				>
 					<div class="spell-check-suggestion">
 						{{ `"${spellCheck?.collations[index].collationQuery}"` }}
 					</div>
@@ -25,9 +28,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { SpellCheckType } from '@/types/SpellCheckType';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'SpellChecker',
+	methods: { addTestDataEnrichment },
 	props: {
 		spellCheck: {
 			type: Object as PropType<SpellCheckType>,

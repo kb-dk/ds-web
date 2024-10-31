@@ -1,7 +1,7 @@
 <template>
 	<div class="imageAndTextContainer">
 		<div class="con"><slot name="text"></slot></div>
-		<div class="con"><slot name="image"></slot></div>
+		<div :class="`con ${hideImageOnMobile ? 'hide-image' : ''}`"><slot name="image"></slot></div>
 	</div>
 </template>
 
@@ -17,6 +17,12 @@ export default defineComponent({
 				return true;
 			},
 		},
+		hideImageOnMobile: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return false;
+			},
+		},
 	},
 });
 </script>
@@ -27,7 +33,6 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .imageAndTextContainer {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-around;
 }
 .imageAndTextContainer .con {
@@ -36,5 +41,18 @@ temporary styling until patterns from design system are implemented
 	align-content: center;
 	justify-content: center;
 	flex-wrap: wrap;
+}
+@media (min-width: 450px) {
+	.imageAndTextContainer {
+		flex-direction: column;
+	}
+	.imageAndTextContainer .con {
+		width: 80%;
+	}
+}
+@media (min-width: 840px) {
+	.imageAndTextContainer {
+		flex-direction: row;
+	}
 }
 </style>
