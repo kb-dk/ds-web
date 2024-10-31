@@ -41,7 +41,7 @@ export default defineComponent({
 	transform: rotateZ(-2deg);
 	transform-origin: center bottom;
 	top: calc(-4vw);
-	z-index: 1;
+	z-index: 4;
 }
 
 @media (min-width: 2000px) {

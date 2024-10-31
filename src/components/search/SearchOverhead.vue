@@ -28,7 +28,7 @@
 							@click="resetFilters()"
 						>
 							<span>×</span>
-							Nulstil filtre
+							{{ $t('search.resetFilters') }}
 						</button>
 					</div>
 					<div class="type-toggles">

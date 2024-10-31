@@ -2,26 +2,26 @@
 	<div class="portal-container container">
 		<div class="categories">
 			<SkewedFoldable
-				:title="'Kategorier'"
 				:left="false"
+				:title="$t('facets.genres', 2)"
 				bg="#002e70"
 				text="white"
 				icon="category"
-				:subtitle="'Vælg, hvilken kategori du gerne vil søge i.'"
 				:fullwidth="true"
 				:shadow-bottom="true"
 				:shadow-top="true"
+				:subtitle="$t('facets.genresSubtitle')"
 			>
 				<MainCategories />
 			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
-				:title="'Søg via dato'"
+				:title="$t('timeSearch.searchDate')"
 				:left="true"
 				bg="#caf0fe"
 				icon="event"
-				:subtitle="'Vælg en dato, du gerne vil se indhold fra.'"
+				:subtitle="$t('timeSearch.dateSubtitle')"
 				:fullwidth="true"
 				text="#0a2e70"
 				:always-expand="true"
@@ -33,12 +33,12 @@
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
-				:title="'Søg via periode'"
+				:title="$t('timeSearch.timeMachine')"
 				:left="false"
 				bg="#fafafa"
 				text="#0a2e70"
 				icon="schedule"
-				:subtitle="`Vælg hvilket tidsrum i DR's sendeflader, du vil søge i.`"
+				:subtitle="$t('timeSearch.timeMachineSubtitle')"
 				:fullwidth="true"
 				:dashed-bottom="true"
 				:shadow-bottom="false"
@@ -66,7 +66,7 @@
 			<div class="edge blue"></div>
 
 			<div class="container">
-				<h3>Om arkivet</h3>
+				<h3>{{ $t('app.titles.frontpage.about') + ' ' + $t('app.titles.frontpage.archive.name') }}</h3>
 				<GridDisplay
 					:draggable="false"
 					:spot-nr="3"
@@ -116,7 +116,7 @@ export default defineComponent({
 				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
 			},
 		);
-		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment };
+		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment, t };
 	},
 	methods: {
 		useRoute,
@@ -134,7 +134,7 @@ export default defineComponent({
 
 .portal-container {
 	position: relative;
-	margin-top: -100px !important;
+	margin-top: -110px !important;
 	align-items: center;
 }
 
@@ -148,7 +148,7 @@ export default defineComponent({
 }
 
 .categories {
-	z-index: 3;
+	/* z-index: 3; */
 }
 .date-picker {
 	z-index: 2;

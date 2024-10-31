@@ -4,6 +4,19 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2024-10-31
+### Added
+- Added summary for categories and genres.
+- Fixed backlink from fullpost no longer doing a search.
+- Added hero image and archive explanation.
+- Added 404 page.
+
+### Changed
+- Fixed a bug where filters were not correctly removed.
+- Restyled the time filters on the searchpage.
+- Fixed a bunch of translations.
+- Some web optimizations have been done all around the application.
+
 ## [1.0.3] - 2024-09-26
 ### Added
 - Added messages service call to bff for kaltura ids on app start.

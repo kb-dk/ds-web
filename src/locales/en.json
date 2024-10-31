@@ -5,7 +5,8 @@
             "archive":  {
                "name": "DR Archive",
                "suffix": " - DR Archive"
-            }
+            },
+            "about": "About"
          },
          "search":" Search for"
       },
@@ -19,11 +20,12 @@
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
+      "genresSubtitle": "Choose which category you would like to search in",
       "allChannels":"all channels",
       "channels":"channel | channels",
       "chosen":"chosen",
-      "reset":"reset"
-
+      "reset":"reset",
+      "choose": "Choose"
 
    },
    "breadcrumb": {
@@ -35,6 +37,7 @@
    },
    "timeSearch": {
       "timeMachine":"Use the time...",
+      "searchDate": "Search via date",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
@@ -55,6 +58,8 @@
       "allDays":"all weekdays in the period",
       "allTimeslots":"all hours",
       "selection":"A selection of the results",
+      "dateSubtitle": "Pick a date you would like to see content from.",
+      "timeMachineSubtitle": "Pick which period in DR's broadcasts you would like to search in.",
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
@@ -107,6 +112,7 @@
      "mainCategories": "Look further in our main categories",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
+     "resetFilters": "Reset filters",
      "nextPage":"Next page",
      "previousPage":"Previous page",
      "page": "Page",
@@ -126,10 +132,15 @@
      "tv":"TV",
      "radio":"Radio",
      "all":"All",
+     "thumbnail": "Thumbnail",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "of":"of",
      "startTime":"Start time",
+     "dataQuantity":{
+        "firstPart": "The curve shows how much DR archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
+        "secondPart": "We work all the time to get more broadcasts ready for to be released in the online archive, therefore the curve will change according to how many broadcasts has been added."
+     },
      "portals": {
          "drArchive":"DR Archive",
          "booksAndMaterials":"Books and journals",
@@ -143,7 +154,21 @@
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
          "seeAllMaterials":"See all materials"
-      }
+      },
+     "searchGuide": {
+        "title":"Good advice for your search",
+        "subtitle": "Maybe you can improve your search with these methods",
+        "first": "Try using less search words",
+        "second": {
+           "line1": "Check spelling. If you're unsure you can write ? as replacement for a letter - for example Son?a",
+           "line2": "Then you'll search for both Sonia and Sonja"
+        },
+        "third": {
+           "line1": "Try writing * at the end of a word, for example skov*",
+           "line2": "Then you'll search for skov, skovens, skovtur and so on"
+        },
+        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent"
+     }
   },
   "record":{
      "duration":"Duration",
@@ -326,5 +351,13 @@
       "frontPage": "Frontpage of DR Archive",
       "kbPage": "Frontpage of the Royal Danish Library"
    }
-  }
+  },
+  "hero": {
+   "title":"DR-Archive",
+   "subtitle":"The Royal Danish Library",
+   "progress":"We have reached {index}%...",
+   "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",
+   "link":"Read more about the DR-archive"
+
+} 
 }

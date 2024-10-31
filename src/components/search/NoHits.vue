@@ -26,31 +26,30 @@
 				</template>
 			</EdgedContentArea>
 			<TiltedDivider
-				title="Gode råd til din søgning"
+				:title="$t('search.searchGuide.title')"
 				:right="true"
 			></TiltedDivider>
 			<TextAndImage>
 				<template #text>
 					<div>
-						<h3>Måske kan du forbedre din søgning med en af disse metoder</h3>
+						<h3>{{ $t('search.searchGuide.subtitle') }}</h3>
 						<ul>
 							<li>
-								<div>Prøv med færre eller andre søgeord</div>
+								<div>{{ $t('search.searchGuide.first') }}</div>
 							</li>
 							<li>
 								<div>
-									Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a
+									{{ $t('search.searchGuide.second.line1') }}
 								</div>
-								<div>Så søger du både på Sonia og Sonja</div>
+								<div>{{ $t('search.searchGuide.second.line2') }}</div>
 							</li>
 							<li>
-								<div>Prøv at skrive * i slutningen af et ord, eksempelvis skov*</div>
-								<div>Så søger du på skov, skovens, skovtur og så videre</div>
+								<div>{{ $t('search.searchGuide.third.line1') }}</div>
+								<div>{{ $t('search.searchGuide.third.line2') }}</div>
 							</li>
 							<li>
 								<div>
-									Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår
-									udsendelsen blev sendt
+									{{ $t('search.searchGuide.fourth') }}
 								</div>
 							</li>
 							<li>
