@@ -195,7 +195,7 @@ export default defineComponent({
 }
 
 .rdl-logo-inverted {
-	background-image: url('../../../assets/images/logo-white.svg');
+	background-image: url('@/assets/images/logo-white.svg');
 	height: 48px;
 	margin-bottom: 32px;
 	background-position: 0;
