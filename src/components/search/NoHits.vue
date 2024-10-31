@@ -177,6 +177,8 @@ export default defineComponent({
 
 .no-hits-heading {
 	font-size: 36px;
+	word-wrap: break-word;
+	hyphens: auto;
 }
 h2 {
 	margin: 0;
