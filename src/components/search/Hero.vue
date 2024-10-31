@@ -64,7 +64,7 @@ export default defineComponent({
 		const currentProgress = ref(35);
 		const { t } = useI18n();
 		const backgroundImage = computed(() => {
-			return new URL(`@/assets/images/rgb_hero_dr.svg`, import.meta.url).href;
+			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
 		});
 
 		const progress = (index: number) => {
@@ -161,6 +161,14 @@ h1 .subtitle {
 	pointer-events: all;
 }
 
+h1 .subtitle {
+	font-size: 24px;
+}
+
+h1 .headline {
+	font-size: 40px;
+}
+
 .container {
 	width: 100%;
 	display: flex;
@@ -231,22 +239,6 @@ h1 {
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	font-size: 18px;
-	padding: 5px 0px;
-	border-radius: 4px;
-	height: 40px;
-	display: flex;
-	align-items: center;
-	box-sizing: border-box;
-	justify-content: center;
-	border: 1px solid white;
-	margin-bottom: 15px;
-}
-
-.subtitle {
-	text-align: center;
-	letter-spacing: 0px;
-	color: #0b0d0a;
 	font-size: 16px;
 }
 
@@ -300,12 +292,12 @@ h1 {
 .noise {
 	background-image: url('@/assets/images/noise.png');
 	position: fixed;
-	top: -50%;
+	top: -25%;
 	left: -50%;
 	right: -50%;
 	bottom: -50%;
 	width: 200%;
-	height: 200%;
+	height: 150%;
 	object-fit: cover;
 	position: absolute;
 	mix-blend-mode: overlay;
