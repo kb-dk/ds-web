@@ -9,7 +9,12 @@
 			ref="content"
 			class="full-width"
 		>
-			<div class="container"><slot name="content"></slot></div>
+			<div
+				ref="container"
+				class="container"
+			>
+				<slot name="content"></slot>
+			</div>
 		</div>
 		<div
 			ref="bottom"
@@ -55,11 +60,18 @@ export default defineComponent({
 				return false;
 			},
 		},
+		alignItems: {
+			type: String as PropType<string>,
+			default() {
+				return 'center';
+			},
+		},
 	},
 
 	setup(props) {
 		const top = ref<HTMLDivElement>();
 		const content = ref<HTMLDivElement>();
+		const container = ref<HTMLDivElement>();
 		const bottom = ref<HTMLDivElement>();
 
 		const getClasses = (prefix: string) => {
@@ -73,10 +85,11 @@ export default defineComponent({
 		onMounted(() => {
 			if (top.value) top.value.style.backgroundColor = props.backgroundColor;
 			if (content.value) content.value.style.backgroundColor = props.backgroundColor;
+			if (container.value) container.value.style.alignItems = props.alignItems;
 			if (bottom.value) bottom.value.style.backgroundColor = props.backgroundColor;
 		});
 
-		return { top, content, bottom, getClasses };
+		return { top, content, container, bottom, getClasses };
 	},
 });
 </script>
@@ -171,9 +184,9 @@ h3.reverse {
 	margin-left: auto;
 	box-sizing: border-box;
 	display: flex;
-	align-items: center;
 	flex-direction: column;
 }
+
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {
 	h3 {

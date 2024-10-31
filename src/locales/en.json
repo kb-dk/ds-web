@@ -96,7 +96,13 @@
      "searchbtn":"Search",
      "hitcount": " result fund for | results found for",
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
-     "nohitSubtitle": "We are sorry we couldn't find what you were looking for. The archive is under development and has issues getting the search experience modernised. But we got some tips to optimize the search.",
+     "nohitSubtitle": {
+        "firstPart": "We're sorry that it wasn't possible to find a result to your search. It isn't all broadcasts in the archive thats connected to good search words. So it might demand af few tries to find what you're searching. Maybe you have search for somehting thats not yet in the archive, or something we may not show.",
+        "readMore": "Read more about what the archive",
+        "contains": "contains.",
+        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+        "lastPart": "We hope for your understanding and patience. We're working on making archive material more searchable. We have collected some good advice underneat, which might help you."
+     },
      "tipsTitle": "A few tips for your search",
      "mainCategories": "Look further in our main categories",
      "showFilters":"Show filters",

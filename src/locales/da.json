@@ -93,7 +93,13 @@
   "search":{
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
-     "nohitSubtitle": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. \nDet er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger. Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet. \nLæs mere om, hvad arkivet indeholder [Link til Om-siden: https://www.kb.dk/find-materiale/tjenester/dr-arkivet]\n\nVi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart.\n\nNedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre.",
+     "nohitSubtitle": {
+       "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger. Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
+       "readMore": "Læs mere om, hvad arkivet",
+       "contains": "indeholder.",
+       "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+       "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
+     },
      "tipsTitle": "Et par fif til din søgning",
      "mainCategories": "led videre i vores hovedkategorier",
      "nohit":"Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",

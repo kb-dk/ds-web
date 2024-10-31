@@ -6,13 +6,17 @@
 		<div>
 			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
 			<div class="no-hits-heading-subtitle">
-				{{ $t('search.nohitSubtitle') }}
+				{{ $t('search.nohitSubtitle.firstPart') }}
+				{{ $t('search.nohitSubtitle.readMore') }}
+				<a :href="$t('search.nohitSubtitle.link')">{{ $t('search.nohitSubtitle.contains') }}</a>
+				{{ $t('search.nohitSubtitle.lastPart') }}
 			</div>
 			<EdgedContentArea
 				v-if="searchResultStore.spellCheck.suggestions.length > 0"
 				:lines="true"
 				:dotted-edges="false"
 				background-color="#c4f1ed"
+				align-items="start"
 			>
 				<template #content>
 					<h2>{{ $t('search.maybeYouMeant') }}</h2>
@@ -71,16 +75,6 @@
 					</div>
 				</template>
 			</EdgedContentArea>
-			<TiltedDivider
-				title="Andre har søgt på"
-				:right="false"
-			></TiltedDivider>
-			<div class="previous-searches">
-				Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris
-				Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og
-				æd / Lorem / Ipsum /
-			</div>
-			<TiltedDivider :right="true"></TiltedDivider>
 		</div>
 	</Transition>
 </template>
