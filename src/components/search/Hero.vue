@@ -4,8 +4,8 @@
 			:src="backgroundImage"
 			title="search background"
 			alt="Image of the Royal Danish Library"
-			loading="lazy"
 			class="bg-image"
+			fetchpriority="high"
 		/>
 		<div class="hue-overlay"></div>
 		<div class="bluify"></div>
