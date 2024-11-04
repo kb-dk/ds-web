@@ -82,7 +82,13 @@ export default defineComponent({
 				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
 			}
 		};
-
+		const getMoreLikeThisDate = async (start: string, end: string, id: string) => {
+			try {
+				return await APIService.getTimeStartEndResults(start, end, id);
+			} catch (err) {
+				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
+			}
+		};
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
@@ -108,8 +114,38 @@ export default defineComponent({
 				document.title = (recordData.value['name'] + t('app.titles.frontpage.archive.suffix')) as string;
 			}
 			if (moreLikeThis) {
-				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+				if (moreLikeThis.data.response.docs.length > 0) {
+					moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+				}
+				console.log(moreLikeThis);
 			}
+			if (moreLikeThisRecords.value.length === 0) {
+				const startAndEnd = getStartAndEndFromStartTime();
+				console.log(startAndEnd);
+				if (startAndEnd.length > 0) {
+					const moreLikeThisDate = await getMoreLikeThisDate(startAndEnd[0], startAndEnd[1], idStr);
+					console.log(moreLikeThisDate);
+					if (moreLikeThisDate) moreLikeThisRecords.value = moreLikeThisDate.data.response.docs;
+				}
+			}
+		};
+
+		const getStartAndEndFromStartTime = (): string[] => {
+			let startEnd: string[] = [];
+			if (recordData.value as BroadcastRecordType) {
+				const startTime = (recordData.value as BroadcastRecordType).startTime;
+				startEnd[0] = startTime.replace(/T(.*)/, 'T00:00:00Z');
+				// startTime[1] = '23:59:59Z';
+				startEnd[1] = startTime.replace(/T(.*)/, 'T23:59:59Z');
+				console.log(startTime);
+				// startEnd[0] = new Date(
+				// 	new Date((recordData.value as BroadcastRecordType).startTime).setHours(0, 0, 0, 0),
+				// ).toLocaleString('yyyy-MM-ddHH:mm:ss:ff');
+				// startEnd[1] = new Date(
+				// 	new Date((recordData.value as BroadcastRecordType).startTime).setHours(23, 59, 59, 59),
+				// ).toLocaleString('yyyy-MM-ddHH:mm:ss:ff');
+			}
+			return startEnd;
 		};
 
 		onMounted(async () => {
