@@ -1,14 +1,19 @@
 <template>
 	<div
 		ref="gridContainer"
+		draggable="false"
 		class="grid-result-item"
 	>
 		<Transition
 			name="result"
 			mode="out-in"
 		>
-			<div v-if="resultdata != null && !loading">
+			<div
+				v-if="resultdata != null && !loading"
+				class="data"
+			>
 				<router-link
+					draggable="false"
 					:to="{ path: 'post/' + resultdata.id }"
 					class="link-title"
 					role="link"
@@ -217,6 +222,7 @@ export default defineComponent({
 	font-size: 14px;
 	text-decoration: none;
 	color: black;
+	display: grid;
 }
 
 .grid-result-item:after {

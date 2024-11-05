@@ -56,30 +56,17 @@
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
-				:spot-nr="8"
+				:spot-nr="currentMonth.length === 0 ? 4 : currentMonth.length"
 				:row-nr="4"
 				:draggable="true"
-				:spots="mockdata1"
+				:spots="currentMonth"
+				:loading="dataLoaded"
 			></GridDisplay>
-		</div>
-		<div class="blue-background">
-			<div class="edge blue"></div>
-
-			<div class="container">
-				<h3>{{ $t('app.titles.frontpage.about') + ' ' + $t('app.titles.frontpage.archive.name') }}</h3>
-				<GridDisplay
-					:draggable="false"
-					:spot-nr="3"
-					:row-nr="3"
-					:blue-background="true"
-					:spots="mockdata2"
-				></GridDisplay>
-			</div>
 		</div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch, onMounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
@@ -92,6 +79,8 @@ import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { APIService } from '@/api/api-service';
+import { APISearchResponseType } from '@/types/APIResponseTypes';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -105,8 +94,14 @@ export default defineComponent({
 	},
 
 	setup() {
-		const mockdata1 = ['1', '2', '3', '4', '5', '6', '7', '8'] as unknown as GenericSearchResultType[];
-		const mockdata2 = ['1', '2', '3'] as unknown as GenericSearchResultType[];
+		const currentMonth = ref([] as GenericSearchResultType[]);
+		const testItems = [
+			'ds.tv:oai:io:fa2a9bb2-0d3d-4d9d-9647-507975928095',
+			'ds.tv:oai:io:b6af9638-67d1-4d21-999f-425dc20934ce',
+			'ds.tv:oai:io:aa501264-10d2-49b1-aeca-e44584d91142',
+			'ds.tv:oai:io:332f73ee-dfea-407c-b7b3-22d83a9a8f0a',
+		];
+		const dataLoaded = ref(false);
 		const searchResultStore = useSearchResultStore();
 		const currentLocale = ref('da-dk');
 		const { locale, t } = useI18n({ useScope: 'global' });
@@ -116,7 +111,26 @@ export default defineComponent({
 				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
 			},
 		);
-		return { searchResultStore, mockdata1, mockdata2, currentLocale, addTestDataEnrichment, t };
+
+		onMounted(() => {
+			Promise.race([
+				APIService.getFeatureItems(testItems),
+				new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+			])
+				.then((response) => {
+					const typedResponse = response as APISearchResponseType; // Assert the correct type
+					currentMonth.value = typedResponse.data.response.docs;
+					console.log(typedResponse);
+				})
+				.catch(() => {
+					/* some sort of error */
+				})
+				.finally(() => {
+					dataLoaded.value = true;
+				});
+		});
+
+		return { searchResultStore, currentMonth, currentLocale, addTestDataEnrichment, t, dataLoaded };
 	},
 	methods: {
 		useRoute,
@@ -145,6 +159,10 @@ export default defineComponent({
 	margin-top: -6.1vw;
 	width: calc(100% + 24px);
 	margin-left: -12px;
+}
+
+.container {
+	width: 100%;
 }
 
 .categories {
