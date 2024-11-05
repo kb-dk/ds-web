@@ -335,7 +335,7 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
-		width: 30%;
+		width: 33.3%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
