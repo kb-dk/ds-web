@@ -182,6 +182,16 @@ export class APIServiceClient {
 		);
 	}
 
+	async getFeatureItems(ids: string[]): Promise<APISearchResponseType> {
+		let idString = '';
+		ids.forEach((item, index) => {
+			idString += `id:"${item}"`;
+			console.log(index, ids.length);
+			index < ids.length - 1 ? (idString += ` OR `) : null;
+		});
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=${idString}&facet=false&sort=startTime asc`);
+	}
+
 	async getRecord(id: string): Promise<APIRecordResponseType> {
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`bff/v1/proxy/record/${encodeId}?format=JSON-LD`);

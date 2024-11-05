@@ -2,11 +2,16 @@
 	<div class="grid-display">
 		<div :class="draggable ? 'record-grid draggable row-' + rowNr : 'record-grid row-' + rowNr">
 			<div
-				v-for="(item, i) in spots"
+				v-for="(item, i) in spotNr"
 				:key="i"
 				:class="draggable ? 'related-record draggable-item' : 'related-record'"
 			>
-				<kb-spotcomponent :data="item"></kb-spotcomponent>
+				<GridResultItem
+					:loading="false"
+					:resultdata="spots[i]"
+					:index="i"
+					background="#ffffff"
+				></GridResultItem>
 			</div>
 		</div>
 	</div>
@@ -15,12 +20,14 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-
+import GridResultItem from '../search/GridResultItem.vue';
 import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'GridDisplay',
-
+	components: {
+		GridResultItem,
+	},
 	props: {
 		rowNr: { type: Number, required: true },
 		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
@@ -50,13 +57,12 @@ export default defineComponent({
 			this.slidingElement.addEventListener('mouseup', this.stopMovementOnParent);
 			this.slidingElement.addEventListener('mousemove', this.calculateMovement);
 			this.slidingElement.addEventListener('touchmove', this.calculateMovement, { passive: true });
-
 			this.linkItems.forEach((element) => {
 				element.addEventListener('mousedown', this.stopMovement);
 				element.addEventListener('touchstart', this.stopMovement, { passive: true });
 				element.addEventListener('mousemove', this.startMovement);
 				element.addEventListener('touchmove', this.startMovement, { passive: true });
-				element.addEventListener('click', this.preventClickIfMovement);
+				element.addEventListener('click', this.preventClickIfMovement, { capture: true });
 			});
 		}
 	},
@@ -139,6 +145,7 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .grid-display {
 	position: relative;
+	margin-bottom: 80px;
 }
 
 .record-grid {
