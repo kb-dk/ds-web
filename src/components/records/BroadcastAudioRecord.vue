@@ -73,18 +73,22 @@
 		</div>
 		<div class="extra-record-data">
 			<div
-				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
+				v-for="(record, index) in moreLikeThisRecords"
+				:key="record"
 				class="related-content"
 			>
 				<h3>Relateret indhold</h3>
-				<GridDisplay
+				<GridResultItem
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
-					:spots="moreLikeThisRecords"
-				></GridDisplay>
+					:resultdata="record"
+					:starttime="new Date(record.startTime).toLocaleString()"
+					:index="index"
+					:full-post-url="true"
+				></GridResultItem>
 			</div>
-			<div v-else>No related records here. Now what?</div>
+			<!--			<div v-else>No related records here. Now what?</div>-->
 		</div>
 	</div>
 </template>
@@ -104,14 +108,15 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/components/common/wc-spot-item';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
 
 	components: {
+		GridResultItem,
 		AudioPlayer,
 		Duration,
-		GridDisplay,
 	},
 
 	props: {
@@ -293,6 +298,7 @@ temporary styling until patterns from design system are implemented
 
 .related-content {
 	padding: 0px 20px;
+	max-width: 30%;
 }
 
 .related-record {

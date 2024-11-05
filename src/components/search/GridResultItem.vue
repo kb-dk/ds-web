@@ -8,8 +8,10 @@
 			mode="out-in"
 		>
 			<div v-if="resultdata != null && !loading">
+				{{ console.log('WTF') }}
+				{{ console.log(resultdata.id) }}
 				<router-link
-					:to="{ path: 'post/' + resultdata.id }"
+					:to="{ path: fullPostUrl ? resultdata.id : 'post/' + resultdata.id }"
 					class="link-title"
 					role="link"
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
@@ -132,6 +134,12 @@ export default defineComponent({
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
+		fullPostUrl: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return false;
+			},
+		},
 	},
 
 	setup(props) {
