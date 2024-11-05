@@ -339,7 +339,7 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
-		max-width: 30%;
+		width: 30%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
