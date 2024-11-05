@@ -298,7 +298,7 @@ temporary styling until patterns from design system are implemented
 
 .related-content {
 	padding: 0px 20px;
-	max-width: 30%;
+	max-width: 100%;
 }
 
 .related-record {
@@ -336,10 +336,12 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
+		max-width: 30%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
+		flex-direction: row;
 	}
 }
 
@@ -392,7 +394,6 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 	}
 	.main-record-data,
-	.related-content,
 	.accordion {
 		flex: 0 0 calc(75% - 20px);
 		max-width: calc(75% - 20px);

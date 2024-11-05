@@ -74,18 +74,21 @@
 		</div>
 		<div class="extra-record-data">
 			<div
-				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
+				v-for="(record, index) in moreLikeThisRecords"
+				:key="record"
 				class="related-content"
 			>
 				<h3>Relateret indhold</h3>
-				<GridDisplay
+				<GridResultItem
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
-					:spots="moreLikeThisRecords"
-				></GridDisplay>
+					:resultdata="record"
+					:starttime="new Date(record.startTime).toLocaleString()"
+					:index="index"
+					:full-post-url="true"
+				></GridResultItem>
 			</div>
-			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
@@ -96,7 +99,6 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
-import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
@@ -105,6 +107,7 @@ import { getTimeFromISOFormat } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -112,7 +115,7 @@ export default defineComponent({
 	components: {
 		VideoPlayer,
 		Duration,
-		GridDisplay,
+		GridResultItem,
 	},
 
 	props: {
@@ -298,6 +301,7 @@ temporary styling until patterns from design system are implemented
 
 .related-content {
 	padding: 0px 20px;
+	max-width: 100%;
 }
 
 .related-record {
@@ -335,10 +339,12 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
+		max-width: 30%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
+		flex-direction: row;
 	}
 }
 
@@ -391,7 +397,6 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 	}
 	.main-record-data,
-	.related-content,
 	.accordion {
 		flex: 0 0 calc(75% - 20px);
 		max-width: calc(75% - 20px);
