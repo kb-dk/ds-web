@@ -8,8 +8,6 @@
 			mode="out-in"
 		>
 			<div v-if="resultdata != null && !loading">
-				{{ console.log('WTF') }}
-				{{ console.log(resultdata.id) }}
 				<router-link
 					:to="{ path: fullPostUrl ? resultdata.id : 'post/' + resultdata.id }"
 					class="link-title"

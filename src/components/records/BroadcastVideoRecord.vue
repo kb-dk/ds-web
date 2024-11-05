@@ -20,7 +20,7 @@
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<h3>Sendt</h3>
+					<h3>{{ $t('record.aired') }}</h3>
 					<div>
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
@@ -61,7 +61,7 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				Tilbage
+				{{ $t('record.back') }}
 			</router-link>
 			<router-link
 				v-else
@@ -69,7 +69,7 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				Til forsiden
+				{{ $t('record.toFrontpage') }}
 			</router-link>
 		</div>
 		<div class="extra-record-data">
@@ -78,7 +78,7 @@
 				:key="record"
 				class="related-content"
 			>
-				<h3>Relateret indhold</h3>
+				<h3>{{ $t('search.relatedContent') }}</h3>
 				<GridResultItem
 					:row-nr="3"
 					:spot-nr="3"
