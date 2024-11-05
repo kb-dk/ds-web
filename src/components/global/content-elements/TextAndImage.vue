@@ -47,7 +47,7 @@ temporary styling until patterns from design system are implemented
 		flex-direction: column;
 	}
 	.imageAndTextContainer .con {
-		width: 80%;
+		width: 100%;
 	}
 }
 @media (min-width: 840px) {
