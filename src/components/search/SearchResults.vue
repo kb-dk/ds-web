@@ -13,7 +13,6 @@
 					v-if="searchResultStore.resultGrid"
 					:resultdata="searchResults[index]"
 					:loading="searchResultStore.loading"
-					:starttime="searchResults[index] ? getStartTime(searchResults[index]) : ''"
 					:index="index"
 					background="white"
 				></GridResultItem>
