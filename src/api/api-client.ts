@@ -186,7 +186,6 @@ export class APIServiceClient {
 		let idString = '';
 		ids.forEach((item, index) => {
 			idString += `id:"${item}"`;
-			console.log(index, ids.length);
 			index < ids.length - 1 ? (idString += ` OR `) : null;
 		});
 		return await this.httpClient.get(`bff/v1/proxy/search/?q=${idString}&facet=false&sort=startTime asc`);

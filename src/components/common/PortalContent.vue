@@ -153,7 +153,6 @@ export default defineComponent({
 				.then((response) => {
 					const typedResponse = response as APISearchResponseType; // Assert the correct type
 					searchResultStore.setRotationalResult(typedResponse.data.response.docs);
-					console.log(typedResponse);
 				})
 				.catch(() => {
 					/* some sort of error */
