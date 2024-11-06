@@ -3,15 +3,15 @@
       "titles": {
          "frontpage": {
             "archive":  {
-               "name": "DR Archive",
-               "suffix": " - DR Archive"
+               "name": "DR-archive",
+               "suffix": " - DR-archive"
             },
             "about": "About"
          },
          "search":" Search for"
       },
       "frontPages": {
-         "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive"
       }
    },
    "frontpage": {
@@ -138,18 +138,18 @@
      "of":"of",
      "startTime":"Start time",
      "dataQuantity":{
-        "firstPart": "The curve shows how much DR archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
+        "firstPart": "The curve shows how much DR-archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
         "secondPart": "We work all the time to get more broadcasts ready for to be released in the online archive, therefore the curve will change according to how many broadcasts has been added."
      },
      "portals": {
-         "drArchive":"DR Archive",
+         "drArchive":"DR-archive",
          "booksAndMaterials":"Books and journals",
          "kbdk":"Search kb.dk",
          "webshop":"Webshop",
          "seeAllMaterials":"See all materials"
       },
       "placeholders": {
-         "drArchive":"Search DR Archive",
+         "drArchive":"Search DR-archive",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
@@ -206,7 +206,7 @@
          "title": "Shortcuts",
          "links": {
             "1": {
-               "title": "About the DR archive",
+               "title": "About the DR-archive",
                "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
             },
             "2": {
@@ -351,12 +351,12 @@
       "header": "Sadly we can not find the page you're looking for :(",
       "text": "It is unfortunate because we got 25.000 TB websites in storage",
       "altHeader": "Maybe you're looking for",
-      "frontPage": "Frontpage of DR Archive",
+      "frontPage": "Frontpage of DR-archive",
       "kbPage": "Frontpage of the Royal Danish Library"
    }
   },
   "hero": {
-   "title":"DR-Archive",
+   "title":"DR-archive",
    "subtitle":"The Royal Danish Library",
    "progress":"We have reached {index}%...",
    "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",

@@ -3,15 +3,15 @@
       "titles": {
          "frontpage": {
             "archive":  {
-               "name": "DR Arkiv",
-               "suffix": " - DR Arkiv"
+               "name": "DR-arkiv",
+               "suffix": " - DR-arkiv"
             },
            "about": "Om"
          },
          "search":" Søgning på "
       },
       "frontPages": {
-         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR arkiv"
+         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv"
       }
    },
    "frontpage": {
@@ -30,7 +30,7 @@
    "breadcrumb": {
       "frontpage":"Forside",
       "findMaterials": "Find materiale",
-      "drArchive": "DR-Arkivet",
+      "drArchive": "DR-arkivet",
       "search":"Søgning",
       "record": "Fuldpost"
    },
@@ -141,14 +141,14 @@
       "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
     },
      "portals": {
-         "drArchive":"DR Arkivet",
+         "drArchive":"DR-arkivet",
          "booksAndMaterials":"Bøger og tidskrifter",
          "kbdk":"Søg på kb.dk",
          "webshop":"Webshop",
          "seeAllMaterials":"Se alt materiale"
       },
       "placeholders": {
-         "drArchive":"Søg i  DR arkiv",
+         "drArchive":"Søg i  DR-arkivet",
          "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
@@ -168,7 +168,7 @@
       "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt",
       "readMore": "Læs mere om",
       "searchTips": "søgetips",
-      "link": ""
+      "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning"
     }
    },
   "record":{
@@ -352,7 +352,7 @@
     }
   },
   "hero": {
-      "title":"DR-Arkiv",
+      "title":"DR-arkiv",
       "subtitle":"Det Kgl. Biblioteks",
       "progress":"Vi er nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",
