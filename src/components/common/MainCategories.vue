@@ -80,6 +80,7 @@ export default defineComponent({
 					categories.value.push(category);
 				}
 			});
+			categories.value.sort((a, b) => a.name.localeCompare(b.name));
 			categoriesLoaded.value = true;
 		};
 
