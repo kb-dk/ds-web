@@ -56,10 +56,10 @@
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
-				:spot-nr="currentMonth.length === 0 ? 4 : currentMonth.length"
+				:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
 				:row-nr="4"
 				:draggable="true"
-				:spots="currentMonth"
+				:spots="searchResultStore.rotationalResult"
 				:loading="dataLoaded"
 			></GridDisplay>
 		</div>
@@ -113,13 +113,41 @@ export default defineComponent({
 		);
 
 		onMounted(() => {
+			if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.rotationalResult).length === 0) {
+				getRotationalResult();
+			} else {
+				watch(
+					() => searchResultStore.firstBackendFetchExecuted,
+					(newVal: boolean) => {
+						if (newVal && Object.keys(searchResultStore.rotationalResult).length === 0) {
+							getRotationalResult();
+						} else {
+							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
+							const customEvent = new CustomEvent('notify-user', {
+								detail: {
+									title: 'Backend svarer ikke.',
+									message:
+										'De bagvedliggende applikationer svarer ikke, så det er ikke muligt at søge pt. \n \n Prøv igen senere.',
+									key: false,
+									severity: 'low',
+									userClose: true,
+								},
+							});
+							window.dispatchEvent(customEvent);
+						}
+					},
+				);
+			}
+		});
+
+		const getRotationalResult = () => {
 			Promise.race([
 				APIService.getFeatureItems(testItems),
 				new Promise((_, reject) => setTimeout(() => reject(), 5000)),
 			])
 				.then((response) => {
 					const typedResponse = response as APISearchResponseType; // Assert the correct type
-					currentMonth.value = typedResponse.data.response.docs;
+					searchResultStore.setRotationalResult(typedResponse.data.response.docs);
 					console.log(typedResponse);
 				})
 				.catch(() => {
@@ -128,7 +156,7 @@ export default defineComponent({
 				.finally(() => {
 					dataLoaded.value = true;
 				});
-		});
+		};
 
 		return { searchResultStore, currentMonth, currentLocale, addTestDataEnrichment, t, dataLoaded };
 	},
