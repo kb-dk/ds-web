@@ -124,6 +124,7 @@ export default defineComponent({
 			holder.setMonth(month);
 			holder.setFullYear(year);
 			selectedDate.value = holder;
+			updateSeeMoreLink();
 		};
 
 		return {
