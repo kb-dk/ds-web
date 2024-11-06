@@ -95,11 +95,16 @@ export default defineComponent({
 
 	setup() {
 		const currentMonth = ref([] as GenericSearchResultType[]);
+		// november test data
 		const testItems = [
-			'ds.tv:oai:io:fa2a9bb2-0d3d-4d9d-9647-507975928095',
-			'ds.tv:oai:io:b6af9638-67d1-4d21-999f-425dc20934ce',
-			'ds.tv:oai:io:aa501264-10d2-49b1-aeca-e44584d91142',
-			'ds.tv:oai:io:332f73ee-dfea-407c-b7b3-22d83a9a8f0a',
+			'ds.tv:oai:io:47578244-da4a-48ca-8ab0-cceef12f23aa',
+			'ds.tv:oai:io:4b252da6-7a71-4cdb-a7d8-9c6e9318e565',
+			'ds.tv:oai:io:e5724c9b-b9c4-4212-95ff-9edf715a5f84',
+			'ds.tv:oai:io:ddc4dc00-8530-4f94-ad11-fcb979fb9f8b',
+			'ds.radio:oai:io:6a93f74e-66a0-4386-9f6b-c24b3f92025c',
+			'ds.radio:oai:io:5cd51b8c-944c-401b-a80d-0105ffaaede7',
+			'ds.tv:oai:io:99ab2820-9d2a-4007-8bb8-873e1911ab61',
+			'ds.tv:oai:io:248a7e6a-0834-4928-8099-d562f53a36ff',
 		];
 		const dataLoaded = ref(false);
 		const searchResultStore = useSearchResultStore();
