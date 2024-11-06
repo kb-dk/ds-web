@@ -5,14 +5,36 @@
 	>
 		<div>
 			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
-			<div class="no-hits">
-				<SpellChecker :spell-check="searchResultStore.spellCheck" />
+			<div class="no-hits-heading-subtitle">
+				{{ $t('search.nohitSubtitle.firstPart') }}
+				{{ $t('search.nohitSubtitle.readMore') }}
+				<a
+					:href="$t('search.nohitSubtitle.link')"
+					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
+				>
+					{{ $t('search.nohitSubtitle.contains') }}
+				</a>
+				{{ $t('search.nohitSubtitle.lastPart') }}
 			</div>
+			<EdgedContentArea
+				v-if="searchResultStore.spellCheck.collations.length > 0"
+				:lines="true"
+				:dotted-edges="false"
+				background-color="#c4f1ed"
+				align-items="start"
+			>
+				<template #content>
+					<h2>{{ $t('search.maybeYouMeant') }}</h2>
+					<div class="no-hits">
+						<SpellChecker :spell-check="searchResultStore.spellCheck" />
+					</div>
+				</template>
+			</EdgedContentArea>
 			<TiltedDivider
 				:title="$t('search.searchGuide.title')"
 				:right="true"
 			></TiltedDivider>
-			<TextAndImage>
+			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
 						<h3>{{ $t('search.searchGuide.subtitle') }}</h3>
@@ -37,8 +59,13 @@
 							</li>
 							<li>
 								<div>
-									Læs mere om
-									<a href="">søgetips</a>
+									{{ $t('search.searchGuide.readMore') }}
+									<a
+										:href="$t('search.searchGuide.link')"
+										:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-search-tips', 0)"
+									>
+										{{ $t('search.searchGuide.searchTips') }}
+									</a>
 								</div>
 							</li>
 						</ul>
@@ -48,32 +75,15 @@
 			</TextAndImage>
 			<EdgedContentArea
 				:lines="true"
-				title="Led videre i vores hovedkategorier"
+				:title="$t('search.mainCategories')"
+				class="main-categories-header"
 			>
 				<template #content>
 					<div class="showcase-container">
-						<div
-							v-for="(item, index) in categories"
-							:key="index"
-							class="showcase"
-						>
-							<div class="material-icons">movie</div>
-
-							{{ item }}
-						</div>
+						<MainCategories></MainCategories>
 					</div>
 				</template>
 			</EdgedContentArea>
-			<TiltedDivider
-				title="Andre har søgt på"
-				:right="false"
-			></TiltedDivider>
-			<div class="previous-searches">
-				Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris
-				Mikkelsen / Realty TV / Nak og æd / Lorem / Ipsum / Zig-Zan / Matador / Jarl Fris Mikkelsen / Realty TV / Nak og
-				æd / Lorem / Ipsum /
-			</div>
-			<TiltedDivider :right="true"></TiltedDivider>
 		</div>
 	</Transition>
 </template>
@@ -85,10 +95,13 @@ import SpellChecker from '@/components/search/SpellChecker.vue';
 import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import MainCategories from '@/components/common/MainCategories.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
+		MainCategories,
 		SpellChecker,
 		TiltedDivider,
 		TextAndImage,
@@ -108,15 +121,12 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		return { searchResultStore, categories };
 	},
+	methods: { addTestDataEnrichment },
 });
 </script>
 <style scoped>
-.no-hits {
-	background-color: #e8e8e8;
-	padding-right: 12px;
-	padding-left: 12px;
-	margin-right: auto;
-	margin-left: auto;
+.no-hits * {
+	padding: 0;
 	box-sizing: border-box;
 }
 
@@ -167,8 +177,16 @@ export default defineComponent({
 
 .no-hits-heading {
 	font-size: 36px;
+	word-wrap: break-word;
+	hyphens: auto;
 }
-
+h2 {
+	margin: 0;
+}
+.no-hits-heading-subtitle {
+	margin-top: 10px;
+	max-width: 70%;
+}
 .search-icon {
 	text-align: center;
 	font-size: 256px;

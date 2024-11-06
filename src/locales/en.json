@@ -3,15 +3,15 @@
       "titles": {
          "frontpage": {
             "archive":  {
-               "name": "DR Archive",
-               "suffix": " - DR Archive"
+               "name": "DR-archive",
+               "suffix": " - DR-archive"
             },
             "about": "About"
          },
          "search":" Search for"
       },
       "frontPages": {
-         "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive"
       }
    },
    "frontpage": {
@@ -101,6 +101,15 @@
      "searchbtn":"Search",
      "hitcount": " result fund for | results found for",
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
+     "nohitSubtitle": {
+        "firstPart": "We're sorry that it wasn't possible to find a result to your search. It isn't all broadcasts in the archive thats connected to good search words. So it might demand af few tries to find what you're searching. Maybe you have search for somehting thats not yet in the archive, or something we may not show.",
+        "readMore": "Read more about what the archive",
+        "contains": "contains.",
+        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+        "lastPart": "We hope for your understanding and patience. We're working on making archive material more searchable. We have collected some good advice underneat, which might help you."
+     },
+     "tipsTitle": "A few tips for your search",
+     "mainCategories": "Look further in our main categories",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
      "resetFilters": "Reset filters",
@@ -117,6 +126,7 @@
      "relatedSubjects":"Related subjects",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} results)",
+     "maybeYouMeant": "Maybe you meant?",
      "searchInput":"search in KB",
      "searchHere":"search here",
      "tv":"TV",
@@ -128,18 +138,18 @@
      "of":"of",
      "startTime":"Start time",
      "dataQuantity":{
-        "firstPart": "The curve shows how much DR archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
+        "firstPart": "The curve shows how much DR-archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
         "secondPart": "We work all the time to get more broadcasts ready for to be released in the online archive, therefore the curve will change according to how many broadcasts has been added."
      },
      "portals": {
-         "drArchive":"DR Archive",
+         "drArchive":"DR-archive",
          "booksAndMaterials":"Books and journals",
          "kbdk":"Search kb.dk",
          "webshop":"Webshop",
          "seeAllMaterials":"See all materials"
       },
       "placeholders": {
-         "drArchive":"Search DR Archive",
+         "drArchive":"Search DR-archive",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
@@ -157,7 +167,10 @@
            "line1": "Try writing * at the end of a word, for example skov*",
            "line2": "Then you'll search for skov, skovens, skovtur and so on"
         },
-        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent"
+        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent",
+        "readMore": "Read more about",
+        "searchTips": "search tips",
+        "link": ""
      }
   },
   "record":{
@@ -193,7 +206,7 @@
          "title": "Shortcuts",
          "links": {
             "1": {
-               "title": "About the DR archive",
+               "title": "About the DR-archive",
                "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
             },
             "2": {
@@ -338,12 +351,12 @@
       "header": "Sadly we can not find the page you're looking for :(",
       "text": "It is unfortunate because we got 25.000 TB websites in storage",
       "altHeader": "Maybe you're looking for",
-      "frontPage": "Frontpage of DR Archive",
+      "frontPage": "Frontpage of DR-archive",
       "kbPage": "Frontpage of the Royal Danish Library"
    }
   },
   "hero": {
-   "title":"DR-Archive",
+   "title":"DR-archive",
    "subtitle":"The Royal Danish Library",
    "progress":"We have reached {index}%...",
    "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",
