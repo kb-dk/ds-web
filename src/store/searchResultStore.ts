@@ -21,6 +21,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const facetResult = ref(Object as unknown as FacetResultType);
 	const autocompleteResult = ref([] as Array<APIAutocompleteTerm>);
 	const errorManager = inject('errorManager') as ErrorManagerType;
+	const rotationalResult = ref([] as Array<GenericSearchResultType>);
 	const searchFired = ref(false);
 	const { t } = useI18n();
 	const numFound = ref(0);
@@ -59,6 +60,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const toggleShowFacets = (value: boolean) => {
 		showFacets.value = value;
+	};
+
+	const setRotationalResult = (items: GenericSearchResultType[]) => {
+		rotationalResult.value = items;
 	};
 
 	const addFilter = (filter: string) => {
@@ -321,6 +326,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		rowOffset,
 		channelFilters,
 		categoryFilters,
+		rotationalResult,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -342,5 +348,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowOffset,
 		setStart,
 		setRowCountFromURL,
+		setRotationalResult,
 	};
 });
