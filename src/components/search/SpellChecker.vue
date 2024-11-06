@@ -32,7 +32,6 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'SpellChecker',
-	methods: { addTestDataEnrichment },
 	props: {
 		spellCheck: {
 			type: Object as PropType<SpellCheckType>,
@@ -41,6 +40,7 @@ export default defineComponent({
 			},
 		},
 	},
+	methods: { addTestDataEnrichment },
 });
 </script>
 
