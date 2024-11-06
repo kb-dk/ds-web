@@ -191,7 +191,6 @@ export default defineComponent({
 
 		const resetAllFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
-			console.log(routeQueries);
 			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
