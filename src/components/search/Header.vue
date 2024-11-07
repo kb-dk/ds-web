@@ -42,6 +42,7 @@ export default defineComponent({
 	transform-origin: center bottom;
 	top: calc(-4vw);
 	z-index: 4;
+	transition: all 0.25s linear 0s;
 }
 
 .home .edge.top {
