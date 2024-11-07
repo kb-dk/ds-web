@@ -284,7 +284,7 @@ export default defineComponent({
 	color: white;
 	background-color: #002e70;
 	border-left: 1px solid white;
-	line-height: 17px;
+	line-height: 18px;
 }
 
 .extra-thumbnail {
