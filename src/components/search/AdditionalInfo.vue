@@ -285,6 +285,7 @@ export default defineComponent({
 	background-color: #002e70;
 	border-left: 1px solid white;
 	line-height: 18px;
+	opacity: 0.9;
 }
 
 .extra-thumbnail {
