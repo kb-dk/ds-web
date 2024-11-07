@@ -317,7 +317,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .share-icon {
-	width: 20px;
 	display: flex;
 	margin-right: 5px;
 	filter: brightness(0) invert(1);

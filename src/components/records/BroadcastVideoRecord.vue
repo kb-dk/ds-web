@@ -321,7 +321,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .share-icon {
-	width: 20px;
 	display: flex;
 	margin-right: 5px;
 	filter: brightness(0) invert(1);
@@ -348,6 +347,9 @@ temporary styling until patterns from design system are implemented
 .link {
 	position: relative;
 	top: 2px;
+}
+.link-container a {
+	white-space: nowrap;
 }
 /* First breakpoint for tablet */
 
@@ -432,9 +434,6 @@ temporary styling until patterns from design system are implemented
 	.related-record:nth-of-type(3n) {
 		padding-right: 0px;
 		padding-left: 10px;
-	}
-	.link-container a {
-		white-space: nowrap;
 	}
 }
 
