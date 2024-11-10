@@ -342,6 +342,7 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
+				searchResultStore.searchResult = [];
 				searchResultStore.resetAutocomplete();
 				clearTimeout(AutocompleteTimer);
 				debounceMechanic.value = true;

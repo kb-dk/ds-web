@@ -79,7 +79,7 @@ export default defineComponent({
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
 			document.title = t('app.titles.frontpage.archive.name') as string;
 			const pastPage = router.options.history.state.back as string;
-			if (pastPage && pastPage.startsWith('/post/')) {
+			if (pastPage && pastPage.startsWith('/post/') && searchResultStore.searchResult.length !== 0) {
 				document.title = (t('app.titles.search') +
 					'"' +
 					route.query.q +
@@ -116,6 +116,7 @@ export default defineComponent({
 					}
 					if (routeFacetQueries) {
 						searchResultStore.setFiltersFromURL(routeFacetQueries);
+						timeSearchStore.setFiltersFromUrl(routeFacetQueries);
 					}
 					searchResultStore.getSearchResults(route.query.q as string);
 					document.title = (t('app.titles.search') +

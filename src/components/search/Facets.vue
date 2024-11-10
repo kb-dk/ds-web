@@ -256,7 +256,7 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			const filters = route.query.fq as string[];
+			const filters = normalizeFq(route.query.fq as string[]);
 			if (Array.isArray(filters) && filters.some((str) => str.includes('startTime'))) {
 				const years = filters.filter((str) => str.includes('startTime'));
 				const splitYears = decodeURIComponent(years[0]).replace('startTime:', '').replace(/[[\]]/g, '').split(' TO ');

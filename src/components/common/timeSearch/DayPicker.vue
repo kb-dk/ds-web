@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import { startYear, endYear, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
@@ -126,6 +126,10 @@ export default defineComponent({
 			selectedDate.value = holder;
 			updateSeeMoreLink();
 		};
+
+		onMounted(() => {
+			updateSeeMoreLink();
+		});
 
 		return {
 			singleDatePicker,

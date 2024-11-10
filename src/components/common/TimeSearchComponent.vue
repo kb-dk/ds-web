@@ -114,6 +114,7 @@ export default defineComponent({
 				fq: [],
 			},
 		});
+
 		const fetchNewTimeResults = () => {
 			updateLink();
 			getTimeResults(true);
