@@ -192,12 +192,12 @@ export class APIServiceClient {
 	}
 
 	async getTimeStartEndResults(start: string, end: string, id: string): Promise<APISearchResponseType> {
-		let timeConstrain = '';
+		let timeConstraint = '';
 		if (start && end) {
-			timeConstrain = `startTime:${encodeURIComponent(`[${start} TO ${end}]`)}`;
+			timeConstraint = `startTime:${encodeURIComponent(`[${start} TO ${end}]`)}`;
 		}
 		return await this.httpClient.get(
-			`bff/v1/proxy/search/?q=${timeConstrain} AND NOT id:"${id}"&rows=3&sort=startTime asc`,
+			`bff/v1/proxy/search/?q=${timeConstraint} AND NOT id:"${id}"&rows=3&sort=startTime asc`,
 		);
 	}
 

@@ -72,13 +72,13 @@
 				{{ $t('record.toFrontpage') }}
 			</router-link>
 		</div>
+		<h3>{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
 				:key="record"
 				class="related-content"
 			>
-				<h3>{{ $t('search.relatedContent') }}</h3>
 				<GridResultItem
 					:row-nr="3"
 					:spot-nr="3"
