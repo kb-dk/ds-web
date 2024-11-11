@@ -1,9 +1,11 @@
 <template>
 	<div class="audio-player-box">
-		<div
-			id="audio-player"
-			class="player"
-		></div>
+		<div class="not-allowed">
+			<div
+				id="audio-player"
+				class="player"
+			></div>
+		</div>
 	</div>
 </template>
 
@@ -117,6 +119,8 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	width: 100%;
 	height: auto;
+	z-index: -2;
+	background-color: rgba(244, 182, 100, 0.3) !important;
 }
 
 .audio-player-box {
@@ -151,5 +155,11 @@ export default defineComponent({
 		max-width: 100%;
 		padding: 0px;
 	}
+}
+.not-allowed {
+	background-color: rgba(244, 182, 100, 0.3) !important;
+	width: 100%;
+	height: 100%;
+	z-index: 90;
 }
 </style>

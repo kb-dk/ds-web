@@ -2,6 +2,7 @@
 	<div class="broadcast-record">
 		<div class="video-container">
 			<div v-if="entryId !== ''">
+				<NotAllowedBanner></NotAllowedBanner>
 				<VideoPlayer :entry-id="entryId"></VideoPlayer>
 			</div>
 			<div
@@ -107,11 +108,14 @@ import { getTimeFromISOFormat } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
 
 	components: {
+		NotAllowedBanner,
 		VideoPlayer,
 		Duration,
 		GridDisplay,
