@@ -13,7 +13,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name }}</h2>
+					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }} ALSO, LOREM IPSUM PLEASE</p>
 				</div>
 			</div>
@@ -49,10 +49,7 @@
 						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
 						@click="getCurrentUrl()"
 					>
-						<img
-							class="share-icon"
-							:src="getImgServerSrcURL()"
-						/>
+						<span class="material-icons">share</span>
 						<a class="link">{{ $t('record.copy') }}</a>
 					</div>
 				</div>
@@ -151,9 +148,6 @@ export default defineComponent({
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
-		const getImgServerSrcURL = () => {
-			return new URL(`@/assets/images/share.svg`, import.meta.url).href;
-		};
 		return {
 			lastPath,
 			locale,
@@ -164,7 +158,6 @@ export default defineComponent({
 			getBroadcastTime,
 			checkForKalturaId,
 			addTestDataEnrichment,
-			getImgServerSrcURL,
 		};
 	},
 });
@@ -316,12 +309,6 @@ temporary styling until patterns from design system are implemented
 	box-sizing: border-box;
 }
 
-.share-icon {
-	display: flex;
-	margin-right: 5px;
-	filter: brightness(0) invert(1);
-}
-
 .link-container {
 	background-color: #0a2e70;
 	width: 33.3%;
@@ -344,7 +331,9 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 	top: 2px;
 }
-
+.link-container a {
+	white-space: nowrap;
+}
 /* First breakpoint for tablet */
 
 @media (min-width: 640px) {
