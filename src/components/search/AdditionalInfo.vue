@@ -8,7 +8,7 @@
 			@click="showThumbnails()"
 		>
 			<span class="material-icons thumbnails-icon">photo_library</span>
-			Thumbnails
+			{{ $t('search.thumbnail') }}
 			<span :class="extraContentShown ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
 				expand_more
 			</span>
@@ -217,7 +217,7 @@ export default defineComponent({
 	color: #002e70;
 	transition:
 		all 0.3s ease-in-out 0s,
-		margin-bottom 0s linar 0s;
+		margin-bottom 0s linear 0s;
 	top: 1px;
 	position: relative;
 	padding: 5px 15px;
@@ -284,7 +284,8 @@ export default defineComponent({
 	color: white;
 	background-color: #002e70;
 	border-left: 1px solid white;
-	line-height: 17px;
+	line-height: 18px;
+	opacity: 0.9;
 }
 
 .extra-thumbnail {

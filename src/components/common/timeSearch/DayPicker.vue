@@ -17,6 +17,7 @@
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 				@update:model-value="updateSeeMoreLink()"
+				@update-month-year="HandleMonthYear"
 			></VueDatePicker>
 		</div>
 		<div class="time-container">
@@ -43,6 +44,12 @@ import { startYear, endYear, startDate, endDate } from '@/components/common/time
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+
+interface MonthYearEvent {
+	instance: number;
+	month: number;
+	year: number;
+}
 
 export default defineComponent({
 	name: 'DayPicker',
@@ -111,6 +118,15 @@ export default defineComponent({
 			};
 		};
 
+		const HandleMonthYear = ({ month, year }: MonthYearEvent) => {
+			const holder = new Date(endDate.value.getTime());
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			selectedDate.value = holder;
+			updateSeeMoreLink();
+		};
+
 		return {
 			singleDatePicker,
 			startYear,
@@ -121,6 +137,7 @@ export default defineComponent({
 			addTestDataEnrichment,
 			updateSeeMoreLink,
 			moveToSearchPage,
+			HandleMonthYear,
 		};
 	},
 });

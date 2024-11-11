@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
 		<kb-menu
 			:routing="true"
 			:locale="locale"
@@ -41,7 +41,12 @@ export default defineComponent({
 	transform: rotateZ(-2deg);
 	transform-origin: center bottom;
 	top: calc(-4vw);
-	z-index: 1;
+	z-index: 4;
+	transition: all 0.25s linear 0s;
+}
+
+.home .edge.top {
+	box-shadow: rgba(0, 0, 0, 0.45) 0px 14px 8px -11px;
 }
 
 @media (min-width: 2000px) {

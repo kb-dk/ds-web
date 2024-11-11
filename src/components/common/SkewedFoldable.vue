@@ -83,7 +83,7 @@ export default defineComponent({
 	props: {
 		bg: { type: String, default: 'white' },
 		text: { type: String, default: 'black' },
-		title: { type: String, default: 'Title' },
+		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
 		icon: { type: String, default: 'schedule' },
 		fullwidth: { type: Boolean, default: false },
@@ -195,7 +195,7 @@ export default defineComponent({
 	align-items: flex-start;
 	flex-direction: column;
 	overflow-x: hidden;
-	z-index: 1;
+	z-index: 4;
 	padding-bottom: 25px;
 }
 
@@ -220,6 +220,11 @@ export default defineComponent({
 h1 {
 	font-family: noway, sans-serif;
 	font-weight: 100;
+	text-transform: lowercase;
+}
+
+h1::first-letter {
+	text-transform: capitalize;
 }
 
 .content .responsive-title {
@@ -275,6 +280,7 @@ h1 {
 	top: 3vw;
 	transform: rotateZ(2deg);
 	transform-origin: center bottom;
+	z-index: 3;
 }
 
 .edge.top.left {
@@ -299,6 +305,7 @@ h1 {
 	top: -3vw;
 	transform: rotateZ(-2deg);
 	transform-origin: center top;
+	z-index: 3;
 }
 .edge.bottom.left {
 	width: 110%;

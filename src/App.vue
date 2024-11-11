@@ -152,17 +152,17 @@ export default defineComponent({
 
 		router.beforeEach((to, from) => {
 			if (from.name === 'Search' && to.name === 'Record') {
-				transitionName.value = 'from-search-to-record';
+				transitionName.value = 'search-to-record';
 			} else if (from.name === 'Record' && to.name === 'Search') {
-				transitionName.value = 'from-record-to-search';
+				transitionName.value = 'record-to-search';
 			} else if (from.name === 'Home' && to.name === 'Search') {
-				transitionName.value = 'from-record-to-search';
+				transitionName.value = 'home-to-search';
 			} else if (from.name === 'Search' && to.name === 'Home') {
-				transitionName.value = 'from-record-to-search';
+				transitionName.value = 'record-to-search';
 			} else if (from.name === 'Record' && to.name === 'Home') {
-				transitionName.value = 'from-record-to-search';
+				transitionName.value = 'record-to-search';
 			} else if (from.name === 'Home' && to.name === 'Record') {
-				transitionName.value = 'from-search-to-record';
+				transitionName.value = 'search-to-record';
 			} else {
 				transitionName.value = 'swipe';
 			}
@@ -310,64 +310,137 @@ export default defineComponent({
 	}
 }
 
-.from-record-to-search-enter-active,
-.from-record-to-search-leave-active {
+/* SEARCH TO HOME TRANSITION */
+
+.search-to-home-enter-active,
+.search-to-home-leave-active {
 	transition: all 0.25s linear;
 }
 
-.from-record-to-search-enter-from {
+.search-to-home-enter-from {
 	margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
 
-.from-record-to-search-enter-to {
+.search-to-home-enter-to {
 	margin-top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
-.from-record-to-search-leave-from {
+.search-to-home-leave-from {
+	top: 0px;
+	opacity: 1;
+	position: relative;
+	z-index: 3;
+}
+
+.search-to-home-leave-to {
+	margin-top: 50px;
+	opacity: 0;
+	position: relative;
+}
+.search-to-home-leave-active {
+	z-index: 0;
+}
+
+/* HOME TO SEARCH TRANSITION */
+
+.home-to-search-enter-active,
+.home-to-search-leave-active {
+	transition: all 0.25s linear;
+}
+
+.home-to-search-enter-from {
+	margin-top: -50px;
+	opacity: 0;
+	position: relative;
+}
+
+.home-to-search-enter-to {
+	margin-top: 0px;
+	opacity: 1;
+	position: relative;
+}
+
+.home-to-search-leave-from {
+	top: 0px;
+	opacity: 1;
+	position: relative;
+	z-index: 3;
+}
+
+.home-to-search-leave-to {
+	margin-top: 50px;
+	opacity: 0;
+	position: relative;
+}
+.home-to-search-leave-active {
+	z-index: 0;
+}
+
+/* RECORD TO SEARCH TRANSITION */
+.record-to-search-enter-active,
+.record-to-search-leave-active {
+	transition: all 0.25s linear;
+}
+
+.record-to-search-enter-from {
+	margin-top: -50px;
+	opacity: 0;
+	position: relative;
+}
+
+.record-to-search-enter-to {
+	margin-top: 0px;
+	opacity: 1;
+	position: relative;
+}
+
+.record-to-search-leave-from {
 	top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
-.from-record-to-search-leave-to {
+.record-to-search-leave-to {
 	margin-top: 50px;
 	opacity: 0;
 	position: relative;
 }
-.from-record-to-search-leave-active,
-.from-search-to-record-enter-active {
+.record-to-search-leave-active,
+.search-to-record-enter-active {
 	z-index: 1000;
 }
 
-.from-search-to-record-enter-active,
-.from-search-to-record-leave-active {
+.search-to-record-enter-active,
+.search-to-record-leave-active {
 	transition: all 0.25s linear;
 	position: relative;
 }
 
-.from-search-to-record-enter-from {
+/* SEARCH TO RECORD TRANSITION */
+
+.search-to-record-enter-from {
 	margin-top: 50px;
 	opacity: 0;
 	position: absolute;
 }
 
-.from-search-to-record-enter-to {
+.search-to-record-enter-to {
 	margin-top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
-.from-search-to-record-leave-from {
+.search-to-record-leave-from {
 	top: 0px;
 	opacity: 1;
 	position: relative;
 }
 
-.from-search-to-record-leave-to {
+.search-to-record-leave-to {
 	margin-top: -50px;
 	opacity: 0;
 	position: relative;

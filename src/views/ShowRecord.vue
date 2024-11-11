@@ -212,6 +212,7 @@ export default defineComponent({
 		top: -6vw;
 		margin-left: 24px;
 		margin-right: 24px;
+		z-index: 4;
 	}
 }
 /* MEDIA QUERY 1150 */

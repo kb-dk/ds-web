@@ -495,7 +495,7 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	height: 100%;
 	position: relative;
-	z-index: 5;
+	z-index: 6;
 }
 
 .btn-icon i {
@@ -713,7 +713,7 @@ input:focus {
 	margin-bottom: 0;
 	position: relative;
 	vertical-align: middle;
-
+	display: none;
 	width: 100%;
 	border: 1px solid black;
 	height: 48px;
@@ -916,6 +916,10 @@ input:focus {
 @media (min-width: 640px) {
 	.rdl-advanced-radio {
 		width: 50%;
+	}
+
+	.bootstrap-select {
+		display: block;
 	}
 
 	.container {

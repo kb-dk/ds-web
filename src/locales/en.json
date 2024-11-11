@@ -3,27 +3,29 @@
       "titles": {
          "frontpage": {
             "archive":  {
-               "name": "DR Archive",
-               "suffix": " - DR Archive"
-            }
+               "name": "DR-archive",
+               "suffix": " - DR-archive"
+            },
+            "about": "About"
          },
          "search":" Search for"
       },
       "frontPages": {
-         "TVRadioDR":"Welcome to the Royal Danish Librarys DR archive"
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive"
       }
    },
    "frontpage": {
-      "fromTheArchive":"A selection from the archive"
+      "fromTheArchive":"{month} month on DR through time"
    },
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
+      "genresSubtitle": "Choose which category you would like to search in",
       "allChannels":"all channels",
       "channels":"channel | channels",
       "chosen":"chosen",
-      "reset":"reset"
-
+      "reset":"reset",
+      "choose": "Choose"
 
    },
    "breadcrumb": {
@@ -35,6 +37,7 @@
    },
    "timeSearch": {
       "timeMachine":"Use the time...",
+      "searchDate": "Search via date",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
@@ -55,6 +58,8 @@
       "allDays":"all weekdays in the period",
       "allTimeslots":"all hours",
       "selection":"A selection of the results",
+      "dateSubtitle": "Pick a date you would like to see content from.",
+      "timeMachineSubtitle": "Pick which period in DR's broadcasts you would like to search in.",
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
@@ -96,8 +101,18 @@
      "searchbtn":"Search",
      "hitcount": " result fund for | results found for",
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
+     "nohitSubtitle": {
+        "firstPart": "We're sorry that it wasn't possible to find a result to your search. It isn't all broadcasts in the archive thats connected to good search words. So it might demand af few tries to find what you're searching. Maybe you have search for somehting thats not yet in the archive, or something we may not show.",
+        "readMore": "Read more about what the archive",
+        "contains": "contains.",
+        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+        "lastPart": "We hope for your understanding and patience. We're working on making archive material more searchable. We have collected some good advice underneat, which might help you."
+     },
+     "tipsTitle": "A few tips for your search",
+     "mainCategories": "Look further in our main categories",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
+     "resetFilters": "Reset filters",
      "nextPage":"Next page",
      "previousPage":"Previous page",
      "page": "Page",
@@ -112,29 +127,52 @@
      "relatedContent": "Related content",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} results)",
+     "maybeYouMeant": "Maybe you meant?",
      "searchInput":"search in KB",
      "searchHere":"search here",
      "tv":"TV",
      "radio":"Radio",
      "all":"All",
+     "thumbnail": "Thumbnail",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "of":"of",
      "startTime":"Start time",
+     "dataQuantity":{
+        "firstPart": "The curve shows how much DR-archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
+        "secondPart": "We work all the time to get more broadcasts ready for to be released in the online archive, therefore the curve will change according to how many broadcasts has been added."
+     },
      "portals": {
-         "drArchive":"DR Archive",
+         "drArchive":"DR-archive",
          "booksAndMaterials":"Books and journals",
          "kbdk":"Search kb.dk",
          "webshop":"Webshop",
          "seeAllMaterials":"See all materials"
       },
       "placeholders": {
-         "drArchive":"Search DR Archive",
+         "drArchive":"Search DR-archive",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
          "seeAllMaterials":"See all materials"
-      }
+      },
+     "searchGuide": {
+        "title":"Good advice for your search",
+        "subtitle": "Maybe you can improve your search with these methods",
+        "first": "Try using less search words",
+        "second": {
+           "line1": "Check spelling. If you're unsure you can write ? as replacement for a letter - for example Son?a",
+           "line2": "Then you'll search for both Sonia and Sonja"
+        },
+        "third": {
+           "line1": "Try writing * at the end of a word, for example skov*",
+           "line2": "Then you'll search for skov, skovens, skovtur and so on"
+        },
+        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent",
+        "readMore": "Read more about",
+        "searchTips": "search tips",
+        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search"
+     }
   },
   "record":{
      "duration":"Duration",
@@ -167,29 +205,33 @@
    },
    "footer": {
       "contactInfo":"Contact information",
-      "cookie":"Cookie settings",
+      "cookie":"Cookie Settings",
       "column1": {
          "title": "Shortcuts",
          "links": {
             "1": {
-               "title": "Find Materials",
-               "link": "https://www.kb.dk/en/find-materials"
+               "title": "About the DR-archive",
+               "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
             },
             "2": {
-               "title": "Inspiration",
-               "link": "https://www.kb.dk/en/inspiration"
+               "title": "Find materials",
+               "link": "https://www.kb.dk/find-materiale"
             },
             "3": {
-               "title": "Events",
-               "link": "https://www.kb.dk/en/events"
+               "title": "Inspiration",
+               "link": "https://www.kb.dk/inspiration"
             },
             "4": {
-               "title": "Services",
-               "link": "https://www.kb.dk/en/services"
+               "title": "Events",
+               "link": "https://www.kb.dk/arrangementer"
             },
             "5": {
+               "title": "Services",
+               "link": "https://www.kb.dk/services"
+            },
+            "6": {
                "title": "Visit us",
-               "link": "https://www.kb.dk/en/visit-us"
+               "link": "https://www.kb.dk/besoeg-os"
             }
          }
       },
@@ -197,20 +239,24 @@
         "title": "Use the library",
          "links": {
             "1": {
-               "title": "For professionals",
-               "link": "https://pro.kb.dk/en"
+             "title": "Mediestream",
+             "link": "https://www2.statsbiblioteket.dk/mediestream/"
             },
             "2": {
-               "title": "Meetings and conferences",
-               "link": "https://pro.kb.dk/en/meetings"
+               "title": "Digital collections",
+               "link": "https://www.kb.dk/en/find-materials/systems-and-services/digital-collections"
             },
             "3": {
-               "title": "For the central administration in Denmark",
-               "link": "https://forcentraladministrationen.kb.dk/en"
+               "title": "The Radio- and TV collection",
+               "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
             },
             "4": {
-               "title": "Legal deposit",
-               "link": "https://pro.kb.dk/en/legal-deposit"
+               "title": "Find Danish radio and TV programmes",
+               "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+            },
+            "5": {
+               "title": "The Library system",
+               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
             }
          }
       },
@@ -235,7 +281,7 @@
             },
             "5": {
                "title": "Accessibility statement",
-               "link": "https://www.kb.dk/was"
+               "link": "https://www.was.digst.dk/kb-dk"
             },
             "6": {
                "title": "Service status",
@@ -254,11 +300,11 @@
                "link": "mailto:kb@kb.dk"
             },
             "3": {
-               "title": "Tel: (+45) 3346 4747",
+               "title": "Tel: (+45) 33 47 47 47",
                "link": ""
             },
             "4": {
-               "title": "Press",
+               "title": "Press contact",
                "link": "https://www.kb.dk/en/about-us/press"
             },
             "5": {
@@ -309,8 +355,16 @@
       "header": "Sadly we can not find the page you're looking for :(",
       "text": "It is unfortunate because we got 25.000 TB websites in storage",
       "altHeader": "Maybe you're looking for",
-      "frontPage": "Frontpage of DR Archive",
+      "frontPage": "Frontpage of DR-archive",
       "kbPage": "Frontpage of the Royal Danish Library"
    }
-  }
+  },
+  "hero": {
+   "title":"DR-archive",
+   "subtitle":"The Royal Danish Library",
+   "progress":"We have reached {index}%...",
+   "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",
+   "link":"Read more about the DR-archive"
+
+} 
 }

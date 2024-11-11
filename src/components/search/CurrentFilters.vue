@@ -190,6 +190,7 @@ export default defineComponent({
 		};
 
 		const resetAllFilters = () => {
+			const routeQueries = cloneRouteQuery(route);
 			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
@@ -198,7 +199,9 @@ export default defineComponent({
 			endDate.value.setTime(endYear.value.getTime());
 			router.push({
 				name: 'Search',
-				query: { q: searchResultStore.currentQuery },
+				query: {
+					q: routeQueries.q,
+				},
 			});
 		};
 

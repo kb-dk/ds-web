@@ -56,9 +56,9 @@
 						<div class="flex-container">
 							<div class="category-container">
 								<CustomExpander
-									headline="Udvælg kategorier"
+									:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
 									icon="category"
-									:subline="`Alle kategorier`"
+									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
 								>
 									<fieldset
 										v-if="searchResultStore.firstBackendFetchExecuted"
@@ -89,7 +89,7 @@
 								</CustomExpander>
 							</div>
 							<CustomExpander
-								headline="Udvælg kanaler"
+								:headline="$t('facets.choose') + ' ' + $t('facets.channels', 2)"
 								icon="ondemand_video"
 								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
 								:fade="true"
@@ -256,11 +256,24 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			timeSearchStore.timeFacetsOpen = false;
-			const startHolder = new Date(startYear.value.getTime());
-			const endHolder = new Date(endYear.value.getTime());
-			startDate.value = startHolder;
-			endDate.value = endHolder;
+			const filters = route.query.fq as string[];
+			if (Array.isArray(filters) && filters.some((str) => str.includes('startTime'))) {
+				const years = filters.filter((str) => str.includes('startTime'));
+				const splitYears = decodeURIComponent(years[0]).replace('startTime:', '').replace(/[[\]]/g, '').split(' TO ');
+				const yh = new Date(splitYears[0]);
+				const eh = new Date(splitYears[1]);
+				startDate.value = yh;
+				endDate.value = eh;
+				timeSearchStore.timeFacetsOpen = true;
+				toggleTimeFacets();
+				timeSearchStore.setNewSearchReqMet(false);
+			} else {
+				timeSearchStore.timeFacetsOpen = false;
+				const startHolder = new Date(startYear.value.getTime());
+				const endHolder = new Date(endYear.value.getTime());
+				startDate.value = startHolder;
+				endDate.value = endHolder;
+			}
 			watch(
 				() => searchResultStore.facetResult,
 				(newFacets: FacetResultType) => {
@@ -367,7 +380,6 @@ export default defineComponent({
 				});
 			} else {
 				timeFacetButton.value?.setAttribute('aria-checked', 'true');
-				timeSearchStore.setNewSearchReqMet(true);
 				gsap.set(timeFacets.value, {
 					display: 'flex',
 					flexDirection: 'column',

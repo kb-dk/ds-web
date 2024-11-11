@@ -16,7 +16,6 @@
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 					>
 						<div class="hits">
-							{{ $t('timeSearch.timeHits') }}
 							<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
 							{{ $t('timeSearch.result', timeSearchStore.numFound) }}
 						</div>
@@ -56,7 +55,6 @@
 					>
 						<div class="further-results">
 							<div class="hits">
-								{{ $t('timeSearch.timeHits') }}
 								<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
 								{{ $t('timeSearch.result', timeSearchStore.numFound) }}
 							</div>

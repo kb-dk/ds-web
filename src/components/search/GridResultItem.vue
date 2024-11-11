@@ -1,15 +1,20 @@
 <template>
 	<div
 		ref="gridContainer"
+		draggable="false"
 		class="grid-result-item"
 	>
 		<Transition
 			name="result"
 			mode="out-in"
 		>
-			<div v-if="resultdata != null && !loading">
+			<div
+				v-if="resultdata != null && !loading"
+				class="data"
+			>
 				<router-link
 					:to="{ path: fullPostUrl ? resultdata.id : 'post/' + resultdata.id }"
+					draggable="false"
 					class="link-title"
 					role="link"
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
@@ -24,7 +29,7 @@
 					<div class="date">
 						<span class="material-icons">play_circle_filled</span>
 						{{ resultdata.creator_affiliation + ', ' }}
-						{{ starttime }}
+						{{ getStartTime(resultdata) }}
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
@@ -35,10 +40,10 @@
 							:iso-duration="resultdata.duration"
 							:parenthesis="false"
 						></Duration>
-						&nbsp;-&nbsp;
+						<!-- &nbsp;-&nbsp;
 						<span style="font-style: italic; opacity: 0.5">
 							{{ resultdata.temporal_start_day_da }}
-						</span>
+						</span> -->
 					</div>
 
 					<div class="title">
@@ -98,7 +103,7 @@
 <script lang="ts">
 import { PropType, defineComponent, ref, watch, onMounted } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { getBroadcastDate } from '@/utils/time-utils';
+import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
@@ -107,6 +112,7 @@ import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from '@/components/common/Duration.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'GridResultItem',
@@ -142,6 +148,7 @@ export default defineComponent({
 
 	setup(props) {
 		const gridContainer = ref<HTMLDivElement | null>(null);
+		const { t, locale } = useI18n();
 
 		const timeSearchStore = useTimeSearchStore();
 		const searchResultStore = useSearchResultStore();
@@ -153,6 +160,13 @@ export default defineComponent({
 				placeholder: undefined,
 			} as ImageComponentType),
 		);
+
+		const getStartTime = (resultItem: GenericSearchResultType) => {
+			return resultItem.startTime !== undefined
+				? `${getBroadcastDate(resultItem.startTime as string, locale.value)}
+				${t('record.timestamp')}${getBroadcastTime(resultItem.startTime as string)}`
+				: t('record.noBroadcastData');
+		};
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
@@ -197,7 +211,15 @@ export default defineComponent({
 
 			getImageData();
 		});
-		return { gridContainer, getBroadcastDate, imageData, timeSearchStore, searchResultStore, addTestDataEnrichment };
+		return {
+			gridContainer,
+			getBroadcastDate,
+			imageData,
+			timeSearchStore,
+			searchResultStore,
+			addTestDataEnrichment,
+			getStartTime,
+		};
 	},
 });
 </script>
@@ -223,6 +245,7 @@ export default defineComponent({
 	font-size: 14px;
 	text-decoration: none;
 	color: black;
+	display: grid;
 }
 
 .grid-result-item:after {

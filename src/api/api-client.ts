@@ -182,6 +182,15 @@ export class APIServiceClient {
 		);
 	}
 
+	async getFeatureItems(ids: string[]): Promise<APISearchResponseType> {
+		let idString = '';
+		ids.forEach((item, index) => {
+			idString += `id:"${item}"`;
+			index < ids.length - 1 ? (idString += ` OR `) : null;
+		});
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=${idString}&facet=false&sort=startTime asc`);
+	}
+
 	async getTimeStartEndResults(start: string, end: string, id: string): Promise<APISearchResponseType> {
 		let timeConstrain = '';
 		if (start && end) {
