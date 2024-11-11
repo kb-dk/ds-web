@@ -26,7 +26,8 @@
 					</div>
 					<div>
 						<span class="material-icons blue">schedule</span>
-						Kl. {{ getBroadcastTime(recordData.startTime) }} - {{ getBroadcastTime(recordData.endTime) }}
+						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
+						{{ getBroadcastTime(recordData.endTime) }}
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
@@ -256,6 +257,7 @@ temporary styling until patterns from design system are implemented
 	padding: 20px 10px 30px 10px;
 	background-color: #f0fbff;
 	box-sizing: border-box;
+	text-transform: capitalize;
 }
 
 .related-record {
