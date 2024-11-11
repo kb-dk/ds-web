@@ -104,6 +104,8 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/components/common/wc-spot-item';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -344,6 +346,9 @@ temporary styling until patterns from design system are implemented
 		margin-left: 0px;
 		margin-right: 0px;
 		gap: 20px;
+	}
+	.broadcast-record {
+		padding-top: 0px;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);

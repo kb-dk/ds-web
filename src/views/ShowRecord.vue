@@ -3,6 +3,7 @@
 		<div class="container top-offset">
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
+
 				<div v-if="recordData">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
@@ -44,6 +45,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -63,6 +65,7 @@ export default defineComponent({
 		const spinnerStore = useSpinnerStore();
 		const authStore = useAuthStore();
 		const route = useRoute();
+		const allowed = ref<boolean>(true);
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -86,6 +89,7 @@ export default defineComponent({
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
+					allowed.value = false;
 					const errorMsg =
 						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
 					errorManager.submitError(err, errorMsg);
@@ -129,7 +133,7 @@ export default defineComponent({
 			}
 		});
 
-		return { recordData, recordType, moreLikeThisRecords };
+		return { recordData, recordType, moreLikeThisRecords, allowed };
 	},
 });
 </script>
