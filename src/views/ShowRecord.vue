@@ -46,6 +46,7 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import searchResults from '@/components/search/SearchResults.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -65,7 +66,6 @@ export default defineComponent({
 		const spinnerStore = useSpinnerStore();
 		const authStore = useAuthStore();
 		const route = useRoute();
-		const allowed = ref<boolean>(true);
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -89,7 +89,7 @@ export default defineComponent({
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
-					allowed.value = false;
+					authStore.isAllowedToDisplayContent = false;
 					const errorMsg =
 						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
 					errorManager.submitError(err, errorMsg);
@@ -133,7 +133,7 @@ export default defineComponent({
 			}
 		});
 
-		return { recordData, recordType, moreLikeThisRecords, allowed };
+		return { recordData, recordType, moreLikeThisRecords };
 	},
 });
 </script>

@@ -339,7 +339,9 @@
       }
    },
    "auth": {
-      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere"
+      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere",
+     "notAllowedHeader": "Du har desværre ikke adgang til dette indhold",
+     "notAllowedText": "Vi kan desværre ikke tilbyde dig denne udsendelse."
    },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",

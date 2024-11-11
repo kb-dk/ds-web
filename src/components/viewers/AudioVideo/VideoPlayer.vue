@@ -4,6 +4,7 @@
 			id="video-player"
 			class="player"
 		></div>
+		<NotAllowedBanner :video-player="true"></NotAllowedBanner>
 	</div>
 </template>
 
@@ -14,13 +15,14 @@ import { useRoute } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
+import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
 
 export default defineComponent({
 	name: 'VideoPlayer',
-	components: {},
+	components: { NotAllowedBanner },
 	props: {
 		entryId: {
 			type: String,
@@ -159,7 +161,10 @@ export default defineComponent({
 	width: 100%;
 	margin-left: 0px;
 	overflow-y: hidden;
-	background-color: #caf0fe;
+	padding-top: 31px;
+	padding-bottom: 31px;
+	background-color: white;
+	position: relative;
 }
 
 .edge {
