@@ -50,10 +50,7 @@
 						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
 						@click="getCurrentUrl()"
 					>
-						<img
-							class="share-icon"
-							:src="getImgServerSrcURL()"
-						/>
+						<span class="material-icons">share</span>
 						<a class="link">{{ $t('record.copy') }}</a>
 					</div>
 				</div>
@@ -148,9 +145,6 @@ export default defineComponent({
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
-		const getImgServerSrcURL = () => {
-			return new URL(`@/assets/images/share.svg`, import.meta.url).href;
-		};
 		return {
 			lastPath,
 			locale,
@@ -161,7 +155,6 @@ export default defineComponent({
 			getTimeFromISOFormat,
 			entryId,
 			addTestDataEnrichment,
-			getImgServerSrcURL,
 		};
 	},
 });
@@ -318,12 +311,6 @@ temporary styling until patterns from design system are implemented
 .related-record {
 	flex: 0 0 90%;
 	box-sizing: border-box;
-}
-
-.share-icon {
-	display: flex;
-	margin-right: 5px;
-	filter: brightness(0) invert(1);
 }
 
 .link-container {
