@@ -1,11 +1,10 @@
 <template>
 	<div class="audio-player-box">
-		<div class="not-allowed">
-			<div
-				id="audio-player"
-				class="player"
-			></div>
-		</div>
+		<div
+			id="audio-player"
+			class="player"
+		></div>
+		<NotAllowedBanner :video-player="false"></NotAllowedBanner>
 	</div>
 </template>
 
@@ -16,12 +15,13 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import { useRoute } from 'vue-router';
+import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
 export default defineComponent({
 	name: 'AudioPlayer',
-	components: {},
+	components: { NotAllowedBanner },
 	props: {
 		entryId: {
 			type: String,
@@ -119,8 +119,6 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	width: 100%;
 	height: auto;
-	z-index: -2;
-	background-color: rgba(244, 182, 100, 0.3) !important;
 }
 
 .audio-player-box {
@@ -134,6 +132,7 @@ export default defineComponent({
 	padding-top: 31px;
 	padding-bottom: 31px;
 	background-color: white;
+	position: relative;
 }
 
 .edge {
@@ -155,11 +154,5 @@ export default defineComponent({
 		max-width: 100%;
 		padding: 0px;
 	}
-}
-.not-allowed {
-	background-color: rgba(244, 182, 100, 0.3) !important;
-	width: 100%;
-	height: 100%;
-	z-index: 90;
 }
 </style>

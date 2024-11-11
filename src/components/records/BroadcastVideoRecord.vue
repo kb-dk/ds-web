@@ -2,7 +2,6 @@
 	<div class="broadcast-record">
 		<div class="video-container">
 			<div v-if="entryId !== ''">
-				<NotAllowedBanner></NotAllowedBanner>
 				<VideoPlayer :entry-id="entryId"></VideoPlayer>
 			</div>
 			<div
@@ -113,7 +112,6 @@ export default defineComponent({
 	name: 'BroadcastRecord',
 
 	components: {
-		NotAllowedBanner,
 		VideoPlayer,
 		Duration,
 		GridDisplay,
