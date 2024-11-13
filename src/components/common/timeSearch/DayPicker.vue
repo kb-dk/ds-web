@@ -40,10 +40,19 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import { startYear, endYear, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
+import {
+	startYear,
+	endYear,
+	startDate,
+	endDate,
+	months,
+	days,
+	timeslots,
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { resetAllSelectorValues } from '@/utils/time-search-utils';
 
 interface MonthYearEvent {
 	instance: number;
@@ -58,10 +67,10 @@ export default defineComponent({
 	},
 	setup() {
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref(new Date(1992, 0, 1, 0, 0, 0));
+		const selectedDate = ref(new Date(2015, 0, 1, 0, 0, 0));
 
-		const singleDayStartDate = ref<Date>(new Date(1992, 0, 1, 0, 0, 0)); // January 1, 1992, 00:00:00
-		const singleDayEndDate = ref<Date>(new Date(1992, 0, 1, 23, 59, 59)); // January 1, 1992, 23:59:59
+		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
+		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
 		const format = (date: Date) => {
 			const day = date.getDate();
@@ -89,6 +98,10 @@ export default defineComponent({
 			endDate.value.setFullYear(selectedDate.value.getFullYear());
 			endDate.value.setMonth(selectedDate.value.getMonth());
 			endDate.value.setDate(selectedDate.value.getDate());
+
+			resetAllSelectorValues(months.value);
+			resetAllSelectorValues(days.value);
+			resetAllSelectorValues(timeslots.value);
 		};
 
 		const updateSeeMoreLink = () => {

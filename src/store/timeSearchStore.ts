@@ -16,6 +16,8 @@ import {
 	endYear,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { SelectorData } from '@/types/TimeSearchTypes';
+import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import { normalizeFq } from '@/utils/filter-utils';
 
 export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const loading = ref(false);
@@ -70,9 +72,10 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	};
 
 	const setFiltersFromUrl = (URLFilters: string[] | LocationQueryValue[] | string) => {
-		if (URLFilters !== undefined) {
-			if (URLFilters instanceof Array) {
-				URLFilters.forEach((filter) => {
+		const filters = normalizeFq(URLFilters as string[]);
+		if (filters !== undefined) {
+			if (filters instanceof Array) {
+				filters.forEach((filter) => {
 					if (typeof filter === 'string') {
 						if (filter.includes('startTime')) {
 							const splitYears = decodeURIComponent(filter)
@@ -80,24 +83,36 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 								.replace(/[[\]]/g, '')
 								.split(' TO ');
 							setYearTimes(splitYears[0], splitYears[1]);
-						} else if (filter.includes('temporal_start_day_da')) {
+						}
+						if (filter.includes('temporal_start_day_da')) {
 							const splitDays = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(days.value, splitDays);
-						} else if (filter.includes('temporal_start_month')) {
+						} else {
+							resetAllSelectorValues(days.value);
+						}
+						if (filter.includes('temporal_start_month')) {
 							const splitMonths = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(months.value, splitMonths);
-						} else if (filter.includes('temporal_start_hour_da')) {
+						} else {
+							resetAllSelectorValues(months.value);
+						}
+						if (filter.includes('temporal_start_hour_da')) {
 							const splitTimes = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(timeslots.value, splitTimes);
+						} else {
+							resetAllSelectorValues(timeslots.value);
 						}
 					}
 				});
-				const foundString = URLFilters.find((str) => str?.includes('startTime'));
+				const foundString = filters.find((str) => str?.includes('startTime'));
 				if (!foundString) {
 					const startHolder = new Date(startYear.value.getTime());
 					const endHolder = new Date(endYear.value.getTime());
 					startDate.value = startHolder;
 					endDate.value = endHolder;
+					setTimeFacetsOpen(false);
+				} else {
+					setTimeFacetsOpen(true);
 				}
 			}
 			setNewSearchReqMet(false);
@@ -107,8 +122,8 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const setYearTimes = (firstYear: string, lastYear: string) => {
 		const facetStartDate = new Date(firstYear);
 		const facetEndDate = new Date(lastYear);
-		startDate.value.setTime(facetStartDate.getTime());
-		endDate.value.setTime(facetEndDate.getTime());
+		startDate.value = facetStartDate;
+		endDate.value = facetEndDate;
 	};
 
 	const setTimeFilter = (TimeArray: SelectorData[], facetArray: string[]) => {

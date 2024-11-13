@@ -114,10 +114,8 @@ export default defineComponent({
 							}
 						}
 					}
-					if (routeFacetQueries) {
-						searchResultStore.setFiltersFromURL(routeFacetQueries);
-						timeSearchStore.setFiltersFromUrl(routeFacetQueries);
-					}
+					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
+					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
 					searchResultStore.getSearchResults(route.query.q as string);
 					document.title = (t('app.titles.search') +
 						'"' +
@@ -144,8 +142,8 @@ export default defineComponent({
 					searchResultStore.setSortFromURL(route.query.sort as string);
 					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 					searchResultStore.setRowCountFromURL(route.query.rows as string);
-					searchResultStore.getSearchResults(route.query.q as string);
 					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
+					searchResultStore.getSearchResults(route.query.q as string);
 
 					document.title = (t('app.titles.search') +
 						'"' +
