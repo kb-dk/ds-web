@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, inject, watch } from 'vue';
+import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
@@ -45,8 +45,6 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import searchResults from '@/components/search/SearchResults.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',

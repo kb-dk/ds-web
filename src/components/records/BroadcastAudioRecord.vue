@@ -104,8 +104,6 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/components/common/wc-spot-item';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
