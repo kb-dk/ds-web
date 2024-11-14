@@ -27,6 +27,7 @@
 				:always-expand="true"
 				:dashed-bottom="true"
 				:shadow-bottom="true"
+				:hover-effect="true"
 			>
 				<DayPicker />
 			</SkewedFoldable>
