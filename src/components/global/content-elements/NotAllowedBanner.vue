@@ -25,11 +25,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/authStore';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'NotAllowedBanner',
 	setup() {
