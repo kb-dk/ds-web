@@ -5,23 +5,26 @@
 		<button
 			ref="relevanceRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
-			@click="newSort('score desc')"
+			@click="newSort(`score ${sortAsc ? 'asc' : 'desc'}`)"
 		>
 			{{ t('search.relevance') }}
+			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
 		</button>
 		<button
 			ref="titleRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
-			@click="newSort('title_sort_da asc')"
+			@click="newSort(`title_sort_da ${sortAsc ? 'asc' : 'desc'}`)"
 		>
 			{{ t('search.title') }}
+			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
 		</button>
 		<button
 			ref="timeRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
-			@click="newSort('startTime asc')"
+			@click="newSort(`startTime ${sortAsc ? 'asc' : 'desc'}`)"
 		>
 			{{ t('search.date') }}
+			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
 		</button>
 	</div>
 </template>
@@ -42,7 +45,7 @@ export default defineComponent({
 		const router = useRouter();
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
-
+		const sortAsc = ref(true);
 		const titleRef = ref<HTMLElement | null>();
 		const relevanceRef = ref<HTMLElement | null>();
 		const timeRef = ref<HTMLElement | null>();
@@ -76,9 +79,11 @@ export default defineComponent({
 		};
 
 		const newSort = (sortValue: string) => {
+			console.log(event.target.);
 			const sort = encodeURIComponent(`${sortValue}`);
 			const start = `${0}`;
 			const query = { ...route.query, sort, start };
+			sortAsc.value = !sortAsc.value;
 			router.push({ query });
 			showSortingOptions.value = false;
 			searchResultStore.resetStart();
@@ -99,6 +104,7 @@ export default defineComponent({
 			revealSortingOptions,
 			showSortingOptions,
 			newSort,
+			sortAsc,
 			searchResultStore,
 			t,
 			titleRef,
