@@ -3,6 +3,7 @@
 		<div class="container top-offset">
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
+
 				<div v-if="recordData">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
@@ -92,6 +93,7 @@ export default defineComponent({
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
+					authStore.isAllowedToDisplayContent = false;
 					const errorMsg =
 						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
 					errorManager.submitError(err, errorMsg);

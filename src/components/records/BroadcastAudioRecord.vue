@@ -398,6 +398,9 @@ temporary styling until patterns from design system are implemented
 		margin-right: 0px;
 		gap: 20px;
 	}
+	.broadcast-record {
+		padding-top: 0px;
+	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
