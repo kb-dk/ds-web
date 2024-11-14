@@ -76,7 +76,7 @@
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
-				:key="record"
+				:key="index"
 				class="related-content"
 			>
 				<GridResultItem
@@ -87,6 +87,7 @@
 					:starttime="new Date(record.startTime).toLocaleString()"
 					:index="index"
 					:full-post-url="true"
+					:loading="moreLikeThisRecords?.length === 0"
 				></GridResultItem>
 			</div>
 		</div>

@@ -13,7 +13,7 @@
 				class="data"
 			>
 				<router-link
-					:to="{ path: fullPostUrl ? resultdata.id : 'post/' + resultdata.id }"
+					:to="{ name: 'Record', params: { id: resultdata.id } }"
 					draggable="false"
 					class="link-title"
 					role="link"

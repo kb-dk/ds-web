@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, inject, watch } from 'vue';
+import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
@@ -104,10 +104,12 @@ export default defineComponent({
 		};
 
 		const buildContentFromReponse = async () => {
+			moreLikeThisRecords.value = [];
 			const id = route.params.id;
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
 			const moreLikeThis = await getMoreLikeThisRecords(idStr);
+			console.log(moreLikeThis);
 			if (recordResp) {
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
@@ -136,7 +138,15 @@ export default defineComponent({
 			}
 			return startEnd;
 		};
-
+		watch(
+			() => route.params.id,
+			() => {
+				console.log('test');
+				buildContentFromReponse().then(() => {
+					window.scrollTo({ top: 0, behavior: 'smooth' });
+				});
+			},
+		);
 		onMounted(async () => {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 
