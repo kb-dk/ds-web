@@ -14,7 +14,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name[0].value }}</h2>
+					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
 				</div>
 			</div>
@@ -45,14 +45,16 @@
 					<div>{{ recordData.keywords }}</div>
 				</div>
 				<div class="divider darkblue"></div>
-				<button
-					class="get-link"
-					:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
-					@click="getCurrentUrl()"
-				>
-					<span class="material-icons">link</span>
-					<span class="link-text">{{ $t('record.copy') }}</span>
-				</button>
+				<div class="share-button">
+					<div
+						class="link-container get-link"
+						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+						@click="getCurrentUrl()"
+					>
+						<span class="material-icons">share</span>
+						<a class="link">{{ $t('record.copy') }}</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="back-link">
@@ -148,7 +150,6 @@ export default defineComponent({
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
-
 		return {
 			lastPath,
 			locale,
@@ -199,6 +200,11 @@ temporary styling until patterns from design system are implemented
 	padding: 10px;
 	box-sizing: border-box;
 }
+.share-button {
+	width: 100%;
+	justify-content: center;
+	display: flex;
+}
 
 .get-link {
 	font-family: noway, sans-serif;
@@ -206,6 +212,8 @@ temporary styling until patterns from design system are implemented
 	border: 0px;
 	cursor: pointer;
 	padding-top: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
 	padding-bottom: 25px;
 }
 
@@ -311,6 +319,31 @@ temporary styling until patterns from design system are implemented
 	box-sizing: border-box;
 }
 
+.link-container {
+	background-color: #0a2e70;
+	width: 33.3%;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	font-size: 18px;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	box-sizing: border-box;
+	margin-bottom: 15px;
+	padding: 5px 25px;
+	font-family: 'noway';
+	font-weight: 100;
+	flex-direction: row;
+	justify-content: center;
+}
+.link {
+	position: relative;
+	top: 2px;
+}
+.link-container a {
+	white-space: nowrap;
+}
 /* First breakpoint for tablet */
 
 @media (min-width: 640px) {
@@ -347,6 +380,15 @@ temporary styling until patterns from design system are implemented
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
 		flex-direction: row;
+	}
+	.share-button {
+		justify-content: flex-end;
+	}
+	.get-link {
+		width: 50%;
+	}
+	.share-icon {
+		margin-right: 5px;
 	}
 }
 

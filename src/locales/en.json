@@ -184,7 +184,7 @@
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
-     "copy":"Copy reference for this content",
+     "copy":"Copy link",
      "copyTitleSuccess":"Copying successful.",
      "copyMessageSuccess":"The link was successfully copied to the clipboard.",
      "copyTitleFailed":"Copying failed.",
