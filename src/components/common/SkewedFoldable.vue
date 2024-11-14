@@ -273,7 +273,6 @@ h1::first-letter {
 .content .mobile-title {
 	border: 0px;
 	background-color: transparent;
-	width: 100%;
 	display: flex;
 	align-items: center;
 	cursor: pointer;
@@ -425,6 +424,9 @@ h1::first-letter {
 @media (min-width: 990px) {
 	.foldable-toggle {
 		display: none;
+	}
+	.mobile-title {
+		width: 100%;
 	}
 
 	h1 {

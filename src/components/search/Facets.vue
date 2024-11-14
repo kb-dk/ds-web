@@ -59,6 +59,11 @@
 									:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
 									icon="category"
 									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
+									:item-array="genreArray"
+									:use-headline-translation="false"
+									:update-entity="updateFacet"
+									:filter-name-cutoff="5"
+									:facet-type="'genre'"
 								>
 									<fieldset
 										v-if="searchResultStore.firstBackendFetchExecuted"
@@ -202,7 +207,7 @@ export default defineComponent({
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 
-		if (searchResultStore.firstBackendFetchExecuted) {
+		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 			);
@@ -255,39 +260,73 @@ export default defineComponent({
 			}
 		};
 
-		onMounted(() => {
-			const filters = route.query.fq as string[];
-			if (Array.isArray(filters) && filters.some((str) => str.includes('startTime'))) {
-				const years = filters.filter((str) => str.includes('startTime'));
-				const splitYears = decodeURIComponent(years[0]).replace('startTime:', '').replace(/[[\]]/g, '').split(' TO ');
-				const yh = new Date(splitYears[0]);
-				const eh = new Date(splitYears[1]);
-				startDate.value = yh;
-				endDate.value = eh;
-				timeSearchStore.timeFacetsOpen = true;
-				toggleTimeFacets();
-				timeSearchStore.setNewSearchReqMet(false);
-			} else {
-				timeSearchStore.timeFacetsOpen = false;
-				const startHolder = new Date(startYear.value.getTime());
-				const endHolder = new Date(endYear.value.getTime());
-				startDate.value = startHolder;
-				endDate.value = endHolder;
-			}
-			watch(
-				() => searchResultStore.facetResult,
-				(newFacets: FacetResultType) => {
-					currentFacets.value = {} as FacetResultType;
-					channelFacets.value = [] as FacetPair[];
-					categoryFacets.value = [] as FacetPair[];
-					currentFacets.value = newFacets;
-					channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
-					categoryFacets.value = simplifyFacets(newFacets['genre']);
-					lastUpdate.value = new Date().getTime();
-				},
-				{ deep: true },
-			);
-		});
+		watch(
+			() => searchResultStore.facetResult,
+			(newFacets: FacetResultType) => {
+				currentFacets.value = {} as FacetResultType;
+				channelFacets.value = [] as FacetPair[];
+				categoryFacets.value = [] as FacetPair[];
+				currentFacets.value = newFacets;
+				channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
+				categoryFacets.value = simplifyFacets(newFacets['genre']);
+				lastUpdate.value = new Date().getTime();
+			},
+			{ deep: true },
+		);
+
+		watch(
+			() => searchResultStore.categoryFilters,
+			(newA: string[]) => {
+				setCategoryArrayFromStore(newA);
+			},
+		);
+
+		const setCategoryArrayFromStore = (items: string[]) => {
+			genreArray.value.forEach((item) => {
+				item.selected = false;
+			});
+			items.forEach((item) => {
+				let newItem = decodeURIComponent(item).replaceAll('"', '').split(':')[1];
+				const matchedItem = genreArray.value.find((genreItem) => genreItem.name === newItem);
+				if (matchedItem) {
+					matchedItem.selected = true;
+				}
+			});
+		};
+
+		watch(
+			() => searchResultStore.channelFilters,
+			(newA: string[]) => {
+				setChannelArrayFromStore(newA);
+			},
+		);
+
+		const setChannelArrayFromStore = (items: string[]) => {
+			channelsArray.value.forEach((item) => {
+				item.selected = false;
+			});
+			items.forEach((item) => {
+				let newItem = decodeURIComponent(item).replaceAll('"', '').split(':')[1];
+				const matchedItem = channelsArray.value.find((channelItem) => channelItem.name === newItem);
+				if (matchedItem) {
+					matchedItem.selected = true;
+				}
+			});
+		};
+
+		watch(
+			() => searchResultStore.currentQuery,
+			(newQ: string, oldQ: string) => {
+				if (newQ !== oldQ) {
+					genreArray.value.forEach((item) => {
+						item.selected = false;
+					});
+					channelsArray.value.forEach((item) => {
+						item.selected = false;
+					});
+				}
+			},
+		);
 
 		watch(
 			() => searchResultStore.showFacets,
@@ -295,6 +334,16 @@ export default defineComponent({
 				toggleFacets();
 			},
 		);
+
+		onMounted(() => {
+			setCategoryArrayFromStore(searchResultStore.categoryFilters);
+			setChannelArrayFromStore(searchResultStore.channelFilters);
+			if (timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'false') {
+				toggleTimeFacets();
+			} else if (!timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'true') {
+				toggleTimeFacets();
+			}
+		});
 
 		watch(
 			() => timeSearchStore.timeFacetsOpen,

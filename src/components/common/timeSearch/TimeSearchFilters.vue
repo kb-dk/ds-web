@@ -264,6 +264,8 @@ import {
 	timeslots,
 	startDate,
 	endDate,
+	initEndDate,
+	initStartDate,
 	initSliderValues,
 	startYear,
 	endYear,
@@ -336,7 +338,10 @@ export default defineComponent({
 				resetAllSelectorValues(days.value);
 				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = initSliderValues.value;
-
+				const holder = new Date(initEndDate.value.getTime());
+				endDate.value = holder;
+				const holder2 = new Date(initStartDate.value.getTime());
+				startDate.value = holder2;
 				getTimeResults(true);
 			}
 			if (props.timeline) {
