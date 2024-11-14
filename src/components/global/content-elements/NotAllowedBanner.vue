@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="!isAllowedToDisplayContent"
+		v-if="!authStore.isAllowedToDisplayContent"
 		class="not-allowed"
 	>
 		<div class="not-allowed-banner">
@@ -32,8 +32,8 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 export default defineComponent({
 	name: 'NotAllowedBanner',
 	setup() {
-		const { isAllowedToDisplayContent } = useAuthStore();
-		return { isAllowedToDisplayContent, addTestDataEnrichment };
+		const authStore = useAuthStore();
+		return { authStore, addTestDataEnrichment };
 	},
 });
 </script>

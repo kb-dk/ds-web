@@ -2,7 +2,7 @@
 	<div class="broadcast-record">
 		<div class="video-container">
 			<div v-if="entryId !== ''">
-				<VideoPlayer :entry-id="entryId"></VideoPlayer>
+				<VideoPlayer></VideoPlayer>
 			</div>
 			<div
 				v-else
@@ -14,8 +14,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
-					<p>{{ recordData.description }}</p>
+					<h2>{{ $t('error.record.unknown') }}</h2>
 				</div>
 			</div>
 			<div class="right-side">
@@ -23,52 +22,16 @@
 					<h3>Sendt</h3>
 					<div class="info">
 						<span class="material-icons blue">event</span>
-						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
 					<div class="info">
 						<span class="material-icons blue">schedule</span>
-						Kl. {{ getBroadcastTime(recordData.startTime) }} - {{ getBroadcastTime(recordData.endTime) }}
-						<span class="broadcast-duration">
-							<duration
-								:duration="recordData.duration"
-								:start-date="recordData.startTime"
-								:end-date="recordData.endTime"
-							></duration>
-						</span>
 					</div>
 					<div class="info">
 						<span class="material-icons blue">tv</span>
-						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<h4>{{ $t('record.genre') }}</h4>
-					<div>
-						<router-link
-							:to="{
-								name: 'Search',
-								query: {
-									q: '*:*',
-									start: 0,
-									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
-								},
-							}"
-							class="genre-link"
-							:data-testid="addTestDataEnrichment('link', 'boardcast-record-video', `genre-link`, 0)"
-						>
-							{{ recordData.genre }}
-						</router-link>
-					</div>
 				</div>
 				<div class="divider darkblue"></div>
-				<div class="share-button">
-					<div
-						class="link-container get-link"
-						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
-						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link">{{ $t('record.copy') }}</a>
-					</div>
-				</div>
 			</div>
 		</div>
 		<div class="back-link">
@@ -102,47 +65,27 @@
 					:spots="moreLikeThisRecords"
 				></GridDisplay>
 			</div>
-			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { BroadcastRecordType } from '@/types/BroadcastRecordType';
-import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, onMounted, PropType, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
-import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
-	name: 'BroadcastRecord',
+	name: 'NotAllowedRecord',
 
 	components: {
 		VideoPlayer,
-		Duration,
 		GridDisplay,
-	},
-
-	props: {
-		recordData: {
-			type: Object as PropType<BroadcastRecordType>,
-			required: true,
-		},
-		moreLikeThisRecords: {
-			type: Array as PropType<GenericSearchResultType[]>,
-			required: false,
-			default() {
-				return [];
-			},
-		},
 	},
 
 	setup(props) {
@@ -153,8 +96,6 @@ export default defineComponent({
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
-
-		const entryId = getEntryId(props.recordData);
 
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
@@ -172,7 +113,6 @@ export default defineComponent({
 			getBroadcastDate,
 			getBroadcastTime,
 			getTimeFromISOFormat,
-			entryId,
 			addTestDataEnrichment,
 			quotation,
 		};
@@ -180,8 +120,8 @@ export default defineComponent({
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only 
-temporary styling until patterns from design system are implemented 
+<!-- Add "scoped" attribute to limit CSS to this component only
+temporary styling until patterns from design system are implemented
 -->
 <style scoped>
 :host {
