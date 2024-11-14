@@ -342,7 +342,10 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
+				searchResultStore.searchResult = [];
 				searchResultStore.resetAutocomplete();
+				searchResultStore.channelFilters = [];
+				searchResultStore.categoryFilters = [];
 				clearTimeout(AutocompleteTimer);
 				debounceMechanic.value = true;
 				setTimeout(() => {

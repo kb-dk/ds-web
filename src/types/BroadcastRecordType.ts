@@ -10,6 +10,7 @@ export interface BroadcastRecordType {
 	startTime: string;
 	endTime: string;
 	duration: string;
+	genre: string;
 	keywords: string;
 	identifier: IdentifierType[];
 	contentUrl: string;

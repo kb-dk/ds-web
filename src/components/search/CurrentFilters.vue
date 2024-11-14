@@ -101,16 +101,28 @@
 				</span>
 				<span class="material-icons">close</span>
 			</button>
+			<button
+				v-if="searchResultStore.preliminaryFilter !== ''"
+				key="5"
+				@click="removePreliminaryFilterAndSearch()"
+			>
+				<span>
+					{{
+						`${decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]}`
+					}}
+				</span>
+				<span class="material-icons">close</span>
+			</button>
 			<span
 				v-if="filtersActive"
-				key="5"
+				key="6"
 				class="seperator"
 			>
 				|
 			</span>
 			<button
 				v-if="filtersActive"
-				key="6"
+				key="7"
 				class="resetFilters"
 				@click="resetAllFilters"
 			>
@@ -158,7 +170,8 @@ export default defineComponent({
 					searchResultStore.categoryFilters.length !== 0 ||
 					searchResultStore.channelFilters.length !== 0 ||
 					startDate.value.getTime() !== startYear.value.getTime() ||
-					endDate.value.getTime() !== endYear.value.getTime()) &&
+					endDate.value.getTime() !== endYear.value.getTime() ||
+					searchResultStore.preliminaryFilter !== '') &&
 				!timeSearchStore.newSearchReqMet
 			) {
 				return true;
@@ -176,6 +189,18 @@ export default defineComponent({
 			startDate.value.setTime(startYear.value.getTime());
 			endDate.value.setTime(endYear.value.getTime());
 			removeFilterAndSearch(facet);
+		};
+
+		const removePreliminaryFilterAndSearch = () => {
+			searchResultStore.preliminaryFilter = '';
+			const routeQueries = cloneRouteQuery(route);
+			let fq = normalizeFq(routeQueries.fq);
+			fq = fq.filter((query) => !query.includes('origin'));
+			routeQueries.fq = fq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
 		const removeFilterAndSearch = (facet: string) => {
@@ -216,6 +241,7 @@ export default defineComponent({
 			resetAllFilters,
 			removeFilterAndSearch,
 			resetYearsAndSearch,
+			removePreliminaryFilterAndSearch,
 			startDate,
 			endDate,
 			startYear,

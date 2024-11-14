@@ -2,6 +2,7 @@
 	<div
 		ref="foldableRef"
 		class="foldable-container"
+		@click="toggleContent($event)"
 	>
 		<div
 			:style="`background-color:${bg}`"
@@ -11,7 +12,7 @@
 			:id="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
 			ref="contentRef"
 			:style="`background-color:${bg}; color:${text}`"
-			:class="alwaysExpand ? 'content' : 'content hide'"
+			:class="getContentClasses()"
 		>
 			<button
 				ref="primaryButtonRef"
@@ -20,7 +21,6 @@
 				:aria-label="title"
 				:aria-expanded="foldableOpen"
 				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
-				@click="toggleContent()"
 			>
 				<div class="icon">
 					<span
@@ -58,14 +58,14 @@
 			:style="`background-color:${bg}`"
 			:class="getBottomClasses()"
 		></div>
-		<div class="foldable-toggle">
+		<div :class="alwaysExpand ? 'foldable-toggle alwaysShown' : 'foldable-toggle'">
 			<button
 				:class="foldableOpen ? 'toggle-button open' : 'toggle-button closed'"
 				:data-testid="addTestDataEnrichment('button', 'skewed-foldable', `${title}-status-toggle`, 0)"
 				:title="foldableOpen ? 'Close' : 'Open'"
 				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
 				:aria-expanded="foldableOpen"
-				@click="toggleContent()"
+				@click="toggleContent($event)"
 			>
 				{{ foldableOpen ? '-' : '+' }}
 			</button>
@@ -93,6 +93,7 @@ export default defineComponent({
 		dashedBottom: { type: Boolean, default: false },
 		shadowBottom: { type: Boolean, default: false },
 		shadowTop: { type: Boolean, default: false },
+		hoverEffect: { type: Boolean, default: false },
 	},
 	setup(props) {
 		const foldableRef = ref<HTMLElement | null>(null);
@@ -104,6 +105,9 @@ export default defineComponent({
 
 		const getBottomClasses = () => {
 			let classes = 'edge bottom';
+			if (props.hoverEffect) {
+				classes += ' hover';
+			}
 			if (props.left) {
 				classes += ' left';
 			}
@@ -118,6 +122,9 @@ export default defineComponent({
 
 		const getTopClasses = () => {
 			let classes = 'edge top';
+			if (props.hoverEffect) {
+				classes += ' hover';
+			}
 			if (props.left) {
 				classes += ' left';
 			}
@@ -127,7 +134,15 @@ export default defineComponent({
 			return classes;
 		};
 
-		const toggleContent = () => {
+		const getContentClasses = () => {
+			let classes = 'content';
+			if (!props.alwaysExpand) classes += ' hide';
+			if (props.hoverEffect) classes += ' hover';
+			return classes;
+		};
+
+		const toggleContent = (e: Event) => {
+			e.stopPropagation();
 			if (foldableOpen.value) {
 				gsap.to(slotRef.value, {
 					duration: 0.5,
@@ -181,6 +196,7 @@ export default defineComponent({
 			primaryButtonRef,
 			santizeAndSimplify,
 			getTopClasses,
+			getContentClasses,
 		};
 	},
 });
@@ -238,6 +254,17 @@ h1::first-letter {
 	justify-content: flex-start;
 }
 
+.foldable-container:hover .edge.hover,
+.foldable-container:hover .content.hover {
+	background-color: #c4f1ed !important;
+	cursor: pointer;
+}
+
+.edge.hover,
+.content.hover {
+	transition: background-color 0.15s linear 0s;
+}
+
 .content .headline h1 {
 	padding: 0px;
 	margin: 0px;
@@ -246,7 +273,6 @@ h1::first-letter {
 .content .mobile-title {
 	border: 0px;
 	background-color: transparent;
-	width: 100%;
 	display: flex;
 	align-items: center;
 	cursor: pointer;
@@ -264,6 +290,10 @@ h1::first-letter {
 	width: 100%;
 	align-items: center;
 	margin: 15px 0px;
+}
+
+.foldable-toggle.alwaysShown {
+	display: flex !important;
 }
 
 .edge.top.shadow {
@@ -328,7 +358,7 @@ h1::first-letter {
 
 .foldable-toggle {
 	position: absolute;
-	width: 100%;
+	width: calc(100vw - 15px);
 	display: flex;
 	justify-content: center;
 	margin-top: -55px;
@@ -392,8 +422,11 @@ h1::first-letter {
 }
 
 @media (min-width: 990px) {
-	.toggle-button {
+	.foldable-toggle {
 		display: none;
+	}
+	.mobile-title {
+		width: 100%;
 	}
 
 	h1 {
@@ -452,6 +485,67 @@ h1::first-letter {
 	}
 	.content.hide .responsive-title {
 		display: flex;
+	}
+
+	.toggle-button {
+		z-index: 5;
+		border: 0px solid transparent;
+		cursor: pointer;
+		background-color: transparent;
+		padding: 10px 5px;
+		width: 30px;
+		height: 30px;
+		background-color: #0a2e70;
+		color: white;
+		font-size: 24px;
+		display: grid;
+		align-items: center;
+		justify-content: center;
+		align-content: center;
+		position: relative;
+		top: -15px;
+	}
+
+	.toggle-button:after {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-top: 10px solid #0a2e70;
+		position: relative;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: all 0.15s ease-in-out 0s;
+	}
+
+	.toggle-button:before {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-bottom: 10px solid #0a2e70;
+		position: relative;
+		transition: all 0.15s ease-in-out 0s;
+		transform: scaleY(0);
+		transform-origin: bottom;
+	}
+
+	.toggle-button:after {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-top: 10px solid #0a2e70;
+		position: relative;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: all 0.15s ease-in-out 0s;
 	}
 }
 /* MEDIA QUERY 1150 */

@@ -21,11 +21,11 @@
 			<div class="right-side">
 				<div class="right-side-metadata-box">
 					<h3>{{ $t('record.aired') }}</h3>
-					<div>
+					<div class="info">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
-					<div>
+					<div class="info">
 						<span class="material-icons blue">schedule</span>
 						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
 						{{ getBroadcastTime(recordData.endTime) }}
@@ -37,12 +37,27 @@
 							></duration>
 						</span>
 					</div>
-					<div>
+					<div class="info">
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<h4>{{ $t('record.genre') }}</h4>
-					<div>{{ recordData.keywords }}</div>
+					<div>
+						<router-link
+							:to="{
+								name: 'Search',
+								query: {
+									q: '*:*',
+									start: 0,
+									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
+								},
+							}"
+							class="genre-link"
+							:data-testid="addTestDataEnrichment('link', 'boardcast-record-video', `genre-link`, 0)"
+						>
+							{{ recordData.genre }}
+						</router-link>
+					</div>
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
@@ -150,6 +165,11 @@ export default defineComponent({
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
+
+		const quotation = (name: string) => {
+			return `"${name}"`;
+		};
+
 		return {
 			lastPath,
 			locale,
@@ -160,6 +180,7 @@ export default defineComponent({
 			getTimeFromISOFormat,
 			entryId,
 			addTestDataEnrichment,
+			quotation,
 		};
 	},
 });
@@ -186,6 +207,12 @@ temporary styling until patterns from design system are implemented
 .video-container {
 	min-height: 300px;
 	width: 100%;
+}
+
+.info {
+	display: flex;
+	align-items: center;
+	gap: 7px;
 }
 
 .no-streaming {
@@ -317,6 +344,11 @@ temporary styling until patterns from design system are implemented
 .related-record {
 	flex: 0 0 90%;
 	box-sizing: border-box;
+}
+
+.genre-link {
+	color: #002e70;
+	text-decoration: none;
 }
 
 .link-container {
