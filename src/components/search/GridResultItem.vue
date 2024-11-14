@@ -101,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, ref, watch, onMounted } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { ImageComponentType } from '@/types/ImageComponentType';
