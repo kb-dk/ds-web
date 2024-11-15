@@ -1,11 +1,10 @@
 <template>
 	<div class="sort">
-		<span class="material-icons">sort</span>
 		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
-			@click="newSort($refs.relevanceRef, `score ${getAscOrDesc(!sortAsc)}`)"
+			@click="newSort($refs.relevanceRef, `score`)"
 		>
 			<p>{{ t('search.relevance') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
@@ -13,7 +12,7 @@
 		<button
 			ref="titleRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
-			@click="newSort($refs.titleRef, `title_sort_da ${getAscOrDesc(!sortAsc)}`)"
+			@click="newSort($refs.titleRef, `title_sort_da`)"
 		>
 			<p>{{ t('search.title') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
@@ -21,7 +20,7 @@
 		<button
 			ref="timeRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
-			@click="newSort($refs.timeRef, `startTime ${getAscOrDesc(!sortAsc)}`)"
+			@click="newSort($refs.timeRef, `startTime`)"
 		>
 			<p>{{ t('search.date') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
@@ -79,7 +78,12 @@ export default defineComponent({
 		};
 
 		const newSort = (clickedElement: any, sortValue: string) => {
-			sortAsc.value = !sortAsc.value;
+			if (clickedElement.classList.contains('active')) {
+				sortAsc.value = !sortAsc.value;
+			} else {
+				sortAsc.value = false;
+			}
+			sortValue = `${sortValue} ${getAscOrDesc(sortAsc.value)}`;
 			const sort = encodeURIComponent(`${sortValue}`);
 			const start = `${0}`;
 			const query = { ...route.query, sort, start };
@@ -129,12 +133,13 @@ export default defineComponent({
 	padding-top: 20px;
 	justify-content: space-between;
 }
-
 .sort button {
 	display: flex;
 	flex-direction: row;
+	margin-left: 0px;
+	margin-right: 0px;
 }
-.sort p {
+.sort button p {
 	position: relative;
 }
 
@@ -144,6 +149,10 @@ export default defineComponent({
 }
 
 .sort .material-icons {
+	color: rgba(71, 71, 71, 0);
+}
+
+.sort .active .material-icons {
 	color: #002e70;
 }
 
@@ -152,7 +161,7 @@ export default defineComponent({
 }
 
 .sort-by {
-	margin-right: auto !important;
+	margin-right: 15px !important;
 }
 
 .sort p {
@@ -160,14 +169,12 @@ export default defineComponent({
 	padding: 0;
 	color: #002e70;
 	height: 20px;
-	margin-left: 5px;
 }
 
 .sort-options button {
 	font-size: 16px;
 	cursor: pointer;
 	border: 0px;
-	margin: 0px 7px;
 	background-color: white;
 	height: 20px;
 	text-align: center;
