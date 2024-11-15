@@ -73,7 +73,7 @@ export default defineComponent({
 <style scoped>
 .info-btn {
 	display: flex;
-	height: 25px;
+	height: 26px;
 	border: 1px solid white;
 	background-color: transparent;
 	position: relative;
@@ -82,7 +82,7 @@ export default defineComponent({
 	margin: 0;
 	cursor: pointer;
 	box-sizing: border-box;
-	transition: all 0.25s ease-in-out 0s;
+	transition: all 0.15s ease-in-out 0s;
 	color: var(--text-color);
 	background-color: var(--bg-color);
 }
@@ -96,14 +96,14 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 
-.info-btn:hover .title {
-	background-color: white !important;
-	color: #0a2e70 !important;
+.info-btn:hover {
+	color: var(--bg-color);
+	background-color: var(--text-color);
 }
 
 .title {
 	display: inline-block;
-	padding: 4px 5px;
+	padding: 0px 5px;
 	padding-left: 10px;
 	font-weight: bold;
 	transition: all 0.25s ease-in-out 0s;
