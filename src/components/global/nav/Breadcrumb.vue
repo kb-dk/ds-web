@@ -59,6 +59,30 @@
 				<span>/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
+			<div class="search-tip">
+				<InfoComponent
+					icon="info_outline"
+					title="Hvordan søger jeg bedst?"
+					modal-align="right"
+				>
+					<div class="search-help">
+						<p>
+							Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse
+							i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis hotel
+							ikke vil finde resultater, hvor der står hoteller eller badehotel.
+						</p>
+						<p>
+							Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.
+						</p>
+						<br />
+						<p>
+							Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori,
+							kanal eller tid.
+						</p>
+						<a href="https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning">Læs flere gode råd om søgning</a>
+					</div>
+				</InfoComponent>
+			</div>
 		</div>
 	</div>
 </template>
@@ -68,9 +92,13 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import InfoComponent from '@/components/common/InfoComponent.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
+	components: {
+		InfoComponent,
+	},
 	setup() {
 		const { t } = useI18n();
 		const router = useRouter();
@@ -207,6 +235,14 @@ export default defineComponent({
 
 .container span {
 	color: black;
+}
+
+.search-tip {
+	margin-left: auto;
+}
+
+.search-help a {
+	color: #002e70;
 }
 
 /* MEDIA QUERY 480 */
