@@ -253,6 +253,10 @@ h1::first-letter {
 	flex-direction: column;
 	justify-content: flex-start;
 }
+.headline span {
+	font-size: 16px;
+	text-align: left;
+}
 
 .foldable-container:hover .edge.hover,
 .foldable-container:hover .content.hover {
