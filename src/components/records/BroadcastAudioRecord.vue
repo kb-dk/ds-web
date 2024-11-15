@@ -50,9 +50,9 @@
 									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
 								},
 							}"
-							@click="emptySearchResults()"
 							class="genre-link"
 							:data-testid="addTestDataEnrichment('link', 'boardcast-record-audio', `genre-link`, 0)"
+							@click="emptySearchResults()"
 						>
 							{{ recordData.genre }}
 						</router-link>

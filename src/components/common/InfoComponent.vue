@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { useRoute, RouteLocationNormalized } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
 	name: 'InfoComponent',
