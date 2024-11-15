@@ -7,7 +7,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
 			@click="newSort($refs.relevanceRef, `score ${getAscOrDesc(!sortAsc)}`)"
 		>
-			{{ t('search.relevance') }}
+			<p>{{ t('search.relevance') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
@@ -15,7 +15,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
 			@click="newSort($refs.titleRef, `title_sort_da ${getAscOrDesc(!sortAsc)}`)"
 		>
-			{{ t('search.title') }}
+			<p>{{ t('search.title') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
@@ -23,7 +23,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
 			@click="newSort($refs.timeRef, `startTime ${getAscOrDesc(!sortAsc)}`)"
 		>
-			{{ t('search.date') }}
+			<p>{{ t('search.date') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 	</div>
@@ -44,7 +44,7 @@ export default defineComponent({
 		const router = useRouter();
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
-		const sortAsc = ref(true);
+		const sortAsc = ref(false);
 		const titleRef = ref<HTMLElement | null>();
 		const relevanceRef = ref<HTMLElement | null>();
 		const timeRef = ref<HTMLElement | null>();
@@ -130,13 +130,25 @@ export default defineComponent({
 	justify-content: space-between;
 }
 
-.sort .active {
+.sort button {
+	display: flex;
+	flex-direction: row;
+}
+.sort p {
+	position: relative;
+}
+
+.sort .active p {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
 }
 
 .sort .material-icons {
 	color: #002e70;
+}
+
+.material-icons {
+	position: relative;
 }
 
 .sort-by {
