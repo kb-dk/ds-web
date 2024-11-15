@@ -5,36 +5,35 @@
 		<button
 			ref="relevanceRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
-			@click="newSort(`score ${sortAsc ? 'asc' : 'desc'}`)"
+			@click="newSort($refs.relevanceRef, `score ${getAscOrDesc(!sortAsc)}`)"
 		>
 			{{ t('search.relevance') }}
-			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
 			ref="titleRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
-			@click="newSort(`title_sort_da ${sortAsc ? 'asc' : 'desc'}`)"
+			@click="newSort($refs.titleRef, `title_sort_da ${getAscOrDesc(!sortAsc)}`)"
 		>
 			{{ t('search.title') }}
-			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
 			ref="timeRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
-			@click="newSort(`startTime ${sortAsc ? 'asc' : 'desc'}`)"
+			@click="newSort($refs.timeRef, `startTime ${getAscOrDesc(!sortAsc)}`)"
 		>
 			{{ t('search.date') }}
-			<span class="material-icons">{{ sortAsc ? 'arrow_drop_up' : 'arrow_drop_down' }}</span>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
-import { onMounted } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
@@ -49,6 +48,7 @@ export default defineComponent({
 		const titleRef = ref<HTMLElement | null>();
 		const relevanceRef = ref<HTMLElement | null>();
 		const timeRef = ref<HTMLElement | null>();
+		const activeSort = ref<HTMLElement | null>();
 
 		const revealSortingOptions = () => {
 			showSortingOptions.value = !showSortingOptions.value;
@@ -64,13 +64,13 @@ export default defineComponent({
 
 		const setCurrentActive = (active: string | undefined) => {
 			if (active) {
-				decodeURIComponent(active) === 'title_sort_da asc'
+				decodeURIComponent(active) === `title_sort_da ${getAscOrDesc(sortAsc.value)}`
 					? titleRef.value?.classList.add('active')
 					: titleRef.value?.classList.remove('active');
-				decodeURIComponent(active) === 'score desc'
+				decodeURIComponent(active) === `score ${getAscOrDesc(sortAsc.value)}`
 					? relevanceRef.value?.classList.add('active')
 					: relevanceRef.value?.classList.remove('active');
-				decodeURIComponent(active) === 'startTime asc'
+				decodeURIComponent(active) === `startTime ${getAscOrDesc(sortAsc.value)}`
 					? timeRef.value?.classList.add('active')
 					: timeRef.value?.classList.remove('active');
 			} else {
@@ -78,15 +78,18 @@ export default defineComponent({
 			}
 		};
 
-		const newSort = (sortValue: string) => {
-			console.log(event.target.);
+		const newSort = (clickedElement: any, sortValue: string) => {
+			sortAsc.value = !sortAsc.value;
 			const sort = encodeURIComponent(`${sortValue}`);
 			const start = `${0}`;
 			const query = { ...route.query, sort, start };
-			sortAsc.value = !sortAsc.value;
 			router.push({ query });
 			showSortingOptions.value = false;
 			searchResultStore.resetStart();
+		};
+
+		const getAscOrDesc = (sortAsc: boolean): string => {
+			return sortAsc ? 'asc' : 'desc';
 		};
 
 		onMounted(() => {
@@ -111,6 +114,8 @@ export default defineComponent({
 			relevanceRef,
 			timeRef,
 			addTestDataEnrichment,
+			getAscOrDesc,
+			activeSort,
 		};
 	},
 });
