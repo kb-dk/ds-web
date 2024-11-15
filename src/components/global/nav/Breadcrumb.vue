@@ -62,24 +62,22 @@
 			<div class="search-tip">
 				<InfoComponent
 					icon="info_outline"
-					title="Hvordan søger jeg bedst?"
+					:title="t('search.frontpageGuide.title')"
 					modal-align="right"
 				>
 					<div class="search-help">
 						<p>
-							Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse
-							i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis hotel
-							ikke vil finde resultater, hvor der står hoteller eller badehotel.
+							{{ t('search.frontpageGuide.first') }}
 						</p>
 						<p>
-							Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.
+							{{ t('search.frontpageGuide.second') }}
 						</p>
-						<br />
 						<p>
-							Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori,
-							kanal eller tid.
+							{{ t('search.frontpageGuide.third') }}
 						</p>
-						<a href="https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning">Læs flere gode råd om søgning</a>
+						<a :href="t('search.frontpageGuide.link')">
+							{{ t('search.frontpageGuide.linktext') }}
+						</a>
 					</div>
 				</InfoComponent>
 			</div>
@@ -243,6 +241,7 @@ export default defineComponent({
 
 .search-help a {
 	color: #002e70;
+	text-decoration: underline;
 }
 
 /* MEDIA QUERY 480 */
