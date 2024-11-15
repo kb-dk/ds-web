@@ -156,7 +156,7 @@ export default defineComponent({
 				});
 				gsap.to(contentRef.value, {
 					duration: 0.5,
-					height: '90px',
+					height: '110px',
 					overwrite: true,
 					ease: 'none',
 				});
@@ -203,7 +203,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 90px;
+	height: 110px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
