@@ -1,29 +1,29 @@
 <template>
-	<div>
-		<button @click="showContent = !showContent">
-			<span
-				:style="`background-color:${bgColor}; color:${color}`"
-				class="material-icons icon"
-			>
-				{{ icon }}
-			</span>
-			<span
-				class="title"
-				:style="`background-color:${bgColor}; color:${color}`"
-			>
-				{{ title }}
-			</span>
-		</button>
-		<Transition name="fade">
-			<div
-				v-if="showContent"
-				class="modal"
-			>
-				<button @click="showContent = false"><span class="material-icons">close</span></button>
-				<slot></slot>
-			</div>
-		</Transition>
-	</div>
+	<button
+		:class="title !== '' ? 'info-btn' : 'info-btn icon-only'"
+		:style="{ '--text-color': color, '--bg-color': bgColor }"
+		@click="showContent = !showContent"
+	>
+		<span
+			:style="{ '--text-color': bgColor, '--bg-color': color }"
+			class="material-icons icon"
+		>
+			{{ icon }}
+		</span>
+		<span class="title">
+			{{ title }}
+		</span>
+	</button>
+	<Transition name="fade">
+		<div
+			v-if="showContent"
+			:class="modalAlign"
+			class="modal"
+		>
+			<button @click="showContent = false"><span class="material-icons">close</span></button>
+			<slot></slot>
+		</div>
+	</Transition>
 </template>
 
 <script lang="ts">
@@ -58,14 +58,12 @@ export default defineComponent({
 		},
 	},
 
-	setup(props) {
+	setup() {
 		const showContent = ref(false);
 		const route = useRoute();
 
-		watch(route, (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-			if (to.fullPath !== from.fullPath) {
-				showContent.value = false;
-			}
+		watch(route, () => {
+			showContent.value = false;
 		});
 
 		return { showContent };
@@ -73,7 +71,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-button {
+.info-btn {
 	display: flex;
 	height: 25px;
 	border: 1px solid white;
@@ -83,13 +81,37 @@ button {
 	padding: 0;
 	margin: 0;
 	cursor: pointer;
+	box-sizing: border-box;
+	transition: all 0.25s ease-in-out 0s;
+	color: var(--text-color);
+	background-color: var(--bg-color);
+}
+
+.icon-only:hover {
+	border: 1px solid transparent !important;
+}
+
+.info-btn:hover {
+	border: 1px solid #0a2e70;
+	box-sizing: border-box;
+}
+
+.info-btn:hover .title {
+	background-color: white !important;
+	color: #0a2e70 !important;
 }
 
 .title {
 	display: inline-block;
-	padding: 5px 5px;
+	padding: 4px 5px;
 	padding-left: 10px;
 	font-weight: bold;
+	transition: all 0.25s ease-in-out 0s;
+}
+
+.title:empty {
+	padding: 0;
+	padding-left: 10px;
 }
 
 .modal {
@@ -98,15 +120,26 @@ button {
 	border: 1px solid #0a2e70;
 	background-color: white;
 	color: #0a2e70;
-	right: 0px;
-	max-width: 50vw;
+	width: calc(100% - 1px);
 	padding: 15px 50px 15px 15px;
+	box-sizing: border-box;
+	z-index: 15;
+}
+
+.modal.left {
+}
+
+.modal.right {
+	right: 0px;
 }
 
 .modal button {
 	position: absolute;
 	right: 3px;
 	top: 10px;
+	border: 0px;
+	background-color: transparent;
+	cursor: pointer;
 }
 
 .modal button span {
@@ -125,8 +158,13 @@ button {
 	margin-left: -22px;
 	font-size: 36px;
 	top: -3px;
+	color: var(--bg-color);
+	background-color: var(--text-color);
 }
 /* MEDIA QUERY 990 */
-@media (min-width: 990px) {
+@media (min-width: 640px) {
+	.modal {
+		width: 400px;
+	}
 }
 </style>

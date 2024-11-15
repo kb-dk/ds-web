@@ -53,6 +53,7 @@
 							}"
 							class="genre-link"
 							:data-testid="addTestDataEnrichment('link', 'boardcast-record-video', `genre-link`, 0)"
+							@click="emptySearchResults()"
 						>
 							{{ recordData.genre }}
 						</router-link>
@@ -122,8 +123,7 @@ import { getTimeFromISOFormat } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -152,12 +152,17 @@ export default defineComponent({
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();
+		const searchResultStore = useSearchResultStore();
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
 
 		const entryId = getEntryId(props.recordData);
+
+		const emptySearchResults = () => {
+			searchResultStore.searchResult = [];
+		};
 
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
@@ -178,6 +183,7 @@ export default defineComponent({
 			entryId,
 			addTestDataEnrichment,
 			quotation,
+			emptySearchResults,
 		};
 	},
 });

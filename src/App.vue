@@ -163,8 +163,11 @@ export default defineComponent({
 				transitionName.value = 'record-to-search';
 			} else if (from.name === 'Home' && to.name === 'Record') {
 				transitionName.value = 'search-to-record';
+			} else if (from.name === 'Record' && to.name === 'Record') {
+				transitionName.value = 'search-to-record';
 			} else {
-				transitionName.value = 'swipe';
+				//Just a fix for now - we need a talk about transitions.
+				transitionName.value = 'home-to-search';
 			}
 		});
 
