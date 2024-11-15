@@ -36,8 +36,9 @@
       "record": "Fullpost"
    },
    "timeSearch": {
-      "timeMachine":"Use the time...",
+      "timeMachine":"Search via period",
       "searchDate": "Search via date",
+      "searchCategory": "Search via category",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
@@ -60,6 +61,7 @@
       "selection":"A selection of the results",
       "dateSubtitle": "Pick a date you would like to see content from.",
       "timeMachineSubtitle": "Pick which period in DR's broadcasts you would like to search in.",
+      "searchCategorySubtitle": "Pick a category and discover our broadcasts.",
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
