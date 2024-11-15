@@ -228,8 +228,8 @@ h1 {
 }
 
 .link {
-	background-color: #002e70;
-	color: white;
+	color: #002e70;
+	background-color: #49da87;
 	display: flex;
 	text-decoration: none;
 	padding: 2px 5px;
@@ -237,19 +237,21 @@ h1 {
 	font-size: 16px;
 	position: relative;
 	left: -10px;
+	height: 25px;
+	align-items: center;
 }
 
 .link-arrow {
 	display: block;
 	width: 0;
 	height: 0;
-	border-bottom: 12px solid transparent;
-	border-top: 12px solid transparent;
-	border-left: 8px solid #0a2e70;
+	border-bottom: 14px solid transparent;
+	border-top: 14px solid transparent;
+	border-left: 8px solid #49da87;
 	margin-left: 5px;
 	position: absolute;
 	margin-right: -13px;
-	margin-top: -2px;
+	margin-top: -1px;
 }
 
 .further-recap {
