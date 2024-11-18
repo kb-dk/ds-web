@@ -4,6 +4,26 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2024-11-06
+### Added
+- better support for keeping filters when using browser forward/backward navigation.
+- New "how to search"-button added below the searchbar.
+
+### Changed
+- Autcomplete updated with new values from backend (for timeouts and the likes).
+- Some changes to some translations.
+- Timesearch component had initial values updated to reflect the real corpus.
+- Timesearch links updated.
+- A fair amount of small bugfixes.
+- Small changes on design for some filter buttons.
+- Sort bugs fixed.
+- Update to "not allowed" content design.
+
+## [1.0.5] - 2024-11-06
+### Added
+- New design of zero-hits page.
+- Added new content from backend in "cool stuff from this month"-section.
+
 ## [1.0.6] - 2024-11-06
 ### Changed
 - Fixed a bug where daypicker link was not updated on month/year selection.
