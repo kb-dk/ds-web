@@ -30,6 +30,7 @@
 					<router-link
 						v-else
 						:to="{ name: 'Home' }"
+						class="link-container return"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 					>
 						<span class="material-icons offset">chevron_left</span>
@@ -281,7 +282,6 @@ temporary styling until patterns from design system are implemented
 .main-record-data {
 	flex: 0 0 100%;
 	max-width: 100%;
-	justify-content: space-between;
 	display: flex;
 	flex-direction: column;
 }
@@ -379,14 +379,13 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 	top: 2px;
 }
-/* First breakpoint for tablet */
 
 .back-link {
 	display: flex;
 	flex-direction: row;
 	bottom: 0;
-	vertical-align: bottom;
 	width: 105px;
+	padding-top: 15px;
 }
 
 .triangle {
@@ -400,6 +399,7 @@ temporary styling until patterns from design system are implemented
 	border-radius: 0px;
 }
 
+/* First breakpoint for tablet */
 @media (min-width: 640px) {
 	.boardcast-record-data {
 		flex-direction: row;

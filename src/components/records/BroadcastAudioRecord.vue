@@ -75,17 +75,17 @@
 			<router-link
 				v-if="lastPath"
 				:to="lastPath"
+				class="link-container return"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 			>
-				<span class="material-icons">chevron_left</span>
 				Tilbage
 			</router-link>
 			<router-link
 				v-else
 				to="/"
+				class="link-container return"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 			>
-				<span class="material-icons">chevron_left</span>
 				Til forsiden
 			</router-link>
 		</div>
@@ -202,10 +202,7 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link {
-	display: flex;
 	width: 100%;
-	margin-bottom: 10px;
-	flex-direction: row;
 }
 
 .info {
@@ -268,6 +265,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
+	position: relative;
 }
 
 .extra-record-data {
