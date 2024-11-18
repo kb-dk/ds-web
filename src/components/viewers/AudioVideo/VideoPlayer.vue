@@ -4,16 +4,16 @@
 			id="video-player"
 			class="player"
 		></div>
-		<NotAllowedBanner :video-player="true"></NotAllowedBanner>
+		<NotAllowedBanner></NotAllowedBanner>
 	</div>
 </template>
 
 <script lang="ts">
-import { onMounted, onBeforeUnmount, defineComponent, inject, watch } from 'vue';
+import { defineComponent, inject, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
-import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 

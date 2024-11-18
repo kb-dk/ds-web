@@ -2,7 +2,7 @@
 	<div class="broadcast-record">
 		<div class="video-container">
 			<div v-if="entryId !== ''">
-				<VideoPlayer :entry-id="entryId"></VideoPlayer>
+				<VideoPlayer></VideoPlayer>
 			</div>
 			<div
 				v-else
@@ -14,63 +14,24 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
-					<p>{{ recordData.description }}</p>
+					<h2>{{ $t('error.record.unknown') }}</h2>
 				</div>
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<h3>{{ $t('record.aired') }}</h3>
+					<h3>Sendt</h3>
 					<div class="info">
 						<span class="material-icons blue">event</span>
-						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
 					<div class="info">
 						<span class="material-icons blue">schedule</span>
-						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
-						{{ getBroadcastTime(recordData.endTime) }}
-						<span class="broadcast-duration">
-							<duration
-								:duration="recordData.duration"
-								:start-date="recordData.startTime"
-								:end-date="recordData.endTime"
-							></duration>
-						</span>
 					</div>
 					<div class="info">
 						<span class="material-icons blue">tv</span>
-						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<h4>{{ $t('record.genre') }}</h4>
-					<div>
-						<router-link
-							:to="{
-								name: 'Search',
-								query: {
-									q: '*:*',
-									start: 0,
-									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
-								},
-							}"
-							class="genre-link"
-							:data-testid="addTestDataEnrichment('link', 'boardcast-record-video', `genre-link`, 0)"
-							@click="emptySearchResults()"
-						>
-							{{ recordData.genre }}
-						</router-link>
-					</div>
 				</div>
 				<div class="divider darkblue"></div>
-				<div class="share-button">
-					<div
-						class="link-container get-link"
-						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
-						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link">{{ $t('record.copy') }}</a>
-					</div>
-				</div>
 			</div>
 		</div>
 		<div class="back-link">
@@ -80,7 +41,7 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				{{ $t('record.back') }}
+				Tilbage
 			</router-link>
 			<router-link
 				v-else
@@ -88,85 +49,53 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				{{ $t('record.toFrontpage') }}
+				Til forsiden
 			</router-link>
 		</div>
-		<h3>{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
-				v-for="(record, index) in moreLikeThisRecords"
-				:key="index"
+				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
 				class="related-content"
 			>
-				<GridResultItem
+				<h3>Relateret indhold</h3>
+				<GridDisplay
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
-					:resultdata="record"
-					:starttime="new Date(record.startTime).toLocaleString()"
-					:index="index"
-					:full-post-url="true"
-					:loading="moreLikeThisRecords?.length === 0"
-				></GridResultItem>
+					:spots="moreLikeThisRecords"
+				></GridDisplay>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { BroadcastRecordType } from '@/types/BroadcastRecordType';
-import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, onMounted, PropType, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
-import Duration from '@/components/common/Duration.vue';
+import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import GridResultItem from '@/components/search/GridResultItem.vue';
-import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
-	name: 'BroadcastRecord',
+	name: 'NotAllowedRecord',
 
 	components: {
 		VideoPlayer,
-		Duration,
-		GridResultItem,
-	},
-
-	props: {
-		recordData: {
-			type: Object as PropType<BroadcastRecordType>,
-			required: true,
-		},
-		moreLikeThisRecords: {
-			type: Array as PropType<GenericSearchResultType[]>,
-			required: false,
-			default() {
-				return [];
-			},
-		},
+		GridDisplay,
 	},
 
 	setup(props) {
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();
-		const searchResultStore = useSearchResultStore();
 
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
-
-		const entryId = getEntryId(props.recordData);
-
-		const emptySearchResults = () => {
-			searchResultStore.searchResult = [];
-		};
 
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
@@ -184,17 +113,15 @@ export default defineComponent({
 			getBroadcastDate,
 			getBroadcastTime,
 			getTimeFromISOFormat,
-			entryId,
 			addTestDataEnrichment,
 			quotation,
-			emptySearchResults,
 		};
 	},
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only 
-temporary styling until patterns from design system are implemented 
+<!-- Add "scoped" attribute to limit CSS to this component only
+temporary styling until patterns from design system are implemented
 -->
 <style scoped>
 :host {
@@ -299,8 +226,8 @@ temporary styling until patterns from design system are implemented
 	padding: 20px 10px 30px 10px;
 	background-color: #f0fbff;
 	box-sizing: border-box;
-	text-transform: capitalize;
 }
+
 .related-record {
 	margin-left: 20px;
 }
@@ -345,7 +272,6 @@ temporary styling until patterns from design system are implemented
 
 .related-content {
 	padding: 0px 20px;
-	max-width: 100%;
 }
 
 .related-record {
@@ -413,12 +339,10 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
-		width: 33.3%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
-		flex-direction: row;
 	}
 	.share-button {
 		justify-content: flex-end;
@@ -480,6 +404,7 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 	}
 	.main-record-data,
+	.related-content,
 	.accordion {
 		flex: 0 0 calc(75% - 20px);
 		max-width: calc(75% - 20px);

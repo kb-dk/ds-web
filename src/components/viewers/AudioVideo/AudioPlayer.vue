@@ -4,24 +4,21 @@
 			id="audio-player"
 			class="player"
 		></div>
-		<NotAllowedBanner :video-player="false"></NotAllowedBanner>
 	</div>
 </template>
 
 <script lang="ts">
-import { onMounted, onBeforeUnmount, defineComponent, inject } from 'vue';
+import { defineComponent, inject, onBeforeUnmount, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
-import { PlayerType, KalturaPlayerType } from '@/types/KalturaTypes';
+import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import { useRoute } from 'vue-router';
-import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
 export default defineComponent({
 	name: 'AudioPlayer',
-	components: { NotAllowedBanner },
 	props: {
 		entryId: {
 			type: String,

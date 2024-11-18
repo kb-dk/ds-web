@@ -338,7 +338,8 @@
   "error": {
     "record": {
       "loadingFailed": "Materialet kunne ikke hentes",
-      "notAllowed":"Du har ikke adgang til materialet"
+      "notAllowed":"Du har ikke adgang til materialet",
+      "unknown": "Ukendt"
     },
     "players":{
       "video": {
