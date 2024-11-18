@@ -191,6 +191,16 @@ export class APIServiceClient {
 		return await this.httpClient.get(`bff/v1/proxy/search/?q=${idString}&facet=false&sort=startTime asc`);
 	}
 
+	async getTimeStartEndResults(start: string, end: string, id: string): Promise<APISearchResponseType> {
+		let timeConstraint = '';
+		if (start && end) {
+			timeConstraint = `startTime:${encodeURIComponent(`[${start} TO ${end}]`)}`;
+		}
+		return await this.httpClient.get(
+			`bff/v1/proxy/search/?q=${timeConstraint} AND NOT id:"${id}"&rows=3&sort=startTime asc`,
+		);
+	}
+
 	async getRecord(id: string): Promise<APIRecordResponseType> {
 		const encodeId = encodeURIComponent(id);
 		return await this.httpClient.get(`bff/v1/proxy/record/${encodeId}?format=JSON-LD`);

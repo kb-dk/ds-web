@@ -14,19 +14,20 @@
 			<div class="main-record-data">
 				<div class="record-data">
 					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
-					<p>{{ recordData.description }} ALSO, LOREM IPSUM PLEASE</p>
+					<p>{{ recordData.description }}</p>
 				</div>
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<h3>Sendt</h3>
+					<h3>{{ $t('record.aired') }}</h3>
 					<div class="info">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
 					<div class="info">
 						<span class="material-icons blue">schedule</span>
-						Kl. {{ getBroadcastTime(recordData.startTime) }} - {{ getBroadcastTime(recordData.endTime) }}
+						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
+						{{ getBroadcastTime(recordData.endTime) }}
 						<span class="broadcast-duration">
 							<duration
 								:duration="recordData.duration"
@@ -78,7 +79,7 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
-				Tilbage
+				{{ $t('record.back') }}
 			</router-link>
 			<router-link
 				v-else
@@ -86,23 +87,27 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 			>
 				<span class="material-icons">chevron_left</span>
-				Til forsiden
+				{{ $t('record.toFrontpage') }}
 			</router-link>
 		</div>
+		<h3>{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
-				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
+				v-for="(record, index) in moreLikeThisRecords"
+				:key="index"
 				class="related-content"
 			>
-				<h3>Relateret indhold</h3>
-				<GridDisplay
+				<GridResultItem
 					:row-nr="3"
 					:spot-nr="3"
 					:draggable="true"
-					:spots="moreLikeThisRecords"
-				></GridDisplay>
+					:resultdata="record"
+					:starttime="new Date(record.startTime).toLocaleString()"
+					:index="index"
+					:full-post-url="true"
+					:loading="moreLikeThisRecords?.length === 0"
+				></GridResultItem>
 			</div>
-			<div v-else>No related records here. Now what?</div>
 		</div>
 	</div>
 </template>
@@ -123,14 +128,15 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/common/wc-spot-item';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
 
 	components: {
+		GridResultItem,
 		AudioPlayer,
 		Duration,
-		GridDisplay,
 	},
 
 	props: {
@@ -296,6 +302,7 @@ temporary styling until patterns from design system are implemented
 	padding: 20px 10px 30px 10px;
 	background-color: #f0fbff;
 	box-sizing: border-box;
+	text-transform: capitalize;
 }
 
 .related-record {
@@ -337,6 +344,7 @@ temporary styling until patterns from design system are implemented
 
 .related-content {
 	padding: 0px 20px;
+	max-width: 100%;
 }
 
 .related-record {
@@ -404,10 +412,12 @@ temporary styling until patterns from design system are implemented
 	}
 	.related-content {
 		padding: 0px;
+		width: 33.3%;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
+		flex-direction: row;
 	}
 	.share-button {
 		justify-content: flex-end;
@@ -475,7 +485,6 @@ temporary styling until patterns from design system are implemented
 		gap: 20px;
 	}
 	.main-record-data,
-	.related-content,
 	.accordion {
 		flex: 0 0 calc(75% - 20px);
 		max-width: calc(75% - 20px);
