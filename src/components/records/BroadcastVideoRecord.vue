@@ -358,6 +358,7 @@ temporary styling until patterns from design system are implemented
 
 .link-container {
 	background-color: #0a2e70;
+	width: 33.3%;
 	color: white;
 	text-align: center;
 	text-decoration: none;
@@ -397,6 +398,7 @@ temporary styling until patterns from design system are implemented
 }
 .return {
 	border-radius: 0px;
+	width: 100%;
 }
 
 /* First breakpoint for tablet */

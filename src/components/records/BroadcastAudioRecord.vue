@@ -16,6 +16,25 @@
 					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }} ALSO, LOREM IPSUM PLEASE</p>
 				</div>
+				<div class="back-link">
+					<div class="triangle"></div>
+					<router-link
+						v-if="lastPath"
+						:to="lastPath"
+						class="link-container return"
+						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
+					>
+						Tilbage
+					</router-link>
+					<router-link
+						v-else
+						to="/"
+						class="link-container return"
+						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
+					>
+						Til forsiden
+					</router-link>
+				</div>
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
@@ -70,24 +89,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="back-link">
-			<router-link
-				v-if="lastPath"
-				:to="lastPath"
-				class="link-container return"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
-			>
-				Tilbage
-			</router-link>
-			<router-link
-				v-else
-				to="/"
-				class="link-container return"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
-			>
-				Til forsiden
-			</router-link>
 		</div>
 		<div class="extra-record-data">
 			<div
@@ -374,6 +375,26 @@ temporary styling until patterns from design system are implemented
 .link-container a {
 	white-space: nowrap;
 }
+.back-link {
+	display: flex;
+	flex-direction: row;
+	bottom: 0;
+	width: 105px;
+	padding-top: 15px;
+}
+
+.triangle {
+	width: 0;
+	height: 0;
+	border-bottom: 20px solid transparent;
+	border-right: 10px solid #0a2e70;
+	border-top: 20px solid transparent;
+}
+.return {
+	border-radius: 0px;
+	width: 100%;
+}
+
 /* First breakpoint for tablet */
 
 @media (min-width: 640px) {
