@@ -241,7 +241,7 @@ export default defineComponent({
 .dokumentar {
 	background-image: url('@/assets/icons/default/dokumentar.svg');
 }
-.fiktion {
+.film-og-serier {
 	background-image: url('@/assets/icons/default/fiktion.svg');
 }
 .kultur-og-oplysning {
@@ -259,10 +259,10 @@ export default defineComponent({
 .sport {
 	background-image: url('@/assets/icons/default/sport.svg');
 }
-.underholdning {
+.humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/default/underholdning.svg');
 }
-.videnskab-og-natur {
+.natur-og-videnskab {
 	background-image: url('@/assets/icons/default/videnskab.svg');
 }
 .brn-og-unge {
@@ -275,7 +275,7 @@ export default defineComponent({
 .category-item:hover .dokumentar {
 	background-image: url('@/assets/icons/cyan/dokumentar-cyan.svg');
 }
-.category-item:hover .fiktion {
+.category-item:hover .film-og-serier {
 	background-image: url('@/assets/icons/cyan/fiktion-cyan.svg');
 }
 .category-item:hover .kultur-og-oplysning {
@@ -293,10 +293,10 @@ export default defineComponent({
 .category-item:hover .sport {
 	background-image: url('@/assets/icons/cyan/sport-cyan.svg');
 }
-.category-item:hover .underholdning {
+.category-item:hover .humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/cyan/underholdning-cyan.svg');
 }
-.category-item:hover .videnskab-og-natur {
+.category-item:hover .natur-og-videnskab {
 	background-image: url('@/assets/icons/cyan/videnskab-cyan.svg');
 }
 .category-item:hover .brn-og-unge {

@@ -1,12 +1,15 @@
 <template>
 	<button
 		:class="title !== '' ? 'info-btn' : 'info-btn icon-only'"
-		:style="{ '--text-color': color, '--bg-color': bgColor }"
-		@click="showContent = !showContent"
+		:style="{
+			'--text-color': color,
+			'--bg-color': bgColor,
+		}"
+		@click="toggleModal($event)"
 	>
 		<span
 			:style="{ '--text-color': bgColor, '--bg-color': color }"
-			class="material-icons icon"
+			:class="title ? 'material-icons icon big-icon' : 'material-icons icon small-icon'"
 		>
 			{{ icon }}
 		</span>
@@ -20,7 +23,7 @@
 			:class="modalAlign"
 			class="modal"
 		>
-			<button @click="showContent = false"><span class="material-icons">close</span></button>
+			<button @click="toggleModal($event)"><span class="material-icons">close</span></button>
 			<slot></slot>
 		</div>
 	</Transition>
@@ -62,11 +65,16 @@ export default defineComponent({
 		const showContent = ref(false);
 		const route = useRoute();
 
+		const toggleModal = (e: Event) => {
+			e.stopPropagation();
+			showContent.value = !showContent.value;
+		};
+
 		watch(route, () => {
 			showContent.value = false;
 		});
 
-		return { showContent };
+		return { showContent, toggleModal };
 	},
 });
 </script>
@@ -82,13 +90,21 @@ export default defineComponent({
 	margin: 0;
 	cursor: pointer;
 	box-sizing: border-box;
-	transition: all 0.15s ease-in-out 0s;
+	transition:
+		background-color 0.15s ease-in-out,
+		color 0.15s ease-in-out;
 	color: var(--text-color);
 	background-color: var(--bg-color);
+	margin-left: 25px;
+}
+
+.info-btn.icon-only {
+	border: 1px solid transparent;
 }
 
 .icon-only:hover {
 	border: 1px solid transparent !important;
+	background-color: var(--bg-color) !important;
 }
 
 .info-btn:hover {
@@ -99,6 +115,10 @@ export default defineComponent({
 .info-btn:hover {
 	color: var(--bg-color);
 	background-color: var(--text-color);
+}
+
+.small-icon {
+	font-size: 24px !important;
 }
 
 .title {
@@ -123,13 +143,18 @@ export default defineComponent({
 	width: calc(100% - 1px);
 	padding: 15px 50px 15px 15px;
 	box-sizing: border-box;
-	z-index: 15;
+	z-index: 25;
 }
 
 .modal.left {
+	right: 0px;
 }
 
 .modal.right {
+	right: 0px;
+}
+
+.modal.middle {
 	right: 0px;
 }
 
@@ -165,6 +190,14 @@ export default defineComponent({
 @media (min-width: 640px) {
 	.modal {
 		width: 400px;
+	}
+	.info-btn {
+		left: auto;
+	}
+}
+@media (min-width: 990px) {
+	.modal.middle {
+		right: -185px;
 	}
 }
 </style>
