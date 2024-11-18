@@ -129,6 +129,16 @@ export default defineComponent({
 			);
 		});
 
+		watch(
+			() => route.params.id,
+			() => {
+				if (KalturaPlayer) {
+					videoPlayer.destroy();
+				}
+				setupPlayer();
+			},
+		);
+
 		const setupPlayer = () => {
 			const no_script = !document.getElementById('kaltura-player-script');
 			if (no_script) {

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onBeforeUnmount, onMounted } from 'vue';
+import { defineComponent, inject, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
@@ -95,13 +95,39 @@ export default defineComponent({
 			}
 		};
 		onMounted(() => {
+			if (authStore.kalturaIdFetchExecuted === false) {
+				watch(
+					() => authStore.kalturaIdFetchExecuted as boolean,
+					(newVal: boolean) => {
+						if (newVal === true) {
+							setupPlayer();
+						}
+					},
+				);
+			} else {
+				setupPlayer();
+			}
+		});
+
+		watch(
+			() => route.params.id,
+			() => {
+				if (KalturaPlayer) {
+					audioPlayer.destroy();
+				}
+				setupPlayer();
+			},
+		);
+
+		const setupPlayer = () => {
 			const no_script = !document.getElementById('kaltura-player-script');
 			if (no_script) {
 				appendScript();
 			} else {
 				bootstrapPlayer();
 			}
-		});
+		};
+
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
 				audioPlayer.destroy();
