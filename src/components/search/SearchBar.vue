@@ -280,7 +280,7 @@ export default defineComponent({
 					if (!searchResultStore.blockAutocomplete) {
 						AutocompleteTimer = setTimeout(() => {
 							getAutocompleteResponse(newStart);
-						}, 300); // 1000 milliseconds (1 second) delay
+						}, 500); // 1000 milliseconds (0.5 second) delay
 					}
 				} else {
 					searchResultStore.autocompleteResult = [];
@@ -332,7 +332,7 @@ export default defineComponent({
 		const getAutocompleteResponse = (query: string) => {
 			if (
 				query !== undefined &&
-				query.length >= 2 &&
+				query.length >= 3 &&
 				!searchResultStore.blockAutocomplete &&
 				selectedPortal.value === 'drArchive'
 			) {

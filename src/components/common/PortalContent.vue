@@ -2,17 +2,21 @@
 	<div class="portal-container container">
 		<div class="categories">
 			<SkewedFoldable
+				:title="$t('timeSearch.searchCategories')"
 				:left="false"
-				:title="$t('facets.genres', 2)"
 				bg="#002e70"
 				text="white"
 				icon="category"
 				:fullwidth="true"
 				:shadow-bottom="true"
 				:shadow-top="true"
-				:subtitle="$t('facets.genresSubtitle')"
+				:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 			>
-				<MainCategories />
+				<MainCategories
+					:title="$t('timeSearch.searchCategories')"
+					text="white"
+					:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+				></MainCategories>
 			</SkewedFoldable>
 		</div>
 		<div class="date-picker">
@@ -44,7 +48,11 @@
 				:dashed-bottom="true"
 				:shadow-bottom="false"
 			>
-				<TimeSearchComponent />
+				<TimeSearchComponent
+					:title="$t('timeSearch.timeMachine')"
+					:subtitle="$t('timeSearch.timeMachineSubtitle')"
+					text="#0a2e70"
+				></TimeSearchComponent>
 			</SkewedFoldable>
 		</div>
 		<TiltedDivider
@@ -67,7 +75,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';

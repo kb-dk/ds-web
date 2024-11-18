@@ -1,7 +1,13 @@
 <template>
 	<EdgedContentArea background-color="#FAFAFA">
 		<template #content>
-			<h1 class="headline">{{ $t('timeSearch.timeMachine') }}</h1>
+			<div
+				class="header"
+				:style="`color: ${text}`"
+			>
+				<h1>{{ title }}</h1>
+				<span>{{ subtitle }}</span>
+			</div>
 			<TimeSearchFilters
 				:timeline="true"
 				:init="true"
@@ -68,26 +74,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import {
-	timeSliderValues,
-	months,
 	days,
-	timeslots,
-	startDate,
 	endDate,
+	months,
+	startDate,
+	timeSliderValues,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
-	getTimeResults,
 	getSublineForDays,
 	getSublineForMonths,
 	getSublineForTimeslots,
+	getTimeResults,
 	getYears,
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
@@ -101,6 +107,11 @@ export default defineComponent({
 		GridResultItem,
 		EdgedContentArea,
 		TimeSearchFilters,
+	},
+	props: {
+		title: { type: String, default: '' },
+		subtitle: { type: String, default: '' },
+		text: { type: String, default: 'black' },
 	},
 	setup() {
 		const { t } = useI18n();
@@ -217,8 +228,8 @@ h1 {
 }
 
 .link {
-	background-color: #002e70;
-	color: white;
+	color: #002e70;
+	background-color: #49da87;
 	display: flex;
 	text-decoration: none;
 	padding: 2px 5px;
@@ -226,19 +237,21 @@ h1 {
 	font-size: 16px;
 	position: relative;
 	left: -10px;
+	height: 25px;
+	align-items: center;
 }
 
 .link-arrow {
 	display: block;
 	width: 0;
 	height: 0;
-	border-bottom: 12px solid transparent;
-	border-top: 12px solid transparent;
-	border-left: 8px solid #0a2e70;
+	border-bottom: 14px solid transparent;
+	border-top: 14px solid transparent;
+	border-left: 8px solid #49da87;
 	margin-left: 5px;
 	position: absolute;
 	margin-right: -13px;
-	margin-top: -2px;
+	margin-top: -1px;
 }
 
 .further-recap {
@@ -301,9 +314,27 @@ h1 {
 	box-sizing: border-box;
 }
 
-.headline {
+.header {
+	margin: 0;
+	position: relative;
+	padding-bottom: 5px;
+	text-align: left;
+	max-width: 1280px;
 	width: 100%;
 	display: none;
+}
+
+.header h1 {
+	font-family: 'LibreBaskerville';
+	font-weight: 100;
+	text-transform: uppercase;
+	font-size: 32px;
+	margin: 0;
+}
+
+.header span {
+	margin: 0;
+	font-size: 16px;
 }
 
 @media (max-width: 480px) {
@@ -335,7 +366,7 @@ h1 {
 		max-width: calc(25% - 15px);
 		box-sizing: border-box;
 	}
-	.headline {
+	.header {
 		display: block;
 	}
 }

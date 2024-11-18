@@ -37,6 +37,7 @@
    "timeSearch": {
       "timeMachine":"Søg via periode",
      "searchDate": "Søg via dato",
+     "searchCategories": "Søg via kategori",
       "year":"år | år",
       "month":"måned | måneder",
       "day":"ugedag | ugedage",
@@ -57,8 +58,9 @@
       "allDays":"Alle ugedage i perioden",
       "allTimeslots":"Hele døgnet",
       "selection":"Et udpluk af resultaterne",
-     "dateSubtitle": "Vælg en dato, du gerne vil se indhold fra.",
-     "timeMachineSubtitle": "Vælg hvilket tidsrum i DR's sendeflader, du vil søge i.",
+     "dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag.",
+     "timeMachineSubtitle": "Her kan du vælge årstal, måneder og ugedage, hvis du søger udsendelser sendt i en bestemt periode.",
+     "searchCategoriesSubtitle": "Vælg en kategori og gå på opdagelse i udsendelserne.",
       "monthHeadline":"Vælg måneder",
       "dayHeadline":"Vælg ugedage",
       "timeslotHeadline":"Vælg tidspunkter",
@@ -170,6 +172,14 @@
       "readMore": "Læs mere om",
       "searchTips": "søgetips",
       "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning"
+    },
+    "frontpageGuide": {
+      "title":"Hvordan søger jeg bedst?",
+      "first":"Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis hotel ikke vil finde resultater, hvor der står hoteller eller badehotel.",
+      "second":"Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.",
+      "third":"Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori, kanal eller tid.",
+      "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning",
+      "linktext":"Læs flere gode råd om søgning"
     }
    },
   "record":{
@@ -361,7 +371,7 @@
       "title":"DR-arkiv",
       "subtitle":"Det Kgl. Biblioteks",
       "progress":"Vi er nået {index}%...",
-      "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og større.",
+      "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre",
       "link":"Læs mere om DR-arkivet"
    }
 }
