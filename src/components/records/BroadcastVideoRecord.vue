@@ -33,7 +33,6 @@
 						class="link-container return"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 					>
-						<span class="material-icons offset">chevron_left</span>
 						{{ $t('record.toFrontpage') }}
 					</router-link>
 				</div>
