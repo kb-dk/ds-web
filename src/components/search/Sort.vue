@@ -77,7 +77,7 @@ export default defineComponent({
 			}
 		};
 
-		const newSort = (clickedElement: any, sortValue: string) => {
+		const newSort = (clickedElement: HTMLButtonElement, sortValue: string) => {
 			if (clickedElement.classList.contains('active')) {
 				sortAsc.value = !sortAsc.value;
 			} else {

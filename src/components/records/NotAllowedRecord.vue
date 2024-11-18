@@ -67,7 +67,7 @@ export default defineComponent({
 		VideoPlayer,
 	},
 
-	setup(props) {
+	setup() {
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();

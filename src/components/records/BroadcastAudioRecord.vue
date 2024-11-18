@@ -119,7 +119,6 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import AudioPlayer from '@/components/viewers/AudioVideo/AudioPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
-import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
