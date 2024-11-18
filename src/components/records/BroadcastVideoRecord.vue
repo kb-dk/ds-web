@@ -17,6 +17,25 @@
 					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
 				</div>
+				<div class="back-link">
+					<div class="triangle"></div>
+					<router-link
+						v-if="lastPath"
+						:to="lastPath"
+						class="link-container return"
+						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
+					>
+						Tilbage
+					</router-link>
+					<router-link
+						v-else
+						:to="{ name: 'Home' }"
+						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
+					>
+						<span class="material-icons offset">chevron_left</span>
+						Til forsiden
+					</router-link>
+				</div>
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
@@ -72,24 +91,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="back-link">
-			<router-link
-				v-if="lastPath"
-				:to="lastPath"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
-			>
-				<span class="material-icons offset">chevron_left</span>
-				Tilbage
-			</router-link>
-			<router-link
-				v-else
-				:to="{ name: 'Home' }"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
-			>
-				<span class="material-icons offset">chevron_left</span>
-				Til forsiden
-			</router-link>
-		</div>
 		<div class="extra-record-data">
 			<div
 				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
@@ -116,10 +117,9 @@ import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
-import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getTimeFromISOFormat } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
@@ -200,7 +200,6 @@ temporary styling until patterns from design system are implemented
 
 .back-link {
 	width: 100%;
-	margin-bottom: 10px;
 }
 
 .back-link a {
@@ -265,6 +264,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
+	position: relative;
 }
 
 .extra-record-data {
@@ -281,6 +281,9 @@ temporary styling until patterns from design system are implemented
 .main-record-data {
 	flex: 0 0 100%;
 	max-width: 100%;
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
 }
 
 .right-side {
@@ -355,7 +358,6 @@ temporary styling until patterns from design system are implemented
 
 .link-container {
 	background-color: #0a2e70;
-	width: 33.3%;
 	color: white;
 	text-align: center;
 	text-decoration: none;
@@ -370,15 +372,33 @@ temporary styling until patterns from design system are implemented
 	font-weight: 100;
 	flex-direction: row;
 	justify-content: center;
+	white-space: nowrap;
 }
+
 .link {
 	position: relative;
 	top: 2px;
 }
-.link-container a {
-	white-space: nowrap;
-}
 /* First breakpoint for tablet */
+
+.back-link {
+	display: flex;
+	flex-direction: row;
+	bottom: 0;
+	vertical-align: bottom;
+	width: 105px;
+}
+
+.triangle {
+	width: 0;
+	height: 0;
+	border-bottom: 20px solid transparent;
+	border-right: 10px solid #0a2e70;
+	border-top: 20px solid transparent;
+}
+.return {
+	border-radius: 0px;
+}
 
 @media (min-width: 640px) {
 	.boardcast-record-data {

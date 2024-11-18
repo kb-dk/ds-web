@@ -202,8 +202,10 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link {
+	display: flex;
 	width: 100%;
 	margin-bottom: 10px;
+	flex-direction: row;
 }
 
 .info {
