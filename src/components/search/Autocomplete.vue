@@ -49,9 +49,10 @@ export default defineComponent({
 		const currentSelectedAutocomplete = ref(0);
 
 		const doAutocompleteSearch = (query: string) => {
+			const rdyQuery = `"${query.replaceAll('"', '\\"')}"`;
 			router.push({
 				name: 'Search',
-				query: { q: query ? query : searchResultStore.currentQuery, start: 0 },
+				query: { q: query ? rdyQuery : searchResultStore.currentQuery, start: 0 },
 			});
 		};
 

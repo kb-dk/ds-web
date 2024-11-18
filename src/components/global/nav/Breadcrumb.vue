@@ -59,6 +59,28 @@
 				<span>/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
+			<div class="search-tip">
+				<InfoComponent
+					icon="info_outline"
+					:title="t('search.frontpageGuide.title')"
+					modal-align="right"
+				>
+					<div class="search-help">
+						<p>
+							{{ t('search.frontpageGuide.first') }}
+						</p>
+						<p>
+							{{ t('search.frontpageGuide.second') }}
+						</p>
+						<p>
+							{{ t('search.frontpageGuide.third') }}
+						</p>
+						<a :href="t('search.frontpageGuide.link')">
+							{{ t('search.frontpageGuide.linktext') }}
+						</a>
+					</div>
+				</InfoComponent>
+			</div>
 		</div>
 	</div>
 </template>
@@ -68,9 +90,13 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRouter, useRoute } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import InfoComponent from '@/components/common/InfoComponent.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
+	components: {
+		InfoComponent,
+	},
 	setup() {
 		const { t } = useI18n();
 		const router = useRouter();
@@ -207,6 +233,15 @@ export default defineComponent({
 
 .container span {
 	color: black;
+}
+
+.search-tip {
+	margin-left: auto;
+}
+
+.search-help a {
+	color: #002e70;
+	text-decoration: underline;
 }
 
 /* MEDIA QUERY 480 */

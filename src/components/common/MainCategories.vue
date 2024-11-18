@@ -1,4 +1,11 @@
 <template>
+	<div
+		class="header"
+		:style="`color: ${text}`"
+	>
+		<h1>{{ title }}</h1>
+		<span>{{ subtitle }}</span>
+	</div>
 	<div class="head-categories">
 		<Transition
 			mode="out-in"
@@ -56,9 +63,14 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { facetItem } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
+
 export default defineComponent({
 	name: 'MainCategories',
-
+	props: {
+		title: { type: String, default: '' },
+		subtitle: { type: String, default: '' },
+		text: { type: String, default: 'black' },
+	},
 	setup() {
 		const { t } = useI18n();
 		const categories = ref([] as facetItem[]);
@@ -117,6 +129,29 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.header {
+	margin: 0;
+	position: relative;
+	padding-bottom: 5px;
+	text-align: left;
+	max-width: 1280px;
+	width: 100%;
+	display: none;
+}
+
+.header h1 {
+	font-family: 'LibreBaskerville';
+	font-weight: 100;
+	text-transform: uppercase;
+	font-size: 32px;
+	margin: 0;
+}
+
+.header span {
+	margin: 0;
+	font-size: 16px;
+}
+
 .head-categories {
 	display: flex;
 	width: calc(100vw - 14px);
@@ -181,7 +216,7 @@ export default defineComponent({
 	top: -21px;
 	left: -1px;
 	background-image: url('@/assets/icons/default/diverse.svg');
-	filter: hue-rotate(5);
+	filter: hue-rotate(5deg);
 }
 
 .category-item:hover .category-image {
@@ -206,7 +241,7 @@ export default defineComponent({
 .dokumentar {
 	background-image: url('@/assets/icons/default/dokumentar.svg');
 }
-.fiktion {
+.film-og-serier {
 	background-image: url('@/assets/icons/default/fiktion.svg');
 }
 .kultur-og-oplysning {
@@ -224,10 +259,10 @@ export default defineComponent({
 .sport {
 	background-image: url('@/assets/icons/default/sport.svg');
 }
-.underholdning {
+.humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/default/underholdning.svg');
 }
-.videnskab-og-natur {
+.natur-og-videnskab {
 	background-image: url('@/assets/icons/default/videnskab.svg');
 }
 .brn-og-unge {
@@ -240,7 +275,7 @@ export default defineComponent({
 .category-item:hover .dokumentar {
 	background-image: url('@/assets/icons/cyan/dokumentar-cyan.svg');
 }
-.category-item:hover .fiktion {
+.category-item:hover .film-og-serier {
 	background-image: url('@/assets/icons/cyan/fiktion-cyan.svg');
 }
 .category-item:hover .kultur-og-oplysning {
@@ -258,10 +293,10 @@ export default defineComponent({
 .category-item:hover .sport {
 	background-image: url('@/assets/icons/cyan/sport-cyan.svg');
 }
-.category-item:hover .underholdning {
+.category-item:hover .humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/cyan/underholdning-cyan.svg');
 }
-.category-item:hover .videnskab-og-natur {
+.category-item:hover .natur-og-videnskab {
 	background-image: url('@/assets/icons/cyan/videnskab-cyan.svg');
 }
 .category-item:hover .brn-og-unge {
@@ -289,6 +324,9 @@ export default defineComponent({
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
+	.header {
+		display: block;
+	}
 	.category-grid {
 		padding: 0px 5px;
 		gap: 45px 40px;

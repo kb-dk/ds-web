@@ -80,7 +80,11 @@
 			>
 				<template #content>
 					<div class="showcase-container">
-						<MainCategories></MainCategories>
+						<MainCategories
+							:title="$t('timeSearch.searchCategories')"
+							text="white"
+							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+						></MainCategories>
 					</div>
 				</template>
 			</EdgedContentArea>

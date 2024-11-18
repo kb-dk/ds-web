@@ -1,37 +1,38 @@
 <template>
 	<div class="sort">
-		<span class="material-icons">sort</span>
 		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
-			@click="newSort('score desc')"
+			@click="newSort($refs.relevanceRef, `score`)"
 		>
-			{{ t('search.relevance') }}
+			<p>{{ t('search.relevance') }}</p>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
 			ref="titleRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
-			@click="newSort('title_sort_da asc')"
+			@click="newSort($refs.titleRef, `title_sort_da`)"
 		>
-			{{ t('search.title') }}
+			<p>{{ t('search.title') }}</p>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
 			ref="timeRef"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
-			@click="newSort('startTime asc')"
+			@click="newSort($refs.timeRef, `startTime`)"
 		>
-			{{ t('search.date') }}
+			<p>{{ t('search.date') }}</p>
+			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
-import { onMounted } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
@@ -42,10 +43,11 @@ export default defineComponent({
 		const router = useRouter();
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
-
+		const sortAsc = ref(false);
 		const titleRef = ref<HTMLElement | null>();
 		const relevanceRef = ref<HTMLElement | null>();
 		const timeRef = ref<HTMLElement | null>();
+		const activeSort = ref<HTMLElement | null>();
 
 		const revealSortingOptions = () => {
 			showSortingOptions.value = !showSortingOptions.value;
@@ -61,13 +63,13 @@ export default defineComponent({
 
 		const setCurrentActive = (active: string | undefined) => {
 			if (active) {
-				decodeURIComponent(active) === 'title_sort_da asc'
+				decodeURIComponent(active) === `title_sort_da ${getAscOrDesc(sortAsc.value)}`
 					? titleRef.value?.classList.add('active')
 					: titleRef.value?.classList.remove('active');
-				decodeURIComponent(active) === 'score desc'
+				decodeURIComponent(active) === `score ${getAscOrDesc(sortAsc.value)}`
 					? relevanceRef.value?.classList.add('active')
 					: relevanceRef.value?.classList.remove('active');
-				decodeURIComponent(active) === 'startTime asc'
+				decodeURIComponent(active) === `startTime ${getAscOrDesc(sortAsc.value)}`
 					? timeRef.value?.classList.add('active')
 					: timeRef.value?.classList.remove('active');
 			} else {
@@ -75,13 +77,23 @@ export default defineComponent({
 			}
 		};
 
-		const newSort = (sortValue: string) => {
+		const newSort = (clickedElement: any, sortValue: string) => {
+			if (clickedElement.classList.contains('active')) {
+				sortAsc.value = !sortAsc.value;
+			} else {
+				sortAsc.value = false;
+			}
+			sortValue = `${sortValue} ${getAscOrDesc(sortAsc.value)}`;
 			const sort = encodeURIComponent(`${sortValue}`);
 			const start = `${0}`;
 			const query = { ...route.query, sort, start };
 			router.push({ query });
 			showSortingOptions.value = false;
 			searchResultStore.resetStart();
+		};
+
+		const getAscOrDesc = (sortAsc: boolean): string => {
+			return sortAsc ? 'asc' : 'desc';
 		};
 
 		onMounted(() => {
@@ -99,12 +111,15 @@ export default defineComponent({
 			revealSortingOptions,
 			showSortingOptions,
 			newSort,
+			sortAsc,
 			searchResultStore,
 			t,
 			titleRef,
 			relevanceRef,
 			timeRef,
 			addTestDataEnrichment,
+			getAscOrDesc,
+			activeSort,
 		};
 	},
 });
@@ -118,18 +133,35 @@ export default defineComponent({
 	padding-top: 20px;
 	justify-content: space-between;
 }
+.sort button {
+	display: flex;
+	flex-direction: row;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.sort button p {
+	position: relative;
+}
 
-.sort .active {
+.sort .active p {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
 }
 
 .sort .material-icons {
+	color: rgba(71, 71, 71, 0);
+}
+
+.sort .active .material-icons {
 	color: #002e70;
 }
 
+.material-icons {
+	position: relative;
+}
+
 .sort-by {
-	margin-right: auto !important;
+	margin-right: 15px !important;
 }
 
 .sort p {
@@ -137,14 +169,12 @@ export default defineComponent({
 	padding: 0;
 	color: #002e70;
 	height: 20px;
-	margin-left: 5px;
 }
 
 .sort-options button {
 	font-size: 16px;
 	cursor: pointer;
 	border: 0px;
-	margin: 0px 7px;
 	background-color: white;
 	height: 20px;
 	text-align: center;

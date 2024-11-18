@@ -52,6 +52,7 @@
 							}"
 							class="genre-link"
 							:data-testid="addTestDataEnrichment('link', 'boardcast-record-audio', `genre-link`, 0)"
+							@click="emptySearchResults()"
 						>
 							{{ recordData.genre }}
 						</router-link>
@@ -119,6 +120,7 @@ import { getEntryId } from '@/utils/record-utils';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/common/wc-spot-item';
 
@@ -149,6 +151,7 @@ export default defineComponent({
 		const lastPath = ref('');
 		const router = useRouter();
 		const { locale, t } = useI18n();
+		const searchResultStore = useSearchResultStore();
 
 		const checkForKalturaId = () => {
 			return props.recordData.identifier.find((obj) => obj.PropertyID === 'KalturaID') !== undefined;
@@ -157,6 +160,10 @@ export default defineComponent({
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
+
+		const emptySearchResults = () => {
+			searchResultStore.searchResult = [];
+		};
 
 		const entryId = getEntryId(props.recordData);
 
@@ -179,6 +186,7 @@ export default defineComponent({
 			checkForKalturaId,
 			addTestDataEnrichment,
 			quotation,
+			emptySearchResults,
 		};
 	},
 });

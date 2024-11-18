@@ -145,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -395,6 +395,7 @@ export default defineComponent({
 	gap: 10px;
 	width: 100%;
 	padding-bottom: 25px;
+	height: 44px;
 }
 
 .result-options {
@@ -486,6 +487,8 @@ export default defineComponent({
 	z-index: 1;
 	font-size: 20px;
 	margin-right: 10px;
+	height: 44px;
+	width: 126px;
 }
 
 .filter-button .material-icons {
@@ -613,7 +616,7 @@ export default defineComponent({
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	background-color: #f7ae3b;
-	max-height: 28px;
+	height: 44px;
 	z-index: 1;
 	box-shadow:
 		inset 1px 1px 2px #00000000,
