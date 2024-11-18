@@ -1,4 +1,5 @@
 # ds-web
+This is a frontend for showing digital cultural heritage.
 
 ## Project setup
 The project requires node v20.10.0.
