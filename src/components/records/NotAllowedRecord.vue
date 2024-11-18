@@ -1,14 +1,8 @@
 <template>
 	<div class="broadcast-record">
 		<div class="video-container">
-			<div v-if="entryId !== ''">
+			<div>
 				<VideoPlayer></VideoPlayer>
-			</div>
-			<div
-				v-else
-				class="no-streaming"
-			>
-				{{ t('record.missingStreamingUrl') }}
 			</div>
 		</div>
 		<div class="boardcast-record-data">
@@ -52,27 +46,13 @@
 				Til forsiden
 			</router-link>
 		</div>
-		<div class="extra-record-data">
-			<div
-				v-if="moreLikeThisRecords !== undefined && moreLikeThisRecords.length > 0"
-				class="related-content"
-			>
-				<h3>Relateret indhold</h3>
-				<GridDisplay
-					:row-nr="3"
-					:spot-nr="3"
-					:draggable="true"
-					:spots="moreLikeThisRecords"
-				></GridDisplay>
-			</div>
-		</div>
+		<div class="extra-record-data"></div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
-import GridDisplay from '@/components/common/GridDisplay.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useRouter } from 'vue-router';
@@ -85,7 +65,6 @@ export default defineComponent({
 
 	components: {
 		VideoPlayer,
-		GridDisplay,
 	},
 
 	setup(props) {
