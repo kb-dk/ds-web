@@ -17,12 +17,20 @@
 							:record-data="recordData as BroadcastRecordType"
 						/>
 					</div>
+					<div
+						v-if="
+							!loading &&
+							recordData !== null &&
+							recordType !== 'VideoObject' &&
+							recordType !== 'MediaObject' &&
+							recordType !== 'AudioObject'
+						"
+					>
+						<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
+					</div>
 				</div>
-				<div v-if="!loading && recordData === null">
+				<div v-if="!loading && recordData === null && contentNotAllowed">
 					<NotAllowedRecord />
-				</div>
-				<div v-if="loading">
-					<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
 				</div>
 			</div>
 		</div>
@@ -69,6 +77,7 @@ export default defineComponent({
 		const authStore = useAuthStore();
 		const route = useRoute();
 		const loading = ref(true);
+		const contentNotAllowed = ref(false);
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -103,6 +112,7 @@ export default defineComponent({
 					const errorMsg =
 						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
 					errorManager.submitError(err, errorMsg);
+					contentNotAllowed.value = true;
 					break;
 				}
 				case 'moreLikeThisCall':
@@ -148,7 +158,7 @@ export default defineComponent({
 		watch(
 			() => route.params.id,
 			() => {
-				console.log('test');
+				contentNotAllowed.value = false;
 				buildContentFromReponse().then(() => {
 					window.scrollTo({ top: 0, behavior: 'smooth' });
 				});
@@ -171,7 +181,7 @@ export default defineComponent({
 			}
 		});
 
-		return { recordData, recordType, moreLikeThisRecords };
+		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed };
 	},
 	computed: {
 		GenericRecord() {
