@@ -125,6 +125,7 @@
      "date":"Dato",
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
+    "relatedContent": "Relateret indhold",
      "didYouMean": "Mente du \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} resultater)",
      "maybeYouMeant": "Måske mente du?",
@@ -185,6 +186,9 @@
      "duration":"Varighed",
      "noBroadcastData":"Ingen sendetid",
      "seeMaterial":"See material",
+    "toFrontpage": "Til forsiden",
+    "back": "Tilbage",
+    "aired": "Sendt",
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
@@ -334,7 +338,8 @@
   "error": {
     "record": {
       "loadingFailed": "Materialet kunne ikke hentes",
-      "notAllowed":"Du har ikke adgang til materialet"
+      "notAllowed":"Du har ikke adgang til materialet",
+      "unknown": "Ukendt"
     },
     "players":{
       "video": {

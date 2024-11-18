@@ -13,8 +13,8 @@
 				class="data"
 			>
 				<router-link
+					:to="{ name: 'Record', params: { id: resultdata.id } }"
 					draggable="false"
-					:to="{ path: 'post/' + resultdata.id }"
 					class="link-title"
 					role="link"
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
@@ -101,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, ref, watch, onMounted } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -138,6 +138,12 @@ export default defineComponent({
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
+		fullPostUrl: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return false;
+			},
+		},
 	},
 
 	setup(props) {
@@ -157,7 +163,7 @@ export default defineComponent({
 
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
-				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} 
+				? `${getBroadcastDate(resultItem.startTime as string, locale.value)}
 				${t('record.timestamp')}${getBroadcastTime(resultItem.startTime as string)}`
 				: t('record.noBroadcastData');
 		};

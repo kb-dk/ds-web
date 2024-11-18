@@ -126,6 +126,7 @@
      "date":"date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
+     "relatedContent": "Related content",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} results)",
      "maybeYouMeant": "Maybe you meant?",
@@ -187,6 +188,9 @@
      "duration":"Duration",
      "noBroadcastData":"No air date",
      "seeMaterial":"Se materiale",
+     "toFrontpage": "To the frontpage",
+     "back": "Back",
+     "aired": "Aired",
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
@@ -337,7 +341,8 @@
    "error": {
       "record": {
          "loadingFailed": "The requested material could not be loaded",
-         "notAllowed":"You are not authorized to view this material"
+         "notAllowed":"You are not authorized to view this material",
+         "unknown": "Unknown"
        },
        "players":{
             "video": {

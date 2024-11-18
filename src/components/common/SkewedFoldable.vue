@@ -142,45 +142,47 @@ export default defineComponent({
 		};
 
 		const toggleContent = (e: Event) => {
-			e.stopPropagation();
-			if (foldableOpen.value) {
-				gsap.to(slotRef.value, {
-					duration: 0.5,
-					opacity: 0,
-					onComplete: () => {
-						gsap.set(slotRef.value, {
-							overwrite: true,
-							display: 'none',
-						});
-					},
-				});
-				gsap.to(contentRef.value, {
-					duration: 0.5,
-					height: '110px',
-					overwrite: true,
-					ease: 'none',
-				});
-			} else {
-				if (primaryButtonRef.value !== null) {
-					primaryButtonRef.value.focus();
+			if (slotRef.value) {
+				e.stopPropagation();
+				if (foldableOpen.value) {
+					gsap.to(slotRef.value, {
+						duration: 0.5,
+						opacity: 0,
+						onComplete: () => {
+							gsap.set(slotRef.value, {
+								overwrite: true,
+								display: 'none',
+							});
+						},
+					});
+					gsap.to(contentRef.value, {
+						duration: 0.5,
+						height: '110px',
+						overwrite: true,
+						ease: 'none',
+					});
+				} else {
+					if (primaryButtonRef.value !== null) {
+						primaryButtonRef.value.focus();
+					}
+					gsap.set(slotRef.value, {
+						display: 'flex',
+						overwrite: true,
+						onComplete: () => {
+							gsap.to(slotRef.value, {
+								opacity: 1,
+								duration: 0.5,
+							});
+							//contentRef.value.$el.focus();
+							gsap.to(contentRef.value, {
+								height: 'auto',
+								duration: 0.5,
+								overwrite: true,
+								ease: 'none',
+							});
+						},
+					});
 				}
-				gsap.set(slotRef.value, {
-					display: 'flex',
-					overwrite: true,
-					onComplete: () => {
-						gsap.to(slotRef.value, {
-							opacity: 1,
-							duration: 0.5,
-						});
-						//contentRef.value.$el.focus();
-						gsap.to(contentRef.value, {
-							height: 'auto',
-							duration: 0.5,
-							overwrite: true,
-							ease: 'none',
-						});
-					},
-				});
 			}
 			foldableOpen.value = !foldableOpen.value;
 		};
@@ -252,6 +254,7 @@ h1::first-letter {
 	align-items: flex-start;
 	flex-direction: column;
 	justify-content: flex-start;
+	width: 100%;
 }
 .headline span {
 	font-size: 16px;
@@ -281,6 +284,7 @@ h1::first-letter {
 	align-items: center;
 	cursor: pointer;
 	margin: 15px 12px;
+	width: calc(100% - 15px);
 }
 
 .icon .material-icons {

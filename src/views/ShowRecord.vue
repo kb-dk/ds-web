@@ -4,7 +4,7 @@
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
 
-				<div v-if="recordData">
+				<div v-if="!loading && recordData !== null">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
 							:more-like-this-records="moreLikeThisRecords"
@@ -17,9 +17,12 @@
 							:record-data="recordData as BroadcastRecordType"
 						/>
 					</div>
-					<div v-else>
-						<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
-					</div>
+				</div>
+				<div v-if="!loading && recordData === null">
+					<NotAllowedRecord />
+				</div>
+				<div v-if="loading">
+					<GenericRecordMetadataView :record-data="recordData as GenericRecordType" />
 				</div>
 			</div>
 		</div>
@@ -32,23 +35,24 @@ import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
+import GenericRecord from '@/components/records/GenericRecord.vue';
 import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVideoRecord.vue';
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
 import Footer from '@/components/global/nav/Footer.vue';
 import { useI18n } from 'vue-i18n';
-import { AxiosError } from 'axios';
-
-//Types
+import { AxiosError } from 'axios'; //Types
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
+import NotAllowedRecord from '@/components/records/NotAllowedRecord.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',
 	components: {
+		NotAllowedRecord,
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
@@ -64,6 +68,7 @@ export default defineComponent({
 		const spinnerStore = useSpinnerStore();
 		const authStore = useAuthStore();
 		const route = useRoute();
+		const loading = ref(true);
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -72,6 +77,7 @@ export default defineComponent({
 			} catch (err) {
 				handleShowRecordError(err as AxiosError, 'recordCall');
 			} finally {
+				loading.value = false;
 				spinnerStore.toggleSpinner(false);
 			}
 		};
@@ -83,7 +89,13 @@ export default defineComponent({
 				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
 			}
 		};
-
+		const getMoreLikeThisDate = async (start: string, end: string, id: string) => {
+			try {
+				return await APIService.getTimeStartEndResults(start, end, id);
+			} catch (err) {
+				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
+			}
+		};
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
@@ -100,20 +112,48 @@ export default defineComponent({
 		};
 
 		const buildContentFromReponse = async () => {
+			moreLikeThisRecords.value = [];
 			const id = route.params.id;
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
-			const moreLikeThis = await getMoreLikeThisRecords(idStr);
 			if (recordResp) {
+				const moreLikeThis = await getMoreLikeThisRecords(idStr);
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 				document.title = (recordData.value['name'] + t('app.titles.frontpage.archive.suffix')) as string;
+				if (moreLikeThis) {
+					moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+				}
+			} else {
+				document.title = ('Unknown' + t('app.titles.frontpage.archive.suffix')) as string;
 			}
-			if (moreLikeThis) {
-				moreLikeThisRecords.value = moreLikeThis.data.response.docs;
+			if (moreLikeThisRecords.value.length === 0) {
+				const startAndEnd = getStartAndEndFromStartTime();
+				if (startAndEnd.length > 0) {
+					const moreLikeThisDate = await getMoreLikeThisDate(startAndEnd[0], startAndEnd[1], idStr);
+					if (moreLikeThisDate) moreLikeThisRecords.value = moreLikeThisDate.data.response.docs;
+				}
 			}
 		};
 
+		const getStartAndEndFromStartTime = (): string[] => {
+			let startEnd: string[] = [];
+			if (recordData.value as BroadcastRecordType) {
+				const startTime = (recordData.value as BroadcastRecordType).startTime;
+				startEnd[0] = startTime.replace(/T(.*)/, 'T00:00:00Z');
+				startEnd[1] = startTime.replace(/T(.*)/, 'T23:59:59Z');
+			}
+			return startEnd;
+		};
+		watch(
+			() => route.params.id,
+			() => {
+				console.log('test');
+				buildContentFromReponse().then(() => {
+					window.scrollTo({ top: 0, behavior: 'smooth' });
+				});
+			},
+		);
 		onMounted(async () => {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -132,6 +172,11 @@ export default defineComponent({
 		});
 
 		return { recordData, recordType, moreLikeThisRecords };
+	},
+	computed: {
+		GenericRecord() {
+			return GenericRecord;
+		},
 	},
 });
 </script>
