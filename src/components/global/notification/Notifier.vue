@@ -129,7 +129,7 @@ ul {
 	z-index: 50;
 	width: 100%;
 	max-width: 300px;
-	right: 10px;
+	right: 35px;
 }
 
 .passive-notifications ul {

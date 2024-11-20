@@ -5,7 +5,10 @@
 		@mouseleave="resumeAnimation"
 	>
 		<h3>
-			<span class="title-span">{{ notification.key ? $t(notification.title) : notification.title }}</span>
+			<span class="title-span">
+				<span class="material-icons">check</span>
+				{{ notification.key ? $t(notification.title) : notification.title }}
+			</span>
 			<button
 				v-if="notification.userClose"
 				class="close"
@@ -17,17 +20,20 @@
 			</button>
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
-		<div
-			v-if="!notification.userClose"
-			ref="countdown"
-			class="timer"
-		></div>
+		<div class="timer-max">
+			<div
+				v-if="!notification.userClose"
+				ref="countdown"
+				class="timer"
+			></div>
+			<span class="material-icons">pause</span>
+		</div>
 	</li>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import { gsap } from 'gsap';
+import gsap from 'gsap';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
@@ -77,30 +83,69 @@ export default defineComponent({
 <style lang="scss" scoped>
 .single-notification {
 	pointer-events: all;
-	background-color: #fff6c4;
-	width: 300px;
-	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+	background-color: #49da87;
+	width: 330px;
+	max-width: 330px;
 	height: auto;
 	min-height: 100px;
 	margin-top: 15px;
-	padding: 10px;
-	box-shadow: 0px 5px 15px -7px rgba(30, 30, 30, 0.6);
+	margin-right: 15px;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 20px;
+	color: #002e70;
+	border: 1px solid #002e70;
+	white-space: nowrap;
+	box-shadow: 0 5px 15px -7px rgba(30, 30, 30, 0.6);
 	box-sizing: border-box;
+	justify-content: space-between;
+}
+.title-span {
+	font: normal normal normal 26px/28px Noway;
+}
+.title-span span {
+	font-size: 30px;
+	vertical-align: text-bottom;
+}
+
+.single-notification:hover .timer-max {
+	background-color: #17171780;
+}
+.timer-max span {
+	display: none;
+}
+.single-notification:hover .timer-max span {
+	display: block;
+	position: absolute;
+	float: right;
+	right: 0;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 26px;
 }
 
 .timer {
-	width: calc(100% + 20px);
-	margin-left: -10px;
-	height: 4px;
+	width: 100%;
+	height: 24px;
 	background-color: #002e70;
 	position: relative;
-	top: 10px;
+}
+
+.timer-max {
+	background-color: #1717172e;
+	border-top: 1px solid #002e70;
+	margin-left: -10px;
+	width: calc(100% + 20px);
+	display: flex;
+	flex-direction: row;
 }
 
 .close {
 	position: relative;
 	float: right;
-	border: 0px;
+	border: 0;
 	background-color: #fff6c4;
 	font-size: 25px;
 	top: -5px;
@@ -121,7 +166,7 @@ export default defineComponent({
 	z-index: -2;
 	margin-left: -1px;
 	margin-top: -1px;
-	top: 0px;
+	top: 0;
 	transform: scale(0);
 	transition: all 0.1s cubic-bezier(0.09, 0.77, 0.94, 0.58) 0s;
 	transform-origin: bottom left;
@@ -141,7 +186,7 @@ export default defineComponent({
 	z-index: -1;
 	margin-left: 1px;
 	margin-top: 1px;
-	top: 0px;
+	top: 0;
 }
 
 h3 {
