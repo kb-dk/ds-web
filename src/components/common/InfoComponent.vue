@@ -1,32 +1,38 @@
 <template>
 	<button
-		:class="title !== '' ? 'info-btn' : 'info-btn icon-only'"
+		:title="title"
+		:class="showTitle ? 'info-btn' : 'info-btn icon-only'"
 		:style="{
 			'--text-color': color,
 			'--bg-color': bgColor,
+			'--top-offset': top,
+			'--left-offset': left,
+			'--info-offset': infoOffset,
 		}"
 		@click="toggleModal($event)"
 	>
 		<span
 			:style="{ '--text-color': bgColor, '--bg-color': color }"
-			:class="title ? 'material-icons icon big-icon' : 'material-icons icon small-icon'"
+			:class="showTitle ? 'material-icons icon big-icon' : 'material-icons icon small-icon'"
 		>
 			{{ icon }}
 		</span>
 		<span class="title">
-			{{ title }}
+			{{ showTitle ? title : '' }}
 		</span>
+		<Transition name="fade">
+			<div
+				v-if="showContent"
+				class="modal"
+				:style="{
+					'--offset': modalOffset,
+				}"
+			>
+				<button @click="toggleModal($event)"><span class="material-icons">close</span></button>
+				<slot></slot>
+			</div>
+		</Transition>
 	</button>
-	<Transition name="fade">
-		<div
-			v-if="showContent"
-			:class="modalAlign"
-			class="modal"
-		>
-			<button @click="toggleModal($event)"><span class="material-icons">close</span></button>
-			<slot></slot>
-		</div>
-	</Transition>
 </template>
 
 <script lang="ts">
@@ -40,12 +46,17 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: true,
 		},
+		showTitle: {
+			type: Boolean as PropType<boolean>,
+			required: false,
+			default: true,
+		},
 		icon: {
 			type: String as PropType<string>,
 			required: false,
 			default: 'info_outline',
 		},
-		modalAlign: {
+		modalOffset: {
 			type: String as PropType<string>,
 			required: true,
 		},
@@ -58,6 +69,21 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: false,
 			default: 'white',
+		},
+		top: {
+			type: String as PropType<string>,
+			required: false,
+			default: '',
+		},
+		left: {
+			type: String as PropType<string>,
+			required: false,
+			default: '',
+		},
+		infoOffset: {
+			type: String as PropType<string>,
+			required: false,
+			default: '',
 		},
 	},
 
@@ -96,6 +122,8 @@ export default defineComponent({
 	color: var(--text-color);
 	background-color: var(--bg-color);
 	margin-left: 25px;
+	z-index: 10;
+	top: var(--info-offset);
 }
 
 .info-btn.icon-only {
@@ -140,18 +168,22 @@ export default defineComponent({
 	border: 1px solid #0a2e70;
 	background-color: white;
 	color: #0a2e70;
-	width: calc(100% - 1px);
+	width: calc(100vw - 35px);
 	padding: 15px 50px 15px 15px;
 	box-sizing: border-box;
 	z-index: 25;
-}
-
-.modal.left {
-	right: 0px;
+	right: -1px;
+	top: 25px;
+	text-align: left;
+	right: -1px;
 }
 
 .modal.right {
-	right: 0px;
+	left: -220px;
+}
+
+.modal.left {
+	right: -370px;
 }
 
 .modal.middle {
@@ -186,18 +218,26 @@ export default defineComponent({
 	color: var(--bg-color);
 	background-color: var(--text-color);
 }
-/* MEDIA QUERY 990 */
+/* MEDIA QUERY 640 */
 @media (min-width: 640px) {
-	.modal {
-		width: 400px;
-	}
-	.info-btn {
-		left: auto;
+	.modal.left {
+		right: -370px;
 	}
 }
+
+/* MEDIA QUERY 990 */
+
 @media (min-width: 990px) {
 	.modal.middle {
 		right: -185px;
+	}
+	.info-btn {
+		top: var(--top-offset);
+		left: var(--left-offset);
+	}
+	.modal {
+		width: 400px;
+		left: var(--offset);
 	}
 }
 </style>

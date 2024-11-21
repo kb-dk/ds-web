@@ -1,5 +1,25 @@
 <template>
 	<div class="portal-container container">
+		<div class="info-component">
+			<InfoComponent
+				title="Information om kategorier"
+				:show-title="false"
+				icon="info_outline"
+				bg-color="#"
+				color="white"
+				modal-offset="-220px"
+				top="calc(2px)"
+				left="calc(350px)"
+				info-offset="18px"
+			>
+				<p>
+					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
+					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
+					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
+					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
+				</p>
+			</InfoComponent>
+		</div>
 		<div class="categories">
 			<SkewedFoldable
 				:title="$t('timeSearch.searchCategories')"
@@ -19,6 +39,26 @@
 				></MainCategories>
 			</SkewedFoldable>
 		</div>
+		<div class="info-component">
+			<InfoComponent
+				title="Information om søgning via dato"
+				:show-title="false"
+				icon="info_outline"
+				bg-color="#"
+				color="#0a2e70"
+				modal-offset="-220px"
+				top="calc(18px)"
+				left="calc(260px)"
+				info-offset="18px"
+			>
+				<p>
+					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
+					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
+					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
+					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
+				</p>
+			</InfoComponent>
+		</div>
 		<div class="date-picker">
 			<SkewedFoldable
 				:title="$t('timeSearch.searchDate')"
@@ -35,6 +75,26 @@
 			>
 				<DayPicker />
 			</SkewedFoldable>
+		</div>
+		<div class="info-component">
+			<InfoComponent
+				title="Information om søgning via periode"
+				:show-title="false"
+				icon="info_outline"
+				bg-color="#"
+				color="#002e70"
+				modal-offset="-220px"
+				top="calc(1px)"
+				left="calc(305px)"
+				info-offset="18px"
+			>
+				<p>
+					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
+					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
+					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
+					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
+				</p>
+			</InfoComponent>
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
@@ -90,6 +150,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { APIService } from '@/api/api-service';
 import { APISearchResponseType } from '@/types/APIResponseTypes';
+import InfoComponent from './InfoComponent.vue';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -100,6 +161,7 @@ export default defineComponent({
 		DayPicker,
 		MainCategories,
 		SkewedFoldable,
+		InfoComponent,
 	},
 
 	setup() {
@@ -187,6 +249,25 @@ export default defineComponent({
 	margin-bottom: -70px;
 }
 
+.info-component {
+	height: 0px;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	position: relative;
+}
+
+.info-component:nth-of-type(1) {
+	z-index: 20;
+}
+.info-component:nth-of-type(2) {
+	z-index: 19;
+}
+.info-component:nth-of-type(3) {
+	z-index: 18;
+}
+
 .portal-container {
 	position: relative;
 	margin-top: -110px !important;
@@ -223,6 +304,10 @@ export default defineComponent({
 	.time-search {
 		width: 100%;
 		margin-left: 0px;
+	}
+
+	.info-component {
+		justify-content: start;
 	}
 
 	.time-search,
