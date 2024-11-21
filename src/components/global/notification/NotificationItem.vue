@@ -1,28 +1,44 @@
 <template>
 	<li
-		:class="notification.userClose ? 'single-notification user' : 'single-notification passing'"
+		ref="notificationBox"
+		:class="[
+			notification.userClose ? 'single-notification user' : 'single-notification passing',
+			notification.severity === 'high' ? 'high-severity' : 'low-severity',
+		]"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
 	>
 		<h3>
 			<span class="title-span">
-				<span class="material-icons">check</span>
+				<span
+					v-if="notification.severity === 'low'"
+					class="material-icons"
+				>
+					check
+				</span>
+				<span
+					v-if="notification.severity === 'high'"
+					class="material-icons"
+				>
+					warning
+				</span>
 				{{ notification.key ? $t(notification.title) : notification.title }}
 			</span>
-			<button
+			<span
 				v-if="notification.userClose"
-				class="close"
+				class="material-icons close"
 				:aria-label="$t('notification.close')"
 				@click="close(notification)"
 			>
-				&times;
-				<div class="close-border"></div>
-			</button>
+				close
+			</span>
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
-		<div class="timer-max">
+		<div
+			v-if="!notification.userClose"
+			class="timer-max"
+		>
 			<div
-				v-if="!notification.userClose"
 				ref="countdown"
 				class="timer"
 			></div>
@@ -85,7 +101,6 @@ export default defineComponent({
 	pointer-events: all;
 	display: flex;
 	flex-direction: column;
-	background-color: #49da87;
 	width: 330px;
 	max-width: 330px;
 	height: auto;
@@ -96,15 +111,13 @@ export default defineComponent({
 	padding-left: 10px;
 	padding-right: 10px;
 	font-size: 20px;
-	color: #002e70;
-	border: 1px solid #002e70;
-	white-space: nowrap;
 	box-shadow: 0 5px 15px -7px rgba(30, 30, 30, 0.6);
 	box-sizing: border-box;
 	justify-content: space-between;
 }
 .title-span {
 	font: normal normal normal 26px/28px Noway;
+	white-space: nowrap;
 }
 .title-span span {
 	font-size: 30px;
@@ -146,16 +159,14 @@ export default defineComponent({
 	position: relative;
 	float: right;
 	border: 0;
-	background-color: #fff6c4;
-	font-size: 25px;
-	top: -5px;
-	margin-right: -5px;
+	font-size: 30px;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out 0s;
 	width: 30px;
 	height: 30px;
 	padding: 0;
-	z-index: 2;
+	z-index: 100;
+	vertical-align: text-bottom;
 }
 
 .close-border {
@@ -179,7 +190,6 @@ export default defineComponent({
 .close:before {
 	content: '';
 	display: block;
-	background-color: #fff6c4;
 	position: absolute;
 	width: 28px;
 	height: 28px;
@@ -195,5 +205,28 @@ h3 {
 
 .title-span {
 	max-width: 90%;
+	z-index: 90;
+}
+.low-severity {
+	background-color: #49da87;
+	color: #002e70;
+	border: 1px solid #002e70;
+}
+.high-severity {
+	background-color: #b30018;
+	color: white;
+	border: 1px solid white;
+}
+
+.low-severity .close {
+	background-color: #fff6c4;
+}
+
+.high-severity .close {
+	color: white;
+}
+
+.high-severity .close:before {
+	background-color: #b30018;
 }
 </style>

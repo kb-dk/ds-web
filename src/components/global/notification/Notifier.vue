@@ -47,7 +47,7 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			/* notificationStore.addNotification("test notitication","this is a test",false, "low", true) */
+			notificationStore.addNotification('test notitication', 'this is a test', false, 'high', true);
 		});
 
 		onUnmounted(() => {
@@ -59,11 +59,12 @@ export default defineComponent({
 		};
 
 		const addNotification = (e: CustomEvent) => {
+			console.log(e.detail);
 			notificationStore.addNotification(
 				e.detail.title,
 				e.detail.message,
 				e.detail.key !== undefined ? e.detail.key : false,
-				'low',
+				e.detail.severity,
 				e.detail.userClose !== undefined ? e.detail.userClose : false,
 			);
 		};
