@@ -137,6 +137,9 @@ export default defineComponent({
 	max-width: 1280px;
 	width: 100%;
 	display: none;
+	padding-right: 12px;
+	padding-left: 12px;
+	box-sizing: border-box;
 }
 
 .header h1 {
@@ -154,7 +157,7 @@ export default defineComponent({
 
 .head-categories {
 	display: flex;
-	width: calc(100vw - 14px);
+	width: calc(100vw - 15px);
 	justify-content: center;
 	padding-top: 25px;
 }
@@ -328,7 +331,7 @@ export default defineComponent({
 		display: block;
 	}
 	.category-grid {
-		padding: 0px 5px;
+		padding: 0px 12px;
 		gap: 45px 40px;
 		justify-content: flex-start;
 	}
@@ -352,6 +355,10 @@ export default defineComponent({
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.container {
+		padding-right: 0;
+		padding-left: 0;
+	}
+	.header {
 		padding-right: 0;
 		padding-left: 0;
 	}

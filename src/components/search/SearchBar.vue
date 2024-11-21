@@ -356,15 +356,9 @@ export default defineComponent({
 					start: 0,
 				};
 
-				if (searchResultStore.preliminaryFilter !== '') {
-					query.fq = searchResultStore.preliminaryFilter;
-				}
+				searchResultStore.preliminaryFilter = '';
 
-				if (searchResultStore.sort !== '') {
-					query.sort = searchResultStore.sort;
-				} else {
-					query.sort = encodeURIComponent(`score desc`);
-				}
+				query.sort = encodeURIComponent(`score desc`);
 				timeSearchStore.setTimeFacetsOpen(false);
 
 				router.push({
