@@ -4,7 +4,6 @@
 			<Hero />
 			<PortalContent />
 		</div>
-		<Footer />
 	</div>
 </template>
 
@@ -12,7 +11,6 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import PortalContent from '@/components/common/PortalContent.vue';
-import Footer from '@/components/global/nav/Footer.vue';
 import Hero from '@/components/search/Hero.vue';
 import { useI18n } from 'vue-i18n';
 
@@ -20,7 +18,6 @@ export default defineComponent({
 	name: 'Home',
 	components: {
 		PortalContent,
-		Footer,
 		Hero,
 	},
 

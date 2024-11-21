@@ -2,7 +2,7 @@
 	<div
 		ref="foldableRef"
 		class="foldable-container"
-		@click="toggleContent($event)"
+		@click="toggleContent($event, false)"
 	>
 		<div
 			:style="`background-color:${bg}`"
@@ -21,6 +21,7 @@
 				:aria-label="title"
 				:aria-expanded="foldableOpen"
 				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
+				@click="toggleContent($event, true)"
 			>
 				<div class="icon">
 					<span
@@ -51,7 +52,7 @@
 				ref="slotRef"
 				class="slot"
 			>
-				<slot></slot>
+				<slot v-if="!alwaysExpand ? true : foldableOpen ? true : false"></slot>
 			</div>
 		</div>
 		<div
@@ -65,7 +66,7 @@
 				:title="foldableOpen ? 'Close' : 'Open'"
 				:aria-controls="santizeAndSimplify(`foldable-${title}-${subtitle}`)"
 				:aria-expanded="foldableOpen"
-				@click="toggleContent($event)"
+				@click="toggleContent($event, true)"
 			>
 				{{ foldableOpen ? '-' : '+' }}
 			</button>
@@ -141,26 +142,30 @@ export default defineComponent({
 			return classes;
 		};
 
-		const toggleContent = (e: Event) => {
+		const toggleContent = (e: Event, closeButton: boolean) => {
 			if (slotRef.value) {
 				e.stopPropagation();
 				if (foldableOpen.value) {
-					gsap.to(slotRef.value, {
-						duration: 0.5,
-						opacity: 0,
-						onComplete: () => {
-							gsap.set(slotRef.value, {
-								overwrite: true,
-								display: 'none',
-							});
-						},
-					});
-					gsap.to(contentRef.value, {
-						duration: 0.5,
-						height: '110px',
-						overwrite: true,
-						ease: 'none',
-					});
+					if (closeButton) {
+						gsap.to(slotRef.value, {
+							duration: 0.5,
+							opacity: 0,
+							onComplete: () => {
+								foldableOpen.value = !foldableOpen.value;
+
+								gsap.set(slotRef.value, {
+									overwrite: true,
+									display: 'none',
+								});
+							},
+						});
+						gsap.to(contentRef.value, {
+							duration: 0.5,
+							height: '110px',
+							overwrite: true,
+							ease: 'none',
+						});
+					}
 				} else {
 					if (primaryButtonRef.value !== null) {
 						primaryButtonRef.value.focus();
@@ -169,6 +174,7 @@ export default defineComponent({
 						display: 'flex',
 						overwrite: true,
 						onComplete: () => {
+							foldableOpen.value = !foldableOpen.value;
 							gsap.to(slotRef.value, {
 								opacity: 1,
 								duration: 0.5,
@@ -184,7 +190,6 @@ export default defineComponent({
 					});
 				}
 			}
-			foldableOpen.value = !foldableOpen.value;
 		};
 
 		return {

@@ -1,5 +1,5 @@
 <template>
-	<div class="app">
+	<header class="app">
 		<div
 			v-if="isDevelopment()"
 			class="test-env"
@@ -11,8 +11,11 @@
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<Header :locale="currentLocale"></Header>
-	</div>
-	<div class="content">
+	</header>
+	<main
+		id="main-content"
+		class="content"
+	>
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
@@ -24,17 +27,18 @@
 				<component :is="Component" />
 			</transition>
 		</router-view>
-	</div>
-	<div
-		ref="wipe"
-		class="wipe"
-	>
-		<img
-			title="Royal Danish Library"
-			alt="Logo of the Royal Danish Library"
-			:src="getImgServerSrcURL()"
-		/>
-	</div>
+		<div
+			ref="wipe"
+			class="wipe"
+		>
+			<img
+				title="Royal Danish Library"
+				alt="Logo of the Royal Danish Library"
+				:src="getImgServerSrcURL()"
+			/>
+		</div>
+	</main>
+	<Footer />
 </template>
 
 <script lang="ts">
@@ -337,6 +341,10 @@ export default defineComponent({
 	opacity: 1;
 	position: relative;
 	z-index: 3;
+}
+
+#main-content {
+	min-height: 50vh;
 }
 
 .search-to-home-leave-to {
