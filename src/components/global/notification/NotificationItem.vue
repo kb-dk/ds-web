@@ -3,7 +3,11 @@
 		ref="notificationBox"
 		:class="[
 			notification.userClose ? 'single-notification user' : 'single-notification passing',
-			notification.severity === 'high' ? 'high-severity' : 'low-severity',
+			notification.severity === Severity.ERROR
+				? 'high-severity'
+				: notification.severity === Severity.SUCCESS
+				  ? 'low-severity'
+				  : 'info-severity',
 		]"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
@@ -11,16 +15,22 @@
 		<h3>
 			<span class="title-span">
 				<span
-					v-if="notification.severity === 'low'"
+					v-if="notification.severity === Severity.SUCCESS"
 					class="material-icons"
 				>
 					check
 				</span>
 				<span
-					v-if="notification.severity === 'high'"
+					v-if="notification.severity === Severity.ERROR"
 					class="material-icons"
 				>
 					warning
+				</span>
+				<span
+					v-if="notification.severity === Severity.INFO"
+					class="material-icons"
+				>
+					info
 				</span>
 				{{ notification.key ? $t(notification.title) : notification.title }}
 			</span>
@@ -48,15 +58,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, PropType, ref } from 'vue';
 import gsap from 'gsap';
 import { useI18n } from 'vue-i18n';
+import { NotificationType, Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'NotificationItem',
 
 	props: {
-		notification: { type: Object, required: true },
+		notification: { type: Object as PropType<NotificationType>, required: true },
 		close: { type: Function, required: true },
 	},
 	setup(props) {
@@ -67,6 +78,7 @@ export default defineComponent({
 		let notificationAnimation: null | gsap.core.Tween;
 
 		onMounted(() => {
+			console.log(props.notification);
 			if (!props.notification.userClose) {
 				notificationAnimation = gsap.to(countdown.value, {
 					duration: duration.time,
@@ -91,7 +103,7 @@ export default defineComponent({
 			}
 		};
 
-		return { t, countdown, pauseAnimation, resumeAnimation };
+		return { t, countdown, pauseAnimation, resumeAnimation, Severity };
 	},
 });
 </script>
@@ -110,7 +122,7 @@ export default defineComponent({
 	padding-top: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
-	font-size: 20px;
+	font-size: 18px;
 	box-shadow: 0 5px 15px -7px rgba(30, 30, 30, 0.6);
 	box-sizing: border-box;
 	justify-content: space-between;
@@ -126,29 +138,32 @@ export default defineComponent({
 
 .single-notification:hover .timer-max {
 	background-color: #17171780;
+	transition: all 0.3s ease 0s;
 }
 .timer-max span {
-	display: none;
-}
-.single-notification:hover .timer-max span {
+	opacity: 0;
 	display: block;
 	position: absolute;
 	float: right;
 	right: 0;
+}
+.single-notification:hover .timer-max span {
+	opacity: 100%;
 	color: rgba(255, 255, 255, 0.8);
 	font-size: 26px;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #17171780;
+	transition: opacity 0.4s;
 }
 
 .timer {
 	width: 100%;
 	height: 24px;
-	background-color: #002e70;
 	position: relative;
 }
 
 .timer-max {
 	background-color: #1717172e;
-	border-top: 1px solid #002e70;
 	margin-left: -10px;
 	width: calc(100% + 20px);
 	display: flex;
@@ -218,8 +233,10 @@ h3 {
 	border: 1px solid white;
 }
 
-.low-severity .close {
-	background-color: #fff6c4;
+.info-severity {
+	background-color: white;
+	color: #002e70;
+	border: 1px solid #002e70;
 }
 
 .high-severity .close {
@@ -228,5 +245,21 @@ h3 {
 
 .high-severity .close:before {
 	background-color: #b30018;
+}
+
+.timer-max {
+	border-top: 1px solid #002e70;
+}
+
+.high-severity .timer-max {
+	border-top: 1px solid white;
+}
+
+.timer {
+	background-color: #002e70;
+}
+
+.high-severity .timer {
+	background-color: white;
 }
 </style>
