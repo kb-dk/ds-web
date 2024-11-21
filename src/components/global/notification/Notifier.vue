@@ -6,7 +6,9 @@
 				name="user"
 			>
 				<NotificationItem
-					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === true)"
+					v-for="item in notificationStore.notifications.filter(
+						(notification: NotificationType) => notification.userClose,
+					)"
 					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
@@ -19,7 +21,9 @@
 				name="passive"
 			>
 				<NotificationItem
-					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === false)"
+					v-for="item in notificationStore.notifications.filter(
+						(notification: NotificationType) => !notification.userClose,
+					)"
 					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
@@ -33,7 +37,7 @@
 import { defineComponent, onMounted, onUnmounted } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
 import NotificationItem from '@/components/global/notification/NotificationItem.vue';
-import { NotificationType } from '@/types/NotificationType';
+import { NotificationType, Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'Notifier',
@@ -47,7 +51,7 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			notificationStore.addNotification('test notitication', 'this is a test', false, 'high', true);
+			notificationStore.addNotification('test notitication', 'this is a test', false, Severity.ERROR, false);
 		});
 
 		onUnmounted(() => {
