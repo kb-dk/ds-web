@@ -91,7 +91,7 @@ export default defineComponent({
 <style scoped>
 .hero-container {
 	position: relative;
-	height: 700px;
+	height: auto;
 	display: flex;
 	margin-top: -120px;
 	margin-bottom: 6vw;
@@ -107,9 +107,9 @@ h1 {
 .process-bar {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	height: 30px;
+	height: 34px;
 	display: flex;
-	padding: 5px 25px;
+	padding: 5px 15px;
 }
 
 .procentage {
@@ -117,8 +117,7 @@ h1 {
 	text-align: center;
 	transform: translate(-50%, 0%);
 	color: white;
-	font-weight: bold;
-	font-size: 20px;
+	font-size: 26px;
 }
 
 .step {
@@ -163,6 +162,7 @@ h1 .subtitle {
 
 h1 .subtitle {
 	font-size: 24px;
+	margin-top: 10%;
 }
 
 h1 .headline {
@@ -174,13 +174,17 @@ h1 .headline {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	height: 80%;
 	justify-content: space-evenly;
+}
+.container h1 {
+	margin-top: 135px;
+	margin-bottom: 55px;
 }
 
 .progress-headline {
 	background-color: white;
-	margin: 24px 12px;
+	box-shadow: 0 0px 2px rgb(0 0 0 / 0.3);
+	margin: 15px 15px 0px 15px;
 }
 
 .hero-info {
@@ -192,27 +196,29 @@ h1 .headline {
 	border-bottom: 1px solid white;
 	background-color: rgba(255, 255, 255, 0.35);
 	box-sizing: border-box;
+	padding-bottom: 75px;
 }
 
 .info {
 	height: 100%;
+	margin-top: 0%;
 	display: flex;
 	/* margin-bottom: calc(70px - 3vw); */
 	flex-direction: column;
-	justify-content: center;
 }
 
 .hero-info h2,
 .hero-info p,
 .hero-info .link-container {
-	padding: 5px 25px;
+	padding: 5px 15px;
 	font-family: 'noway';
 	font-weight: 100;
 	color: #0a2e70;
 }
 
 .hero-info h2 {
-	font-size: 18px;
+	font-size: 20px;
+	padding: 12px 25px 6px 25px;
 }
 
 h1 {
@@ -221,6 +227,7 @@ h1 {
 
 .hero-info p {
 	font-size: 14px;
+	padding: 0px 25px 17px 25px;
 }
 
 .hero-info h2,
@@ -239,10 +246,10 @@ h1 {
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	font-size: 18px;
-	padding: 5px 0px;
+	font-size: 26px;
+	padding: 4px 10px 6px 10px;
 	border-radius: 4px;
-	height: 40px;
+	height: 55px;
 	display: flex;
 	align-items: center;
 	box-sizing: border-box;
@@ -384,24 +391,32 @@ h1 {
 		flex-direction: row;
 		margin-left: 12px;
 		justify-content: space-between;
-		align-items: center;
 		height: 100%;
 	}
-
 	h1 {
 		margin-left: 0px;
 	}
-
+	.container h1 {
+		margin-top: 125px;
+	}
+	.process-bar {
+		padding: 5px 20px;
+		margin-bottom: 20px;
+	}
+	.progress-headline {
+		margin: 20px 0px 0px 0px;
+	}
 	.hero-info h2 {
 		font-size: 26px;
+		padding: 14px 20px 0px 20px;
 	}
-
 	.hero-info p {
 		font-size: 16px;
+		padding: 6px 20px 20px 20px;
 	}
 
 	.hero-info {
-		max-width: 400px;
+		max-width: 440px;
 		position: relative;
 		z-index: 0;
 		height: 100%;
@@ -413,7 +428,12 @@ h1 {
 		margin-right: 12px;
 		box-sizing: border-box;
 	}
-
+	.hero-info .link-container {
+		padding: 5px 20px;
+	}
+	.hero-info .info {
+		margin-top: 125px;
+	}
 	.hero-container {
 		height: 500px;
 	}
@@ -428,6 +448,25 @@ h1 {
 
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
+	.hero-info h2 {
+		font-size: 26px;
+		padding: 14px 25px 0px 25px;
+	}
+	.hero-info p {
+		padding: 6px 25px 20px 25px;
+	}
+	.hero-info {
+		max-width: 580px;
+	}
+	.process-bar {
+		padding: 5px 25px;
+	}
+	.hero-info .info {
+		margin-top: 105px;
+	}
+	.hero-info .link-container {
+		padding: 5px 25px;
+	}
 	.hero-container {
 		justify-content: center;
 	}
@@ -436,7 +475,14 @@ h1 {
 		flex-direction: row;
 		max-width: 1150px;
 		justify-content: space-between;
-		align-items: center;
+	}
+	.container h1 {
+		margin-top: 105px;
+	}
+	.link-container .link:hover {
+		background-color: #c4f1ed;
+		color: #0a2e70;
+		text-decoration: underline;
 	}
 }
 /* MEDIA QUERY 1150 */
@@ -447,6 +493,18 @@ h1 {
 }
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
+	.hero-info {
+		max-width: 620px;
+	}
+	.hero-info p {
+		padding: 6px 45px 20px 45px;
+	}
+	.hero-info h2 {
+		padding: 14px 45px 0px 45px;
+	}
+	.process-bar {
+		padding: 5px 45px;
+	}
 	.container {
 		padding-right: 0;
 		padding-left: 0;
@@ -455,6 +513,9 @@ h1 {
 	}
 	.hero-info {
 		margin-right: 0px;
+	}
+	.hero-info .link-container {
+		padding: 5px 45px;
 	}
 }
 </style>
