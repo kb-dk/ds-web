@@ -222,7 +222,7 @@ export class APIServiceClient {
 	}
 
 	async authenticate(): Promise<APIAuthResponseType> {
-		return await this.httpClient.get('bff/v1/authenticate/sds');
+		return await this.httpClient.get('bff/v1/authenticate/');
 	}
 
 	async getKalturaConfIds(): Promise<APIAuthMessagesType> {
