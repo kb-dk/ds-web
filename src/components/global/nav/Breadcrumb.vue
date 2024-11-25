@@ -9,16 +9,18 @@
 				class="level-1"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
-				<span class="line">/</span>
 			</a>
+			<span class="line">/</span>
+
 			<a
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
 				href="https://www.kb.dk/find-materiale"
 				class="level-2"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
-				<span class="line">/</span>
 			</a>
+			<span class="line">/</span>
+
 			<router-link
 				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
@@ -29,10 +31,21 @@
 			</router-link>
 			<span
 				v-if="$route.name === 'Search'"
+				class="line"
+			>
+				/
+			</span>
+			<span
+				v-if="$route.name === 'Search'"
 				class="level-4"
 			>
-				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+			</span>
+			<span
+				v-if="$route.name === 'Record' && lastPath"
+				class="line"
+			>
+				/
 			</span>
 			<router-link
 				v-if="$route.name === 'Record' && lastPath"
@@ -40,7 +53,6 @@
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
 			>
-				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</router-link>
 			<router-link
@@ -52,11 +64,11 @@
 				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</router-link>
+			<span v-if="$route.name === 'Record'">/</span>
 			<span
 				v-if="$route.name === 'Record'"
 				class="level-6"
 			>
-				<span>/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
 			<div class="search-tip">
@@ -201,6 +213,7 @@ export default defineComponent({
 	color: white;
 	background-color: #002e70;
 	border-radius: 4px;
+	margin: 0px 8px;
 }
 
 .bg-container {

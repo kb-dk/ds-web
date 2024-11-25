@@ -108,7 +108,7 @@ export default defineComponent({
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
-			props.click !== undefined ? props.click() : null;
+			props.click !== undefined ? props.click(e) : null;
 		};
 
 		const selectedItems = computed(() => {

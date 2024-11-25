@@ -3,6 +3,7 @@
 <template>
 	<div class="autocomplete">
 		<ul
+			v-if="searchResultStore.autocompleteResult.length > 0"
 			ref="autocomplete"
 			role="listbox"
 			class="autocomplete-list"
@@ -215,7 +216,8 @@ export default defineComponent({
 	height: 39px;
 	padding: 0px 10px;
 	transition: all 0.2s linear 0s;
-	overflow: hidden;
+	/* 	overflow: hidden;
+ */
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
 	background-color: white;

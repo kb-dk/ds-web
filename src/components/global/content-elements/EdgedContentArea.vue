@@ -1,6 +1,11 @@
 <template>
 	<div :class="lines ? 'edge-content lines' : 'edge-content'">
-		<h3 :class="reverse ? 'reverse' : ''">{{ title }}</h3>
+		<h3
+			v-if="title"
+			:class="reverse ? 'reverse' : ''"
+		>
+			{{ title }}
+		</h3>
 		<div
 			ref="top"
 			:class="getClasses('top')"

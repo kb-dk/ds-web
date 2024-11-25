@@ -1,5 +1,8 @@
 <template>
-	<footer class="global-footer">
+	<footer
+		aria-label="footer"
+		class="global-footer"
+	>
 		<nav
 			v-if="currentLocaleMessages !== undefined"
 			class="container"

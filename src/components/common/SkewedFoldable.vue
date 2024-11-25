@@ -269,7 +269,6 @@ h1::first-letter {
 .foldable-container:hover .edge.hover,
 .foldable-container:hover .content.hover {
 	background-color: #c4f1ed !important;
-	cursor: pointer;
 }
 
 .edge.hover,

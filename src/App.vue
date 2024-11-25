@@ -1,5 +1,14 @@
 <template>
-	<header class="app">
+	<header
+		:aria-label="`${route.name as string} header`"
+		class="header"
+	>
+		<a
+			href="#main-content"
+			class="skip-link"
+		>
+			Skip to main content
+		</a>
 		<div
 			v-if="isDevelopment()"
 			class="test-env"
@@ -254,6 +263,7 @@ export default defineComponent({
 
 		return {
 			td,
+			route,
 			leaveDone,
 			currentLocale,
 			wipe,
@@ -269,6 +279,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background-color: #f0f0f0;
+	padding: 5px;
+	z-index: 9999;
+}
+.skip-link:focus {
+	top: 0;
+}
+
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;
@@ -278,7 +300,7 @@ export default defineComponent({
 	transition-delay: 0.15s;
 }
 
-.app {
+.header {
 	position: relative;
 }
 

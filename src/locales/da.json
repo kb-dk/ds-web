@@ -99,6 +99,7 @@
      }
    },
   "search":{
+     "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
      "nohitSubtitle": {
