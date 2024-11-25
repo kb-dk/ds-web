@@ -53,6 +53,7 @@ import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { Severity } from '@/types/NotificationType';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedRecord from '@/components/records/NotAllowedRecord.vue';
@@ -108,15 +109,25 @@ export default defineComponent({
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
-					authStore.isAllowedToDisplayContent = false;
-					const errorMsg =
-						err.response?.status === 403 ? t('error.record.notAllowed') : t('error.record.loadingFailed');
-					errorManager.submitError(err, errorMsg);
-					contentNotAllowed.value = true;
+					let errorMsg = '';
+					if (err.response?.status === 403) {
+						authStore.isAllowedToDisplayContent = false;
+						errorMsg = t('error.record.notAllowed');
+						contentNotAllowed.value = true;
+					} else {
+						errorMsg = t('error.record.loadingFailed');
+						errorManager.submitCustomError('record-error', t('error.title'), errorMsg, Severity.ERROR, true);
+					}
 					break;
 				}
 				case 'moreLikeThisCall':
-					errorManager.submitError(err, t('error.getrelatedrecordsfailed'));
+					errorManager.submitCustomError(
+						'related-content-error',
+						t('error.infoError.title'),
+						t('error.infoError.relatedContent'),
+						Severity.INFO,
+						false,
+					);
 					break;
 			}
 		};

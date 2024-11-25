@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted, inject, watch } from 'vue';
+import { defineComponent, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
@@ -50,10 +50,10 @@ import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
 import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
-import { APIAuthMessagesType } from '@/types/APIResponseTypes';
+import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'App',
@@ -191,7 +191,13 @@ export default defineComponent({
 								searchResultStore.firstBackendFetchExecuted = true;
 							})
 							.catch(() => {
-								errorManager.submitCustomError('solr-error', t('error.backend.solr.notResponsive'));
+								errorManager.submitCustomError(
+									'solr-error',
+									t('error.title'),
+									t('error.backend.solr.notResponsive'),
+									Severity.ERROR,
+									true,
+								);
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
 
@@ -206,7 +212,13 @@ export default defineComponent({
 								authStore.kalturaIdFetchExecuted = true;
 							})
 							.catch(() => {
-								errorManager.submitCustomError('bff-error', t('error.backend.bff.notResponsive'));
+								errorManager.submitCustomError(
+									'bff-error',
+									t('error.title'),
+									t('error.backend.bff.notResponsive'),
+									Severity.ERROR,
+									true,
+								);
 								authStore.kalturaIdFetchExecuted = true;
 							});
 					}

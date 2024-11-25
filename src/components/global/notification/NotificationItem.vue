@@ -113,8 +113,6 @@ export default defineComponent({
 	pointer-events: all;
 	display: flex;
 	flex-direction: column;
-	width: 330px;
-	max-width: 330px;
 	height: auto;
 	min-height: 100px;
 	margin-top: 15px;
@@ -127,6 +125,7 @@ export default defineComponent({
 	box-sizing: border-box;
 	justify-content: space-between;
 }
+
 .title-span {
 	font: normal normal normal 26px/28px Noway;
 	white-space: nowrap;

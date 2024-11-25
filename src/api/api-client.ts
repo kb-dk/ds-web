@@ -1,14 +1,13 @@
-import { AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '@/store/authStore';
 import {
-	APISearchResponseType,
-	APIRecordResponseType,
-	APIMoreLikeThisResponseType,
-	APIAutocompleteResponseType,
-	APIThumbnailsResponseType,
-	APIAuthResponseType,
 	APIAuthMessagesType,
-	// Extend AxiosRequestConfig to include _retryCount to keep TypeScript happy
+	APIAuthResponseType,
+	APIAutocompleteResponseType,
+	APIMoreLikeThisResponseType,
+	APIRecordResponseType,
+	APISearchResponseType,
+	APIThumbnailsResponseType,
 	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
 
@@ -209,7 +208,7 @@ export class APIServiceClient {
 	async getAutocomplete(query: string): Promise<APIAutocompleteResponseType> {
 		return await this.httpClient.get(
 			encodeURI(
-				`bff/v1/proxy/suggest/?suggest.dictionary=radiotv_title_suggest&suggest.q=${query}&suggest.count=5&wt=json`,
+				`bff/v1/proxy/suggest/sds?suggest.dictionary=radiotv_title_suggest&suggest.q=${query}&suggest.count=5&wt=json`,
 			),
 		);
 	}
@@ -223,7 +222,7 @@ export class APIServiceClient {
 	}
 
 	async authenticate(): Promise<APIAuthResponseType> {
-		return await this.httpClient.get('bff/v1/authenticate/');
+		return await this.httpClient.get('bff/v1/authenticate/sds');
 	}
 
 	async getKalturaConfIds(): Promise<APIAuthMessagesType> {

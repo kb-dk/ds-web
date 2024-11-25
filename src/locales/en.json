@@ -339,6 +339,7 @@
       }
    },
    "error": {
+      "title": "Error message",
       "record": {
          "loadingFailed": "The requested material could not be loaded",
          "notAllowed":"You are not authorized to view this material",
@@ -357,6 +358,14 @@
             }
             
        },
+      "backend": {
+         "bff": {
+            "notResponsive": "Messages not responding"
+         }
+      },
+      "thumbnails": {
+         "notResponsive": "Thumbnails do not respond."
+      },
        "auth": {
          "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later",
           "notAllowedHeader": "Unfortunately you do not have access to this content",

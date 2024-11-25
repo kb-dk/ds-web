@@ -336,6 +336,7 @@
    }
   },
   "error": {
+    "title": "Fejlmeddelelse",
     "record": {
       "loadingFailed": "Materialet kunne ikke hentes",
       "notAllowed":"Du har ikke adgang til materialet",
@@ -353,11 +354,23 @@
          "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
       }
    },
+    "backend": {
+      "bff": {
+        "notResponsive": "Messages svare ikke"
+      }
+    },
    "auth": {
       "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere",
      "notAllowedHeader": "Du har desværre ikke adgang til dette indhold",
      "notAllowedText": "Vi kan desværre ikke tilbyde dig denne udsendelse."
    },
+    "infoError": {
+      "title": "Der skete en fejl",
+      "relatedContent": "Der kunne ikke finders noget relateret indhold",
+      "featuredContent": "Fremhævet indhold under DR gennem tiden svarede ikke",
+      "thumbnails": "Billede-oversigt svarer ikke."
+
+    },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
     "wrongUrl": {

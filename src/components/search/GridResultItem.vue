@@ -101,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -113,6 +113,8 @@ import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from '@/components/common/Duration.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useI18n } from 'vue-i18n';
+import { Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'GridResultItem',
@@ -149,7 +151,7 @@ export default defineComponent({
 	setup(props) {
 		const gridContainer = ref<HTMLDivElement | null>(null);
 		const { t, locale } = useI18n();
-
+		const errorManager = inject('errorManager') as ErrorManagerType;
 		const timeSearchStore = useTimeSearchStore();
 		const searchResultStore = useSearchResultStore();
 		const imageData = ref(
@@ -185,6 +187,13 @@ export default defineComponent({
 					})
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
+						errorManager.submitCustomError(
+							'thumbnails-error',
+							t('error.title'),
+							t('error.thumbnails.notResponsive'),
+							Severity.INFO,
+							false,
+						);
 						populateImageDataWithPlaceholder(imageDataObj);
 						imageData.value = JSON.stringify(imageDataObj);
 					});
@@ -219,6 +228,7 @@ export default defineComponent({
 			searchResultStore,
 			addTestDataEnrichment,
 			getStartTime,
+			errorManager,
 		};
 	},
 });
