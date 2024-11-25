@@ -4,6 +4,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 //Had to use the global t function as a work-around here - see comment below
 import i18n from '../i18n';
 import { inject, ref } from 'vue';
+import { Severity } from '@/types/NotificationType';
 
 export const useAuthStore = defineStore('authStore', () => {
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -46,7 +47,13 @@ export const useAuthStore = defineStore('authStore', () => {
 			await APIService.authenticate();
 			startRefreshSessionTimer();
 		} catch (error) {
-			errorManager.submitCustomError('auth-error', t('error.auth.serviceFailed'));
+			errorManager.submitCustomError(
+				'auth-error',
+				t('error.title'),
+				t('error.auth.serviceFailed'),
+				Severity.ERROR,
+				true,
+			);
 		} finally {
 			isAuthenticating.value = false; // Release the authentication lock/flag in all cases
 			firstAuthDone.value = true;

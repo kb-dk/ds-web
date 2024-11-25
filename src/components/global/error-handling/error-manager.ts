@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { createApp } from 'vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { Severity } from '@/types/NotificationType';
 
 export class ErrorManager implements ErrorManagerType {
 	private errorHistory: (AxiosError | string)[] = [];
@@ -22,14 +23,26 @@ export class ErrorManager implements ErrorManagerType {
 		this.handleError(error, message);
 	}
 
-	public submitCustomError(error: string, message: string): void {
-		this.handleError(error, message);
+	public submitCustomError(
+		error: string,
+		title: string,
+		message: string,
+		severity: Severity,
+		userClose: boolean,
+	): void {
+		this.handleError(error, message, title, severity, userClose);
 	}
 
-	private handleError(error: AxiosError | string, message: string) {
+	private handleError(
+		error: AxiosError | string,
+		message: string,
+		title = '',
+		severity: Severity = Severity.ERROR,
+		userClose = true,
+	) {
 		// Check if the current error is in the error history
 		if (!this.isErrorInHistory(error)) {
-			this.publishNotifyEvent(message);
+			this.publishNotifyEvent(message, title, severity, userClose);
 			this.errorHistory.push(error);
 
 			// Remove error after 5 seconds
@@ -71,12 +84,12 @@ export class ErrorManager implements ErrorManagerType {
 		}, delayMs);
 	}
 
-	private getNotifierMessage(message: string) {
-		return { title: 'error', message: message };
+	private getNotifierMessage(message: string, title: string, severity: Severity, userClose: boolean) {
+		return { title: title, message: message, severity: severity, userClose: userClose };
 	}
 
-	private publishNotifyEvent(message: string) {
-		const notifierMsgDetails = this.getNotifierMessage(message);
+	private publishNotifyEvent(message: string, title: string, severity: Severity, userClose: boolean) {
+		const notifierMsgDetails = this.getNotifierMessage(message, title, severity, userClose);
 		const customEvent = new CustomEvent('notify-user', {
 			detail: notifierMsgDetails,
 		});

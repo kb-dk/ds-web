@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import ItemSlider from '@/components/search/ItemSlider.vue';
 import { APIService } from '@/api/api-service';
 import gsap from 'gsap';
@@ -63,6 +63,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { convertSecondstoShow } from '@/utils/time-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
@@ -79,7 +81,7 @@ export default defineComponent({
 	},
 	setup(props) {
 		const { t } = useI18n();
-
+		const errorManager = inject('errorManager') as ErrorManagerType;
 		const thumbnailImages = ref(10);
 		const extraContentShown = ref(false);
 		const thumbnailImageData = ref([] as string[]);
@@ -139,7 +141,13 @@ export default defineComponent({
 				})
 				//Just in case the service fail - we fail silently and swoop in with the placeholder
 				.catch(() => {
-					//nay
+					errorManager.submitCustomError(
+						'thumbnails-error',
+						t('error.title'),
+						t('error.thumbnails.notResponsive'),
+						Severity.INFO,
+						false,
+					);
 				});
 		};
 
@@ -170,6 +178,7 @@ export default defineComponent({
 			convertSecondstoShow,
 			router,
 			t,
+			errorManager,
 			addTestDataEnrichment,
 		};
 	},
