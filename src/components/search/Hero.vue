@@ -246,7 +246,7 @@ h1 {
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	font-size: 26px;
+	font-size: 24px;
 	padding: 4px 10px 6px 10px;
 	border-radius: 4px;
 	height: 55px;
@@ -256,6 +256,7 @@ h1 {
 	justify-content: center;
 	border: 1px solid white;
 	margin-bottom: 15px;
+	transition: all 0.1s linear 0s;
 }
 .subtitle {
 	text-align: center;
@@ -382,6 +383,9 @@ h1 {
 @media (min-width: 640px) {
 	.container {
 		max-width: 990px;
+	}
+	.link-container .link {
+		font-size: 26px;
 	}
 }
 
