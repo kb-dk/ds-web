@@ -113,7 +113,7 @@ import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from '@/components/common/Duration.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useI18n } from 'vue-i18n';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
@@ -193,6 +193,7 @@ export default defineComponent({
 							t('error.thumbnails.notResponsive'),
 							Severity.INFO,
 							false,
+							Priority.LOW,
 						);
 						populateImageDataWithPlaceholder(imageDataObj);
 						imageData.value = JSON.stringify(imageDataObj);

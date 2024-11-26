@@ -356,7 +356,10 @@
    },
     "backend": {
       "bff": {
-        "notResponsive": "Messages svare ikke"
+        "notResponsive": "Messages svarer ikke"
+      },
+      "solr": {
+        "notResponsive":"Der er en fejl i systemet, som vi arbejder på at løse hurtigst muligt. Vi håber på din forståelse og tålmodighed"
       }
     },
    "auth": {

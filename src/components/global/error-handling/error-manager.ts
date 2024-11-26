@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { createApp } from 'vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export class ErrorManager implements ErrorManagerType {
 	private errorHistory: (AxiosError | string)[] = [];
@@ -29,8 +29,9 @@ export class ErrorManager implements ErrorManagerType {
 		message: string,
 		severity: Severity,
 		userClose: boolean,
+		priority: Priority,
 	): void {
-		this.handleError(error, message, title, severity, userClose);
+		this.handleError(error, message, title, severity, userClose, priority);
 	}
 
 	private handleError(
@@ -39,10 +40,11 @@ export class ErrorManager implements ErrorManagerType {
 		title = '',
 		severity: Severity = Severity.ERROR,
 		userClose = true,
+		priority: Priority = Priority.MEDIUM,
 	) {
 		// Check if the current error is in the error history
 		if (!this.isErrorInHistory(error)) {
-			this.publishNotifyEvent(message, title, severity, userClose);
+			this.publishNotifyEvent(message, title, severity, userClose, priority);
 			this.errorHistory.push(error);
 
 			// Remove error after 5 seconds
@@ -84,12 +86,24 @@ export class ErrorManager implements ErrorManagerType {
 		}, delayMs);
 	}
 
-	private getNotifierMessage(message: string, title: string, severity: Severity, userClose: boolean) {
-		return { title: title, message: message, severity: severity, userClose: userClose };
+	private getNotifierMessage(
+		message: string,
+		title: string,
+		severity: Severity,
+		userClose: boolean,
+		priority: Priority,
+	) {
+		return { title: title, message: message, severity: severity, userClose: userClose, priority: priority };
 	}
 
-	private publishNotifyEvent(message: string, title: string, severity: Severity, userClose: boolean) {
-		const notifierMsgDetails = this.getNotifierMessage(message, title, severity, userClose);
+	private publishNotifyEvent(
+		message: string,
+		title: string,
+		severity: Severity,
+		userClose: boolean,
+		priority: Priority,
+	) {
+		const notifierMsgDetails = this.getNotifierMessage(message, title, severity, userClose, priority);
 		const customEvent = new CustomEvent('notify-user', {
 			detail: notifierMsgDetails,
 		});

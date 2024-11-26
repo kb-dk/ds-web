@@ -53,7 +53,7 @@ import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericRecordType } from '@/types/GenericRecordTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedRecord from '@/components/records/NotAllowedRecord.vue';
@@ -116,7 +116,14 @@ export default defineComponent({
 						contentNotAllowed.value = true;
 					} else {
 						errorMsg = t('error.record.loadingFailed');
-						errorManager.submitCustomError('record-error', t('error.title'), errorMsg, Severity.ERROR, true);
+						errorManager.submitCustomError(
+							'record-error',
+							t('error.title'),
+							errorMsg,
+							Severity.ERROR,
+							true,
+							Priority.MEDIUM,
+						);
 					}
 					break;
 				}
@@ -127,6 +134,7 @@ export default defineComponent({
 						t('error.infoError.relatedContent'),
 						Severity.INFO,
 						false,
+						Priority.MEDIUM,
 					);
 					break;
 			}

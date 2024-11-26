@@ -63,7 +63,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { convertSecondstoShow } from '@/utils/time-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
@@ -147,6 +147,7 @@ export default defineComponent({
 						t('error.thumbnails.notResponsive'),
 						Severity.INFO,
 						false,
+						Priority.LOW,
 					);
 				});
 		};

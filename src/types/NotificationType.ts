@@ -6,10 +6,17 @@ export interface NotificationType {
 	userClose: boolean;
 	time: number;
 	count: number;
+	priority: Priority;
 }
 
 export enum Severity {
 	ERROR,
 	INFO,
 	SUCCESS,
+}
+
+export enum Priority {
+	LOW,
+	MEDIUM,
+	HIGH,
 }
