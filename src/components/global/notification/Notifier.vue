@@ -51,7 +51,14 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			// notificationStore.addNotification('test notitication', 'this is a test', false, Severity.ERROR, false);
+			// notificationStore.addNotification(
+			// 	'test notitication',
+			// 	'this is a test this is a test this is a test this is a test this is a test this is a test this is a test',
+			// 	false,
+			// 	Severity.INFO,
+			// 	false,
+			// 	Priority.HIGH,
+			// );
 		});
 
 		onUnmounted(() => {
@@ -133,8 +140,9 @@ ul {
 	position: fixed;
 	z-index: 50;
 	width: 100%;
-	max-width: 300px;
-	right: 35px;
+	max-width: 100%;
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .passive-notifications ul {
@@ -146,5 +154,17 @@ ul {
 .user-notifications ul {
 	list-style-type: none;
 	pointer-events: none;
+}
+@media (min-width: 480px) {
+	.passive-notifications {
+		max-width: 400px;
+	}
+}
+
+@media (min-width: 800px) {
+	.passive-notifications {
+		right: 1%;
+		transform: none;
+	}
 }
 </style>
