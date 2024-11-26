@@ -20,8 +20,13 @@
 					@click="executeOnSelection"
 					@mouseenter="updateSelectedElement(i + 1)"
 					@mouseleave="updateSelectedElement(0)"
-					v-html="setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)"
-				></button>
+				>
+					<span
+						class="autocomplete-term"
+						v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
+					></span>
+					<span class="number">{{ `(${item.weight})` }}</span>
+				</button>
 			</li>
 		</ul>
 	</div>
@@ -88,7 +93,10 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					//executeOnSelection(e);
+					break;
+				case 'Tab':
+					moveSelectorDown();
+					e.preventDefault();
 					break;
 				default:
 					break;
@@ -114,11 +122,7 @@ export default defineComponent({
 		const executeOnSelection = (e: Event) => {
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
-				doAutocompleteSearch(
-					currentSelectedAutocomplete.value !== 0
-						? searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term
-						: searchResultStore.currentQuery,
-				);
+				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
 			}
 		};
 
@@ -134,7 +138,7 @@ export default defineComponent({
 				const matched = str.substring(startIndex, endIndex);
 				const after = str.substring(endIndex);
 
-				const highlightedString = `${before}<span style="font-weight:bold">${matched}</span>${after}`;
+				const highlightedString = `<span>${before}<span style="font-weight:bold">${matched}</span>${after}</span>`;
 				return DOMPurify.default.sanitize(highlightedString, { ALLOWED_TAGS: ['span'] });
 			}
 			return str;
@@ -179,10 +183,21 @@ export default defineComponent({
 	font-size: 16px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
 }
 
-.autocomplete button span {
-	font-weight: bold;
+.autocomplete-term {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline-block;
+}
+
+.autocomplete button .number {
+	color: #757575;
+	margin-left: 5px;
+	font-size: 12px;
 }
 
 .autocomplete:has(> ul:empty) {
@@ -207,15 +222,9 @@ export default defineComponent({
 	background-color: white;
 }
 
-.autocomplete button span {
-	font-weight: bold;
-}
-
 .autocomplete ul li {
 	height: 39px;
-	padding: 0px 10px;
 	transition: all 0.2s linear 0s;
-	overflow: hidden;
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
 	background-color: white;
@@ -239,7 +248,7 @@ export default defineComponent({
 .autocomplete ul li:has(> button:focus):before,
 .autocomplete ul li:has(> button:focus) + li:before {
 	padding: 0px 0px;
-	transform: scaleX(120%);
+	transform: scaleX(calc(100%));
 	z-index: 5;
 }
 
@@ -251,6 +260,7 @@ export default defineComponent({
 	height: 1px;
 	position: relative;
 	transition: all 0.2s linear 0s;
+	transform: scaleX(95%);
 	z-index: 0;
 }
 
