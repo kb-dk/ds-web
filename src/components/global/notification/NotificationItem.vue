@@ -124,6 +124,7 @@ export default defineComponent({
 	box-shadow: 0 5px 15px -7px rgba(30, 30, 30, 0.6);
 	box-sizing: border-box;
 	justify-content: space-between;
+	width: 100%;
 }
 
 .title-span {
