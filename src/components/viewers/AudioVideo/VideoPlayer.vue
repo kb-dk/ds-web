@@ -16,6 +16,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedBanner from '@/components/global/content-elements/NotAllowedBanner.vue';
+import { Priority, Severity } from '@/types/NotificationType';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
@@ -42,15 +43,36 @@ export default defineComponent({
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
 				case 'loadMedia': {
-					errorManager.submitCustomError('player-error', t('error.players.video.fileInit'));
+					errorManager.submitCustomError(
+						'player-error',
+						t('error.title'),
+						t('error.players.video.fileInit'),
+						Severity.ERROR,
+						true,
+						Priority.MEDIUM,
+					);
 					break;
 				}
 				case 'loadScript': {
-					errorManager.submitCustomError('player-error', t('error.players.video.playerInit'));
+					errorManager.submitCustomError(
+						'player-error',
+						t('error.title'),
+						t('error.players.video.playerInit'),
+						Severity.ERROR,
+						true,
+						Priority.MEDIUM,
+					);
 					break;
 				}
 				default: {
-					errorManager.submitCustomError('player-error', t('error.players.video.generic'));
+					errorManager.submitCustomError(
+						'player-error',
+						t('error.title'),
+						t('error.players.video.generic'),
+						Severity.ERROR,
+						true,
+						Priority.MEDIUM,
+					);
 				}
 			}
 		};

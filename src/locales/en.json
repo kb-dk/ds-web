@@ -363,10 +363,17 @@
       "backend": {
          "bff": {
             "notResponsive": "Messages not responding"
+         },
+         "solr": {
+            "notResponsive":"There was an error in the system, that we're working to fix as soon as possible. We hope for your understanding and patience"
          }
       },
-      "thumbnails": {
-         "notResponsive": "Thumbnails do not respond."
+      "infoError": {
+         "title": "There was an error",
+         "relatedContent": "We could not find related content",
+         "featuredContent": "Featured content is not responding",
+         "thumbnails": "Thumbnails are not responding"
+
       },
        "auth": {
          "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later",

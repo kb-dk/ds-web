@@ -4,7 +4,7 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 //Had to use the global t function as a work-around here - see comment below
 import i18n from '../i18n';
 import { inject, ref } from 'vue';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export const useAuthStore = defineStore('authStore', () => {
 	const errorManager = inject('errorManager') as ErrorManagerType;
@@ -53,6 +53,7 @@ export const useAuthStore = defineStore('authStore', () => {
 				t('error.auth.serviceFailed'),
 				Severity.ERROR,
 				true,
+				Priority.HIGH,
 			);
 		} finally {
 			isAuthenticating.value = false; // Release the authentication lock/flag in all cases

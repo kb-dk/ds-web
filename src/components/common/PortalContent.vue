@@ -90,7 +90,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { APIService } from '@/api/api-service';
 import { APISearchResponseType } from '@/types/APIResponseTypes';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
@@ -173,6 +173,7 @@ export default defineComponent({
 						t('error.infoError.featuredContent'),
 						Severity.INFO,
 						false,
+						Priority.LOW,
 					);
 				})
 				.finally(() => {

@@ -1,12 +1,19 @@
 import { defineStore } from 'pinia';
-import { NotificationType, Severity } from '@/types/NotificationType';
+import { NotificationType, Priority, Severity } from '@/types/NotificationType';
 import { ref } from 'vue';
 
 export const useNotificationStore = defineStore('notificationStore', () => {
 	const notifications = ref([] as Array<NotificationType>);
 	const count = ref(0);
 
-	const addNotification = (title: string, desc: string, key: boolean, severity: Severity, userClose: boolean) => {
+	const addNotification = (
+		title: string,
+		desc: string,
+		key: boolean,
+		severity: Severity,
+		userClose: boolean,
+		priority: Priority,
+	) => {
 		const notification: NotificationType = {
 			title: title,
 			desc: desc,
@@ -15,9 +22,18 @@ export const useNotificationStore = defineStore('notificationStore', () => {
 			userClose: userClose,
 			time: new Date().getTime(),
 			count: count.value,
+			priority: priority,
 		};
-		addToCount();
-		notifications.value.push(notification);
+		const foundItems = notifications.value.find((value) => {
+			return value.priority === Priority.HIGH;
+		});
+		if (!foundItems) {
+			if (notification.priority === Priority.HIGH) {
+				resetNotifications();
+			}
+			addToCount();
+			notifications.value.push(notification);
+		}
 	};
 
 	const addToCount = () => {

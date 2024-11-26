@@ -69,6 +69,7 @@ export default defineComponent({
 				e.detail.key !== undefined ? e.detail.key : false,
 				e.detail.severity,
 				e.detail.userClose !== undefined ? e.detail.userClose : false,
+				e.detail.priority,
 			);
 		};
 

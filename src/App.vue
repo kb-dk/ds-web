@@ -66,7 +66,7 @@ import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
-import { Severity } from '@/types/NotificationType';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'App',
@@ -210,6 +210,7 @@ export default defineComponent({
 									t('error.backend.solr.notResponsive'),
 									Severity.ERROR,
 									true,
+									Priority.HIGH,
 								);
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
@@ -231,6 +232,7 @@ export default defineComponent({
 									t('error.backend.bff.notResponsive'),
 									Severity.ERROR,
 									true,
+									Priority.MEDIUM,
 								);
 								authStore.kalturaIdFetchExecuted = true;
 							});
