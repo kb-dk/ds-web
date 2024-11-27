@@ -8,12 +8,11 @@
 				<h2>{{ $t('error.auth.notAllowedHeader') }}</h2>
 				<div>
 					{{ $t('error.auth.notAllowedText') }}
-					{{ $t('search.nohitSubtitle.readMore') }}
 					<a
 						:href="$t('search.nohitSubtitle.link')"
 						:data-testid="addTestDataEnrichment('link', 'NotAllowedBanner', `Link-to-read-more`, 0)"
 					>
-						{{ $t('search.nohitSubtitle.contains') }}
+						{{ $t('search.portals.drArchive') }}
 					</a>
 				</div>
 			</div>
@@ -67,6 +66,10 @@ export default defineComponent({
 	text-align: left;
 	margin-top: 20px;
 	margin-left: 40px;
+}
+
+.not-allowed-text a {
+	color: white;
 }
 
 .not-allowed-lock {
