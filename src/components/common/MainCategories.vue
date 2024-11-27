@@ -145,7 +145,6 @@ export default defineComponent({
 .header h1 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
-	text-transform: uppercase;
 	font-size: 32px;
 	margin: 0;
 }
@@ -159,7 +158,8 @@ export default defineComponent({
 	display: flex;
 	width: calc(100vw - 15px);
 	justify-content: center;
-	padding-top: 25px;
+	padding-top: 50px;
+	padding-bottom: 40px;
 }
 
 .loading {
@@ -176,7 +176,7 @@ export default defineComponent({
 
 .category-grid {
 	display: flex;
-	gap: 30px 10px;
+	gap: 40px 15px;
 	flex-wrap: wrap;
 	justify-content: center;
 	min-height: 200px;
@@ -188,9 +188,9 @@ export default defineComponent({
 	box-shadow: 2px 2px 4px #75757500;
 	border: 2px solid #ffffff;
 	border-radius: 4px;
-	color: black;
+	color: #002e70;
 	width: 100%;
-	padding: 10px 5px;
+	padding: 8px 8px 0px 10px;
 	box-sizing: border-box;
 	margin: 5px 10px;
 	height: 75px;
@@ -199,14 +199,16 @@ export default defineComponent({
 	position: relative;
 	text-decoration: none;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 20px;
-	transition: all 0.3s linear 0s;
+	/*justify-content: center;
+	align-items: center;*/
+	font-size: 26px;
+	line-height: 1;
+	transition: all 0.1s linear 0s;
 }
 
 .category-item:hover {
 	background-color: #c4f1ed;
+	text-decoration: underline;
 }
 
 .category-image {
@@ -216,7 +218,7 @@ export default defineComponent({
 	width: 24px;
 	height: 24px;
 	z-index: 20;
-	top: -21px;
+	top: -25px;
 	left: -1px;
 	background-image: url('@/assets/icons/default/diverse.svg');
 	filter: hue-rotate(5deg);
@@ -226,13 +228,16 @@ export default defineComponent({
 	transform: rotateZ(25deg);
 	background-image: url('@/assets/icons/cyan/diverse-cyan.svg');
 }
-
+.category-item:hover .category-image.livsstil {
+	top: -30px;
+	transform: rotate(0deg);
+}
 .category-item .number {
 	position: absolute;
 	bottom: -16px;
 	right: 8px;
-	font-size: 12px !important;
-	padding: 5px;
+	font-size: 16px !important;
+	padding: 2px 5px 3px 5px;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid #002e70;
 	border-radius: 4px;
