@@ -279,7 +279,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
-				query !== '*:*' ? (currentQuery.value = query) : null;
+				/* query !== '*:*' ? (currentQuery.value = query) : null; */
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
 				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
