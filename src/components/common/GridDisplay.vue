@@ -122,7 +122,7 @@ export default defineComponent({
 				if (!this.isDown) {
 					return;
 				}
-				e.preventDefault();
+				//e.preventDefault();
 
 				let x: number;
 				if (e instanceof TouchEvent) {
