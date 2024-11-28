@@ -1,12 +1,10 @@
 <template>
 	<div class="sound-thumbnail-container">
 		<div class="thumb">
-			<div
-				v-for="(line, index) in lines"
-				:key="index"
-				class="line"
-				:style="`height:${Math.random() * 60 + 5}%;`"
-			></div>
+			<img
+				:src="getImgServerSrcURL()"
+				alt="Image of soundwaves"
+			/>
 		</div>
 		<span class="material-icons play">play_circle_filled</span>
 	</div>
@@ -20,7 +18,10 @@ export default defineComponent({
 
 	setup() {
 		const lines = ref(90);
-		return { lines };
+		const getImgServerSrcURL = () => {
+			return new URL(`@/assets/images/soundwave.svg`, import.meta.url).href;
+		};
+		return { lines, getImgServerSrcURL };
 	},
 });
 </script>
