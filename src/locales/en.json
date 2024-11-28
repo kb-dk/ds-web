@@ -374,7 +374,7 @@
 
       },
        "auth": {
-         "serviceFailed":"The apllication's underlying services are not available at the moment - please try again later",
+         "serviceFailed":"The application's underlying services are not available at the moment - please try again later",
           "notAllowedHeader": "Unfortunately you do not have access to this content",
           "notAllowedText": "We can unfortunately not provide you this broadcast."
       },
