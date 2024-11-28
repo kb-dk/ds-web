@@ -11,17 +11,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'SoundThumbnail',
 
 	setup() {
-		const lines = ref(90);
 		const getImgServerSrcURL = () => {
 			return new URL(`@/assets/images/soundwave.svg`, import.meta.url).href;
 		};
-		return { lines, getImgServerSrcURL };
+		return { getImgServerSrcURL };
 	},
 });
 </script>
