@@ -1,5 +1,6 @@
 {
    "app": {
+      "skip":"Spring til hovedindhold",
       "titles": {
          "frontpage": {
             "archive":  {
@@ -99,6 +100,7 @@
      }
    },
   "search":{
+     "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
      "nohitSubtitle": {

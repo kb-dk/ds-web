@@ -1,5 +1,6 @@
 {
    "app": {
+      "skip":"Skip to main content",
       "titles": {
          "frontpage": {
             "archive":  {
@@ -38,7 +39,7 @@
    "timeSearch": {
       "timeMachine":"Search via period",
       "searchDate": "Search via date",
-      "searchCategory": "Search via category",
+      "searchCategories": "Search via category",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
@@ -61,7 +62,7 @@
       "selection":"A selection of the results",
       "dateSubtitle": "Pick a date you would like to see content from.",
       "timeMachineSubtitle": "Pick which period in DR's broadcasts you would like to search in.",
-      "searchCategorySubtitle": "Pick a category and discover our broadcasts.",
+      "searchCategoriesSubtitle": "Pick a category and discover our broadcasts.",
       "monthHeadline":"Choose months",
       "dayHeadline":"Choose weekdays",
       "timeslotHeadline":"Choose timeslots",
@@ -100,6 +101,7 @@
      }
    },
   "search":{
+     "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
      "hitcount": " result fund for | results found for",
      "nohit":"Sorry we didn't find any results matching this search \"{query}\"",

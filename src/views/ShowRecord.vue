@@ -34,7 +34,6 @@
 				</div>
 			</div>
 		</div>
-		<Footer />
 	</div>
 </template>
 
@@ -46,7 +45,6 @@ import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
 import GenericRecord from '@/components/records/GenericRecord.vue';
 import BroadcastVideoRecordMetadataView from '@/components/records/BroadcastVideoRecord.vue';
 import BroadcastAudioRecordMetadataView from '@/components/records/BroadcastAudioRecord.vue';
-import Footer from '@/components/global/nav/Footer.vue';
 import { useI18n } from 'vue-i18n';
 import { AxiosError } from 'axios'; //Types
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
@@ -64,7 +62,6 @@ export default defineComponent({
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
-		Footer,
 	},
 
 	setup() {

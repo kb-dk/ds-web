@@ -23,7 +23,7 @@
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
 				:data-testid="addTestDataEnrichment('button', 'custom-expander', `${headline}-status-toggle`, 0)"
 				:title="expanderOpen ? 'Close options' : 'Open options'"
-				@click="toggleExpander()"
+				@click="toggleExpander($event)"
 			>
 				{{ expanderOpen ? '-' : '+' }}
 			</button>
@@ -106,7 +106,8 @@ export default defineComponent({
 			props.updateEntity(parent, index, val, props.facetType);
 		};
 
-		const toggleExpander = () => {
+		const toggleExpander = (e: Event) => {
+			e.stopPropagation();
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
 					height: props.fade ? '65px' : '0px',

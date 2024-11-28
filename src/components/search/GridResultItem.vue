@@ -170,7 +170,7 @@ export default defineComponent({
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = props.resultdata?.title;
+			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title;
 
 			if (props.resultdata?.file_id) {

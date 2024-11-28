@@ -3,6 +3,7 @@
 <template>
 	<div class="autocomplete">
 		<ul
+			v-if="searchResultStore.autocompleteResult.length > 0"
 			ref="autocomplete"
 			role="listbox"
 			class="autocomplete-list"
