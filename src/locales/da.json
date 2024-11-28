@@ -1,5 +1,6 @@
 {
    "app": {
+      "skip":"Spring til hovedindhold",
       "titles": {
          "frontpage": {
             "archive":  {

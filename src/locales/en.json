@@ -1,5 +1,6 @@
 {
    "app": {
+      "skip":"Skip to main content",
       "titles": {
          "frontpage": {
             "archive":  {

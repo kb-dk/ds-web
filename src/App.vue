@@ -7,7 +7,7 @@
 			href="#main-content"
 			class="skip-link"
 		>
-			Skip to main content
+			{{ t('app.skip') }}
 		</a>
 		<div
 			v-if="isDevelopment()"
@@ -273,6 +273,7 @@ export default defineComponent({
 			onBeforeLeave,
 			isDevelopment,
 			returnCurrentEnv,
+			t,
 		};
 	},
 });
