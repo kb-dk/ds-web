@@ -76,14 +76,17 @@
 							v-for="(link, index) in currentLocaleMessages.column4.links"
 							:key="index"
 						>
-							<a
-								v-if="link.link"
-								:href="link.link"
-								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
-							>
-								{{ link.title }}
-							</a>
-							<span v-else>{{ link.title }}</span>
+							<!--TODO - remove div at some point into launch-->
+							<div v-if="index !== '2' && index !== '3'">
+								<a
+									v-if="link.link"
+									:href="link.link"
+									:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
+								>
+									{{ link.title }}
+								</a>
+								<span v-else>{{ link.title }}</span>
+							</div>
 						</li>
 					</ul>
 					<div class="some-icons">
@@ -126,7 +129,7 @@
 	</footer>
 </template>
 <script lang="ts">
-import { defineComponent, toRaw, watch, ref, onMounted } from 'vue';
+import { defineComponent, onMounted, ref, toRaw, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FooterType } from '@/types/FooterType';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
