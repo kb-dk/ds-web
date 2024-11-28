@@ -130,7 +130,7 @@ export default defineComponent({
 		});
 
 		watch(
-			() => route.params.id,
+			() => props.entryId,
 			() => {
 				if (KalturaPlayer) {
 					videoPlayer.destroy();
