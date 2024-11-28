@@ -1,25 +1,5 @@
 <template>
 	<div class="portal-container container">
-		<div class="info-component">
-			<InfoComponent
-				title="Information om kategorier"
-				:show-title="false"
-				icon="info_outline"
-				bg-color="#"
-				color="white"
-				modal-offset="-220px"
-				top="calc(2px)"
-				left="calc(350px)"
-				info-offset="18px"
-			>
-				<p>
-					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
-					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
-					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
-					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
-				</p>
-			</InfoComponent>
-		</div>
 		<div class="categories">
 			<SkewedFoldable
 				:title="$t('timeSearch.searchCategories')"
@@ -31,6 +11,9 @@
 				:shadow-bottom="true"
 				:shadow-top="true"
 				:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+				:cod="false"
+				:info-key="t('infoBoxes.categories')"
+				:info-title="$t('infoBoxes.categoriesTitle')"
 			>
 				<MainCategories
 					:title="$t('timeSearch.searchCategories')"
@@ -38,26 +21,6 @@
 					:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 				></MainCategories>
 			</SkewedFoldable>
-		</div>
-		<div class="info-component">
-			<InfoComponent
-				title="Information om søgning via dato"
-				:show-title="false"
-				icon="info_outline"
-				bg-color="#"
-				color="#0a2e70"
-				modal-offset="-220px"
-				top="calc(18px)"
-				left="calc(260px)"
-				info-offset="18px"
-			>
-				<p>
-					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
-					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
-					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
-					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
-				</p>
-			</InfoComponent>
 		</div>
 		<div class="date-picker">
 			<SkewedFoldable
@@ -72,29 +35,12 @@
 				:dashed-bottom="true"
 				:shadow-bottom="true"
 				:hover-effect="true"
+				:cod="true"
+				:info-key="t('infoBoxes.daySearch')"
+				:info-title="$t('infoBoxes.daySearchTitle')"
 			>
 				<DayPicker />
 			</SkewedFoldable>
-		</div>
-		<div class="info-component">
-			<InfoComponent
-				title="Information om søgning via periode"
-				:show-title="false"
-				icon="info_outline"
-				bg-color="#"
-				color="#002e70"
-				modal-offset="-220px"
-				top="calc(1px)"
-				left="calc(305px)"
-				info-offset="18px"
-			>
-				<p>
-					I kategorierne finder du primært TV-udsendelser. Der ligger også en mindre mængde radioudsendelser i hver
-					kategori, men de fleste af radioudsendelserne finder du i “Rodekassen.” Når du har valgt en kategori, kan du
-					filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet
-					inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.
-				</p>
-			</InfoComponent>
 		</div>
 		<div class="time-search">
 			<SkewedFoldable
@@ -107,6 +53,9 @@
 				:fullwidth="true"
 				:dashed-bottom="true"
 				:shadow-bottom="false"
+				:cod="false"
+				:info-key="$t('infoBoxes.timeMachine')"
+				:info-title="$t('infoBoxes.timeMachineTitle')"
 			>
 				<TimeSearchComponent
 					:title="$t('timeSearch.timeMachine')"
@@ -161,7 +110,6 @@ export default defineComponent({
 		DayPicker,
 		MainCategories,
 		SkewedFoldable,
-		InfoComponent,
 	},
 
 	setup() {
@@ -247,25 +195,6 @@ export default defineComponent({
 <style scoped>
 .time-search {
 	margin-bottom: -70px;
-}
-
-.info-component {
-	height: 0px;
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
-	width: 100%;
-	position: relative;
-}
-
-.info-component:nth-of-type(1) {
-	z-index: 20;
-}
-.info-component:nth-of-type(2) {
-	z-index: 19;
-}
-.info-component:nth-of-type(3) {
-	z-index: 18;
 }
 
 .portal-container {

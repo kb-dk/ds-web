@@ -3,7 +3,21 @@
 		class="header"
 		:style="`color: ${text}`"
 	>
-		<h1>{{ title }}</h1>
+		<h1>
+			<span>{{ title }}</span>
+			<div class="info-container">
+				<InfoComponent
+					:title="t('infoBoxes.categoriesTitle')"
+					:show-title="false"
+					icon="info_outline"
+					bg-color="transparent"
+					color="white"
+					modal-offset="0px"
+				>
+					{{ t('infoBoxes.categories') }}
+				</InfoComponent>
+			</div>
+		</h1>
 		<span>{{ subtitle }}</span>
 	</div>
 	<div class="head-categories">
@@ -63,9 +77,12 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { facetItem } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
+import InfoComponent from './InfoComponent.vue';
 export default defineComponent({
 	name: 'MainCategories',
+	components: {
+		InfoComponent,
+	},
 	props: {
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
@@ -142,12 +159,21 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 
+.info-container {
+	display: inline-block;
+}
+
 .header h1 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	text-transform: uppercase;
 	font-size: 32px;
 	margin: 0;
+	display: flex;
+}
+
+.header h1 span {
+	font-size: 32px;
 }
 
 .header span {

@@ -374,5 +374,13 @@
       "progress":"Vi er nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre",
       "link":"Læs mere om DR-arkivet"
+   },
+   "infoBoxes": {
+      "categoriesTitle":"Information om kategorier",
+      "categories":"Kategorierne indeholder hver især et udsnit af primært TV-udsendelser fra arkivet. Radioudsendelser er ikke kategoriseret i særlig høj grad og ligger derfor for de flestes vedkommende i en kategori for sig selv. Når du har valgt en kategori, kan du filtrere yderligere i resultaterne på eksempelvis kanal eller tidspunkt, men du kan ikke søge i søgefeltet inden for en kategori. Hvis det er det, du vil, skal du søge først og derefter filtrere på en kategori.",
+      "daySearchTitle":"Information om søg via dato",
+      "daySearch":"Du kan skifte årstal eller måned ved at klikke på årstal eller måned øverst i kalenderen. Når du har valgt en dato, kan du efterfølgende filtrere resultaterne yderligere på eksempelvis kategori og kanal. Hvis du indtaster en søgning i søgefeltet, vil dit valg af dato blive nulstillet.",
+      "timeMachineTitle":"Information om søg via periode",
+      "timeMachine":"Når du vælger en periode, vil du få vist et udpluk af resultaterne fra perioden nedenfor. Når du klikker dig videre til hele listen af resultater, vil du have mulighed for at filtrere yderligere på TV/radio, kanal og kategori. Hvis du indtaster en søgning i søgefeltet, vil dine valg af filtre blive nulstillet."
    }
 }

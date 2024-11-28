@@ -62,7 +62,7 @@
 			<div class="search-tip">
 				<InfoComponent
 					icon="info_outline"
-					modal-offset="-220px"
+					modal-offset="calc(100% - 400px)"
 					:title="t('search.frontpageGuide.title')"
 					modal-align="right"
 				>

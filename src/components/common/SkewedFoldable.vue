@@ -34,7 +34,21 @@
 					:style="`color:${text}`"
 					class="headline"
 				>
-					<h1>{{ title }}</h1>
+					<h1>
+						<span>{{ title }}</span>
+						<div class="info-container">
+							<InfoComponent
+								:title="infoTitle"
+								:show-title="false"
+								icon="info_outline"
+								bg-color="transparent"
+								:color="text"
+								modal-offset="0px"
+							>
+								{{ infoKey }}
+							</InfoComponent>
+						</div>
+					</h1>
 					<span>{{ subtitle }}</span>
 				</div>
 			</button>
@@ -43,7 +57,21 @@
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h1>{{ title }}</h1>
+					<h1>
+						<span>{{ title }}</span>
+						<div class="info-container">
+							<InfoComponent
+								:title="infoTitle"
+								:show-title="false"
+								icon="info_outline"
+								:bg-color="text"
+								:color="bg"
+								modal-offset="0px"
+							>
+								{{ infoKey }}
+							</InfoComponent>
+						</div>
+					</h1>
 					<span>{{ subtitle }}</span>
 				</div>
 			</div>
@@ -51,7 +79,7 @@
 				ref="slotRef"
 				class="slot"
 			>
-				<slot></slot>
+				<slot v-if="slotShown || !cod"></slot>
 			</div>
 		</div>
 		<div
@@ -74,12 +102,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref, onUnmounted } from 'vue';
 import gsap from 'gsap';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
+import InfoComponent from './InfoComponent.vue';
 
 export default defineComponent({
 	name: 'SkewedFoldable',
+	components: {
+		InfoComponent,
+	},
 	props: {
 		bg: { type: String, default: 'white' },
 		text: { type: String, default: 'black' },
@@ -94,14 +126,30 @@ export default defineComponent({
 		shadowBottom: { type: Boolean, default: false },
 		shadowTop: { type: Boolean, default: false },
 		hoverEffect: { type: Boolean, default: false },
+		cod: { type: Boolean, default: false },
+		infoKey: { type: String, default: '' },
+		infoTitle: { type: String, default: '' },
 	},
 	setup(props) {
 		const foldableRef = ref<HTMLElement | null>(null);
 		const contentRef = ref<HTMLElement | null>(null);
 		const slotRef = ref<HTMLElement | null>(null);
 		const primaryButtonRef = ref<HTMLButtonElement | null>(null);
-
+		const slotShown = ref(false);
 		const foldableOpen = ref(false);
+		const windowWidth = ref(window.innerWidth);
+
+		const updateWidth = () => {
+			windowWidth.value = window.innerWidth;
+		};
+
+		onMounted(() => {
+			window.addEventListener('resize', updateWidth);
+		});
+
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateWidth);
+		});
 
 		const getBottomClasses = () => {
 			let classes = 'edge bottom';
@@ -142,13 +190,15 @@ export default defineComponent({
 		};
 
 		const toggleContent = (e: Event) => {
+			e.stopPropagation();
 			if (slotRef.value) {
-				e.stopPropagation();
 				if (foldableOpen.value) {
 					gsap.to(slotRef.value, {
 						duration: 0.5,
 						opacity: 0,
+						ease: 'power1.inOut',
 						onComplete: () => {
+							slotShown.value = false;
 							gsap.set(slotRef.value, {
 								overwrite: true,
 								display: 'none',
@@ -156,29 +206,33 @@ export default defineComponent({
 						},
 					});
 					gsap.to(contentRef.value, {
-						duration: 0.5,
+						duration: 0.25,
+						delay: 0.25,
 						height: '110px',
 						overwrite: true,
-						ease: 'none',
+						ease: 'power1.inOut',
 					});
 				} else {
 					if (primaryButtonRef.value !== null) {
 						primaryButtonRef.value.focus();
 					}
+					slotShown.value = true;
 					gsap.set(slotRef.value, {
 						display: 'flex',
 						overwrite: true,
 						onComplete: () => {
 							gsap.to(slotRef.value, {
 								opacity: 1,
-								duration: 0.5,
+								duration: 0.4,
+								delay: 0.25,
+								ease: 'power1.inOut',
 							});
 							//contentRef.value.$el.focus();
 							gsap.to(contentRef.value, {
 								height: 'auto',
 								duration: 0.5,
 								overwrite: true,
-								ease: 'none',
+								ease: 'power1.inOut',
 							});
 						},
 					});
@@ -199,6 +253,8 @@ export default defineComponent({
 			santizeAndSimplify,
 			getTopClasses,
 			getContentClasses,
+			slotShown,
+			windowWidth,
 		};
 	},
 });
@@ -206,13 +262,15 @@ export default defineComponent({
 <style scoped>
 .content {
 	height: 110px;
-	overflow-y: hidden;
+	/* 	overflow-y: hidden;
+ */
 	box-sizing: border-box;
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-start;
 	flex-direction: column;
-	overflow-x: hidden;
+	/* 	overflow-x: hidden;
+ */
 	z-index: 4;
 	padding-bottom: 25px;
 }
@@ -255,7 +313,9 @@ h1::first-letter {
 	flex-direction: column;
 	justify-content: flex-start;
 	width: 100%;
+	position: relative;
 }
+
 .headline span {
 	font-size: 16px;
 	text-align: left;
@@ -275,6 +335,12 @@ h1::first-letter {
 .content .headline h1 {
 	padding: 0px;
 	margin: 0px;
+	display: flex;
+	align-items: center;
+}
+
+.headline h1 span {
+	font-size: 26px;
 }
 
 .content .mobile-title {
@@ -370,6 +436,7 @@ h1::first-letter {
 	display: flex;
 	justify-content: center;
 	margin-top: -55px;
+	z-index: 3;
 }
 
 .toggle-button {
@@ -441,6 +508,14 @@ h1::first-letter {
 		font-family: 'LibreBaskerville';
 		font-weight: 100;
 		text-transform: uppercase;
+		font-size: 32px;
+	}
+
+	.content .headline h1 {
+		align-items: initial;
+	}
+
+	.headline h1 span {
 		font-size: 32px;
 	}
 	.content.hide {

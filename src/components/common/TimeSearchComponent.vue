@@ -5,7 +5,21 @@
 				class="header"
 				:style="`color: ${text}`"
 			>
-				<h1>{{ title }}</h1>
+				<h1>
+					<span class="title">{{ title }}</span>
+					<div class="info-container">
+						<InfoComponent
+							:title="t('infoBoxes.timeMachineTitle')"
+							:show-title="false"
+							icon="info_outline"
+							bg-color="transparent"
+							color="#002e70"
+							modal-offset="0px"
+						>
+							{{ t('infoBoxes.timeMachine') }}
+						</InfoComponent>
+					</div>
+				</h1>
 				<span>{{ subtitle }}</span>
 			</div>
 			<TimeSearchFilters
@@ -98,6 +112,7 @@ import {
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import InfoComponent from './InfoComponent.vue';
 
 import '@/assets/styles/vue-slider-styles.css';
 
@@ -107,6 +122,7 @@ export default defineComponent({
 		GridResultItem,
 		EdgedContentArea,
 		TimeSearchFilters,
+		InfoComponent,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -205,6 +221,12 @@ h1 {
 	text-transform: uppercase;
 	color: #002e70;
 	font-size: 32px;
+	display: flex;
+}
+
+h1 .title {
+	color: #002e70;
+	font-size: 32px !important;
 }
 
 .result-container {
@@ -306,6 +328,7 @@ h1 {
 	gap: 20px;
 	flex-wrap: wrap;
 	padding-bottom: 20px;
+	padding-left: 10px;
 }
 
 .time-result-item {
@@ -365,6 +388,9 @@ h1 {
 		flex: 1 1 calc(25% - 20px);
 		max-width: calc(25% - 15px);
 		box-sizing: border-box;
+	}
+	.time-results {
+		padding-left: 0px;
 	}
 	.header {
 		display: block;

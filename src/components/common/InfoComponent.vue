@@ -29,7 +29,7 @@
 				}"
 			>
 				<button @click="toggleModal($event)"><span class="material-icons">close</span></button>
-				<slot></slot>
+				<slot ref="slotRef"></slot>
 			</div>
 		</Transition>
 	</button>
@@ -90,17 +90,21 @@ export default defineComponent({
 	setup() {
 		const showContent = ref(false);
 		const route = useRoute();
+		const slotRef = ref<HTMLElement | null>(null);
 
 		const toggleModal = (e: Event) => {
 			e.stopPropagation();
 			showContent.value = !showContent.value;
+			if (showContent.value) {
+				slotRef.value?.focus();
+			}
 		};
 
 		watch(route, () => {
 			showContent.value = false;
 		});
 
-		return { showContent, toggleModal };
+		return { showContent, toggleModal, slotRef };
 	},
 });
 </script>
@@ -110,7 +114,6 @@ export default defineComponent({
 	height: 26px;
 	border: 1px solid white;
 	background-color: transparent;
-	position: relative;
 	align-items: center;
 	padding: 0;
 	margin: 0;
@@ -168,14 +171,13 @@ export default defineComponent({
 	border: 1px solid #0a2e70;
 	background-color: white;
 	color: #0a2e70;
-	width: calc(100vw - 35px);
+	width: calc(100vw - 40px);
 	padding: 15px 50px 15px 15px;
 	box-sizing: border-box;
 	z-index: 25;
-	right: -1px;
-	top: 25px;
+	right: 12px;
+	top: 35px;
 	text-align: left;
-	right: -1px;
 }
 
 .modal.right {
@@ -214,7 +216,6 @@ export default defineComponent({
 	position: absolute;
 	margin-left: -22px;
 	font-size: 36px;
-	top: -3px;
 	color: var(--bg-color);
 	background-color: var(--text-color);
 }
