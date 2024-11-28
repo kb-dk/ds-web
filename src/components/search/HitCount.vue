@@ -19,7 +19,10 @@
 						v-if="hitCount > 0 || noHits"
 						class="hit-count"
 					>
-						<span v-if="query !== ''">
+						<span
+							v-if="query !== ''"
+							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
+						>
 							{{ new Intl.NumberFormat('de-DE').format(hitCount) }} {{ $t('search.hitcount', hitCount) }} "{{ query }}"
 						</span>
 						<span v-else></span>
@@ -44,6 +47,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'HitCount',
@@ -55,7 +59,7 @@ export default defineComponent({
 
 	setup() {
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore };
+		return { searchResultStore, addTestDataEnrichment };
 	},
 });
 </script>
