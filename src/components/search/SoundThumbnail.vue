@@ -3,7 +3,8 @@
 		<div class="thumb">
 			<img
 				:src="getImgServerSrcURL()"
-				alt="Image of soundwaves"
+				title="Thumbnail for audio results"
+				:alt="`Image of soundwaves for ${resultTitle}`"
 			/>
 		</div>
 		<span class="material-icons play">play_circle_filled</span>
@@ -11,11 +12,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
 	name: 'SoundThumbnail',
-
+	props: {
+		resultTitle: { type: String as PropType<string>, required: true },
+	},
 	setup() {
 		const getImgServerSrcURL = () => {
 			return new URL(`@/assets/images/soundwave.svg`, import.meta.url).href;
