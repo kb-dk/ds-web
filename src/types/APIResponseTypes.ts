@@ -1,4 +1,4 @@
-import { GenericSearchResultType, FacetsType } from './GenericSearchResultTypes';
+import { FacetsType, GenericSearchResultType } from './GenericSearchResultTypes';
 import { GenericRecordType } from './GenericRecordTypes';
 import { BroadcastRecordType } from './BroadcastRecordType';
 import { SpellCheckType } from './SpellCheckType';
@@ -104,6 +104,7 @@ export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 
 export interface APIAuthMessagesType {
 	data: {
+		alert1: string;
 		streamingBaseUrlVideo: string;
 		AudioUiConfId: string;
 		videoUiConfId: string;
