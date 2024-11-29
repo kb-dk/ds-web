@@ -376,9 +376,9 @@
 
       },
        "auth": {
-         "serviceFailed":"The application's underlying services are not available at the moment - please try again later",
-          "notAllowedHeader": "Unfortunately you do not have access to this content",
-          "notAllowedText": "We can unfortunately not provide you this broadcast."
+          "serviceFailed":"The application's underlying services are not available at the moment - please try again later",
+          "notAllowedHeader": "UNFORTUNATELY YOU DO NOT HAVE ACCESS TO THIS CONTENT",
+          "notAllowedText": "It may be due to a broadcast is subject to copyright or clauses. For example due to vulnerable participants. Read more about"
       },
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them",

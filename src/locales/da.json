@@ -366,8 +366,8 @@
     },
    "auth": {
       "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere",
-     "notAllowedHeader": "Du har desværre ikke adgang til dette indhold",
-     "notAllowedText": "Vi kan desværre ikke tilbyde dig denne udsendelse."
+     "notAllowedHeader": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
+     "notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende. Læs mere om"
    },
     "infoError": {
       "title": "Der skete en fejl",
