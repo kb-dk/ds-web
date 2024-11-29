@@ -117,7 +117,7 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, onMounted, PropType, ref } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -158,12 +158,11 @@ export default defineComponent({
 		const router = useRouter();
 		const { locale, t } = useI18n();
 		const searchResultStore = useSearchResultStore();
-
+		const entryId = ref('');
+		entryId.value = getEntryId(props.recordData);
 		onMounted(() => {
 			lastPath.value = router.options.history.state.back as string;
 		});
-
-		const entryId = getEntryId(props.recordData);
 
 		const emptySearchResults = () => {
 			searchResultStore.searchResult = [];
@@ -176,6 +175,14 @@ export default defineComponent({
 		const quotation = (name: string) => {
 			return `"${name}"`;
 		};
+
+		watch(
+			() => props.recordData.id,
+			() => {
+				entryId.value = getEntryId(props.recordData);
+			},
+			{ deep: true },
+		);
 
 		return {
 			lastPath,

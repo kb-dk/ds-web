@@ -279,8 +279,7 @@ const menuTranslations = {
 
 const MENU_COMPONENT_TEMPLATE = /*html*/ `
 <div class="overall-header">
-	<header
-	id="mainHeader"
+	<div
 	class="global-header"
 >
 	<div class="header-bg-wrapper rdl-theme-bg">
@@ -327,7 +326,7 @@ const MENU_COMPONENT_TEMPLATE = /*html*/ `
 			</div>
 		</div>
 	</div>
-</header>
+</div>
 </div>
 
 `;

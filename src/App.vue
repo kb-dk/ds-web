@@ -1,5 +1,14 @@
 <template>
-	<div class="app">
+	<header
+		:aria-label="`${route.name as string} header`"
+		class="header"
+	>
+		<a
+			href="#main-content"
+			class="skip-link"
+		>
+			{{ t('app.skip') }}
+		</a>
 		<div
 			v-if="isDevelopment()"
 			class="test-env"
@@ -11,8 +20,11 @@
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<Header :locale="currentLocale"></Header>
-	</div>
-	<div class="content">
+	</header>
+	<main
+		id="main-content"
+		class="content"
+	>
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
@@ -24,23 +36,24 @@
 				<component :is="Component" />
 			</transition>
 		</router-view>
-	</div>
-	<div
-		ref="wipe"
-		class="wipe"
-	>
-		<img
-			title="Royal Danish Library"
-			alt="Logo of the Royal Danish Library"
-			:src="getImgServerSrcURL()"
-		/>
-	</div>
+		<div
+			ref="wipe"
+			class="wipe"
+		>
+			<img
+				title="Royal Danish Library"
+				alt="Logo of the Royal Danish Library"
+				:src="getImgServerSrcURL()"
+			/>
+		</div>
+	</main>
+	<Footer />
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onBeforeMount, ref, onMounted, inject, watch } from 'vue';
+import { defineComponent, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
@@ -50,10 +63,10 @@ import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
 import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
-import { APIAuthMessagesType } from '@/types/APIResponseTypes';
+import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'App',
@@ -191,7 +204,14 @@ export default defineComponent({
 								searchResultStore.firstBackendFetchExecuted = true;
 							})
 							.catch(() => {
-								errorManager.submitCustomError('solr-error', t('error.backend.solr.notResponsive'));
+								errorManager.submitCustomError(
+									'solr-error',
+									t('error.title'),
+									t('error.backend.solr.notResponsive'),
+									Severity.ERROR,
+									true,
+									Priority.HIGH,
+								);
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
 
@@ -206,7 +226,14 @@ export default defineComponent({
 								authStore.kalturaIdFetchExecuted = true;
 							})
 							.catch(() => {
-								errorManager.submitCustomError('bff-error', t('error.backend.bff.notResponsive'));
+								errorManager.submitCustomError(
+									'bff-error',
+									t('error.title'),
+									t('error.backend.bff.notResponsive'),
+									Severity.ERROR,
+									true,
+									Priority.MEDIUM,
+								);
 								authStore.kalturaIdFetchExecuted = true;
 							});
 					}
@@ -250,6 +277,7 @@ export default defineComponent({
 
 		return {
 			td,
+			route,
 			leaveDone,
 			currentLocale,
 			wipe,
@@ -259,12 +287,25 @@ export default defineComponent({
 			onBeforeLeave,
 			isDevelopment,
 			returnCurrentEnv,
+			t,
 		};
 	},
 });
 </script>
 
 <style lang="scss">
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background-color: #f0f0f0;
+	padding: 5px;
+	z-index: 9999;
+}
+.skip-link:focus {
+	top: 0;
+}
+
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;
@@ -274,7 +315,7 @@ export default defineComponent({
 	transition-delay: 0.15s;
 }
 
-.app {
+.header {
 	position: relative;
 }
 
@@ -337,6 +378,10 @@ export default defineComponent({
 	opacity: 1;
 	position: relative;
 	z-index: 3;
+}
+
+#main-content {
+	min-height: 50vh;
 }
 
 .search-to-home-leave-to {

@@ -37,7 +37,6 @@
 				</div>
 			</Transition>
 		</div>
-		<Footer />
 	</div>
 </template>
 
@@ -52,7 +51,6 @@ import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
-import Footer from '@/components/global/nav/Footer.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -61,7 +59,6 @@ export default defineComponent({
 		Pagination,
 		SearchOverhead,
 		NoHits,
-		Footer,
 	},
 
 	setup() {

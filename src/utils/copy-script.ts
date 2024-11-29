@@ -1,3 +1,5 @@
+import { Priority, Severity } from '@/types/NotificationType';
+
 async function copyTextToClipboard(): Promise<void> {
 	let copyWentOK = false;
 	try {
@@ -14,8 +16,9 @@ async function copyTextToClipboard(): Promise<void> {
 				title: 'record.copyTitleSuccess',
 				message: 'record.copyMessageSuccess',
 				key: true,
-				severity: 'low',
+				severity: Severity.SUCCESS,
 				userClose: false,
+				priority: Priority.LOW,
 			},
 		});
 	} else {
@@ -24,8 +27,9 @@ async function copyTextToClipboard(): Promise<void> {
 				title: 'record.copyTitleFailed',
 				message: 'record.copyMessageFailed',
 				key: true,
-				severity: 'low',
+				severity: Severity.SUCCESS,
 				userClose: true,
+				priority: Priority.LOW,
 			},
 		});
 	}

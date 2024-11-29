@@ -6,6 +6,7 @@
 				v-model="selectedDate"
 				:inline="{ input: true }"
 				:enable-time-picker="false"
+				:locale="locale"
 				auto-apply
 				no-today
 				text-input
@@ -53,6 +54,7 @@ import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import { useI18n } from 'vue-i18n';
 
 interface MonthYearEvent {
 	instance: number;
@@ -72,6 +74,7 @@ export default defineComponent({
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
+		const { locale } = useI18n();
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
@@ -155,6 +158,7 @@ export default defineComponent({
 			updateSeeMoreLink,
 			moveToSearchPage,
 			HandleMonthYear,
+			locale,
 		};
 	},
 });

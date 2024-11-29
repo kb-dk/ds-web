@@ -36,21 +36,16 @@
 				</div>
 			</div>
 		</div>
-		<Footer />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Footer from '@/components/global/nav/Footer.vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: '404',
-	components: {
-		Footer,
-	},
 	setup() {
 		const { t } = useI18n();
 		const getImgServerSrcURL = () => {
