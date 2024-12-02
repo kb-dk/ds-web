@@ -218,6 +218,7 @@ export default defineComponent({
 						Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
 							.then((response) => {
 								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+								searchResultStore.setCuratedContent(typedResponse.data.curatedItems);
 								authStore.partnerId = typedResponse.data.partnerId;
 								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
 								authStore.videoUiConfId = typedResponse.data.videoUiConfId;

@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
+import { CuratedItemsType } from '@/types/CuratedItemsType';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -39,7 +40,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
-	const curatedContent = ref([]);
+	const curatedContent = ref({} as CuratedItemsType);
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -63,6 +64,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const setRotationalResult = (items: GenericSearchResultType[]) => {
 		rotationalResult.value = items;
+	};
+
+	const setCuratedContent = (content: CuratedItemsType) => {
+		curatedContent.value = content;
 	};
 
 	const addFilter = (filter: string) => {
@@ -473,6 +478,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		channelFilters,
 		categoryFilters,
 		rotationalResult,
+		curatedContent,
 		addFilter,
 		resetFilters,
 		removeFilter,
@@ -495,5 +501,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setStart,
 		setRowCountFromURL,
 		setRotationalResult,
+		setCuratedContent,
 	};
 });

@@ -12,7 +12,10 @@
          "search":" Søgning på "
       },
       "frontPages": {
-         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv"
+         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv",
+        "featuredContent": {
+          "noContentTitle": "Vi beklager der ikke er nogle forslag for denne måned"
+        }
       }
    },
    "frontpage": {
