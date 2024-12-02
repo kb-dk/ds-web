@@ -202,7 +202,6 @@ export default defineComponent({
 h1 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
-
 	color: #002e70;
 	font-size: 32px;
 }
@@ -216,6 +215,7 @@ h1 {
 	display: flex;
 	justify-content: space-between;
 	padding-bottom: 20px;
+	flex-direction: column;
 }
 
 .further-link a:visited {
@@ -357,6 +357,9 @@ h1 {
 		flex: 1 1 calc(50% - 20px);
 		max-width: calc(50% - 15px);
 		box-sizing: border-box;
+	}
+	.result-header {
+		flex-direction: unset;
 	}
 }
 /* MEDIA QUERY 990 */
