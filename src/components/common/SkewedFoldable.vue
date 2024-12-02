@@ -460,7 +460,7 @@ h1::first-letter {
 	.slot {
 		opacity: 0;
 		display: flex !important;
-		width: calc(100vw - 14px);
+		width: calc(100vw);
 	}
 	.hide .responsive-title {
 		display: none !important;
