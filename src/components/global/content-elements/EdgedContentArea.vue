@@ -186,7 +186,10 @@ h3.reverse {
 	display: flex;
 	flex-direction: column;
 }
-
+.time-search .container {
+	padding-left: 24px;
+	padding-right: 24px;
+}
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {
 	h3 {
@@ -229,10 +232,14 @@ h3.reverse {
 	.full-width {
 		width: 100vw;
 	}
+	.time-search .container {
+		padding-left: 18px;
+		padding-right: 18px;
+	}
 }
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
-	.container {
+	.time-search .container {
 		padding-right: 0;
 		padding-left: 0;
 	}

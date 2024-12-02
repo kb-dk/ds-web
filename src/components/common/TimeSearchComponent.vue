@@ -202,7 +202,7 @@ export default defineComponent({
 h1 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
-	text-transform: uppercase;
+
 	color: #002e70;
 	font-size: 32px;
 }
@@ -219,12 +219,12 @@ h1 {
 }
 
 .further-link a:visited {
-	color: white;
 }
 
 .selection-header {
 	color: #002e70;
-	font-size: 20px;
+	font-size: 26px;
+	padding-top: 4px;
 }
 
 .link {
@@ -232,26 +232,29 @@ h1 {
 	background-color: #49da87;
 	display: flex;
 	text-decoration: none;
-	padding: 2px 5px;
+	padding: 8px 10px 12px 14px;
 	flex-direction: row-reverse;
-	font-size: 16px;
+	font-size: 26px;
 	position: relative;
 	left: -10px;
 	height: 25px;
+	border-radius: 4px;
 	align-items: center;
+	box-shadow: 0 0px 2px rgb(0 0 0 / 0.3);
 }
 
-.link-arrow {
+.link .link-arrow {
 	display: block;
 	width: 0;
 	height: 0;
-	border-bottom: 14px solid transparent;
-	border-top: 14px solid transparent;
-	border-left: 8px solid #49da87;
+	border-bottom: 23px solid transparent;
+	border-top: 23px solid transparent;
+	border-left: 20px solid #49da87;
 	margin-left: 5px;
 	position: absolute;
-	margin-right: -13px;
-	margin-top: -1px;
+	margin-right: -28px;
+	margin-top: 5px;
+	transition: all 0.15s ease-in-out 0s;
 }
 
 .further-recap {
@@ -317,7 +320,7 @@ h1 {
 .header {
 	margin: 0;
 	position: relative;
-	padding-bottom: 5px;
+	padding-bottom: 25px;
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
@@ -327,7 +330,7 @@ h1 {
 .header h1 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
-	text-transform: uppercase;
+	text-transform: none;
 	font-size: 32px;
 	margin: 0;
 }
@@ -368,6 +371,14 @@ h1 {
 	}
 	.header {
 		display: block;
+	}
+	.link:hover {
+		text-decoration: underline;
+		left: 2px;
+	}
+	.link:hover .link-arrow {
+		border-left: 21px solid #49da87;
+		margin-right: -30px;
 	}
 }
 
