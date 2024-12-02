@@ -13,6 +13,7 @@ import { FacetsType } from '@/types/GenericSearchResultTypes';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
+	let currentSearchUUIDForFacets = '';
 	let comparisonSearchUUID = '';
 	const firstBackendFetchExecuted = ref(false);
 	const initFacets = ref({} as FacetsType);
@@ -41,6 +42,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
+	const currentGenreFacetString = ref('');
+	const currentChannelFacetString = ref('');
+	const loadingChannels = ref(false);
+	const loadingGenres = ref(false);
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -60,6 +65,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 	const toggleShowFacets = (value: boolean) => {
 		showFacets.value = value;
+		if (value) {
+			console.log('getting facets');
+			getFacetResults(lastSearchQuery.value);
+		}
 	};
 
 	const setRotationalResult = (items: GenericSearchResultType[]) => {
@@ -205,12 +214,50 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		return uuid === currentSearchUUID;
 	};
 
+	const getFacetResults = async (query: string) => {
+		if (currentSearchUUIDForFacets !== currentSearchUUID) {
+			currentSearchUUIDForFacets = currentSearchUUID;
+			loadingChannels.value = true;
+			loadingGenres.value = true;
+			const startParam = start.value === '' ? '' : `&start=${start.value}`;
+			const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
+			try {
+				const facetGenreData = await APIService.getFacetResults(
+					query,
+					currentGenreFacetString.value,
+					startParam as string,
+					sortParam as string,
+				);
+
+				const facetChannelData = await APIService.getFacetResults(
+					query,
+					currentChannelFacetString.value,
+					startParam as string,
+					sortParam as string,
+				);
+
+				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
+				facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
+					.creator_affiliation_facet as string[];
+			} catch (err: unknown) {
+				error.value = (err as AxiosError).message;
+				errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+				loadingChannels.value = false;
+				loadingGenres.value = false;
+			} finally {
+				loadingChannels.value = false;
+				loadingGenres.value = false;
+			}
+		}
+	};
+
 	const getSearchResults = async (query: string) => {
 		if (currentQuery.value === '*:*') {
 			currentQuery.value = '';
 		}
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
+
 		resetAutocomplete();
 		let searchFilters = '';
 		let presetGenreFilters = '';
@@ -240,6 +287,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
 			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
 		}
+
+		currentChannelFacetString.value = presetChannelFilters;
+		currentGenreFacetString.value = presetGenreFilters;
+
 		const startParam = start.value === '' ? '' : `&start=${start.value}`;
 		const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 
@@ -249,6 +300,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		const url = URL.createObjectURL(new Blob());
 		currentSearchUUID = url.toString().split('/').reverse()[0];
 		URL.revokeObjectURL(url);
+
+		if (showFacets.value) {
+			getFacetResults(lastSearchQuery.value);
+		}
 
 		try {
 			//window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -262,28 +317,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 				currentSearchUUID,
 			);
-			const facetGenreData = await APIService.getFacetResults(
-				query,
-				presetGenreFilters,
-				startParam as string,
-				sortParam as string,
-			);
-
-			const facetChannelData = await APIService.getFacetResults(
-				query,
-				presetChannelFilters,
-				startParam as string,
-				sortParam as string,
-			);
 
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
-				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
-				facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
-					.creator_affiliation_facet as string[];
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;
 			}
@@ -326,6 +365,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		channelFilters,
 		categoryFilters,
 		rotationalResult,
+		loadingGenres,
+		loadingChannels,
 		addFilter,
 		resetFilters,
 		removeFilter,

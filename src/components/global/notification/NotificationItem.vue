@@ -127,6 +127,10 @@ export default defineComponent({
 	width: 100%;
 }
 
+.single-notification p {
+	white-space: break-spaces;
+}
+
 .title-span {
 	font: normal normal normal 26px/28px Noway;
 	white-space: nowrap;
