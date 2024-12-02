@@ -62,13 +62,10 @@
 					class="shimmer"
 				></div>
 				<div class="thumb-container loading-color">
-					<span
+					<NoFacetContent
 						v-if="!loading"
-						class="material-icons"
-					>
-						warning
-					</span>
-					<p>Indlæsning fejlede</p>
+						position="relative"
+					></NoFacetContent>
 				</div>
 				<div class="material-icons loading-icon">play_circle_filled</div>
 				<div
@@ -124,10 +121,12 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useI18n } from 'vue-i18n';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 
 export default defineComponent({
 	name: 'GridResultItem',
 	components: {
+		NoFacetContent,
 		SoundThumbnail,
 		Duration,
 	},
@@ -289,11 +288,7 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	text-align: center;
 	align-content: center;
-	color: #b30018;
-}
-
-.thumb-container span {
-	font-size: 36px;
+	color: white;
 }
 
 .loading-color {

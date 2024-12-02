@@ -1,31 +1,27 @@
 <template>
-	<EdgedContentArea background-color="rgb(202, 240, 254)">
-		<template #content>
-			<p>NO CONTENT</p>
-		</template>
-	</EdgedContentArea>
+	<div :class="`no-content-container ${position}`">
+		<span class="material-icons">warning</span>
+		<p>{{ $t('app.frontPages.loadingError') }}</p>
+	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NoFacetContent',
-	components: { EdgedContentArea },
 	props: {
-		imageFirst: {
-			type: Boolean as PropType<boolean>,
+		position: {
+			type: String as PropType<string>,
 			default() {
-				return true;
+				'relative';
 			},
 		},
-		hideImageOnMobile: {
-			type: Boolean as PropType<boolean>,
-			default() {
-				return false;
-			},
-		},
+	},
+	setup() {
+		const { t } = useI18n();
+		return { t };
 	},
 });
 </script>
@@ -34,28 +30,25 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented
 -->
 <style scoped>
-.imageAndTextContainer {
+.no-content-container {
+	position: absolute;
 	display: flex;
-	justify-content: space-around;
-}
-.imageAndTextContainer .con {
-	width: 50%;
-	display: flex;
-	align-content: center;
+	flex-direction: column;
+	white-space: nowrap;
+	width: 100%;
+	height: 100%;
 	justify-content: center;
-	flex-wrap: wrap;
+	text-align: center;
+	text-decoration: none;
 }
-@media (min-width: 450px) {
-	.imageAndTextContainer {
-		flex-direction: column;
-	}
-	.imageAndTextContainer .con {
-		width: 100%;
-	}
+.relative {
+	position: relative;
 }
-@media (min-width: 840px) {
-	.imageAndTextContainer {
-		flex-direction: row;
-	}
+.material-icons {
+	font-size: 36px;
+}
+p {
+	margin-top: 5px;
+	font-size: 1rem;
 }
 </style>

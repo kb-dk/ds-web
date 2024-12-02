@@ -12,7 +12,8 @@
          "search":" Search for"
       },
       "frontPages": {
-         "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive"
+         "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive",
+         "loadingError": "Loading error"
       }
    },
    "frontpage": {
