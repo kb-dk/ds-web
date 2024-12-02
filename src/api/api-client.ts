@@ -144,7 +144,7 @@ export class APIServiceClient {
 	}
 
 	async getFullResultWithFacets(): Promise<APISearchResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/search/sds?q=*&facet=true&facet.limit=-1&rows=0`);
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0`);
 	}
 
 	async getSearchResults(
@@ -187,7 +187,7 @@ export class APIServiceClient {
 			idString += `id:"${item}"`;
 			index < ids.length - 1 ? (idString += ` OR `) : null;
 		});
-		return await this.httpClient.get(`bff/v1/proxy/search/sd?q=${idString}&facet=false&sort=startTime asc`);
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=${idString}&facet=false&sort=startTime asc`);
 	}
 
 	async getTimeStartEndResults(start: string, end: string, id: string): Promise<APISearchResponseType> {
