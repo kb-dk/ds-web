@@ -57,10 +57,19 @@
 				class="loading-placeholder"
 			>
 				<div
+					v-if="loading"
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
-				<div class="thumb-container loading-color"></div>
+				<div class="thumb-container loading-color">
+					<span
+						v-if="!loading"
+						class="material-icons"
+					>
+						warning
+					</span>
+					<p>Indlæsning fejlede</p>
+				</div>
 				<div class="material-icons loading-icon">play_circle_filled</div>
 				<div
 					:style="`width:${Math.random() * 30 + 40}%`"
@@ -278,6 +287,13 @@ export default defineComponent({
 .thumb-container {
 	width: 100%;
 	aspect-ratio: 4/2;
+	text-align: center;
+	align-content: center;
+	color: #b30018;
+}
+
+.thumb-container span {
+	font-size: 36px;
 }
 
 .loading-color {

@@ -65,6 +65,7 @@
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
+				v-if="curatedItems.length > 0"
 				:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
 				:row-nr="4"
 				:draggable="true"
@@ -72,6 +73,7 @@
 				:loaded="dataLoaded"
 				:no-data-text="$t('app.frontPages.featuredContent.noContentTitle')"
 			></GridDisplay>
+			<NoFacetContent v-else></NoFacetContent>
 		</div>
 	</div>
 </template>
@@ -94,10 +96,12 @@ import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
+		NoFacetContent,
 		GridDisplay,
 		TimeSearchComponent,
 		TiltedDivider,

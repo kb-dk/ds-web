@@ -1,15 +1,18 @@
 <template>
-	<div class="imageAndTextContainer">
-		<div class="con"><slot name="text"></slot></div>
-		<div :class="`con ${hideImageOnMobile ? 'hide-image' : ''}`"><slot name="image"></slot></div>
-	</div>
+	<EdgedContentArea background-color="rgb(202, 240, 254)">
+		<template #content>
+			<p>NO CONTENT</p>
+		</template>
+	</EdgedContentArea>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 
 export default defineComponent({
-	name: 'TextAndImage',
+	name: 'NoFacetContent',
+	components: { EdgedContentArea },
 	props: {
 		imageFirst: {
 			type: Boolean as PropType<boolean>,
