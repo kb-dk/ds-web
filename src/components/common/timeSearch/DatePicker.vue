@@ -5,6 +5,7 @@
 			v-model="startDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
+			:locale="locale"
 			auto-apply
 			no-today
 			text-input
@@ -23,6 +24,7 @@
 			v-model="endDate"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
+			:locale="locale"
 			auto-apply
 			no-today
 			text-input
@@ -62,6 +64,7 @@ import '@/components/common/timeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
 import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import { useI18n } from 'vue-i18n';
 
 interface Highlight {
 	dates: Date[];
@@ -88,6 +91,7 @@ export default defineComponent({
 		const startDatePicker = ref<DatePickerInstance>();
 		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
+		const { locale } = useI18n();
 
 		onMounted(() => {
 			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
@@ -182,6 +186,7 @@ export default defineComponent({
 			endDatePicker,
 			endHandleMonthYear,
 			startHandleMonthYear,
+			locale,
 		};
 	},
 });

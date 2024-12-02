@@ -1,5 +1,6 @@
 {
    "app": {
+      "skip":"Spring til hovedindhold",
       "titles": {
          "frontpage": {
             "archive":  {
@@ -99,6 +100,7 @@
      }
    },
   "search":{
+     "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
      "nohitSubtitle": {
@@ -336,6 +338,7 @@
    }
   },
   "error": {
+    "title": "Fejlmeddelelse",
     "record": {
       "loadingFailed": "Materialet kunne ikke hentes",
       "notAllowed":"Du har ikke adgang til materialet",
@@ -353,11 +356,26 @@
          "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
       }
    },
+    "backend": {
+      "bff": {
+        "notResponsive": "Messages svarer ikke"
+      },
+      "solr": {
+        "notResponsive":"Der er en fejl i systemet, som vi arbejder på at løse hurtigst muligt. Vi håber på din forståelse og tålmodighed"
+      }
+    },
    "auth": {
       "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere",
-     "notAllowedHeader": "Du har desværre ikke adgang til dette indhold",
-     "notAllowedText": "Vi kan desværre ikke tilbyde dig denne udsendelse."
+     "notAllowedHeader": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
+     "notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende. Læs mere om"
    },
+    "infoError": {
+      "title": "Der skete en fejl",
+      "relatedContent": "Der kunne ikke finders noget relateret indhold",
+      "featuredContent": "Fremhævet indhold under DR gennem tiden svarede ikke",
+      "thumbnails": "Billede-oversigt svarer ikke."
+
+    },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
     "wrongUrl": {

@@ -6,15 +6,17 @@
 		<div>
 			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
 			<div class="no-hits-heading-subtitle">
-				{{ $t('search.nohitSubtitle.firstPart') }}
-				{{ $t('search.nohitSubtitle.readMore') }}
-				<a
-					:href="$t('search.nohitSubtitle.link')"
-					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
-				>
-					{{ $t('search.nohitSubtitle.contains') }}
-				</a>
-				{{ $t('search.nohitSubtitle.lastPart') }}
+				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
+				<p>
+					{{ $t('search.nohitSubtitle.readMore') }}
+					<a
+						:href="$t('search.nohitSubtitle.link')"
+						:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
+					>
+						{{ $t('search.nohitSubtitle.contains') }}
+					</a>
+				</p>
+				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
 			<EdgedContentArea
 				v-if="searchResultStore.spellCheck?.collations.length > 0"

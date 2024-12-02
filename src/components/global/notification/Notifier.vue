@@ -6,7 +6,9 @@
 				name="user"
 			>
 				<NotificationItem
-					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === true)"
+					v-for="item in notificationStore.notifications.filter(
+						(notification: NotificationType) => notification.userClose,
+					)"
 					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
@@ -19,7 +21,9 @@
 				name="passive"
 			>
 				<NotificationItem
-					v-for="item in notificationStore.notifications.filter((notification) => notification.userClose === false)"
+					v-for="item in notificationStore.notifications.filter(
+						(notification: NotificationType) => !notification.userClose,
+					)"
 					:key="item.count"
 					:notification="item"
 					:close="removeNotification"
@@ -47,7 +51,14 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			/* notificationStore.addNotification("test notitication","this is a test",false, "low", true) */
+			// notificationStore.addNotification(
+			// 	'test notitication',
+			// 	'this is a test this is a test this is a test this is a test this is a test this is a test this is a test',
+			// 	false,
+			// 	Severity.INFO,
+			// 	false,
+			// 	Priority.HIGH,
+			// );
 		});
 
 		onUnmounted(() => {
@@ -63,8 +74,9 @@ export default defineComponent({
 				e.detail.title,
 				e.detail.message,
 				e.detail.key !== undefined ? e.detail.key : false,
-				'low',
+				e.detail.severity,
 				e.detail.userClose !== undefined ? e.detail.userClose : false,
+				e.detail.priority,
 			);
 		};
 
@@ -119,7 +131,7 @@ ul {
 	position: fixed;
 	z-index: 50;
 	width: 100%;
-	max-width: 300px;
+	max-width: 500px;
 	left: 50%;
 	transform: translateX(-50%);
 }
@@ -128,8 +140,9 @@ ul {
 	position: fixed;
 	z-index: 50;
 	width: 100%;
-	max-width: 300px;
-	right: 10px;
+	max-width: 100%;
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .passive-notifications ul {
@@ -141,5 +154,17 @@ ul {
 .user-notifications ul {
 	list-style-type: none;
 	pointer-events: none;
+}
+@media (min-width: 480px) {
+	.passive-notifications {
+		max-width: 400px;
+	}
+}
+
+@media (min-width: 800px) {
+	.passive-notifications {
+		right: 1%;
+		transform: none;
+	}
 }
 </style>

@@ -1,14 +1,13 @@
-import { AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '@/store/authStore';
 import {
-	APISearchResponseType,
-	APIRecordResponseType,
-	APIMoreLikeThisResponseType,
-	APIAutocompleteResponseType,
-	APIThumbnailsResponseType,
-	APIAuthResponseType,
 	APIAuthMessagesType,
-	// Extend AxiosRequestConfig to include _retryCount to keep TypeScript happy
+	APIAuthResponseType,
+	APIAutocompleteResponseType,
+	APIMoreLikeThisResponseType,
+	APIRecordResponseType,
+	APISearchResponseType,
+	APIThumbnailsResponseType,
 	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
 

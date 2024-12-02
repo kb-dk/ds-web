@@ -39,7 +39,10 @@
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
 							:imagedata="imageData"
 						></kb-imagecomponent>
-						<SoundThumbnail v-else></SoundThumbnail>
+						<SoundThumbnail
+							v-else
+							:result-title="resultdata.title[0]"
+						></SoundThumbnail>
 					</router-link>
 				</div>
 
@@ -108,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -119,6 +122,8 @@ import '@/components/common/wc-image-item';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'ResultItem',
@@ -159,7 +164,7 @@ export default defineComponent({
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
-
+		const errorManager = inject('errorManager') as ErrorManagerType;
 		//Default imageData obj to prevent render issues
 		const imageData = ref(
 			JSON.stringify({
@@ -173,7 +178,7 @@ export default defineComponent({
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = props.resultdata?.title;
+			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
 			if (props.resultdata?.file_id) {
@@ -188,6 +193,14 @@ export default defineComponent({
 					})
 					//Just in case the service fail - we fail silently and swoop in with the placeholder
 					.catch(() => {
+						errorManager.submitCustomError(
+							'thumbnails-error',
+							t('error.infoError.title'),
+							t('error.infoError.thumbnails'),
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
 						populateImageDataWithPlaceholder(imageDataObj);
 						imageData.value = JSON.stringify(imageDataObj);
 					});
@@ -221,6 +234,7 @@ export default defineComponent({
 			placeholderTitleRef,
 			t,
 			addTestDataEnrichment,
+			errorManager,
 		};
 	},
 });

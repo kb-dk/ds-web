@@ -75,7 +75,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
@@ -90,6 +90,8 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { APIService } from '@/api/api-service';
 import { APISearchResponseType } from '@/types/APIResponseTypes';
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -119,6 +121,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const currentLocale = ref('da-dk');
 		const { locale, t } = useI18n({ useScope: 'global' });
+		const errorManager = inject('errorManager') as ErrorManagerType;
 		watch(
 			() => locale.value,
 			(newVal: string) => {
@@ -164,14 +167,21 @@ export default defineComponent({
 					searchResultStore.setRotationalResult(typedResponse.data.response.docs);
 				})
 				.catch(() => {
-					/* some sort of error */
+					errorManager.submitCustomError(
+						'thumbnails-error',
+						t('error.infoError.title'),
+						t('error.infoError.featuredContent'),
+						Severity.INFO,
+						false,
+						Priority.LOW,
+					);
 				})
 				.finally(() => {
 					dataLoaded.value = true;
 				});
 		};
 
-		return { searchResultStore, currentMonth, currentLocale, addTestDataEnrichment, t, dataLoaded };
+		return { searchResultStore, currentMonth, currentLocale, addTestDataEnrichment, t, dataLoaded, errorManager };
 	},
 	methods: {
 		useRoute,

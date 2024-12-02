@@ -5,19 +5,15 @@
 			<p>Gotta be a loooot of stuff here later i reckon!</p>
 			<router-link to="/">Go to start</router-link>
 		</div>
-		<Footer />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Footer from '@/components/global/nav/Footer.vue';
 
 export default defineComponent({
 	name: 'About',
-	components: {
-		Footer,
-	},
+	components: {},
 	setup() {
 		return {};
 	},

@@ -359,7 +359,6 @@ export default defineComponent({
 				searchResultStore.preliminaryFilter = '';
 
 				query.sort = encodeURIComponent(`score desc`);
-				timeSearchStore.setTimeFacetsOpen(false);
 
 				router.push({
 					name: 'Search',

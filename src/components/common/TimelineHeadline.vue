@@ -5,7 +5,7 @@
 		:title="headline"
 		:aria-label="headline"
 		:aria-expanded="open"
-		@click="dispatchClick()"
+		@click="dispatchClick($event)"
 	>
 		<div class="material-icons icon">
 			{{ icon }}
@@ -106,8 +106,9 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 
-		const dispatchClick = () => {
-			props.click !== undefined ? props.click() : null;
+		const dispatchClick = (e: Event) => {
+			e.stopPropagation();
+			props.click !== undefined ? props.click(e) : null;
 		};
 
 		const selectedItems = computed(() => {

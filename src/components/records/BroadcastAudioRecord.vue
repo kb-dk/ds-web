@@ -116,7 +116,7 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, onMounted, PropType, ref } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import AudioPlayer from '@/components/viewers/AudioVideo/AudioPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -159,6 +159,9 @@ export default defineComponent({
 		const { locale, t } = useI18n();
 		const searchResultStore = useSearchResultStore();
 
+		const entryId = ref('');
+		entryId.value = getEntryId(props.recordData);
+
 		const checkForKalturaId = () => {
 			return props.recordData.identifier.find((obj) => obj.PropertyID === 'KalturaID') !== undefined;
 		};
@@ -171,8 +174,6 @@ export default defineComponent({
 			searchResultStore.searchResult = [];
 		};
 
-		const entryId = getEntryId(props.recordData);
-
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
 		};
@@ -180,6 +181,14 @@ export default defineComponent({
 		const quotation = (name: string) => {
 			return `"${name}"`;
 		};
+
+		watch(
+			() => props.recordData.id,
+			() => {
+				entryId.value = getEntryId(props.recordData);
+			},
+			{ deep: true },
+		);
 
 		return {
 			lastPath,

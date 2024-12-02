@@ -5,7 +5,7 @@
 		type="checkbox"
 		:checked="val"
 		:data-testid="addTestDataEnrichment('input', 'timeline-checkbox', name, index)"
-		@change="updateSelection"
+		@change="updateSelection($event)"
 	/>
 	<label
 		:title="$t(name)"
@@ -77,6 +77,7 @@ export default defineComponent({
 		);
 
 		const updateSelection = (e: Event) => {
+			e.stopPropagation();
 			const target = e.target as HTMLInputElement;
 			props.update(props.parentArray, props.index, target.checked);
 		};
