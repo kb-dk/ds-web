@@ -7,7 +7,7 @@
 				:class="draggable ? 'related-record draggable-item' : 'related-record'"
 			>
 				<GridResultItem
-					:loading="false"
+					:loading="!loaded"
 					:resultdata="spots[i]"
 					:index="i"
 					background="#ffffff"
@@ -33,8 +33,8 @@ export default defineComponent({
 		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		spotNr: { type: Number, required: true },
 		draggable: { type: Boolean, required: false },
+		loaded: { type: Boolean, required: true },
 	},
-
 	data() {
 		return {
 			isDown: false,
@@ -104,7 +104,7 @@ export default defineComponent({
 		startAndCalculateOffset(e: MouseEvent | TouchEvent) {
 			if (this.slidingElement) {
 				this.isDown = true;
-				if (e instanceof TouchEvent) {
+				if (typeof TouchEvent !== 'undefined' && e instanceof TouchEvent) {
 					this.startX = e.touches[0].pageX - this.slidingElement.offsetLeft;
 				} else if (e instanceof MouseEvent) {
 					this.startX = e.pageX - this.slidingElement.offsetLeft;
@@ -125,7 +125,7 @@ export default defineComponent({
 				//e.preventDefault();
 
 				let x: number;
-				if (e instanceof TouchEvent) {
+				if (typeof TouchEvent !== 'undefined' && e instanceof TouchEvent) {
 					x = e.touches[0].pageX - this.slidingElement.offsetLeft;
 				} else if (e instanceof MouseEvent) {
 					x = e.pageX - this.slidingElement.offsetLeft;

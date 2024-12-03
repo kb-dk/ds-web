@@ -11,7 +11,7 @@
 			mode="out-in"
 			name="fade"
 		>
-			<div v-if="categoriesLoaded">
+			<div v-if="categoriesLoaded && categories.length > 0">
 				<div class="container category-grid">
 					<router-link
 						v-for="(entity, i) in categories"
@@ -51,6 +51,10 @@
 							:style="`width:${Math.random() * 3 + 3}%`"
 							class="loading number"
 						></span>
+						<NoFacetContent
+							v-if="categoriesLoaded && categories.length === 0"
+							position="absolute"
+						></NoFacetContent>
 					</div>
 				</div>
 			</div>
@@ -63,9 +67,11 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { facetItem } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 
 export default defineComponent({
 	name: 'MainCategories',
+	components: { NoFacetContent },
 	props: {
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
@@ -107,6 +113,7 @@ export default defineComponent({
 							constructGenre();
 						} else {
 							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
+							categoriesLoaded.value = true;
 							const customEvent = new CustomEvent('notify-user', {
 								detail: {
 									title: 'Backend svarer ikke.',
@@ -156,7 +163,7 @@ export default defineComponent({
 
 .head-categories {
 	display: flex;
-	width: calc(100vw - 15px);
+	width: calc(100vw);
 	justify-content: center;
 	padding-top: 50px;
 	padding-bottom: 40px;

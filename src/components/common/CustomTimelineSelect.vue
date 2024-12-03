@@ -103,6 +103,7 @@ export default defineComponent({
 	color: #002e70;
 	-webkit-appearance: none;
 	-moz-appearance: none;
+	background-color: white;
 	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
 	background-repeat: no-repeat;
 	background-position-x: 85px;

@@ -168,6 +168,7 @@ export default defineComponent({
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	/* border-bottom: 2px dashed rgba(0, 46, 112, 0.3490196078); */
+	background-color: var(--showWhite);
 	background: linear-gradient(
 		90deg,
 		rgba(250, 250, 250, 1) 0%,
