@@ -3,6 +3,7 @@ import { GenericRecordType } from './GenericRecordTypes';
 import { BroadcastRecordType } from './BroadcastRecordType';
 import { SpellCheckType } from './SpellCheckType';
 import { AxiosRequestConfig } from 'axios';
+import { CuratedItemsType } from '@/types/CuratedItemsType';
 
 export interface APISearchResponseType {
 	data: {
@@ -110,5 +111,6 @@ export interface APIAuthMessagesType {
 		videoUiConfId: string;
 		partnerId: string;
 		streamingBaseUrlAudio: string;
+		curatedItems: CuratedItemsType;
 	};
 }

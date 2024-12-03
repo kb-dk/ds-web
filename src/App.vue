@@ -245,6 +245,7 @@ export default defineComponent({
 						])
 							.then((response) => {
 								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+								searchResultStore.setCuratedContent(typedResponse.data.curatedItems);
 								authStore.partnerId = typedResponse.data.partnerId;
 								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
 								authStore.videoUiConfId = typedResponse.data.videoUiConfId;
