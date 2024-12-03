@@ -27,7 +27,11 @@
       "channels":"kanal | kanaler",
       "chosen":"Valgt",
       "reset":"nulstil",
-     "choose": "Vælg"
+     "choose": "Vælg",
+     "slowResponse": {
+       "title": "Lang respons tid",
+       "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
+     }
    },
    "breadcrumb": {
       "frontpage":"Forside",
