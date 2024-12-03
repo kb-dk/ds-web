@@ -41,7 +41,7 @@
 			class="wipe"
 		>
 			<img
-				title="Royal Danish Library"
+				title="forside"
 				alt="Logo of the Royal Danish Library"
 				:src="getImgServerSrcURL()"
 			/>

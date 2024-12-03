@@ -192,7 +192,7 @@
      "noBroadcastData":"No air date",
      "seeMaterial":"Se materiale",
      "toFrontpage": "To the frontpage",
-     "back": "Back",
+     "back": "Back to search",
      "aired": "Aired",
      "timestamp": "at ",
      "title":"Title",
@@ -346,7 +346,9 @@
       "record": {
          "loadingFailed": "The requested material could not be loaded",
          "notAllowed":"You are not authorized to view this material",
-         "unknown": "Unknown"
+         "unknown": "Unknown",
+         "restricted":"SORRY, YOU DO NOT HAVE ACCESS TO THIS PROGRAMME",
+         "restrictedExplained":"This may be because the programme is subject to copyright or is restricted, for example due to particularly vulnerable contributors."
        },
        "players":{
             "video": {

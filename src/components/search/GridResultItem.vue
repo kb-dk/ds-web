@@ -24,7 +24,10 @@
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
 							:imagedata="imageData"
 						></kb-imagecomponent>
-						<SoundThumbnail v-else></SoundThumbnail>
+						<SoundThumbnail
+							v-else
+							:result-title="resultdata.title[0]"
+						></SoundThumbnail>
 					</div>
 					<div class="date">
 						<span class="material-icons">play_circle_filled</span>

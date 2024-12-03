@@ -163,7 +163,7 @@ export default defineComponent({
 
 .head-categories {
 	display: flex;
-	width: calc(100vw - 15px);
+	width: calc(100vw);
 	justify-content: center;
 	padding-top: 50px;
 	padding-bottom: 40px;
