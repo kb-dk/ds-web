@@ -180,7 +180,14 @@
      },
     "frontpageGuide": {
       "title":"How do I optimise my search?",
-      "first":"The search function only finds results where your keywords appear in the title or description in exactly the form and spelling you have written them. This means that a search for, for example, tower will not find results that say towers or watchtower. ",
+      "first":{
+         "part1": "The search function only finds results where your keywords appear in the title or description in exactly the form and spelling you have written them. This means that a search for, for example,",
+         "cursive1": "tower",
+         "part2": "will not find results that say",
+         "cursive2": "towers",
+         "part3": "or",
+         "cursive3": "watchtower."
+      },
       "second":"If you want to include multiple forms of the search words, you can use * at the end and/or beginning of the word.",
       "third":"Please note: When you search in the search box, your previous selection of filters will be reset - for example category, channel or time.",
       "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search",
