@@ -23,8 +23,8 @@ declare const KalturaPlayer: KalturaPlayerType;
 
 interface KalturaErrorEvent {
 	payload: {
-		code: number; // Error code (e.g., 1002)
-		message: string; // Error message
+		code: number;
+		message: string;
 	};
 }
 
