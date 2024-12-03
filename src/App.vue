@@ -198,14 +198,16 @@ export default defineComponent({
 							APIService.getFullResultWithFacets(),
 							new Promise(() =>
 								setTimeout(function () {
-									errorManager.submitCustomError(
-										'long-response',
-										t('facets.slowResponse.title'),
-										t('facets.slowResponse.text'),
-										Severity.INFO,
-										false,
-										Priority.HIGH,
-									);
+									if (!searchResultStore.firstBackendFetchExecuted) {
+										errorManager.submitCustomError(
+											'long-response',
+											t('facets.slowResponse.title'),
+											t('facets.slowResponse.text'),
+											Severity.INFO,
+											false,
+											Priority.MEDIUM,
+										);
+									}
 								}, 2000),
 							),
 							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
@@ -231,14 +233,16 @@ export default defineComponent({
 							APIService.getKalturaConfIds(),
 							new Promise(() =>
 								setTimeout(function () {
-									errorManager.submitCustomError(
-										'long-response',
-										t('facets.slowResponse.title'),
-										t('facets.slowResponse.text'),
-										Severity.INFO,
-										false,
-										Priority.HIGH,
-									);
+									if (!authStore.kalturaIdFetchExecuted) {
+										errorManager.submitCustomError(
+											'long-response',
+											t('facets.slowResponse.title'),
+											t('facets.slowResponse.text'),
+											Severity.INFO,
+											false,
+											Priority.MEDIUM,
+										);
+									}
 								}, 2000),
 							),
 							new Promise((_, reject) => setTimeout(() => reject(), 10000)),

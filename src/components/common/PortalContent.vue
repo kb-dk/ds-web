@@ -162,14 +162,16 @@ export default defineComponent({
 				APIService.getFeatureItems(testItems),
 				new Promise(() =>
 					setTimeout(function () {
-						errorManager.submitCustomError(
-							'long-response',
-							t('facets.slowResponse.title'),
-							t('facets.slowResponse.text'),
-							Severity.INFO,
-							false,
-							Priority.HIGH,
-						);
+						if (!dataLoaded.value) {
+							errorManager.submitCustomError(
+								'long-response',
+								t('facets.slowResponse.title'),
+								t('facets.slowResponse.text'),
+								Severity.INFO,
+								false,
+								Priority.MEDIUM,
+							);
+						}
 					}, 2000),
 				),
 				new Promise((_, reject) => setTimeout(() => reject(), 10000)),
