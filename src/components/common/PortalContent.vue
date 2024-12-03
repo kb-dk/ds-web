@@ -160,7 +160,19 @@ export default defineComponent({
 		const getRotationalResult = () => {
 			Promise.race([
 				APIService.getFeatureItems(testItems),
-				new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+				new Promise(() =>
+					setTimeout(function () {
+						errorManager.submitCustomError(
+							'long-response',
+							t('facets.slowResponse.title'),
+							t('facets.slowResponse.text'),
+							Severity.INFO,
+							false,
+							Priority.HIGH,
+						);
+					}, 2000),
+				),
+				new Promise((_, reject) => setTimeout(() => reject(), 10000)),
 			])
 				.then((response) => {
 					const typedResponse = response as APISearchResponseType; // Assert the correct type

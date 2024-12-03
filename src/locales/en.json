@@ -26,7 +26,11 @@
       "channels":"channel | channels",
       "chosen":"chosen",
       "reset":"reset",
-      "choose": "Select"
+      "choose": "Select",
+      "slowResponse": {
+         "title": "Slow response time",
+         "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
+      }
 
    },
    "breadcrumb": {
