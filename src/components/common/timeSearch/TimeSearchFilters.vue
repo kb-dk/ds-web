@@ -717,14 +717,18 @@ fieldset {
 	pointer-events: none;
 	z-index: 5;
 	left: -1px;
-	/* background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%); */
+	background: rgba(255, 255, 255, 0);
+	/* 	background: linear-gradient(-90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
+ */
 }
 
 .slider-whiteoff-container:after {
 	right: -1px;
 	left: initial;
 	top: 0px;
-	/* background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%); */
+	background: rgba(255, 255, 255, 0);
+	/* 	background: linear-gradient(90deg, rgba(215, 255, 98, 0) 0%, rgb(250, 250, 250) 95%);
+ */
 }
 
 .figures {
