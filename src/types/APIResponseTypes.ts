@@ -105,6 +105,7 @@ export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 
 export interface APIAuthMessagesType {
 	data: {
+		alert1: string;
 		streamingBaseUrlVideo: string;
 		AudioUiConfId: string;
 		videoUiConfId: string;

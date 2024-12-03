@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
+import { Priority, Severity } from '@/types/NotificationType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
@@ -331,7 +332,14 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
-			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+			errorManager.submitCustomError(
+				'search-result-error',
+				t('error.infoError.title'),
+				t('error.infoError.searchResult'),
+				Severity.ERROR,
+				true,
+				Priority.MEDIUM,
+			);
 			noHits.value = numFound.value === 0;
 			loading.value = false;
 		} finally {
