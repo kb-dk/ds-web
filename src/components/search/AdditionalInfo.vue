@@ -143,8 +143,8 @@ export default defineComponent({
 				.catch(() => {
 					errorManager.submitCustomError(
 						'thumbnails-error',
-						t('error.title'),
-						t('error.thumbnails.notResponsive'),
+						t('error.infoError.title'),
+						t('error.infoError.thumbnails'),
 						Severity.INFO,
 						false,
 						Priority.LOW,

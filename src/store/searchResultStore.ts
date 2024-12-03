@@ -1,15 +1,14 @@
 import { defineStore } from 'pinia';
-import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
+import { FacetResultType, FacetsType, GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { APIService } from '@/api/api-service';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
 import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
-import { FacetsType } from '@/types/GenericSearchResultTypes';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -327,7 +326,14 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
-			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+			errorManager.submitCustomError(
+				'search-result-error',
+				t('error.infoError.title'),
+				t('error.infoError.searchResult'),
+				Severity.ERROR,
+				true,
+				Priority.MEDIUM,
+			);
 			noHits.value = numFound.value === 0;
 			loading.value = false;
 		} finally {

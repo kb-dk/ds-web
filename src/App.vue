@@ -251,6 +251,16 @@ export default defineComponent({
 								authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
 								authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
 								authStore.kalturaIdFetchExecuted = true;
+								if (typedResponse.data.alert1) {
+									errorManager.submitCustomError(
+										'messages-error',
+										t('error.title'),
+										typedResponse.data.alert1,
+										Severity.ERROR,
+										true,
+										Priority.HIGH,
+									);
+								}
 							})
 							.catch(() => {
 								errorManager.submitCustomError(

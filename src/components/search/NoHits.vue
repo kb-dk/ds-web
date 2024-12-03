@@ -7,15 +7,13 @@
 			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
 			<div class="no-hits-heading-subtitle">
 				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
-				<p>
+				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
+				<a
+					:href="$t('search.nohitSubtitle.link')"
+					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
+				>
 					{{ $t('search.nohitSubtitle.readMore') }}
-					<a
-						:href="$t('search.nohitSubtitle.link')"
-						:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
-					>
-						{{ $t('search.nohitSubtitle.contains') }}
-					</a>
-				</p>
+				</a>
 				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
 			<EdgedContentArea
@@ -61,12 +59,11 @@
 							</li>
 							<li>
 								<div>
-									{{ $t('search.searchGuide.readMore') }}
 									<a
 										:href="$t('search.searchGuide.link')"
 										:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-search-tips', 0)"
 									>
-										{{ $t('search.searchGuide.searchTips') }}
+										{{ $t('search.searchGuide.readMore') }}
 									</a>
 								</div>
 							</li>

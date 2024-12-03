@@ -37,7 +37,7 @@
       "findMaterials": "Find materiale",
       "drArchive": "DR-arkivet",
       "search":"Søgning",
-      "record": "Fuldpost"
+      "record": "Udsendelse"
    },
    "timeSearch": {
       "timeMachine":"Søg via periode",
@@ -54,8 +54,8 @@
       "notApplied":"ikke i brug",
       "and":"og", 
       "data":"Arkivmateriale",
-      "from":"fra",
-      "to":"til",
+      "from":"Fra",
+      "to":"Til",
       "timeHits": "Der er i alt ",
       "result":"resultat | resultater",
       "all":"alle",
@@ -108,9 +108,9 @@
      "searchbtn":"Søg",
      "hitcount": " resultat fundet for | resultater fundet for",
      "nohitSubtitle": {
-       "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger. Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
-       "readMore": "Læs mere om, hvad arkivet",
-       "contains": "indeholder.",
+       "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger.",
+       "secondPart": "Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
+       "readMore": "Læs mere om, hvad arkivet indeholder.",
        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
        "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
      },
@@ -126,6 +126,7 @@
      "goToPage":"Gå til side {n}",
      "sortAfter":"Sorteret efter ",
      "sortBy": "Sorter efter",
+    "selected": "Valgt",
      "title": "Titel",
      "relevance":"Relevans",
      "date":"Dato",
@@ -149,6 +150,7 @@
       "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er dermeget materiale, og i andre er der kun lidt eller ingenting.",
       "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
     },
+    "showContent": "Vis indhold",
      "portals": {
          "drArchive":"DR-arkivet",
          "booksAndMaterials":"Bøger og tidskrifter",
@@ -157,7 +159,7 @@
          "seeAllMaterials":"Se alt materiale"
       },
       "placeholders": {
-         "drArchive":"Søg i  DR-arkivet",
+         "drArchive":"Søg for eksempel på titel, år eller kategori",
          "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
@@ -175,8 +177,7 @@
         "line2": "Så søger du på skov, skovens, skovtur og så videre"
       },
       "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt",
-      "readMore": "Læs mere om",
-      "searchTips": "søgetips",
+      "readMore": "Læs mere om søgetips",
       "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning"
     },
     "frontpageGuide": {
@@ -192,7 +193,7 @@
      "duration":"Varighed",
      "noBroadcastData":"Ingen sendetid",
      "seeMaterial":"See material",
-    "toFrontpage": "Til forsiden",
+    "toFrontpage": "DR-arkivet",
     "back": "Tilbage til søgning",
     "aired": "Sendt",
      "timestamp":"kl. ",
@@ -344,7 +345,7 @@
   "error": {
     "title": "Fejlmeddelelse",
     "record": {
-      "loadingFailed": "Materialet kunne ikke hentes",
+      "loadingFailed": "Udsendelsen kunne ikke hentes.",
       "notAllowed":"Du har ikke adgang til materialet",
       "unknown": "Ukendt",
       "restricted":"DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
@@ -364,23 +365,25 @@
    },
     "backend": {
       "bff": {
-        "notResponsive": "Messages svarer ikke"
+        "notResponsive": "Noget indhold på denne side kunne ikke hentes."
       },
       "solr": {
         "notResponsive":"Der er en fejl i systemet, som vi arbejder på at løse hurtigst muligt. Vi håber på din forståelse og tålmodighed"
       }
     },
    "auth": {
-      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere",
+      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere.",
      "notAllowedHeader": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
-     "notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende. Læs mere om"
+     "notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
    },
     "infoError": {
       "title": "Der skete en fejl",
-      "relatedContent": "Der kunne ikke finders noget relateret indhold",
-      "featuredContent": "Fremhævet indhold under DR gennem tiden svarede ikke",
-      "thumbnails": "Billede-oversigt svarer ikke."
-
+      "relatedContent": "Relateret indhold svarer ikke.",
+      "featuredContent": "Fremhævet indhold under DR gennem tiden svarer ikke.",
+      "thumbnails": "Billede-oversigten svarer ikke.",
+      "thumbnail": "Miniaturebilleder kan ikke hentes.",
+      "timeMachine": "Periode-filtre svarer ikke - prøv igen senere.",
+      "searchResult": "Søgeresultat svarer ikke - prøv igen senere."
     },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
