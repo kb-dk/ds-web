@@ -78,7 +78,6 @@ export default defineComponent({
 		let notificationAnimation: null | gsap.core.Tween;
 
 		onMounted(() => {
-			console.log(props.notification);
 			if (!props.notification.userClose) {
 				notificationAnimation = gsap.to(countdown.value, {
 					duration: duration.time,

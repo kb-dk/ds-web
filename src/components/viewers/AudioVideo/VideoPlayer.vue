@@ -127,8 +127,8 @@ export default defineComponent({
 						errorManager.submitCustomError(
 							'player-error',
 							t('error.title'),
-							`${t('error.record.notAllowed')} \n \n ${t('error.record.notAllowed')}`,
-							Severity.ERROR,
+							`${t('error.record.restricted')}\n\n${t('error.record.restrictedExplained')}`,
+							Severity.INFO,
 							true,
 							Priority.MEDIUM,
 						);

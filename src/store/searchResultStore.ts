@@ -66,7 +66,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const toggleShowFacets = (value: boolean) => {
 		showFacets.value = value;
 		if (value) {
-			console.log('getting facets');
 			getFacetResults(lastSearchQuery.value);
 		}
 	};
