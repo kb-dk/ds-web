@@ -91,8 +91,8 @@ export default defineComponent({
 	cursor: pointer;
 	box-sizing: border-box;
 	transition:
-		background-color 0.15s ease-in-out,
-		color 0.15s ease-in-out;
+		background-color 0.1s ease-in-out,
+		color 0.1s ease-in-out;
 	color: var(--text-color);
 	background-color: var(--bg-color);
 	margin-left: 25px;
@@ -108,13 +108,13 @@ export default defineComponent({
 }
 
 .info-btn:hover {
-	border: 1px solid #0a2e70;
 	box-sizing: border-box;
 }
 
 .info-btn:hover {
 	color: var(--bg-color);
-	background-color: var(--text-color);
+	background-color: #c4f1ed;
+	text-decoration: underline;
 }
 
 .small-icon {

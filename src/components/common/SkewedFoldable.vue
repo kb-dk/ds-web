@@ -444,7 +444,7 @@ h1::first-letter {
 	h1 {
 		font-family: 'LibreBaskerville';
 		font-weight: 100;
-		text-transform: uppercase;
+
 		font-size: 32px;
 	}
 	.content.hide {

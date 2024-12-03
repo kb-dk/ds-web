@@ -139,9 +139,9 @@ export default defineComponent({
 
 <style scoped>
 .icon {
-	height: 60px;
-	width: 60px;
-	font-size: 60px;
+	height: 46px;
+	width: 46px;
+	font-size: 46px;
 	overflow: hidden;
 	color: #002e70;
 	padding-right: 10px;
@@ -155,6 +155,7 @@ h2 {
 	font-weight: 100;
 	color: #002e70;
 	height: auto;
+	float: left;
 }
 
 .headline span {
@@ -184,24 +185,17 @@ h2 {
 	flex-wrap: wrap;
 	flex-direction: row;
 	align-content: flex-start;
-	height: 50px;
+	height: 55px;
 	width: 100%;
 	transition: all 0.15s linear 0s;
 	align-items: flex-start;
-	padding-top: 5px;
+	padding-top: 8px;
 	flex-wrap: nowrap;
 	background-color: transparent;
 	border: 0px;
 }
-
-.headline-container.open:hover {
-	cursor: pointer;
-	height: 50px !important;
-}
-
-.headline-container:hover {
-	cursor: pointer;
-	height: 55px;
+.headline-container.open {
+	padding-top: 8px;
 }
 
 .headline-container h2,
@@ -243,5 +237,24 @@ h2 {
 
 .selected-entity .close {
 	font-size: 20px;
+}
+@media (min-width: 990px) {
+	.headline-container {
+		height: 50px;
+		padding-top: 5px;
+	}
+	.headline-container.open:hover {
+		cursor: pointer;
+		height: 50px !important;
+	}
+
+	.headline-container:hover {
+		cursor: pointer;
+		height: 55px;
+		padding-top: 8px;
+	}
+	.headline-container:hover h2 {
+		text-decoration: underline;
+	}
 }
 </style>

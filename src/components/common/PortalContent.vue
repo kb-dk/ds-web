@@ -223,7 +223,6 @@ export default defineComponent({
 	margin-top: -110px !important;
 	align-items: center;
 }
-
 .categories,
 .date-picker,
 .time-search {
