@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
+import { CuratedItemsType } from '@/types/CuratedItemsType';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
