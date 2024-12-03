@@ -39,7 +39,10 @@
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
 							:imagedata="imageData"
 						></kb-imagecomponent>
-						<SoundThumbnail v-else></SoundThumbnail>
+						<SoundThumbnail
+							v-else
+							:result-title="resultdata.title[0]"
+						></SoundThumbnail>
 					</router-link>
 				</div>
 

@@ -7,12 +7,14 @@
 				<div v-if="!loading && recordData !== null">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
+							:back-link="backLink"
 							:more-like-this-records="moreLikeThisRecords"
 							:record-data="recordData as BroadcastRecordType"
 						/>
 					</div>
 					<div v-if="recordType === 'AudioObject'">
 						<BroadcastAudioRecordMetadataView
+							:back-link="backLink"
 							:more-like-this-records="moreLikeThisRecords"
 							:record-data="recordData as BroadcastRecordType"
 						/>
@@ -30,7 +32,7 @@
 					</div>
 				</div>
 				<div v-if="!loading && recordData === null && contentNotAllowed">
-					<NotAllowedRecord />
+					<NotAllowedRecord :back-link="backLink" />
 				</div>
 			</div>
 		</div>
@@ -39,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
 import GenericRecord from '@/components/records/GenericRecord.vue';
@@ -74,8 +76,33 @@ export default defineComponent({
 		const spinnerStore = useSpinnerStore();
 		const authStore = useAuthStore();
 		const route = useRoute();
+		const router = useRouter();
 		const loading = ref(true);
 		const contentNotAllowed = ref(false);
+		const backLink = ref('');
+
+		onMounted(async () => {
+			let back = router.options.history.state.back as string;
+			if (back && back.substring(0, 5) === '/find') {
+				backLink.value = router.options.history.state.back as string;
+			} else {
+				backLink.value = '/';
+			}
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+
+			if (authStore.firstAuthDone) {
+				buildContentFromReponse();
+			} else {
+				watch(
+					() => authStore.firstAuthDone,
+					(newVal: boolean) => {
+						if (newVal) {
+							buildContentFromReponse();
+						}
+					},
+				);
+			}
+		});
 
 		const getRecord = async (id: string) => {
 			spinnerStore.toggleSpinner(true);
@@ -180,24 +207,8 @@ export default defineComponent({
 				});
 			},
 		);
-		onMounted(async () => {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
 
-			if (authStore.firstAuthDone) {
-				buildContentFromReponse();
-			} else {
-				watch(
-					() => authStore.firstAuthDone,
-					(newVal: boolean) => {
-						if (newVal) {
-							buildContentFromReponse();
-						}
-					},
-				);
-			}
-		});
-
-		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed };
+		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink };
 	},
 	computed: {
 		GenericRecord() {

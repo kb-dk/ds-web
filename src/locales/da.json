@@ -190,7 +190,7 @@
      "noBroadcastData":"Ingen sendetid",
      "seeMaterial":"See material",
     "toFrontpage": "DR-arkivet",
-    "back": "Tilbage",
+    "back": "Tilbage til søgning",
     "aired": "Sendt",
      "timestamp":"kl. ",
      "title":"Titel",
@@ -343,7 +343,9 @@
     "record": {
       "loadingFailed": "Udsendelsen kunne ikke hentes.",
       "notAllowed":"Du har ikke adgang til materialet",
-      "unknown": "Ukendt"
+      "unknown": "Ukendt",
+      "restricted":"DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
+      "restrictedExplained":"Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
     },
     "players":{
       "video": {

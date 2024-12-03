@@ -104,7 +104,7 @@ export default defineComponent({
 		startAndCalculateOffset(e: MouseEvent | TouchEvent) {
 			if (this.slidingElement) {
 				this.isDown = true;
-				if (e instanceof TouchEvent) {
+				if (typeof TouchEvent !== 'undefined' && e instanceof TouchEvent) {
 					this.startX = e.touches[0].pageX - this.slidingElement.offsetLeft;
 				} else if (e instanceof MouseEvent) {
 					this.startX = e.pageX - this.slidingElement.offsetLeft;
@@ -125,7 +125,7 @@ export default defineComponent({
 				//e.preventDefault();
 
 				let x: number;
-				if (e instanceof TouchEvent) {
+				if (typeof TouchEvent !== 'undefined' && e instanceof TouchEvent) {
 					x = e.touches[0].pageX - this.slidingElement.offsetLeft;
 				} else if (e instanceof MouseEvent) {
 					x = e.pageX - this.slidingElement.offsetLeft;

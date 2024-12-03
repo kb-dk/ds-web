@@ -103,6 +103,7 @@ export default defineComponent({
 	padding: 0px 5px;
 	color: #002e70;
 	padding-right: 10px;
+	background-color: white;
 }
 
 label {

@@ -20,8 +20,8 @@
 				<div class="back-link">
 					<div class="triangle"></div>
 					<router-link
-						v-if="lastPath"
-						:to="lastPath"
+						v-if="backLink !== '/'"
+						:to="backLink"
 						class="link-container return"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 					>
@@ -117,12 +117,11 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
-import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { getEntryId } from '@/utils/record-utils';
 import '@/components/common/wc-spot-item';
@@ -151,18 +150,18 @@ export default defineComponent({
 				return [];
 			},
 		},
+		backLink: {
+			type: String as PropType<string>,
+			required: true,
+		},
 	},
 
 	setup(props) {
 		const lastPath = ref('');
-		const router = useRouter();
 		const { locale, t } = useI18n();
 		const searchResultStore = useSearchResultStore();
 		const entryId = ref('');
 		entryId.value = getEntryId(props.recordData);
-		onMounted(() => {
-			lastPath.value = router.options.history.state.back as string;
-		});
 
 		const emptySearchResults = () => {
 			searchResultStore.searchResult = [];
@@ -211,7 +210,7 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link {
-	width: 100%;
+	width: fit-content;
 }
 
 .back-link a {
@@ -397,7 +396,6 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: row;
 	bottom: 0;
-	width: 105px;
 	padding-top: 15px;
 }
 
