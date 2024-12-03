@@ -557,7 +557,7 @@ export default defineComponent({
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 30px;
-	font-size: 20px;
+	font-size: 26px;
 	text-transform: capitalize;
 }
 
@@ -685,16 +685,23 @@ fieldset {
 .explanation-for-data {
 	position: absolute;
 	width: 100%;
-	min-height: 100px;
 	top: 0px;
 	left: 0px;
-	background-color: #c4f1ed;
+	background-color: #002e70;
 	z-index: 10;
 	border: 1px solid #002e70;
 	color: #002e70;
-	padding: 20px 40px;
+	padding: 35px 0px 35px 30px;
 	box-sizing: border-box;
 	display: flex;
+	color: white;
+}
+.explanation-for-data:hover button {
+	font-size: 50px;
+	top: 0px;
+}
+.explanation-for-data div {
+	padding: 0px 40px 0px 0px;
 }
 .explanation-for-data button {
 	position: absolute;
@@ -702,9 +709,10 @@ fieldset {
 	right: 5px;
 	border: 0px;
 	background-color: transparent;
-	font-size: 25px;
-	color: #002e70;
+	font-size: 40px;
+	color: white;
 	cursor: pointer;
+	transition: all 0.1s linear 0s;
 }
 
 .slider-whiteoff-container:before,
@@ -798,15 +806,22 @@ fieldset {
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 1px solid #ffffff;
 	border-radius: 4px;
-	text-transform: uppercase;
 	position: absolute;
 	text-align: center;
 	letter-spacing: 0px;
 	color: #002e70;
-	padding: 3px;
+	padding: 4px 6px;
 	top: 90px;
 	z-index: 10;
 	cursor: pointer;
+	font-family: noway, sans-serif;
+	font-size: 14px;
+	transition: all 0.1s linear 0s;
+}
+.data-size:hover {
+	background: #0a2e70 0% 0% no-repeat padding-box;
+	text-decoration: underline;
+	color: white;
 }
 
 .picker-container {
@@ -940,7 +955,7 @@ fieldset {
 	color: #b3b3b3;
 	cursor: pointer;
 	background-color: transparent;
-	text-transform: uppercase;
+
 	font-weight: bold;
 	font-size: 14px;
 	position: relative;
@@ -1086,7 +1101,8 @@ fieldset {
 	.slider-container {
 		height: 96px;
 		padding-bottom: 40px;
-		margin-bottom: 60px;
+		margin-bottom: 80px;
+		margin-top: 15px;
 	}
 }
 

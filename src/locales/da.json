@@ -12,7 +12,8 @@
          "search":" Søgning på "
       },
       "frontPages": {
-         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv"
+         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv",
+        "loadingError": "Indlæsning fejlede"
       }
    },
    "frontpage": {

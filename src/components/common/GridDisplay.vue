@@ -7,7 +7,7 @@
 				:class="draggable ? 'related-record draggable-item' : 'related-record'"
 			>
 				<GridResultItem
-					:loading="false"
+					:loading="!loaded"
 					:resultdata="spots[i]"
 					:index="i"
 					background="#ffffff"
@@ -33,8 +33,8 @@ export default defineComponent({
 		spots: { type: Object as PropType<GenericSearchResultType[]>, required: true },
 		spotNr: { type: Number, required: true },
 		draggable: { type: Boolean, required: false },
+		loaded: { type: Boolean, required: true },
 	},
-
 	data() {
 		return {
 			isDown: false,

@@ -93,32 +93,37 @@ export default defineComponent({
 }
 
 .select-container select {
-	font-size: 20px;
+	font-size: 26px;
 	border: 0px;
-	background-color: transparent;
 	font-family: noway, sans-serif;
 	background-color: white;
 	border: 1px solid #002e70;
 	border-radius: 4px;
-	padding: 0px 5px;
+	padding: 4px 50px 5px 8px;
 	color: #002e70;
-	padding-right: 10px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
 	background-color: white;
+	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
+	background-repeat: no-repeat;
+	background-position-x: 85px;
+	background-position-y: 16px;
 }
 
 label {
 	padding-right: 10px;
+	color: black;
 }
 
 .line {
 	display: block;
 	width: 1px;
-	height: 16px;
+	height: 24px;
 	background-color: lightgrey;
-	top: 7px;
+	top: 10px;
 	right: 0px;
 	position: absolute;
-	margin-right: 32px;
+	margin-right: 52px;
 }
 
 select option {

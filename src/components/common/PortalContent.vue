@@ -69,7 +69,7 @@
 				:row-nr="4"
 				:draggable="true"
 				:spots="searchResultStore.rotationalResult"
-				:loading="dataLoaded"
+				:loaded="dataLoaded"
 			></GridDisplay>
 		</div>
 	</div>
@@ -92,6 +92,7 @@ import { APIService } from '@/api/api-service';
 import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { CuratedItemsType } from '@/types/CuratedItemsType';
 
 export default defineComponent({
 	name: 'PortalContent',
@@ -106,60 +107,53 @@ export default defineComponent({
 
 	setup() {
 		const currentMonth = ref([] as GenericSearchResultType[]);
-		// november test data
-		const testItems = [
-			'ds.tv:oai:io:47578244-da4a-48ca-8ab0-cceef12f23aa',
-			'ds.tv:oai:io:4b252da6-7a71-4cdb-a7d8-9c6e9318e565',
-			'ds.tv:oai:io:e5724c9b-b9c4-4212-95ff-9edf715a5f84',
-			'ds.tv:oai:io:ddc4dc00-8530-4f94-ad11-fcb979fb9f8b',
-			'ds.radio:oai:io:6a93f74e-66a0-4386-9f6b-c24b3f92025c',
-			'ds.radio:oai:io:5cd51b8c-944c-401b-a80d-0105ffaaede7',
-			'ds.tv:oai:io:99ab2820-9d2a-4007-8bb8-873e1911ab61',
-			'ds.tv:oai:io:248a7e6a-0834-4928-8099-d562f53a36ff',
-		];
+		const curatedItems = ref([] as Array<string>);
 		const dataLoaded = ref(false);
 		const searchResultStore = useSearchResultStore();
 		const currentLocale = ref('da-dk');
 		const { locale, t } = useI18n({ useScope: 'global' });
 		const errorManager = inject('errorManager') as ErrorManagerType;
+
 		watch(
 			() => locale.value,
 			(newVal: string) => {
 				currentLocale.value = newVal === 'da' ? 'da-dk' : 'en-uk';
 			},
 		);
-
+		const getCuratedItemFromMonth = (items: CuratedItemsType) => {
+			let currentMonth = new Date().toLocaleString('da-DK', { month: 'long' });
+			currentMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+			curatedItems.value = items[currentMonth];
+		};
+		const scrambleArray = (list: Array<GenericSearchResultType>) => {
+			return list
+				.map((value) => ({ value, sort: Math.random() }))
+				.sort((a, b) => a.sort - b.sort)
+				.map(({ value }) => value);
+		};
 		onMounted(() => {
-			if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.rotationalResult).length === 0) {
+			if (searchResultStore.firstBackendFetchExecuted && curatedItems.value.length === 0) {
 				getRotationalResult();
 			} else {
 				watch(
-					() => searchResultStore.firstBackendFetchExecuted,
-					(newVal: boolean) => {
+					() => searchResultStore.curatedContent,
+					(newVal: CuratedItemsType) => {
 						if (newVal && Object.keys(searchResultStore.rotationalResult).length === 0) {
-							getRotationalResult();
-						} else {
-							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
-							const customEvent = new CustomEvent('notify-user', {
-								detail: {
-									title: 'Backend svarer ikke.',
-									message:
-										'De bagvedliggende applikationer svarer ikke, så det er ikke muligt at søge pt. \n \n Prøv igen senere.',
-									key: false,
-									severity: 'low',
-									userClose: true,
-								},
-							});
-							window.dispatchEvent(customEvent);
+							getCuratedItemFromMonth(newVal);
+							if (curatedItems.value.length > 0) {
+								getRotationalResult();
+							} else {
+								dataLoaded.value = true;
+							}
 						}
 					},
 				);
 			}
 		});
-
 		const getRotationalResult = () => {
+			getCuratedItemFromMonth(searchResultStore.curatedContent);
 			Promise.race([
-				APIService.getFeatureItems(testItems),
+				APIService.getFeatureItems(curatedItems.value),
 				new Promise(() =>
 					setTimeout(function () {
 						if (!dataLoaded.value) {
@@ -177,8 +171,12 @@ export default defineComponent({
 				new Promise((_, reject) => setTimeout(() => reject(), 10000)),
 			])
 				.then((response) => {
-					const typedResponse = response as APISearchResponseType; // Assert the correct type
-					searchResultStore.setRotationalResult(typedResponse.data.response.docs);
+					const typedResponse = response as APISearchResponseType;
+					let itemsForMonth = typedResponse.data.response.docs;
+					if (itemsForMonth.length > 7) {
+						itemsForMonth = scrambleArray(itemsForMonth).splice(0, 8);
+					}
+					searchResultStore.setRotationalResult(itemsForMonth);
 				})
 				.catch(() => {
 					errorManager.submitCustomError(
@@ -195,7 +193,18 @@ export default defineComponent({
 				});
 		};
 
-		return { searchResultStore, currentMonth, currentLocale, addTestDataEnrichment, t, dataLoaded, errorManager };
+		return {
+			searchResultStore,
+			currentMonth,
+			currentLocale,
+			curatedItems,
+			getCuratedItemFromMonth,
+			addTestDataEnrichment,
+			scrambleArray,
+			t,
+			dataLoaded,
+			errorManager,
+		};
 	},
 	methods: {
 		useRoute,
@@ -216,7 +225,6 @@ export default defineComponent({
 	margin-top: -110px !important;
 	align-items: center;
 }
-
 .categories,
 .date-picker,
 .time-search {

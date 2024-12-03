@@ -171,33 +171,59 @@ export default defineComponent({
 	background-color: var(--showWhite);
 	background: linear-gradient(
 		90deg,
+		rgba(250, 250, 250, 1) 0%,
+		rgba(255, 255, 255, 1) 15%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 1) 85%,
+		rgba(250, 250, 250, 1) 100%
+	);
+	transition: all 0.15s linear 0s;
+}
+
+.expand-container.open {
+	background: linear-gradient(
+		90deg,
+		rgba(250, 250, 250, 1) 0%,
+		rgba(255, 255, 255, 1) 15%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 1) 85%,
+		rgba(250, 250, 250, 1) 100%
+	);
+}
+.expand-container.open .dotted-line {
+	opacity: 1;
+}
+.expand-container.open:before {
+	background: linear-gradient(
+		90deg,
 		rgba(255, 255, 255, 0) 0%,
-		var(--showWhite) 5%,
-		var(--showWhite) 95%,
+		rgba(10, 46, 112, 1) 25%,
+		rgba(10, 46, 112, 1) 75%,
 		rgba(255, 255, 255, 0) 100%
 	);
-	transition: --showWhite 0.5s;
-}
-.expand-container.open {
-	--showWhite: rgba(255, 255, 255, 1);
+	height: 2px;
+	opacity: 0.9;
 }
 
 .dotted-line {
-	z-index: 1;
+	z-index: -1;
+	border-top: 1px dashed rgb(250, 250, 250);
 	display: block;
 	width: 100%;
-	height: 2px;
+	height: 1px;
 	position: relative;
 	top: 12px;
 	background: linear-gradient(
 		90deg,
-		rgba(250, 250, 250, 0) 0%,
-		rgba(255, 255, 255, 0) 5%,
-		rgba(255, 255, 255, 0) 95%,
-		rgba(250, 250, 250, 0) 100%
+		rgba(255, 255, 255, 0) 0%,
+		rgba(10, 46, 112, 1) 25%,
+		rgba(10, 46, 112, 1) 75%,
+		rgba(255, 255, 255, 0) 100%
 	);
+	opacity: 0.2;
+	transition: all 0.15s linear 0s;
 }
-
+/*Blue-border-top*/
 .expand-container:before {
 	background: linear-gradient(
 		90deg,
@@ -209,10 +235,10 @@ export default defineComponent({
 	content: '';
 	display: block;
 	width: 100%;
-	height: 1px;
-	opacity: 0.3;
+	height: 2px;
+	opacity: 0.55;
 }
-
+/*Shadow*/
 .expand-container:after {
 	transition: all 0.2s ease-in 0s;
 	width: 100%;
@@ -228,7 +254,7 @@ export default defineComponent({
 
 .expand-container.open:after {
 	transition: all 0.2s ease-in 0s;
-	opacity: 0.2;
+	opacity: 0.4;
 }
 
 .expander {
@@ -286,7 +312,8 @@ export default defineComponent({
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-	margin-top: 30px;
+	margin-top: 45px;
+	transition: all 0.15s linear 0s;
 }
 
 .toggle-button:before {
@@ -334,6 +361,64 @@ export default defineComponent({
 	}
 	.expand-container {
 		justify-content: center;
+		background: linear-gradient(
+			90deg,
+			rgba(250, 250, 250, 1) 0%,
+			rgba(255, 255, 255, 0) 35%,
+			rgba(255, 255, 255, 0) 50%,
+			rgba(255, 255, 255, 0) 65%,
+			rgba(250, 250, 250, 1) 100%
+		);
+	}
+	.expand-container:before {
+		background: linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(10, 46, 112, 1) 5%,
+			rgba(10, 46, 112, 1) 95%,
+			rgba(255, 255, 255, 0) 100%
+		);
+		content: '';
+		display: block;
+		width: 100%;
+		height: 1px;
+		opacity: 0.3;
+	}
+	.expand-container:hover {
+		background: linear-gradient(
+			90deg,
+			rgba(250, 250, 250, 1) 0%,
+			rgba(255, 255, 255, 1) 15%,
+			rgba(255, 255, 255, 1) 50%,
+			rgba(255, 255, 255, 1) 85%,
+			rgba(250, 250, 250, 1) 100%
+		);
+	}
+	.expand-container:hover:before {
+		background: linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(10, 46, 112, 1) 25%,
+			rgba(10, 46, 112, 1) 75%,
+			rgba(255, 255, 255, 0) 100%
+		);
+		height: 2px;
+		opacity: 0.9;
+	}
+	.expand-container:hover:after {
+		opacity: 0.4;
+	}
+	.expand-container:hover .dotted-line {
+		opacity: 0.4;
+	}
+	.expand-container.open .toggle-button:hover {
+		margin-top: 41px;
+	}
+	.expand-container.open .dotted-line {
+		opacity: 1;
+	}
+	.dotted-line {
+		opacity: 0;
 	}
 }
 </style>
