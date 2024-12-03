@@ -196,7 +196,7 @@ export default defineComponent({
 					if (newVal) {
 						Promise.race([
 							APIService.getFullResultWithFacets(),
-							new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
 						])
 							.then((response) => {
 								const typedResponse = response as APISearchResponseType;
@@ -215,7 +215,10 @@ export default defineComponent({
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
 
-						Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
+						Promise.race([
+							APIService.getKalturaConfIds(),
+							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
+						])
 							.then((response) => {
 								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
 								searchResultStore.setCuratedContent(typedResponse.data.curatedItems);

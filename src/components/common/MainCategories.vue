@@ -51,7 +51,10 @@
 							:style="`width:${Math.random() * 3 + 3}%`"
 							class="loading number"
 						></span>
-						<NoFacetContent position="absolute"></NoFacetContent>
+						<NoFacetContent
+							v-if="categoriesLoaded && categories.length === 0"
+							position="absolute"
+						></NoFacetContent>
 					</div>
 				</div>
 			</div>
@@ -103,9 +106,6 @@ export default defineComponent({
 			if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 				constructGenre();
 			} else {
-				if (Object.keys(searchResultStore.initFacets).length === 0) {
-					categoriesLoaded.value = true;
-				}
 				watch(
 					() => searchResultStore.firstBackendFetchExecuted,
 					(newVal: boolean) => {

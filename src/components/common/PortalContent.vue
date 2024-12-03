@@ -70,7 +70,6 @@
 				:draggable="true"
 				:spots="searchResultStore.rotationalResult"
 				:loaded="dataLoaded"
-				:no-data-text="$t('app.frontPages.featuredContent.noContentTitle')"
 			></GridDisplay>
 		</div>
 	</div>
@@ -155,7 +154,7 @@ export default defineComponent({
 			getCuratedItemFromMonth(searchResultStore.curatedContent);
 			Promise.race([
 				APIService.getFeatureItems(curatedItems.value),
-				new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+				new Promise((_, reject) => setTimeout(() => reject(), 10000)),
 			])
 				.then((response) => {
 					const typedResponse = response as APISearchResponseType;

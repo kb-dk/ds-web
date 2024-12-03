@@ -34,7 +34,6 @@ export default defineComponent({
 		spotNr: { type: Number, required: true },
 		draggable: { type: Boolean, required: false },
 		loaded: { type: Boolean, required: true },
-		noDataText: { type: String as PropType<string>, required: false },
 	},
 	data() {
 		return {
