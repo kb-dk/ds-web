@@ -30,12 +30,12 @@
 		</div>
 		<div class="back-link">
 			<router-link
-				v-if="lastPath"
-				:to="lastPath"
+				v-if="backLink !== '/'"
+				:to="backLink"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				Tilbage
+				{{ $t('record.back') }}
 			</router-link>
 			<router-link
 				v-else
@@ -43,7 +43,7 @@
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
 				<span class="material-icons offset">chevron_left</span>
-				Til forsiden
+				{{ $t('record.toFrontpage') }}
 			</router-link>
 		</div>
 		<div class="extra-record-data"></div>
@@ -51,30 +51,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref, PropType } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
-import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'NotAllowedRecord',
-
 	components: {
 		VideoPlayer,
+	},
+	props: {
+		backLink: {
+			type: String as PropType<string>,
+			required: true,
+		},
 	},
 
 	setup() {
 		const lastPath = ref('');
-		const router = useRouter();
 		const { locale, t } = useI18n();
-
-		onMounted(() => {
-			lastPath.value = router.options.history.state.back as string;
-		});
 
 		const getCurrentUrl = () => {
 			copyTextToClipboard();
@@ -109,7 +108,7 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link {
-	width: 100%;
+	width: fit-content;
 	margin-bottom: 10px;
 }
 

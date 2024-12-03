@@ -72,6 +72,10 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	};
 
 	const setFiltersFromUrl = (URLFilters: string[] | LocationQueryValue[] | string) => {
+		resetAllSelectorValues(days.value);
+		resetAllSelectorValues(months.value);
+		resetAllSelectorValues(timeslots.value);
+
 		const filters = normalizeFq(URLFilters as string[]);
 		if (filters !== undefined) {
 			if (filters instanceof Array) {
@@ -87,20 +91,14 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 						if (filter.includes('temporal_start_day_da')) {
 							const splitDays = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(days.value, splitDays);
-						} else {
-							resetAllSelectorValues(days.value);
 						}
 						if (filter.includes('temporal_start_month')) {
 							const splitMonths = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(months.value, splitMonths);
-						} else {
-							resetAllSelectorValues(months.value);
 						}
 						if (filter.includes('temporal_start_hour_da')) {
 							const splitTimes = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(timeslots.value, splitTimes);
-						} else {
-							resetAllSelectorValues(timeslots.value);
 						}
 					}
 				});

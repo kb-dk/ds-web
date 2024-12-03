@@ -15,7 +15,6 @@
 								ref="timeFacetButton"
 								role="switch"
 								aria-checked="false"
-								filter-button
 								:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
 								@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 							>
@@ -84,7 +83,7 @@
 													:time-search-active="timeSearchStore.timeFacetsOpen"
 													:number="index"
 													:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
-													:loading="searchResultStore.loading"
+													:loading="searchResultStore.loadingGenres"
 													:update="updateCheckbox"
 													:parent-array="genreArray"
 												/>
@@ -131,7 +130,7 @@
 														searchResultStore.channelFilters,
 													)
 												"
-												:loading="searchResultStore.loading"
+												:loading="searchResultStore.loadingChannels"
 											/>
 										</div>
 									</TransitionGroup>
