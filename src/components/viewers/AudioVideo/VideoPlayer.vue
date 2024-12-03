@@ -21,6 +21,13 @@ import { Priority, Severity } from '@/types/NotificationType';
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
 
+interface KalturaErrorEvent {
+	payload: {
+		code: number; // Error code (e.g., 1002)
+		message: string; // Error message
+	};
+}
+
 export default defineComponent({
 	name: 'VideoPlayer',
 	components: { NotAllowedBanner },
@@ -120,7 +127,7 @@ export default defineComponent({
 				videoPlayer.ready().then(() => {
 					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
 				});
-				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: any) => {
+				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
 					if (error.code === 1002 && !restrictedErrorDispatched.value) {
 						restrictedErrorDispatched.value = true;
