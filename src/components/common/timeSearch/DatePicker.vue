@@ -40,13 +40,13 @@
 		></VueDatePicker>
 		<div class="from-to-display">
 			<div class="container">
-				<span>Fra:</span>
+				<span>{{ $t('timeSearch.from') }}:</span>
 				<div class="time">
 					{{ format(startDate) }}
 				</div>
 			</div>
 			<div class="container">
-				<span>Til:</span>
+				<span>{{ $t('timeSearch.to') }}:</span>
 				<div class="time">
 					{{ format(endDate) /*date2.toISOString()*/ }}
 				</div>
@@ -56,13 +56,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch } from 'vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/components/common/timeSearch/custom-datepicker.css';
 import { addDays } from 'date-fns/addDays';
-import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { endDate, endYear, startDate, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useI18n } from 'vue-i18n';
 

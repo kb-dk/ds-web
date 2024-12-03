@@ -5,7 +5,7 @@
 				v-if="filtersActive"
 				key="1"
 			>
-				Udvalgt:
+				{{ $t('search.selected') }}:
 			</span>
 			<button
 				v-if="searchResultStore.channelFilters.length !== 0"
@@ -133,23 +133,22 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 import {
 	days,
-	months,
-	timeslots,
-	startYear,
-	endYear,
-	startDate,
 	endDate,
+	endYear,
+	months,
+	startDate,
+	startYear,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
-import { useRouter } from 'vue-router';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({

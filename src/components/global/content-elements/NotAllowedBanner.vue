@@ -12,7 +12,7 @@
 						:href="$t('search.nohitSubtitle.link')"
 						:data-testid="addTestDataEnrichment('link', 'NotAllowedBanner', `Link-to-read-more`, 0)"
 					>
-						{{ $t('search.portals.drArchive') }}
+						{{ $t('hero.link') }}
 					</a>
 				</div>
 			</div>

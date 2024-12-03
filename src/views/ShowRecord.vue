@@ -142,7 +142,7 @@ export default defineComponent({
 						errorMsg = t('error.record.loadingFailed');
 						errorManager.submitCustomError(
 							'record-error',
-							t('error.title'),
+							t('error.infoError.title'),
 							errorMsg,
 							Severity.ERROR,
 							true,

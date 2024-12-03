@@ -16,25 +16,25 @@
       }
    },
    "frontpage": {
-      "fromTheArchive":"{month} month on DR through time"
+      "fromTheArchive":"The month of {month} on DR through time"
    },
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
-      "genresSubtitle": "Choose which category you would like to search in",
+      "genresSubtitle": "Select a category and explore the programmes. ",
       "allChannels":"all channels",
       "channels":"channel | channels",
       "chosen":"chosen",
       "reset":"reset",
-      "choose": "Choose"
+      "choose": "Select"
 
    },
    "breadcrumb": {
       "frontpage":"Frontpage",
       "findMaterials": "Find materials",
-      "drArchive": "DR-archive",
+      "drArchive": "DR-arkivet",
       "search":"Search",
-      "record": "Fullpost"
+      "record": "Programme"
    },
    "timeSearch": {
       "timeMachine":"Search via period",
@@ -43,31 +43,31 @@
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
-      "timePeriods": "time span",
+      "timePeriods": "time span | time spans",
       "chosenTimeslots":"Chosen timeslots",
       "foundResults":"found results",
       "allChosen":"All chosen",
       "chosen":"chosen",
       "notApplied":"not applied",
       "and":"and", 
-      "data":"data quantity",
-      "from":"from",
-      "to":"to",
+      "data":"Archive material",
+      "from":"From",
+      "to":"To",
       "timeHits": "There is in total ",
       "result":"result | results",
       "all":"all",
-      "allMonths":"all months in the period",
-      "allDays":"all weekdays in the period",
-      "allTimeslots":"all hours",
+      "allMonths":"All months in the period",
+      "allDays":"All days of the week in the period ",
+      "allTimeslots":"All hours",
       "selection":"A selection of the results",
-      "dateSubtitle": "Pick a date you would like to see content from.",
-      "timeMachineSubtitle": "Pick which period in DR's broadcasts you would like to search in.",
-      "searchCategoriesSubtitle": "Pick a category and discover our broadcasts.",
-      "monthHeadline":"Choose months",
-      "dayHeadline":"Choose weekdays",
-      "timeslotHeadline":"Choose timeslots",
-      "yearHeadline":"Choose dates via calendar",
-      "filterOpenButton":"Date, periods and moments",
+      "dateSubtitle": "Here you can select a specific date and see what was sent that day. ",
+      "timeMachineSubtitle": "Here you can select years, months and days of the week if you are looking for programmes sent in a specific period. ",
+      "searchCategoriesSubtitle": "Select a category and explore the programmes.",
+      "monthHeadline":"Select months",
+      "dayHeadline":"Select days of the week",
+      "timeslotHeadline":"Select hours",
+      "yearHeadline":"Select date or period",
+      "filterOpenButton":"Date, period and time",
       "filterCloseButton":"Close moments",
       "filterApplyButton":"Apply",
       "months": {
@@ -104,16 +104,16 @@
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
      "hitcount": " result fund for | results found for",
-     "nohit":"Sorry we didn't find any results matching this search \"{query}\"",
+     "nohit":"Sorry, we did not find any results matching your search for \"{query}\"",
      "nohitSubtitle": {
-        "firstPart": "We're sorry that it wasn't possible to find a result to your search. It isn't all broadcasts in the archive thats connected to good search words. So it might demand af few tries to find what you're searching. Maybe you have search for somehting thats not yet in the archive, or something we may not show.",
-        "readMore": "Read more about what the archive",
-        "contains": "contains.",
-        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
-        "lastPart": "We hope for your understanding and patience. We're working on making archive material more searchable. We have collected some good advice underneat, which might help you."
+        "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
+        "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",
+        "readMore": "Read more about what the archive contains.",
+        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive",
+        "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
      },
      "tipsTitle": "A few tips for your search",
-     "mainCategories": "Look further in our main categories",
+     "mainCategories": "Browse through our main categories",
      "showFilters":"Show filters",
      "hideFilters":"Hide filters",
      "resetFilters": "Reset filters",
@@ -123,9 +123,10 @@
      "goToPage":"Go to page {n}",
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
-     "title": "title",
-     "relevance":"relevance",
-     "date":"date",
+     "selected": "Selected",
+     "title": "Title",
+     "relevance":"Relevance",
+     "date":"Date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
      "relatedContent": "Related content",
@@ -137,68 +138,68 @@
      "tv":"TV",
      "radio":"Radio",
      "all":"All",
-     "thumbnail": "Thumbnail",
+     "thumbnail": "Thumbnails",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "of":"of",
      "startTime":"Start time",
      "dataQuantity":{
-        "firstPart": "The curve shows how much DR-archive material you can search in the different years. In some periods there's a lot of material, in others there's less or nothing.",
-        "secondPart": "We work all the time to get more broadcasts ready for to be released in the online archive, therefore the curve will change according to how many broadcasts has been added."
+        "firstPart": "The graph shows how much material from DR-arkivet you can search from each year. In some periods, there is a lot of material and in others there is little or nothing. ",
+        "secondPart": "We are constantly working to get more programmes ready to go in the online archive, and therefore the graph will change as more programmes are added. "
      },
+     "showContent": "Show content",
      "portals": {
-         "drArchive":"DR-archive",
+         "drArchive":"DR-arkivet",
          "booksAndMaterials":"Books and journals",
          "kbdk":"Search kb.dk",
          "webshop":"Webshop",
          "seeAllMaterials":"See all materials"
       },
       "placeholders": {
-         "drArchive":"Search DR-archive",
+         "drArchive":"Search for example by title, year or category",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
          "seeAllMaterials":"See all materials"
       },
      "searchGuide": {
-        "title":"Good advice for your search",
-        "subtitle": "Maybe you can improve your search with these methods",
-        "first": "Try using less search words",
+        "title":"Advice about searching",
+        "subtitle": "Perhaps you can improve your search with one of these methods",
+        "first": "Try using fewer or different keywords",
         "second": {
-           "line1": "Check spelling. If you're unsure you can write ? as replacement for a letter - for example Son?a",
-           "line2": "Then you'll search for both Sonia and Sonja"
+           "line1": "Check the spelling. If you're unsure, you can write ? as a substitute for a letter - for example Son?a",
+           "line2": "Then you search both Sonia and Sonja"
         },
         "third": {
-           "line1": "Try writing * at the end of a word, for example skov*",
-           "line2": "Then you'll search for skov, skovens, skovtur and so on"
+           "line1": "Try writing * at the end of a word, for example forest*",
+           "line2": "Then you search for forest, forest's, forester and so on"
         },
-        "fourth": "Use searching via date or periode om DR-archive's frontpage, if you got a sense of where the broadcast was sent",
-        "readMore": "Read more about",
-        "searchTips": "search tips",
+        "fourth": "Use searching via date or periode on the frontpage of DR-arkivet, if you have a sense of when the programme was sent",
+        "readMore": "Read more about search tips",
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search"
      },
     "frontpageGuide": {
-      "title":"How do i search?",
-      "first":"Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis hotel ikke vil finde resultater, hvor der står hoteller eller badehotel.",
-      "second":"Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.",
-      "third":"Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori, kanal eller tid.",
-      "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning",
-      "linktext":"Læs flere gode råd om søgning"
+      "title":"How do I optimise my search?",
+      "first":"The search function only finds results where your keywords appear in the title or description in exactly the form and spelling you have written them. This means that a search for, for example, tower will not find results that say towers or watchtower. ",
+      "second":"If you want to include multiple forms of the search words, you can use * at the end and/or beginning of the word.",
+      "third":"Please note: When you search in the search box, your previous selection of filters will be reset - for example category, channel or time.",
+      "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search",
+      "linktext":"Read more advice about searching "
     }
   },
   "record":{
      "duration":"Duration",
      "noBroadcastData":"No air date",
      "seeMaterial":"Se materiale",
-     "toFrontpage": "To the frontpage",
+     "toFrontpage": "DR-arkivet",
      "back": "Back to search",
      "aired": "Aired",
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
-     "copy":"Copy link",
-     "copyTitleSuccess":"Copying successful.",
-     "copyMessageSuccess":"The link was successfully copied to the clipboard.",
+     "copy":"Share link",
+     "copyTitleSuccess":"The link has now been copied.",
+     "copyMessageSuccess":"",
      "copyTitleFailed":"Copying failed.",
      "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead.",
      "moreMetadataBroadcast":"Additional information about the broadcast",
@@ -343,7 +344,7 @@
    "error": {
       "title": "Error message",
       "record": {
-         "loadingFailed": "The requested material could not be loaded",
+         "loadingFailed": "The requested programme could not be loaded.",
          "notAllowed":"You are not authorized to view this material",
          "unknown": "Unknown",
          "restricted":"SORRY, YOU DO NOT HAVE ACCESS TO THIS PROGRAMME",
@@ -364,40 +365,43 @@
        },
       "backend": {
          "bff": {
-            "notResponsive": "Messages not responding"
+            "notResponsive": "Some content on this page could not be retrieved."
          },
          "solr": {
             "notResponsive":"There was an error in the system, that we're working to fix as soon as possible. We hope for your understanding and patience"
          }
       },
       "infoError": {
-         "title": "There was an error",
-         "relatedContent": "We could not find related content",
-         "featuredContent": "Featured content is not responding",
-         "thumbnails": "Thumbnails are not responding"
+         "title": "An error occurred",
+         "relatedContent": "Related content is not responding.",
+         "featuredContent": "Featured content from this month is not responding.",
+         "thumbnails": "Thumbnails are not responding.",
+         "thumbnail": "Thumbnails are not responding.",
+         "timeMachine": "Period filters are not responding - try again later.",
+         "searchResult": "Search result is not responding - try again later."
 
       },
        "auth": {
-          "serviceFailed":"The application's underlying services are not available at the moment - please try again later",
-          "notAllowedHeader": "UNFORTUNATELY YOU DO NOT HAVE ACCESS TO THIS CONTENT",
-          "notAllowedText": "It may be due to a broadcast is subject to copyright or clauses. For example due to vulnerable participants. Read more about"
+          "serviceFailed":"The application's underlying services are currently unavailable - please try again later.",
+          "notAllowedHeader": "SORRY, YOU DO NOT HAVE ACCESS TO THIS PROGRAMME",
+          "notAllowedText": "This may be because the programme is subject to  copyright or is restricted, for example due to particularly vulnerable contributors."
       },
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them",
    "wrongUrl": {
-      "header": "Sadly we can not find the page you're looking for :(",
-      "text": "It is unfortunate because we got 25.000 TB websites in storage",
-      "altHeader": "Maybe you're looking for",
-      "frontPage": "Frontpage of DR-archive",
-      "kbPage": "Frontpage of the Royal Danish Library"
+      "header": "Sorry, we cannot find the page you are looking for :(",
+      "text": "Try entering a search in the search box or go to the front page of DR-arkivet to use the various entries to the archive material.",
+      "altHeader": "Perhaps you are looking for",
+      "frontPage": "Front page of DR-arkivet",
+      "kbPage": "Front page of Royal Danish Library"
    }
   },
   "hero": {
-   "title":"DR-archive",
-   "subtitle":"The Royal Danish Library",
+   "title":"DR-arkiv",
+   "subtitle":"Royal Danish Library's",
    "progress":"We have reached {index}%...",
-   "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre",
-   "link":"Read more about the DR-archive"
+   "explanation":"In DR-arkivet, you will find a large amount of DR's self-produced TV and radio programmes from 2006 onwards. We continuously add both newer and older programmes so that the archive becomes bigger and better.",
+   "link":"Read more about DR-arkivet"
 
 } 
 }

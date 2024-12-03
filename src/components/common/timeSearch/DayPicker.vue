@@ -31,7 +31,7 @@
 				:to="specificDayLink"
 				@click="moveToSearchPage()"
 			>
-				<span>Vis indhold</span>
+				<span>{{ $t('search.showContent') }}</span>
 				<div class="link-arrow"></div>
 			</router-link>
 		</div>
@@ -40,17 +40,17 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
+import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {
-	startYear,
-	endYear,
-	startDate,
-	endDate,
-	months,
 	days,
+	endDate,
+	endYear,
+	months,
+	startDate,
+	startYear,
 	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
-import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
