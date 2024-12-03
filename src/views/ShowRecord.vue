@@ -83,7 +83,6 @@ export default defineComponent({
 
 		onMounted(async () => {
 			let back = router.options.history.state.back as string;
-			console.log(back);
 			if (back && back.substring(0, 5) === '/find') {
 				backLink.value = router.options.history.state.back as string;
 			} else {
