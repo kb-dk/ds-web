@@ -212,7 +212,7 @@ export default defineComponent({
 									);
 								}
 								resolve();
-							}, 5000);
+							}, 7000);
 						});
 						// promise race - first one back wins
 						Promise.race([facetAPICall, maximumWaitTime])
@@ -268,7 +268,7 @@ export default defineComponent({
 									);
 								}
 								resolve();
-							}, 5000);
+							}, 7000);
 						});
 						// promise race - first one back wins
 						Promise.race([bffBackendCall, maximumBffWaitTime])

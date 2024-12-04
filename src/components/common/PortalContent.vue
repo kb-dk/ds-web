@@ -165,7 +165,7 @@ export default defineComponent({
 
 			// api call to get the items
 			const curatedItemsAPICall = APIService.getFeatureItems(curatedItems.value);
-			// max timeout before we give the users a heads up that our services are slow
+			// timeout promise for long responsetimes. (7 seconds pt.)
 			let curatedItemsAPICallFurfilled = false;
 			const maximumWaitTime = new Promise<void>((resolve) => {
 				setTimeout(() => {
@@ -181,7 +181,7 @@ export default defineComponent({
 						);
 					}
 					resolve();
-				}, 5000);
+				}, 7000);
 			});
 
 			Promise.race([curatedItemsAPICall, maximumWaitTime])
