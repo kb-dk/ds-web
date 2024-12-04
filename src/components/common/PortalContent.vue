@@ -132,7 +132,7 @@ export default defineComponent({
 				.map(({ value }) => value);
 		};
 		onMounted(() => {
-			if (searchResultStore.firstBackendFetchExecuted && curatedItems.value.length === 0) {
+			if (searchResultStore.firstBackendFetchExecuted) {
 				getRotationalResult();
 			} else {
 				watch(
