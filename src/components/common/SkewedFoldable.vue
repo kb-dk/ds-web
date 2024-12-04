@@ -210,7 +210,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 110px;
+	height: 176px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
@@ -264,6 +264,10 @@ h1::first-letter {
 .headline span {
 	font-size: 16px;
 	text-align: left;
+	display: block;
+	line-height: 1.4;
+	margin-top: 4px;
+	max-width: 720px;
 }
 
 .foldable-container:hover .edge.hover,
@@ -432,8 +436,25 @@ h1::first-letter {
 .toggle-button.closed:after {
 	transform: scaleY(1);
 }
-
+@media (max-width: 480px) {
+	.content {
+		height: 146px !important;
+	}
+}
+@media (min-width: 480px) {
+	.content {
+		height: 150px !important;
+	}
+}
+@media (min-width: 640px) {
+	.content {
+		height: 125px !important;
+	}
+}
 @media (min-width: 990px) {
+	.content {
+		height: 140px !important;
+	}
 	.foldable-toggle {
 		display: none;
 	}

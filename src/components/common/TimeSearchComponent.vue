@@ -338,6 +338,10 @@ h1 {
 .header span {
 	margin: 0;
 	font-size: 16px;
+	display: block;
+	line-height: 1.4;
+	margin-top: 4px;
+	max-width: 720px;
 }
 
 @media (max-width: 480px) {
