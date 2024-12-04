@@ -1027,6 +1027,7 @@ fieldset {
 .apply-time-facets:disabled {
 	color: grey;
 	background-color: white;
+	cursor: default;
 }
 
 .apply-time-facets:disabled:after {

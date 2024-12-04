@@ -410,6 +410,8 @@ export default defineComponent({
 				timeFacetButton.value?.setAttribute('aria-checked', 'false');
 				gsap.to(timeFacets.value, {
 					height: '0px',
+					paddingTop: '0px',
+					marginBottom: '0px',
 					duration: 0.5,
 					overwrite: true,
 					onComplete: () => {
@@ -434,6 +436,8 @@ export default defineComponent({
 					onComplete: () => {
 						gsap.to(timeFacets.value, {
 							height: 'auto',
+							paddingTop: '30px',
+							marginBottom: '20px',
 							duration: 0.5,
 							overwrite: true,
 						});
@@ -533,8 +537,6 @@ export default defineComponent({
 	position: relative;
 	width: 100vw;
 	background-color: #d9f5fe;
-	padding-top: 30px;
-	margin-bottom: 20px;
 }
 .expand-container {
 }
