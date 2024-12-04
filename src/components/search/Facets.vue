@@ -222,6 +222,8 @@ export default defineComponent({
 						genreArray.value = extendFacetPairToSelectorData(
 							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
 						);
+						setCategoryArrayFromStore(searchResultStore.categoryFilters);
+						setChannelArrayFromStore(searchResultStore.channelFilters);
 					}
 				},
 			);
