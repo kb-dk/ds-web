@@ -794,7 +794,7 @@ fieldset {
 }
 
 .slider-container {
-	height: 60px;
+	height: 100px;
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	position: relative;
