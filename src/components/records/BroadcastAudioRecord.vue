@@ -74,7 +74,7 @@
 							:data-testid="addTestDataEnrichment('link', 'boardcast-record-audio', `genre-link`, 0)"
 							@click="emptySearchResults()"
 						>
-							{{ recordData.genre }}
+							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
 					</div>
 				</div>
@@ -123,7 +123,7 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import { useI18n } from 'vue-i18n';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/common/wc-spot-item';
@@ -200,6 +200,7 @@ export default defineComponent({
 			addTestDataEnrichment,
 			quotation,
 			emptySearchResults,
+			santizeAndSimplify,
 		};
 	},
 });
@@ -362,6 +363,7 @@ temporary styling until patterns from design system are implemented
 .genre-link {
 	color: #002e70;
 	text-decoration: none;
+	text-transform: none;
 }
 
 .link-container {
