@@ -215,7 +215,7 @@ temporary styling until patterns from design system are implemented
 
 .back-link a {
 	text-decoration: none;
-	padding: 7px 0px;
+	padding: 8px 14px 9px 14px;
 }
 
 .video-container {
@@ -386,6 +386,8 @@ temporary styling until patterns from design system are implemented
 	flex-direction: row;
 	justify-content: center;
 	white-space: nowrap;
+	border: 1px solid #0a2e70;
+	transition: all 0.25s linear 0s;
 }
 .link-container:hover {
 	background: #c4f1ed;
@@ -408,6 +410,7 @@ temporary styling until patterns from design system are implemented
 	border-right: 10px solid #c4f1ed;
 }
 .triangle {
+	display: none;
 	width: 0;
 	height: 0;
 	border-bottom: 20px solid transparent;
@@ -417,7 +420,8 @@ temporary styling until patterns from design system are implemented
 }
 .return {
 	border-radius: 4px;
-	width: 100%;
+	width: fit-content;
+	height: auto;
 }
 
 /* First breakpoint for tablet */

@@ -236,7 +236,7 @@ export default defineComponent({
 }
 
 .record-data {
-	padding-top: 25px;
+	padding-top: 25px 25px 25px 25px;
 }
 
 .top-offset {
@@ -254,7 +254,7 @@ export default defineComponent({
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.record-data {
-		padding: 25px;
+		padding: 25px 25px 25px 25px;
 	}
 	.container {
 		max-width: 990px;
@@ -286,6 +286,12 @@ export default defineComponent({
 		padding-right: 0;
 		padding-left: 0;
 		width: 100%;
+	}
+}
+/* MEDIA QUERY 2000 */
+@media (min-width: 2000px) {
+	.record-data {
+		padding: 65px 25px 25px 25px;
 	}
 }
 </style>
