@@ -6,14 +6,15 @@ import { APIService } from '@/api/api-service';
 import { AxiosError } from 'axios';
 import { useI18n } from 'vue-i18n';
 import { LocationQueryValue } from 'vue-router';
+import { Priority, Severity } from '@/types/NotificationType';
 import {
 	days,
-	months,
-	timeslots,
-	startDate,
 	endDate,
-	startYear,
 	endYear,
+	months,
+	startDate,
+	startYear,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
@@ -72,6 +73,10 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	};
 
 	const setFiltersFromUrl = (URLFilters: string[] | LocationQueryValue[] | string) => {
+		resetAllSelectorValues(days.value);
+		resetAllSelectorValues(months.value);
+		resetAllSelectorValues(timeslots.value);
+
 		const filters = normalizeFq(URLFilters as string[]);
 		if (filters !== undefined) {
 			if (filters instanceof Array) {
@@ -87,20 +92,14 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 						if (filter.includes('temporal_start_day_da')) {
 							const splitDays = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(days.value, splitDays);
-						} else {
-							resetAllSelectorValues(days.value);
 						}
 						if (filter.includes('temporal_start_month')) {
 							const splitMonths = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(months.value, splitMonths);
-						} else {
-							resetAllSelectorValues(months.value);
 						}
 						if (filter.includes('temporal_start_hour_da')) {
 							const splitTimes = decodeURIComponent(filter).split(':')[1].replace(/[()]/g, '').split(' OR ');
 							setTimeFilter(timeslots.value, splitTimes);
-						} else {
-							resetAllSelectorValues(timeslots.value);
 						}
 					}
 				});
@@ -175,7 +174,14 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
-			errorManager.submitError(err as AxiosError, t('error.searchfailed'));
+			errorManager.submitCustomError(
+				'time-search-error',
+				t('error.infoError.title'),
+				t('error.infoError.timeMachine'),
+				Severity.ERROR,
+				false,
+				Priority.MEDIUM,
+			);
 			loading.value = false;
 		} finally {
 			loading.value = false;

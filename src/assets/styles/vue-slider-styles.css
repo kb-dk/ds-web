@@ -93,6 +93,7 @@
 	padding-top: 5px;
 	transform: rotateZ(-35deg) translate(-50%, -50%) !important;
 	left: -25px !important;
+	background-color:white;
 }
 
 .vue-slider-dot-tooltip-inner {

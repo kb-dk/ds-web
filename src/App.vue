@@ -41,7 +41,7 @@
 			class="wipe"
 		>
 			<img
-				title="Royal Danish Library"
+				title="forside"
 				alt="Logo of the Royal Danish Library"
 				:src="getImgServerSrcURL()"
 			/>
@@ -196,7 +196,19 @@ export default defineComponent({
 					if (newVal) {
 						Promise.race([
 							APIService.getFullResultWithFacets(),
-							new Promise((_, reject) => setTimeout(() => reject(), 5000)),
+							new Promise(() =>
+								setTimeout(function () {
+									errorManager.submitCustomError(
+										'long-response',
+										t('facets.slowResponse.title'),
+										t('facets.slowResponse.text'),
+										Severity.INFO,
+										false,
+										Priority.HIGH,
+									);
+								}, 2000),
+							),
+							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
 						])
 							.then((response) => {
 								const typedResponse = response as APISearchResponseType;
@@ -215,15 +227,41 @@ export default defineComponent({
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
 
-						Promise.race([APIService.getKalturaConfIds(), new Promise((_, reject) => setTimeout(() => reject(), 5000))])
+						Promise.race([
+							APIService.getKalturaConfIds(),
+							new Promise(() =>
+								setTimeout(function () {
+									errorManager.submitCustomError(
+										'long-response',
+										t('facets.slowResponse.title'),
+										t('facets.slowResponse.text'),
+										Severity.INFO,
+										false,
+										Priority.HIGH,
+									);
+								}, 2000),
+							),
+							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
+						])
 							.then((response) => {
 								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+								searchResultStore.setCuratedContent(typedResponse.data.curatedItems);
 								authStore.partnerId = typedResponse.data.partnerId;
 								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
 								authStore.videoUiConfId = typedResponse.data.videoUiConfId;
 								authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
 								authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
 								authStore.kalturaIdFetchExecuted = true;
+								if (typedResponse.data.alert1) {
+									errorManager.submitCustomError(
+										'messages-error',
+										t('error.title'),
+										typedResponse.data.alert1,
+										Severity.ERROR,
+										true,
+										Priority.HIGH,
+									);
+								}
 							})
 							.catch(() => {
 								errorManager.submitCustomError(

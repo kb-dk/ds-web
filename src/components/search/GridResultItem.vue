@@ -60,10 +60,16 @@
 				class="loading-placeholder"
 			>
 				<div
+					v-if="loading"
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
-				<div class="thumb-container loading-color"></div>
+				<div class="thumb-container loading-color">
+					<NoFacetContent
+						v-if="!loading"
+						position="relative"
+					></NoFacetContent>
+				</div>
 				<div class="material-icons loading-icon">play_circle_filled</div>
 				<div
 					:style="`width:${Math.random() * 30 + 40}%`"
@@ -118,10 +124,12 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useI18n } from 'vue-i18n';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 
 export default defineComponent({
 	name: 'GridResultItem',
 	components: {
+		NoFacetContent,
 		SoundThumbnail,
 		Duration,
 	},
@@ -192,8 +200,8 @@ export default defineComponent({
 					.catch(() => {
 						errorManager.submitCustomError(
 							'thumbnails-error',
-							t('error.title'),
-							t('error.thumbnails.notResponsive'),
+							t('error.infoError.title'),
+							t('error.InfoError.thumbnail'),
 							Severity.INFO,
 							false,
 							Priority.LOW,
@@ -281,6 +289,9 @@ export default defineComponent({
 .thumb-container {
 	width: 100%;
 	aspect-ratio: 4/2;
+	text-align: center;
+	align-content: center;
+	color: white;
 }
 
 .loading-color {

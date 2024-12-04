@@ -41,16 +41,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch, inject } from 'vue';
+import { defineComponent, inject, onMounted, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
+import { RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
+import { Priority, Severity } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'Search',
@@ -104,10 +105,24 @@ export default defineComponent({
 								 * and even worse you did it by manipulating the url directly
 								 * in the URL bar
 								 * */
-								errorManager.submitCustomError('malformeduri', t('error.malformeduri'));
+								errorManager.submitCustomError(
+									'malformeduri',
+									t('error.infoError.title'),
+									t('error.malformeduri'),
+									Severity.ERROR,
+									false,
+									Priority.MEDIUM,
+								);
 							} else {
 								// General search error happened here so message to user should be generel
-								errorManager.submitCustomError('searchfailed', t('error.searchfailed'));
+								errorManager.submitCustomError(
+									'searchfailed',
+									t('error.searchfailed'),
+									'',
+									Severity.INFO,
+									false,
+									Priority.LOW,
+								);
 							}
 						}
 					}

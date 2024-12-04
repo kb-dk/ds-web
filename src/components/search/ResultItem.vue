@@ -196,7 +196,7 @@ export default defineComponent({
 						errorManager.submitCustomError(
 							'thumbnails-error',
 							t('error.infoError.title'),
-							t('error.infoError.thumbnails'),
+							t('error.infoError.thumbnail'),
 							Severity.INFO,
 							false,
 							Priority.LOW,

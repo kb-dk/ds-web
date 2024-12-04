@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onBeforeUnmount, onMounted, watch } from 'vue';
+import { defineComponent, inject, onBeforeUnmount, onMounted, watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
@@ -20,6 +20,13 @@ import { Priority, Severity } from '@/types/NotificationType';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
+
+interface KalturaErrorEvent {
+	payload: {
+		code: number;
+		message: string;
+	};
+}
 
 export default defineComponent({
 	name: 'VideoPlayer',
@@ -39,6 +46,7 @@ export default defineComponent({
 		let videoPlayer: PlayerType;
 		const route = useRoute();
 		const authStore = useAuthStore();
+		const restrictedErrorDispatched = ref(false);
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -118,6 +126,20 @@ export default defineComponent({
 				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.ready().then(() => {
 					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
+				});
+				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
+					const error = e.payload;
+					if (error.code === 1002 && !restrictedErrorDispatched.value) {
+						restrictedErrorDispatched.value = true;
+						errorManager.submitCustomError(
+							'player-error',
+							t('error.title'),
+							`${t('error.record.restricted')}\n\n${t('error.record.restrictedExplained')}`,
+							Severity.INFO,
+							true,
+							Priority.MEDIUM,
+						);
+					}
 				});
 			} catch (e) {
 				handleErrorDispatch('');
