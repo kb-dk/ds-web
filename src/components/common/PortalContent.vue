@@ -132,14 +132,14 @@ export default defineComponent({
 				.map(({ value }) => value);
 		};
 		onMounted(() => {
-			if (searchResultStore.firstBackendFetchExecuted && curatedItems.value.length === 0) {
+			if (searchResultStore.firstBackendFetchExecuted) {
 				getRotationalResult();
 			} else {
 				watch(
-					() => searchResultStore.curatedContent,
-					(newVal: CuratedItemsType) => {
+					() => searchResultStore.firstBackendFetchExecuted,
+					(newVal: boolean) => {
 						if (newVal && Object.keys(searchResultStore.rotationalResult).length === 0) {
-							getCuratedItemFromMonth(newVal);
+							getCuratedItemFromMonth(searchResultStore.curatedContent);
 							if (curatedItems.value.length > 0) {
 								getRotationalResult();
 							} else {

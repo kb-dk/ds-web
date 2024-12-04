@@ -161,7 +161,7 @@ export default defineComponent({
 						});
 						gsap.to(contentRef.value, {
 							duration: 0.5,
-							height: '110px',
+							height: '155px',
 							overwrite: true,
 							ease: 'none',
 						});
@@ -436,25 +436,7 @@ h1::first-letter {
 .toggle-button.closed:after {
 	transform: scaleY(1);
 }
-@media (max-width: 480px) {
-	.content {
-		height: 146px !important;
-	}
-}
-@media (min-width: 480px) {
-	.content {
-		height: 150px !important;
-	}
-}
-@media (min-width: 640px) {
-	.content {
-		height: 125px !important;
-	}
-}
 @media (min-width: 990px) {
-	.content {
-		height: 140px !important;
-	}
 	.foldable-toggle {
 		display: none;
 	}

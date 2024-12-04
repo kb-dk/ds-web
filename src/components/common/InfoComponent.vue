@@ -98,6 +98,7 @@ export default defineComponent({
 	margin-left: 25px;
 	margin-right: 10px;
 	border-radius: 4px;
+	font-family: noway, sans-serif;
 }
 
 .info-btn.icon-only {
@@ -127,8 +128,8 @@ export default defineComponent({
 	display: none;
 	padding: 0px 5px;
 	padding-left: 10px;
-	font-weight: bold;
 	transition: all 0.25s ease-in-out 0s;
+	font-size: 16px;
 }
 
 .title:empty {
@@ -143,7 +144,7 @@ export default defineComponent({
 	background-color: white;
 	color: #0a2e70;
 	width: calc(100% - 1px);
-	padding: 0px 54px 20px 18px;
+	padding: 18px 54px 20px 18px;
 	box-sizing: border-box;
 	z-index: 25;
 }
