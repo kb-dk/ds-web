@@ -111,6 +111,7 @@ export default defineComponent({
 }
 .select-container:hover select {
 	border: 1px solid #002e70;
+	cursor: pointer;
 }
 
 label {

@@ -820,7 +820,6 @@ fieldset {
 }
 .data-size:hover {
 	background: #0a2e70 0% 0% no-repeat padding-box;
-	text-decoration: underline;
 	color: white;
 }
 

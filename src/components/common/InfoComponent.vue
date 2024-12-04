@@ -97,6 +97,7 @@ export default defineComponent({
 	background-color: var(--bg-color);
 	margin-left: 25px;
 	margin-right: 10px;
+	border-radius: 4px;
 }
 
 .info-btn.icon-only {
