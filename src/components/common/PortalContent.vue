@@ -150,31 +150,53 @@ export default defineComponent({
 				);
 			}
 		});
+
+		const handleAPIResponse = (response: APISearchResponseType) => {
+			const typedResponse = response as APISearchResponseType;
+			let itemsForMonth = typedResponse.data.response.docs;
+			if (itemsForMonth.length > 7) {
+				itemsForMonth = scrambleArray(itemsForMonth).splice(0, 8);
+			}
+			searchResultStore.setRotationalResult(itemsForMonth);
+		};
+
 		const getRotationalResult = () => {
 			getCuratedItemFromMonth(searchResultStore.curatedContent);
-			Promise.race([
-				APIService.getFeatureItems(curatedItems.value),
-				new Promise(() =>
-					setTimeout(function () {
+
+			// api call to get the items
+			const curatedItemsAPICall = APIService.getFeatureItems(curatedItems.value);
+			// max timeout before we give the users a heads up that our services are slow
+			let curatedItemsAPICallFurfilled = false;
+			const maximumWaitTime = new Promise<void>((resolve) => {
+				setTimeout(() => {
+					// if the api promise was not furfilled yet, we tell people to wait a bit longer
+					if (!curatedItemsAPICallFurfilled) {
 						errorManager.submitCustomError(
 							'long-response',
 							t('facets.slowResponse.title'),
 							t('facets.slowResponse.text'),
 							Severity.INFO,
 							false,
-							Priority.HIGH,
+							Priority.MEDIUM,
 						);
-					}, 2000),
-				),
-				new Promise((_, reject) => setTimeout(() => reject(), 10000)),
-			])
-				.then((response) => {
-					const typedResponse = response as APISearchResponseType;
-					let itemsForMonth = typedResponse.data.response.docs;
-					if (itemsForMonth.length > 7) {
-						itemsForMonth = scrambleArray(itemsForMonth).splice(0, 8);
 					}
-					searchResultStore.setRotationalResult(itemsForMonth);
+					resolve();
+				}, 5000);
+			});
+
+			Promise.race([curatedItemsAPICall, maximumWaitTime])
+				.then((response) => {
+					if (response) {
+						handleAPIResponse(response);
+						curatedItemsAPICallFurfilled = true;
+					}
+					return curatedItemsAPICall;
+				})
+				.then((response) => {
+					if (!curatedItemsAPICallFurfilled) {
+						handleAPIResponse(response);
+						curatedItemsAPICallFurfilled = true;
+					}
 				})
 				.catch(() => {
 					errorManager.submitCustomError(

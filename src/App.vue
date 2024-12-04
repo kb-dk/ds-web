@@ -194,28 +194,52 @@ export default defineComponent({
 				() => authStore.firstAuthDone,
 				(newVal: boolean) => {
 					if (newVal) {
-						Promise.race([
-							APIService.getFullResultWithFacets(),
-							new Promise(() =>
-								setTimeout(function () {
+						// ask for facets
+						const facetAPICall = APIService.getFullResultWithFacets();
+						let facetAPiCallFurfilled = false;
+						// timeout promise for long responsetimes. (7 seconds pt.)
+						const maximumWaitTime = new Promise<void>((resolve) => {
+							setTimeout(() => {
+								// if the api promise was not furfilled yet, we tell people to wait a bit longer
+								if (!facetAPiCallFurfilled) {
 									errorManager.submitCustomError(
 										'long-response',
 										t('facets.slowResponse.title'),
 										t('facets.slowResponse.text'),
 										Severity.INFO,
 										false,
-										Priority.HIGH,
+										Priority.MEDIUM,
 									);
-								}, 2000),
-							),
-							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
-						])
+								}
+								resolve();
+							}, 5000);
+						});
+						// promise race - first one back wins
+						Promise.race([facetAPICall, maximumWaitTime])
 							.then((response) => {
-								const typedResponse = response as APISearchResponseType;
-								searchResultStore.initFacets = typedResponse.data.facet_counts;
-								searchResultStore.firstBackendFetchExecuted = true;
+								if (response) {
+									//if api comes back first, we get the results and set our boolean to true.
+									const typedResponse = response as APISearchResponseType;
+									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									searchResultStore.firstBackendFetchExecuted = true;
+									facetAPiCallFurfilled = true;
+								}
+								// If timeout resolves first, wait for `apiPromise` and handle its result
+								return facetAPICall;
 							})
+							.then((response) => {
+								// if the timeout was first, we still want the api promise returned here
+								// unless it the results were already back - then we ignore this.
+								if (!facetAPiCallFurfilled) {
+									const typedResponse = response as APISearchResponseType;
+									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									searchResultStore.firstBackendFetchExecuted = true;
+									facetAPiCallFurfilled = true;
+								}
+							})
+							// and we throw an error if the API returned an error.
 							.catch(() => {
+								facetAPiCallFurfilled = true;
 								errorManager.submitCustomError(
 									'solr-error',
 									t('error.title'),
@@ -227,42 +251,45 @@ export default defineComponent({
 								searchResultStore.firstBackendFetchExecuted = true;
 							});
 
-						Promise.race([
-							APIService.getKalturaConfIds(),
-							new Promise(() =>
-								setTimeout(function () {
+						const bffBackendCall = APIService.getKalturaConfIds();
+						let bffBackendCallFurfilled = false;
+						// timeout promise for long responsetimes. (7 seconds pt.)
+						const maximumBffWaitTime = new Promise<void>((resolve) => {
+							setTimeout(() => {
+								// if the api promise was not furfilled yet, we tell people to wait a bit longer
+								if (!bffBackendCallFurfilled) {
 									errorManager.submitCustomError(
 										'long-response',
-										t('facets.slowResponse.title'),
+										`${t('facets.slowResponse.title')}`,
 										t('facets.slowResponse.text'),
 										Severity.INFO,
 										false,
-										Priority.HIGH,
-									);
-								}, 2000),
-							),
-							new Promise((_, reject) => setTimeout(() => reject(), 10000)),
-						])
-							.then((response) => {
-								const typedResponse = response as APIAuthMessagesType; // Assert the correct type
-								searchResultStore.setCuratedContent(typedResponse.data.curatedItems);
-								authStore.partnerId = typedResponse.data.partnerId;
-								authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
-								authStore.videoUiConfId = typedResponse.data.videoUiConfId;
-								authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
-								authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
-								authStore.kalturaIdFetchExecuted = true;
-								if (typedResponse.data.alert1) {
-									errorManager.submitCustomError(
-										'messages-error',
-										t('error.title'),
-										typedResponse.data.alert1,
-										Severity.ERROR,
-										true,
-										Priority.HIGH,
+										Priority.MEDIUM,
 									);
 								}
+								resolve();
+							}, 5000);
+						});
+						// promise race - first one back wins
+						Promise.race([bffBackendCall, maximumBffWaitTime])
+							.then((response) => {
+								if (response) {
+									//if api comes back first, we get the results and set our boolean to true.
+									handleBffRsponse(response);
+									bffBackendCallFurfilled = true;
+								}
+								// If timeout resolves first, wait for `apiPromise` and handle its result
+								return bffBackendCall;
 							})
+							.then((response) => {
+								// if the timeout was first, we still want the api promise returned here
+								// unless it the results were already back - then we ignore this.
+								if (!bffBackendCallFurfilled) {
+									handleBffRsponse(response);
+									bffBackendCallFurfilled = true;
+								}
+							})
+							// and we throw an error if the API returned an error.
 							.catch(() => {
 								errorManager.submitCustomError(
 									'bff-error',
@@ -273,6 +300,7 @@ export default defineComponent({
 									Priority.MEDIUM,
 								);
 								authStore.kalturaIdFetchExecuted = true;
+								bffBackendCallFurfilled = true;
 							});
 					}
 				},
@@ -294,6 +322,27 @@ export default defineComponent({
 				currentLocale.value = 'da';
 			}
 		});
+
+		const handleBffRsponse = (response: APIAuthMessagesType) => {
+			const typedResponse = response as APIAuthMessagesType; // Assert the correct type
+			searchResultStore.setCuratedContent(typedResponse.data.curatedItems);
+			authStore.partnerId = typedResponse.data.partnerId;
+			authStore.audioUiConfId = typedResponse.data.AudioUiConfId;
+			authStore.videoUiConfId = typedResponse.data.videoUiConfId;
+			authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
+			authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
+			authStore.kalturaIdFetchExecuted = true;
+			if (typedResponse.data.alert1) {
+				errorManager.submitCustomError(
+					'messages-error',
+					t('error.title'),
+					typedResponse.data.alert1,
+					Severity.ERROR,
+					true,
+					Priority.HIGH,
+				);
+			}
+		};
 
 		const isDevelopment = () => {
 			return import.meta.env.MODE !== 'production';
