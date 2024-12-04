@@ -140,7 +140,6 @@ export default defineComponent({
 					(newVal: boolean) => {
 						if (newVal && Object.keys(searchResultStore.rotationalResult).length === 0) {
 							getCuratedItemFromMonth(searchResultStore.curatedContent);
-							console.log(curatedItems.value.length);
 							if (curatedItems.value.length > 0) {
 								getRotationalResult();
 							} else {
