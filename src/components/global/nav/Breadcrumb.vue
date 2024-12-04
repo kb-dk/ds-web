@@ -78,9 +78,24 @@
 					modal-align="right"
 				>
 					<div class="search-help">
-						<p>
-							{{ t('search.frontpageGuide.first') }}
-						</p>
+						<span>
+							{{ t('search.frontpageGuide.first.part1') + ' ' }}
+						</span>
+						<span class="cursive-text">
+							{{ t('search.frontpageGuide.first.cursive1') + ' ' }}
+						</span>
+						<span>
+							{{ t('search.frontpageGuide.first.part2') + ' ' }}
+						</span>
+						<span class="cursive-text">
+							{{ t('search.frontpageGuide.first.cursive2') + ' ' }}
+						</span>
+						<span>
+							{{ t('search.frontpageGuide.first.part3') + ' ' }}
+						</span>
+						<span class="cursive-text">
+							{{ t('search.frontpageGuide.first.cursive3') }}
+						</span>
 						<p>
 							{{ t('search.frontpageGuide.second') }}
 						</p>
@@ -97,10 +112,10 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, computed } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import InfoComponent from '@/components/common/InfoComponent.vue';
 
@@ -255,6 +270,14 @@ export default defineComponent({
 .search-help a {
 	color: #002e70;
 	text-decoration: underline;
+}
+
+.search-help span {
+	color: #002e70;
+}
+
+.cursive-text {
+	font-style: italic;
 }
 
 /* MEDIA QUERY 480 */
