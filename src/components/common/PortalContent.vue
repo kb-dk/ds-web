@@ -136,10 +136,11 @@ export default defineComponent({
 				getRotationalResult();
 			} else {
 				watch(
-					() => searchResultStore.curatedContent,
-					(newVal: CuratedItemsType) => {
+					() => searchResultStore.firstBackendFetchExecuted,
+					(newVal: boolean) => {
 						if (newVal && Object.keys(searchResultStore.rotationalResult).length === 0) {
-							getCuratedItemFromMonth(newVal);
+							getCuratedItemFromMonth(searchResultStore.curatedContent);
+							console.log(curatedItems.value.length);
 							if (curatedItems.value.length > 0) {
 								getRotationalResult();
 							} else {
