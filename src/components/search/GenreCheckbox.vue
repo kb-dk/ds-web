@@ -248,7 +248,7 @@ input:focus {
 	top: -23px;
 	left: -1px;
 	background-image: url('@/assets/icons/blue/diverse-blue.svg');
-	filter: hue-rotate(5);
+	filter: hue-rotate(5deg);
 }
 
 .disabled .category-image {
@@ -303,7 +303,7 @@ input:focus {
 .dokumentar {
 	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
 }
-.fiktion {
+.film-og-serier {
 	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
 }
 .kultur-og-oplysning {
@@ -321,10 +321,10 @@ input:focus {
 .sport {
 	background-image: url('@/assets/icons/blue/sport-blue.svg');
 }
-.underholdning {
+.humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
 }
-.videnskab-og-natur {
+.natur-og-videnskab {
 	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
 }
 .brn-og-unge {
@@ -337,7 +337,7 @@ input:focus {
 .disabled .dokumentar {
 	background-image: url('@/assets/icons/gray/dokumentar-gray.svg');
 }
-.disabled .fiktion {
+.disabled .film-og-serier {
 	background-image: url('@/assets/icons/gray/fiktion-gray.svg');
 }
 .disabled .kultur-og-oplysning {
@@ -355,10 +355,10 @@ input:focus {
 .disabled .sport {
 	background-image: url('@/assets/icons/gray/sport-gray.svg');
 }
-.disabled .underholdning {
+.disabled .humor-quiz-og-underholdning {
 	background-image: url('@/assets/icons/gray/underholdning-gray.svg');
 }
-.disabled .videnskab-og-natur {
+.disabled .natur-og-videnskab {
 	background-image: url('@/assets/icons/gray/videnskab-gray.svg');
 }
 .disabled .brn-og-unge {
