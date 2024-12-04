@@ -143,7 +143,7 @@ export default defineComponent({
 	background-color: white;
 	color: #0a2e70;
 	width: calc(100% - 1px);
-	padding: 0px 54px 20px 18px;
+	padding: 18px 54px 20px 18px;
 	box-sizing: border-box;
 	z-index: 25;
 }
