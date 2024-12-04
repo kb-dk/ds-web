@@ -62,12 +62,14 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { facetItem } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 export default defineComponent({
 	name: 'MainCategories',
@@ -82,6 +84,7 @@ export default defineComponent({
 		const categories = ref([] as facetItem[]);
 		const categoriesLoaded = ref(false);
 		const searchResultStore = useSearchResultStore();
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		const quotation = (name: string) => {
 			return `"${name}"`;
@@ -112,19 +115,15 @@ export default defineComponent({
 						if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
 							constructGenre();
 						} else {
-							/* TODO: NEEDS TRANSLATIONS AND EXPLANATION */
 							categoriesLoaded.value = true;
-							const customEvent = new CustomEvent('notify-user', {
-								detail: {
-									title: 'Backend svarer ikke.',
-									message:
-										'De bagvedliggende applikationer svarer ikke, så det er ikke muligt at søge pt. \n \n Prøv igen senere.',
-									key: false,
-									severity: 'low',
-									userClose: true,
-								},
-							});
-							window.dispatchEvent(customEvent);
+							errorManager.submitCustomError(
+								'categories-error',
+								t('error.infoError.title'),
+								t('error.auth.serviceFailed'),
+								Severity.ERROR,
+								true,
+								Priority.MEDIUM,
+							);
 						}
 					},
 				);
