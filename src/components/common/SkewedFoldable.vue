@@ -210,7 +210,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 176px;
+	height: 155px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
