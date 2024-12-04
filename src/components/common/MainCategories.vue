@@ -208,7 +208,6 @@ export default defineComponent({
 
 .category-item:hover {
 	background-color: #c4f1ed;
-	text-decoration: underline;
 }
 
 .category-image {

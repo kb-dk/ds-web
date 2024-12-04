@@ -97,7 +97,7 @@ export default defineComponent({
 	border: 0px;
 	font-family: noway, sans-serif;
 	background-color: white;
-	border: 1px solid #002e70;
+	border: 1px solid #dadada;
 	border-radius: 4px;
 	padding: 4px 50px 5px 8px;
 	color: #002e70;
@@ -107,6 +107,9 @@ export default defineComponent({
 	background-repeat: no-repeat;
 	background-position-x: 85px;
 	background-position-y: 16px;
+}
+.select-container:hover select {
+	border: 1px solid #002e70;
 }
 
 label {

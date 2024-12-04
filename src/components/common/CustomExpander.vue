@@ -178,6 +178,36 @@ export default defineComponent({
 	);
 	transition: all 0.15s linear 0s;
 }
+.time-facets .container div.expand-container {
+	background: linear-gradient(
+		90deg,
+		rgba(217, 245, 254, 1) 0%,
+		rgba(217, 245, 254, 1) 15%,
+		rgba(217, 245, 254, 1) 50%,
+		rgba(217, 245, 254, 1) 85%,
+		rgba(217, 245, 254, 1) 100%
+	);
+}
+.time-facets .container div.expand-container:hover {
+	background: linear-gradient(
+		90deg,
+		rgba(217, 245, 254, 1) 0%,
+		rgba(255, 255, 255, 1) 15%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 1) 85%,
+		rgba(217, 245, 254, 1) 100%
+	);
+}
+.time-facets .container div.expand-container.open {
+	background: linear-gradient(
+		90deg,
+		rgba(217, 245, 254, 1) 0%,
+		rgba(255, 255, 255, 1) 15%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 1) 85%,
+		rgba(217, 245, 254, 1) 100%
+	);
+}
 
 .expand-container.open {
 	background: linear-gradient(

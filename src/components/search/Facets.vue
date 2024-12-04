@@ -534,6 +534,10 @@ export default defineComponent({
 	position: relative;
 	width: 100vw;
 	background-color: #d9f5fe;
+	padding-top: 30px;
+	margin-bottom: 20px;
+}
+.expand-container {
 }
 
 fieldset {
@@ -545,7 +549,8 @@ fieldset {
 
 .time-facets-toggle {
 	display: flex;
-	padding-bottom: 10px;
+	padding-top: 20px;
+	padding-bottom: 30px;
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
@@ -583,7 +588,10 @@ fieldset {
 	transition: all 0s linear 0s;
 	height: 50px;
 }
-
+.time-facet-button:hover {
+	border: 1px solid #002e70;
+	color: #002e70;
+}
 .toggle-time-text {
 	padding-left: 7px;
 	margin-right: auto;
@@ -600,7 +608,7 @@ fieldset {
 	overflow: hidden;
 	gap: 20px;
 	box-sizing: border-box;
-	padding: 0px 5px;
+	padding-bottom: 15px;
 }
 
 .facet-options {
@@ -783,6 +791,9 @@ h2 {
 	}
 	.container {
 		max-width: 990px;
+	}
+	.time-facets-toggle {
+		padding-top: 0px;
 	}
 }
 

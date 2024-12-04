@@ -212,10 +212,12 @@ temporary styling until patterns from design system are implemented
 
 .back-link {
 	width: 100%;
+	border-radius: 4px;
 }
 
 .back-link a {
 	text-decoration: none;
+	padding: 7px 0px;
 }
 
 .video-container {
@@ -387,6 +389,10 @@ temporary styling until patterns from design system are implemented
 	justify-content: center;
 	white-space: nowrap;
 }
+.link-container:hover {
+	background: #c4f1ed;
+	color: #0a2e70;
+}
 
 .link {
 	position: relative;
@@ -398,18 +404,21 @@ temporary styling until patterns from design system are implemented
 	flex-direction: row;
 	bottom: 0;
 	width: 105px;
-	padding-top: 15px;
+	padding: 7px 0px;
 }
-
+.back-link:hover .triangle {
+	border-right: 10px solid #c4f1ed;
+}
 .triangle {
 	width: 0;
 	height: 0;
 	border-bottom: 20px solid transparent;
 	border-right: 10px solid #0a2e70;
 	border-top: 20px solid transparent;
+	margin-right: -2px;
 }
 .return {
-	border-radius: 0px;
+	border-radius: 4px;
 	width: 100%;
 }
 
