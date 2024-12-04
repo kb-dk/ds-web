@@ -332,7 +332,7 @@ export default defineComponent({
 			authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
 			authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
 			authStore.kalturaIdFetchExecuted = true;
-			/* if (typedResponse.data.alert1) {
+			if (typedResponse.data.alert1) {
 				errorManager.submitCustomError(
 					'messages-error',
 					t('error.title'),
@@ -341,7 +341,7 @@ export default defineComponent({
 					true,
 					Priority.HIGH,
 				);
-			} */
+			}
 		};
 
 		const isDevelopment = () => {
