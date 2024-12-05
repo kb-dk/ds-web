@@ -155,7 +155,7 @@ export default defineComponent({
 				let back = router.options.history.state.back as string;
 				if (back && back.substring(0, 5) === '/find') {
 					lastPath.value = router.options.history.state.back as string;
-				} else {
+				} else if (back && back.substring(0, 5) !== '/post') {
 					lastPath.value = '/';
 				}
 			},
@@ -297,8 +297,8 @@ export default defineComponent({
 	font-style: italic;
 }
 
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
+/* MEDIA QUERY 510 */
+@media (min-width: 510px) {
 	.container {
 		max-width: 640px;
 		padding-right: 12px;
