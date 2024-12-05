@@ -173,19 +173,20 @@ h3 {
 	text-align: center;
 	font: normal normal normal 49px/68px Libre Baskerville;
 	letter-spacing: 1.15px;
-	line-height: -25px;
 	color: #002e70;
-	font-size: 49px;
-	text-transform: uppercase;
-	top: calc(2.5vw + 5px);
+	font-size: 32px;
+	top: calc(2.5vw + 2px);
 	position: relative;
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0);
+	line-height: 1.2;
 }
 
 h3.reverse {
 	transform: matrix(1, -0.03, 0.03, 1, 0, 0);
 }
-
+h3:first-letter {
+	text-transform: uppercase;
+}
 .container {
 	text-align: left;
 	padding-right: 12px;
@@ -203,8 +204,6 @@ h3.reverse {
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {
 	h3 {
-		font: normal normal normal 49px/50px Libre Baskerville;
-		font-size: 40px;
 	}
 }
 /* MEDIA QUERY 480 */
@@ -219,12 +218,14 @@ h3.reverse {
 		max-width: 990px;
 	}
 	h3 {
-		font: normal normal normal 49px/68px Libre Baskerville;
-		font-size: 48px;
+		font-size: 36px;
 	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
+	h3 {
+		font-size: 40px;
+	}
 	.container {
 		display: flex;
 		flex-direction: column;

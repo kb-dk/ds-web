@@ -42,12 +42,20 @@ temporary styling until patterns from design system are implemented
 	justify-content: center;
 	flex-wrap: wrap;
 }
+.imageAndTextContainer .con .li {
+	font-size: 50px;
+}
 @media (min-width: 450px) {
 	.imageAndTextContainer {
 		flex-direction: column;
 	}
 	.imageAndTextContainer .con {
 		width: 100%;
+	}
+	.imageAndTextContainer .con ul {
+		color: lime;
+		display: block;
+		background: pink;
 	}
 }
 @media (min-width: 840px) {
