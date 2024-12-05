@@ -155,7 +155,7 @@ export default defineComponent({
 				let back = router.options.history.state.back as string;
 				if (back && back.substring(0, 5) === '/find') {
 					lastPath.value = router.options.history.state.back as string;
-				} else {
+				} else if (back && back.substring(0, 5) !== '/post') {
 					lastPath.value = '/';
 				}
 			},
