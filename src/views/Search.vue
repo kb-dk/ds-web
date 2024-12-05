@@ -1,49 +1,56 @@
 <template>
 	<div class="search-container">
 		<div class="search-and-results">
-			<Transition
-				name="result"
-				mode="out-in"
-			>
-				<div>
-					<!-- This is for the search results / facets / did-you-mean / pager -->
-					<div
-						v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
-						key="1"
-						class="overall-container"
-					>
-						<SearchOverhead />
-						<div class="container">
-							<div class="row">
-								<div
-									v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
-									class="search-resultset"
-								>
-									<SearchResults
-										:search-results="searchResultStore.searchResult"
-										:num-found="searchResultStore.numFound"
-									/>
-								</div>
+			<TransitionGroup name="result">
+				<!-- This is for the search results / facets / did-you-mean / pager -->
+				<div
+					v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+					key="1"
+					class="overall-container"
+				>
+					<SearchOverhead />
+					<div class="container">
+						<div class="row">
+							<div
+								v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
+								class="search-resultset"
+							>
+								<SearchResults
+									:search-results="searchResultStore.searchResult"
+									:num-found="searchResultStore.numFound"
+								/>
+							</div>
+							<Transition
+								name="result"
+								mode="out-in"
+							>
 								<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
 									<NoHits />
 								</div>
-								<Pagination
-									v-show="searchResultStore.searchResult.length > 0"
-									:items-per-page="Number(searchResultStore.rowCount)"
-									:total-hits="searchResultStore.numFound"
-									:num-pages-to-show="numPagesToShow"
-								/>
-							</div>
+							</Transition>
+							<Pagination
+								v-show="searchResultStore.searchResult.length > 0"
+								:items-per-page="Number(searchResultStore.rowCount)"
+								:total-hits="searchResultStore.numFound"
+								:num-pages-to-show="numPagesToShow"
+							/>
 						</div>
 					</div>
-					<div
-						v-else
-						class="container"
+				</div>
+
+				<div
+					v-if="route.fullPath === '/find'"
+					key="2"
+					class="container"
+				>
+					<Transition
+						name="result"
+						mode="out-in"
 					>
 						<NoHits />
-					</div>
+					</Transition>
 				</div>
-			</Transition>
+			</TransitionGroup>
 		</div>
 	</div>
 </template>
@@ -54,7 +61,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
-import { RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router';
+import { routeLocationKey, RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
@@ -195,6 +202,7 @@ export default defineComponent({
 		return {
 			searchResultStore,
 			numPagesToShow,
+			route,
 		};
 	},
 });
