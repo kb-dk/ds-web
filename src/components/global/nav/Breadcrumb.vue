@@ -298,7 +298,7 @@ export default defineComponent({
 }
 
 /* MEDIA QUERY 480 */
-@media (min-width: 480px) {
+@media (min-width: 510px) {
 	.container {
 		max-width: 640px;
 		padding-right: 12px;
