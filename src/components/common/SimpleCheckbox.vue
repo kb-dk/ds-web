@@ -33,6 +33,7 @@
 				role="checkbox"
 				type="checkbox"
 				class="checkbox"
+				:name="title"
 				:disabled="amount === '0' && !checked"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"

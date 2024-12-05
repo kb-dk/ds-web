@@ -40,6 +40,7 @@
 				:disabled="amount === '0' && !checked"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'genre-checkbox', title, number)"
+				:name="title"
 				@change="updateSelection(!checked, title, fqkey)"
 			/>
 		</label>

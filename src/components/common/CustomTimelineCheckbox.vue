@@ -2,6 +2,7 @@
 	<input
 		:id="name + '-checkbox-' + index"
 		ref="checkboxRef"
+		:name="name"
 		type="checkbox"
 		:checked="val"
 		:data-testid="addTestDataEnrichment('input', 'timeline-checkbox', name, index)"
