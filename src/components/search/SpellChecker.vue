@@ -45,9 +45,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.spell-check-query {
+	font-family: noway, sans-serif;
+}
 .spell-check-query a {
 	color: #002e70;
-	font-weight: bold;
 }
 
 .spell-check-collations {
@@ -55,13 +57,18 @@ export default defineComponent({
 }
 
 .spell-check-box {
-	padding: 20px;
 	margin-top: 20px;
-	margin-bottom: 50px;
+	font-size: 20px;
 }
-
-.spell-check-suggestion {
+/*.spell-check-suggestion:nth-child(odd) {
+	display: inline-flex;
+	color: pink;
+	width: 30%;
+}
+.spell-check-suggestion:nth-child(even) {
 	display: inline-flex;
 	margin-right: 30px;
-}
+	color: lime;
+	width: 60%;
+}*/
 </style>

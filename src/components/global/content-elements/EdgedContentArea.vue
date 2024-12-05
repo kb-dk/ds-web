@@ -129,9 +129,14 @@ temporary styling until patterns from design system are implemented
 }
 
 .edge-content.lines {
-	padding: 50px 0px;
+	padding: 0px 0px;
 }
-
+.edge-content.lines .full-width {
+	min-height: 100px;
+}
+.edge-content.lines .full-width .bottom-edge {
+	bottom: 20px;
+}
 .top-dotted-border {
 	box-sizing: border-box;
 	border-top: 2px dashed #002e7059;
