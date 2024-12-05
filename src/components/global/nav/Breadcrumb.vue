@@ -141,13 +141,23 @@ export default defineComponent({
 		});
 
 		onMounted(() => {
-			lastPath.value = router.options.history.state.back as string;
+			let back = router.options.history.state.back as string;
+			if (back && back.substring(0, 5) === '/find') {
+				lastPath.value = router.options.history.state.back as string;
+			} else {
+				lastPath.value = '/';
+			}
 		});
 
 		watch(
 			() => route.path,
 			() => {
-				lastPath.value = router.options.history.state.back as string;
+				let back = router.options.history.state.back as string;
+				if (back && back.substring(0, 5) === '/find') {
+					lastPath.value = router.options.history.state.back as string;
+				} else {
+					lastPath.value = '/';
+				}
 			},
 		);
 
