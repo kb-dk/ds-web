@@ -786,6 +786,7 @@ fieldset {
 	display: flex;
 	width: 100%;
 	min-width: 1000px;
+	overflow: hidden;
 }
 
 .select-container,
