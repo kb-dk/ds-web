@@ -155,6 +155,16 @@ import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
+import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import {
+	days,
+	timeslots,
+	months,
+	startDate,
+	startYear,
+	endDate,
+	endYear,
+} from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -210,20 +220,19 @@ export default defineComponent({
 		);
 
 		const resetFilters = () => {
-			tvToggled.value = true;
-			radioToggled.value = true;
-			let qs = searchResultStore.currentQuery;
-			searchResultStore.resetSearch();
-			if (qs !== '') {
-				router.push({
-					name: 'Search',
-					query: { q: qs },
-				});
-			} else {
-				router.push({
-					name: 'Home',
-				});
-			}
+			const routeQueries = cloneRouteQuery(route);
+			searchResultStore.resetFilters();
+			resetAllSelectorValues(days.value);
+			resetAllSelectorValues(timeslots.value);
+			resetAllSelectorValues(months.value);
+			startDate.value.setTime(startYear.value.getTime());
+			endDate.value.setTime(endYear.value.getTime());
+			router.push({
+				name: 'Search',
+				query: {
+					q: routeQueries.q,
+				},
+			});
 		};
 
 		const setDelimitationFilterAndExecute = () => {
