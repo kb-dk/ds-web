@@ -61,7 +61,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
 import { useI18n } from 'vue-i18n';
-import { routeLocationKey, RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router';
+import { RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router';
 import Pagination from '@/components/search/Pager.vue';
 import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
