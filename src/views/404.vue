@@ -28,7 +28,7 @@
 							class="btn-light btn"
 							:href="t('footer.column1.links.1.link')"
 							role="button"
-							:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
+							:data-testid="addTestDataEnrichment('button', '404', 'link-to-about', 0)"
 						>
 							{{ t('footer.column1.links.1.title') }}
 						</a>
@@ -50,7 +50,7 @@
 				class="btn-blue btn"
 				:href="t('column4.links.1.link')"
 				role="button"
-				:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
+				:data-testid="addTestDataEnrichment('button', '404', 'link-to-ask-about-library', 0)"
 			>
 				{{ t('footer.column4.links.1.title') }}
 			</a>
