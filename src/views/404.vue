@@ -44,8 +44,16 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div class="contact">
 			<h1>Kontakt os gerne</h1>
+			<a
+				class="btn-blue btn"
+				:href="t('column4.links.1.link')"
+				role="button"
+				:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
+			>
+				{{ t('footer.column4.links.1.title') }}
+			</a>
 		</div>
 	</div>
 </template>
@@ -78,10 +86,11 @@ export default defineComponent({
 .not-found-content {
 	align-items: center;
 	padding: 0px 12px;
+	justify-content: space-around;
 }
 
 .extra-suggest {
-	display: flex;
+	display: block;
 	flex-direction: column;
 	justify-content: space-around;
 	padding-bottom: 40px;
@@ -95,10 +104,12 @@ export default defineComponent({
 	z-index: 1;
 	color: white;
 	width: 100%;
+	justify-content: space-around;
 }
 .not-found-details {
 	display: flex;
 	flex-direction: column;
+	width: 40%;
 }
 .edge-top {
 	width: 110%;
@@ -112,7 +123,7 @@ export default defineComponent({
 	z-index: -1;
 }
 .wrongUrlImage {
-	max-width: 400px;
+	max-width: 500px;
 	margin-top: 14px;
 }
 .btn {
@@ -141,11 +152,18 @@ export default defineComponent({
 		background-color 0.15s ease-in-out,
 		border-color 0.15s ease-in-out,
 		box-shadow 0.15s ease-in-out;
-	margin: 2px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	white-space: nowrap;
 }
 .btn-light {
 	color: #212529;
 	background-color: #f2f4f8;
+	border-color: #f2f4f8;
+}
+.btn-blue {
+	color: white;
+	background-color: #002e70;
 	border-color: #f2f4f8;
 }
 .btn-light:hover {
@@ -168,6 +186,13 @@ export default defineComponent({
 	top: calc(-4vw);
 	z-index: 1;
 }
+
+.contact {
+	position: relative;
+	top: auto;
+	text-align: justify;
+}
+
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {
 	.not-found-content {
@@ -177,7 +202,7 @@ export default defineComponent({
 		margin-bottom: 40px;
 	}
 	.wrongUrlImage {
-		min-width: 400px;
+		min-width: 500px;
 	}
 	.imageContainer {
 		min-height: 20%;
@@ -188,14 +213,11 @@ export default defineComponent({
 	.not-found-content {
 		max-width: 990px;
 	}
-	.extra-suggest {
-		flex-direction: row;
-	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.not-found-content {
-		justify-content: space-between;
+		justify-content: space-around;
 		display: flex;
 		max-width: 1150px;
 		flex-direction: row;
