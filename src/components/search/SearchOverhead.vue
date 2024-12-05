@@ -79,7 +79,10 @@
 					</div>
 				</div>
 				<Facets />
-				<div class="result-options">
+				<div
+					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
+					class="result-options"
+				>
 					<div class="hits">
 						<HitCount
 							:hit-count="searchResultStore.numFound"
@@ -89,7 +92,10 @@
 					</div>
 				</div>
 				<div><CurrentFilters /></div>
-				<div class="sort-options">
+				<div
+					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
+					class="sort-options"
+				>
 					<Sort></Sort>
 					<div class="search-options">
 						<Transition name="fade">
