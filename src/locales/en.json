@@ -42,9 +42,9 @@
       "record": "Programme"
    },
    "timeSearch": {
-      "timeMachine":"Search via period",
-      "searchDate": "Search via date",
-      "searchCategories": "Search via category",
+      "timeMachine":"Search by period",
+      "searchDate": "Search by date",
+      "searchCategories": "Search by category",
       "year":"year | years",
       "month":"month | months",
       "day":"day | days",
