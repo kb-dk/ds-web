@@ -19,7 +19,6 @@
 						<a
 							class="btn-light btn"
 							href="/find-materiale/dr-arkivet/"
-							role="button"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
 						>
 							{{ t('error.wrongUrl.frontPage') }}
@@ -27,7 +26,6 @@
 						<a
 							class="btn-light btn"
 							:href="t('footer.column1.links.1.link')"
-							role="button"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-about', 0)"
 						>
 							{{ t('footer.column1.links.1.title') }}
@@ -35,7 +33,6 @@
 						<a
 							class="btn-light btn"
 							href="https://www.kb.dk"
-							role="button"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
 						>
 							{{ t('error.wrongUrl.kbPage') }}
@@ -48,8 +45,7 @@
 			<h1>{{ t('search.contactUs') }}</h1>
 			<a
 				class="btn-blue btn"
-				:href="t('column4.links.1.link')"
-				role="button"
+				:href="t('footer.column4.links.1.link')"
 				:data-testid="addTestDataEnrichment('button', '404', 'link-to-ask-about-library', 0)"
 			>
 				{{ t('footer.column4.links.1.title') }}
