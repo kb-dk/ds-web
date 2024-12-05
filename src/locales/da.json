@@ -195,8 +195,9 @@
       "third":"Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori, kanal eller tid.",
       "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning",
       "linktext":"Læs flere gode råd om søgning"
-    }
-   },
+    },
+    "contactUs": "Kontakt os gerne, hvis du har brug for hjælp"
+  },
   "record":{
      "duration":"Varighed",
      "noBroadcastData":"Ingen sendetid",

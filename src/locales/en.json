@@ -197,7 +197,8 @@
       "third":"Please note: When you search in the search box, your previous selection of filters will be reset - for example category, channel or time.",
       "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search",
       "linktext":"Read more advice about searching "
-    }
+    },
+     "contactUs": "Contact us if you need help"
   },
   "record":{
      "duration":"Duration",
