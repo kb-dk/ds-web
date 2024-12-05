@@ -218,6 +218,7 @@ export default defineComponent({
 
 .category-item:hover {
 	background-color: #c4f1ed;
+	border: 2px solid #ffffff;
 }
 
 .category-image {
