@@ -241,6 +241,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	align-items: center;
 	text-decoration: none;
+	padding: 8px 14px 9px 14px;
 }
 
 .share-button {
@@ -395,8 +396,12 @@ temporary styling until patterns from design system are implemented
 	bottom: 0;
 	padding-top: 15px;
 }
-
+.link-container:hover {
+	background: #c4f1ed;
+	color: #0a2e70;
+}
 .triangle {
+	display: none;
 	width: 0;
 	height: 0;
 	border-bottom: 20px solid transparent;
@@ -404,8 +409,9 @@ temporary styling until patterns from design system are implemented
 	border-top: 20px solid transparent;
 }
 .return {
-	border-radius: 0px;
-	width: 100%;
+	border-radius: 4px;
+	width: fit-content;
+	height: auto;
 }
 
 /* First breakpoint for tablet */

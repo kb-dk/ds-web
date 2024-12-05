@@ -403,7 +403,6 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: row;
 	bottom: 0;
-	width: 105px;
 	padding: 7px 0px;
 }
 .back-link:hover .triangle {
