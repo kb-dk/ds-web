@@ -5,34 +5,42 @@
 				name="result"
 				mode="out-in"
 			>
-				<!-- This is for the search results / facets / did-you-mean / pager -->
-				<div
-					v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
-					key="1"
-					class="overall-container"
-				>
-					<SearchOverhead />
-					<div class="container">
-						<div class="row">
-							<div
-								v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
-								class="search-resultset"
-							>
-								<SearchResults
-									:search-results="searchResultStore.searchResult"
-									:num-found="searchResultStore.numFound"
+				<div>
+					<!-- This is for the search results / facets / did-you-mean / pager -->
+					<div
+						v-if="searchResultStore.searchResult.length > 0 || searchResultStore.searchFired"
+						key="1"
+						class="overall-container"
+					>
+						<SearchOverhead />
+						<div class="container">
+							<div class="row">
+								<div
+									v-if="searchResultStore.searchResult.length > 0 || searchResultStore.loading"
+									class="search-resultset"
+								>
+									<SearchResults
+										:search-results="searchResultStore.searchResult"
+										:num-found="searchResultStore.numFound"
+									/>
+								</div>
+								<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
+									<NoHits />
+								</div>
+								<Pagination
+									v-show="searchResultStore.searchResult.length > 0"
+									:items-per-page="Number(searchResultStore.rowCount)"
+									:total-hits="searchResultStore.numFound"
+									:num-pages-to-show="numPagesToShow"
 								/>
 							</div>
-							<div v-if="searchResultStore.searchResult.length == 0 && !searchResultStore.loading">
-								<NoHits />
-							</div>
-							<Pagination
-								v-show="searchResultStore.searchResult.length > 0"
-								:items-per-page="Number(searchResultStore.rowCount)"
-								:total-hits="searchResultStore.numFound"
-								:num-pages-to-show="numPagesToShow"
-							/>
 						</div>
+					</div>
+					<div
+						v-else
+						class="container"
+					>
+						<NoHits />
 					</div>
 				</div>
 			</Transition>
