@@ -182,13 +182,14 @@ export default defineComponent({
 	font-size: 36px;
 	word-wrap: break-word;
 	hyphens: auto;
+	max-width: 750px;
 }
 h2 {
 	margin: 0;
 }
 .no-hits-heading-subtitle {
 	margin-top: 10px;
-	max-width: 70%;
+	max-width: 750px;
 }
 .search-icon {
 	text-align: center;
