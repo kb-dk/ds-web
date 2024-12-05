@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="contact">
-			<h1>Kontakt os gerne</h1>
+			<h1>{{ t('search.contactUs') }}</h1>
 			<a
 				class="btn-blue btn"
 				:href="t('column4.links.1.link')"
@@ -109,7 +109,7 @@ export default defineComponent({
 .not-found-details {
 	display: flex;
 	flex-direction: column;
-	width: 40%;
+	width: 100%;
 }
 .edge-top {
 	width: 110%;
@@ -123,7 +123,8 @@ export default defineComponent({
 	z-index: -1;
 }
 .wrongUrlImage {
-	max-width: 500px;
+	max-width: 400px;
+	min-width: 400px;
 	margin-top: 14px;
 }
 .btn {
@@ -171,6 +172,13 @@ export default defineComponent({
 	background-color: #d9dfeb;
 	border-color: #d1d8e6;
 }
+
+.btn-blue:hover {
+	background-color: #c4f1ed;
+	color: #002e70;
+	border-color: #002e70;
+}
+
 .imageContainer {
 	display: flex;
 	flex-direction: column;
@@ -189,8 +197,8 @@ export default defineComponent({
 
 .contact {
 	position: relative;
-	top: auto;
-	text-align: justify;
+	top: calc(-6vw);
+	left: 1%;
 }
 
 /* MEDIA QUERY 450 */
@@ -200,9 +208,6 @@ export default defineComponent({
 		flex-direction: column;
 		max-width: 640px;
 		margin-bottom: 40px;
-	}
-	.wrongUrlImage {
-		min-width: 500px;
 	}
 	.imageContainer {
 		min-height: 20%;
@@ -227,8 +232,17 @@ export default defineComponent({
 		margin-right: auto;
 		margin-left: auto;
 	}
+	.wrongUrlImage {
+		min-width: 500px;
+	}
 	.imageContainer {
 		min-height: 100%;
+	}
+	.not-found-details {
+		width: 42%;
+	}
+	.contact {
+		left: 15%;
 	}
 }
 /* MEDIA QUERY 1150 */
