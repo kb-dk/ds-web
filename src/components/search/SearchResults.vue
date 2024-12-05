@@ -122,7 +122,7 @@ export default defineComponent({
 	padding: 0 0 0 0;
 	box-sizing: border-box;
 	width: 100%;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 }
 
 .hit-box.data:hover:after,

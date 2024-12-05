@@ -59,7 +59,7 @@
 									icon="category"
 									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
 									:item-array="genreArray"
-									:use-headline-translation="false"
+									:use-headline-translation="true"
 									:update-entity="updateFacet"
 									:filter-name-cutoff="5"
 									:facet-type="'genre'"
@@ -179,6 +179,8 @@ import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import { santizeAndSimplify } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'Facets',
 	components: {
@@ -205,12 +207,15 @@ export default defineComponent({
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
-
+		const translatedGenreArray = ref([] as SelectorData[]);
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 			);
-			genreArray.value = extendFacetPairToSelectorData(simplifyFacets(searchResultStore.initFacets.facet_fields.genre));
+			genreArray.value = extendFacetPairToSelectorData(
+				simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+				'categories',
+			);
 		} else {
 			watch(
 				() => searchResultStore.firstBackendFetchExecuted,
@@ -221,7 +226,10 @@ export default defineComponent({
 						);
 						genreArray.value = extendFacetPairToSelectorData(
 							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+							'categories',
 						);
+						setCategoryArrayFromStore(searchResultStore.categoryFilters);
+						setChannelArrayFromStore(searchResultStore.channelFilters);
 					}
 				},
 			);
@@ -410,6 +418,8 @@ export default defineComponent({
 				timeFacetButton.value?.setAttribute('aria-checked', 'false');
 				gsap.to(timeFacets.value, {
 					height: '0px',
+					paddingTop: '0px',
+					marginBottom: '0px',
 					duration: 0.5,
 					overwrite: true,
 					onComplete: () => {
@@ -434,6 +444,8 @@ export default defineComponent({
 					onComplete: () => {
 						gsap.to(timeFacets.value, {
 							height: 'auto',
+							paddingTop: '30px',
+							marginBottom: '20px',
 							duration: 0.5,
 							overwrite: true,
 						});
@@ -503,6 +515,8 @@ export default defineComponent({
 			updateFacet,
 			updateCheckbox,
 			getSublineForFacets,
+			santizeAndSimplify,
+			translatedGenreArray,
 		};
 	},
 });
@@ -534,6 +548,8 @@ export default defineComponent({
 	width: 100vw;
 	background-color: #d9f5fe;
 }
+.expand-container {
+}
 
 fieldset {
 	padding: 0px;
@@ -544,7 +560,8 @@ fieldset {
 
 .time-facets-toggle {
 	display: flex;
-	padding-bottom: 10px;
+	padding-top: 20px;
+	padding-bottom: 30px;
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
@@ -582,7 +599,10 @@ fieldset {
 	transition: all 0s linear 0s;
 	height: 50px;
 }
-
+.time-facet-button:hover {
+	border: 1px solid #002e70;
+	color: #002e70;
+}
 .toggle-time-text {
 	padding-left: 7px;
 	margin-right: auto;
@@ -599,7 +619,8 @@ fieldset {
 	overflow: hidden;
 	gap: 20px;
 	box-sizing: border-box;
-	padding: 0px 5px;
+	padding-bottom: 15px;
+	width: 100%;
 }
 
 .facet-options {
@@ -782,6 +803,9 @@ h2 {
 	}
 	.container {
 		max-width: 990px;
+	}
+	.time-facets-toggle {
+		padding-top: 0px;
 	}
 }
 

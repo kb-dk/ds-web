@@ -409,5 +409,18 @@
       "progress":"Vi er nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre",
       "link":"Læs mere om DR-arkivet"
+   },
+   "categories": {
+      "brn-og-unge":"Børn og unge",
+      "dokumentar": "Dokumentar",
+      "film-og-serier": "Film og serier",
+      "humor-quiz-og-underholdning":"Humor, quiz og underholdning",
+      "kultur-og-oplysning":"Kultur og oplysning",
+      "livsstil":"Livsstil",
+      "musik":"Musik",
+      "natur-og-videnskab":"Natur og videnskab",
+      "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
+      "radio-rodekasse":"Radio-rodekasse",
+      "tv-rodekasse":"TV-rodekasse"
    }
 }

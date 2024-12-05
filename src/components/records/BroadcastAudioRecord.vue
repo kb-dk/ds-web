@@ -74,7 +74,7 @@
 							:data-testid="addTestDataEnrichment('link', 'boardcast-record-audio', `genre-link`, 0)"
 							@click="emptySearchResults()"
 						>
-							{{ recordData.genre }}
+							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
 					</div>
 				</div>
@@ -123,7 +123,7 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
 import { getEntryId } from '@/utils/record-utils';
 import { useI18n } from 'vue-i18n';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/common/wc-spot-item';
@@ -200,6 +200,7 @@ export default defineComponent({
 			addTestDataEnrichment,
 			quotation,
 			emptySearchResults,
+			santizeAndSimplify,
 		};
 	},
 });
@@ -241,6 +242,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	align-items: center;
 	text-decoration: none;
+	padding: 8px 14px 9px 14px;
 }
 
 .share-button {
@@ -362,6 +364,7 @@ temporary styling until patterns from design system are implemented
 .genre-link {
 	color: #002e70;
 	text-decoration: none;
+	text-transform: none;
 }
 
 .link-container {
@@ -395,8 +398,12 @@ temporary styling until patterns from design system are implemented
 	bottom: 0;
 	padding-top: 15px;
 }
-
+.link-container:hover {
+	background: #c4f1ed;
+	color: #0a2e70;
+}
 .triangle {
+	display: none;
 	width: 0;
 	height: 0;
 	border-bottom: 20px solid transparent;
@@ -404,8 +411,9 @@ temporary styling until patterns from design system are implemented
 	border-top: 20px solid transparent;
 }
 .return {
-	border-radius: 0px;
-	width: 100%;
+	border-radius: 4px;
+	width: fit-content;
+	height: auto;
 }
 
 /* First breakpoint for tablet */

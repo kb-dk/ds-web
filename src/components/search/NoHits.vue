@@ -17,7 +17,7 @@
 				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
 			<EdgedContentArea
-				v-if="searchResultStore.spellCheck?.collations.length > 0"
+				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"
 				:dotted-edges="false"
 				background-color="#c4f1ed"

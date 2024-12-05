@@ -4,6 +4,22 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2024-12-05
+### Added
+- Added tracking scripts for various UX platforms.
+- Added main category translations.
+- Added support for error messages throughout the platform.
+- Added curated content on the frontpage
+
+### Changed
+- Fixed a bug where the breadcrumb was not selecting the right path based on previous page.
+- Fixed a bug where an empty /find path would result in nothing shown.
+- Fixed a bug where headline selections were not updated on reload.
+- Split facet-call and search-call in two - making facet-call optional based on user interaction.
+- Fixed an issue with videos not changing when selecting a related record.
+- Various UX fixes on frontpage.
+- Various UX fixes on filters and search-page
+
 ## [1.0.8] - 2024-11-18
 ### Added
 - Added a check for the video and audio-player to rebuild with new kaltura id when selecting a related record

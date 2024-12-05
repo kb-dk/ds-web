@@ -141,13 +141,23 @@ export default defineComponent({
 		});
 
 		onMounted(() => {
-			lastPath.value = router.options.history.state.back as string;
+			let back = router.options.history.state.back as string;
+			if (back && back.substring(0, 5) === '/find') {
+				lastPath.value = router.options.history.state.back as string;
+			} else {
+				lastPath.value = '/';
+			}
 		});
 
 		watch(
 			() => route.path,
 			() => {
-				lastPath.value = router.options.history.state.back as string;
+				let back = router.options.history.state.back as string;
+				if (back && back.substring(0, 5) === '/find') {
+					lastPath.value = router.options.history.state.back as string;
+				} else {
+					lastPath.value = '/';
+				}
 			},
 		);
 
@@ -217,7 +227,7 @@ export default defineComponent({
 }
 
 .breadcrumb a:hover .highlighted {
-	color: white;
+	color: #002e70;
 }
 
 .breadcrumb a:visited {
@@ -229,6 +239,13 @@ export default defineComponent({
 	background-color: #002e70;
 	border-radius: 4px;
 	margin: 0px 8px;
+	padding: 2px 6px 3px 6px;
+	border: 1px solid #002e70;
+	transition: all 0.1s linear 0s;
+}
+.breadcrumb-title.highlighted:hover {
+	background-color: #c4f1ed;
+	color: pink;
 }
 
 .bg-container {

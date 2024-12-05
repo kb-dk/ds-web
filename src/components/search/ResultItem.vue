@@ -306,7 +306,7 @@ export default defineComponent({
 
 .information {
 	text-overflow: ellipsis;
-	width: calc(100% - (200px + 30px));
+	width: calc(100% - (120px + 30px));
 	overflow: hidden;
 	max-width: 100%;
 }
@@ -488,9 +488,16 @@ export default defineComponent({
 	max-height: calc(20px * 3); /* fallback for firefox */
 	position: absolute;
 	top: 110px;
+	margin-top: 10px;
 }
 
 @media (min-width: 640px) {
+	.information {
+		text-overflow: ellipsis;
+		width: calc(100% - (200px + 30px));
+		overflow: hidden;
+		max-width: 100%;
+	}
 }
 
 @media (min-width: 800px) {
@@ -538,7 +545,7 @@ export default defineComponent({
 	}
 
 	.result-item-wrapper.data:hover:before {
-		opacity: 1;
+		opacity: 0.6;
 	}
 }
 

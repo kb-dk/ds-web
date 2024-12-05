@@ -161,7 +161,7 @@ export default defineComponent({
 }
 
 .sort-by {
-	margin-right: 15px !important;
+	margin-right: 10px !important;
 }
 
 .sort p {
@@ -182,6 +182,7 @@ export default defineComponent({
 	top: 1px;
 	padding: 0px;
 	border-bottom: 2px solid transparent;
+	padding-right: 5px;
 }
 @media (min-width: 640px) {
 	.sort-by {
