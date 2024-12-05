@@ -416,16 +416,16 @@
    "link":"Read more about DR-arkivet"
    },
    "categories": {
-      "brn-og-unge":"Children and young people",
+      "brn-og-unge":"Children and adolescents",
       "dokumentar": "Documentary",
-      "film-og-serier": "Movies and series",
-      "humor-quiz-og-underholdning":"Humor, quiz, and entertainment",
-      "kultur-og-oplysning":"Culture and education",
+      "film-og-serier": "Films and series",
+      "humor-quiz-og-underholdning":"Humour, quiz, and entertainment",
+      "kultur-og-oplysning":"Culture and enlightenment",
       "livsstil":"Lifestyle",
       "musik":"Music",
       "natur-og-videnskab":"Nature and science",
       "nyheder-politik-og-samfund":"News, politics, and society",
-      "radio-rodekasse":"Miscellaneous Radio",
-      "tv-rodekasse":"Miscellaneous TV"
+      "radio-rodekasse":"Radio jumble box",
+      "tv-rodekasse":"TV jumble box"
    } 
 }
