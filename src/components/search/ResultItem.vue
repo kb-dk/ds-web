@@ -21,7 +21,9 @@
 							<span class="material-icons arrow">keyboard_arrow_right</span>
 						</router-link>
 						<div class="subtitle">
-							<span class="material-icons icons schedule">{{ resultdata.origin.split('.')[1] }}</span>
+							<span class="material-icons icons schedule">
+								{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+							</span>
 							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
 							<span class="when">{{ starttime }}</span>
 							<span class="material-icons icons schedule">schedule</span>
