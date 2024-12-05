@@ -297,7 +297,7 @@ export default defineComponent({
 	font-style: italic;
 }
 
-/* MEDIA QUERY 480 */
+/* MEDIA QUERY 510 */
 @media (min-width: 510px) {
 	.container {
 		max-width: 640px;
