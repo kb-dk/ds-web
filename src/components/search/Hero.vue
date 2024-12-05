@@ -486,7 +486,7 @@ h1 {
 	.link-container .link:hover {
 		background-color: #c4f1ed;
 		color: #0a2e70;
-		text-decoration: underline;
+		border: 1px solid #0a2e70;
 	}
 }
 /* MEDIA QUERY 1150 */

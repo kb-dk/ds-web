@@ -57,7 +57,7 @@ temporary styling until patterns from design system are implemented
 
 .bar {
 	width: 100%;
-	height: 42.5px;
+	height: 18px;
 	background-color: #002e70;
 }
 
@@ -68,9 +68,51 @@ h2 {
 	font: normal normal normal 49px/68px Libre Baskerville;
 	letter-spacing: 1.15px;
 	color: #002e70;
-	font-size: 49px;
-	text-transform: uppercase;
+	font-size: 16px;
 	top: 5px;
 	position: relative;
+	line-height: 1.8;
+}
+h2::first-letter {
+	text-transform: uppercase;
+}
+@media (min-width: 500px) {
+	h2 {
+		font-size: 20px;
+	}
+	.bar {
+		height: 22px;
+	}
+}
+@media (min-width: 580px) {
+	h2 {
+		font-size: 25px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	h2 {
+		font-size: 28px;
+	}
+	.bar {
+		height: 28px;
+	}
+}
+/* MEDIA QUERY 800 */
+@media (min-width: 800px) {
+	h2 {
+		font-size: 36px;
+	}
+	.bar {
+		height: 34px;
+	}
+}
+@media (min-width: 990px) {
+	h2 {
+		font-size: 44px;
+	}
+	.bar {
+		height: 42.5px;
+	}
 }
 </style>

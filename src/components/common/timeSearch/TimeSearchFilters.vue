@@ -786,6 +786,7 @@ fieldset {
 	display: flex;
 	width: 100%;
 	min-width: 1000px;
+	overflow: hidden;
 }
 
 .select-container,
@@ -794,7 +795,7 @@ fieldset {
 }
 
 .slider-container {
-	height: 60px;
+	height: 100px;
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	position: relative;
@@ -820,7 +821,6 @@ fieldset {
 }
 .data-size:hover {
 	background: #0a2e70 0% 0% no-repeat padding-box;
-	text-decoration: underline;
 	color: white;
 }
 
@@ -1028,6 +1028,7 @@ fieldset {
 .apply-time-facets:disabled {
 	color: grey;
 	background-color: white;
+	cursor: default;
 }
 
 .apply-time-facets:disabled:after {

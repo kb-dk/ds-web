@@ -161,7 +161,7 @@ export default defineComponent({
 						});
 						gsap.to(contentRef.value, {
 							duration: 0.5,
-							height: '110px',
+							height: '155px',
 							overwrite: true,
 							ease: 'none',
 						});
@@ -210,7 +210,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 110px;
+	height: 155px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
@@ -264,6 +264,10 @@ h1::first-letter {
 .headline span {
 	font-size: 16px;
 	text-align: left;
+	display: block;
+	line-height: 1.4;
+	margin-top: 4px;
+	max-width: 720px;
 }
 
 .foldable-container:hover .edge.hover,
@@ -432,7 +436,6 @@ h1::first-letter {
 .toggle-button.closed:after {
 	transform: scaleY(1);
 }
-
 @media (min-width: 990px) {
 	.foldable-toggle {
 		display: none;

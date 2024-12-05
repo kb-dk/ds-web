@@ -96,6 +96,9 @@ export default defineComponent({
 	color: var(--text-color);
 	background-color: var(--bg-color);
 	margin-left: 25px;
+	margin-right: 10px;
+	border-radius: 4px;
+	font-family: noway, sans-serif;
 }
 
 .info-btn.icon-only {
@@ -114,7 +117,7 @@ export default defineComponent({
 .info-btn:hover {
 	color: var(--bg-color);
 	background-color: #c4f1ed;
-	text-decoration: underline;
+	border: 1px solid var(--bg-color);
 }
 
 .small-icon {
@@ -122,11 +125,11 @@ export default defineComponent({
 }
 
 .title {
-	display: inline-block;
+	display: none;
 	padding: 0px 5px;
 	padding-left: 10px;
-	font-weight: bold;
 	transition: all 0.25s ease-in-out 0s;
+	font-size: 16px;
 }
 
 .title:empty {
@@ -141,9 +144,11 @@ export default defineComponent({
 	background-color: white;
 	color: #0a2e70;
 	width: calc(100% - 1px);
-	padding: 15px 50px 15px 15px;
+	padding: 18px 54px 20px 18px;
 	box-sizing: border-box;
 	z-index: 25;
+}
+.modal p {
 }
 
 .modal.left {
@@ -186,7 +191,14 @@ export default defineComponent({
 	color: var(--bg-color);
 	background-color: var(--text-color);
 }
-/* MEDIA QUERY 990 */
+@media (min-width: 480px) {
+	.title {
+		display: inline;
+	}
+	.info-btn {
+		margin-right: 0px;
+	}
+}
 @media (min-width: 640px) {
 	.modal {
 		width: 400px;
@@ -195,6 +207,7 @@ export default defineComponent({
 		left: auto;
 	}
 }
+/* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.modal.middle {
 		right: -185px;

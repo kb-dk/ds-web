@@ -394,7 +394,8 @@ export default defineComponent({
 	display: flex;
 	gap: 10px;
 	width: 100%;
-	padding-bottom: 25px;
+	padding-bottom: 8px;
+	padding-top: 10px;
 	height: 44px;
 }
 
@@ -407,6 +408,7 @@ export default defineComponent({
 	z-index: 0;
 	position: relative;
 	padding-top: 25px;
+	padding-bottom: 8px;
 }
 
 .sort-options {
@@ -415,6 +417,8 @@ export default defineComponent({
 	justify-content: space-between;
 	z-index: 0;
 	flex-direction: column-reverse;
+	padding-bottom: 8px;
+	padding-top: 40px;
 }
 
 .filter-options {
@@ -471,8 +475,7 @@ export default defineComponent({
 }
 
 .filter-button {
-	border: 0px;
-	background-color: transparent;
+	border: 1px solid #002e70;
 	line-height: 24px;
 	cursor: pointer;
 	margin: 10px 0px;
@@ -480,26 +483,30 @@ export default defineComponent({
 	margin-left: 0;
 	background-color: #002e70;
 	color: white;
-	box-shadow:
-		inset 1px 1px 2px #00000000,
-		1px 1px 2px #00000029;
 	border-radius: 4px;
 	z-index: 1;
 	font-size: 20px;
-	margin-right: 10px;
-	height: 44px;
-	width: 126px;
+	padding: 6px 12px 9px 12px;
+	font-family: noway, sans-serif;
+	transition: all 0.25s linear 0s;
+}
+.filter-button:hover {
+	background-color: #c4f1ed;
+	color: #002e70;
+}
+.filter-button[aria-checked='true'] {
+}
+.filter-button:hover .material-icons {
 }
 
 .filter-button .material-icons {
-	font-size: 16px;
+	font-size: 24px;
 	position: relative;
-	top: 2px;
+	top: 5px;
 }
 
 .filter-button-text {
 	padding-left: 5px;
-	font-size: 16px;
 }
 
 .source-facet-button {
@@ -516,6 +523,10 @@ export default defineComponent({
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	z-index: 1;
+}
+.source-facet-button:hover {
+	border: 1px solid #002e70;
+	color: #002e70;
 }
 
 .source-facet-button.open {
@@ -604,9 +615,10 @@ export default defineComponent({
 }
 
 .reset {
+	font-family: noway, sans-serif;
 	cursor: pointer;
-	padding: 3px 3px;
-	font-size: 18px;
+	padding: 10px 8px 10px 7px;
+	font-size: 16px;
 	width: fit-content;
 	display: flex;
 	align-items: center;
@@ -616,16 +628,22 @@ export default defineComponent({
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	background-color: #f7ae3b;
-	height: 44px;
+	height: 26px;
 	z-index: 1;
 	box-shadow:
 		inset 1px 1px 2px #00000000,
 		1px 1px 2px #00000029;
+	margin-left: 35px;
+	transition: all 0.25s linear 0s;
+}
+.reset:hover {
+	border: 1px solid #002e70;
 }
 
 .reset span {
-	font-size: 25px;
-	padding-right: 5px;
+	font-size: 30px;
+	padding-bottom: 5px;
+	padding-right: 4px;
 }
 
 .filter-buttons {
@@ -658,7 +676,6 @@ export default defineComponent({
 		align-items: center;
 	}
 	.result-options {
-		padding-top: 0px;
 	}
 }
 </style>

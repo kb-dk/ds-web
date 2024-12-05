@@ -136,10 +136,7 @@ export default defineComponent({
 label {
 	width: 100%;
 	height: 100%;
-	padding: 10px 5px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
 	cursor: pointer;
 }
 
@@ -202,7 +199,6 @@ input:focus {
 	background-color: #6e6e6e !important;
 	cursor: default;
 }
-
 .category-item {
 	background: #002e70 0% 0% no-repeat padding-box;
 	box-shadow: 2px 2px 4px #75757500;
@@ -217,10 +213,12 @@ input:focus {
 	position: relative;
 	text-decoration: none;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 20px;
-	transition: all 0.3s linear 0s;
+	/*justify-content: center;
+	align-items: center;*/
+	font-size: 26px;
+	line-height: 1;
+	transition: all 0.1s linear 0s;
+	padding: 8px 8px 0px 10px;
 }
 
 .category-item .number {
@@ -313,6 +311,10 @@ input:focus {
 }
 .livsstil {
 	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
+}
+.category-item:hover .category-image.livsstil {
+	top: -30px;
+	transform: rotate(0deg);
 }
 .musik {
 	background-image: url('@/assets/icons/blue/musik-blue.svg');
