@@ -343,6 +343,9 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	font-size: 14px;
 }
+.when {
+	padding-right: 20px;
+}
 
 .loading {
 	width: 100vw;
