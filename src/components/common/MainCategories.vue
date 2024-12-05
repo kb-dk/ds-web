@@ -27,7 +27,7 @@
 						class="category-item"
 						:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
 					>
-						{{ entity.name }}
+						{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
 						<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
 						<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
 					</router-link>

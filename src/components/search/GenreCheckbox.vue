@@ -1,10 +1,10 @@
 <template>
 	<div :class="getStyles()">
 		<label
-			:title="title"
+			:title="t(`categories.${santizeAndSimplify(title)}`)"
 			class="label"
 		>
-			<span class="title">{{ title }}</span>
+			<span class="title">{{ t(`categories.${santizeAndSimplify(title)}`) }}</span>
 			<div
 				v-if="checked"
 				class="small-checkbox"
@@ -52,6 +52,7 @@ import { defineComponent, PropType } from 'vue';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'GenreCheckbox',
@@ -98,6 +99,7 @@ export default defineComponent({
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
+		const { t } = useI18n();
 		const getStyles = () => {
 			let classes = 'category-item';
 			if (props.checked) {
@@ -117,7 +119,7 @@ export default defineComponent({
 			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.categoryFilters);
 		};
 
-		return { updateSelection, displayAmount, addTestDataEnrichment, santizeAndSimplify, getStyles };
+		return { updateSelection, displayAmount, addTestDataEnrichment, santizeAndSimplify, getStyles, t };
 	},
 });
 </script>

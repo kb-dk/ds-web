@@ -1,6 +1,7 @@
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { SelectorData } from '@/types/TimeSearchTypes';
+import { santizeAndSimplify } from './test-enrichments';
 const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
 };
@@ -200,7 +201,7 @@ const simplifyFacets = (facet: Array<string>): FacetPair[] => {
 	return allPairedFacets;
 };
 
-const extendFacetPairToSelectorData = (facets: FacetPair[]): SelectorData[] => {
+const extendFacetPairToSelectorData = (facets: FacetPair[], key?: string): SelectorData[] => {
 	if (facets === undefined) {
 		return [];
 	} else {
@@ -211,6 +212,7 @@ const extendFacetPairToSelectorData = (facets: FacetPair[]): SelectorData[] => {
 				value: item.number,
 				index: i,
 				selected: false,
+				translation: `${key}.${santizeAndSimplify(item.title)}`,
 			} as SelectorData;
 			na.push(no);
 		});

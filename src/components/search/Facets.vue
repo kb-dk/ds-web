@@ -59,7 +59,7 @@
 									icon="category"
 									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
 									:item-array="genreArray"
-									:use-headline-translation="false"
+									:use-headline-translation="true"
 									:update-entity="updateFacet"
 									:filter-name-cutoff="5"
 									:facet-type="'genre'"
@@ -179,6 +179,8 @@ import CustomExpander from '@/components/common/CustomExpander.vue';
 import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import { santizeAndSimplify } from '@/utils/test-enrichments';
+
 export default defineComponent({
 	name: 'Facets',
 	components: {
@@ -205,12 +207,15 @@ export default defineComponent({
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
-
+		const translatedGenreArray = ref([] as SelectorData[]);
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 			);
-			genreArray.value = extendFacetPairToSelectorData(simplifyFacets(searchResultStore.initFacets.facet_fields.genre));
+			genreArray.value = extendFacetPairToSelectorData(
+				simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+				'categories',
+			);
 		} else {
 			watch(
 				() => searchResultStore.firstBackendFetchExecuted,
@@ -221,6 +226,7 @@ export default defineComponent({
 						);
 						genreArray.value = extendFacetPairToSelectorData(
 							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+							'categories',
 						);
 						setCategoryArrayFromStore(searchResultStore.categoryFilters);
 						setChannelArrayFromStore(searchResultStore.channelFilters);
@@ -509,6 +515,8 @@ export default defineComponent({
 			updateFacet,
 			updateCheckbox,
 			getSublineForFacets,
+			santizeAndSimplify,
+			translatedGenreArray,
 		};
 	},
 });
@@ -612,6 +620,7 @@ fieldset {
 	gap: 20px;
 	box-sizing: border-box;
 	padding-bottom: 15px;
+	width: 100%;
 }
 
 .facet-options {
