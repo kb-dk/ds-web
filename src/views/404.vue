@@ -26,6 +26,14 @@
 						</a>
 						<a
 							class="btn-light btn"
+							:href="t('footer.column1.links.1.link')"
+							role="button"
+							:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
+						>
+							{{ t('footer.column1.links.1.title') }}
+						</a>
+						<a
+							class="btn-light btn"
 							href="https://www.kb.dk"
 							role="button"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
@@ -35,6 +43,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div>
+			<h1>Kontakt os gerne</h1>
 		</div>
 	</div>
 </template>
