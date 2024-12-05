@@ -30,7 +30,9 @@
 						></SoundThumbnail>
 					</div>
 					<div class="date">
-						<span class="material-icons">play_circle_filled</span>
+						<span class="material-icons">
+							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+						</span>
 						{{ resultdata.creator_affiliation + ', ' }}
 						{{ getStartTime(resultdata) }}
 					</div>
