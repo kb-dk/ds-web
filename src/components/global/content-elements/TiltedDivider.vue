@@ -68,31 +68,25 @@ h2 {
 	font: normal normal normal 49px/68px Libre Baskerville;
 	letter-spacing: 1.15px;
 	color: #002e70;
-	font-size: 16px;
-	top: 5px;
+	font-size: 32px;
+	top: 2px;
 	position: relative;
-	line-height: 1.8;
+	line-height: 1.2;
 }
-h2::first-letter {
+h2:first-letter {
 	text-transform: uppercase;
 }
 @media (min-width: 500px) {
-	h2 {
-		font-size: 20px;
-	}
 	.bar {
 		height: 22px;
 	}
 }
 @media (min-width: 580px) {
-	h2 {
-		font-size: 25px;
-	}
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	h2 {
-		font-size: 28px;
+		font-size: 36px;
 	}
 	.bar {
 		height: 28px;
@@ -100,16 +94,13 @@ h2::first-letter {
 }
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
-	h2 {
-		font-size: 36px;
-	}
 	.bar {
 		height: 34px;
 	}
 }
 @media (min-width: 990px) {
 	h2 {
-		font-size: 44px;
+		font-size: 40px;
 	}
 	.bar {
 		height: 42.5px;

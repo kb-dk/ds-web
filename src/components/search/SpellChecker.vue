@@ -58,17 +58,21 @@ export default defineComponent({
 
 .spell-check-box {
 	margin-top: 20px;
-	font-size: 20px;
+	font-size: 26px;
+	font-family: noway, sans-serif;
 }
-/*.spell-check-suggestion:nth-child(odd) {
+.spell-check-suggestion {
 	display: inline-flex;
-	color: pink;
-	width: 30%;
+}
+.spell-check-suggestion:nth-child(odd) {
+	color: #002e70;
+	margin-right: 50px;
+}
+.spell-check-suggestion:nth-child(odd):hover {
+	text-decoration: underline;
 }
 .spell-check-suggestion:nth-child(even) {
-	display: inline-flex;
-	margin-right: 30px;
-	color: lime;
-	width: 60%;
-}*/
+	color: black;
+	font-size: 16px;
+}
 </style>
