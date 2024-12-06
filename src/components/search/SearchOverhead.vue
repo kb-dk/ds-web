@@ -91,7 +91,7 @@
 						/>
 					</div>
 				</div>
-				<div><CurrentFilters /></div>
+				<div class="filter-container"><CurrentFilters /></div>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
 					class="sort-options"
@@ -363,6 +363,11 @@ export default defineComponent({
 	height: 30px;
 	border-bottom: 1px solid transparent;
 	color: grey;
+}
+
+.filter-container {
+	z-index: 1;
+	position: relative;
 }
 
 .display-option.list {
