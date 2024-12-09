@@ -96,8 +96,10 @@ export default defineComponent({
 				case 'Enter':
 					break;
 				case 'Tab':
-					moveSelectorDown();
-					e.preventDefault();
+					if (searchResultStore.autocompleteResult?.length > 0) {
+						moveSelectorDown();
+						e.preventDefault();
+					}
 					break;
 				default:
 					break;
