@@ -15,6 +15,7 @@
 				<div class="container category-grid">
 					<router-link
 						v-for="(entity, i) in categories"
+						@click="scrollToTop()"
 						:key="i"
 						:to="{
 							name: 'Search',
@@ -130,7 +131,14 @@ export default defineComponent({
 			}
 		});
 
-		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation, santizeAndSimplify };
+		const scrollToTop = () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		};
+
+		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation, santizeAndSimplify, scrollToTop };
 	},
 });
 </script>
