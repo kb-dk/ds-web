@@ -226,23 +226,35 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			const startParam = start.value === '' ? '' : `&start=${start.value}`;
 			const sortParam = sort.value === '' ? '' : `&sort=${sort.value}`;
 			try {
-				const facetGenreData = await APIService.getFacetResults(
-					query,
-					currentGenreFacetString.value,
-					startParam as string,
-					sortParam as string,
-				);
+				if (currentGenreFacetString.value !== currentChannelFacetString.value) {
+					const facetGenreData = await APIService.getFacetResults(
+						query,
+						currentGenreFacetString.value,
+						startParam as string,
+						sortParam as string,
+					);
 
-				const facetChannelData = await APIService.getFacetResults(
-					query,
-					currentChannelFacetString.value,
-					startParam as string,
-					sortParam as string,
-				);
+					const facetChannelData = await APIService.getFacetResults(
+						query,
+						currentChannelFacetString.value,
+						startParam as string,
+						sortParam as string,
+					);
 
-				facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
-				facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
-					.creator_affiliation_facet as string[];
+					facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
+					facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
+						.creator_affiliation_facet as string[];
+				} else {
+					const facetData = await APIService.getFacetResults(
+						query,
+						currentGenreFacetString.value,
+						startParam as string,
+						sortParam as string,
+					);
+					facetResult.value.genre = facetData.data.facet_counts.facet_fields.genre as string[];
+					facetResult.value.creator_affiliation_facet = facetData.data.facet_counts.facet_fields
+						.creator_affiliation_facet as string[];
+				}
 			} catch (err: unknown) {
 				error.value = (err as AxiosError).message;
 				errorManager.submitError(err as AxiosError, t('error.searchfailed'));
