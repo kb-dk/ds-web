@@ -2,34 +2,39 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="autocomplete">
-		<ul
-			v-if="searchResultStore.autocompleteResult.length > 0"
-			ref="autocomplete"
-			role="listbox"
-			class="autocomplete-list"
-			aria-label="autocomplete list"
+		<Transition
+			name="fade"
+			mode="out-in"
 		>
-			<li
-				v-for="(item, i) in searchResultStore.autocompleteResult"
-				:key="i"
-				role="option"
-				:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
+			<ul
+				v-if="searchResultStore.autocompleteResult.length > 0"
+				ref="autocomplete"
+				role="listbox"
+				class="autocomplete-list"
+				aria-label="autocomplete list"
 			>
-				<button
-					:title="item?.term"
-					:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
-					@click="executeOnSelection"
-					@mouseenter="updateSelectedElement(i + 1)"
-					@mouseleave="updateSelectedElement(0)"
+				<li
+					v-for="(item, i) in searchResultStore.autocompleteResult"
+					:key="i"
+					role="option"
+					:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 				>
-					<span
-						class="autocomplete-term"
-						v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
-					></span>
-					<span class="number">{{ `(${item.weight})` }}</span>
-				</button>
-			</li>
-		</ul>
+					<button
+						:title="item?.term"
+						:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
+						@click="executeOnSelection"
+						@mouseenter="updateSelectedElement(i + 1)"
+						@mouseleave="updateSelectedElement(0)"
+					>
+						<span
+							class="autocomplete-term"
+							v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
+						></span>
+						<span class="number">{{ `(${item.weight})` }}</span>
+					</button>
+				</li>
+			</ul>
+		</Transition>
 	</div>
 </template>
 <script lang="ts">

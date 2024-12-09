@@ -110,11 +110,11 @@
 									<TransitionGroup name="result">
 										<div
 											v-for="(singleFacet, index) in channelsArray"
-											:key="`${index}-facet-${lastUpdate}`"
+											:key="`${index}-facet`"
 											:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
 										>
 											<SimpleCheckbox
-												:key="`channelCheckbox-${lastUpdate}-${index}`"
+												:key="`channelCheckbox-${index}`"
 												:fqkey="'creator_affiliation_facet'"
 												:title="singleFacet.name"
 												:amount="
