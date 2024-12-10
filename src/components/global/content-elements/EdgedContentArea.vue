@@ -1,5 +1,5 @@
 <template>
-	<div :class="lines ? 'edge-content lines' : 'edge-content'">
+	<div :class="[lines ? 'edge-content lines' : 'edge-content', !linePadding ? 'no-padding' : '']">
 		<h3
 			v-if="title"
 			:class="reverse ? 'reverse' : ''"
@@ -63,6 +63,12 @@ export default defineComponent({
 			type: Boolean as PropType<boolean>,
 			default() {
 				return false;
+			},
+		},
+		linePadding: {
+			type: Boolean as PropType<boolean>,
+			default() {
+				return true;
 			},
 		},
 		alignItems: {
@@ -152,6 +158,10 @@ temporary styling until patterns from design system are implemented
 	min-height: 200px;
 	z-index: 5;
 	position: relative;
+}
+
+.no-padding {
+	padding: 0px !important;
 }
 
 .bottom-edge {
