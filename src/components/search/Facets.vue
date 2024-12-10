@@ -6,6 +6,7 @@
 		<div class="search-facets-flex">
 			<EdgedContentArea
 				:lines="true"
+				:line-padding="false"
 				background-color="#FAFAFA"
 			>
 				<template #content>
@@ -484,7 +485,7 @@ export default defineComponent({
 					onComplete: () => {
 						gsap.to(facetsContainer.value, {
 							height: 'auto',
-							marginBottom: '-125px',
+							marginBottom: '0px',
 							duration: 0.5,
 							opacity: 1,
 							overwrite: true,
@@ -667,7 +668,7 @@ h2 {
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: calc(-60px + -2vw);
+	top: 0px;
 	height: 0px;
 	display: none;
 	opacity: 0;
@@ -676,6 +677,7 @@ h2 {
 }
 
 .dark-bar {
+	min-width: 50px;
 	width: 50px;
 	background-color: #d5d5d5;
 	height: 24px;
