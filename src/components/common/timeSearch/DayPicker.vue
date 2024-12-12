@@ -1,6 +1,7 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
+			<span class="date-span">Dato:</span>
 			<VueDatePicker
 				ref="singleDatePicker"
 				v-model="selectedDate"
@@ -9,7 +10,7 @@
 				:locale="locale"
 				auto-apply
 				no-today
-				text-input
+				:text-input="textInputOptions"
 				:format="format"
 				six-weeks="fair"
 				:month-change-on-scroll="false"
@@ -17,16 +18,16 @@
 				:max-date="endYear"
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
+				:state="validDate"
 				@update:model-value="updateSeeMoreLink()"
 				@update-month-year="HandleMonthYear"
+				@input="updateSelectedDate"
+				@blur="handleLossOfFocus"
 			></VueDatePicker>
 		</div>
 		<div class="time-container">
-			<div class="time">
-				{{ format(selectedDate) /*date2.toISOString()*/ }}
-			</div>
 			<router-link
-				class="single-day-link"
+				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
 				@click="moveToSearchPage()"
@@ -39,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, inject } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {
@@ -55,6 +56,8 @@ import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 interface MonthYearEvent {
 	instance: number;
@@ -74,13 +77,89 @@ export default defineComponent({
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
-		const { locale } = useI18n();
+		const errorManager = inject('errorManager') as ErrorManagerType;
+
+		const { locale, t } = useI18n();
+		const validDate = ref(true);
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
 			const year = date.getFullYear();
 
 			return `${day} / ${month} / ${year}`;
+		};
+
+		const updateSelectedDate = (e: Event) => {
+			const input = e.target as HTMLInputElement;
+			const dateInput = input.value.split(' / ');
+
+			if (dateInput.length === 3) {
+				const [day, month, year] = dateInput.map(Number);
+
+				// Validate if day, month, and year are numbers
+				if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+					// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
+					const setDate = new Date(year, month - 1, day);
+
+					// Ensure the date is valid
+					if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
+						// Validate if the date is within the range
+						const minDate = new Date(startYear.value);
+						const maxDate = new Date(endYear.value);
+
+						if (setDate >= minDate && setDate <= maxDate) {
+							validDate.value = true;
+							const holder = new Date(setDate.getTime());
+							selectedDate.value = holder;
+							updateSeeMoreLink();
+						} else {
+							validDate.value = false;
+							errorManager.submitCustomError(
+								'datepicker-outofRange',
+								t('error.outofRange'),
+								'',
+								Severity.INFO,
+								false,
+								Priority.LOW,
+							);
+						}
+					} else {
+						validDate.value = false;
+						errorManager.submitCustomError(
+							'datepicker-invalidDate',
+							t('error.invalidDate'),
+							'',
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
+					}
+				} else {
+					validDate.value = false;
+					errorManager.submitCustomError(
+						'datepicker-invalidInput',
+						t('error.invalidInput'),
+						'',
+						Severity.INFO,
+						false,
+						Priority.LOW,
+					);
+				}
+			} else {
+				validDate.value = false;
+				errorManager.submitCustomError(
+					'datepicker-invalidFormat',
+					t('error.invalidFormat'),
+					'',
+					Severity.INFO,
+					false,
+					Priority.LOW,
+				);
+			}
+		};
+
+		const textInputOptions = {
+			format: 'd / M / yyyy',
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -92,6 +171,10 @@ export default defineComponent({
 				fq: [],
 			},
 		});
+
+		const handleLossOfFocus = () => {
+			validDate.value = true;
+		};
 
 		const moveToSearchPage = () => {
 			startDate.value.setFullYear(selectedDate.value.getFullYear());
@@ -159,6 +242,10 @@ export default defineComponent({
 			moveToSearchPage,
 			HandleMonthYear,
 			locale,
+			textInputOptions,
+			updateSelectedDate,
+			handleLossOfFocus,
+			validDate,
 		};
 	},
 });
@@ -168,6 +255,20 @@ export default defineComponent({
 	display: flex;
 	width: calc(100vw - 14px);
 	flex-direction: column;
+	justify-content: center;
+}
+
+.date-span {
+	width: 263px;
+	position: relative;
+	display: block;
+}
+
+.picker-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: center;
 }
 
 .single-day-link {
@@ -182,10 +283,19 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 
+.single-day-link.disabled {
+	background-color: gray;
+	pointer-events: none;
+}
+
 .single-day-link span {
 	display: block;
 	text-align: center;
 	width: 100%;
+}
+
+.single-day-link.disabled .link-arrow {
+	border-left: 8px solid gray;
 }
 
 .link-arrow {
@@ -247,13 +357,8 @@ export default defineComponent({
 	.day-picker {
 		flex-direction: row;
 		gap: 25px;
-		justify-content: flex-end;
 		padding-right: 50px;
 		padding-top: 30px;
-	}
-
-	.time-container {
-		justify-content: flex-end;
 	}
 }
 /* MEDIA QUERY 1150 */
