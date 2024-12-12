@@ -60,6 +60,7 @@
 							<li>
 								<div>
 									<a
+										target="_blank"
 										:href="$t('search.searchGuide.link')"
 										:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-search-tips', 0)"
 									>

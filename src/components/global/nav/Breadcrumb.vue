@@ -102,7 +102,10 @@
 						<p>
 							{{ t('search.frontpageGuide.third') }}
 						</p>
-						<a :href="t('search.frontpageGuide.link')">
+						<a
+							target="_blank"
+							:href="t('search.frontpageGuide.link')"
+						>
 							{{ t('search.frontpageGuide.linktext') }}
 						</a>
 					</div>
