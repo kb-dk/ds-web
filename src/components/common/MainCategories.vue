@@ -1,65 +1,65 @@
 <template>
-	<div
+	<!-- 	<div
 		class="header"
 		:style="`color: ${text}`"
 	>
 		<h1>{{ title }}</h1>
 		<span>{{ subtitle }}</span>
-	</div>
+	</div> -->
 	<div class="head-categories">
-		<Transition
+		<!-- 		<Transition
 			mode="out-in"
 			name="fade"
+		> -->
+		<div v-if="categoriesLoaded && categories.length > 0">
+			<div class="container category-grid">
+				<router-link
+					v-for="(entity, i) in categories"
+					:key="i"
+					:to="{
+						name: 'Search',
+						query: {
+							q: '*:*',
+							start: 0,
+							fq: [encodeURIComponent(`genre:${quotation(entity.name)}`)],
+						},
+					}"
+					class="category-item"
+					:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
+					@click="scrollToTop()"
+				>
+					{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
+					<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
+					<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
+				</router-link>
+			</div>
+		</div>
+		<div
+			v-else
+			class="container"
 		>
-			<div v-if="categoriesLoaded && categories.length > 0">
-				<div class="container category-grid">
-					<router-link
-						v-for="(entity, i) in categories"
-						@click="scrollToTop()"
-						:key="i"
-						:to="{
-							name: 'Search',
-							query: {
-								q: '*:*',
-								start: 0,
-								fq: [encodeURIComponent(`genre:${quotation(entity.name)}`)],
-							},
-						}"
-						class="category-item"
-						:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
-					>
-						{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
-						<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
-						<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
-					</router-link>
+			<div class="container category-grid">
+				<div
+					v-for="i in 12"
+					:key="i"
+					class="category-item"
+				>
+					<span
+						:style="`width:${Math.random() * 30 + 30}%`"
+						class="loading"
+					></span>
+					<span
+						:style="`width:${Math.random() * 3 + 3}%`"
+						class="loading number"
+					></span>
+					<NoFacetContent
+						v-if="categoriesLoaded && categories.length === 0"
+						position="absolute"
+					></NoFacetContent>
 				</div>
 			</div>
-			<div
-				v-else
-				class="container"
-			>
-				<div class="container category-grid">
-					<div
-						v-for="i in 12"
-						:key="i"
-						class="category-item"
-					>
-						<span
-							:style="`width:${Math.random() * 30 + 30}%`"
-							class="loading"
-						></span>
-						<span
-							:style="`width:${Math.random() * 3 + 3}%`"
-							class="loading number"
-						></span>
-						<NoFacetContent
-							v-if="categoriesLoaded && categories.length === 0"
-							position="absolute"
-						></NoFacetContent>
-					</div>
-				</div>
-			</div>
-		</Transition>
+		</div>
+		<!-- 		</Transition> -->
 	</div>
 </template>
 <script lang="ts">
