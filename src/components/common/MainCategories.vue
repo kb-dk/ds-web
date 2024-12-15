@@ -1,11 +1,12 @@
 <template>
-	<!-- 	<div
+	<div
+		v-if="showHeader"
 		class="header"
 		:style="`color: ${text}`"
 	>
 		<h1>{{ title }}</h1>
 		<span>{{ subtitle }}</span>
-	</div> -->
+	</div>
 	<div class="head-categories">
 		<!-- 		<Transition
 			mode="out-in"
@@ -79,6 +80,7 @@ export default defineComponent({
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
 		text: { type: String, default: 'black' },
+		showHeader: { type: Boolean, default: false },
 	},
 	setup() {
 		const { t } = useI18n();
@@ -150,7 +152,7 @@ export default defineComponent({
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
-	display: none;
+	display: block;
 	padding-right: 12px;
 	padding-left: 12px;
 	box-sizing: border-box;
