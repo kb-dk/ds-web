@@ -46,14 +46,24 @@
 				chevron_right
 			</i>
 		</button>
+		<span>
+			<input
+				class="page-select-input"
+				placeholder="indtast sidetal"
+				@keydown="checkIfNumber($event)"
+				@keyup.enter="submitPage()"
+			/>
+		</span>
 	</div>
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, defineComponent, watch } from 'vue';
+import { ref, computed, onMounted, defineComponent, watch, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { useI18n } from 'vue-i18n';
 export default defineComponent({
 	name: 'Pager',
 	props: {
@@ -67,9 +77,36 @@ export default defineComponent({
 		const router = useRouter();
 		const currentPageRef = ref(1);
 		const searchResultStore = useSearchResultStore();
-
+		const selectPage = ref('');
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
+		const errorManager = inject('errorManager') as ErrorManagerType;
+		const { t } = useI18n({ useScope: 'global' });
 
+		const checkIfNumber = (event: KeyboardEvent) => {
+			if (event.key.length === 1 && !isNaN(Number(event.key))) {
+				selectPage.value += event.key;
+			} else {
+				if (event.key === 'Backspace') {
+					selectPage.value = selectPage.value.substring(0, selectPage.value.length - 1);
+				} else {
+					event.preventDefault();
+				}
+			}
+		};
+		const submitPage = () => {
+			if (parseInt(selectPage.value) <= totalPages.value && parseInt(selectPage.value) > 0) {
+				goToPage(parseInt(selectPage.value));
+			} else {
+				errorManager.submitCustomError(
+					'search-result-error',
+					t('error.infoError.title'),
+					t('error.infoError.searchResult'),
+					Severity.INFO,
+					false,
+					Priority.LOW,
+				);
+			}
+		};
 		const navigate = () => {
 			const start = (currentPageRef.value - 1) * props.itemsPerPage;
 			const query = { ...route.query, start };
@@ -178,7 +215,18 @@ export default defineComponent({
 			},
 		);
 
-		return { currentPageRef, totalPages, nextPage, prevPage, goToPage, computedPages, searchResultStore };
+		return {
+			currentPageRef,
+			totalPages,
+			nextPage,
+			prevPage,
+			goToPage,
+			computedPages,
+			searchResultStore,
+			checkIfNumber,
+			selectPage,
+			submitPage,
+		};
 	},
 });
 </script>
@@ -228,5 +276,15 @@ button span,
 
 .dots {
 	text-decoration: none;
+}
+.page-select-input {
+	background: #ffffff 0% 0% no-repeat padding-box;
+	color: #002e70;
+	border: 1px solid #002e70;
+	border-radius: 2px;
+	height: 25px;
+	width: 110px;
+	font-size: 16px;
+	padding: 2px 5px;
 }
 </style>
