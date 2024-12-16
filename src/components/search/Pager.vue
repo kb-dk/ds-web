@@ -1,56 +1,57 @@
 <template>
 	<div :class="searchResultStore.loading ? 'pager disabled' : 'pager'">
-		<button
-			:disabled="currentPageRef === 1"
-			:title="$t('search.previousPage')"
-			:aria-label="$t('search.previousPage')"
-			@click="prevPage"
-		>
-			<i
-				class="material-icons"
-				aria-hidden="true"
+		<div class="pager-buttons">
+			<button
+				:disabled="currentPageRef === 1"
+				:title="$t('search.previousPage')"
+				:aria-label="$t('search.previousPage')"
+				@click="prevPage"
 			>
-				chevron_left
-			</i>
-		</button>
-		<span
-			v-for="(pageNumber, index) in computedPages"
-			:key="index"
-		>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_left
+				</i>
+			</button>
 			<span
-				v-if="pageNumber === '...'"
-				class="dots"
+				v-for="(pageNumber, index) in computedPages"
+				:key="index"
 			>
-				{{ pageNumber }}
+				<span
+					v-if="pageNumber === '...'"
+					class="dots"
+				>
+					{{ pageNumber }}
+				</span>
+				<button
+					v-else
+					:class="{ active: pageNumber === currentPageRef }"
+					:title="`${$t('search.page')} ${pageNumber}`"
+					:aria-label="$t('search.goToPage', Number(pageNumber))"
+					@click="goToPage(pageNumber as number)"
+				>
+					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
+				</button>
 			</span>
 			<button
-				v-else
-				:class="{ active: pageNumber === currentPageRef }"
-				:title="`${$t('search.page')} ${pageNumber}`"
-				:aria-label="$t('search.goToPage', Number(pageNumber))"
-				@click="goToPage(pageNumber as number)"
+				:disabled="currentPageRef === totalPages"
+				:title="$t('search.nextPage')"
+				:aria-label="$t('search.nextPage')"
+				@click="nextPage"
 			>
-				<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_right
+				</i>
 			</button>
-		</span>
-		<button
-			:disabled="currentPageRef === totalPages"
-			:title="$t('search.nextPage')"
-			:aria-label="$t('search.nextPage')"
-			@click="nextPage"
-		>
-			<i
-				class="material-icons"
-				aria-hidden="true"
-			>
-				chevron_right
-			</i>
-		</button>
-		<span>
+		</div>
+		<span class="pager-input">
 			<input
-				ref="page-input"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
-				placeholder="indtast sidetal"
+				:placeholder="$t('search.pageNumberPlaceholder')"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>
@@ -114,7 +115,7 @@ export default defineComponent({
 				errorManager.submitCustomError(
 					'search-result-error',
 					t('error.infoError.title'),
-					t('error.infoError.searchResult'),
+					t('error.infoError.pageNumber'),
 					Severity.INFO,
 					false,
 					Priority.LOW,
@@ -252,6 +253,7 @@ export default defineComponent({
 	justify-content: center;
 	padding-top: 25px;
 	padding-bottom: 50px;
+	flex-direction: column;
 }
 
 .pager.disabled {
@@ -292,6 +294,12 @@ button span,
 .dots {
 	text-decoration: none;
 }
+
+.pager-input {
+	padding-top: 10px;
+	align-self: center;
+}
+
 .page-select-input {
 	background: #ffffff 0% 0% no-repeat padding-box;
 	color: #002e70;
@@ -304,6 +312,20 @@ button span,
 }
 
 .page-select-input-error {
-	box-shadow: 0 0 var(--dp-border-radius) var(--dp-danger-color);
+	box-shadow: 0 0 5px #ff6f60ff;
+}
+
+.page-select-input-error:focus-visible {
+	outline: 1px solid #ff6f60;
+}
+
+@media (min-width: 640px) {
+	.pager {
+		flex-direction: row;
+	}
+	.pager-input {
+		padding-top: 0;
+		align-self: center;
+	}
 }
 </style>
