@@ -48,7 +48,8 @@
 		</button>
 		<span>
 			<input
-				class="page-select-input"
+				ref="page-input"
+				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
 				placeholder="indtast sidetal"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
@@ -58,12 +59,13 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, defineComponent, watch, inject } from 'vue';
+import { computed, defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { useI18n } from 'vue-i18n';
+
 export default defineComponent({
 	name: 'Pager',
 	props: {
@@ -78,10 +80,22 @@ export default defineComponent({
 		const currentPageRef = ref(1);
 		const searchResultStore = useSearchResultStore();
 		const selectPage = ref('');
+		const inputIncorrect = ref(false);
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n({ useScope: 'global' });
-
+		watch(
+			() => selectPage.value,
+			(newVal) => {
+				if (newVal) {
+					if (parseInt(newVal) <= 0 || parseInt(newVal) > totalPages.value) {
+						inputIncorrect.value = true;
+					} else {
+						inputIncorrect.value = false;
+					}
+				}
+			},
+		);
 		const checkIfNumber = (event: KeyboardEvent) => {
 			if (event.key.length === 1 && !isNaN(Number(event.key))) {
 				selectPage.value += event.key;
@@ -225,6 +239,7 @@ export default defineComponent({
 			searchResultStore,
 			checkIfNumber,
 			selectPage,
+			inputIncorrect,
 			submitPage,
 		};
 	},
@@ -286,5 +301,8 @@ button span,
 	width: 110px;
 	font-size: 16px;
 	padding: 2px 5px;
+}
+
+.page-select-input-error {
 }
 </style>
