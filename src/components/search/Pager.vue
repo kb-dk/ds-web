@@ -304,5 +304,6 @@ button span,
 }
 
 .page-select-input-error {
+	box-shadow: 0 0 var(--dp-border-radius) var(--dp-danger-color);
 }
 </style>
