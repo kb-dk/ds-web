@@ -3,24 +3,44 @@
 		<div class="breadcrumb container">
 			<span class="material-icons home-icon">home</span>
 			<span class="material-icons back-arrow">chevron_left</span>
-			<a
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
-				href="https://www.kb.dk"
-				class="level-1"
-			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
-			</a>
-			<span class="line">/</span>
+			<TransitionGroup name="breadcrumb">
+				<button
+					v-if="dotsShown"
+					class="dot-button"
+					@click="
+						togglePreLinks(true);
+						toggleDots(false);
+					"
+				>
+					...&nbsp;&nbsp;/
+				</button>
+				<div
+					v-if="prelinksShown"
+					class="dot-content"
+					@mouseleave="
+						togglePreLinks(false);
+						toggleDots(true);
+					"
+				>
+					<a
+						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
+						href="https://www.kb.dk"
+						class="level-1"
+					>
+						<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
+					</a>
+					<span class="line mobile-hidden">/</span>
 
-			<a
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
-				href="https://www.kb.dk/find-materiale"
-				class="level-2"
-			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
-			</a>
-			<span class="line">/</span>
-
+					<a
+						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
+						href="https://www.kb.dk/find-materiale"
+						class="level-2"
+					>
+						<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
+					</a>
+					<span class="line mobile-hidden">/</span>
+				</div>
+			</TransitionGroup>
 			<router-link
 				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
@@ -133,6 +153,8 @@ export default defineComponent({
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
+		const prelinksShown = ref(false);
+		const dotsShown = ref(true);
 
 		const currentPage = computed(() => {
 			let page = route.name as string;
@@ -142,6 +164,16 @@ export default defineComponent({
 				return '';
 			}
 		});
+
+		const togglePreLinks = (value: boolean) => {
+			console.log(value, 'links');
+			prelinksShown.value = value;
+		};
+
+		const toggleDots = (value: boolean) => {
+			console.log(value, 'dots');
+			dotsShown.value = value;
+		};
 
 		onMounted(() => {
 			let back = router.options.history.state.back as string;
@@ -164,12 +196,42 @@ export default defineComponent({
 			},
 		);
 
-		return { t, addTestDataEnrichment, lastPath, searchResultStore, currentPage };
+		return {
+			t,
+			addTestDataEnrichment,
+			lastPath,
+			searchResultStore,
+			currentPage,
+			prelinksShown,
+			togglePreLinks,
+			toggleDots,
+			dotsShown,
+		};
 	},
 });
 </script>
 
 <style scoped>
+/* Base transition styles */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease,
+		width 0.3s ease;
+	width: auto;
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-to {
+	opacity: 0;
+	width: 0px;
+}
+
+.breadcrumb-leave-active {
+	pointer-events: none; /* Avoid triggering mouse events during fade-out */
+}
+
 .breadcrumb {
 	height: 40px;
 	position: relative;
@@ -180,12 +242,36 @@ export default defineComponent({
 	font-size: 16px;
 }
 
+.dot-content {
+	overflow: hidden;
+}
+
 .level-1,
 .level-2,
 .level-3,
 .level-4,
 .level-5,
 .level-6 {
+	display: none;
+}
+
+.dot-button {
+	font-size: 16px;
+	background-color: transparent;
+	border: 0px solid transparent;
+	display: flex;
+	font-family: noway, sans-serif;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	transition: all 0.15s linear 0s;
+}
+
+.dot-button:hover {
+	color: #002e70;
+}
+
+.mobile-hidden {
 	display: none;
 }
 
@@ -331,6 +417,10 @@ export default defineComponent({
 
 	.back-arrow {
 		display: none;
+	}
+
+	.mobile-hidden {
+		display: initial;
 	}
 
 	.level-1,
