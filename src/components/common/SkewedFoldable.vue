@@ -437,6 +437,18 @@ h1::first-letter {
 		color: #0a2e70 !important;
 	}
 
+	.closed:hover .content .headline h1 {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .content .headline span {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .content .icon span {
+		color: #0a2e70 !important;
+	}
+
 	.closed:hover .edge.hover,
 	.closed:hover .content.hover {
 		background-color: #c4f1ed !important;
