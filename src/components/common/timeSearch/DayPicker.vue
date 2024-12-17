@@ -247,7 +247,7 @@ export default defineComponent({
 	.day-picker {
 		flex-direction: row;
 		gap: 25px;
-		justify-content: flex-end;
+		justify-content: center;
 		padding-right: 50px;
 		padding-top: 30px;
 	}
