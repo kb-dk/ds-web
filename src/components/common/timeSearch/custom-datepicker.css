@@ -1,5 +1,5 @@
 .dp__input_wrap {
-	display: none;
+	/* display: none; */
 }
 
 .dp__flex_display {
@@ -16,4 +16,14 @@
 
 .dp__cell_inner {
 	border-radius:0px;
+}
+
+.dp__input.dp__input_icon_pad.dp__input_focus {
+	width:263px;
+	margin-bottom: 5px;
+}
+
+.dp--clear-btn {
+	display:none;
+	pointer-events: none;
 }

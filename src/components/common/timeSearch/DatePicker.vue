@@ -8,7 +8,7 @@
 			:locale="locale"
 			auto-apply
 			no-today
-			text-input
+			:text-input="textInputOptions"
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
@@ -16,8 +16,10 @@
 			:max-date="endYear"
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
-			@update:model-value="readyForNewSearch()"
+			:state="validStartDate"
+			@update:model-value="readyForNewSearch('start')"
 			@update-month-year="startHandleMonthYear"
+			@input="updateSelectedDate($event, 'start')"
 		></VueDatePicker>
 		<VueDatePicker
 			ref="endDatePicker"
@@ -27,7 +29,7 @@
 			:locale="locale"
 			auto-apply
 			no-today
-			text-input
+			:text-input="textInputOptions"
 			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
@@ -35,28 +37,16 @@
 			:max-date="endYear"
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
-			@update:model-value="readyForNewSearch()"
+			:state="validEndDate"
+			@update:model-value="readyForNewSearch('end')"
 			@update-month-year="endHandleMonthYear"
+			@input="updateSelectedDate($event, 'end')"
 		></VueDatePicker>
-		<div class="from-to-display">
-			<div class="container">
-				<span>{{ $t('timeSearch.from') }}:</span>
-				<div class="time">
-					{{ format(startDate) }}
-				</div>
-			</div>
-			<div class="container">
-				<span>{{ $t('timeSearch.to') }}:</span>
-				<div class="time">
-					{{ format(endDate) /*date2.toISOString()*/ }}
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch, inject } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -65,6 +55,8 @@ import { addDays } from 'date-fns/addDays';
 import { endDate, endYear, startDate, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useI18n } from 'vue-i18n';
+import { Priority, Severity } from '@/types/NotificationType';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
 
 interface Highlight {
 	dates: Date[];
@@ -91,7 +83,10 @@ export default defineComponent({
 		const startDatePicker = ref<DatePickerInstance>();
 		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
-		const { locale } = useI18n();
+		const { locale, t } = useI18n();
+		const validStartDate = ref(true);
+		const validEndDate = ref(true);
+		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		onMounted(() => {
 			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
@@ -147,12 +142,97 @@ export default defineComponent({
 			}
 			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
 		};
+
+		const updateSelectedDate = (e: Event, picker: string) => {
+			const input = e.target as HTMLInputElement;
+			const dateInput = input.value.split(' / ');
+
+			if (dateInput.length === 3) {
+				const [day, month, year] = dateInput.map(Number);
+
+				// Validate if day, month, and year are numbers
+				if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+					// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
+					const setDate = new Date(year, month - 1, day);
+
+					// Ensure the date is valid
+					if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
+						// Validate if the date is within the range
+						const minDate = new Date(startYear.value);
+						const maxDate = new Date(endYear.value);
+
+						if (setDate >= minDate && setDate <= maxDate) {
+							picker === 'start' ? (validStartDate.value = true) : (validEndDate.value = true);
+							const holder = new Date(setDate.getTime());
+							picker === 'start' ? (startDate.value = holder) : (endDate.value = holder);
+							//selectedDate.value = holder;
+						} else {
+							picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
+							errorManager.submitCustomError(
+								'datepicker-outofRange',
+								t('error.outofRange'),
+								'',
+								Severity.INFO,
+								false,
+								Priority.LOW,
+							);
+						}
+					} else {
+						picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
+						errorManager.submitCustomError(
+							'datepicker-invalidDate',
+							t('error.invalidDate'),
+							'',
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
+					}
+				} else {
+					picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
+					errorManager.submitCustomError(
+						'datepicker-invalidInput',
+						t('error.invalidInput'),
+						'',
+						Severity.INFO,
+						false,
+						Priority.LOW,
+					);
+				}
+			} else {
+				picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
+				errorManager.submitCustomError(
+					'datepicker-invalidFormat',
+					t('error.invalidFormat'),
+					'',
+					Severity.INFO,
+					false,
+					Priority.LOW,
+				);
+			}
+			enableApplyButtonIfSearchisValid();
+		};
+
 		const newSearch = () => {
 			emit('spanUpdated');
 		};
 
-		const readyForNewSearch = () => {
-			timeSearchStore.setNewSearchReqMet(true);
+		const enableApplyButtonIfSearchisValid = () => {
+			if (validEndDate.value && validStartDate.value) {
+				timeSearchStore.setNewSearchReqMet(true);
+			} else {
+				timeSearchStore.setNewSearchReqMet(false);
+			}
+		};
+
+		const readyForNewSearch = (picker: string) => {
+			if (picker === 'end') {
+				validEndDate.value = true;
+			}
+			if (picker === 'start') {
+				validStartDate.value = true;
+			}
+			enableApplyButtonIfSearchisValid();
 		};
 		/*
 		 * We're not using this right now - its _VERY_ heavy.
@@ -173,6 +253,10 @@ export default defineComponent({
 			return highlight;
 		});
 
+		const textInputOptions = {
+			format: 'd / M / yyyy',
+		};
+
 		return {
 			startDate,
 			endDate,
@@ -187,6 +271,10 @@ export default defineComponent({
 			endHandleMonthYear,
 			startHandleMonthYear,
 			locale,
+			textInputOptions,
+			updateSelectedDate,
+			validStartDate,
+			validEndDate,
 		};
 	},
 });
@@ -204,6 +292,7 @@ export default defineComponent({
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
+	justify-content: center;
 }
 
 .date-pickers > div {
