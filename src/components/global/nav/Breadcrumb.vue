@@ -7,20 +7,15 @@
 				<button
 					v-if="dotsShown"
 					class="dot-button"
-					@click="
-						togglePreLinks(true);
-						toggleDots(false);
-					"
+					@click="showDotContent()"
 				>
 					...&nbsp;&nbsp;/
 				</button>
 				<div
 					v-if="prelinksShown"
 					class="dot-content"
-					@mouseleave="
-						togglePreLinks(false);
-						toggleDots(true);
-					"
+					@mouseleave="hideDotContentOnDelay()"
+					@mouseover="resetTimeout()"
 				>
 					<a
 						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
@@ -135,7 +130,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
@@ -155,6 +150,7 @@ export default defineComponent({
 		const route = useRoute();
 		const prelinksShown = ref(false);
 		const dotsShown = ref(true);
+		const timeout: Ref<number | null> = ref(null);
 
 		const currentPage = computed(() => {
 			let page = route.name as string;
@@ -165,13 +161,33 @@ export default defineComponent({
 			}
 		});
 
+		const resetTimeout = () => {
+			console.log('resetting timeout!');
+			if (timeout.value !== null) {
+				clearTimeout(timeout.value);
+				timeout.value = null;
+			}
+		};
+
+		const hideDotContentOnDelay = () => {
+			console.log('leaving, setting timeout!');
+			timeout.value = setTimeout(() => {
+				console.log("timeout done, we're closing!");
+				togglePreLinks(false);
+				toggleDots(true);
+			}, 1000);
+		};
+
+		const showDotContent = () => {
+			togglePreLinks(true);
+			toggleDots(false);
+		};
+
 		const togglePreLinks = (value: boolean) => {
-			console.log(value, 'links');
 			prelinksShown.value = value;
 		};
 
 		const toggleDots = (value: boolean) => {
-			console.log(value, 'dots');
 			dotsShown.value = value;
 		};
 
@@ -206,6 +222,9 @@ export default defineComponent({
 			togglePreLinks,
 			toggleDots,
 			dotsShown,
+			hideDotContentOnDelay,
+			showDotContent,
+			resetTimeout,
 		};
 	},
 });
@@ -215,10 +234,7 @@ export default defineComponent({
 /* Base transition styles */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-	transition:
-		opacity 0.3s ease,
-		transform 0.3s ease,
-		width 0.3s ease;
+	transition: all 1s ease;
 	width: auto;
 }
 
