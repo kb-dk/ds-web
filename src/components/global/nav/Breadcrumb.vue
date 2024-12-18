@@ -3,7 +3,7 @@
 		<div class="breadcrumb container">
 			<span class="material-icons home-icon">home</span>
 			<span class="material-icons back-arrow">chevron_left</span>
-			<TransitionGroup name="breadcrumb">
+			<Transition name="breadcrumb">
 				<button
 					v-if="dotsShown"
 					class="dot-button"
@@ -11,6 +11,8 @@
 				>
 					...&nbsp;&nbsp;/
 				</button>
+			</Transition>
+			<Transition name="breadcrumb-content">
 				<div
 					v-if="prelinksShown"
 					class="dot-content"
@@ -35,7 +37,7 @@
 					</a>
 					<span class="line mobile-hidden">/</span>
 				</div>
-			</TransitionGroup>
+			</Transition>
 			<router-link
 				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
@@ -162,7 +164,6 @@ export default defineComponent({
 		});
 
 		const resetTimeout = () => {
-			console.log('resetting timeout!');
 			if (timeout.value !== null) {
 				clearTimeout(timeout.value);
 				timeout.value = null;
@@ -170,9 +171,7 @@ export default defineComponent({
 		};
 
 		const hideDotContentOnDelay = () => {
-			console.log('leaving, setting timeout!');
 			timeout.value = setTimeout(() => {
-				console.log("timeout done, we're closing!");
 				togglePreLinks(false);
 				toggleDots(true);
 			}, 1000);
@@ -181,6 +180,10 @@ export default defineComponent({
 		const showDotContent = () => {
 			togglePreLinks(true);
 			toggleDots(false);
+			timeout.value = setTimeout(() => {
+				togglePreLinks(false);
+				toggleDots(true);
+			}, 5000);
 		};
 
 		const togglePreLinks = (value: boolean) => {
@@ -234,18 +237,45 @@ export default defineComponent({
 /* Base transition styles */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-	transition: all 1s ease;
-	width: auto;
+	transition: all 0.5s ease;
+	max-width: 50px;
+}
+
+.breadcrumb-enter-active {
+	transition-delay: 0.5s; /* Delay for enter transition */
 }
 
 .breadcrumb-enter-from,
 .breadcrumb-leave-to {
 	opacity: 0;
-	width: 0px;
+	max-width: 0px;
 }
 
 .breadcrumb-leave-active {
 	pointer-events: none; /* Avoid triggering mouse events during fade-out */
+	transition-delay: 0s; /* No delay for leave transition */
+}
+
+/* Base transition styles */
+.breadcrumb-content-enter-active,
+.breadcrumb-content-leave-active {
+	transition: all 0.5s ease;
+	max-width: 200px;
+}
+
+.breadcrumb-content-enter-active {
+	transition-delay: 0.2s; /* Delay for enter transition */
+}
+
+.breadcrumb-content-enter-from,
+.breadcrumb-content-leave-to {
+	opacity: 0;
+	max-width: 0px;
+}
+
+.breadcrumb-content-leave-active {
+	pointer-events: none; /* Avoid triggering mouse events during fade-out */
+	transition-delay: 0s; /* No delay for leave transition */
 }
 
 .breadcrumb {
@@ -260,6 +290,8 @@ export default defineComponent({
 
 .dot-content {
 	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .level-1,
@@ -281,6 +313,9 @@ export default defineComponent({
 	margin: 0;
 	cursor: pointer;
 	transition: all 0.15s linear 0s;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .dot-button:hover {
