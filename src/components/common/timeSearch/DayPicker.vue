@@ -105,6 +105,7 @@ export default defineComponent({
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		};
 
 		const updateSeeMoreLink = () => {
