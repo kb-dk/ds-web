@@ -126,6 +126,7 @@
      "previousPage":"Forrige side",
      "page": "Side",
      "goToPage":"Gå til side {n}",
+    "goToThePage": "Gå til siden",
      "sortAfter":"Sorteret efter ",
      "sortBy": "Sorter efter",
     "selected": "Valgt",
