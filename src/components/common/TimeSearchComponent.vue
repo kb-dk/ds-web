@@ -20,6 +20,7 @@
 						class="link"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+						@click="scrollToTop()"
 					>
 						<div class="hits">
 							<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
@@ -58,6 +59,7 @@
 						class="link"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
+						@click="scrollToTop()"
 					>
 						<div class="further-results">
 							<div class="hits">
@@ -126,6 +128,13 @@ export default defineComponent({
 			},
 		});
 
+		const scrollToTop = () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		};
+
 		const fetchNewTimeResults = () => {
 			updateLink();
 			getTimeResults(true);
@@ -193,6 +202,7 @@ export default defineComponent({
 			getSublineForMonths,
 			getSublineForTimeslots,
 			addTestDataEnrichment,
+			scrollToTop,
 		};
 	},
 });
