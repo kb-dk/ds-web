@@ -1,7 +1,7 @@
 <template>
 	<div
 		ref="foldableRef"
-		class="foldable-container"
+		:class="foldableOpen ? 'foldable-container open' : 'foldable-container closed'"
 		@click="toggleContent($event, false)"
 	>
 		<div
@@ -270,16 +270,6 @@ h1::first-letter {
 	max-width: 720px;
 }
 
-.foldable-container:hover .edge.hover,
-.foldable-container:hover .content.hover {
-	background-color: #c4f1ed !important;
-}
-
-.edge.hover,
-.content.hover {
-	transition: background-color 0.15s linear 0s;
-}
-
 .content .headline h1 {
 	padding: 0px;
 	margin: 0px;
@@ -437,6 +427,39 @@ h1::first-letter {
 	transform: scaleY(1);
 }
 @media (min-width: 990px) {
+	.hover .headline,
+	.hover .material-icons {
+		transition: all 0.15s linear 0s;
+	}
+
+	.closed .hover:hover .headline,
+	.closed .hover:hover .material-icons {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .content .headline h1 {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .content .headline span {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .content .icon span {
+		color: #0a2e70 !important;
+	}
+
+	.closed:hover .edge.hover,
+	.closed:hover .content.hover {
+		background-color: #c4f1ed !important;
+		color: #0a2e70 !important;
+	}
+
+	.closed .edge.hover,
+	.closed .content.hover {
+		transition: all 0.15s linear 0s;
+	}
+
 	.foldable-toggle {
 		display: none;
 	}

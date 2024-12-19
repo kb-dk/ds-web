@@ -84,6 +84,7 @@
 							:title="$t('timeSearch.searchCategories')"
 							text="white"
 							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+							:show-header="true"
 						></MainCategories>
 					</div>
 				</template>
