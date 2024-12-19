@@ -107,7 +107,8 @@
   "search":{
      "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
-     "hitcount": " resultat fundet for | resultater fundet for",
+     "hitcount": " resultat fundet med | resultater fundet med",
+     "filterSearch": " resultater fundet med dine filtre",
      "nohitSubtitle": {
        "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger.",
        "secondPart": "Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
