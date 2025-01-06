@@ -94,5 +94,8 @@ export default defineComponent({
 	.contact-relative {
 		left: 15%;
 	}
+	.contact {
+		margin-left: 0;
+	}
 }
 </style>
