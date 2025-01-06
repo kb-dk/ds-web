@@ -1,5 +1,5 @@
 <template>
-	<div :class="`contact ${relativePosition ? 'relative' : ''}`">
+	<div :class="`${relativePosition ? 'contact-relative' : 'contact'}`">
 		<h1>{{ t('search.contactUs') }}</h1>
 		<a
 			class="btn-blue btn"
@@ -34,11 +34,12 @@ export default defineComponent({
 </script>
 <style scoped>
 .contact {
+	margin-left: 1%;
+}
+.contact-relative {
+	position: relative;
 	top: calc(-6vw);
 	left: 1%;
-}
-.relative {
-	position: relative;
 }
 .btn {
 	display: inline-block;
@@ -90,7 +91,7 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.contact {
+	.contact-relative {
 		left: 15%;
 	}
 }
