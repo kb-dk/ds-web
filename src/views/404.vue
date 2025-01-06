@@ -41,16 +41,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="contact">
-			<h1>{{ t('search.contactUs') }}</h1>
-			<a
-				class="btn-blue btn"
-				:href="t('footer.column4.links.1.link')"
-				:data-testid="addTestDataEnrichment('button', '404', 'link-to-ask-about-library', 0)"
-			>
-				{{ t('footer.column4.links.1.title') }}
-			</a>
-		</div>
+		<ContactUs></ContactUs>
 	</div>
 </template>
 
@@ -58,9 +49,11 @@
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: '404',
+	components: { ContactUs },
 	setup() {
 		const { t } = useI18n();
 		const getImgServerSrcURL = () => {
@@ -158,21 +151,11 @@ export default defineComponent({
 	background-color: #f2f4f8;
 	border-color: #f2f4f8;
 }
-.btn-blue {
-	color: white;
-	background-color: #002e70;
-	border-color: #f2f4f8;
-}
+
 .btn-light:hover {
 	color: #212529;
 	background-color: #d9dfeb;
 	border-color: #d1d8e6;
-}
-
-.btn-blue:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-	border-color: #002e70;
 }
 
 .imageContainer {
@@ -189,12 +172,6 @@ export default defineComponent({
 	transform-origin: center bottom;
 	top: calc(-4vw);
 	z-index: 1;
-}
-
-.contact {
-	position: relative;
-	top: calc(-6vw);
-	left: 1%;
 }
 
 /* MEDIA QUERY 450 */
@@ -236,9 +213,6 @@ export default defineComponent({
 	}
 	.not-found-details {
 		width: 42%;
-	}
-	.contact {
-		left: 15%;
 	}
 }
 /* MEDIA QUERY 1150 */

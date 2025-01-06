@@ -111,6 +111,7 @@
 				></GridResultItem>
 			</div>
 		</div>
+		<ContactUs :relative-position="false"></ContactUs>
 	</div>
 </template>
 
@@ -128,11 +129,13 @@ import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
 
 	components: {
+		ContactUs,
 		VideoPlayer,
 		Duration,
 		GridResultItem,

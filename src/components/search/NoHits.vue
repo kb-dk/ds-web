@@ -89,6 +89,16 @@
 					</div>
 				</template>
 			</EdgedContentArea>
+			<EdgedContentArea
+				:lines="true"
+				:dotted-edges="false"
+				background-color="#ffffffff"
+				align-items="start"
+			>
+				<template #content>
+					<ContactUs style="left: 0"></ContactUs>
+				</template>
+			</EdgedContentArea>
 		</div>
 	</Transition>
 </template>
@@ -102,10 +112,12 @@ import TextAndImage from '@/components/global/content-elements/TextAndImage.vue'
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
+		ContactUs,
 		MainCategories,
 		SpellChecker,
 		TiltedDivider,
