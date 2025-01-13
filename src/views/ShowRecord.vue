@@ -3,7 +3,6 @@
 		<div class="container top-offset">
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
-
 				<div v-if="!loading && recordData !== null">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
@@ -34,6 +33,9 @@
 				<div v-if="!loading && recordData === null && contentNotAllowed">
 					<NotAllowedRecord :back-link="backLink" />
 				</div>
+				<div v-if="recordType === null && backendError && !loading">
+					<UnavailableRecord />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,6 +59,7 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedRecord from '@/components/records/NotAllowedRecord.vue';
+import UnavailableRecord from '@/components/records/UnavailableRecord.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -65,6 +68,7 @@ export default defineComponent({
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
+		UnavailableRecord,
 	},
 
 	setup() {
@@ -80,6 +84,7 @@ export default defineComponent({
 		const loading = ref(true);
 		const contentNotAllowed = ref(false);
 		const backLink = ref('');
+		const backendError = ref(false);
 
 		onMounted(async () => {
 			let back = router.options.history.state.back as string;
@@ -105,11 +110,13 @@ export default defineComponent({
 		});
 
 		const getRecord = async (id: string) => {
+			backendError.value = false;
 			spinnerStore.toggleSpinner(true);
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
 				handleShowRecordError(err as AxiosError, 'recordCall');
+				backendError.value = true;
 			} finally {
 				loading.value = false;
 				spinnerStore.toggleSpinner(false);
@@ -208,7 +215,7 @@ export default defineComponent({
 			},
 		);
 
-		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink };
+		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink, backendError };
 	},
 	computed: {
 		GenericRecord() {
