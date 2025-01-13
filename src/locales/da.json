@@ -217,8 +217,9 @@
      "copyTitleFailed":"Kopiering fejlede.",
      "copyMessageFailed":"Linket blev ikke kopieret. Kopier URL i stedet.",
      "moreMetadataBroadcast":"Yderligere information om udsendelsen",
-     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise."
-
+     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise.",
+     "noRecordFound":"Vi kan desværre ikke finde den udsendelse, som du forsøger at tilgå :(",
+     "noRecordFoundExplained":"Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner."
   },
   "duration":{
    "hours":"t",

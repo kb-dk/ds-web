@@ -219,8 +219,9 @@
      "copyTitleFailed":"Copying failed.",
      "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead.",
      "moreMetadataBroadcast":"Additional information about the broadcast",
-     "missingStreamingUrl":"We're sorry, it seems this record has no streaming URL, \n so there is nothing to show."
-
+     "missingStreamingUrl":"We're sorry, it seems this record has no streaming URL, \n so there is nothing to show.",
+     "noRecordFound":"Unfortunately, we cannot find the broadcast you are trying to access :(",
+     "noRecordFoundExplained":"It's really unfortunate, and how you ended up here is a bit of a mystery, but you can try searching again to find the content you're missing."
   },
   "duration":{
    "hours":"h",
