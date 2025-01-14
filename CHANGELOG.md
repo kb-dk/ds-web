@@ -4,6 +4,25 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2024-12-17
+
+### Changed
+- centered daypicker on desktop view.
+- small hover effect was not applied correctly.
+
+## [1.0.13] - 2024-12-16
+
+### Changed
+- Categories on the front page is now fodled up on load on desktop aswell as mobile.
+- Page scrolls to the top of search when we come from a selected genre.
+- Small fix for fewer calls for the facets from backend.
+- mobile styling fixes on resultpage.
+- small transition changes on the autocomplete component.
+- small bug in autocomplete fixed.
+- Links to searchguide now opens in a new tab.
+- Small changes to categories container behavior.
+- Hover effect now added on the categories component on the frontpage.
+
 ## [1.0.12] - 2024-12-06
 
 ### Changed

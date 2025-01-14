@@ -313,7 +313,7 @@ h1 {
 }
 
 .noise {
-	background-image: url('@/assets/images/noise.png');
+	background-image: url('@/assets/images/noise.jpg');
 	position: fixed;
 	top: -25%;
 	left: -50%;

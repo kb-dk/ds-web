@@ -10,7 +10,9 @@
 				:fullwidth="true"
 				:shadow-bottom="true"
 				:shadow-top="true"
+				:always-expand="true"
 				:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+				:hover-effect="true"
 			>
 				<MainCategories
 					:title="$t('timeSearch.searchCategories')"

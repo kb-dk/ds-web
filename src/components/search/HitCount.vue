@@ -23,7 +23,11 @@
 							v-if="query !== ''"
 							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
 						>
-							{{ new Intl.NumberFormat('de-DE').format(hitCount) }} {{ $t('search.hitcount', hitCount) }} "{{ query }}"
+							{{
+								query !== '*:*' && query !== ''
+									? `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.hitcount', hitCount)} "${query}"`
+									: `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.filterSearch', hitCount)}`
+							}}
 						</span>
 						<span v-else></span>
 					</div>

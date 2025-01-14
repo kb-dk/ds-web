@@ -188,6 +188,7 @@ export default defineComponent({
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		};
 
 		const updateSeeMoreLink = () => {
@@ -357,6 +358,7 @@ export default defineComponent({
 	.day-picker {
 		flex-direction: row;
 		gap: 25px;
+		justify-content: center;
 		padding-right: 50px;
 		padding-top: 30px;
 	}

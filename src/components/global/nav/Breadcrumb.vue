@@ -3,24 +3,41 @@
 		<div class="breadcrumb container">
 			<span class="material-icons home-icon">home</span>
 			<span class="material-icons back-arrow">chevron_left</span>
-			<a
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
-				href="https://www.kb.dk"
-				class="level-1"
-			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
-			</a>
-			<span class="line">/</span>
+			<Transition name="breadcrumb">
+				<button
+					v-if="dotsShown"
+					class="dot-button"
+					@click="showDotContent()"
+				>
+					...&nbsp;&nbsp;/
+				</button>
+			</Transition>
+			<Transition name="breadcrumb-content">
+				<div
+					v-if="prelinksShown"
+					class="dot-content"
+					@mouseleave="hideDotContentOnDelay()"
+					@mouseover="resetTimeout()"
+				>
+					<a
+						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
+						href="https://www.kb.dk"
+						class="level-1"
+					>
+						<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
+					</a>
+					<span class="line mobile-hidden">/</span>
 
-			<a
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
-				href="https://www.kb.dk/find-materiale"
-				class="level-2"
-			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
-			</a>
-			<span class="line">/</span>
-
+					<a
+						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
+						href="https://www.kb.dk/find-materiale"
+						class="level-2"
+					>
+						<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
+					</a>
+					<span class="line mobile-hidden">/</span>
+				</div>
+			</Transition>
 			<router-link
 				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
@@ -102,7 +119,10 @@
 						<p>
 							{{ t('search.frontpageGuide.third') }}
 						</p>
-						<a :href="t('search.frontpageGuide.link')">
+						<a
+							target="_blank"
+							:href="t('search.frontpageGuide.link')"
+						>
 							{{ t('search.frontpageGuide.linktext') }}
 						</a>
 					</div>
@@ -112,7 +132,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
@@ -130,6 +150,9 @@ export default defineComponent({
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
+		const prelinksShown = ref(false);
+		const dotsShown = ref(true);
+		const timeout: Ref<number | null> = ref(null);
 
 		const currentPage = computed(() => {
 			let page = route.name as string;
@@ -139,6 +162,37 @@ export default defineComponent({
 				return '';
 			}
 		});
+
+		const resetTimeout = () => {
+			if (timeout.value !== null) {
+				clearTimeout(timeout.value);
+				timeout.value = null;
+			}
+		};
+
+		const hideDotContentOnDelay = () => {
+			timeout.value = setTimeout(() => {
+				togglePreLinks(false);
+				toggleDots(true);
+			}, 1000);
+		};
+
+		const showDotContent = () => {
+			togglePreLinks(true);
+			toggleDots(false);
+			timeout.value = setTimeout(() => {
+				togglePreLinks(false);
+				toggleDots(true);
+			}, 5000);
+		};
+
+		const togglePreLinks = (value: boolean) => {
+			prelinksShown.value = value;
+		};
+
+		const toggleDots = (value: boolean) => {
+			dotsShown.value = value;
+		};
 
 		onMounted(() => {
 			let back = router.options.history.state.back as string;
@@ -161,12 +215,69 @@ export default defineComponent({
 			},
 		);
 
-		return { t, addTestDataEnrichment, lastPath, searchResultStore, currentPage };
+		return {
+			t,
+			addTestDataEnrichment,
+			lastPath,
+			searchResultStore,
+			currentPage,
+			prelinksShown,
+			togglePreLinks,
+			toggleDots,
+			dotsShown,
+			hideDotContentOnDelay,
+			showDotContent,
+			resetTimeout,
+		};
 	},
 });
 </script>
 
 <style scoped>
+/* Base transition styles */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+	transition: all 0.5s ease;
+	max-width: 50px;
+}
+
+.breadcrumb-enter-active {
+	transition-delay: 0.5s; /* Delay for enter transition */
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-to {
+	opacity: 0;
+	max-width: 0px;
+}
+
+.breadcrumb-leave-active {
+	pointer-events: none; /* Avoid triggering mouse events during fade-out */
+	transition-delay: 0s; /* No delay for leave transition */
+}
+
+/* Base transition styles */
+.breadcrumb-content-enter-active,
+.breadcrumb-content-leave-active {
+	transition: all 0.5s ease;
+	max-width: 200px;
+}
+
+.breadcrumb-content-enter-active {
+	transition-delay: 0.2s; /* Delay for enter transition */
+}
+
+.breadcrumb-content-enter-from,
+.breadcrumb-content-leave-to {
+	opacity: 0;
+	max-width: 0px;
+}
+
+.breadcrumb-content-leave-active {
+	pointer-events: none; /* Avoid triggering mouse events during fade-out */
+	transition-delay: 0s; /* No delay for leave transition */
+}
+
 .breadcrumb {
 	height: 40px;
 	position: relative;
@@ -177,12 +288,41 @@ export default defineComponent({
 	font-size: 16px;
 }
 
+.dot-content {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 .level-1,
 .level-2,
 .level-3,
 .level-4,
 .level-5,
 .level-6 {
+	display: none;
+}
+
+.dot-button {
+	font-size: 16px;
+	background-color: transparent;
+	border: 0px solid transparent;
+	display: flex;
+	font-family: noway, sans-serif;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	transition: all 0.15s linear 0s;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dot-button:hover {
+	color: #002e70;
+}
+
+.mobile-hidden {
 	display: none;
 }
 
@@ -328,6 +468,10 @@ export default defineComponent({
 
 	.back-arrow {
 		display: none;
+	}
+
+	.mobile-hidden {
+		display: initial;
 	}
 
 	.level-1,
