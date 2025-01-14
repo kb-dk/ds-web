@@ -86,7 +86,7 @@ export default defineComponent({
 			const month = date.getMonth() + 1;
 			const year = date.getFullYear();
 
-			return `${day} / ${month} / ${year}`;
+			return `${day}/${month}/${year}`;
 		};
 
 		const updateSelectedDate = (e: Event) => {
@@ -159,7 +159,7 @@ export default defineComponent({
 		};
 
 		const textInputOptions = {
-			format: 'd / M / yyyy',
+			format: 'd/M/yyyy',
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({

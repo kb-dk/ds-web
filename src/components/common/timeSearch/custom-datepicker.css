@@ -27,3 +27,34 @@
 	display:none;
 	pointer-events: none;
 }
+
+.dp--arrow-btn-nav {
+	display: none;
+}
+
+.dp__btn.dp__month_year_select:after {
+	content:'expand_more';
+	font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.dp__month_year_select {
+	border:1px solid rgba(128, 128, 128, 0.404);
+}
+
+.dp__month_year_select:first-of-type {
+	margin-right:20px;
+}

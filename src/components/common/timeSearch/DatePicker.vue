@@ -3,13 +3,13 @@
 		<VueDatePicker
 			ref="startDatePicker"
 			v-model="startDate"
+			:format="format"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
 			:locale="locale"
 			auto-apply
 			no-today
 			:text-input="textInputOptions"
-			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
 			:min-date="startYear"
@@ -17,20 +17,20 @@
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			:state="validStartDate"
+			:highlight="highlightedDays.startHighlight"
 			@update:model-value="readyForNewSearch('start')"
 			@update-month-year="startHandleMonthYear"
-			@input="updateSelectedDate($event, 'start')"
 		></VueDatePicker>
 		<VueDatePicker
 			ref="endDatePicker"
 			v-model="endDate"
+			:format="format"
 			:inline="{ input: true }"
 			:enable-time-picker="false"
 			:locale="locale"
 			auto-apply
 			no-today
 			:text-input="textInputOptions"
-			:format="format"
 			six-weeks="fair"
 			:month-change-on-scroll="false"
 			:min-date="startYear"
@@ -38,9 +38,9 @@
 			prevent-min-max-navigation
 			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 			:state="validEndDate"
+			:highlight="highlightedDays.endHighlight"
 			@update:model-value="readyForNewSearch('end')"
 			@update-month-year="endHandleMonthYear"
-			@input="updateSelectedDate($event, 'end')"
 		></VueDatePicker>
 	</div>
 </template>
@@ -57,15 +57,16 @@ import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useI18n } from 'vue-i18n';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { startOfMonth, endOfMonth } from 'date-fns';
 
-interface Highlight {
+/* interface Highlight {
 	dates: Date[];
 	years: number[];
 	months: { month: number; year: number }[];
 	quarters: { quarter: number; year: number }[];
 	weekdays: number[];
 	options: { highlightDisabled: boolean };
-}
+} */
 
 interface MonthYearEvent {
 	instance: number;
@@ -108,7 +109,7 @@ export default defineComponent({
 			const month = date.getMonth() + 1;
 			const year = date.getFullYear();
 
-			return `${day} / ${month} / ${year}`;
+			return `${day}-${month}-${year}`;
 		};
 
 		/* This way might seem weird to update the endDate,
@@ -145,7 +146,11 @@ export default defineComponent({
 
 		const updateSelectedDate = (e: Event, picker: string) => {
 			const input = e.target as HTMLInputElement;
-			const dateInput = input.value.split(' / ');
+			const value = input.value.trim(); // Remove extra spaces
+
+			// Use a regular expression to split by '/', '.', or '-'
+			const dateInput = value.split(/[/.-]/);
+			const splitter = value.match(/[/.-]/);
 
 			if (dateInput.length === 3) {
 				const [day, month, year] = dateInput.map(Number);
@@ -157,6 +162,8 @@ export default defineComponent({
 
 					// Ensure the date is valid
 					if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
+						/* textInputOptions.format = `d${splitter}M${splitter}yyyy`;
+						currentSplitter.value = splitter as unknown as string; */
 						// Validate if the date is within the range
 						const minDate = new Date(startYear.value);
 						const maxDate = new Date(endYear.value);
@@ -234,27 +241,41 @@ export default defineComponent({
 			}
 			enableApplyButtonIfSearchisValid();
 		};
-		/*
-		 * We're not using this right now - its _VERY_ heavy.
-		 * If we at some point want it, its just :highlight="highlightedDays"
-		 * in the picker.
-		 */
+
 		const highlightedDays = computed(() => {
-			const timeDifference = endDate.value.getTime() - startDate.value.getTime();
-			const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-			const highlights = [];
-			for (let i = 0; i < days; i++) {
-				highlights.push(addDays(startDate.value, i));
+			const startHighlights = [];
+			const endHighlights = [];
+
+			if (startDate.value) {
+				const startMonthEnd = endOfMonth(startDate.value);
+				const limitDate = endDate.value && endDate.value < startMonthEnd ? endDate.value : startMonthEnd;
+
+				let currentDate = startDate.value;
+				while (currentDate <= limitDate) {
+					startHighlights.push(currentDate);
+					currentDate = addDays(currentDate, 1);
+				}
 			}
 
-			const highlight = {} as Highlight;
-			highlight.dates = highlights;
+			if (endDate.value) {
+				const endMonthStart = startOfMonth(endDate.value);
+				const limitDate = startDate.value && startDate.value > endMonthStart ? startDate.value : endMonthStart;
 
-			return highlight;
+				let currentDate = endDate.value;
+				while (currentDate >= limitDate) {
+					endHighlights.push(currentDate);
+					currentDate = addDays(currentDate, -1);
+				}
+			}
+
+			return {
+				startHighlight: { dates: startHighlights },
+				endHighlight: { dates: endHighlights },
+			};
 		});
 
 		const textInputOptions = {
-			format: 'd / M / yyyy',
+			format: 'd-M-yyyy', // Default display format
 		};
 
 		return {
