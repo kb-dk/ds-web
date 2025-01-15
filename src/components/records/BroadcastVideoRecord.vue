@@ -124,7 +124,6 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useI18n } from 'vue-i18n';
 import { getEntryId } from '@/utils/record-utils';
-import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';

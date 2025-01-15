@@ -56,7 +56,6 @@ import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useI18n } from 'vue-i18n';
-import '@/components/common/wc-spot-item';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({

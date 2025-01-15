@@ -21,7 +21,6 @@
 import { defineComponent, PropType } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import GridResultItem from '../search/GridResultItem.vue';
-import '@/components/common/wc-spot-item';
 
 export default defineComponent({
 	name: 'GridDisplay',

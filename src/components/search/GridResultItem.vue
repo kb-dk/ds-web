@@ -20,10 +20,10 @@
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
 				>
 					<div class="thumb-container">
-						<kb-imagecomponent
+						<ImageComponent
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
-							:imagedata="imageData"
-						></kb-imagecomponent>
+							:image-data="imageData"
+						></ImageComponent>
 						<SoundThumbnail
 							v-else
 							:result-title="resultdata.title[0]"
@@ -127,10 +127,12 @@ import { useI18n } from 'vue-i18n';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
+import ImageComponent from '@/components/common/ImageComponent.vue';
 
 export default defineComponent({
 	name: 'GridResultItem',
 	components: {
+		ImageComponent,
 		NoFacetContent,
 		SoundThumbnail,
 		Duration,
