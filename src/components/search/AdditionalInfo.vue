@@ -40,7 +40,7 @@
 						ref="thumbnailRefs"
 						class="img-wrap"
 					>
-						<kb-imagecomponent :imagedata="thumbnailImageData[index]"></kb-imagecomponent>
+						<ImageComponent :image-data="thumbnailImageData[index]"></ImageComponent>
 					</div>
 					<div class="img-stamp">
 						{{ convertSecondstoShow(timeStamps[index]) }}
@@ -65,10 +65,12 @@ import { convertSecondstoShow } from '@/utils/time-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import ImageComponent from '@/components/common/ImageComponent.vue';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
 	components: {
+		ImageComponent,
 		ItemSlider,
 	},
 	props: {

@@ -126,8 +126,6 @@ import { getEntryId } from '@/utils/record-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
-import '@/components/common/wc-spot-item';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 
