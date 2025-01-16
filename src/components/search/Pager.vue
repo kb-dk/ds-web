@@ -59,6 +59,7 @@
 			/>
 			<button
 				:class="`go-to-button ${inputIncorrect || selectPage === '' ? 'go-to-button-error' : ''}`"
+				:disabled="inputIncorrect || selectPage === ''"
 				@click="submitPage()"
 			>
 				{{ $t('search.goToThePage') }}
@@ -347,6 +348,7 @@ button span,
 }
 
 .go-to-button {
+	transition: all 0.3s linear 0s;
 	color: #002e70;
 	background-color: #49da87;
 	font-size: 16px;
@@ -363,6 +365,9 @@ button span,
 .go-to-button-error {
 	background-color: #6e6e6e;
 	color: white;
+}
+.go-to-button-error:hover {
+	outline: 0px solid #002e70;
 }
 
 .container[data-v-a895c851] {
