@@ -87,11 +87,12 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		const errorManager = inject('errorManager') as ErrorManagerType;
+		const updateResizeProperty = () => {
+			numPagesToShow.value = window.innerWidth < 850 ? 3 : 8;
+		};
 		onMounted(() => {
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
-			window.addEventListener('resize', () => {
-				numPagesToShow.value = window.innerWidth < 850 ? 3 : 8;
-			});
+			window.addEventListener('resize', updateResizeProperty);
 			document.title = t('app.titles.frontpage.archive.name') as string;
 			const pastPage = router.options.history.state.back as string;
 			if (pastPage && pastPage.startsWith('/post/') && searchResultStore.searchResult.length !== 0) {
@@ -157,9 +158,7 @@ export default defineComponent({
 			}
 		});
 		onUnmounted(() => {
-			window.removeEventListener('resize', () => {
-				numPagesToShow.value = window.innerWidth < 600 ? 3 : 8;
-			});
+			window.removeEventListener('resize', updateResizeProperty);
 		});
 		// Watch the url param and update search results if it changes
 		watch(
@@ -209,6 +208,7 @@ export default defineComponent({
 			searchResultStore,
 			numPagesToShow,
 			route,
+			updateResizeProperty,
 		};
 	},
 });
