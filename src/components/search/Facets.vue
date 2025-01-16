@@ -116,7 +116,12 @@
 										<div
 											v-for="(singleFacet, index) in channelsArray"
 											:key="`${index}-facet`"
-											:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
+											:class="{
+												'checkbox end': index >= (channelsArray.length / 4) * 3,
+												'checkbox semi-end':
+													index >= channelsArray.length / 2 && index < (channelsArray.length / 4) * 3,
+												checkbox: index < channelsArray.length / 2,
+											}"
 										>
 											<SimpleCheckbox
 												:key="`channelCheckbox-${index}`"
@@ -630,8 +635,7 @@ fieldset {
 }
 
 .facet-options {
-	display: flex;
-	flex-wrap: wrap;
+	column-count: 1;
 	width: 100%;
 }
 
@@ -657,14 +661,6 @@ h2 {
 	flex: 0 0 100%;
 	max-width: 100%;
 	box-sizing: border-box;
-}
-
-.checkbox.last {
-	border-right: 0px;
-}
-
-.facet-options > .checkbox:nth-of-type(2n) {
-	border-right: 0px;
 }
 
 .search-facets {
@@ -796,13 +792,23 @@ h2 {
 	.time-facet-button {
 		width: fit-content;
 	}
-	.checkbox {
-		flex: 0 0 50%;
-		max-width: 50%;
+
+	.facet-options {
+		column-count: 2;
 	}
-	.facet-options > .checkbox:nth-of-type(2n + 1) {
+
+	.facet-options .checkbox {
 		border-right: 1px solid rgba(230, 230, 230, 1);
 	}
+
+	.facet-options .checkbox.end {
+		border-right: 0px solid rgba(230, 230, 230, 1);
+	}
+
+	.facet-options .checkbox.semi-end {
+		border-right: 0px solid rgba(230, 230, 230, 1);
+	}
+
 	.genre {
 		width: calc(50% - 15px);
 		flex: 0 0 calc(50% - 15px);
@@ -817,16 +823,14 @@ h2 {
 }
 
 @media (min-width: 990px) {
-	.checkbox {
-		flex: 0 0 25%;
-		max-width: 25%;
+	.facet-options {
+		column-count: 4;
 	}
-	.facet-options > .checkbox:nth-of-type(2n) {
+
+	.facet-options .checkbox.semi-end {
 		border-right: 1px solid rgba(230, 230, 230, 1);
 	}
-	.checkbox.last {
-		border-right: 0px solid rgba(255, 255, 255, 0) !important;
-	}
+
 	.genre-facets {
 		padding: 0px 5px;
 		gap: 45px 40px;
