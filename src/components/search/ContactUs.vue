@@ -1,6 +1,6 @@
 <template>
 	<div :class="`${relativePosition ? 'contact-relative' : 'contact'}`">
-		<h1>{{ t('search.contactUs') }}</h1>
+		<h2>{{ t('search.contactUs') }}</h2>
 		<a
 			class="btn-blue btn"
 			:href="t('footer.column4.links.1.link')"

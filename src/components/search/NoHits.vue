@@ -89,16 +89,10 @@
 					</div>
 				</template>
 			</EdgedContentArea>
-			<EdgedContentArea
-				:lines="true"
-				:dotted-edges="false"
-				background-color="#ffffffff"
-				align-items="start"
-			>
-				<template #content>
-					<ContactUs style="left: 0"></ContactUs>
-				</template>
-			</EdgedContentArea>
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
 		</div>
 	</Transition>
 </template>
@@ -209,5 +203,17 @@ h2 {
 	text-align: center;
 	font-size: 256px;
 	color: #002e70;
+}
+
+.contact-us {
+	margin-top: 0;
+	padding-bottom: 0;
+}
+
+@media (min-width: 990px) {
+	.contact-us {
+		margin-top: -40px;
+		padding-bottom: 40px;
+	}
 }
 </style>
