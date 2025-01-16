@@ -39,6 +39,7 @@
 				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
 				@change="updateSelection(!checked, title, fqkey)"
 			/>
+			<div class="underline"></div>
 		</label>
 	</div>
 </template>
@@ -179,12 +180,29 @@ export default defineComponent({
 }
 
 .checkbox-container {
+	max-height: 24px;
 	padding: 0px 5px;
 	text-align: left;
 }
 
 .checkbox-container.disabled .label {
 	cursor: default;
+}
+
+.label:hover .underline {
+	width: calc(100% - 3px);
+}
+
+.label {
+	position: relative;
+}
+
+.underline {
+	height: 1px;
+	background-color: #002e70;
+	width: 0px;
+	transition: all 0.3s ease-in-out 0s;
+	position: absolute;
 }
 
 .checkbox-container.disabled .title,
@@ -204,7 +222,7 @@ export default defineComponent({
 }
 
 .loading.tag-number {
-	height: 25px;
+	height: 24px;
 	overflow: hidden;
 	position: relative;
 }
