@@ -340,28 +340,33 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
-				searchResultStore.searchResult = [];
-				searchResultStore.resetAutocomplete();
-				searchResultStore.channelFilters = [];
-				searchResultStore.categoryFilters = [];
-				clearTimeout(AutocompleteTimer);
-				debounceMechanic.value = true;
-				setTimeout(() => {
-					debounceMechanic.value = false;
-				}, 500);
-				let query: LocationQueryRaw = {
-					q: searchResultStore.currentQuery,
-					start: 0,
-				};
+				if (
+					router.currentRoute.value.name !== 'Search' ||
+					searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
+				) {
+					searchResultStore.searchResult = [];
+					searchResultStore.resetAutocomplete();
+					searchResultStore.channelFilters = [];
+					searchResultStore.categoryFilters = [];
+					clearTimeout(AutocompleteTimer);
+					debounceMechanic.value = true;
+					setTimeout(() => {
+						debounceMechanic.value = false;
+					}, 500);
+					let query: LocationQueryRaw = {
+						q: searchResultStore.currentQuery,
+						start: 0,
+					};
 
-				searchResultStore.preliminaryFilter = '';
+					searchResultStore.preliminaryFilter = '';
 
-				query.sort = encodeURIComponent(`score desc`);
+					query.sort = encodeURIComponent(`score desc`);
 
-				router.push({
-					name: 'Search',
-					query: query,
-				});
+					router.push({
+						name: 'Search',
+						query: query,
+					});
+				}
 			} else {
 				let URL = selectorValues.find((item) => item.name === selectedPortal.value)?.destination;
 				if (URL) {
