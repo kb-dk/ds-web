@@ -59,8 +59,8 @@
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
-					<h4>{{ $t('record.genre') }}</h4>
-					<div>
+					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
+					<div v-if="recordData.genre">
 						<router-link
 							:to="{
 								name: 'Search',
@@ -110,6 +110,7 @@
 				></GridResultItem>
 			</div>
 		</div>
+		<ContactUs :relative-position="false"></ContactUs>
 	</div>
 </template>
 
@@ -128,11 +129,13 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 
 import '@/components/common/wc-spot-item';
 import GridResultItem from '@/components/search/GridResultItem.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
 
 	components: {
+		ContactUs,
 		GridResultItem,
 		AudioPlayer,
 		Duration,

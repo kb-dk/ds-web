@@ -89,6 +89,10 @@
 					</div>
 				</template>
 			</EdgedContentArea>
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
 		</div>
 	</Transition>
 </template>
@@ -102,10 +106,12 @@ import TextAndImage from '@/components/global/content-elements/TextAndImage.vue'
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
+		ContactUs,
 		MainCategories,
 		SpellChecker,
 		TiltedDivider,
@@ -197,5 +203,17 @@ h2 {
 	text-align: center;
 	font-size: 256px;
 	color: #002e70;
+}
+
+.contact-us {
+	margin-top: 0;
+	padding-bottom: 0;
+}
+
+@media (min-width: 990px) {
+	.contact-us {
+		margin-top: -40px;
+		padding-bottom: 40px;
+	}
 }
 </style>

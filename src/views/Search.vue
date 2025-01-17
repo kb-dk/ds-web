@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, watch } from 'vue';
+import { defineComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
@@ -83,13 +83,16 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 
-		const numPagesToShow = 8;
+		const numPagesToShow = ref(window.innerWidth < 850 ? 3 : 8);
 		const { t } = useI18n();
 
 		const errorManager = inject('errorManager') as ErrorManagerType;
-
+		const updateResizeProperty = () => {
+			numPagesToShow.value = window.innerWidth < 850 ? 3 : 8;
+		};
 		onMounted(() => {
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
+			window.addEventListener('resize', updateResizeProperty);
 			document.title = t('app.titles.frontpage.archive.name') as string;
 			const pastPage = router.options.history.state.back as string;
 			if (pastPage && pastPage.startsWith('/post/') && searchResultStore.searchResult.length !== 0) {
@@ -154,7 +157,9 @@ export default defineComponent({
 				}
 			}
 		});
-
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateResizeProperty);
+		});
 		// Watch the url param and update search results if it changes
 		watch(
 			() => router.currentRoute.value,
@@ -203,6 +208,7 @@ export default defineComponent({
 			searchResultStore,
 			numPagesToShow,
 			route,
+			updateResizeProperty,
 		};
 	},
 });
