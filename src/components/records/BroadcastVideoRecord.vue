@@ -60,8 +60,8 @@
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
-					<h4>{{ $t('record.genre') }}</h4>
-					<div>
+					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
+					<div v-if="recordData.genre">
 						<router-link
 							:to="{
 								name: 'Search',
