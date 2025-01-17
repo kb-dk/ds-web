@@ -208,7 +208,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, watch, onMounted, onUnmounted } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
@@ -340,33 +340,35 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
+				console.log(searchResultStore.lastSearchQuery);
+				console.log(searchResultStore.currentQuery);
 				if (
 					router.currentRoute.value.name !== 'Search' ||
 					searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
 				) {
 					searchResultStore.searchResult = [];
-					searchResultStore.resetAutocomplete();
-					searchResultStore.channelFilters = [];
-					searchResultStore.categoryFilters = [];
-					clearTimeout(AutocompleteTimer);
-					debounceMechanic.value = true;
-					setTimeout(() => {
-						debounceMechanic.value = false;
-					}, 500);
-					let query: LocationQueryRaw = {
-						q: searchResultStore.currentQuery,
-						start: 0,
-					};
-
-					searchResultStore.preliminaryFilter = '';
-
-					query.sort = encodeURIComponent(`score desc`);
-
-					router.push({
-						name: 'Search',
-						query: query,
-					});
 				}
+				searchResultStore.resetAutocomplete();
+				searchResultStore.channelFilters = [];
+				searchResultStore.categoryFilters = [];
+				clearTimeout(AutocompleteTimer);
+				debounceMechanic.value = true;
+				setTimeout(() => {
+					debounceMechanic.value = false;
+				}, 500);
+				let query: LocationQueryRaw = {
+					q: searchResultStore.currentQuery,
+					start: 0,
+				};
+
+				searchResultStore.preliminaryFilter = '';
+
+				query.sort = encodeURIComponent(`score desc`);
+
+				router.push({
+					name: 'Search',
+					query: query,
+				});
 			} else {
 				let URL = selectorValues.find((item) => item.name === selectedPortal.value)?.destination;
 				if (URL) {
