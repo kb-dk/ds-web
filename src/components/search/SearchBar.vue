@@ -340,8 +340,6 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
-				console.log(searchResultStore.lastSearchQuery);
-				console.log(searchResultStore.currentQuery);
 				if (
 					router.currentRoute.value.name !== 'Search' ||
 					searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
