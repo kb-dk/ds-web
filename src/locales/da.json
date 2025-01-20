@@ -2,6 +2,7 @@
    "app": {
       "skip":"Spring til hovedindhold",
       "titles": {
+         "unknown":"Ukendt udsendelse",
          "frontpage": {
             "archive":  {
                "name": "DR-arkiv",

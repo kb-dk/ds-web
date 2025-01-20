@@ -201,6 +201,7 @@ export default defineComponent({
 	justify-content: center;
 	min-height: 200px;
 	box-sizing: border-box;
+	padding: 0px 12px;
 }
 
 .category-item {
