@@ -38,6 +38,9 @@
 				<MainCategories />
 			</template>
 		</EdgedContentArea>
+		<div class="contactus">
+			<ContactUs />
+		</div>
 	</div>
 </template>
 
@@ -47,12 +50,14 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import MainCategories from '@/components/common/MainCategories.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import ContactUs from '../search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'GenericRecord',
 	components: {
 		MainCategories,
 		EdgedContentArea,
+		ContactUs,
 	},
 	setup() {
 		const { t } = useI18n();
@@ -66,6 +71,10 @@ export default defineComponent({
 	flex-direction: column;
 	width: 100%;
 	padding-bottom: 25px;
+}
+
+.contactus {
+	margin-top: 150px;
 }
 
 .btn {
@@ -118,5 +127,10 @@ export default defineComponent({
 	background-color: #c4f1ed;
 	color: #002e70;
 	border-color: #002e70;
+}
+@media (min-width: 990px) {
+	.contactus {
+		margin-bottom: -150px;
+	}
 }
 </style>

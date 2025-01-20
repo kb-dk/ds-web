@@ -154,7 +154,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .full-width {
-	width: calc(100% + 24px);
 	min-height: 200px;
 	z-index: 5;
 	position: relative;

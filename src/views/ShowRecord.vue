@@ -185,7 +185,7 @@ export default defineComponent({
 					moreLikeThisRecords.value = moreLikeThis.data.response.docs;
 				}
 			} else {
-				document.title = ('Unknown' + t('app.titles.frontpage.archive.suffix')) as string;
+				document.title = `${t('app.titles.unknown')} ${t('app.titles.frontpage.archive.suffix')}` as string;
 			}
 			if (moreLikeThisRecords.value.length === 0) {
 				const startAndEnd = getStartAndEndFromStartTime();
