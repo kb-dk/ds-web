@@ -1,24 +1,24 @@
 <template>
 	<figure
 		class="image-wrapper"
-		:style="`background: ${background}; aspect-ratio: ${aspectRatio}`"
+		:style="`background: ${background}; aspect-ratio: ${data.aspect}`"
 	>
 		<img
 			ref="image-item"
 			draggable="false"
 			loading="lazy"
 			:class="`image-item ${loaded ? 'loaded' : ''}`"
-			:src="thumbSrc"
+			:src="data.imgSrc"
 			:style="imgStyle"
-			:alt="altText"
-			:title="title"
+			:alt="data.altText"
+			:title="data.title"
 			@load="loaded = true"
 		/>
 		<span
 			class="type-symbol material-icons"
-			:style="`color: ${iconColor}`"
+			:style="`color: ${data.iconColor}`"
 		>
-			{{ icon }}
+			{{ data.icon }}
 		</span>
 	</figure>
 </template>
@@ -33,57 +33,43 @@ export default defineComponent({
 		imageData: {
 			type: Object as PropType<string>,
 			required: true,
+			default() {
+				return JSON.stringify({
+					imgSrc: '',
+					altText: '',
+					imgTitle: '',
+					placeholder: '',
+					imgOption: '',
+					objectPos: '',
+					icon: '',
+					iconColor: '',
+					aspect: '',
+				} as ImageComponentType);
+			},
 		},
 	},
 	setup(props) {
 		const loaded = ref(false);
-		const thumbSrc = ref();
-		const objectPosition = ref();
-		const objectFit = ref();
-		const altText = ref();
-		const title = ref();
-		const icon = ref();
-		const iconColor = ref();
-		const aspectRatio = ref();
 		const background = `linear-gradient(${Math.round(Math.random() * 360)}deg, #caf0fe, #002e70)`;
+		const data = ref(JSON.parse(props.imageData) as ImageComponentType);
 		const imgStyle = () => {
 			return {
 				backgroundColor: 'rgb(237,237,237)',
-				objectPosition: objectPosition.value,
-				objectFit: objectFit.value,
+				objectPosition: data.value.objectPos,
+				objectFit: data.value.imgOption,
 			};
 		};
 		watch(
 			() => props.imageData,
-			(newVal: string) => {
-				const imageData = JSON.parse(newVal) as ImageComponentType;
-				if (imageData.imgSrc) {
-					thumbSrc.value = imageData.imgSrc;
-				}
-				if (imageData.placeholder) {
-					thumbSrc.value = imageData.placeholder;
-				}
-				objectPosition.value = imageData.objectPos;
-				objectFit.value = imageData.imgOption;
-				altText.value = imageData.altText;
-				title.value = imageData.title;
-				icon.value = imageData.icon;
-				iconColor.value = imageData.iconColor;
-				aspectRatio.value = imageData.aspect;
+			(newVal) => {
+				data.value = JSON.parse(newVal) as ImageComponentType;
 			},
 		);
 		return {
 			background,
-			objectPosition,
-			objectFit,
-			altText,
-			title,
-			icon,
-			iconColor,
-			aspectRatio,
-			thumbSrc,
 			imgStyle,
 			loaded,
+			data,
 		};
 	},
 });
