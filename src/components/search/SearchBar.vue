@@ -258,13 +258,21 @@ export default defineComponent({
 				destination: '',
 			},
 		];
-
+		const closePortal = (e: MouseEvent) => {
+			if (selectButtonRef.value instanceof HTMLButtonElement && e.target instanceof Node) {
+				if (!selectButtonRef.value.contains(e.target)) {
+					showPortalSelector.value = false;
+				}
+			}
+		};
 		onMounted(() => {
 			window.addEventListener('toggle-search', toggleSearchField);
+			document.addEventListener('click', closePortal);
 		});
 
 		onUnmounted(() => {
 			window.removeEventListener('toggle-search', toggleSearchField);
+			document.addEventListener('click', closePortal);
 		});
 
 		watch(
