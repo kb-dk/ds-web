@@ -63,7 +63,7 @@
 									:use-headline-translation="true"
 									:update-entity="updateFacet"
 									:filter-name-cutoff="5"
-									:facet-type="'genre'"
+									:facet-type="'genre_facet'"
 								>
 									<fieldset
 										v-if="searchResultStore.firstBackendFetchExecuted"
@@ -71,19 +71,23 @@
 									>
 										<TransitionGroup name="result">
 											<div
-												v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre)"
-												:key="index + 'genre'"
+												v-for="(singleFacet, index) in simplifyFacets(
+													searchResultStore.initFacets.facet_fields.genre_facet,
+												)"
+												:key="index + 'genre_facet'"
 												class="genre"
 											>
 												<GenreCheckbox
-													:fqkey="'genre'"
+													:fqkey="'genre_facet'"
 													:title="singleFacet.title"
 													:amount="
 														categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
 													"
 													:time-search-active="timeSearchStore.timeFacetsOpen"
 													:number="index"
-													:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
+													:checked="
+														channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)
+													"
 													:loading="searchResultStore.loadingGenres"
 													:update="updateCheckbox"
 													:parent-array="genreArray"
@@ -154,13 +158,15 @@ import { useRoute, useRouter } from 'vue-router';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import {
-	channelFilterExists,
-	simplifyFacets,
-	cloneRouteQuery,
-	extendFacetPairToSelectorData,
 	addChannelOrCategoryFilter,
-	removeChannelOrCategoryFilter,
+	channelFilterExists,
+	cloneRouteQuery,
 	createFilter,
+	extendFacetPairToSelectorData,
+	normalizeFq,
+	removeChannelOrCategoryFilter,
+	removeTimeFacetsFromRoute,
+	simplifyFacets,
 } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
@@ -168,16 +174,15 @@ import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
 import {
 	days,
-	months,
-	timeslots,
-	startDate,
 	endDate,
-	startYear,
 	endYear,
+	months,
+	startDate,
+	startYear,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
@@ -214,7 +219,7 @@ export default defineComponent({
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 			);
 			genreArray.value = extendFacetPairToSelectorData(
-				simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+				simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet),
 				'categories',
 			);
 		} else {
@@ -226,7 +231,7 @@ export default defineComponent({
 							simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 						);
 						genreArray.value = extendFacetPairToSelectorData(
-							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+							simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet),
 							'categories',
 						);
 						setCategoryArrayFromStore(searchResultStore.categoryFilters);
@@ -276,7 +281,7 @@ export default defineComponent({
 				categoryFacets.value = [] as FacetPair[];
 				currentFacets.value = newFacets;
 				channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
-				categoryFacets.value = simplifyFacets(newFacets['genre']);
+				categoryFacets.value = simplifyFacets(newFacets['genre_facet']);
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
