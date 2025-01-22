@@ -53,7 +53,7 @@ export interface FacetResultType {
 	catalog: string[];
 	categories: string[];
 	collection: string[];
-	genre: string[];
+	genre_facet: string[];
 	creator_affiliation_facet: string[];
 	resource_description: string[];
 	resource_description_general: string[];
