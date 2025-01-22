@@ -21,7 +21,7 @@
 				:state="validDate"
 				@update:model-value="updateSeeMoreLink()"
 				@update-month-year="HandleMonthYear"
-				@input="updateSelectedDate"
+				@keydown.enter="updateSelectedDate"
 				@blur="handleLossOfFocus"
 			></VueDatePicker>
 		</div>
@@ -91,10 +91,11 @@ export default defineComponent({
 
 		const updateSelectedDate = (e: Event) => {
 			const input = e.target as HTMLInputElement;
-			const dateInput = input.value.split(' / ');
-
-			if (dateInput.length === 3) {
-				const [day, month, year] = dateInput.map(Number);
+			let dateInput = input.value;
+			dateInput = dateInput.replace(/[.-]/g, '/');
+			let splitDateInput = dateInput.split('/');
+			if (splitDateInput.length === 3) {
+				const [day, month, year] = splitDateInput.map(Number);
 
 				// Validate if day, month, and year are numbers
 				if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
@@ -113,53 +114,33 @@ export default defineComponent({
 							selectedDate.value = holder;
 							updateSeeMoreLink();
 						} else {
-							validDate.value = false;
-							errorManager.submitCustomError(
-								'datepicker-outofRange',
-								t('error.outofRange'),
-								'',
-								Severity.INFO,
-								false,
-								Priority.LOW,
-							);
+							throwInvalidDateError();
 						}
 					} else {
-						validDate.value = false;
-						errorManager.submitCustomError(
-							'datepicker-invalidDate',
-							t('error.invalidDate'),
-							'',
-							Severity.INFO,
-							false,
-							Priority.LOW,
-						);
+						throwInvalidDateError();
 					}
 				} else {
-					validDate.value = false;
-					errorManager.submitCustomError(
-						'datepicker-invalidInput',
-						t('error.invalidInput'),
-						'',
-						Severity.INFO,
-						false,
-						Priority.LOW,
-					);
+					throwInvalidDateError();
 				}
 			} else {
-				validDate.value = false;
-				errorManager.submitCustomError(
-					'datepicker-invalidFormat',
-					t('error.invalidFormat'),
-					'',
-					Severity.INFO,
-					false,
-					Priority.LOW,
-				);
+				throwInvalidDateError();
 			}
 		};
 
 		const textInputOptions = {
 			format: 'd/M/yyyy',
+		};
+
+		const throwInvalidDateError = () => {
+			validDate.value = false;
+			errorManager.submitCustomError(
+				'datepicker-invalidDate',
+				t('error.invalidDate'),
+				'',
+				Severity.INFO,
+				false,
+				Priority.LOW,
+			);
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -174,6 +155,7 @@ export default defineComponent({
 
 		const handleLossOfFocus = () => {
 			validDate.value = true;
+			console.log('WAT');
 		};
 
 		const moveToSearchPage = () => {
