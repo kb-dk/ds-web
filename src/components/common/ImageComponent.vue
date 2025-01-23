@@ -9,7 +9,7 @@
 			loading="lazy"
 			:class="`image-item ${loaded ? 'loaded' : ''}`"
 			:src="data.imgSrc"
-			:style="imgStyle"
+			:style="imgStyle()"
 			:alt="data.altText"
 			:title="data.title"
 			@load="loaded = true"
@@ -31,7 +31,7 @@ export default defineComponent({
 	name: 'ImageComponent',
 	props: {
 		imageData: {
-			type: Object as PropType<string>,
+			type: String as PropType<string>,
 			required: true,
 			default() {
 				return JSON.stringify({
@@ -53,11 +53,7 @@ export default defineComponent({
 		const background = `linear-gradient(${Math.round(Math.random() * 360)}deg, #caf0fe, #002e70)`;
 		const data = ref(JSON.parse(props.imageData) as ImageComponentType);
 		const imgStyle = () => {
-			return {
-				backgroundColor: 'rgb(237,237,237)',
-				objectPosition: data.value.objectPos,
-				objectFit: data.value.imgOption,
-			};
+			return `backgroundColor: 'rgb(237,237,237)'; objectPosition: ${data.value.objectPos}; objectFit: ${data.value.imgOption};`;
 		};
 		watch(
 			() => props.imageData,
