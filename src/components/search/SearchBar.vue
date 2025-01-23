@@ -261,18 +261,19 @@ export default defineComponent({
 		const closePortal = (e: MouseEvent) => {
 			if (selectButtonRef.value instanceof HTMLButtonElement && e.target instanceof Node) {
 				if (!selectButtonRef.value.contains(e.target)) {
-					showPortalSelector.value = false;
+					togglePortalSelector();
 				}
 			}
 		};
 		onMounted(() => {
 			window.addEventListener('toggle-search', toggleSearchField);
-			document.addEventListener('click', closePortal);
 		});
 
 		onUnmounted(() => {
 			window.removeEventListener('toggle-search', toggleSearchField);
-			document.addEventListener('click', closePortal);
+			if (showPortalSelector.value) {
+				document.removeEventListener('click', closePortal);
+			}
 		});
 
 		watch(
@@ -400,6 +401,11 @@ export default defineComponent({
 
 		const togglePortalSelector = () => {
 			showPortalSelector.value = !showPortalSelector.value;
+			if (showPortalSelector.value) {
+				document.addEventListener('click', closePortal);
+			} else {
+				document.removeEventListener('click', closePortal);
+			}
 		};
 
 		const selectPortal = (selected: number) => {
