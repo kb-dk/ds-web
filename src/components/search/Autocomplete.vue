@@ -22,7 +22,7 @@
 					<button
 						:title="item?.term"
 						:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
-						@click="executeOnSelection"
+						@click="executeOnSelection($event, i + 1)"
 						@mouseenter="updateSelectedElement(i + 1)"
 						@mouseleave="updateSelectedElement(0)"
 					>
@@ -127,9 +127,14 @@ export default defineComponent({
 			}
 		};
 
-		const executeOnSelection = (e: Event) => {
+		const executeOnSelection = (e: PointerEvent, n: number) => {
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
+				// pointerType mouse is for a mouse click, where pointerType would be "" if enter
+				if (e.pointerType === 'mouse') {
+					//updated selected element to make sure it picks the clicked element.
+					updateSelectedElement(n);
+				}
 				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
 			}
 		};
