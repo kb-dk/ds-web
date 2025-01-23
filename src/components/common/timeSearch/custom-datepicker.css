@@ -20,7 +20,9 @@
 
 .dp__input.dp__input_icon_pad.dp__input_focus {
 	width:263px;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
+	padding: 6px 5px;
+	text-align: center;
 }
 
 .dp--clear-btn {
@@ -31,6 +33,35 @@
 .dp--arrow-btn-nav {
 	display: none;
 }
+
+.dp__active_date {
+	background-color: #0a2e70 !important;
+}
+
+.dp__input_icon.dp__input_icons {
+	display:none;
+}
+
+.dp__btn:hover {
+ background-color: #caf0fe !important;
+ color:#0a2e70;
+}
+
+.dp__btn {
+	transition: all 0.25s linear 0s;
+	background-color: #0a2e70;
+	color:white;
+}
+
+.dp__overlay_cell_active {
+	background-color: #0a2e70;
+}
+
+.dp__cell_inner:hover {
+	transition: all 0.25s linear 0s;
+	background-color: #caf0fe !important;
+}
+
 
 .dp__btn.dp__month_year_select:after {
 	content:'expand_more';
