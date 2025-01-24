@@ -74,7 +74,8 @@ export default defineComponent({
 }
 
 .contactus {
-	margin-top: 150px;
+	margin-top: 60px;
+	margin-bottom: 0px;
 }
 
 .btn {
@@ -128,9 +129,31 @@ export default defineComponent({
 	color: #002e70;
 	border-color: #002e70;
 }
+
+@media (min-width: 480px) {
+	.contactus {
+		margin-bottom: -20px;
+	}
+}
+
+@media (min-width: 640px) {
+	.contactus {
+		margin-top: 80px;
+		margin-bottom: -80px;
+	}
+}
+
 @media (min-width: 990px) {
 	.contactus {
-		margin-bottom: -150px;
+		margin-bottom: -120px;
+		margin-top: 105px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.contactus {
+		margin-bottom: -130px;
+		margin-top: 130px;
 	}
 }
 </style>
