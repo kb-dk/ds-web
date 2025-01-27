@@ -1,4 +1,10 @@
+:root {
+	--dp-menu-min-width: 320px;
+	--dp-highlight-color: #c4f1ed;
+}
+
 .dp__input_wrap {
+	width: 320px;
 	/* display: none; */
 }
 
@@ -6,6 +12,10 @@
 	display: flex;
 	align-content: center;
 	flex-wrap: wrap;
+}
+
+.dp__cell_highlight {
+	background-color: #c4f1ed !important;
 }
 
 .dp__cell_highlight_active {
@@ -16,6 +26,7 @@
 
 .dp__cell_inner {
 	border-radius:0px;
+	width:100%;
 }
 
 .dp__input.dp__input_icon_pad.dp__input_focus {
@@ -31,35 +42,66 @@
 }
 
 .dp--arrow-btn-nav {
-	display: none;
+	display: none !important;
 }
 
 .dp__active_date {
 	background-color: #0a2e70 !important;
+	color:white;
 }
 
 .dp__input_icon.dp__input_icons {
 	display:none;
 }
 
-.dp__btn:hover {
+.dp__calendar_header_item {
+	text-transform: capitalize;
+}
+
+.dp__input.dp__input_icon_pad.dp__input_focus {
+	width:50%;
+}
+
+.dp__calendar_row {
+	margin:0;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dp__calendar_header_separator {
+	background-color: transparent;
+}
+
+.dp__calendar_header {
+	padding:5px 0px;
+}
+
+.dp__cell_inner:hover {
  background-color: #caf0fe !important;
  color:#0a2e70;
 }
 
-.dp__btn {
+.dp__month_year_select {
 	transition: all 0.25s linear 0s;
 	background-color: #0a2e70;
 	color:white;
+	display:flex;
+	justify-content: flex-end;
 }
 
 .dp__overlay_cell_active {
 	background-color: #0a2e70;
 }
 
-.dp__cell_inner:hover {
+.dp__month_year_select:hover {
 	transition: all 0.25s linear 0s;
 	background-color: #caf0fe !important;
+}
+
+.dp__btn.dp__month_year_select:hover:after {
+	border-left: 1px solid #0a2e70;
+
 }
 
 
@@ -80,6 +122,14 @@
     text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'liga';
+
+		height: 14px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-left: 1px solid white;
+		margin-left: 10px;
+    padding-left: 5px;
 }
 
 .dp__month_year_select {
@@ -88,4 +138,12 @@
 
 .dp__month_year_select:first-of-type {
 	margin-right:20px;
+}
+
+.date-pickers .dp__main:first-of-type .dp__input_wrap:before {
+	content:"Dato";
+}
+
+.date-pickers .dp__main:last-of-type .dp__input_wrap:before {
+	content:"Til";
 }

@@ -33,7 +33,7 @@
 				@click="moveToSearchPage()"
 			>
 				<span>{{ $t('search.showContent') }}</span>
-				<div class="link-arrow"></div>
+				<div class="check-mark"></div>
 			</router-link>
 		</div>
 	</div>
@@ -242,7 +242,7 @@ export default defineComponent({
 }
 
 .date-span {
-	width: 263px;
+	width: 320px;
 	position: relative;
 	display: block;
 }
@@ -262,8 +262,43 @@ export default defineComponent({
 	padding: 2px 5px;
 	flex-direction: row-reverse;
 	font-size: 16px;
-	width: 261px;
 	box-sizing: border-box;
+	width: fit-content;
+	padding: 10px 15px;
+	border-radius: 4px;
+}
+
+.check-mark {
+	width: 25px;
+}
+
+.day-picker.container {
+	display: flex;
+	align-items: center;
+}
+
+.check-mark:before {
+	content: '';
+	display: block;
+	width: 2px;
+	height: 20px;
+	transform: rotateZ(45deg);
+	background-color: white;
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 5px;
+}
+
+.check-mark:after {
+	content: '';
+	display: block;
+	width: 2px;
+	height: 9px;
+	transform: rotateZ(-45deg);
+	background-color: white;
+	position: absolute;
+	margin-top: 10px;
+	margin-left: -5px;
 }
 
 .single-day-link.disabled {
@@ -279,19 +314,6 @@ export default defineComponent({
 
 .single-day-link.disabled .link-arrow {
 	border-left: 8px solid gray;
-}
-
-.link-arrow {
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 12px solid transparent;
-	border-top: 12px solid transparent;
-	border-left: 8px solid #0a2e70;
-	margin-left: 5px;
-	position: absolute;
-	margin-right: -13px;
-	margin-top: -2px;
 }
 
 .time {
@@ -312,6 +334,10 @@ export default defineComponent({
 	flex-direction: column;
 	align-items: center;
 	padding-top: 20px;
+	width: 320px;
+	align-items: flex-end;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .container {
@@ -338,7 +364,7 @@ export default defineComponent({
 	}
 
 	.day-picker {
-		flex-direction: row;
+		flex-direction: column;
 		gap: 25px;
 		justify-content: center;
 		padding-right: 50px;
