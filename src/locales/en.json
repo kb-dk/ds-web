@@ -214,6 +214,7 @@
      "title":"Title",
      "genre":"Genre",
      "copy":"Share link",
+     "copyWithTime":"{copy} at {timestamp}",
      "copyTitleSuccess":"The link has now been copied.",
      "copyMessageSuccess":"",
      "copyTitleFailed":"Copying failed.",

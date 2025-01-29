@@ -47,6 +47,7 @@ export default defineComponent({
 		const route = useRoute();
 		const authStore = useAuthStore();
 		const restrictedErrorDispatched = ref(false);
+		let playerTimer: ReturnType<typeof setInterval>;
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -126,6 +127,14 @@ export default defineComponent({
 				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.ready().then(() => {
 					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
+					playerTimer = setInterval(() => {
+						if (
+							videoPlayer.currentTime - authStore.streamingUrlTimestamp >= 3 ||
+							videoPlayer.currentTime - authStore.streamingUrlTimestamp <= -3
+						) {
+							authStore.streamingUrlTimestamp = videoPlayer.currentTime;
+						}
+					}, 1500);
 				});
 				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
@@ -195,6 +204,9 @@ export default defineComponent({
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
 				videoPlayer.destroy();
+			}
+			if (playerTimer) {
+				clearInterval(playerTimer);
 			}
 		});
 	},

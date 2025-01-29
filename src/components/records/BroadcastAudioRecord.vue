@@ -89,6 +89,23 @@
 						<a class="link">{{ $t('record.copy') }}</a>
 					</div>
 				</div>
+				<div class="share-button">
+					<div
+						class="link-container get-link get-link-timestamp"
+						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+						@click="getCurrentUrlWithTimestamp()"
+					>
+						<span class="material-icons">share</span>
+						<a class="link">
+							{{
+								$t('record.copyWithTime', {
+									copy: $t('record.copy'),
+									timestamp: formatSeconds(Math.round(timestamp)),
+								})
+							}}
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<h3>{{ $t('search.relatedContent') }}</h3>
@@ -128,6 +145,7 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
+import { useAuthStore } from '@/store/authStore';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -161,9 +179,10 @@ export default defineComponent({
 		const lastPath = ref('');
 		const { locale, t } = useI18n();
 		const searchResultStore = useSearchResultStore();
-
+		const authStore = useAuthStore();
 		const entryId = ref('');
 		entryId.value = getEntryId(props.recordData);
+		const timestamp = ref(0);
 
 		const checkForKalturaId = () => {
 			return props.recordData.identifier.find((obj) => obj.PropertyID === 'KalturaID') !== undefined;
@@ -174,11 +193,20 @@ export default defineComponent({
 		};
 
 		const getCurrentUrl = () => {
-			copyTextToClipboard();
+			copyTextToClipboard(location.href);
+		};
+		const getCurrentUrlWithTimestamp = () => {
+			const hrefBeforeQuery = location.href.split('?')[0];
+			const newQuery = `?autoplay=true&startAt=${timestamp.value}`;
+			copyTextToClipboard(hrefBeforeQuery + newQuery);
 		};
 
 		const quotation = (name: string) => {
 			return `"${name}"`;
+		};
+
+		const formatSeconds = (s: number) => {
+			return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s;
 		};
 
 		watch(
@@ -187,6 +215,12 @@ export default defineComponent({
 				entryId.value = getEntryId(props.recordData);
 			},
 			{ deep: true },
+		);
+		watch(
+			() => authStore.streamingUrlTimestamp,
+			(newVal) => {
+				timestamp.value = newVal;
+			},
 		);
 
 		return {
@@ -202,6 +236,9 @@ export default defineComponent({
 			quotation,
 			emptySearchResults,
 			santizeAndSimplify,
+			getCurrentUrlWithTimestamp,
+			timestamp,
+			formatSeconds,
 		};
 	},
 });
@@ -459,6 +496,9 @@ temporary styling until patterns from design system are implemented
 	}
 	.get-link {
 		width: 50%;
+	}
+	.get-link-timestamp {
+		width: 100%;
 	}
 	.share-icon {
 		margin-right: 5px;

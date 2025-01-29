@@ -1,9 +1,8 @@
 import { Priority, Severity } from '@/types/NotificationType';
-
-async function copyTextToClipboard(): Promise<void> {
+async function copyTextToClipboard(textToCopy: string): Promise<void> {
 	let copyWentOK = false;
 	try {
-		await navigator.clipboard.writeText(location.href);
+		await navigator.clipboard.writeText(textToCopy);
 		copyWentOK = true;
 	} catch (err) {
 		copyWentOK = false;
@@ -35,5 +34,4 @@ async function copyTextToClipboard(): Promise<void> {
 	}
 	window.dispatchEvent(customEvent);
 }
-
 export { copyTextToClipboard };

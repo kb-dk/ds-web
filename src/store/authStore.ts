@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('authStore', () => {
 	const videoUiConfId = ref('');
 	const streamingBaseUrlAudio = ref('');
 	const streamingBaseUrlVideo = ref('');
+	const streamingUrlTimestamp = ref(0);
 	const firstAuthDone = ref(false);
 	const isAllowedToDisplayContent = ref(true);
 	//Session time (in millis) - currently 36 hours
@@ -83,6 +84,7 @@ export const useAuthStore = defineStore('authStore', () => {
 		videoUiConfId,
 		streamingBaseUrlAudio,
 		streamingBaseUrlVideo,
+		streamingUrlTimestamp,
 		kalturaIdFetchExecuted,
 		isAllowedToDisplayContent,
 	};
