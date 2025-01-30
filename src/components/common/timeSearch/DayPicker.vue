@@ -21,6 +21,7 @@
 				:state="validDate"
 				@update:model-value="updateSeeMoreLink()"
 				@update-month-year="HandleMonthYear"
+				@keydown="setupInputTimer"
 				@keydown.enter="updateSelectedDate"
 				@blur="handleLossOfFocus"
 			></VueDatePicker>
@@ -71,9 +72,10 @@ export default defineComponent({
 		VueDatePicker,
 	},
 	setup() {
+		let inputTimer: ReturnType<typeof setTimeout>;
+
 		const singleDatePicker = ref<DatePickerInstance>();
 		const selectedDate = ref(new Date(2015, 0, 1, 0, 0, 0));
-
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
@@ -89,7 +91,17 @@ export default defineComponent({
 			return `${day}/${month}/${year}`;
 		};
 
+		const setupInputTimer = (e: Event) => {
+			console.log('clearing timer and setting new one!');
+			clearTimeout(inputTimer);
+			inputTimer = setTimeout(() => {
+				console.log('executing on input!');
+				updateSelectedDate(e);
+			}, 750); // 750 milliseconds (0.5 second) delay
+		};
+
 		const updateSelectedDate = (e: Event) => {
+			clearTimeout(inputTimer);
 			const input = e.target as HTMLInputElement;
 			let dateInput = input.value;
 			dateInput = dateInput.replace(/[.-]/g, '/');
@@ -155,7 +167,6 @@ export default defineComponent({
 
 		const handleLossOfFocus = () => {
 			validDate.value = true;
-			console.log('WAT');
 		};
 
 		const moveToSearchPage = () => {
@@ -229,6 +240,7 @@ export default defineComponent({
 			updateSelectedDate,
 			handleLossOfFocus,
 			validDate,
+			setupInputTimer,
 		};
 	},
 });

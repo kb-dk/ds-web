@@ -1,6 +1,7 @@
 :root {
 	--dp-menu-min-width: 320px;
 	--dp-highlight-color: #c4f1ed;
+	--dp-cell-size: 42px;
 }
 
 .dp__input_wrap {
@@ -26,7 +27,11 @@
 
 .dp__cell_inner {
 	border-radius:0px;
-	width:100%;
+	height:38px;
+}
+
+.dp__calendar_item {
+	display:flex;
 }
 
 .dp__input.dp__input_icon_pad.dp__input_focus {
@@ -140,10 +145,27 @@
 	margin-right:20px;
 }
 
-.date-pickers .dp__main:first-of-type .dp__input_wrap:before {
-	content:"Dato";
+.date-pickers .picker-container:first-of-type .dp__main {
+	align-content: flex-end;
 }
 
-.date-pickers .dp__main:last-of-type .dp__input_wrap:before {
-	content:"Til";
+.date-pickers .picker-container:first-of-type .dp__menu {
+	padding-right: 10px !important;
+	border-right: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	background-color:rgba(243, 243, 243, 0.404)
+}
+
+.date-pickers .picker-container:last-of-type .dp__main {
+	align-content: flex-start;
+}
+
+.date-pickers .picker-container:last-of-type .dp__menu {
+	padding-left: 10px !important;
+	border-left: 0px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	background-color:rgba(243, 243, 243, 0.404)
+
 }

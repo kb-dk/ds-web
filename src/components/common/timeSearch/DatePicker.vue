@@ -1,47 +1,57 @@
 <template>
 	<div class="date-pickers">
-		<VueDatePicker
-			ref="startDatePicker"
-			v-model="startDate"
-			:format="format"
-			:inline="{ input: true }"
-			:enable-time-picker="false"
-			:locale="locale"
-			auto-apply
-			no-today
-			:text-input="textInputOptions"
-			six-weeks="fair"
-			:month-change-on-scroll="false"
-			:min-date="startYear"
-			:max-date="endYear"
-			prevent-min-max-navigation
-			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
-			:state="validStartDate"
-			:highlight="highlightedDays.startHighlight"
-			@update:model-value="readyForNewSearch('start')"
-			@update-month-year="startHandleMonthYear"
-		></VueDatePicker>
-		<VueDatePicker
-			ref="endDatePicker"
-			v-model="endDate"
-			:format="format"
-			:inline="{ input: true }"
-			:enable-time-picker="false"
-			:locale="locale"
-			auto-apply
-			no-today
-			:text-input="textInputOptions"
-			six-weeks="fair"
-			:month-change-on-scroll="false"
-			:min-date="startYear"
-			:max-date="endYear"
-			prevent-min-max-navigation
-			:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
-			:state="validEndDate"
-			:highlight="highlightedDays.endHighlight"
-			@update:model-value="readyForNewSearch('end')"
-			@update-month-year="endHandleMonthYear"
-		></VueDatePicker>
+		<div class="picker-container">
+			<div class="headline-container">
+				<span class="date-headline">Dato</span>
+			</div>
+			<VueDatePicker
+				ref="startDatePicker"
+				v-model="startDate"
+				:format="format"
+				:inline="{ input: true }"
+				:enable-time-picker="false"
+				:locale="locale"
+				auto-apply
+				no-today
+				:text-input="textInputOptions"
+				six-weeks="fair"
+				:month-change-on-scroll="false"
+				:min-date="startYear"
+				:max-date="endYear"
+				prevent-min-max-navigation
+				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
+				:state="validStartDate"
+				:highlight="highlightedDays.startHighlight"
+				@update:model-value="readyForNewSearch('start')"
+				@update-month-year="startHandleMonthYear"
+			></VueDatePicker>
+		</div>
+		<div class="picker-container">
+			<div class="headline-container">
+				<span class="date-headline">Til</span>
+			</div>
+			<VueDatePicker
+				ref="endDatePicker"
+				v-model="endDate"
+				:format="format"
+				:inline="{ input: true }"
+				:enable-time-picker="false"
+				:locale="locale"
+				auto-apply
+				no-today
+				:text-input="textInputOptions"
+				six-weeks="fair"
+				:month-change-on-scroll="false"
+				:min-date="startYear"
+				:max-date="endYear"
+				prevent-min-max-navigation
+				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
+				:state="validEndDate"
+				:highlight="highlightedDays.endHighlight"
+				@update:model-value="readyForNewSearch('end')"
+				@update-month-year="endHandleMonthYear"
+			></VueDatePicker>
+		</div>
 	</div>
 </template>
 
@@ -316,8 +326,31 @@ export default defineComponent({
 	justify-content: center;
 }
 
-.date-pickers > div {
+.date-headline {
+	width: 320px;
+	display: block;
+	padding-left: 0px !important;
+}
+
+.picker-container {
+	display: flex;
 	width: 50%;
+
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.picker-container:first-of-type .headline-container {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.picker-container:last-of-type .headline-container {
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
 }
 
 .from-to-display {
@@ -368,7 +401,7 @@ export default defineComponent({
 }
 
 @media (min-width: 990px) {
-	.date-pickers > div {
+	.picker-container {
 		width: 33.33%;
 	}
 	.from-to-display {
