@@ -53,7 +53,7 @@ export default defineComponent({
 		const background = `linear-gradient(${Math.round(Math.random() * 360)}deg, #caf0fe, #002e70)`;
 		const data = ref(JSON.parse(props.imageData) as ImageComponentType);
 		const imgStyle = () => {
-			return `backgroundColor: 'rgb(237,237,237)'; objectPosition: ${data.value.objectPos}; objectFit: ${data.value.imgOption};`;
+			return `background-color: 'rgb(237,237,237)'; object-position: ${data.value.objectPos}; object-fit: ${data.value.imgOption};`;
 		};
 		watch(
 			() => props.imageData,
