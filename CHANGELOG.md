@@ -4,6 +4,24 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.15] - 2024-01-30
+### Added
+- Unavailable records now has their own template.
+- Added contact the library a bunch of places. (UX wanted this.)
+
+### Changed
+- Styling on channel checkboxes and changed direction of added items.
+- Autocomplete bug fixed.
+- Portal dropdown now closes if you click outside of it.
+- Genre now changed to genre_facets in the code.
+- Some refactoring done on web components to vue components.
+- Breadcrumb can now be opened/closed on hover/click.
+- Small Safari bug in the header fixed.
+- Choosing a category now brings you to the top of the search results.
+- Fixed a small bug when you searched for the same query twice in a row.
+- Fixed minor bug with positioning of the thumbnails.
+- Various small styling corrections.
+
 ## [1.0.14] - 2024-12-17
 
 ### Changed
