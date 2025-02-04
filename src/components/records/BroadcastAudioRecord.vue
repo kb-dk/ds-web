@@ -67,7 +67,7 @@
 								query: {
 									q: '*:*',
 									start: 0,
-									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
+									fq: [encodeURIComponent(`genre_facet:${quotation(recordData.genre)}`)],
 								},
 							}"
 							class="genre-link"
