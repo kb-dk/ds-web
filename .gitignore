@@ -10,7 +10,7 @@ README_RELEASE_ARTIFACT.md
 # local env files
 .env.local
 .env.*.local
-
+.env.local.*
 # lighthouse reports
 *.report.html
 
