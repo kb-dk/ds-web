@@ -121,6 +121,7 @@
      "tipsTitle": "Et par fif til din søgning",
      "mainCategories": "led videre i vores hovedkategorier",
      "nohit":"Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",
+     "nohitWithFilter":"Vi beklager ingen {filterSearch}",
      "showFilters":"Vis filtre",
      "hideFilters":"Skjul filtre",
     "resetFilters": "Nulstil filtre",
