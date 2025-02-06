@@ -112,6 +112,7 @@
      "hitcount": " result fund with | results found with",
      "filterSearch": " results found with your filters",
      "nohit":"Sorry, we did not find any results matching your search for \"{query}\"",
+     "nohitWithFilter":"We are sorrry no {filterSearch}",
      "nohitSubtitle": {
         "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
         "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",

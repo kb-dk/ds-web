@@ -4,7 +4,13 @@
 		mode="out-in"
 	>
 		<div>
-			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
+			<div class="no-hits-heading">
+				{{
+					searchResultStore.lastSearchQuery === '*:*'
+						? $t('search.nohitWithFilter', { filterSearch: $t('search.filterSearch') })
+						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
+				}}
+			</div>
 			<div class="no-hits-heading-subtitle">
 				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
 				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
@@ -190,7 +196,7 @@ export default defineComponent({
 	font-size: 36px;
 	word-wrap: break-word;
 	hyphens: auto;
-	max-width: 750px;
+	max-width: 800px;
 }
 h2 {
 	margin: 0;
