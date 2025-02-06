@@ -1,7 +1,7 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
-			<span class="date-span">Dato:</span>
+			<span class="date-span">{{ t('datepicker.date') }}:</span>
 			<VueDatePicker
 				ref="singleDatePicker"
 				v-model="selectedDate"
@@ -19,12 +19,21 @@
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 				:state="validDate"
+				allow-null="true"
 				@update:model-value="updateSeeMoreLink()"
 				@update-month-year="HandleMonthYear"
 				@keydown="setupInputTimer"
-				@keydown.enter="updateSelectedDate"
+				@keydown.enter="executeUpdate($event)"
 				@blur="handleLossOfFocus"
 			></VueDatePicker>
+			<Transition name="fade">
+				<div
+					v-if="!validDate"
+					class="error-container"
+				>
+					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+				</div>
+			</Transition>
 		</div>
 		<div class="time-container">
 			<router-link
@@ -41,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, inject } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {
@@ -57,8 +66,7 @@ import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
-import { Priority, Severity } from '@/types/NotificationType';
-import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { updateSelectedDate } from '@/utils/datepicker-utils';
 
 interface MonthYearEvent {
 	instance: number;
@@ -72,14 +80,12 @@ export default defineComponent({
 		VueDatePicker,
 	},
 	setup() {
-		let inputTimer: ReturnType<typeof setTimeout>;
+		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref(new Date(2015, 0, 1, 0, 0, 0));
+		const selectedDate = ref<Date | null>(new Date(2015, 0, 1, 0, 0, 0));
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
-
-		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		const { locale, t } = useI18n();
 		const validDate = ref(true);
@@ -88,71 +94,20 @@ export default defineComponent({
 			const month = date.getMonth() + 1;
 			const year = date.getFullYear();
 
-			return `${day}/${month}/${year}`;
+			return `${day}-${month}-${year}`;
 		};
 
 		const setupInputTimer = (e: Event) => {
-			console.log('clearing timer and setting new one!');
-			clearTimeout(inputTimer);
-			inputTimer = setTimeout(() => {
-				console.log('executing on input!');
-				updateSelectedDate(e);
-			}, 750); // 750 milliseconds (0.5 second) delay
-		};
-
-		const updateSelectedDate = (e: Event) => {
-			clearTimeout(inputTimer);
-			const input = e.target as HTMLInputElement;
-			let dateInput = input.value;
-			dateInput = dateInput.replace(/[.-]/g, '/');
-			let splitDateInput = dateInput.split('/');
-			if (splitDateInput.length === 3) {
-				const [day, month, year] = splitDateInput.map(Number);
-
-				// Validate if day, month, and year are numbers
-				if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-					// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
-					const setDate = new Date(year, month - 1, day);
-
-					// Ensure the date is valid
-					if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
-						// Validate if the date is within the range
-						const minDate = new Date(startYear.value);
-						const maxDate = new Date(endYear.value);
-
-						if (setDate >= minDate && setDate <= maxDate) {
-							validDate.value = true;
-							const holder = new Date(setDate.getTime());
-							selectedDate.value = holder;
-							updateSeeMoreLink();
-						} else {
-							throwInvalidDateError();
-						}
-					} else {
-						throwInvalidDateError();
-					}
-				} else {
-					throwInvalidDateError();
-				}
-			} else {
-				throwInvalidDateError();
+			if (inputTimer !== null) {
+				clearTimeout(inputTimer);
 			}
+			inputTimer = setTimeout(() => {
+				updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink);
+			}, 750); // 750 milliseconds (0.75 second) delay
 		};
 
 		const textInputOptions = {
-			format: 'd/M/yyyy',
-		};
-
-		const throwInvalidDateError = () => {
-			validDate.value = false;
-			errorManager.submitCustomError(
-				'datepicker-invalidDate',
-				t('error.invalidDate'),
-				'',
-				Severity.INFO,
-				false,
-				Priority.LOW,
-			);
+			format: 'd-M/-yyy',
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -170,13 +125,15 @@ export default defineComponent({
 		};
 
 		const moveToSearchPage = () => {
-			startDate.value.setFullYear(selectedDate.value.getFullYear());
-			startDate.value.setMonth(selectedDate.value.getMonth());
-			startDate.value.setDate(selectedDate.value.getDate());
+			if (selectedDate.value !== null) {
+				startDate.value.setFullYear(selectedDate.value.getFullYear());
+				startDate.value.setMonth(selectedDate.value.getMonth());
+				startDate.value.setDate(selectedDate.value.getDate());
 
-			endDate.value.setFullYear(selectedDate.value.getFullYear());
-			endDate.value.setMonth(selectedDate.value.getMonth());
-			endDate.value.setDate(selectedDate.value.getDate());
+				endDate.value.setFullYear(selectedDate.value.getFullYear());
+				endDate.value.setMonth(selectedDate.value.getMonth());
+				endDate.value.setDate(selectedDate.value.getDate());
+			}
 
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
@@ -184,31 +141,38 @@ export default defineComponent({
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		};
 
+		const executeUpdate = (e: Event) => {
+			updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink); // Pass .value here as well
+		};
+
 		const updateSeeMoreLink = () => {
-			singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
-			singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
-			singleDayStartDate.value.setDate(selectedDate.value.getDate());
+			if (selectedDate.value !== null && selectedDate.value instanceof Date) {
+				singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
+				singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
+				singleDayStartDate.value.setDate(selectedDate.value.getDate());
 
-			singleDayEndDate.value.setFullYear(selectedDate.value.getFullYear());
-			singleDayEndDate.value.setMonth(selectedDate.value.getMonth());
-			singleDayEndDate.value.setDate(selectedDate.value.getDate());
-			const fqArray = [];
+				singleDayEndDate.value.setFullYear(selectedDate.value.getFullYear());
+				singleDayEndDate.value.setMonth(selectedDate.value.getMonth());
+				singleDayEndDate.value.setDate(selectedDate.value.getDate());
 
-			fqArray.push(
-				encodeURIComponent(
-					`startTime:[${singleDayStartDate.value.toISOString() + ' TO ' + singleDayEndDate.value.toISOString()}]`,
-				),
-			);
+				const fqArray = [];
 
-			specificDayLink.value = {
-				name: 'Search',
-				query: {
-					q: '*:*',
-					start: 0,
-					rows: 10,
-					fq: fqArray,
-				},
-			};
+				fqArray.push(
+					encodeURIComponent(
+						`startTime:[${singleDayStartDate.value.toISOString() + ' TO ' + singleDayEndDate.value.toISOString()}]`,
+					),
+				);
+
+				specificDayLink.value = {
+					name: 'Search',
+					query: {
+						q: '*:*',
+						start: 0,
+						rows: 10,
+						fq: fqArray,
+					},
+				};
+			}
 		};
 
 		const HandleMonthYear = ({ month, year }: MonthYearEvent) => {
@@ -239,8 +203,11 @@ export default defineComponent({
 			textInputOptions,
 			updateSelectedDate,
 			handleLossOfFocus,
-			validDate,
 			setupInputTimer,
+			inputTimer,
+			validDate,
+			executeUpdate,
+			t,
 		};
 	},
 });
@@ -259,6 +226,32 @@ export default defineComponent({
 	display: block;
 }
 
+.error-container {
+	width: 50%;
+	position: absolute;
+	height: fit-content;
+	left: 0px;
+	top: 55px;
+	color: white;
+	padding: 5px;
+	background-color: rgb(184, 0, 0);
+	box-sizing: border-box;
+}
+
+.error-container:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid rgb(184, 0, 0);
+	top: -7px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
 .picker-container {
 	display: flex;
 	flex-direction: column;
@@ -267,8 +260,8 @@ export default defineComponent({
 }
 
 .single-day-link {
-	background-color: #002e70;
-	color: white;
+	background-color: #49da87;
+	color: #002e70;
 	display: flex;
 	text-decoration: none;
 	padding: 2px 5px;
@@ -295,7 +288,7 @@ export default defineComponent({
 	width: 2px;
 	height: 20px;
 	transform: rotateZ(45deg);
-	background-color: white;
+	background-color: #002e70;
 	position: absolute;
 	margin-top: 0px;
 	margin-left: 5px;
@@ -307,7 +300,7 @@ export default defineComponent({
 	width: 2px;
 	height: 9px;
 	transform: rotateZ(-45deg);
-	background-color: white;
+	background-color: #002e70;
 	position: absolute;
 	margin-top: 10px;
 	margin-left: -5px;

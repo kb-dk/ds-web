@@ -105,6 +105,11 @@
       "night":"00.00 - 06.00"
      }
    },
+   "datepicker": {
+      "error":"Not a valid date. The archive currently covers the period from {start} to {end}.",
+      "date":"Date",
+      "to":"To"
+   },
   "search":{
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",

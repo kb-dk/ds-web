@@ -104,6 +104,11 @@
          "night":"00.00 - 06.00"
      }
    },
+  "datepicker": {
+      "error":"Ikke gyldig dato. I øjeblikket dækker arkivet fra {start} til {end}",
+      "date":"Dato",
+      "to":"Til"
+   },
   "search":{
      "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",

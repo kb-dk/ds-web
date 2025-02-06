@@ -2,7 +2,7 @@
 	<div class="date-pickers">
 		<div class="picker-container">
 			<div class="headline-container">
-				<span class="date-headline">Dato</span>
+				<span class="date-headline">{{ t('datepicker.date') }}:</span>
 			</div>
 			<VueDatePicker
 				ref="startDatePicker"
@@ -21,14 +21,26 @@
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 				:state="validStartDate"
+				allow-null="true"
 				:highlight="highlightedDays.startHighlight"
 				@update:model-value="readyForNewSearch('start')"
 				@update-month-year="startHandleMonthYear"
+				@keydown="setupStartInputTimer"
+				@keydown.enter="executeStartUpdate($event)"
+				@blur="handleLossOfFocus(validStartDate)"
 			></VueDatePicker>
+			<Transition name="fade">
+				<div
+					v-if="!validStartDate"
+					class="from-error-container"
+				>
+					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+				</div>
+			</Transition>
 		</div>
 		<div class="picker-container">
 			<div class="headline-container">
-				<span class="date-headline">Til</span>
+				<span class="date-headline">{{ t('datepicker.to') }}:</span>
 			</div>
 			<VueDatePicker
 				ref="endDatePicker"
@@ -47,16 +59,28 @@
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
 				:state="validEndDate"
+				allow-null="true"
 				:highlight="highlightedDays.endHighlight"
 				@update:model-value="readyForNewSearch('end')"
 				@update-month-year="endHandleMonthYear"
+				@keydown="setupEndInputTimer"
+				@keydown.enter="executeEndUpdate($event)"
+				@blur="handleLossOfFocus(validEndDate)"
 			></VueDatePicker>
+			<Transition name="fade">
+				<div
+					v-if="!validEndDate"
+					class="to-error-container"
+				>
+					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+				</div>
+			</Transition>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch, inject } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -65,9 +89,8 @@ import { addDays } from 'date-fns/addDays';
 import { endDate, endYear, startDate, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useI18n } from 'vue-i18n';
-import { Priority, Severity } from '@/types/NotificationType';
-import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { startOfMonth, endOfMonth } from 'date-fns';
+import { updateSelectedDate } from '@/utils/datepicker-utils';
 
 /* interface Highlight {
 	dates: Date[];
@@ -91,13 +114,16 @@ export default defineComponent({
 	},
 	emits: ['spanUpdated'],
 	setup(props, { emit }) {
+		let startInputTimer: ReturnType<typeof setTimeout> | null = null;
+
+		let endInputTimer: ReturnType<typeof setTimeout> | null = null;
+
 		const startDatePicker = ref<DatePickerInstance>();
 		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
 		const { locale, t } = useI18n();
-		const validStartDate = ref(true);
-		const validEndDate = ref(true);
-		const errorManager = inject('errorManager') as ErrorManagerType;
+		const validStartDate = ref(false);
+		const validEndDate = ref(false);
 
 		onMounted(() => {
 			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
@@ -120,6 +146,36 @@ export default defineComponent({
 			const year = date.getFullYear();
 
 			return `${day}-${month}-${year}`;
+		};
+
+		const executeStartUpdate = (e: Event) => {
+			updateSelectedDate(e, startInputTimer, validStartDate, startDate, enableApplyButtonIfSearchisValid);
+		};
+
+		const executeEndUpdate = (e: Event) => {
+			updateSelectedDate(e, endInputTimer, validEndDate, endDate, enableApplyButtonIfSearchisValid);
+		};
+
+		const handleLossOfFocus = (val: boolean) => {
+			val = true;
+		};
+
+		const setupStartInputTimer = (e: Event) => {
+			if (startInputTimer !== null) {
+				clearTimeout(startInputTimer);
+			}
+			startInputTimer = setTimeout(() => {
+				updateSelectedDate(e, startInputTimer, validStartDate, startDate, enableApplyButtonIfSearchisValid);
+			}, 750); // 750 milliseconds (0.75 second) delay
+		};
+
+		const setupEndInputTimer = (e: Event) => {
+			if (endInputTimer !== null) {
+				clearTimeout(endInputTimer);
+			}
+			endInputTimer = setTimeout(() => {
+				updateSelectedDate(e, endInputTimer, validEndDate, endDate, enableApplyButtonIfSearchisValid);
+			}, 750); // 750 milliseconds (0.75 second) delay
 		};
 
 		/* This way might seem weird to update the endDate,
@@ -152,82 +208,6 @@ export default defineComponent({
 				timeSearchStore.setNewSearchReqMet(false);
 			}
 			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
-		};
-
-		const updateSelectedDate = (e: Event, picker: string) => {
-			const input = e.target as HTMLInputElement;
-			const value = input.value.trim(); // Remove extra spaces
-
-			// Use a regular expression to split by '/', '.', or '-'
-			const dateInput = value.split(/[/.-]/);
-			const splitter = value.match(/[/.-]/);
-
-			if (dateInput.length === 3) {
-				const [day, month, year] = dateInput.map(Number);
-
-				// Validate if day, month, and year are numbers
-				if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-					// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
-					const setDate = new Date(year, month - 1, day);
-
-					// Ensure the date is valid
-					if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
-						/* textInputOptions.format = `d${splitter}M${splitter}yyyy`;
-						currentSplitter.value = splitter as unknown as string; */
-						// Validate if the date is within the range
-						const minDate = new Date(startYear.value);
-						const maxDate = new Date(endYear.value);
-
-						if (setDate >= minDate && setDate <= maxDate) {
-							picker === 'start' ? (validStartDate.value = true) : (validEndDate.value = true);
-							const holder = new Date(setDate.getTime());
-							picker === 'start' ? (startDate.value = holder) : (endDate.value = holder);
-							//selectedDate.value = holder;
-						} else {
-							picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
-							errorManager.submitCustomError(
-								'datepicker-outofRange',
-								t('error.outofRange'),
-								'',
-								Severity.INFO,
-								false,
-								Priority.LOW,
-							);
-						}
-					} else {
-						picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
-						errorManager.submitCustomError(
-							'datepicker-invalidDate',
-							t('error.invalidDate'),
-							'',
-							Severity.INFO,
-							false,
-							Priority.LOW,
-						);
-					}
-				} else {
-					picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
-					errorManager.submitCustomError(
-						'datepicker-invalidInput',
-						t('error.invalidInput'),
-						'',
-						Severity.INFO,
-						false,
-						Priority.LOW,
-					);
-				}
-			} else {
-				picker === 'start' ? (validStartDate.value = false) : (validEndDate.value = false);
-				errorManager.submitCustomError(
-					'datepicker-invalidFormat',
-					t('error.invalidFormat'),
-					'',
-					Severity.INFO,
-					false,
-					Priority.LOW,
-				);
-			}
-			enableApplyButtonIfSearchisValid();
 		};
 
 		const newSearch = () => {
@@ -302,16 +282,54 @@ export default defineComponent({
 			endHandleMonthYear,
 			startHandleMonthYear,
 			locale,
+			t,
 			textInputOptions,
 			updateSelectedDate,
 			validStartDate,
 			validEndDate,
+			executeEndUpdate,
+			executeStartUpdate,
+			handleLossOfFocus,
+			setupStartInputTimer,
+			setupEndInputTimer,
 		};
 	},
 });
 </script>
 
 <style scoped>
+.to-error-container,
+.from-error-container {
+	width: 160px;
+	position: absolute;
+	height: fit-content;
+	right: 161px;
+	top: 55px;
+	color: white;
+	padding: 5px;
+	background-color: rgb(184, 0, 0);
+	box-sizing: border-box;
+}
+
+.to-error-container {
+	left: 0px;
+}
+
+.to-error-container:before,
+.from-error-container:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid rgb(184, 0, 0);
+	top: -7px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
 .date-pickers {
 	padding-top: 40px;
 	padding-bottom: 40px;
@@ -334,8 +352,6 @@ export default defineComponent({
 
 .picker-container {
 	display: flex;
-	width: 50%;
-
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
