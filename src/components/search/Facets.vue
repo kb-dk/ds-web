@@ -664,7 +664,6 @@ h2 {
 }
 
 .search-facets {
-	z-index: 0;
 	box-sizing: border-box;
 	overflow-x: visible;
 	overflow-y: clip;
