@@ -60,20 +60,24 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 };
 
 const getSublineForYears = (startDate: Date, endDate: Date, t: ComposerTranslation) => {
-	const startYear = startDate.getFullYear();
-	const endYear = endDate.getFullYear();
+	if (startDate && endDate) {
+		const startYear = startDate.getFullYear();
+		const endYear = endDate.getFullYear();
 
-	let yearsDifference = endYear - startYear + 1;
+		let yearsDifference = endYear - startYear + 1;
 
-	const isBeforeStartDate =
-		endDate.getMonth() < startDate.getMonth() ||
-		(endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+		const isBeforeStartDate =
+			endDate.getMonth() < startDate.getMonth() ||
+			(endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
 
-	if (isBeforeStartDate) {
-		yearsDifference--;
+		if (isBeforeStartDate) {
+			yearsDifference--;
+		}
+
+		return `${yearsDifference} ${t('timeSearch.year', yearsDifference)}`;
+	} else {
+		return `${t('datepicker.unknownLength')}`;
 	}
-
-	return `${yearsDifference} ${t('timeSearch.year', yearsDifference)}`;
 };
 
 const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {

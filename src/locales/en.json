@@ -108,7 +108,9 @@
    "datepicker": {
       "error":"Not a valid date. The archive currently covers the period from {start} to {end}.",
       "date":"Date",
-      "to":"To"
+      "to":"To",
+      "unknownLength":"Unknown timespan"
+
    },
   "search":{
      "recordThumbnail":"Thumbnail from {title}",

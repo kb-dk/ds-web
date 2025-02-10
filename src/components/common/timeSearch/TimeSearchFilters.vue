@@ -1011,8 +1011,8 @@ fieldset {
 	align-items: center;
 	box-shadow: 1px 1px 2px #00000000;
 	border: 1px solid #d9d8d8;
-	background: #002e70;
-	color: white;
+	background: #49da87;
+	color: #002e70;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	z-index: 1;

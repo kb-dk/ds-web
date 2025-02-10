@@ -91,15 +91,7 @@ import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useI18n } from 'vue-i18n';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import { updateSelectedDate } from '@/utils/datepicker-utils';
-
-/* interface Highlight {
-	dates: Date[];
-	years: number[];
-	months: { month: number; year: number }[];
-	quarters: { quarter: number; year: number }[];
-	weekdays: number[];
-	options: { highlightDisabled: boolean };
-} */
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 interface MonthYearEvent {
 	instance: number;
@@ -122,8 +114,8 @@ export default defineComponent({
 		const endDatePicker = ref<DatePickerInstance>();
 		const timeSearchStore = useTimeSearchStore();
 		const { locale, t } = useI18n();
-		const validStartDate = ref(false);
-		const validEndDate = ref(false);
+		const validStartDate = ref(true);
+		const validEndDate = ref(true);
 
 		onMounted(() => {
 			startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
@@ -138,6 +130,36 @@ export default defineComponent({
 					endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
 				}
 			},
+		);
+
+		/* This is not pretty, but we gotta watch for the value of dpWrapMenuRef (which is the HTML),
+		 * so that we can manipulate it and add the test id's and change what we wanna change in the HTML.
+		 */
+		watch(
+			() => startDatePicker.value?.dpWrapMenuRef,
+			(newVal: any) => {
+				if (newVal !== null) {
+					const pickers = document.querySelector('.date-pickers');
+					if (pickers) {
+						const inputs = Array.from(pickers.querySelectorAll('input')) as HTMLElement[];
+						if (inputs[0]) {
+							inputs[0].setAttribute('data-testid', addTestDataEnrichment('input', 'date-pickers', 'start', 0));
+						}
+						if (inputs[1]) {
+							inputs[1].setAttribute('data-testid', addTestDataEnrichment('input', 'date-pickers', 'end', 1));
+						}
+						const calendars = Array.from(pickers.querySelectorAll('.dp__outer_menu_wrap')) as HTMLElement[];
+						console.log(pickers, calendars, 'calendars');
+						if (calendars[0]) {
+							calendars[0].setAttribute('data-testid', addTestDataEnrichment('calendar', 'date-pickers', 'start', 0));
+						}
+						if (calendars[1]) {
+							calendars[1].setAttribute('data-testid', addTestDataEnrichment('calendar', 'date-pickers', 'end', 1));
+						}
+					}
+				}
+			},
+			{ deep: true },
 		);
 
 		const format = (date: Date) => {
@@ -312,7 +334,7 @@ export default defineComponent({
 }
 
 .to-error-container {
-	left: 0px;
+	left: 18px;
 }
 
 .to-error-container:before,
@@ -406,7 +428,7 @@ export default defineComponent({
 	justify-content: center;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 740px) {
 	.date-pickers {
 		align-items: initial;
 		flex-direction: row;
