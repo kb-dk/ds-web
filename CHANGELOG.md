@@ -4,6 +4,11 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.16] - 2024-02-11
+### Changed
+- Fixed a broken link due to changes in genre_facets.
+- Fixed an issue where a wrong header would be shown when searching with *:*.
+
 ## [1.0.15] - 2024-01-30
 ### Added
 - Unavailable records now has their own template.
