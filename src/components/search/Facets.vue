@@ -668,12 +668,12 @@ h2 {
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: 0px;
 	height: 0px;
 	display: none;
 	opacity: 0;
 	align-items: center;
 	justify-content: center;
+	margin-top: -2.5vw;
 }
 
 .dark-bar {

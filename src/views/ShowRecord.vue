@@ -301,4 +301,10 @@ export default defineComponent({
 		padding: 65px 25px 25px 25px;
 	}
 }
+
+@media (min-width: 4000px) {
+	.top-offset {
+		top: -4vw;
+	}
+}
 </style>
