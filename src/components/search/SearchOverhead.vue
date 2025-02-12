@@ -692,25 +692,11 @@ export default defineComponent({
 	flex-direction: row;
 }
 
-.filter-buttons-top-filter-active {
-	bottom: -20px;
-}
-
 .filter-button-bottom {
-	top: -25px;
-}
-.type-toggles-filter-active {
-	bottom: -20px;
+	top: -2.5vw;
 }
 
 @media (min-width: 640px) {
-	.type-toggles-filter-active {
-		bottom: -25px;
-	}
-	.filter-buttons-top-filter-active {
-		bottom: -25px;
-	}
-
 	.filter-options {
 		flex-direction: row;
 	}
@@ -731,28 +717,6 @@ export default defineComponent({
 		align-items: center;
 	}
 	.result-options {
-	}
-}
-@media (min-width: 1200px) {
-	.filter-buttons-top-filter-active {
-		bottom: -35px;
-	}
-	.type-toggles-filter-active {
-		bottom: -35px;
-	}
-	.filter-button-bottom {
-		top: -35px;
-	}
-}
-@media (min-width: 1700px) {
-	.filter-buttons-top-filter-active {
-		bottom: 0;
-	}
-	.type-toggles-filter-active {
-		bottom: 0;
-	}
-	.filter-button-bottom {
-		top: -45px;
 	}
 }
 </style>
