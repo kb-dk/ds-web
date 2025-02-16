@@ -445,10 +445,10 @@ export default defineComponent({
 				emit('newSearch', false);
 			}
 			if (yearSearch.value) {
-				const resultContainer = document.getElementsByClassName('result-options')[0];
+				const resultContainer = document.getElementsByClassName('hits')[0];
 				resultContainer?.scrollIntoView({
 					behavior: 'smooth',
-					block: 'center',
+					block: 'start',
 				});
 			}
 			timeSearchStore.setNewSearchReqMet(false);

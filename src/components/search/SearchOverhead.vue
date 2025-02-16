@@ -95,7 +95,7 @@
 				</button>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
-					class="result-options"
+					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
 				>
 					<div class="hits">
 						<HitCount
@@ -442,8 +442,12 @@ export default defineComponent({
 	min-height: 47px;
 	z-index: 0;
 	position: relative;
-	padding-top: 25px;
+	padding-top: 50px;
 	padding-bottom: 8px;
+}
+
+.result-options.less-top-padding {
+	padding-top: 5px;
 }
 
 .sort-options {
@@ -464,6 +468,7 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	z-index: 1;
 	position: relative;
+	margin-bottom: calc(-2vw + -10px);
 }
 
 .filter-options.disabled button {
@@ -693,12 +698,13 @@ export default defineComponent({
 }
 
 .filter-button-bottom {
-	top: -2.5vw;
+	top: calc(-2vw + -10px);
 }
 
 @media (min-width: 640px) {
 	.filter-options {
 		flex-direction: row;
+		margin-bottom: calc(-2vw + -5px);
 	}
 	.type-toggles {
 		width: auto;
@@ -716,7 +722,35 @@ export default defineComponent({
 		flex-direction: row;
 		align-items: center;
 	}
-	.result-options {
+	.filter-button-bottom {
+		top: calc(-2vw + -5px);
+	}
+}
+
+@media (min-width: 2000px) {
+	.filter-button-bottom {
+		top: calc(-2vw + -10px);
+	}
+	.filter-options {
+		margin-bottom: calc(-2vw + -10px);
+	}
+}
+
+@media (min-width: 3000px) {
+	.filter-button-bottom {
+		top: calc(-2vw + -15px);
+	}
+	.filter-options {
+		margin-bottom: calc(-2vw + -15px);
+	}
+}
+
+@media (min-width: 4000px) {
+	.filter-button-bottom {
+		top: calc(-1vw + 10px);
+	}
+	.filter-options {
+		margin-bottom: calc(-1vw + 10px);
 	}
 }
 </style>
