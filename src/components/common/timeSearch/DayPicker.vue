@@ -107,7 +107,7 @@ export default defineComponent({
 		};
 
 		const textInputOptions = {
-			format: 'd-M/-yyy',
+			format: 'd-M-yyy',
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
