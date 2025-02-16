@@ -673,7 +673,6 @@ h2 {
 	opacity: 0;
 	align-items: center;
 	justify-content: center;
-	margin-top: -2.5vw;
 }
 
 .dark-bar {

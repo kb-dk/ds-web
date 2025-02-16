@@ -161,7 +161,7 @@ export default defineComponent({
 
 <style scoped>
 .player {
-	aspect-ratio: 4/2;
+	aspect-ratio: 4 / 2.4;
 	width: 100%;
 	height: auto;
 }
@@ -185,6 +185,10 @@ export default defineComponent({
 }
 
 @media (min-width: 640px) {
+	.player {
+		aspect-ratio: 4/2;
+	}
+
 	.audio-player-box {
 		margin-left: -36px;
 		width: 100vw;
