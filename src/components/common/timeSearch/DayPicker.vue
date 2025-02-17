@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {
@@ -96,6 +96,30 @@ export default defineComponent({
 
 			return `${day}-${month}-${year}`;
 		};
+
+		onMounted(() => {
+			watch(
+				() => singleDatePicker.value?.dpWrapMenuRef,
+				(newVal: any) => {
+					if (newVal !== null) {
+						const picker = document.querySelector('.day-picker');
+						if (picker) {
+							const inputs = Array.from(picker.querySelectorAll('input')) as HTMLElement[];
+							if (inputs[0]) {
+								inputs[0].setAttribute('data-testid', addTestDataEnrichment('input', 'day-picker', 'start', 0));
+							}
+
+							const calendar = Array.from(picker.querySelectorAll('.dp__outer_menu_wrap')) as HTMLElement[];
+							console.log(picker, calendar, 'calendars');
+							if (calendar[0]) {
+								calendar[0].setAttribute('data-testid', addTestDataEnrichment('calendar', 'day-picker', 'start', 0));
+							}
+						}
+					}
+				},
+				{ deep: true },
+			);
+		});
 
 		const setupInputTimer = (e: Event) => {
 			if (inputTimer !== null) {
