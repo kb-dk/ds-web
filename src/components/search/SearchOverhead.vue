@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="hit-count">
 				<div :class="!searchResultStore.loading ? 'filter-options' : 'filter-options disabled'">
-					<div class="filter-buttons">
+					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
 						<button
 							ref="toggleFacetsButton"
 							role="switch"
@@ -31,7 +31,7 @@
 							{{ $t('search.resetFilters') }}
 						</button>
 					</div>
-					<div class="type-toggles">
+					<div :class="`type-toggles ${searchResultStore.showFacets ? 'type-toggles-filter-active' : ''}`">
 						<button
 							:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-tv', 0)"
@@ -79,9 +79,23 @@
 					</div>
 				</div>
 				<Facets />
+				<button
+					v-if="searchResultStore.showFacets"
+					ref="toggleFacetsButton"
+					role="switch"
+					aria-checked="true"
+					class="filter-button filter-button-bottom"
+					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
+					@click="toggleFacets()"
+				>
+					<span class="material-icons">{{ 'close' }}</span>
+					<span class="filter-button-text">
+						{{ $t('search.hideFilters') }}
+					</span>
+				</button>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
-					class="result-options"
+					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
 				>
 					<div class="hits">
 						<HitCount
@@ -411,6 +425,7 @@ export default defineComponent({
 }
 
 .type-toggles {
+	position: relative;
 	display: flex;
 	gap: 10px;
 	width: 100%;
@@ -427,8 +442,12 @@ export default defineComponent({
 	min-height: 47px;
 	z-index: 0;
 	position: relative;
-	padding-top: 25px;
+	padding-top: 50px;
 	padding-bottom: 8px;
+}
+
+.result-options.less-top-padding {
+	padding-top: 5px;
 }
 
 .sort-options {
@@ -449,6 +468,7 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	z-index: 1;
 	position: relative;
+	margin-bottom: calc(-2vw + -10px);
 }
 
 .filter-options.disabled button {
@@ -495,6 +515,7 @@ export default defineComponent({
 }
 
 .filter-button {
+	position: relative;
 	border: 1px solid #002e70;
 	line-height: 24px;
 	cursor: pointer;
@@ -504,7 +525,7 @@ export default defineComponent({
 	background-color: #002e70;
 	color: white;
 	border-radius: 4px;
-	z-index: 1;
+	z-index: 0;
 	font-size: 20px;
 	padding: 6px 12px 9px 12px;
 	font-family: noway, sans-serif;
@@ -667,6 +688,7 @@ export default defineComponent({
 }
 
 .filter-buttons {
+	position: relative;
 	margin-right: auto;
 	display: flex;
 	align-items: center;
@@ -675,9 +697,14 @@ export default defineComponent({
 	flex-direction: row;
 }
 
+.filter-button-bottom {
+	top: calc(-2vw + -10px);
+}
+
 @media (min-width: 640px) {
 	.filter-options {
 		flex-direction: row;
+		margin-bottom: calc(-2vw + -5px);
 	}
 	.type-toggles {
 		width: auto;
@@ -695,7 +722,35 @@ export default defineComponent({
 		flex-direction: row;
 		align-items: center;
 	}
-	.result-options {
+	.filter-button-bottom {
+		top: calc(-2vw + -5px);
+	}
+}
+
+@media (min-width: 2000px) {
+	.filter-button-bottom {
+		top: calc(-2vw + -10px);
+	}
+	.filter-options {
+		margin-bottom: calc(-2vw + -10px);
+	}
+}
+
+@media (min-width: 3000px) {
+	.filter-button-bottom {
+		top: calc(-2vw + -15px);
+	}
+	.filter-options {
+		margin-bottom: calc(-2vw + -15px);
+	}
+}
+
+@media (min-width: 4000px) {
+	.filter-button-bottom {
+		top: calc(-1vw + 10px);
+	}
+	.filter-options {
+		margin-bottom: calc(-1vw + 10px);
 	}
 }
 </style>

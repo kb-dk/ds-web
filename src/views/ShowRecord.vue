@@ -249,7 +249,7 @@ export default defineComponent({
 .top-offset {
 	position: relative;
 	background: white;
-	top: -6vw;
+	top: -20px;
 	z-index: 3;
 }
 /* MEDIA QUERY 480 */
@@ -266,6 +266,9 @@ export default defineComponent({
 	.container {
 		max-width: 990px;
 	}
+	.top-offset {
+		top: -40px;
+	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
@@ -275,7 +278,7 @@ export default defineComponent({
 		max-width: 1150px;
 	}
 	.top-offset {
-		top: -6vw;
+		top: -60px;
 		margin-left: 24px;
 		margin-right: 24px;
 		z-index: 4;
@@ -286,19 +289,27 @@ export default defineComponent({
 	.container {
 		max-width: 1280px;
 	}
-}
-/* MEDIA QUERY 1280 */
-@media (min-width: 1280px) {
-	.container {
-		padding-right: 0;
-		padding-left: 0;
-		width: 100%;
+	.top-offset {
+		top: calc(-6vw + 10px);
 	}
-}
-/* MEDIA QUERY 2000 */
-@media (min-width: 2000px) {
-	.record-data {
-		padding: 65px 25px 25px 25px;
+	/* MEDIA QUERY 1280 */
+	@media (min-width: 1280px) {
+		.container {
+			padding-right: 0;
+			padding-left: 0;
+			width: 100%;
+		}
+	}
+	@media (min-width: 2000px) {
+		.top-offset {
+			top: calc(-4vw + 10px);
+		}
+	}
+
+	@media (min-width: 4000px) {
+		.top-offset {
+			top: calc(-2vw + 10px);
+		}
 	}
 }
 </style>

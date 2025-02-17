@@ -664,12 +664,10 @@ h2 {
 }
 
 .search-facets {
-	z-index: 0;
 	box-sizing: border-box;
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: 0px;
 	height: 0px;
 	display: none;
 	opacity: 0;
