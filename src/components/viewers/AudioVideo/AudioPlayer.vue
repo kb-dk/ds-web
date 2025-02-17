@@ -34,6 +34,7 @@ export default defineComponent({
 		let audioPlayer: PlayerType;
 		const route = useRoute();
 		const authStore = useAuthStore();
+		let playerTimer: ReturnType<typeof setInterval>;
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -111,6 +112,14 @@ export default defineComponent({
 				document.querySelector('#audio-player')?.setAttribute('data-testid', 'audio-player-kaltura-container-0');
 				audioPlayer.ready().then(() => {
 					audioPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
+					playerTimer = setInterval(() => {
+						if (
+							audioPlayer.currentTime - authStore.streamingUrlTimestamp >= 3 ||
+							audioPlayer.currentTime - authStore.streamingUrlTimestamp <= -3
+						) {
+							authStore.streamingUrlTimestamp = audioPlayer.currentTime;
+						}
+					}, 1500);
 				});
 			} catch (e) {
 				handleErrorDispatch('');
@@ -153,6 +162,9 @@ export default defineComponent({
 		onBeforeUnmount(() => {
 			if (KalturaPlayer) {
 				audioPlayer.destroy();
+			}
+			if (playerTimer) {
+				clearInterval(playerTimer);
 			}
 		});
 	},
