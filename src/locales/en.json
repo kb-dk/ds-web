@@ -2,6 +2,7 @@
    "app": {
       "skip":"Skip to main content",
       "titles": {
+         "unknown":"Unknown broadcast",
          "frontpage": {
             "archive":  {
                "name": "DR-archive",
@@ -118,6 +119,7 @@
      "hitcount": " result fund with | results found with",
      "filterSearch": " results found with your filters",
      "nohit":"Sorry, we did not find any results matching your search for \"{query}\"",
+     "nohitWithFilter":"We are sorrry no {filterSearch}",
      "nohitSubtitle": {
         "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
         "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",
@@ -125,6 +127,7 @@
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive",
         "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
      },
+     "pageNumberPlaceholder": "Enter page",
      "tipsTitle": "A few tips for your search",
      "mainCategories": "Browse through our main categories",
      "showFilters":"Show filters",
@@ -134,6 +137,7 @@
      "previousPage":"Previous page",
      "page": "Page",
      "goToPage":"Go to page {n}",
+     "goToThePage": "Go to the page",
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
      "selected": "Selected",
@@ -224,8 +228,9 @@
      "copyTitleFailed":"Copying failed.",
      "copyMessageFailed":"The link was not copied to the clipboard. Copy the URL instead.",
      "moreMetadataBroadcast":"Additional information about the broadcast",
-     "missingStreamingUrl":"We're sorry, it seems this record has no streaming URL, \n so there is nothing to show."
-
+     "missingStreamingUrl":"We're sorry, it seems this record has no streaming URL, \n so there is nothing to show.",
+     "noRecordFound":"Unfortunately, we cannot find the broadcast you are trying to access :(",
+     "noRecordFoundExplained":"It's really unfortunate, and how you ended up here is a bit of a mystery, but you can try searching again to find the content you're missing."
   },
   "duration":{
    "hours":"h",
@@ -399,8 +404,8 @@
          "thumbnails": "Thumbnails are not responding.",
          "thumbnail": "Thumbnails are not responding.",
          "timeMachine": "Period filters are not responding - try again later.",
-         "searchResult": "Search result is not responding - try again later."
-
+         "searchResult": "Search result is not responding - try again later.",
+         "pageNumber": "The page number does not exist."
       },
        "auth": {
           "serviceFailed":"The application's underlying services are currently unavailable - please try again later.",

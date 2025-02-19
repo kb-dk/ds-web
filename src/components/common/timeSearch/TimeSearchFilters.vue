@@ -251,37 +251,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 import ItemSlider from '@/components/search/ItemSlider.vue';
 import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
 import {
-	timeSliderValues,
-	months,
 	days,
-	timeslots,
-	startDate,
 	endDate,
-	initEndDate,
-	initStartDate,
-	initSliderValues,
-	startYear,
 	endYear,
+	initEndDate,
+	initSliderValues,
+	initStartDate,
+	months,
+	startDate,
+	startYear,
+	timeSliderValues,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
-import { pointItem, markerData, dataItem, SelectorData } from '@/types/TimeSearchTypes';
+import { dataItem, markerData, pointItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import CustomExpander from '@/components/common/CustomExpander.vue';
 import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
-	getTimeResults,
-	resetAllSelectorValues,
-	getSublineForMonths,
 	getSublineForDays,
+	getSublineForMonths,
 	getSublineForTimeslots,
 	getSublineForYears,
+	getTimeResults,
+	resetAllSelectorValues,
 } from '@/utils/time-search-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -445,10 +445,10 @@ export default defineComponent({
 				emit('newSearch', false);
 			}
 			if (yearSearch.value) {
-				const resultContainer = document.getElementsByClassName('result-options')[0];
+				const resultContainer = document.getElementsByClassName('hits')[0];
 				resultContainer?.scrollIntoView({
 					behavior: 'smooth',
-					block: 'center',
+					block: 'start',
 				});
 			}
 			timeSearchStore.setNewSearchReqMet(false);

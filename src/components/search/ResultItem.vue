@@ -37,10 +37,11 @@
 						role="link"
 						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
 					>
-						<kb-imagecomponent
+						<ImageComponent
 							v-if="resultdata.origin.split('.')[1] === 'tv'"
-							:imagedata="imageData"
-						></kb-imagecomponent>
+							:image-data="imageData"
+						></ImageComponent>
+
 						<SoundThumbnail
 							v-else
 							:result-title="resultdata.title[0]"
@@ -120,16 +121,17 @@ import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
 import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
-import '@/components/common/wc-image-item';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import ImageComponent from '@/components/common/ImageComponent.vue';
 
 export default defineComponent({
 	name: 'ResultItem',
 	components: {
+		ImageComponent,
 		SoundThumbnail,
 		AdditionalInfo,
 	},

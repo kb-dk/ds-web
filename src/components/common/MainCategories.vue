@@ -22,7 +22,7 @@
 						query: {
 							q: '*:*',
 							start: 0,
-							fq: [encodeURIComponent(`genre:${quotation(entity.name)}`)],
+							fq: [encodeURIComponent(`genre_facet:${quotation(entity.name)}`)],
 						},
 					}"
 					class="category-item"
@@ -94,7 +94,7 @@ export default defineComponent({
 		};
 
 		const constructGenre = () => {
-			const categoryArray = searchResultStore.initFacets.facet_fields.genre;
+			const categoryArray = searchResultStore.initFacets.facet_fields.genre_facet;
 			categoryArray.forEach((item, index) => {
 				if (index % 2 === 0) {
 					let category = {
@@ -201,6 +201,7 @@ export default defineComponent({
 	justify-content: center;
 	min-height: 200px;
 	box-sizing: border-box;
+	padding: 0px 12px;
 }
 
 .category-item {

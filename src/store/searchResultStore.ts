@@ -101,7 +101,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						channelFilters.value = cleanedString.split(' OR ');
-					} else if (filter?.split('%3A')[0].includes('genre')) {
+					} else if (filter?.split('%3A')[0].includes('genre_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						categoryFilters.value = cleanedString.split(' OR ');
 					} else {
@@ -115,7 +115,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
 					const cleanedString = str.replace(/[()]/g, '');
 					channelFilters.value = cleanedString.split(' OR ');
-				} else if (str.split('%3A')[0].includes('genre')) {
+				} else if (str.split('%3A')[0].includes('genre_facet')) {
 					const cleanedString = str.replace(/[()]/g, '');
 					categoryFilters.value = cleanedString.split(' OR ');
 				} else {
@@ -241,7 +241,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 						sortParam as string,
 					);
 
-					facetResult.value.genre = facetGenreData.data.facet_counts.facet_fields.genre as string[];
+					facetResult.value.genre_facet = facetGenreData.data.facet_counts.facet_fields.genre_facet as string[];
 					facetResult.value.creator_affiliation_facet = facetChannelData.data.facet_counts.facet_fields
 						.creator_affiliation_facet as string[];
 				} else {
@@ -251,7 +251,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 						startParam as string,
 						sortParam as string,
 					);
-					facetResult.value.genre = facetData.data.facet_counts.facet_fields.genre as string[];
+					facetResult.value.genre_facet = facetData.data.facet_counts.facet_fields.genre_facet as string[];
 					facetResult.value.creator_affiliation_facet = facetData.data.facet_counts.facet_fields
 						.creator_affiliation_facet as string[];
 				}

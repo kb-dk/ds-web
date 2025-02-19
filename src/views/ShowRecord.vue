@@ -3,7 +3,6 @@
 		<div class="container top-offset">
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
-
 				<div v-if="!loading && recordData !== null">
 					<div v-if="recordType === 'VideoObject' || recordType === 'MediaObject'">
 						<BroadcastVideoRecordMetadataView
@@ -34,6 +33,9 @@
 				<div v-if="!loading && recordData === null && contentNotAllowed">
 					<NotAllowedRecord :back-link="backLink" />
 				</div>
+				<div v-if="recordType === null && backendError && !loading">
+					<UnavailableRecord />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,6 +59,7 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { useSpinnerStore } from '@/store/spinnerStore';
 import { useAuthStore } from '@/store/authStore';
 import NotAllowedRecord from '@/components/records/NotAllowedRecord.vue';
+import UnavailableRecord from '@/components/records/UnavailableRecord.vue';
 
 export default defineComponent({
 	name: 'ShowRecord',
@@ -65,6 +68,7 @@ export default defineComponent({
 		GenericRecordMetadataView,
 		BroadcastVideoRecordMetadataView,
 		BroadcastAudioRecordMetadataView,
+		UnavailableRecord,
 	},
 
 	setup() {
@@ -80,6 +84,7 @@ export default defineComponent({
 		const loading = ref(true);
 		const contentNotAllowed = ref(false);
 		const backLink = ref('');
+		const backendError = ref(false);
 
 		onMounted(async () => {
 			let back = router.options.history.state.back as string;
@@ -105,11 +110,13 @@ export default defineComponent({
 		});
 
 		const getRecord = async (id: string) => {
+			backendError.value = false;
 			spinnerStore.toggleSpinner(true);
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
 				handleShowRecordError(err as AxiosError, 'recordCall');
+				backendError.value = true;
 			} finally {
 				loading.value = false;
 				spinnerStore.toggleSpinner(false);
@@ -178,7 +185,7 @@ export default defineComponent({
 					moreLikeThisRecords.value = moreLikeThis.data.response.docs;
 				}
 			} else {
-				document.title = ('Unknown' + t('app.titles.frontpage.archive.suffix')) as string;
+				document.title = `${t('app.titles.unknown')} ${t('app.titles.frontpage.archive.suffix')}` as string;
 			}
 			if (moreLikeThisRecords.value.length === 0) {
 				const startAndEnd = getStartAndEndFromStartTime();
@@ -208,7 +215,7 @@ export default defineComponent({
 			},
 		);
 
-		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink };
+		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink, backendError };
 	},
 	computed: {
 		GenericRecord() {
@@ -242,7 +249,7 @@ export default defineComponent({
 .top-offset {
 	position: relative;
 	background: white;
-	top: -6vw;
+	top: -20px;
 	z-index: 3;
 }
 /* MEDIA QUERY 480 */
@@ -259,6 +266,9 @@ export default defineComponent({
 	.container {
 		max-width: 990px;
 	}
+	.top-offset {
+		top: -40px;
+	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
@@ -268,7 +278,7 @@ export default defineComponent({
 		max-width: 1150px;
 	}
 	.top-offset {
-		top: -6vw;
+		top: -60px;
 		margin-left: 24px;
 		margin-right: 24px;
 		z-index: 4;
@@ -279,19 +289,27 @@ export default defineComponent({
 	.container {
 		max-width: 1280px;
 	}
-}
-/* MEDIA QUERY 1280 */
-@media (min-width: 1280px) {
-	.container {
-		padding-right: 0;
-		padding-left: 0;
-		width: 100%;
+	.top-offset {
+		top: calc(-6vw + 10px);
 	}
-}
-/* MEDIA QUERY 2000 */
-@media (min-width: 2000px) {
-	.record-data {
-		padding: 65px 25px 25px 25px;
+	/* MEDIA QUERY 1280 */
+	@media (min-width: 1280px) {
+		.container {
+			padding-right: 0;
+			padding-left: 0;
+			width: 100%;
+		}
+	}
+	@media (min-width: 2000px) {
+		.top-offset {
+			top: calc(-4vw + 10px);
+		}
+	}
+
+	@media (min-width: 4000px) {
+		.top-offset {
+			top: calc(-2vw + 10px);
+		}
 	}
 }
 </style>

@@ -4,7 +4,13 @@
 		mode="out-in"
 	>
 		<div>
-			<div class="no-hits-heading">{{ $t('search.nohit', { query: searchResultStore.lastSearchQuery }) }}</div>
+			<div class="no-hits-heading">
+				{{
+					searchResultStore.lastSearchQuery === '*:*'
+						? $t('search.nohitWithFilter', { filterSearch: $t('search.filterSearch') })
+						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
+				}}
+			</div>
 			<div class="no-hits-heading-subtitle">
 				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
 				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
@@ -89,6 +95,10 @@
 					</div>
 				</template>
 			</EdgedContentArea>
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
 		</div>
 	</Transition>
 </template>
@@ -102,10 +112,12 @@ import TextAndImage from '@/components/global/content-elements/TextAndImage.vue'
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
+		ContactUs,
 		MainCategories,
 		SpellChecker,
 		TiltedDivider,
@@ -184,7 +196,7 @@ export default defineComponent({
 	font-size: 36px;
 	word-wrap: break-word;
 	hyphens: auto;
-	max-width: 750px;
+	max-width: 800px;
 }
 h2 {
 	margin: 0;
@@ -197,5 +209,17 @@ h2 {
 	text-align: center;
 	font-size: 256px;
 	color: #002e70;
+}
+
+.contact-us {
+	margin-top: 0;
+	padding-bottom: 0;
+}
+
+@media (min-width: 990px) {
+	.contact-us {
+		margin-top: -40px;
+		padding-bottom: 40px;
+	}
 }
 </style>

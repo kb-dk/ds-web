@@ -154,7 +154,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .full-width {
-	width: calc(100% + 24px);
 	min-height: 200px;
 	z-index: 5;
 	position: relative;
@@ -263,6 +262,21 @@ h3:first-letter {
 	.time-search .container {
 		padding-right: 0;
 		padding-left: 0;
+	}
+}
+@media (min-width: 4000px) {
+	.top-edge {
+		transform: rotateZ(0deg) !important;
+		top: 0.75vw;
+		height: 3vw;
+		z-index: -1;
+	}
+
+	.bottom-edge {
+		transform: rotateZ(0deg) !important;
+		top: -0.75vw;
+		height: 3vw;
+		z-index: -1;
 	}
 }
 </style>

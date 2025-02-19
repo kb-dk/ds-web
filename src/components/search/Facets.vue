@@ -63,7 +63,7 @@
 									:use-headline-translation="true"
 									:update-entity="updateFacet"
 									:filter-name-cutoff="5"
-									:facet-type="'genre'"
+									:facet-type="'genre_facet'"
 								>
 									<fieldset
 										v-if="searchResultStore.firstBackendFetchExecuted"
@@ -71,19 +71,23 @@
 									>
 										<TransitionGroup name="result">
 											<div
-												v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre)"
-												:key="index + 'genre'"
+												v-for="(singleFacet, index) in simplifyFacets(
+													searchResultStore.initFacets.facet_fields.genre_facet,
+												)"
+												:key="index + 'genre_facet'"
 												class="genre"
 											>
 												<GenreCheckbox
-													:fqkey="'genre'"
+													:fqkey="'genre_facet'"
 													:title="singleFacet.title"
 													:amount="
 														categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
 													"
 													:time-search-active="timeSearchStore.timeFacetsOpen"
 													:number="index"
-													:checked="channelFilterExists('genre', singleFacet.title, searchResultStore.categoryFilters)"
+													:checked="
+														channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)
+													"
 													:loading="searchResultStore.loadingGenres"
 													:update="updateCheckbox"
 													:parent-array="genreArray"
@@ -112,7 +116,12 @@
 										<div
 											v-for="(singleFacet, index) in channelsArray"
 											:key="`${index}-facet`"
-											:class="index % 4 === 3 ? 'checkbox last' : 'checkbox'"
+											:class="{
+												'checkbox end': index >= (channelsArray.length / 4) * 3,
+												'checkbox semi-end':
+													index >= channelsArray.length / 2 && index < (channelsArray.length / 4) * 3,
+												checkbox: index < channelsArray.length / 2,
+											}"
 										>
 											<SimpleCheckbox
 												:key="`channelCheckbox-${index}`"
@@ -154,13 +163,15 @@ import { useRoute, useRouter } from 'vue-router';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import {
-	channelFilterExists,
-	simplifyFacets,
-	cloneRouteQuery,
-	extendFacetPairToSelectorData,
 	addChannelOrCategoryFilter,
-	removeChannelOrCategoryFilter,
+	channelFilterExists,
+	cloneRouteQuery,
 	createFilter,
+	extendFacetPairToSelectorData,
+	normalizeFq,
+	removeChannelOrCategoryFilter,
+	removeTimeFacetsFromRoute,
+	simplifyFacets,
 } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
@@ -168,16 +179,15 @@ import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
 import {
 	days,
-	months,
-	timeslots,
-	startDate,
 	endDate,
-	startYear,
 	endYear,
+	months,
+	startDate,
+	startYear,
+	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
-import { removeTimeFacetsFromRoute, normalizeFq } from '@/utils/filter-utils';
 import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
@@ -214,7 +224,7 @@ export default defineComponent({
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 			);
 			genreArray.value = extendFacetPairToSelectorData(
-				simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+				simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet),
 				'categories',
 			);
 		} else {
@@ -226,7 +236,7 @@ export default defineComponent({
 							simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
 						);
 						genreArray.value = extendFacetPairToSelectorData(
-							simplifyFacets(searchResultStore.initFacets.facet_fields.genre),
+							simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet),
 							'categories',
 						);
 						setCategoryArrayFromStore(searchResultStore.categoryFilters);
@@ -276,7 +286,7 @@ export default defineComponent({
 				categoryFacets.value = [] as FacetPair[];
 				currentFacets.value = newFacets;
 				channelFacets.value = simplifyFacets(newFacets['creator_affiliation_facet']);
-				categoryFacets.value = simplifyFacets(newFacets['genre']);
+				categoryFacets.value = simplifyFacets(newFacets['genre_facet']);
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
@@ -625,8 +635,7 @@ fieldset {
 }
 
 .facet-options {
-	display: flex;
-	flex-wrap: wrap;
+	column-count: 1;
 	width: 100%;
 }
 
@@ -654,21 +663,11 @@ h2 {
 	box-sizing: border-box;
 }
 
-.checkbox.last {
-	border-right: 0px;
-}
-
-.facet-options > .checkbox:nth-of-type(2n) {
-	border-right: 0px;
-}
-
 .search-facets {
-	z-index: 0;
 	box-sizing: border-box;
 	overflow-x: visible;
 	overflow-y: clip;
 	position: relative;
-	top: 0px;
 	height: 0px;
 	display: none;
 	opacity: 0;
@@ -791,13 +790,23 @@ h2 {
 	.time-facet-button {
 		width: fit-content;
 	}
-	.checkbox {
-		flex: 0 0 50%;
-		max-width: 50%;
+
+	.facet-options {
+		column-count: 2;
 	}
-	.facet-options > .checkbox:nth-of-type(2n + 1) {
+
+	.facet-options .checkbox {
 		border-right: 1px solid rgba(230, 230, 230, 1);
 	}
+
+	.facet-options .checkbox.end {
+		border-right: 0px solid rgba(230, 230, 230, 1);
+	}
+
+	.facet-options .checkbox.semi-end {
+		border-right: 0px solid rgba(230, 230, 230, 1);
+	}
+
 	.genre {
 		width: calc(50% - 15px);
 		flex: 0 0 calc(50% - 15px);
@@ -812,16 +821,14 @@ h2 {
 }
 
 @media (min-width: 990px) {
-	.checkbox {
-		flex: 0 0 25%;
-		max-width: 25%;
+	.facet-options {
+		column-count: 4;
 	}
-	.facet-options > .checkbox:nth-of-type(2n) {
+
+	.facet-options .checkbox.semi-end {
 		border-right: 1px solid rgba(230, 230, 230, 1);
 	}
-	.checkbox.last {
-		border-right: 0px solid rgba(255, 255, 255, 0) !important;
-	}
+
 	.genre-facets {
 		padding: 0px 5px;
 		gap: 45px 40px;

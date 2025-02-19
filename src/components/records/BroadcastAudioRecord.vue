@@ -59,15 +59,15 @@
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
-					<h4>{{ $t('record.genre') }}</h4>
-					<div>
+					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
+					<div v-if="recordData.genre">
 						<router-link
 							:to="{
 								name: 'Search',
 								query: {
 									q: '*:*',
 									start: 0,
-									fq: [encodeURIComponent(`genre:${quotation(recordData.genre)}`)],
+									fq: [encodeURIComponent(`genre_facet:${quotation(recordData.genre)}`)],
 								},
 							}"
 							class="genre-link"
@@ -110,6 +110,7 @@
 				></GridResultItem>
 			</div>
 		</div>
+		<ContactUs :relative-position="false"></ContactUs>
 	</div>
 </template>
 
@@ -125,14 +126,14 @@ import { getEntryId } from '@/utils/record-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
-import '@/components/common/wc-spot-item';
 import GridResultItem from '@/components/search/GridResultItem.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
 
 	components: {
+		ContactUs,
 		GridResultItem,
 		AudioPlayer,
 		Duration,

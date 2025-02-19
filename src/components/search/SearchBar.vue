@@ -208,7 +208,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, watch, onMounted, onUnmounted } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
@@ -258,13 +258,22 @@ export default defineComponent({
 				destination: '',
 			},
 		];
-
+		const closePortal = (e: MouseEvent) => {
+			if (selectButtonRef.value instanceof HTMLButtonElement && e.target instanceof Node) {
+				if (!selectButtonRef.value.contains(e.target)) {
+					togglePortalSelector();
+				}
+			}
+		};
 		onMounted(() => {
 			window.addEventListener('toggle-search', toggleSearchField);
 		});
 
 		onUnmounted(() => {
 			window.removeEventListener('toggle-search', toggleSearchField);
+			if (showPortalSelector.value) {
+				document.removeEventListener('click', closePortal);
+			}
 		});
 
 		watch(
@@ -340,7 +349,12 @@ export default defineComponent({
 
 		const search = () => {
 			if (selectedPortal.value === 'drArchive') {
-				searchResultStore.searchResult = [];
+				if (
+					router.currentRoute.value.name !== 'Search' ||
+					searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
+				) {
+					searchResultStore.searchResult = [];
+				}
 				searchResultStore.resetAutocomplete();
 				searchResultStore.channelFilters = [];
 				searchResultStore.categoryFilters = [];
@@ -387,6 +401,11 @@ export default defineComponent({
 
 		const togglePortalSelector = () => {
 			showPortalSelector.value = !showPortalSelector.value;
+			if (showPortalSelector.value) {
+				document.addEventListener('click', closePortal);
+			} else {
+				document.removeEventListener('click', closePortal);
+			}
 		};
 
 		const selectPortal = (selected: number) => {

@@ -325,7 +325,7 @@ h1 {
 	position: absolute;
 	mix-blend-mode: overlay;
 	opacity: 0.5;
-	animation: noiseEffect 0.1s infinite;
+	animation: noiseEffect 0.1s infinite alternate-reverse;
 	filter: grayscale(1);
 }
 

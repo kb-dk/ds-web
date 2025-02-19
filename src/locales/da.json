@@ -2,6 +2,7 @@
    "app": {
       "skip":"Spring til hovedindhold",
       "titles": {
+         "unknown":"Ukendt udsendelse",
          "frontpage": {
             "archive":  {
                "name": "DR-arkiv",
@@ -122,9 +123,11 @@
        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
        "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
      },
+    "pageNumberPlaceholder": "Indtast sidetal",
      "tipsTitle": "Et par fif til din søgning",
      "mainCategories": "led videre i vores hovedkategorier",
      "nohit":"Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",
+     "nohitWithFilter":"Vi beklager ingen {filterSearch}",
      "showFilters":"Vis filtre",
      "hideFilters":"Skjul filtre",
     "resetFilters": "Nulstil filtre",
@@ -132,6 +135,7 @@
      "previousPage":"Forrige side",
      "page": "Side",
      "goToPage":"Gå til side {n}",
+    "goToThePage": "Gå til siden",
      "sortAfter":"Sorteret efter ",
      "sortBy": "Sorter efter",
     "selected": "Valgt",
@@ -221,8 +225,9 @@
      "copyTitleFailed":"Kopiering fejlede.",
      "copyMessageFailed":"Linket blev ikke kopieret. Kopier URL i stedet.",
      "moreMetadataBroadcast":"Yderligere information om udsendelsen",
-     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise."
-
+     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise.",
+     "noRecordFound":"Vi kan desværre ikke finde den udsendelse, som du forsøger at tilgå :(",
+     "noRecordFoundExplained":"Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner."
   },
   "duration":{
    "hours":"t",
@@ -399,7 +404,8 @@
       "thumbnails": "Billede-oversigten svarer ikke.",
       "thumbnail": "Miniaturebilleder kan ikke hentes.",
       "timeMachine": "Periode-filtre svarer ikke - prøv igen senere.",
-      "searchResult": "Søgeresultat svarer ikke - prøv igen senere."
+      "searchResult": "Søgeresultat svarer ikke - prøv igen senere.",
+      "pageNumber": "Sidetallet findes ikke."
     },
    "searchfailed":"Noget gik galt med din søgning",
    "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
