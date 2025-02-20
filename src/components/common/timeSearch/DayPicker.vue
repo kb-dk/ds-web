@@ -24,7 +24,6 @@
 				@update-month-year="HandleMonthYear"
 				@keydown="setupInputTimer"
 				@keydown.enter="executeUpdate($event)"
-				@blur="handleLossOfFocus"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -99,8 +98,8 @@ export default defineComponent({
 
 		onMounted(() => {
 			watch(
-				() => singleDatePicker.value?.dpWrapMenuRef,
-				(newVal: any) => {
+				() => singleDatePicker.value?.dpWrapMenuRef as unknown as HTMLElement | null,
+				(newVal: HTMLElement | null) => {
 					if (newVal !== null) {
 						const picker = document.querySelector('.day-picker');
 						if (picker) {
@@ -110,7 +109,6 @@ export default defineComponent({
 							}
 
 							const calendar = Array.from(picker.querySelectorAll('.dp__outer_menu_wrap')) as HTMLElement[];
-							console.log(picker, calendar, 'calendars');
 							if (calendar[0]) {
 								calendar[0].setAttribute('data-testid', addTestDataEnrichment('calendar', 'day-picker', 'start', 0));
 							}
@@ -120,6 +118,13 @@ export default defineComponent({
 				{ deep: true },
 			);
 		});
+
+		watch(
+			() => selectedDate.value,
+			() => {
+				updateSeeMoreLink();
+			},
+		);
 
 		const setupInputTimer = (e: Event) => {
 			if (inputTimer !== null) {
@@ -144,12 +149,8 @@ export default defineComponent({
 			},
 		});
 
-		const handleLossOfFocus = () => {
-			validDate.value = true;
-		};
-
 		const moveToSearchPage = () => {
-			if (selectedDate.value !== null) {
+			if (selectedDate.value !== null && startDate.value !== null && endDate.value !== null) {
 				startDate.value.setFullYear(selectedDate.value.getFullYear());
 				startDate.value.setMonth(selectedDate.value.getMonth());
 				startDate.value.setDate(selectedDate.value.getDate());
@@ -171,6 +172,7 @@ export default defineComponent({
 
 		const updateSeeMoreLink = () => {
 			if (selectedDate.value !== null && selectedDate.value instanceof Date) {
+				validDate.value = true;
 				singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
 				singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
 				singleDayStartDate.value.setDate(selectedDate.value.getDate());
@@ -196,16 +198,20 @@ export default defineComponent({
 						fq: fqArray,
 					},
 				};
+			} else {
+				validDate.value = false;
 			}
 		};
 
 		const HandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			const holder = new Date(endDate.value.getTime());
-			holder.setDate(1);
-			holder.setMonth(month);
-			holder.setFullYear(year);
-			selectedDate.value = holder;
-			updateSeeMoreLink();
+			if (endDate.value !== null) {
+				const holder = new Date(endDate.value.getTime());
+				holder.setDate(1);
+				holder.setMonth(month);
+				holder.setFullYear(year);
+				selectedDate.value = holder;
+				updateSeeMoreLink();
+			}
 		};
 
 		onMounted(() => {
@@ -226,7 +232,6 @@ export default defineComponent({
 			locale,
 			textInputOptions,
 			updateSelectedDate,
-			handleLossOfFocus,
 			setupInputTimer,
 			inputTimer,
 			validDate,

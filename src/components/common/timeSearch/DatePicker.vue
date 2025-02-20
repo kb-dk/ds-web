@@ -27,7 +27,6 @@
 				@update-month-year="startHandleMonthYear"
 				@keydown="setupStartInputTimer"
 				@keydown.enter="executeStartUpdate($event)"
-				@blur="handleLossOfFocus(validStartDate)"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -65,7 +64,6 @@
 				@update-month-year="endHandleMonthYear"
 				@keydown="setupEndInputTimer"
 				@keydown.enter="executeEndUpdate($event)"
-				@blur="handleLossOfFocus(validEndDate)"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -149,7 +147,6 @@ export default defineComponent({
 							inputs[1].setAttribute('data-testid', addTestDataEnrichment('input', 'date-pickers', 'end', 1));
 						}
 						const calendars = Array.from(pickers.querySelectorAll('.dp__outer_menu_wrap')) as HTMLElement[];
-						console.log(pickers, calendars, 'calendars');
 						if (calendars[0]) {
 							calendars[0].setAttribute('data-testid', addTestDataEnrichment('calendar', 'date-pickers', 'start', 0));
 						}
@@ -178,10 +175,6 @@ export default defineComponent({
 			updateSelectedDate(e, endInputTimer, validEndDate, endDate, enableApplyButtonIfSearchisValid);
 		};
 
-		const handleLossOfFocus = (val: boolean) => {
-			val = true;
-		};
-
 		const setupStartInputTimer = (e: Event) => {
 			if (startInputTimer !== null) {
 				clearTimeout(startInputTimer);
@@ -205,29 +198,33 @@ export default defineComponent({
 		 * so we also get an update in the template. Weird, but this is the way.
 		 */
 		const endHandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			const holder = new Date(endDate.value.getTime());
-			holder.setDate(1);
-			holder.setMonth(month);
-			holder.setFullYear(year);
-			endDate.value = holder;
-			if (endDate.value.getTime() !== endYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
+			if (endDate.value !== null) {
+				const holder = new Date(endDate.value.getTime());
+				holder.setDate(1);
+				holder.setMonth(month);
+				holder.setFullYear(year);
+				endDate.value = holder;
+				if (endDate.value.getTime() !== endYear.value.getTime()) {
+					timeSearchStore.setNewSearchReqMet(true);
+				} else {
+					timeSearchStore.setNewSearchReqMet(false);
+				}
 			}
 			//endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
 		};
 
 		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			const holder = new Date(startDate.value.getTime());
-			holder.setDate(1);
-			holder.setMonth(month);
-			holder.setFullYear(year);
-			startDate.value = holder;
-			if (startDate.value.getTime() !== startYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
+			if (startDate.value !== null) {
+				const holder = new Date(startDate.value.getTime());
+				holder.setDate(1);
+				holder.setMonth(month);
+				holder.setFullYear(year);
+				startDate.value = holder;
+				if (startDate.value.getTime() !== startYear.value.getTime()) {
+					timeSearchStore.setNewSearchReqMet(true);
+				} else {
+					timeSearchStore.setNewSearchReqMet(false);
+				}
 			}
 			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
 		};
@@ -243,6 +240,34 @@ export default defineComponent({
 				timeSearchStore.setNewSearchReqMet(false);
 			}
 		};
+
+		const validateStartInput = () => {
+			startDate.value !== null && startDate.value instanceof Date
+				? (validStartDate.value = true)
+				: (validStartDate.value = false);
+			enableApplyButtonIfSearchisValid();
+		};
+
+		const validateEndInput = () => {
+			endDate.value !== null && endDate.value instanceof Date
+				? (validEndDate.value = true)
+				: (validEndDate.value = false);
+			enableApplyButtonIfSearchisValid();
+		};
+
+		watch(
+			() => startDate.value,
+			() => {
+				validateStartInput();
+			},
+		);
+
+		watch(
+			() => endDate.value,
+			() => {
+				validateEndInput();
+			},
+		);
 
 		const readyForNewSearch = (picker: string) => {
 			if (picker === 'end') {
@@ -311,7 +336,6 @@ export default defineComponent({
 			validEndDate,
 			executeEndUpdate,
 			executeStartUpdate,
-			handleLossOfFocus,
 			setupStartInputTimer,
 			setupEndInputTimer,
 		};
