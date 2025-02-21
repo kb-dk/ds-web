@@ -123,6 +123,9 @@
 	background-color: #C4F1ED !important;
 }
 
+.dp__calendar_item {
+	flex-grow: unset;
+}
 
 .dp__btn.dp__month_year_select:after {
 	content:'expand_more';
@@ -149,6 +152,11 @@
     border-left: 1px solid white;
 		margin-left: 10px;
     padding-left: 5px;
+}
+
+.dp__cell_highlight:hover {
+	border:1px solid #0a2e70;
+	box-sizing: border-box;
 }
 
 .dp__month_year_select {
