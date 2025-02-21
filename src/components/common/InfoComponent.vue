@@ -191,7 +191,7 @@ export default defineComponent({
 	color: var(--bg-color);
 	background-color: var(--text-color);
 }
-@media (min-width: 510px) {
+@media (min-width: 640px) {
 	.title {
 		display: inline;
 	}
