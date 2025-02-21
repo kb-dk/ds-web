@@ -23,25 +23,28 @@
 						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
 						href="https://www.kb.dk"
 						class="level-1"
+						:title="t('breadcrumb.frontpage')"
 					>
 						<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
 					</a>
-					<span class="line mobile-hidden">/</span>
+					<span class="line">/</span>
 
 					<a
 						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
 						href="https://www.kb.dk/find-materiale"
 						class="level-2"
+						:title="t('breadcrumb.findMaterials')"
 					>
 						<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
 					</a>
-					<span class="line mobile-hidden">/</span>
+					<span class="line level-2">/</span>
 				</div>
 			</Transition>
 			<router-link
 				:to="{ path: '/' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
 				class="level-3"
+				:title="t('breadcrumb.drArchive')"
 				@click="searchResultStore.resetSearch()"
 			>
 				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
@@ -60,7 +63,7 @@
 			</span>
 			<span
 				v-if="$route.name === 'Record' && lastPath"
-				class="line"
+				class="line level-5"
 			>
 				/
 			</span>
@@ -69,6 +72,7 @@
 				class="level-5"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
+				:title="t('breadcrumb.search')"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</router-link>
@@ -77,6 +81,7 @@
 				class="level-5"
 				:to="{ name: 'Search' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-empty', 4)"
+				:title="t('breadcrumb.search')"
 			>
 				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
@@ -294,16 +299,12 @@ export default defineComponent({
 	text-overflow: ellipsis;
 }
 
-.level-1,
-.level-2,
-.level-3,
-.level-4,
-.level-5,
-.level-6 {
+.level-2 {
 	display: none;
 }
 
 .dot-button {
+	min-width: 30px;
 	font-size: 16px;
 	background-color: transparent;
 	border: 0px solid transparent;
@@ -382,7 +383,9 @@ export default defineComponent({
 	padding: 2px 6px 3px 6px;
 	border: 1px solid #002e70;
 	transition: all 0.1s linear 0s;
+	white-space: pre;
 }
+
 .breadcrumb-title.highlighted:hover {
 	background-color: #c4f1ed;
 	color: pink;
@@ -400,6 +403,8 @@ export default defineComponent({
 	margin: 0px 2px;
 	color: black;
 	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .record .breadcrumb-title.level-4 {
