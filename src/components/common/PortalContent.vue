@@ -64,6 +64,7 @@
 					month: new Date().toLocaleString(currentLocale, { month: 'long' }),
 				})
 			"
+			:data-testid="addTestDataEnrichment('TiltedDivider', 'PortalContent', 'through-time-header', 0)"
 		></TiltedDivider>
 		<div class="container">
 			<GridDisplay
@@ -72,6 +73,7 @@
 				:draggable="true"
 				:spots="searchResultStore.rotationalResult"
 				:loaded="dataLoaded"
+				:data-testid="addTestDataEnrichment('container', 'PortalContent', 'through-time-container', 0)"
 			></GridDisplay>
 		</div>
 	</div>
