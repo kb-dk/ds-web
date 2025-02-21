@@ -407,7 +407,7 @@ export default defineComponent({
 
 			const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
 
-			if (yearSearch) {
+			if (yearSearch && startDate.value !== null && endDate.value !== null) {
 				existingFq.push(
 					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 				);

@@ -205,6 +205,7 @@ h3:first-letter {
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
+	width: 100vw;
 }
 .time-search .container {
 	padding-left: 24px;
