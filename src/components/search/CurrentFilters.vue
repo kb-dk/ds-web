@@ -81,6 +81,8 @@
 			</button>
 			<button
 				v-if="
+					(startDate as unknown as string) !== '' &&
+					(endDate as unknown as string) !== '' &&
 					(startDate.getTime() !== startYear.getTime() || endDate.getTime() !== endYear.getTime()) &&
 					!timeSearchStore.newSearchReqMet
 				"
@@ -162,18 +164,22 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		const filtersActive = computed(() => {
-			if (
-				(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-					months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-					timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-					searchResultStore.categoryFilters.length !== 0 ||
-					searchResultStore.channelFilters.length !== 0 ||
-					startDate.value.getTime() !== startYear.value.getTime() ||
-					endDate.value.getTime() !== endYear.value.getTime() ||
-					searchResultStore.preliminaryFilter !== '') &&
-				!timeSearchStore.newSearchReqMet
-			) {
-				return true;
+			if ((startDate.value as unknown as string) !== '' && (endDate.value as unknown as string) !== '') {
+				if (
+					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+						timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+						searchResultStore.categoryFilters.length !== 0 ||
+						searchResultStore.channelFilters.length !== 0 ||
+						startDate.value.getTime() !== startYear.value.getTime() ||
+						endDate.value.getTime() !== endYear.value.getTime() ||
+						searchResultStore.preliminaryFilter !== '') &&
+					!timeSearchStore.newSearchReqMet
+				) {
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
