@@ -91,7 +91,14 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const selectPage = ref('');
 		const inputIncorrect = ref(false);
-		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
+		const totalPages = computed(() => {
+			if (Math.ceil(props.totalHits / props.itemsPerPage) < 100) {
+				return Math.ceil(props.totalHits / props.itemsPerPage);
+			} else {
+				return 100;
+			}
+		});
+
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n({ useScope: 'global' });
 		const inputRef = ref<HTMLInputElement | null>();
