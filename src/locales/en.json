@@ -131,6 +131,13 @@
      "page": "Page",
      "goToPage":"Go to page {n}",
      "goToThePage": "Go to the page",
+     "morePagesMessage":{
+      "1": "To give you the best experience, we have omitted a few posts in the system, other than the approximately 1.000 theres already shown.",
+      "2": "You have",
+      "3": "{totalHits}",
+      "4": "results that you can specify with search words or",
+      "5": "sorts at the top of results."
+    },
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
      "selected": "Selected",
