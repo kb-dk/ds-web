@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="hit-count">
-				<div :class="!searchResultStore.loading ? 'filter-options' : 'filter-options disabled'">
+				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
 						<button
 							ref="toggleFacetsButton"
@@ -460,6 +460,11 @@ export default defineComponent({
 	padding-top: 40px;
 }
 
+.filter-options.open {
+	transition: margin-bottom 0.1s ease-in-out 0s;
+	margin-bottom: calc(-2vw + -10px);
+}
+
 .filter-options {
 	display: flex;
 	flex-wrap: wrap;
@@ -468,7 +473,7 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	z-index: 1;
 	position: relative;
-	margin-bottom: calc(-2vw + -10px);
+	transition: margin-bottom 0.19s linear 0.27s;
 }
 
 .filter-options.disabled button {
@@ -704,6 +709,8 @@ export default defineComponent({
 @media (min-width: 640px) {
 	.filter-options {
 		flex-direction: row;
+	}
+	.filter-button.open {
 		margin-bottom: calc(-2vw + -5px);
 	}
 	.type-toggles {
@@ -731,7 +738,7 @@ export default defineComponent({
 	.filter-button-bottom {
 		top: calc(-2vw + -10px);
 	}
-	.filter-options {
+	.filter-options.open {
 		margin-bottom: calc(-2vw + -10px);
 	}
 }
@@ -740,7 +747,7 @@ export default defineComponent({
 	.filter-button-bottom {
 		top: calc(-2vw + -15px);
 	}
-	.filter-options {
+	.filter-options.open {
 		margin-bottom: calc(-2vw + -15px);
 	}
 }
@@ -749,7 +756,7 @@ export default defineComponent({
 	.filter-button-bottom {
 		top: calc(-1vw + 10px);
 	}
-	.filter-options {
+	.filter-options.open {
 		margin-bottom: calc(-1vw + 10px);
 	}
 }

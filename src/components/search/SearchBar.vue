@@ -94,7 +94,7 @@
 										</div>
 									</button>
 									<div
-										:class="showPortalSelector ? 'dropdown-menu select-show' : 'dropdown-menu'"
+										:class="showPortalSelector ? 'portal-dropdown-menu select-show' : 'portal-dropdown-menu'"
 										style=""
 									>
 										<div
@@ -104,7 +104,8 @@
 											tabindex="1"
 										>
 											<ul
-												class="dropdown-menu-inner inner show"
+												class="portal-dropdown-menu-inner inner show"
+												:data-testid="addTestDataEnrichment('dropdown', 'searchbar', 'portal', 0)"
 												role="presentation"
 												style="margin-top: 0px; margin-bottom: 0px"
 											>
@@ -798,7 +799,7 @@ input:focus {
 	font-feature-settings: 'liga';
 }
 
-.dropdown-menu-inner li:last-child {
+.portal-dropdown-menu-inner li:last-child {
 	border-top: 1px solid #d6d6d6;
 }
 
@@ -828,7 +829,7 @@ input:focus {
 	border: 0;
 }
 
-.dropdown-menu {
+.portal-dropdown-menu {
 	position: absolute;
 	top: 100%;
 	left: 0;
@@ -849,7 +850,7 @@ input:focus {
 	min-width: 100%;
 }
 
-.dropdown-menu-inner {
+.portal-dropdown-menu-inner {
 	position: absolute;
 	top: 100%;
 	left: 0;
@@ -872,21 +873,21 @@ input:focus {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
 }
 
-.dropdown-menu-inner button,
-.dropdown-menu-inner a {
+.portal-dropdown-menu-inner button,
+.portal-dropdown-menu-inner a {
 	font-family: 'noway', sans-serif;
 	font-size: 16px;
 	transition: all 0.3s linear 0s;
 }
 
-.dropdown-menu-inner button:hover,
-.dropdown-menu-inner a:hover {
+.portal-dropdown-menu-inner button:hover,
+.portal-dropdown-menu-inner a:hover {
 	color: #002e70;
 	background-color: #f2f4f8;
 	cursor: pointer;
 }
 
-.dropdown-menu.select-show {
+.portal-dropdown-menu.select-show {
 	display: block;
 }
 #bs-select-1-3 {
@@ -902,14 +903,14 @@ input:focus {
 	transform: translate(-100%, 0px);
 }
 
-.bootstrap-select .dropdown-menu li {
+.bootstrap-select .portal-dropdown-menu li {
 	position: relative;
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
 }
 
-.bootstrap-select .dropdown-menu.inner {
+.bootstrap-select .portal-dropdown-menu.inner {
 	position: static;
 	float: none;
 	border: 0;
@@ -975,7 +976,7 @@ input:focus {
 		padding: 20px 12px;
 	}
 
-	.dropdown-menu {
+	.portal-dropdown-menu {
 		top: 71px;
 	}
 
