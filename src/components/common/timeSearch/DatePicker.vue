@@ -27,6 +27,7 @@
 				@update-month-year="startHandleMonthYear"
 				@keydown="setupStartInputTimer"
 				@keydown.enter="executeStartUpdate($event)"
+				@blur="validStartDate = true"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -64,6 +65,7 @@
 				@update-month-year="endHandleMonthYear"
 				@keydown="setupEndInputTimer"
 				@keydown.enter="executeEndUpdate($event)"
+				@blur="validEndDate = true"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -167,11 +169,11 @@ export default defineComponent({
 		};
 
 		const executeStartUpdate = (e: Event) => {
-			updateSelectedDate(e, startInputTimer, validStartDate, startDate, enableApplyButtonIfSearchisValid);
+			updateSelectedDate(e, startInputTimer, validStartDate, startDate, validateStartInput);
 		};
 
 		const executeEndUpdate = (e: Event) => {
-			updateSelectedDate(e, endInputTimer, validEndDate, endDate, enableApplyButtonIfSearchisValid);
+			updateSelectedDate(e, endInputTimer, validEndDate, endDate, validateEndInput);
 		};
 
 		const setupStartInputTimer = (e: Event) => {
@@ -179,7 +181,7 @@ export default defineComponent({
 				clearTimeout(startInputTimer);
 			}
 			startInputTimer = setTimeout(() => {
-				updateSelectedDate(e, startInputTimer, validStartDate, startDate, enableApplyButtonIfSearchisValid);
+				updateSelectedDate(e, startInputTimer, validStartDate, startDate, validateStartInput);
 			}, 750); // 750 milliseconds (0.75 second) delay
 		};
 
@@ -188,7 +190,7 @@ export default defineComponent({
 				clearTimeout(endInputTimer);
 			}
 			endInputTimer = setTimeout(() => {
-				updateSelectedDate(e, endInputTimer, validEndDate, endDate, enableApplyButtonIfSearchisValid);
+				updateSelectedDate(e, endInputTimer, validEndDate, endDate, validateEndInput);
 			}, 750); // 750 milliseconds (0.75 second) delay
 		};
 
@@ -209,7 +211,6 @@ export default defineComponent({
 					timeSearchStore.setNewSearchReqMet(false);
 				}
 			}
-			//endDatePicker.value ? endDatePicker.value.updateInternalModelValue(endDate.value) : null;
 		};
 
 		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
@@ -225,25 +226,24 @@ export default defineComponent({
 					timeSearchStore.setNewSearchReqMet(false);
 				}
 			}
-			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
 		};
 
 		const enableApplyButtonIfSearchisValid = () => {
 			if (validEndDate.value && validStartDate.value) {
-				timeSearchStore.setNewSearchReqMet(true);
+				timeSearchStore.setFilterSearchReady(true);
 			} else {
-				timeSearchStore.setNewSearchReqMet(false);
+				timeSearchStore.setFilterSearchReady(false);
 			}
 		};
 
 		const validateStartInput = () => {
-			startDate.value !== null && startDate.value instanceof Date
+			startDate.value !== null && startDate.value instanceof Date && (startDate.value as unknown as string) !== ''
 				? (validStartDate.value = true)
 				: (validStartDate.value = false);
 		};
 
 		const validateEndInput = () => {
-			endDate.value !== null && endDate.value instanceof Date
+			endDate.value !== null && endDate.value instanceof Date && (endDate.value as unknown as string) !== ''
 				? (validEndDate.value = true)
 				: (validEndDate.value = false);
 		};
@@ -252,6 +252,7 @@ export default defineComponent({
 			() => startDate.value,
 			() => {
 				validateStartInput();
+				enableApplyButtonIfSearchisValid();
 			},
 		);
 
@@ -259,6 +260,14 @@ export default defineComponent({
 			() => endDate.value,
 			() => {
 				validateEndInput();
+				enableApplyButtonIfSearchisValid();
+			},
+		);
+
+		watch(
+			() => [validStartDate.value, validEndDate.value],
+			() => {
+				enableApplyButtonIfSearchisValid();
 			},
 		);
 

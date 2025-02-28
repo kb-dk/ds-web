@@ -81,8 +81,10 @@
 			</button>
 			<button
 				v-if="
-					((startDate !== null && startDate.getTime() !== startYear.getTime()) ||
-						(endDate !== null && endDate.getTime() !== endYear.getTime())) &&
+					((startDate !== null &&
+						(startDate as unknown as string) !== '' &&
+						startDate.getTime() !== startYear.getTime()) ||
+						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())) &&
 					!timeSearchStore.newSearchReqMet
 				"
 				@click="resetYearsAndSearch('startTime')"
@@ -154,7 +156,12 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		const filtersActive = computed(() => {
-			if (startDate.value !== null && endDate.value !== null) {
+			if (
+				startDate.value !== null &&
+				(startDate.value as unknown as string) !== '' &&
+				endDate.value !== null &&
+				(endDate.value as unknown as string) !== ''
+			) {
 				if (
 					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
 						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
@@ -235,7 +242,12 @@ export default defineComponent({
 		};
 
 		const presentDateSpan = () => {
-			if (startDate.value !== null && endDate.value !== null) {
+			if (
+				startDate.value !== null &&
+				endDate.value !== null &&
+				(startDate.value as unknown as string) !== '' &&
+				(endDate.value as unknown as string) !== ''
+			) {
 				return `${startDate.value.getDate()}/${
 					startDate.value.getMonth() + 1
 				}-${startDate.value.getFullYear()} - ${endDate.value.getDate()}/${
@@ -247,7 +259,12 @@ export default defineComponent({
 		};
 
 		const calculatedYearSpan = () => {
-			if (startDate.value !== null && endDate.value !== null) {
+			if (
+				startDate.value !== null &&
+				endDate.value !== null &&
+				(startDate.value as unknown as string) !== '' &&
+				(endDate.value as unknown as string) !== ''
+			) {
 				return `(${endDate.value.getFullYear() - startDate.value.getFullYear() + 1}~ ${t(
 					'timeSearch.year',
 					endDate.value.getFullYear() - startDate.value.getFullYear() + 1,

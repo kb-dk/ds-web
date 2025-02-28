@@ -75,7 +75,7 @@
 			icon="event"
 			:subline="getSublineForYears(startDate, endDate, t)"
 		>
-			<div class="picker-background"><DatePicker @span-updated="emitNewSearch()"></DatePicker></div>
+			<div class="picker-background"><DatePicker></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
@@ -239,7 +239,7 @@
 		>
 			<button
 				class="apply-time-facets"
-				:disabled="!timeSearchStore.newSearchReqMet"
+				:disabled="!timeSearchStore.filterSearchReady"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
@@ -452,6 +452,7 @@ export default defineComponent({
 				});
 			}
 			timeSearchStore.setNewSearchReqMet(false);
+			timeSearchStore.setFilterSearchReady(false);
 		};
 
 		const updateStartYear = (val: number) => {
