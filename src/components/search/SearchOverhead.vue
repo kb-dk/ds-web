@@ -245,8 +245,15 @@ export default defineComponent({
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
-			startDate.value.setTime(startYear.value.getTime());
-			endDate.value.setTime(endYear.value.getTime());
+			if (startDate.value !== null && endDate.value !== null) {
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			} else {
+				startDate.value = new Date();
+				endDate.value = new Date();
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			}
 			router.push({
 				name: 'Search',
 				query: {
