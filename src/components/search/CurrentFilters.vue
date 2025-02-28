@@ -81,25 +81,15 @@
 			</button>
 			<button
 				v-if="
-					(startDate as unknown as string) !== '' &&
-					(endDate as unknown as string) !== '' &&
-					(startDate.getTime() !== startYear.getTime() || endDate.getTime() !== endYear.getTime()) &&
+					((startDate !== null && startDate.getTime() !== startYear.getTime()) ||
+						(endDate !== null && endDate.getTime() !== endYear.getTime())) &&
 					!timeSearchStore.newSearchReqMet
 				"
 				@click="resetYearsAndSearch('startTime')"
 			>
 				<span>
-					{{
-						`${startDate.getDate()}/${startDate.getMonth() + 1}-${startDate.getFullYear()} - ${endDate.getDate()}/${
-							endDate.getMonth() + 1
-						}-${endDate.getFullYear()}`
-					}}
-					{{
-						`(${endDate.getFullYear() - startDate.getFullYear() + 1}~ ${t(
-							'timeSearch.year',
-							endDate.getFullYear() - startDate.getFullYear() + 1,
-						)})`
-					}}
+					{{ presentDateSpan() }}
+					{{ calculatedYearSpan() }}
 				</span>
 				<span class="material-icons">close</span>
 			</button>
@@ -164,7 +154,7 @@ export default defineComponent({
 		const { t } = useI18n();
 
 		const filtersActive = computed(() => {
-			if ((startDate.value as unknown as string) !== '' && (endDate.value as unknown as string) !== '') {
+			if (startDate.value !== null && endDate.value !== null) {
 				if (
 					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
 						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
@@ -191,9 +181,11 @@ export default defineComponent({
 		};
 
 		const resetYearsAndSearch = (facet: string) => {
-			startDate.value.setTime(startYear.value.getTime());
-			endDate.value.setTime(endYear.value.getTime());
-			removeFilterAndSearch(facet);
+			if (startDate.value !== null && endDate.value !== null) {
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+				removeFilterAndSearch(facet);
+			}
 		};
 
 		const removePreliminaryFilterAndSearch = () => {
@@ -225,14 +217,44 @@ export default defineComponent({
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
-			startDate.value.setTime(startYear.value.getTime());
-			endDate.value.setTime(endYear.value.getTime());
+			if (startDate.value !== null && endDate.value !== null) {
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			} else {
+				startDate.value = new Date();
+				endDate.value = new Date();
+				startDate.value.setTime(startYear.value.getTime());
+				endDate.value.setTime(endYear.value.getTime());
+			}
 			router.push({
 				name: 'Search',
 				query: {
 					q: routeQueries.q,
 				},
 			});
+		};
+
+		const presentDateSpan = () => {
+			if (startDate.value !== null && endDate.value !== null) {
+				return `${startDate.value.getDate()}/${
+					startDate.value.getMonth() + 1
+				}-${startDate.value.getFullYear()} - ${endDate.value.getDate()}/${
+					endDate.value.getMonth() + 1
+				}-${endDate.value.getFullYear()}`;
+			} else {
+				return '';
+			}
+		};
+
+		const calculatedYearSpan = () => {
+			if (startDate.value !== null && endDate.value !== null) {
+				return `(${endDate.value.getFullYear() - startDate.value.getFullYear() + 1}~ ${t(
+					'timeSearch.year',
+					endDate.value.getFullYear() - startDate.value.getFullYear() + 1,
+				)})`;
+			} else {
+				return '';
+			}
 		};
 
 		return {
@@ -252,6 +274,8 @@ export default defineComponent({
 			startYear,
 			endYear,
 			t,
+			presentDateSpan,
+			calculatedYearSpan,
 		};
 	},
 });

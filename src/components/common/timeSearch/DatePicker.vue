@@ -102,8 +102,7 @@ export default defineComponent({
 	components: {
 		VueDatePicker,
 	},
-	emits: ['spanUpdated'],
-	setup(props, { emit }) {
+	setup() {
 		let startInputTimer: ReturnType<typeof setTimeout> | null = null;
 
 		let endInputTimer: ReturnType<typeof setTimeout> | null = null;
@@ -229,10 +228,6 @@ export default defineComponent({
 			//startDatePicker.value ? startDatePicker.value.updateInternalModelValue(startDate.value) : null;
 		};
 
-		const newSearch = () => {
-			emit('spanUpdated');
-		};
-
 		const enableApplyButtonIfSearchisValid = () => {
 			if (validEndDate.value && validStartDate.value) {
 				timeSearchStore.setNewSearchReqMet(true);
@@ -245,14 +240,12 @@ export default defineComponent({
 			startDate.value !== null && startDate.value instanceof Date
 				? (validStartDate.value = true)
 				: (validStartDate.value = false);
-			enableApplyButtonIfSearchisValid();
 		};
 
 		const validateEndInput = () => {
 			endDate.value !== null && endDate.value instanceof Date
 				? (validEndDate.value = true)
 				: (validEndDate.value = false);
-			enableApplyButtonIfSearchisValid();
 		};
 
 		watch(
@@ -322,7 +315,6 @@ export default defineComponent({
 			endYear,
 			format,
 			highlightedDays,
-			newSearch,
 			readyForNewSearch,
 			startDatePicker,
 			endDatePicker,

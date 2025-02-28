@@ -438,7 +438,7 @@ export default defineComponent({
 			if (yearSearch.value && yearSearch.value.expanderOpen) {
 				emit('newSearch', true);
 			} else {
-				if (props.timeline) {
+				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
 					endDate.value.setFullYear(timeSliderValues.value[1]);
 				}
@@ -456,20 +456,20 @@ export default defineComponent({
 
 		const updateStartYear = (val: number) => {
 			timeSliderValues.value[0] = Number(val);
-			startDate.value.setFullYear(val);
+			startDate.value !== null ? startDate.value.setFullYear(val) : null;
 			if (Number(val) > timeSliderValues.value[1]) {
 				timeSliderValues.value[1] = Number(val);
-				endDate.value.setFullYear(val);
+				endDate.value !== null ? endDate.value.setFullYear(val) : null;
 			}
 			emitNewSearch();
 		};
 
 		const updateEndYear = (val: number) => {
-			endDate.value.setFullYear(val);
+			endDate.value !== null ? endDate.value.setFullYear(val) : null;
 			timeSliderValues.value[1] = Number(val);
 			if (Number(val) < timeSliderValues.value[0]) {
 				timeSliderValues.value[0] = Number(val);
-				startDate.value.setFullYear(val);
+				startDate.value !== null ? startDate.value.setFullYear(val) : null;
 			}
 			emitNewSearch();
 		};

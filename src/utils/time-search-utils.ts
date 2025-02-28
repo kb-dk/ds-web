@@ -34,8 +34,8 @@ const resetAllSelectorValues = (array: SelectorData[]) => {
 const getTimeResults = (allowYearSearch: boolean) => {
 	const timeSearchStore = useTimeSearchStore();
 	timeSearchStore.getTimeSearchResults(
-		allowYearSearch ? startDate.value.toISOString() : '',
-		allowYearSearch ? endDate.value.toISOString() : '',
+		allowYearSearch && startDate.value !== null ? startDate.value.toISOString() : '',
+		allowYearSearch && endDate.value !== null ? endDate.value.toISOString() : '',
 		getSelectedFromArray(months.value),
 		getSelectedFromArray(days.value),
 		getSelectedFromArray(timeslots.value),
@@ -59,7 +59,7 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 	return selected;
 };
 
-const getSublineForYears = (startDate: Date, endDate: Date, t: ComposerTranslation) => {
+const getSublineForYears = (startDate: Date | null, endDate: Date | null, t: ComposerTranslation) => {
 	if (startDate && endDate) {
 		const startYear = startDate.getFullYear();
 		const endYear = endDate.getFullYear();
