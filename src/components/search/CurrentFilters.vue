@@ -58,7 +58,7 @@
 				<span>
 					{{
 						`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.day',
+							'timeSearch.weekday',
 							days.filter((entity) => entity.selected === true).length,
 						)}`
 					}}
@@ -92,12 +92,7 @@
 							endDate.getMonth() + 1
 						}-${endDate.getFullYear()}`
 					}}
-					{{
-						`(${endDate.getFullYear() - startDate.getFullYear() + 1}~ ${t(
-							'timeSearch.year',
-							endDate.getFullYear() - startDate.getFullYear() + 1,
-						)})`
-					}}
+					{{ approxTimeDifference() }}
 				</span>
 				<span class="material-icons">close</span>
 			</button>
@@ -229,6 +224,25 @@ export default defineComponent({
 			});
 		};
 
+		const approxTimeDifference = () => {
+			const yearDifference: number = endDate.value.getFullYear() - startDate.value.getFullYear();
+			const monthDifference: number = endDate.value.getMonth() - startDate.value.getMonth();
+			const dayDifference: number = endDate.value.getDate() - startDate.value.getDate();
+			if (yearDifference === 0) {
+				if (monthDifference === 0) {
+					if (dayDifference >= 7) {
+						return `(${Math.floor(dayDifference / 7)}~ ${t('timeSearch.week', Math.floor(dayDifference / 7))})`;
+					} else {
+						return `(${dayDifference + 1}~ ${t('timeSearch.day', dayDifference + 1)})`;
+					}
+				} else {
+					return `(${monthDifference + 1}~ ${t('timeSearch.month', monthDifference + 1)})`;
+				}
+			} else {
+				return `(${yearDifference + 1}~ ${t('timeSearch.year', yearDifference + 1)})`;
+			}
+		};
+
 		return {
 			searchResultStore,
 			timeSearchStore,
@@ -245,6 +259,7 @@ export default defineComponent({
 			endDate,
 			startYear,
 			endYear,
+			approxTimeDifference,
 			t,
 		};
 	},

@@ -88,7 +88,7 @@ const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
 	if (getDays(days).length === 0 || getDays(days).length === 7) {
 		return `${t('timeSearch.allDays')}`;
 	} else {
-		return `${getDays(days).length} ${t('timeSearch.day', getDays(days).length)}`;
+		return `${getDays(days).length} ${t('timeSearch.weekday', getDays(days).length)}`;
 	}
 };
 
