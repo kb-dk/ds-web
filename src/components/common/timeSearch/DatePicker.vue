@@ -199,32 +199,32 @@ export default defineComponent({
 		 * so we also get an update in the template. Weird, but this is the way.
 		 */
 		const endHandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			if (endDate.value !== null) {
-				const holder = new Date(endDate.value.getTime());
-				holder.setDate(1);
-				holder.setMonth(month);
-				holder.setFullYear(year);
-				endDate.value = holder;
-				if (endDate.value.getTime() !== endYear.value.getTime()) {
-					timeSearchStore.setNewSearchReqMet(true);
-				} else {
-					timeSearchStore.setNewSearchReqMet(false);
-				}
+			const holder = new Date();
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			holder.setHours(23, 59, 59, 999); // End of the day
+			endDate.value = holder;
+
+			if (endDate.value.getTime() !== endYear.value.getTime()) {
+				timeSearchStore.setNewSearchReqMet(true);
+			} else {
+				timeSearchStore.setNewSearchReqMet(false);
 			}
 		};
 
 		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			if (startDate.value !== null) {
-				const holder = new Date(startDate.value.getTime());
-				holder.setDate(1);
-				holder.setMonth(month);
-				holder.setFullYear(year);
-				startDate.value = holder;
-				if (startDate.value.getTime() !== startYear.value.getTime()) {
-					timeSearchStore.setNewSearchReqMet(true);
-				} else {
-					timeSearchStore.setNewSearchReqMet(false);
-				}
+			const holder = new Date();
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			holder.setHours(0, 0, 0, 0); // Start of the day
+			startDate.value = holder;
+
+			if (startDate.value.getTime() !== startYear.value.getTime()) {
+				timeSearchStore.setNewSearchReqMet(true);
+			} else {
+				timeSearchStore.setNewSearchReqMet(false);
 			}
 		};
 

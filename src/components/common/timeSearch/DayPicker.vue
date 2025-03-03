@@ -176,10 +176,12 @@ export default defineComponent({
 				singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
 				singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
 				singleDayStartDate.value.setDate(selectedDate.value.getDate());
+				singleDayStartDate.value.setHours(0, 0, 0, 0); // Start of the day
 
 				singleDayEndDate.value.setFullYear(selectedDate.value.getFullYear());
 				singleDayEndDate.value.setMonth(selectedDate.value.getMonth());
 				singleDayEndDate.value.setDate(selectedDate.value.getDate());
+				singleDayEndDate.value.setHours(23, 59, 59, 999); // End of the day
 
 				const fqArray = [];
 
@@ -204,14 +206,12 @@ export default defineComponent({
 		};
 
 		const HandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			if (endDate.value !== null) {
-				const holder = new Date(endDate.value.getTime());
-				holder.setDate(1);
-				holder.setMonth(month);
-				holder.setFullYear(year);
-				selectedDate.value = holder;
-				updateSeeMoreLink();
-			}
+			const holder = new Date();
+			holder.setDate(1);
+			holder.setMonth(month);
+			holder.setFullYear(year);
+			selectedDate.value = holder;
+			updateSeeMoreLink();
 		};
 
 		onMounted(() => {
