@@ -130,6 +130,11 @@ export default defineComponent({
 			const start = (currentPageRef.value - 1) * props.itemsPerPage;
 			const query = { ...route.query, start };
 			router.push({ query });
+			const resultContainer = document.getElementsByClassName('hits')[0];
+			resultContainer?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
 		};
 
 		const nextPage = () => {
@@ -231,7 +236,6 @@ export default defineComponent({
 			(newStart: string, prevStart: string) => {
 				if (newStart !== prevStart) {
 					initializePager();
-					window.scrollTo({ top: 0, behavior: 'smooth' });
 					selectPage.value = '';
 				}
 			},

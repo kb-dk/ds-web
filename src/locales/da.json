@@ -105,6 +105,12 @@
          "night":"00.00 - 06.00"
      }
    },
+  "datepicker": {
+      "error":"Ikke gyldig dato. I øjeblikket dækker arkivet fra {start} til {end}",
+      "date":"Dato",
+      "to":"Til",
+      "unknownLength":"Ukendt tidsperiode"
+   },
   "search":{
      "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
@@ -156,7 +162,7 @@
       "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er dermeget materiale, og i andre er der kun lidt eller ingenting.",
       "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
     },
-    "showContent": "Vis indhold",
+    "showContent": "Anvend",
      "portals": {
          "drArchive":"DR-arkivet",
          "booksAndMaterials":"Bøger og tidskrifter",
