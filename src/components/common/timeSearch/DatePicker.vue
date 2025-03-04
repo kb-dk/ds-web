@@ -220,7 +220,6 @@ export default defineComponent({
 			holder.setFullYear(year);
 			holder.setHours(0, 0, 0, 0); // Start of the day
 			startDate.value = holder;
-
 			if (startDate.value.getTime() !== startYear.value.getTime()) {
 				timeSearchStore.setNewSearchReqMet(true);
 			} else {
@@ -229,11 +228,7 @@ export default defineComponent({
 		};
 
 		const enableApplyButtonIfSearchisValid = () => {
-			if (validEndDate.value && validStartDate.value) {
-				timeSearchStore.setFilterSearchReady(true);
-			} else {
-				timeSearchStore.setFilterSearchReady(false);
-			}
+			timeSearchStore.setFilterSearchReady(validEndDate.value && validStartDate.value);
 		};
 
 		const validateStartInput = () => {

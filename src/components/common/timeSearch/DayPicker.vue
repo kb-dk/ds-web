@@ -187,7 +187,7 @@ export default defineComponent({
 
 				fqArray.push(
 					encodeURIComponent(
-						`startTime:[${singleDayStartDate.value.toISOString() + ' TO ' + singleDayEndDate.value.toISOString()}]`,
+						`startTime:[${singleDayStartDate.value.toISOString()} TO ${singleDayEndDate.value.toISOString()}]`,
 					),
 				);
 
