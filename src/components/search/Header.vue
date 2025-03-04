@@ -1,10 +1,11 @@
 <template>
 	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
-		<kb-menu
+		<!-- <kb-menu
 			:routing="true"
 			:locale="locale"
 			:page="$route.name"
-		></kb-menu>
+		></kb-menu> -->
+		<HeaderMenu></HeaderMenu>
 		<SearchBar />
 		<Breadcrumb />
 		<div class="edge top"></div>
@@ -13,7 +14,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import '@/components/global/nav/wc-header-menu';
+// import '@/components/global/nav/wc-header-menu';
+import HeaderMenu from '../global/nav/HeaderMenu.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
 export default defineComponent({
@@ -21,6 +23,7 @@ export default defineComponent({
 	components: {
 		SearchBar,
 		Breadcrumb,
+		HeaderMenu,
 	},
 	props: {
 		locale: { type: String, required: true },

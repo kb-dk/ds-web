@@ -17,6 +17,60 @@
          "loadingError": "Loading error"
       }
    },
+
+   "header":{
+      "secondary":
+         [
+            {
+               "title": "Collect and return",
+               "link": "https://www.kb.dk/en/services/loans-and-returns"
+            },{
+               "title": "New user", 
+               "link": "https://www.kb.dk/en/become-library-user"
+            },{
+               "title": "About us", 
+               "link": "https://www.kb.dk/en/about-us"
+            },{
+               "title": "Webshop", 
+               "link": "https://webshop.kb.dk/"
+            },{
+               "title": "Opening hours", 
+               "link": "https://www.kb.dk/en/opening-hours"
+            },{
+               "title": "På dansk", 
+               "link": "#",
+               "id": "localeSwitcher"
+            },{
+               "title": "Login", 
+               "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=en",
+               "icon": "account_circle"
+            }
+         ],
+      "primary":
+         [
+            {
+               "title": "Find materials",
+               "link": "https://www.kb.dk/en/find-materials"
+            },{
+               "title": "Inspiration", 
+               "link": "https://www.kb.dk/en/inspiration"
+            },{
+               "title": "Events", 
+               "link": "https://www.kb.dk/en/events"
+            },{
+               "title": "Services", 
+               "link": "https://www.kb.dk/en/services"
+            },{
+               "title": "Visit us", 
+               "link": "https://www.kb.dk/en/visit-us"
+            },{
+               "title": "Close", 
+               "link": "#",
+               "id": "searchToggle",
+               "icon": "search"
+            }
+         ]
+   },
    "frontpage": {
       "fromTheArchive":"The month of {month} on DR through time"
    },
@@ -48,7 +102,9 @@
       "searchCategories": "Search by category",
       "year":"year | years",
       "month":"month | months",
+      "week":"week | weeks",
       "day":"day | days",
+      "weekday":"day | days",
       "timePeriods": "time span | time spans",
       "chosenTimeslots":"Chosen timeslots",
       "foundResults":"found results",

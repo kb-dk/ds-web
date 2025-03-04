@@ -17,6 +17,60 @@
         "loadingError": "Indlæsning fejlede"
       }
    },
+
+   "header":{
+      "secondary":
+         [
+            {
+               "title": "Lån og aflevering",
+               "link": "https://www.kb.dk/services/laan-og-aflevering"
+            },{
+               "title": "Bliv bruger", 
+               "link": "https://www.kb.dk/bliv-bruger"
+            },{
+               "title": "Om os", 
+               "link": "https://www.kb.dk/om-os"
+            },{
+               "title": "Webshop", 
+               "link": "https://webshop.kb.dk/"
+            },{
+               "title": "Åbningstider", 
+               "link": "https://www.kb.dk/aabningstider"
+            },{
+               "title": "In english", 
+               "link": "#",
+               "id": "localeSwitcher"
+            },{
+               "title": "Login", 
+               "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
+               "icon": "account_circle"
+            }
+         ],
+      "primary":
+         [
+            {
+               "title": "Find materiale",
+               "link": "https://www.kb.dk/find-materiale"
+            },{
+               "title": "Inspiration", 
+               "link": "https://www.kb.dk/inspiration"
+            },{
+               "title": "Arrangementer", 
+               "link": "https://www.kb.dk/arrangementer"
+            },{
+               "title": "Services", 
+               "link": "https://www.kb.dk/services"
+            },{
+               "title": "Besøg os", 
+               "link": "https://www.kb.dk/besoeg-os"
+            },{
+               "title": "Luk", 
+               "link": "#",
+               "id": "searchToggle",
+               "icon": "search"
+            }
+         ]
+   },
    "frontpage": {
       "fromTheArchive":"{month} måned på DR gennem tiden"
    },
@@ -47,7 +101,9 @@
      "searchCategories": "Søg via kategori",
       "year":"år | år",
       "month":"måned | måneder",
-      "day":"ugedag | ugedage",
+      "week":"uge | uger",
+      "day":"dag | dage",
+      "weekday":"ugedag | ugedage",
       "timePeriods": "tidspunkt | tidspunkter",
       "chosenTimeslots":"Valgte tidspunkter",
       "foundResults":"fundne resultater",
