@@ -33,6 +33,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const { t } = useI18n();
 	const newSearchReqMet = ref(false);
 	const timeFacetsOpen = ref(false);
+	const filterSearchReady = ref(true);
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
 		const dateA = new Date(a.startTime).getTime();
@@ -46,6 +47,10 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 
 	const setNewSearchReqMet = (val: boolean) => {
 		newSearchReqMet.value = val;
+	};
+
+	const setFilterSearchReady = (val: boolean) => {
+		filterSearchReady.value = val;
 	};
 
 	const setLoading = (value: boolean) => {
@@ -199,5 +204,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		timeFacetsOpen,
 		setTimeFacetsOpen,
 		setFiltersFromUrl,
+		filterSearchReady,
+		setFilterSearchReady,
 	};
 });

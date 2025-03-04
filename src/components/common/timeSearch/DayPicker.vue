@@ -1,6 +1,7 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
+			<span class="date-span">{{ t('datepicker.date') }}:</span>
 			<VueDatePicker
 				ref="singleDatePicker"
 				v-model="selectedDate"
@@ -9,7 +10,7 @@
 				:locale="locale"
 				auto-apply
 				no-today
-				text-input
+				:text-input="textInputOptions"
 				:format="format"
 				six-weeks="fair"
 				:month-change-on-scroll="false"
@@ -17,29 +18,38 @@
 				:max-date="endYear"
 				prevent-min-max-navigation
 				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
+				:state="validDate"
+				allow-null="true"
 				@update:model-value="updateSeeMoreLink()"
 				@update-month-year="HandleMonthYear"
+				@keydown="setupInputTimer"
+				@keydown.enter="executeUpdate($event)"
 			></VueDatePicker>
+			<Transition name="fade">
+				<div
+					v-if="!validDate"
+					class="error-container"
+				>
+					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+				</div>
+			</Transition>
 		</div>
 		<div class="time-container">
-			<div class="time">
-				{{ format(selectedDate) /*date2.toISOString()*/ }}
-			</div>
 			<router-link
-				class="single-day-link"
+				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
 				@click="moveToSearchPage()"
 			>
 				<span>{{ $t('search.showContent') }}</span>
-				<div class="link-arrow"></div>
+				<div class="check-mark"></div>
 			</router-link>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {
@@ -55,6 +65,7 @@ import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
+import { updateSelectedDate } from '@/utils/datepicker-utils';
 
 interface MonthYearEvent {
 	instance: number;
@@ -68,19 +79,64 @@ export default defineComponent({
 		VueDatePicker,
 	},
 	setup() {
-		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref(new Date(2015, 0, 1, 0, 0, 0));
+		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 
+		const singleDatePicker = ref<DatePickerInstance>();
+		const selectedDate = ref<Date | null>(new Date(2015, 0, 1, 0, 0, 0));
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
-		const { locale } = useI18n();
+		const { locale, t } = useI18n();
+		const validDate = ref(true);
 		const format = (date: Date) => {
 			const day = date.getDate();
 			const month = date.getMonth() + 1;
 			const year = date.getFullYear();
 
-			return `${day} / ${month} / ${year}`;
+			return `${day}-${month}-${year}`;
+		};
+
+		onMounted(() => {
+			watch(
+				() => singleDatePicker.value?.dpWrapMenuRef as unknown as HTMLElement | null,
+				(newVal: HTMLElement | null) => {
+					if (newVal !== null) {
+						const picker = document.querySelector('.day-picker');
+						if (picker) {
+							const inputs = Array.from(picker.querySelectorAll('input')) as HTMLElement[];
+							if (inputs[0]) {
+								inputs[0].setAttribute('data-testid', addTestDataEnrichment('input', 'day-picker', 'start', 0));
+							}
+
+							const calendar = Array.from(picker.querySelectorAll('.dp__outer_menu_wrap')) as HTMLElement[];
+							if (calendar[0]) {
+								calendar[0].setAttribute('data-testid', addTestDataEnrichment('calendar', 'day-picker', 'start', 0));
+							}
+						}
+					}
+				},
+				{ deep: true },
+			);
+		});
+
+		watch(
+			() => selectedDate.value,
+			() => {
+				updateSeeMoreLink();
+			},
+		);
+
+		const setupInputTimer = (e: Event) => {
+			if (inputTimer !== null) {
+				clearTimeout(inputTimer);
+			}
+			inputTimer = setTimeout(() => {
+				updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink);
+			}, 750); // 750 milliseconds (0.75 second) delay
+		};
+
+		const textInputOptions = {
+			format: 'd-M-yyyy',
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -94,13 +150,15 @@ export default defineComponent({
 		});
 
 		const moveToSearchPage = () => {
-			startDate.value.setFullYear(selectedDate.value.getFullYear());
-			startDate.value.setMonth(selectedDate.value.getMonth());
-			startDate.value.setDate(selectedDate.value.getDate());
+			if (selectedDate.value !== null && startDate.value !== null && endDate.value !== null) {
+				startDate.value.setFullYear(selectedDate.value.getFullYear());
+				startDate.value.setMonth(selectedDate.value.getMonth());
+				startDate.value.setDate(selectedDate.value.getDate());
 
-			endDate.value.setFullYear(selectedDate.value.getFullYear());
-			endDate.value.setMonth(selectedDate.value.getMonth());
-			endDate.value.setDate(selectedDate.value.getDate());
+				endDate.value.setFullYear(selectedDate.value.getFullYear());
+				endDate.value.setMonth(selectedDate.value.getMonth());
+				endDate.value.setDate(selectedDate.value.getDate());
+			}
 
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
@@ -108,35 +166,47 @@ export default defineComponent({
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		};
 
+		const executeUpdate = (e: Event) => {
+			updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink); // Pass .value here as well
+		};
+
 		const updateSeeMoreLink = () => {
-			singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
-			singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
-			singleDayStartDate.value.setDate(selectedDate.value.getDate());
+			if (selectedDate.value !== null && selectedDate.value instanceof Date) {
+				validDate.value = true;
+				singleDayStartDate.value.setFullYear(selectedDate.value.getFullYear());
+				singleDayStartDate.value.setMonth(selectedDate.value.getMonth());
+				singleDayStartDate.value.setDate(selectedDate.value.getDate());
+				singleDayStartDate.value.setHours(0, 0, 0, 0); // Start of the day
 
-			singleDayEndDate.value.setFullYear(selectedDate.value.getFullYear());
-			singleDayEndDate.value.setMonth(selectedDate.value.getMonth());
-			singleDayEndDate.value.setDate(selectedDate.value.getDate());
-			const fqArray = [];
+				singleDayEndDate.value.setFullYear(selectedDate.value.getFullYear());
+				singleDayEndDate.value.setMonth(selectedDate.value.getMonth());
+				singleDayEndDate.value.setDate(selectedDate.value.getDate());
+				singleDayEndDate.value.setHours(23, 59, 59, 999); // End of the day
 
-			fqArray.push(
-				encodeURIComponent(
-					`startTime:[${singleDayStartDate.value.toISOString() + ' TO ' + singleDayEndDate.value.toISOString()}]`,
-				),
-			);
+				const fqArray = [];
 
-			specificDayLink.value = {
-				name: 'Search',
-				query: {
-					q: '*:*',
-					start: 0,
-					rows: 10,
-					fq: fqArray,
-				},
-			};
+				fqArray.push(
+					encodeURIComponent(
+						`startTime:[${singleDayStartDate.value.toISOString()} TO ${singleDayEndDate.value.toISOString()}]`,
+					),
+				);
+
+				specificDayLink.value = {
+					name: 'Search',
+					query: {
+						q: '*:*',
+						start: 0,
+						rows: 10,
+						fq: fqArray,
+					},
+				};
+			} else {
+				validDate.value = false;
+			}
 		};
 
 		const HandleMonthYear = ({ month, year }: MonthYearEvent) => {
-			const holder = new Date(endDate.value.getTime());
+			const holder = new Date();
 			holder.setDate(1);
 			holder.setMonth(month);
 			holder.setFullYear(year);
@@ -160,6 +230,13 @@ export default defineComponent({
 			moveToSearchPage,
 			HandleMonthYear,
 			locale,
+			textInputOptions,
+			updateSelectedDate,
+			setupInputTimer,
+			inputTimer,
+			validDate,
+			executeUpdate,
+			t,
 		};
 	},
 });
@@ -169,18 +246,98 @@ export default defineComponent({
 	display: flex;
 	width: calc(100vw - 14px);
 	flex-direction: column;
+	justify-content: center;
+}
+
+.date-span {
+	width: 320px;
+	position: relative;
+	display: block;
+}
+
+.error-container {
+	width: 50%;
+	position: absolute;
+	height: fit-content;
+	left: 0px;
+	top: 55px;
+	color: white;
+	padding: 5px;
+	background-color: rgb(184, 0, 0);
+	box-sizing: border-box;
+}
+
+.error-container:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid rgb(184, 0, 0);
+	top: -7px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
+.picker-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: center;
 }
 
 .single-day-link {
-	background-color: #002e70;
-	color: white;
+	background-color: #49da87;
+	color: #002e70;
 	display: flex;
 	text-decoration: none;
 	padding: 2px 5px;
 	flex-direction: row-reverse;
 	font-size: 16px;
-	width: 261px;
 	box-sizing: border-box;
+	width: fit-content;
+	padding: 10px 15px;
+	border-radius: 4px;
+}
+
+.check-mark {
+	width: 25px;
+}
+
+.day-picker.container {
+	display: flex;
+	align-items: center;
+}
+
+.check-mark:before {
+	content: '';
+	display: block;
+	width: 2px;
+	height: 20px;
+	transform: rotateZ(45deg);
+	background-color: #002e70;
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 5px;
+}
+
+.check-mark:after {
+	content: '';
+	display: block;
+	width: 2px;
+	height: 9px;
+	transform: rotateZ(-45deg);
+	background-color: #002e70;
+	position: absolute;
+	margin-top: 10px;
+	margin-left: -5px;
+}
+
+.single-day-link.disabled {
+	background-color: gray;
+	pointer-events: none;
 }
 
 .single-day-link span {
@@ -189,17 +346,8 @@ export default defineComponent({
 	width: 100%;
 }
 
-.link-arrow {
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 12px solid transparent;
-	border-top: 12px solid transparent;
-	border-left: 8px solid #0a2e70;
-	margin-left: 5px;
-	position: absolute;
-	margin-right: -13px;
-	margin-top: -2px;
+.single-day-link.disabled .link-arrow {
+	border-left: 8px solid gray;
 }
 
 .time {
@@ -220,6 +368,10 @@ export default defineComponent({
 	flex-direction: column;
 	align-items: center;
 	padding-top: 20px;
+	width: 320px;
+	align-items: flex-end;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .container {
@@ -246,15 +398,11 @@ export default defineComponent({
 	}
 
 	.day-picker {
-		flex-direction: row;
+		flex-direction: column;
 		gap: 25px;
 		justify-content: center;
 		padding-right: 50px;
 		padding-top: 30px;
-	}
-
-	.time-container {
-		justify-content: flex-end;
 	}
 }
 /* MEDIA QUERY 1150 */
