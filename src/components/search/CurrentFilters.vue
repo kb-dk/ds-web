@@ -225,21 +225,23 @@ export default defineComponent({
 		};
 
 		const approxTimeDifference = () => {
-			const yearDifference: number = endDate.value.getFullYear() - startDate.value.getFullYear();
-			const monthDifference: number = endDate.value.getMonth() - startDate.value.getMonth();
-			const dayDifference: number = endDate.value.getDate() - startDate.value.getDate();
+			const diff: number = Math.abs(endDate.value.valueOf() - startDate.value.valueOf()); //The difference in milliseconds
+			const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1; // calculate to days +1 to account for filtering the same date
+			const yearDifference: number = Math.floor(diffDays / 365);
+			const monthDifference: number = Math.floor(diffDays / 30);
+
 			if (yearDifference === 0) {
 				if (monthDifference === 0) {
-					if (dayDifference >= 7) {
-						return `(${Math.floor(dayDifference / 7)}~ ${t('timeSearch.week', Math.floor(dayDifference / 7))})`;
+					if (diffDays >= 7) {
+						return `(${Math.floor(diffDays / 7)}~ ${t('timeSearch.week', Math.floor(diffDays / 7))})`;
 					} else {
-						return `(${dayDifference + 1}~ ${t('timeSearch.day', dayDifference + 1)})`;
+						return `(${diffDays}~ ${t('timeSearch.day', diffDays)})`;
 					}
 				} else {
-					return `(${monthDifference + 1}~ ${t('timeSearch.month', monthDifference + 1)})`;
+					return `(${monthDifference}~ ${t('timeSearch.month', monthDifference)})`;
 				}
 			} else {
-				return `(${yearDifference + 1}~ ${t('timeSearch.year', yearDifference + 1)})`;
+				return `(${yearDifference}~ ${t('timeSearch.year', yearDifference)})`;
 			}
 		};
 
