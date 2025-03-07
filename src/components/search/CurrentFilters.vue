@@ -58,7 +58,7 @@
 				<span>
 					{{
 						`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.day',
+							'timeSearch.weekday',
 							days.filter((entity) => entity.selected === true).length,
 						)}`
 					}}
@@ -91,7 +91,7 @@
 			>
 				<span>
 					{{ presentDateSpan() }}
-					{{ calculatedYearSpan() }}
+					{{ approxTimeDifference() }}
 				</span>
 				<span class="material-icons">close</span>
 			</button>
@@ -241,6 +241,28 @@ export default defineComponent({
 			});
 		};
 
+		const approxTimeDifference = () => {
+			if (endDate.value && startDate.value) {
+				const diff: number = Math.abs(endDate.value.valueOf() - startDate.value.valueOf()); //The difference in milliseconds
+				const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1; // calculate to days +1 to account for filtering the same date
+				const yearDifference: number = Math.floor(diffDays / 365);
+				const monthDifference: number = Math.floor(diffDays / 30);
+
+				if (yearDifference === 0) {
+					if (monthDifference === 0) {
+						if (diffDays >= 7) {
+							return `(${Math.floor(diffDays / 7)}~ ${t('timeSearch.week', Math.floor(diffDays / 7))})`;
+						} else {
+							return `(${diffDays}~ ${t('timeSearch.day', diffDays)})`;
+						}
+					} else {
+						return `(${monthDifference}~ ${t('timeSearch.month', monthDifference)})`;
+					}
+				} else {
+					return `(${yearDifference}~ ${t('timeSearch.year', yearDifference)})`;
+				}
+			}
+		};
 		const presentDateSpan = () => {
 			if (
 				startDate.value !== null &&
@@ -290,6 +312,7 @@ export default defineComponent({
 			endDate,
 			startYear,
 			endYear,
+			approxTimeDifference,
 			t,
 			presentDateSpan,
 			calculatedYearSpan,
