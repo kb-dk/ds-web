@@ -105,17 +105,6 @@ export default defineComponent({
 			}
 		};
 
-		const switchLocale = (e: Event) => {
-			e.preventDefault();
-			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
-			const html = document.querySelector('html');
-			html?.setAttribute('lang', locale.value);
-			LocalStorageWrapper.set('locale', locale.value);
-			const routeQueries = { ...route.query };
-			routeQueries.locale = currentLocale.value;
-			router.replace({ query: routeQueries });
-		};
-
 		const getImgServerSrcURL = () => {
 			return new URL(`@/assets/images/crown.png`, import.meta.url).href;
 		};
@@ -353,12 +342,10 @@ export default defineComponent({
 		};
 
 		onBeforeMount(() => {
-			window.addEventListener('locale-switch', switchLocale);
 			window.addEventListener('change-path', gotoPath);
 		});
 
 		onBeforeUnmount(() => {
-			window.removeEventListener('locale-switch', switchLocale);
 			window.removeEventListener('change-path', gotoPath);
 		});
 
@@ -651,17 +638,6 @@ body {
 	align-content: center;
 	flex-wrap: wrap;
 	background-color: #002e70;
-}
-
-nav {
-	flex-basis: 0;
-	flex-grow: 1;
-	max-width: 100%;
-	position: relative;
-	width: 100%;
-	padding-right: 12px;
-	padding-left: 12px;
-	box-sizing: border-box;
 }
 
 #app {

@@ -5,15 +5,18 @@
 			:locale="locale"
 			:page="$route.name"
 		></kb-menu> -->
-		<HeaderMenu></HeaderMenu>
-		<SearchBar />
+		<HeaderMenu
+			:search-bar-open="searchBarOpen"
+			@toggle-search-bar="toggleSearchBar"
+		></HeaderMenu>
+		<SearchBar :search-bar-open="searchBarOpen" />
 		<Breadcrumb />
 		<div class="edge top"></div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 // import '@/components/global/nav/wc-header-menu';
 import HeaderMenu from '../global/nav/HeaderMenu.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
@@ -29,7 +32,12 @@ export default defineComponent({
 		locale: { type: String, required: true },
 	},
 	setup() {
-		return {};
+		const searchBarOpen = ref(true);
+		const toggleSearchBar = () => {
+			searchBarOpen.value = !searchBarOpen.value;
+		};
+
+		return { searchBarOpen, toggleSearchBar };
 	},
 });
 </script>

@@ -209,7 +209,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
+import { defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
@@ -224,10 +224,11 @@ export default defineComponent({
 	components: {
 		Autocomplete,
 	},
-
-	setup() {
+	props: {
+		searchBarOpen: { type: Boolean as PropType<boolean>, required: true },
+	},
+	setup(props) {
 		const { t } = useI18n();
-		const visibleSearchfield = ref(true);
 		const searchResultStore = useSearchResultStore();
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
@@ -266,12 +267,8 @@ export default defineComponent({
 				}
 			}
 		};
-		onMounted(() => {
-			window.addEventListener('toggle-search', toggleSearchField);
-		});
 
 		onUnmounted(() => {
-			window.removeEventListener('toggle-search', toggleSearchField);
 			if (showPortalSelector.value) {
 				document.removeEventListener('click', closePortal);
 			}
@@ -296,42 +293,44 @@ export default defineComponent({
 			},
 		);
 
-		const toggleSearchField = () => {
-			if (visibleSearchfield.value) {
-				gsap.to(searchFormRef.value, {
-					height: '0px',
-					duration: 0.5,
-					overwrite: true,
-					opacity: 1,
-					overflow: 'hidden',
-					onComplete: () => {
-						gsap.set(searchFormRef.value, {
-							display: 'none',
-							overwrite: true,
-						});
-					},
-				});
-			} else {
-				gsap.set(searchFormRef.value, {
-					display: 'block',
-					overwrite: true,
-					onComplete: () => {
-						gsap.to(searchFormRef.value, {
-							height: 'auto',
-							duration: 0.5,
-							overwrite: true,
-							opacity: 1,
-							onComplete: () => {
-								gsap.set(searchFormRef.value, {
-									overflow: 'visible',
-								});
-							},
-						});
-					},
-				});
-			}
-			visibleSearchfield.value = !visibleSearchfield.value;
-		};
+		watch(
+			() => props.searchBarOpen,
+			() => {
+				if (!props.searchBarOpen) {
+					gsap.to(searchFormRef.value, {
+						height: '0px',
+						duration: 0.5,
+						overwrite: true,
+						opacity: 1,
+						overflow: 'hidden',
+						onComplete: () => {
+							gsap.set(searchFormRef.value, {
+								display: 'none',
+								overwrite: true,
+							});
+						},
+					});
+				} else {
+					gsap.set(searchFormRef.value, {
+						display: 'block',
+						overwrite: true,
+						onComplete: () => {
+							gsap.to(searchFormRef.value, {
+								height: 'auto',
+								duration: 0.5,
+								overwrite: true,
+								opacity: 1,
+								onComplete: () => {
+									gsap.set(searchFormRef.value, {
+										overflow: 'visible',
+									});
+								},
+							});
+						},
+					});
+				}
+			},
+		);
 
 		const updateKeystrokeForAutocomplete = (e: KeyboardEvent) => {
 			keyStrokeEvent.value = e;

@@ -65,6 +65,7 @@
                "link": "https://www.kb.dk/besoeg-os"
             },{
                "title": "Luk", 
+               "altTitle": "Søg",
                "link": "#",
                "id": "searchToggle",
                "icon": "search"
