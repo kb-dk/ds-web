@@ -64,7 +64,8 @@
                "title": "Visit us", 
                "link": "https://www.kb.dk/en/visit-us"
             },{
-               "title": "Close", 
+               "title": "Close",
+               "altTitle": "Search", 
                "link": "#",
                "id": "searchToggle",
                "icon": "search"

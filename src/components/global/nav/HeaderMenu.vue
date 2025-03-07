@@ -26,6 +26,7 @@
 								data-toggle="collapse"
 								aria-expanded="true"
 								aria-label="Luk søgefelt"
+								@click="toggleSearchBar"
 							>
 								<i
 									class="material-icons"
@@ -35,10 +36,15 @@
 								</i>
 
 								<span
-									class="search-label cursive"
+									v-if="currentLocaleMessages"
+									class="search-label cursive'"
 									aria-hidden="true"
 								>
-									Luk
+									{{
+										searchBarOpen
+											? currentLocaleMessages.primary.filter((a) => a.id === 'searchToggle')[0].title
+											: currentLocaleMessages.primary.filter((a) => a.id === 'searchToggle')[0].altTitle
+									}}
 								</span>
 							</button>
 						</div>
@@ -50,10 +56,11 @@
 									class="btn rdl-burger collapsed"
 									data-toggle="collapse"
 									data-target="#mobileNavigation"
-									aria-expanded="false"
+									:aria-expanded="menuOpen"
 									aria-controls="mobileNavigation"
 									aria-label="Åbn eller luk navigation"
 									aria-pressed="false"
+									@click="toggleMainHeader"
 								>
 									<span
 										class="rdl-line"
@@ -74,6 +81,7 @@
 					</div>
 					<div
 						id="mobileNavigation"
+						ref="mainHeaderRef"
 						class="collapse rdl-main-navigation-wrapper"
 						data-parent="#mainHeader"
 					>
@@ -96,9 +104,10 @@
 										v-if="item.id"
 										:aria-expanded="true"
 										:class="`nav-item level-1  ${item.id ? 'cursive' : ''}`"
+										@click="toggleSearchBar"
 									>
 										<span :class="item.id === 'searchToggle' ? 'cursive' : ''">
-											{{ item.title }}
+											{{ searchBarOpen ? item.title : item.altTitle }}
 										</span>
 										<i
 											v-if="item.icon"
@@ -138,8 +147,8 @@
 								>
 									<button
 										v-if="item.id"
-										:aria-expanded="item.id === 'searchToggle'"
 										class="nav-item level-1"
+										@click="switchLocale"
 									>
 										<span>
 											{{ item.title }}
@@ -178,17 +187,67 @@
 
 <script lang="ts">
 import { HeaderType } from '@/types/HeaderType';
+import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { defineComponent, onMounted, ref, toRaw, watch } from 'vue';
+import { defineComponent, onMounted, PropType, ref, toRaw, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'HeaderMenu',
-	setup() {
+	props: {
+		searchBarOpen: { type: Boolean as PropType<boolean>, required: true },
+	},
+
+	emits: ['toggleSearchBar'],
+	setup(props, { emit }) {
 		const { t, messages, locale } = useI18n();
 		const currentLocaleMessages = ref(undefined as unknown as HeaderType);
-		const test1 = t.toString();
-		const test2 = messages.toString();
+		let currentLocale = ref('da');
+		const mainHeaderRef = ref<HTMLFormElement | null>(null);
+		const menuOpen = ref(false);
+		const router = useRouter();
+		const route = useRoute();
+
+		const switchLocale = (e: Event) => {
+			e.preventDefault();
+			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
+			const html = document.querySelector('html');
+			html?.setAttribute('lang', locale.value);
+			LocalStorageWrapper.set('locale', locale.value);
+			const routeQueries = { ...route.query };
+			routeQueries.locale = currentLocale.value;
+			router.replace({ query: routeQueries });
+		};
+
+		const toggleSearchBar = () => {
+			emit('toggleSearchBar');
+		};
+
+		const toggleMainHeader = () => {
+			if (!menuOpen.value) {
+				mainHeaderRef.value?.classList.toggle('collapse');
+				mainHeaderRef.value?.classList.toggle('show');
+				gsap.to(mainHeaderRef.value, {
+					height: 'auto',
+					duration: 0.25,
+					overwrite: false,
+				});
+			} else {
+				gsap.to(mainHeaderRef.value, {
+					height: '0px',
+					duration: 0.25,
+					overwrite: false,
+					onComplete: () => {
+						mainHeaderRef.value?.classList.toggle('collapse');
+						mainHeaderRef.value?.classList.toggle('show');
+					},
+				});
+			}
+			menuOpen.value = !menuOpen.value;
+		};
+
 		onMounted(() => {
 			currentLocaleMessages.value = toRaw(messages.value[locale.value].header) as HeaderType;
 		});
@@ -201,12 +260,21 @@ export default defineComponent({
 				}
 			},
 		);
-		return { t, currentLocaleMessages, addTestDataEnrichment, test1, test2 };
+		return {
+			mainHeaderRef,
+			switchLocale,
+			t,
+			currentLocaleMessages,
+			addTestDataEnrichment,
+			toggleSearchBar,
+			toggleMainHeader,
+			menuOpen,
+		};
 	},
 });
 </script>
 
-<style>
+<style scoped>
 .overall-header {
 	position: relative;
 	z-index: 4;
