@@ -168,9 +168,11 @@ export default defineComponent({
 				.join(' OR ');
 
 			const fqArray = [];
-			fqArray.push(
-				encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
-			);
+			if (startDate.value !== null && endDate.value !== null) {
+				fqArray.push(
+					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
+				);
+			}
 			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
 			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
 			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;

@@ -108,6 +108,13 @@
       "night":"00.00 - 06.00"
      }
    },
+   "datepicker": {
+      "error":"Not a valid date. The archive currently covers the period from {start} to {end}.",
+      "date":"Date",
+      "to":"To",
+      "unknownLength":"Unknown timespan"
+
+   },
   "search":{
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
@@ -159,7 +166,7 @@
         "firstPart": "The graph shows how much material from DR-arkivet you can search from each year. In some periods, there is a lot of material and in others there is little or nothing. ",
         "secondPart": "We are constantly working to get more programmes ready to go in the online archive, and therefore the graph will change as more programmes are added. "
      },
-     "showContent": "Show content",
+     "showContent": "Apply",
      "portals": {
          "drArchive":"DR-arkivet",
          "booksAndMaterials":"Books and journals",
