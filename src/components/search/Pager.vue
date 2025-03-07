@@ -54,6 +54,7 @@
 				ref="inputRef"
 				v-model="selectPage"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
+				:aria-label="$t('search.goToThePage')"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>

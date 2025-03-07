@@ -210,7 +210,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 165px;
+	height: 250px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
@@ -426,6 +426,13 @@ h1::first-letter {
 .toggle-button.closed:after {
 	transform: scaleY(1);
 }
+
+@media (min-width: 400px) {
+	.content {
+		height: 165px;
+	}
+}
+
 @media (min-width: 990px) {
 	.hover .headline,
 	.hover .material-icons {

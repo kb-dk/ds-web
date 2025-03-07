@@ -72,40 +72,40 @@
 						:style="`width:${Math.random() * 20 + 20 + '%'}`"
 					></div>
 					<div class="placeholder-w">
-						<span class="material-icons ph-icon">play_circle_filled</span>
-						<span
+						<div class="material-icons ph-icon">play_circle_filled</div>
+						<div
 							class="line"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
-						></span>
-						<span class="material-icons ph-icon">schedule</span>
-						<span
+						></div>
+						<div class="material-icons ph-icon">schedule</div>
+						<div
 							class="line"
 							:style="`width:${Math.random() * 10 + 5 + '%'}`"
-						></span>
-						<span
+						></div>
+						<div
 							class="line"
 							:style="`width:${Math.random() * 10 + 5 + '%'}`"
-						></span>
+						></div>
 					</div>
 					<div class="placeholder-s">
-						<span>
-							<span
+						<div>
+							<div
 								class="ph-span"
 								:style="`width:${Math.random() * 5 + 70 + '%'}`"
-							></span>
-						</span>
-						<span>
-							<span
+							></div>
+						</div>
+						<div>
+							<div
 								class="ph-span"
 								:style="`width:${Math.random() * 5 + 60 + '%'}`"
-							></span>
-						</span>
+							></div>
+						</div>
 					</div>
 				</div>
 				<div class="placeholder-extra">
-					<span class="material-icons ph-icon">collections</span>
-					<span class="line"></span>
-					<span class="material-icons ph-icon">expand_more</span>
+					<div class="material-icons ph-icon">collections</div>
+					<div class="line"></div>
+					<div class="material-icons ph-icon">expand_more</div>
 				</div>
 				<div class="result-image-wrapper skeleton"></div>
 			</div>
@@ -287,6 +287,7 @@ export default defineComponent({
 	padding-right: 3px;
 	position: relative;
 	top: 3px;
+	background-color: white;
 }
 .schedule {
 	transition: all 0.5s ease-in-out 0s;
@@ -377,6 +378,29 @@ export default defineComponent({
 	overflow: hidden;
 	background-size: 200% 100%;
 	background-position: 160% center;
+	display: none;
+}
+
+.placeholder-t:before,
+.placeholder-w .line:before,
+.placeholder-s .ph-span:before {
+	content: '';
+	animation: loading 3s ease-in-out 0s infinite;
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		117deg,
+		rgba(255, 255, 255, 0) 44%,
+		rgba(255, 255, 255, 0.7455357142857143) 64%,
+		rgba(255, 255, 255, 0) 77%
+	);
+	position: absolute;
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	mix-blend-mode: soft-light;
+	overflow: hidden;
+	background-size: 200% 100%;
+	background-position: 160% center;
 }
 
 @keyframes loading {
@@ -399,6 +423,7 @@ export default defineComponent({
 	background-color: #002e70;
 	height: 14px;
 	margin-bottom: 15px;
+	position: relative;
 }
 
 .placeholder-extra {
@@ -428,6 +453,7 @@ export default defineComponent({
 
 .placeholder-w {
 	margin-bottom: 14px;
+	position: relative;
 }
 
 .placeholder-w .line {
@@ -447,6 +473,7 @@ export default defineComponent({
 .ph-icon {
 	font-size: 14px;
 	padding-right: 5px;
+	background-color: white;
 }
 
 .placeholder-s {
@@ -460,13 +487,14 @@ export default defineComponent({
 	align-items: flex-start;
 	align-content: flex-start;
 	margin-left: -3px;
+	position: relative;
 }
 
 .result-image-wrapper.skeleton {
 	background-color: rgba(170, 170, 170, 1);
 }
 
-.placeholder-s > span {
+.placeholder-s > div {
 	display: block;
 	height: 14px;
 	margin: 0px 3px;
@@ -478,6 +506,7 @@ export default defineComponent({
 	border-radius: 10px;
 	display: inline-block;
 	height: 14px;
+	position: relative;
 }
 
 .summary {

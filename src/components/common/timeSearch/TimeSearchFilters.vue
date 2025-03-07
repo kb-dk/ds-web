@@ -552,7 +552,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	align-content: center;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
@@ -795,7 +795,7 @@ fieldset {
 }
 
 .slider-container {
-	height: 100px;
+	height: 150px;
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	position: relative;
@@ -1074,6 +1074,13 @@ fieldset {
 	border-bottom: 1px solid #002e70;
 	box-sizing: border-box;
 }
+
+@media (min-width: 450px) {
+	.slider-container {
+		height: 100px;
+	}
+}
+
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
 	.overall-selector {

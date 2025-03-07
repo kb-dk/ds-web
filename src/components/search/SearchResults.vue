@@ -123,6 +123,7 @@ export default defineComponent({
 	box-sizing: border-box;
 	width: 100%;
 	margin-bottom: 40px;
+	background-color: white;
 }
 
 .hit-box.data:hover:after,

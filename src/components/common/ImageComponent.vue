@@ -1,7 +1,7 @@
 <template>
 	<figure
 		class="image-wrapper"
-		:style="`background: ${background}; aspect-ratio: ${data.aspect}`"
+		:style="`background: rgb(60,60,60); aspect-ratio: ${data.aspect}`"
 	>
 		<img
 			ref="image-item"
