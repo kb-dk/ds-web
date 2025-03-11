@@ -111,7 +111,10 @@ export default defineComponent({
 		const selectPage = ref('');
 		const inputIncorrect = ref(false);
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
-		const maxPages = computed(() => (totalPages.value > 100 ? 100 : totalPages.value));
+		//We normally display 10 or 40 items per page. This'll make it dynamic2
+		const maxPages = computed(() =>
+			totalPages.value > 1000 / props.itemsPerPage ? 1000 / props.itemsPerPage : totalPages.value,
+		);
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n({ useScope: 'global' });
 		const inputRef = ref<HTMLInputElement | null>();
@@ -415,7 +418,8 @@ button span,
 }
 .topOfScreen > span {
 	position: relative;
-	top: 6px;
+	top: 7px;
+	line-height: 9px;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
