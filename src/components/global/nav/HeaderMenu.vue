@@ -103,6 +103,7 @@
 									<button
 										v-if="item.id"
 										:aria-expanded="true"
+										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										:class="`nav-item level-1  ${item.id ? 'cursive' : ''}`"
 										@click="toggleSearchBar"
 									>
@@ -120,6 +121,7 @@
 									<a
 										v-else
 										:href="item.link"
+										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 									>
 										{{ item.title }}
@@ -148,6 +150,7 @@
 									<button
 										v-if="item.id"
 										class="nav-item level-1"
+										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										@click="switchLocale"
 									>
 										<span>
@@ -164,6 +167,7 @@
 									<a
 										v-else
 										:href="item.link"
+										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 									>
 										{{ item.title }}
