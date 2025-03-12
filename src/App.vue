@@ -61,7 +61,6 @@ import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
 import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
-import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';

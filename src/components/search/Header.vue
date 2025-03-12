@@ -17,7 +17,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-// import '@/components/global/nav/wc-header-menu';
 import HeaderMenu from '../global/nav/HeaderMenu.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
