@@ -144,6 +144,7 @@ export default defineComponent({
 
 .hit-box:after {
 	content: '•';
+	z-index: 1;
 	position: absolute;
 	height: 10px;
 	text-align: center;
@@ -172,7 +173,7 @@ export default defineComponent({
 	margin-top: -5px;
 	left: 0px;
 	display: none;
-	background: white;
+	background-color: white;
 }
 
 .search-results {

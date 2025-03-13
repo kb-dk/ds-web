@@ -5,9 +5,8 @@
 				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
 						<button
-							ref="toggleFacetsButton"
-							role="switch"
-							aria-checked="true"
+							ref="bottomToggleFacetsButton"
+							aria-pressed="false"
 							class="filter-button"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
 							@click="toggleFacets()"
@@ -81,9 +80,8 @@
 				<Facets />
 				<button
 					v-if="searchResultStore.showFacets"
-					ref="toggleFacetsButton"
-					role="switch"
-					aria-checked="true"
+					ref="topToggleFacetsButton"
+					aria-pressed="false"
 					class="filter-button filter-button-bottom"
 					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
 					@click="toggleFacets()"
@@ -200,7 +198,9 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 		const { t } = useI18n();
-		const toggleFacetsButton = ref<HTMLButtonElement | null>(null);
+		const bottomToggleFacetsButton = ref<HTMLButtonElement | null>(null);
+		const topToggleFacetsButton = ref<HTMLButtonElement | null>(null);
+
 		const tvToggled = ref(true);
 		const radioToggled = ref(true);
 
@@ -298,7 +298,7 @@ export default defineComponent({
 			tvToggled.value = !tvToggled.value;
 			if (event.target) {
 				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', tvToggled.value.toString());
+				btn.setAttribute('aria-pressed', tvToggled.value.toString());
 			}
 			if (!tvToggled.value && !radioToggled.value) {
 				radioToggled.value = !radioToggled.value;
@@ -311,7 +311,7 @@ export default defineComponent({
 			radioToggled.value = !radioToggled.value;
 			if (event.target) {
 				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', radioToggled.value.toString());
+				btn.setAttribute('aria-pressed', radioToggled.value.toString());
 			}
 			if (!tvToggled.value && !radioToggled.value) {
 				tvToggled.value = !tvToggled.value;
@@ -336,7 +336,8 @@ export default defineComponent({
 
 		const toggleFacets = () => {
 			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
-			toggleFacetsButton.value?.setAttribute('aria-checked', searchResultStore.showFacets.toString());
+			topToggleFacetsButton.value?.setAttribute('aria-pressed', searchResultStore.showFacets.toString());
+			bottomToggleFacetsButton.value?.setAttribute('aria-pressed', searchResultStore.showFacets.toString());
 		};
 
 		const setGridAndLoadResults = (grid: boolean) => {
@@ -355,7 +356,8 @@ export default defineComponent({
 			setGridAndLoadResults,
 			t,
 			toggleFacets,
-			toggleFacetsButton,
+			topToggleFacetsButton,
+			bottomToggleFacetsButton,
 			tvToggled,
 			radioToggled,
 			toggleRadio,
@@ -557,7 +559,7 @@ export default defineComponent({
 
 .source-facet-button {
 	cursor: pointer;
-	padding: 3px 3px;
+	padding: 3px 2px;
 	font-size: 18px;
 	width: fit-content;
 	display: flex;

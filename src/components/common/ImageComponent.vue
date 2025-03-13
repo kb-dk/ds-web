@@ -15,6 +15,8 @@
 			@load="loaded = true"
 		/>
 		<span
+			role="img"
+			:aria-label="`${data.icon} icon for the image`"
 			class="type-symbol material-icons"
 			:style="`color: ${data.iconColor}`"
 		>
@@ -93,11 +95,18 @@ export default defineComponent({
 }
 
 .type-symbol {
-	font-size: 64px !important;
+	font-size: 55px;
 	position: absolute !important;
 	left: 50% !important;
 	top: 50% !important;
 	transform: translate(-50%, -50%);
+}
+
+.play-icon {
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	position: absolute;
 }
 
 .image-wrapper {

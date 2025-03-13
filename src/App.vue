@@ -36,7 +36,7 @@
 				<component :is="Component" />
 			</transition>
 		</router-view>
-		<div
+		<!-- 		<div
 			ref="wipe"
 			class="wipe"
 		>
@@ -45,7 +45,7 @@
 				alt="Logo of the Royal Danish Library"
 				:src="getImgServerSrcURL()"
 			/>
-		</div>
+		</div> -->
 	</main>
 	<Footer />
 </template>
@@ -124,7 +124,7 @@ export default defineComponent({
 			if (transitionName !== 'swipe') {
 				return;
 			}
-			gsap.set(wipe.value, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
+			gsap.set(wipe.value, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)', display: 'flex' });
 			gsap.to(wipe.value, {
 				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
 				duration: td.value / 2,
@@ -157,6 +157,9 @@ export default defineComponent({
 						duration: td.value / 2,
 						ease: 'linear',
 						overwrite: true,
+						onComplete: () => {
+							gsap.set(wipe.value, { display: 'none' });
+						},
 					});
 					leaveDone = false;
 				},
@@ -638,6 +641,7 @@ body {
 	opacity: 1;
 	pointer-events: none;
 	z-index: 50;
+	display: none;
 	top: 0;
 	margin: 0;
 	left: 0;
@@ -646,7 +650,6 @@ body {
 	width: 100vw;
 	height: 100vh;
 	clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
-	display: flex;
 	justify-content: center;
 	align-content: center;
 	flex-wrap: wrap;

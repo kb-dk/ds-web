@@ -7,7 +7,13 @@
 				:alt="`Image of soundwaves for ${resultTitle}`"
 			/>
 		</div>
-		<span class="material-icons play">play_circle_filled</span>
+		<span
+			role="img"
+			aria-label="Audio play icon"
+			class="material-icons play"
+		>
+			play_circle_filled
+		</span>
 	</div>
 </template>
 

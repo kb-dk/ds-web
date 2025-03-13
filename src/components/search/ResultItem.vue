@@ -1,5 +1,6 @@
 <template>
 	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
+		<div class="backfade"></div>
 		<Transition
 			name="result"
 			mode="out-in"
@@ -18,15 +19,27 @@
 							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
-							<span class="material-icons arrow">keyboard_arrow_right</span>
+							<div
+								role="img"
+								class="material-icons arrow"
+								aria-label="Go to post"
+							>
+								keyboard_arrow_right
+							</div>
 						</router-link>
 						<div class="subtitle">
-							<span class="material-icons icons schedule">
-								{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
-							</span>
+							<span
+								role="img"
+								:class="`icons schedule ${resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
+								aria-label="Broadcast time and place"
+							></span>
 							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
 							<span class="when">{{ starttime }}</span>
-							<span class="material-icons icons schedule">schedule</span>
+							<div
+								role="img"
+								class="icons schedule timeSVG"
+								aria-label="Duration for broadcast"
+							></div>
 							<span class="duration">{{ duration }}</span>
 						</div>
 						<div class="summary">{{ resultdata.description }}</div>
@@ -61,10 +74,10 @@
 				v-else
 				class="loading container"
 			>
-				<div
+				<!-- <div
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
-				></div>
+				></div> -->
 				<div class="information">
 					<div
 						ref="placeholderTitleRef"
@@ -72,12 +85,24 @@
 						:style="`width:${Math.random() * 20 + 20 + '%'}`"
 					></div>
 					<div class="placeholder-w">
-						<div class="material-icons ph-icon">play_circle_filled</div>
+						<div
+							role="img"
+							aria-label="Play time and channel"
+							class="material-icons ph-icon"
+						>
+							play_circle_filled
+						</div>
 						<div
 							class="line"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
 						></div>
-						<div class="material-icons ph-icon">schedule</div>
+						<div
+							role="img"
+							class="material-icons ph-icon"
+							title="Duration of broadcast"
+						>
+							schedule
+						</div>
 						<div
 							class="line"
 							:style="`width:${Math.random() * 10 + 5 + '%'}`"
@@ -256,6 +281,8 @@ export default defineComponent({
 }
 
 .outer-container {
+	z-index: 1;
+	position: relative;
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
 
@@ -265,6 +292,28 @@ export default defineComponent({
 	position: relative;
 	opacity: 0;
 	transition: opacity 0.1s linear 0s;
+}
+
+.timeSVG {
+	background-image: url('@/assets/website/schedule_000000.svg');
+}
+
+.volumeSVG {
+	background-image: url('@/assets/website/volume_up_000000.svg');
+}
+
+.playSVG {
+	background-image: url('@/assets/website/play_circle_filled_000000.svg');
+}
+
+.playSVG,
+.timeSVG,
+.volumeSVG {
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .material-icons {
@@ -283,11 +332,19 @@ export default defineComponent({
 	-webkit-font-feature-settings: 'liga';
 	-webkit-font-smoothing: antialiased;
 }
+
+.icons,
+.arrow {
+	z-index: 1;
+	position: relative;
+}
+
 .icons {
 	padding-right: 3px;
 	position: relative;
 	top: 3px;
-	background-color: white;
+	color: black !important;
+	background-color: white !important;
 }
 .schedule {
 	transition: all 0.5s ease-in-out 0s;
@@ -302,16 +359,57 @@ export default defineComponent({
 
 .container {
 	display: flex;
-	flex-direction: row;
-	height: 175px;
+	flex-direction: column-reverse;
 	justify-content: space-between;
-	gap: 30px;
+	gap: 0px;
 	width: 100%;
+}
+
+.summary {
+	transition: all 0.5s ease-in-out 0s;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	line-height: 20px; /* fallback for firefox */
+	max-height: calc(20px * 3); /* fallback for firefox */
+	position: relative;
+	margin-top: 10px;
+}
+
+.result-image-wrapper {
+	width: 100%;
+	height: 150px;
+}
+
+@media (min-width: 400px) {
+	.container {
+		gap: 30px;
+		height: 175px;
+		flex-direction: row;
+	}
+	.information {
+		width: calc(100% - (120px + 30px));
+	}
+
+	.summary {
+		position: absolute;
+		top: 110px;
+	}
+	.result-image-wrapper {
+		width: 200px;
+		height: 105px;
+	}
 }
 
 .information {
 	text-overflow: ellipsis;
-	width: calc(100% - (120px + 30px));
+	width: 100%;
 	overflow: hidden;
 	max-width: 100%;
 }
@@ -332,11 +430,6 @@ export default defineComponent({
 	display: block;
 	margin-bottom: 7px;
 	color: #002e70;
-}
-
-.result-image-wrapper {
-	width: 200px;
-	height: 105px;
 }
 
 .where,
@@ -361,7 +454,7 @@ export default defineComponent({
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
 
-.shimmer {
+/* .shimmer {
 	animation: loading 3s ease-in-out 0s infinite;
 	background: rgb(255, 255, 255);
 	background: linear-gradient(
@@ -379,7 +472,7 @@ export default defineComponent({
 	background-size: 200% 100%;
 	background-position: 160% center;
 	display: none;
-}
+} */
 
 .placeholder-t:before,
 .placeholder-w .line:before,
@@ -509,24 +602,6 @@ export default defineComponent({
 	position: relative;
 }
 
-.summary {
-	transition: all 0.5s ease-in-out 0s;
-	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	line-height: 20px; /* fallback for firefox */
-	max-height: calc(20px * 3); /* fallback for firefox */
-	position: absolute;
-	top: 110px;
-	margin-top: 10px;
-}
-
 @media (min-width: 640px) {
 	.information {
 		text-overflow: ellipsis;
@@ -561,9 +636,8 @@ export default defineComponent({
 		border-left: 1px solid rgba(230, 230, 230, 1);
 	}
 
-	.result-item-wrapper.data:before {
-		transition: all 0.3s ease-in-out 0s;
-		content: '';
+	.backfade {
+		background: white;
 		z-index: 0;
 		opacity: 0;
 		box-shadow:
@@ -578,10 +652,19 @@ export default defineComponent({
 		width: calc(100%);
 		height: calc(100%);
 		pointer-events: none;
+		visibility: hidden; /* Initially hidden */
+		transition:
+			opacity 0.3s ease-in-out,
+			visibility 0s linear 0.3s; /* Delay visibility hiding */
 	}
 
-	.result-item-wrapper.data:hover:before {
+	.result-item-wrapper.data:hover .backfade {
 		opacity: 0.6;
+		visibility: visible; /* Show immediately */
+
+		transition:
+			opacity 0.3s ease-in-out,
+			visibility 0s linear 0s; /* Make visible immediately */
 	}
 }
 
@@ -594,7 +677,7 @@ export default defineComponent({
 		left: 0px;
 	}
 
-	.result-item-wrapper.data:before {
+	.backfade {
 		left: 0px;
 		width: calc(100%);
 		width: calc(100% + 20px);

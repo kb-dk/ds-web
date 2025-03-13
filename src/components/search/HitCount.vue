@@ -19,7 +19,7 @@
 						v-if="hitCount > 0 || noHits"
 						class="hit-count"
 					>
-						<span
+						<h1
 							v-if="query !== ''"
 							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
 						>
@@ -28,7 +28,7 @@
 									? `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.hitcount', hitCount)} "${query}"`
 									: `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.filterSearch', hitCount)}`
 							}}
-						</span>
+						</h1>
 						<span v-else></span>
 					</div>
 				</div>
@@ -78,6 +78,11 @@ export default defineComponent({
 	z-index: 0;
 }
 
+.hit-count h1 {
+	font-weight: normal;
+	font-size: 24px;
+}
+
 .loading-placeholder {
 	display: flex;
 	gap: 10px;
@@ -92,6 +97,9 @@ export default defineComponent({
 }
 @media (min-width: 640px) {
 	.hit-count {
+		font-size: 36px;
+	}
+	.hit-count h1 {
 		font-size: 36px;
 	}
 }
