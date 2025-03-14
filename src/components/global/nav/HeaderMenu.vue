@@ -137,12 +137,12 @@
 							</ul>
 
 							<ul
-								v-if="currentLocaleMessages"
+								v-if="header.serviceHeader.get(locale)"
 								role="menubar"
 								class="rdl-secondary-nav"
 							>
 								<li
-									v-for="(item, index) in currentLocaleMessages.secondary"
+									v-for="(item, index) in header.serviceHeader.get(locale)"
 									:key="index"
 									role="menuitem"
 									:class="item.icon"
@@ -166,7 +166,7 @@
 									</button>
 									<a
 										v-else
-										:href="item.link"
+										:href="item.full_url"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 									>
@@ -193,10 +193,13 @@
 import { HeaderType } from '@/types/HeaderType';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { defineComponent, onMounted, PropType, ref, toRaw, watch } from 'vue';
+import { defineComponent, inject, onMounted, PropType, ref, toRaw, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
+import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { DrupalHeaderType } from '@/types/DrupalDataType';
+import { useHeaderAndFooterStore } from '@/store/headerAndFooterStore';
 
 export default defineComponent({
 	name: 'HeaderMenu',
@@ -213,6 +216,10 @@ export default defineComponent({
 		const menuOpen = ref(false);
 		const router = useRouter();
 		const route = useRoute();
+		const loaded = ref(false);
+		const header = useHeaderAndFooterStore();
+		const serviceHeader = ref<Array<DrupalHeaderType> | null>(null);
+		const mainHeader = ref<Array<DrupalHeaderType> | null>(null);
 
 		const switchLocale = (e: Event) => {
 			e.preventDefault();
@@ -268,11 +275,16 @@ export default defineComponent({
 			mainHeaderRef,
 			switchLocale,
 			t,
+			locale,
 			currentLocaleMessages,
 			addTestDataEnrichment,
 			toggleSearchBar,
 			toggleMainHeader,
 			menuOpen,
+			header,
+			loaded,
+			serviceHeader,
+			mainHeader,
 		};
 	},
 });

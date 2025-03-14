@@ -19,33 +19,18 @@
    },
 
    "header":{
-      "secondary":
-         [
-            {
-               "title": "Lån og aflevering",
-               "link": "https://www.kb.dk/services/laan-og-aflevering"
-            },{
-               "title": "Bliv bruger", 
-               "link": "https://www.kb.dk/bliv-bruger"
-            },{
-               "title": "Om os", 
-               "link": "https://www.kb.dk/om-os"
-            },{
-               "title": "Webshop", 
-               "link": "https://webshop.kb.dk/"
-            },{
-               "title": "Åbningstider", 
-               "link": "https://www.kb.dk/aabningstider"
-            },{
-               "title": "In english", 
-               "link": "#",
-               "id": "localeSwitcher"
-            },{
-               "title": "Login", 
-               "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
-               "icon": "account_circle"
-            }
-         ],
+      "service":{
+         "inEnglish":{
+            "title": "In english", 
+            "link": "#",
+            "id": "localeSwitcher"
+         },
+         "login":{
+            "title": "Login", 
+            "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
+            "icon": "account_circle"
+         }
+      },
       "primary":
          [
             {
