@@ -39,6 +39,10 @@
             "id": "searchToggle",
             "icon": "search"
          }
+      },
+      "error":{
+         "title":"Fejlmeddelelse",
+         "text":"Sidehovedet svarer ikke"
       }
 
    },

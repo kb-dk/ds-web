@@ -53,11 +53,10 @@ export const useHeaderAndFooterStore = defineStore('headerAndFooter', () => {
 				}
 			}
 		} catch (err: unknown) {
-			//TODO
 			errorManager.submitCustomError(
-				'time-search-error',
-				t('error.infoError.title'),
-				t('error.infoError.timeMachine'),
+				'header-error',
+				t('header.error.title'),
+				t('header.error.text'),
 				Severity.ERROR,
 				false,
 				Priority.MEDIUM,

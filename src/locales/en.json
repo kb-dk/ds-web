@@ -39,6 +39,10 @@
             "id": "searchToggle",
             "icon": "search"
          }
+      },
+      "error":{
+         "title":"Error message",
+         "text":"Header is not responding"
       }
    },
    "frontpage": {
