@@ -31,31 +31,16 @@
             "icon": "account_circle"
          }
       },
-      "primary":
-         [
-            {
-               "title": "Find materiale",
-               "link": "https://www.kb.dk/find-materiale"
-            },{
-               "title": "Inspiration", 
-               "link": "https://www.kb.dk/inspiration"
-            },{
-               "title": "Arrangementer", 
-               "link": "https://www.kb.dk/arrangementer"
-            },{
-               "title": "Services", 
-               "link": "https://www.kb.dk/services"
-            },{
-               "title": "Besøg os", 
-               "link": "https://www.kb.dk/besoeg-os"
-            },{
-               "title": "Luk", 
-               "altTitle": "Søg",
-               "link": "#",
-               "id": "searchToggle",
-               "icon": "search"
-            }
-         ]
+      "main":{
+         "close":{
+            "title": "Luk", 
+            "altTitle": "Søg",
+            "link": "#",
+            "id": "searchToggle",
+            "icon": "search"
+         }
+      }
+
    },
    "frontpage": {
       "fromTheArchive":"{month} måned på DR gennem tiden"

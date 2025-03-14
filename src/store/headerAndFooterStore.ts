@@ -32,17 +32,20 @@ export const useHeaderAndFooterStore = defineStore('headerAndFooter', () => {
 	]);
 	const { t, locale } = useI18n();
 	const errorManager = inject('errorManager') as ErrorManagerType;
-	const getDrupalData = () => {
+	const getDrupalData = async () => {
 		try {
 			if (!hasData.get(locale.value)) {
 				if (locale.value === 'en') {
 					APIService.getDrupalDataEnglish().then((resp) => {
+						console.log(resp);
+
 						getHeaderData(resp);
 						getFooterData(resp);
 						hasData.set('en', true);
 					});
 				} else {
 					APIService.getDrupalData().then((resp) => {
+						console.log(resp);
 						getHeaderData(resp);
 						getFooterData(resp);
 						hasData.set('da', true);
@@ -63,31 +66,42 @@ export const useHeaderAndFooterStore = defineStore('headerAndFooter', () => {
 	};
 
 	const getHeaderData = (resp: APIDrupalDataType) => {
-		serviceHeader.value.set(locale.value, resp.data.attributes.service_menu);
-		serviceHeader.value.get(locale.value)?.push({
-			title: t('header.service.inEnglish.title'),
-			full_url: t('header.service.inEnglish.link'),
-			id: t('header.service.inEnglish.id'),
-			icon: '',
-			children: [null],
-		});
-		serviceHeader.value.get(locale.value)?.push({
-			title: t('header.service.login.title'),
-			full_url: t('header.service.login.link'),
-			id: '',
-			icon: t('header.service.login.icon'),
-			children: [null],
-		});
-		mainHeader.value.set(locale.value, resp.data.attributes.main_menu);
+		if (resp) {
+			console.log(resp);
+
+			serviceHeader.value.set(locale.value, resp.data.data.attributes.service_menu);
+			serviceHeader.value.get(locale.value)?.push({
+				title: t('header.service.inEnglish.title'),
+				full_url: t('header.service.inEnglish.link'),
+				id: t('header.service.inEnglish.id'),
+				icon: '',
+				children: [null],
+			});
+			serviceHeader.value.get(locale.value)?.push({
+				title: t('header.service.login.title'),
+				full_url: t('header.service.login.link'),
+				id: '',
+				icon: t('header.service.login.icon'),
+				children: [null],
+			});
+			mainHeader.value.set(locale.value, resp.data.data.attributes.main_menu);
+			mainHeader.value.get(locale.value)?.push({
+				title: '',
+				full_url: t('header.main.close.link'),
+				id: t('header.main.close.id'),
+				icon: t('header.main.close.icon'),
+				children: [null],
+			});
+		}
 	};
 
 	const getFooterData = (resp: APIDrupalDataType) => {
-		footer_column_1.value = resp.data.attributes.footer_column_1;
-		footer_column_2.value = resp.data.attributes.footer_column_2;
-		footer_column_3.value = resp.data.attributes.footer_column_3;
-		footer_column_4.value = resp.data.attributes.footer_column_4;
-		footer_column_5.value = resp.data.attributes.footer_column_5;
-		footer_column_6.value = resp.data.attributes.footer_column_6;
+		footer_column_1.value = resp.data.data.attributes.footer_column_1;
+		footer_column_2.value = resp.data.data.attributes.footer_column_2;
+		footer_column_3.value = resp.data.data.attributes.footer_column_3;
+		footer_column_4.value = resp.data.data.attributes.footer_column_4;
+		footer_column_5.value = resp.data.data.attributes.footer_column_5;
+		footer_column_6.value = resp.data.data.attributes.footer_column_6;
 	};
 
 	return {
