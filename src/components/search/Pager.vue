@@ -9,13 +9,13 @@
 						{{ $t('search.morePagesMessage.3', { totalHits: totalHits.toLocaleString('da-dk') }) }}
 					</div>
 					{{ $t('search.morePagesMessage.4') }}
-					<a
-						href="#"
+					<span
 						class="topOfScreen"
+						@click="scrollToTop()"
 					>
 						<span class="material-icons">sort</span>
 						{{ $t('search.morePagesMessage.5') }}
-					</a>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -259,7 +259,12 @@ export default defineComponent({
 				}
 			},
 		);
-
+		const scrollToTop = () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		};
 		return {
 			currentPageRef,
 			totalPages,
@@ -274,6 +279,7 @@ export default defineComponent({
 			inputIncorrect,
 			inputRef,
 			submitPage,
+			scrollToTop,
 		};
 	},
 });
@@ -312,6 +318,10 @@ button {
 	cursor: pointer;
 	margin: 0px 2px;
 	padding: 2px 2px;
+}
+
+:disabled {
+	cursor: default;
 }
 
 button span,
@@ -415,6 +425,7 @@ button span,
 }
 .morePagesMessage .topOfScreen {
 	color: #002e70;
+	cursor: pointer;
 }
 .topOfScreen > span {
 	position: relative;
