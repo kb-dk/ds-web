@@ -164,7 +164,7 @@
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 									>
-										{{ item.title }}
+										<span v-text="item.title"></span>
 										<i
 											v-if="item.icon"
 											class="material-icons"
@@ -187,7 +187,7 @@
 import { HeaderType } from '@/types/HeaderType';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { defineComponent, onMounted, PropType, ref, toRaw, watch } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
@@ -501,8 +501,8 @@ a {
  */
 	margin-right: 4px;
 	padding-bottom: 0;
-	/* 		border-bottom: 2px solid transparent;
- */
+	border-bottom: 2px solid transparent;
+
 	display: table;
 	padding: 13px 0px;
 	transition: border-bottom-color 0.3s ease-in-out;
