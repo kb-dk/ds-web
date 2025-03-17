@@ -505,8 +505,8 @@ a {
  */
 	margin-right: 4px;
 	padding-bottom: 0;
-	/* 		border-bottom: 2px solid transparent;
- */
+	border-bottom: 2px solid transparent;
+
 	display: table;
 	padding: 13px 0px;
 	transition: border-bottom-color 0.3s ease-in-out;
