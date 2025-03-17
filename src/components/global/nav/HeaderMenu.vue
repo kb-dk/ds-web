@@ -204,7 +204,6 @@ export default defineComponent({
 	setup(props, { emit }) {
 		const { t, locale } = useI18n();
 		const currentLocaleMessages = ref(undefined as unknown as HeaderType);
-		let currentLocale = ref('da');
 		const mainHeaderRef = ref<HTMLFormElement | null>(null);
 		const menuOpen = ref(false);
 		const router = useRouter();
@@ -214,14 +213,13 @@ export default defineComponent({
 		const serviceHeader = ref<Array<DrupalHeaderType> | null>(null);
 		const mainHeader = ref<Array<DrupalHeaderType> | null>(null);
 
-		const switchLocale = (e: Event) => {
-			e.preventDefault();
-			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
+		const switchLocale = () => {
+			locale.value = locale.value === 'da' ? 'en' : 'da';
 			const html = document.querySelector('html');
 			html?.setAttribute('lang', locale.value);
 			LocalStorageWrapper.set('locale', locale.value);
 			const routeQueries = { ...route.query };
-			routeQueries.locale = currentLocale.value;
+			routeQueries.locale = locale.value;
 			router.replace({ query: routeQueries });
 			header.getDrupalData();
 		};
@@ -288,8 +286,7 @@ export default defineComponent({
 }
 
 .rdl-logo {
-	/* TODO: We need a better way to get images into web components. */
-	background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
+	background-image: url('@/assets/images/logo-digital.svg');
 	background-position: 0;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -629,7 +626,7 @@ li button i {
 }
 
 .rdl-logo {
-	background-image: url('https://design.kb.dk/components/assets/images/logo-digital.svg');
+	background-image: url('@/assets/images/logo-digital.svg');
 	background-position: 0;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -804,7 +801,7 @@ li button i {
 	}
 
 	.rdl-logo {
-		background-image: url('https://design.kb.dk/components/assets/images/logo.svg');
+		background-image: url('@/assets/images/logo.svg');
 		height: 69px;
 		width: 174px;
 	}
