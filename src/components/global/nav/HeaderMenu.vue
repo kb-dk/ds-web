@@ -170,7 +170,7 @@
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 									>
-										{{ item.title }}
+										<span v-text="item.title"></span>
 										<i
 											v-if="item.icon"
 											class="material-icons"
@@ -553,6 +553,7 @@ li button i {
 	position: relative;
 	top: 2px;
 	font-size: 1rem;
+	margin-left: 4px;
 }
 
 .rdl-primary-nav,
