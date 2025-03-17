@@ -1,5 +1,24 @@
 <template>
 	<div :class="searchResultStore.loading ? 'pager disabled' : 'pager'">
+		<div class="morePagesMessage">
+			<div v-if="totalPages > maxPages && currentPageRef === maxPages">
+				<div>
+					{{ $t('search.morePagesMessage.1') }}
+					{{ $t('search.morePagesMessage.2') }}
+					<div class="totalHits">
+						{{ $t('search.morePagesMessage.3', { totalHits: totalHits.toLocaleString('da-dk') }) }}
+					</div>
+					{{ $t('search.morePagesMessage.4') }}
+					<span
+						class="topOfScreen"
+						@click="scrollToTop()"
+					>
+						<span class="material-icons">sort</span>
+						{{ $t('search.morePagesMessage.5') }}
+					</span>
+				</div>
+			</div>
+		</div>
 		<div class="pager-buttons">
 			<button
 				:disabled="currentPageRef === 1"
@@ -35,7 +54,7 @@
 				</button>
 			</span>
 			<button
-				:disabled="currentPageRef === totalPages"
+				:disabled="currentPageRef === maxPages"
 				:title="$t('search.nextPage')"
 				:aria-label="$t('search.nextPage')"
 				@click="nextPage"
@@ -92,6 +111,10 @@ export default defineComponent({
 		const selectPage = ref('');
 		const inputIncorrect = ref(false);
 		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
+		//We normally display 10 or 40 items per page. This'll make it dynamic2
+		const maxPages = computed(() =>
+			totalPages.value > 1000 / props.itemsPerPage ? 1000 / props.itemsPerPage : totalPages.value,
+		);
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n({ useScope: 'global' });
 		const inputRef = ref<HTMLInputElement | null>();
@@ -99,7 +122,7 @@ export default defineComponent({
 			() => selectPage.value,
 			(newVal) => {
 				if (newVal) {
-					if (parseInt(newVal) <= 0 || parseInt(newVal) > totalPages.value) {
+					if (parseInt(newVal) <= 0 || parseInt(newVal) > maxPages.value) {
 						inputIncorrect.value = true;
 					} else {
 						inputIncorrect.value = false;
@@ -113,7 +136,7 @@ export default defineComponent({
 			}
 		};
 		const submitPage = () => {
-			if (parseInt(selectPage.value) <= totalPages.value && parseInt(selectPage.value) > 0) {
+			if (parseInt(selectPage.value) <= maxPages.value && parseInt(selectPage.value) > 0) {
 				goToPage(parseInt(selectPage.value));
 			} else {
 				errorManager.submitCustomError(
@@ -138,7 +161,7 @@ export default defineComponent({
 		};
 
 		const nextPage = () => {
-			if (currentPageRef.value < totalPages.value) {
+			if (currentPageRef.value < maxPages.value) {
 				currentPageRef.value++;
 				navigate();
 			}
@@ -152,7 +175,7 @@ export default defineComponent({
 		};
 
 		const goToPage = (page: number) => {
-			if (page >= 1 && page <= totalPages.value) {
+			if (page >= 1 && page <= maxPages.value) {
 				currentPageRef.value = page;
 				navigate();
 			}
@@ -162,8 +185,8 @@ export default defineComponent({
 			//Array to hold them page numbers
 			const pages = [];
 			//If the page count doesn't exceed our number of pages to show we just push all pages
-			if (totalPages.value <= props.numPagesToShow) {
-				for (let i = 1; i <= totalPages.value; i++) {
+			if (maxPages.value <= props.numPagesToShow) {
+				for (let i = 1; i <= maxPages.value; i++) {
 					pages.push(i);
 				}
 				/*If the page count does exceed our number of pages to show we calculate
@@ -179,8 +202,8 @@ export default defineComponent({
 				 	and the start page is calculated from endPage and 'number of pages to show' values. We +1
 					or else there would be shown one more page in the pager than specified in props.numPagesToShow
 				 */
-				if (endPage > totalPages.value) {
-					endPage = totalPages.value;
+				if (endPage > maxPages.value) {
+					endPage = maxPages.value;
 					startPage = endPage - props.numPagesToShow + 1;
 				}
 				if (startPage > 1) {
@@ -205,11 +228,11 @@ export default defineComponent({
 				so we push them to the pages array. If this condition is not met we know this is the end of line
 				and push the total page count to the array as the last thing before we return pages
 				*/
-				if (endPage < totalPages.value) {
-					if (endPage < totalPages.value - 1) {
+				if (endPage < maxPages.value) {
+					if (endPage < maxPages.value - 1) {
 						pages.push('...');
 					}
-					pages.push(totalPages.value);
+					pages.push(maxPages.value);
 				}
 			}
 			return pages;
@@ -240,10 +263,16 @@ export default defineComponent({
 				}
 			},
 		);
-
+		const scrollToTop = () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		};
 		return {
 			currentPageRef,
 			totalPages,
+			maxPages,
 			nextPage,
 			prevPage,
 			goToPage,
@@ -254,6 +283,7 @@ export default defineComponent({
 			inputIncorrect,
 			inputRef,
 			submitPage,
+			scrollToTop,
 		};
 	},
 });
@@ -292,6 +322,10 @@ button {
 	cursor: pointer;
 	margin: 0px 2px;
 	padding: 2px 2px;
+}
+
+:disabled {
+	cursor: default;
 }
 
 button span,
@@ -378,6 +412,30 @@ button span,
 	text-align: left;
 }
 
+.morePagesMessage {
+	width: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+.morePagesMessage > div {
+	width: 95%;
+}
+.morePagesMessage .totalHits {
+	font-weight: bold;
+	width: fit-content;
+	display: inline;
+}
+.morePagesMessage .topOfScreen {
+	color: #002e70;
+	cursor: pointer;
+}
+.topOfScreen > span {
+	position: relative;
+	top: 7px;
+	line-height: 9px;
+}
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.pager-buttons {
@@ -385,6 +443,12 @@ button span,
 	}
 	button {
 		padding: 2px 5px;
+	}
+}
+
+@media (min-width: 800px) {
+	.morePagesMessage > div {
+		width: 55%;
 	}
 }
 </style>

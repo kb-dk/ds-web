@@ -138,6 +138,13 @@
      "page": "Side",
      "goToPage":"Gå til side {n}",
     "goToThePage": "Gå til siden",
+    "morePagesMessage":{
+      "1": "For at give dig den bedste oplevelse, har vi udladt nogle poster i systemet, der ligger ud over de ca. 1.000 der allerede vises.",
+      "2": "Du har",
+      "3": "{totalHits}",
+      "4": "resultater, som du kan forsøge at indskærpe via søgeord, eller de",
+      "5": "sorteringer vi giver dig i toppen af resultatet."
+    },
      "sortAfter":"Sorteret efter ",
      "sortBy": "Sorter efter",
     "selected": "Valgt",
