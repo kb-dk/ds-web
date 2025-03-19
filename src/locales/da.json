@@ -138,6 +138,7 @@
      "page": "Side",
      "goToPage":"Gå til side {n}",
     "goToThePage": "Gå til siden",
+    "outOf": "ud af",
     "morePagesMessage":{
       "1": "For at give dig den bedste oplevelse, har vi udladt nogle poster i systemet, der ligger ud over de ca. 1.000 der allerede vises.",
       "2": "Du har",

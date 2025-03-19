@@ -3,7 +3,7 @@ import { FacetResultType, FacetsType, GenericSearchResultType } from '@/types/Ge
 import { APIService } from '@/api/api-service';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
-import { inject, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
@@ -47,6 +47,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const currentChannelFacetString = ref('');
 	const loadingChannels = ref(false);
 	const loadingGenres = ref(false);
+
+	const pageNumber = computed(() => {
+		const pageStart = start.value ? Number(start.value) : 0;
+		return (pageStart + Number(rowCount.value)) / Number(rowCount.value);
+	});
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -414,5 +419,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowCountFromURL,
 		setRotationalResult,
 		setCuratedContent,
+		pageNumber,
 	};
 });
