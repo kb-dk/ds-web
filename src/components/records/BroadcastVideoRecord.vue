@@ -230,6 +230,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	align-items: center;
 	gap: 7px;
+	flex-wrap: wrap;
 }
 
 .no-streaming {

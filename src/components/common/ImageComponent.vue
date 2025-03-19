@@ -1,7 +1,7 @@
 <template>
 	<figure
 		class="image-wrapper"
-		:style="`background: ${background}; aspect-ratio: ${data.aspect}`"
+		:style="`background: rgb(60,60,60); aspect-ratio: ${data.aspect}`"
 	>
 		<img
 			ref="image-item"
@@ -15,6 +15,8 @@
 			@load="loaded = true"
 		/>
 		<span
+			role="img"
+			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
 			class="type-symbol material-icons"
 			:style="`color: ${data.iconColor}`"
 		>
@@ -26,6 +28,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { ImageComponentType } from '@/types/ImageComponentType';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'ImageComponent',
@@ -49,6 +52,7 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
+		const { t } = useI18n();
 		const loaded = ref(false);
 		const background = `linear-gradient(${Math.round(Math.random() * 360)}deg, #caf0fe, #002e70)`;
 		const data = ref(JSON.parse(props.imageData) as ImageComponentType);
@@ -66,6 +70,7 @@ export default defineComponent({
 			imgStyle,
 			loaded,
 			data,
+			t,
 		};
 	},
 });
@@ -93,7 +98,7 @@ export default defineComponent({
 }
 
 .type-symbol {
-	font-size: 64px !important;
+	font-size: 55px;
 	position: absolute !important;
 	left: 50% !important;
 	top: 50% !important;

@@ -132,6 +132,7 @@ export default defineComponent({
 	padding-bottom: 20px;
 	padding-top: 20px;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
 .sort button {
 	display: flex;

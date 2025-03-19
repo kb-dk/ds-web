@@ -1,6 +1,6 @@
 <template>
-	<span>
-		<span>{{ parenthesis ? '(' : '' }} {{ formattedDuration }} {{ parenthesis ? ')' : '' }}</span>
+	<span class="duration-container">
+		<span class="set-duration">{{ parenthesis ? '(' : '' }} {{ formattedDuration }} {{ parenthesis ? ')' : '' }}</span>
 	</span>
 </template>
 
@@ -47,3 +47,10 @@ export default defineComponent({
 	},
 });
 </script>
+
+<style scoped>
+.set-duration {
+	display: flex;
+	flex-wrap: wrap;
+}
+</style>

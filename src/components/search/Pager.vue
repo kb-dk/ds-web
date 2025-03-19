@@ -73,6 +73,8 @@
 				ref="inputRef"
 				v-model="selectPage"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
+				:aria-label="$t('search.goToThePage')"
+				autocomplete="off"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>
@@ -410,6 +412,11 @@ button span,
 
 .container[data-v-a895c851] {
 	text-align: left;
+}
+
+.material-icons {
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .morePagesMessage {

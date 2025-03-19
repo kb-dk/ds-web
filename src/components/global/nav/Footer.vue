@@ -97,7 +97,13 @@
 									:href="t('some.facebook.link')"
 									:data-testid="addTestDataEnrichment('link', 'footer', `facebook-column4`, 0)"
 								>
-									<i class="rdl-icons">rdl_facebook</i>
+									<i
+										:aria-label="`${t('app.a11y.facebook')}`"
+										role="img"
+										class="rdl-icons"
+									>
+										rdl_facebook
+									</i>
 									<span class="sr-only">{{ t('some.facebook.title') }}</span>
 								</a>
 							</li>
@@ -107,7 +113,13 @@
 									:href="t('some.instagram.link')"
 									:data-testid="addTestDataEnrichment('link', 'footer', `instagram-column4`, 0)"
 								>
-									<i class="rdl-icons">rdl_instagram</i>
+									<i
+										:aria-label="`${t('app.a11y.instagram')}`"
+										role="img"
+										class="rdl-icons"
+									>
+										rdl_instagram
+									</i>
 									<span class="sr-only">{{ t('some.instagram.title') }}</span>
 								</a>
 							</li>
@@ -117,7 +129,13 @@
 									:href="t('some.linkedin.link')"
 									:data-testid="addTestDataEnrichment('link', 'footer', `linkedin-column4`, 0)"
 								>
-									<i class="rdl-icons">rdl_linkedin</i>
+									<i
+										:aria-label="`${t('app.a11y.linkedin')}`"
+										role="img"
+										class="rdl-icons"
+									>
+										rdl_linkedin
+									</i>
 									<span class="sr-only">{{ t('some.linkedin.title') }}</span>
 								</a>
 							</li>
@@ -223,6 +241,7 @@ export default defineComponent({
 .rdl-some-link i {
 	color: #002e70;
 	font-size: 0.875rem;
+	background-color: #fff;
 }
 
 h2 {

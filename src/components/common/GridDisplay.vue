@@ -157,7 +157,13 @@ temporary styling until patterns from design system are implemented
 }
 
 .draggable {
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
+}
+
+@media (min-width: 321px) {
+	.draggable {
+		flex-wrap: nowrap;
+	}
 }
 
 .draggable-item {

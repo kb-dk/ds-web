@@ -558,13 +558,18 @@ export default defineComponent({
 	top: 5px;
 }
 
+.material-icons {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .filter-button-text {
 	padding-left: 5px;
 }
 
 .source-facet-button {
 	cursor: pointer;
-	padding: 3px 3px;
+	padding: 3px 2px;
 	font-size: 18px;
 	width: fit-content;
 	display: flex;
