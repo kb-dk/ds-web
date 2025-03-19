@@ -121,11 +121,7 @@
 									{{ t('search.page') }}
 									{{ searchResultStore.pageNumber }}
 									{{ t('search.of') }}
-									{{
-										new Intl.NumberFormat('de-DE').format(
-											Math.ceil(searchResultStore.numFound / Number(searchResultStore.rowCount)),
-										)
-									}}
+									{{ searchResultStore.maxPages }}
 								</div>
 							</Transition>
 							<Transition name="fade">
@@ -135,7 +131,7 @@
 								>
 									{{ Number(searchResultStore.start) + 1 }} -
 									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }} {{ $t('search.outOf') }}
-									{{ searchResultStore.numFound }}
+									{{ new Intl.NumberFormat('de-DE').format(searchResultStore.numFound) }}
 								</div>
 							</Transition>
 						</div>
