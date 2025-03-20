@@ -527,6 +527,7 @@ export default defineComponent({
 }
 
 .filter-button {
+	display: flex;
 	position: relative;
 	border: 1px solid #002e70;
 	line-height: 24px;
