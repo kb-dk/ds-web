@@ -48,7 +48,6 @@ import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
 import Header from '@/components/search/Header.vue';
 import { useAuthStore } from '@/store/authStore';
-import '@/components/global/nav/wc-header-menu';
 import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -89,17 +88,6 @@ export default defineComponent({
 			} else {
 				router.push({ path: e.detail.path });
 			}
-		};
-
-		const switchLocale = (e: Event) => {
-			e.preventDefault();
-			locale.value = currentLocale.value = locale.value === 'da' ? 'en' : 'da';
-			const html = document.querySelector('html');
-			html?.setAttribute('lang', locale.value);
-			LocalStorageWrapper.set('locale', locale.value);
-			const routeQueries = { ...route.query };
-			routeQueries.locale = currentLocale.value;
-			router.replace({ query: routeQueries });
 		};
 
 		router.beforeEach((to, from) => {
@@ -292,12 +280,10 @@ export default defineComponent({
 		};
 
 		onBeforeMount(() => {
-			window.addEventListener('locale-switch', switchLocale);
 			window.addEventListener('change-path', gotoPath);
 		});
 
 		onBeforeUnmount(() => {
-			window.removeEventListener('locale-switch', switchLocale);
 			window.removeEventListener('change-path', gotoPath);
 		});
 
@@ -567,17 +553,6 @@ body {
 		max-height: initial;
 		overflow: initial;
 	}
-}
-
-nav {
-	flex-basis: 0;
-	flex-grow: 1;
-	max-width: 100%;
-	position: relative;
-	width: 100%;
-	padding-right: 12px;
-	padding-left: 12px;
-	box-sizing: border-box;
 }
 
 #app {

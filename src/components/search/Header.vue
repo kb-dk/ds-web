@@ -1,19 +1,23 @@
 <template>
 	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
-		<kb-menu
+		<!-- <kb-menu
 			:routing="true"
 			:locale="locale"
 			:page="$route.name"
-		></kb-menu>
-		<SearchBar />
+		></kb-menu> -->
+		<HeaderMenu
+			:search-bar-open="searchBarOpen"
+			@toggle-search-bar="toggleSearchBar"
+		></HeaderMenu>
+		<SearchBar :search-bar-open="searchBarOpen" />
 		<Breadcrumb />
 		<div class="edge top"></div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import '@/components/global/nav/wc-header-menu';
+import { defineComponent, ref } from 'vue';
+import HeaderMenu from '../global/nav/HeaderMenu.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
 export default defineComponent({
@@ -21,12 +25,18 @@ export default defineComponent({
 	components: {
 		SearchBar,
 		Breadcrumb,
+		HeaderMenu,
 	},
 	props: {
 		locale: { type: String, required: true },
 	},
 	setup() {
-		return {};
+		const searchBarOpen = ref(true);
+		const toggleSearchBar = () => {
+			searchBarOpen.value = !searchBarOpen.value;
+		};
+
+		return { searchBarOpen, toggleSearchBar };
 	},
 });
 </script>
