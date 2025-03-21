@@ -135,8 +135,8 @@ export default defineComponent({
 		 * so that we can manipulate it and add the test id's and change what we wanna change in the HTML.
 		 */
 		watch(
-			() => startDatePicker.value?.dpWrapMenuRef,
-			(newVal: any) => {
+			() => startDatePicker.value?.dpWrapMenuRef as unknown as HTMLElement | null,
+			(newVal: HTMLElement | null) => {
 				if (newVal !== null) {
 					const pickers = document.querySelector('.date-pickers');
 					if (pickers) {

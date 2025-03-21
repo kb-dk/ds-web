@@ -118,6 +118,9 @@ export default defineComponent({
 label {
 	padding-right: 10px;
 	color: black;
+	display: flex;
+	gap: 5px;
+	align-items: center;
 }
 
 .line {

@@ -15,6 +15,16 @@
       "frontPages": {
          "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv",
         "loadingError": "Indlæsning fejlede"
+      },
+      "a11y": {
+         "imageComponentTitle":"ikon til billedet",
+         "facebook":"Link til Facebook",
+         "linkedin":"Link til LinkedIn",
+         "instagram":"Link til Instagram",
+         "soundIcon":"lyd afspilnings icon",
+         "goToPost":"Gå til udsendelse",
+         "broadcastTimeAndPlace":"Afspilningskanal og tid",
+         "broadcastDuration":"Udsendelsens varighed"
       }
    },
 

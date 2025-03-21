@@ -38,7 +38,7 @@
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
-						<span>{{ $t('record.duration') }}:&nbsp;</span>
+						<span class="record-duration">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
 							:end-date="resultdata.endTime"
@@ -311,6 +311,7 @@ export default defineComponent({
 
 .duration {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .loading-icon {
@@ -325,6 +326,7 @@ export default defineComponent({
 	display: flex;
 	padding-top: 12px;
 	padding-bottom: 5px;
+	flex-wrap: wrap;
 }
 
 .date.loading {
@@ -335,6 +337,8 @@ export default defineComponent({
 .date .material-icons,
 .duration .material-icons {
 	font-size: 20px;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .title {

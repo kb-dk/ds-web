@@ -33,10 +33,11 @@ temporary styling until patterns from design system are implemented
 <style scoped>
 .imageAndTextContainer {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
 }
 .imageAndTextContainer .con {
-	width: 50%;
+	width: 100%;
 	display: flex;
 	align-content: center;
 	justify-content: center;
@@ -45,6 +46,7 @@ temporary styling until patterns from design system are implemented
 .imageAndTextContainer .con .li {
 	font-size: 50px;
 }
+
 @media (min-width: 450px) {
 	.imageAndTextContainer {
 		flex-direction: column;

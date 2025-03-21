@@ -207,7 +207,7 @@ h2 {
 }
 .search-icon {
 	text-align: center;
-	font-size: 256px;
+	font-size: 150px;
 	color: #002e70;
 }
 
@@ -220,6 +220,9 @@ h2 {
 	.contact-us {
 		margin-top: -40px;
 		padding-bottom: 40px;
+	}
+	.search-icon {
+		font-size: 256px;
 	}
 }
 </style>

@@ -1,7 +1,10 @@
 <!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div class="autocomplete">
+	<div
+		v-if="searchResultStore.autocompleteResult.length > 0"
+		class="autocomplete"
+	>
 		<Transition
 			name="fade"
 			mode="out-in"

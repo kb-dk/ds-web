@@ -796,11 +796,17 @@ fieldset {
 }
 
 .slider-container {
-	height: 100px;
+	height: 150px;
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	position: relative;
 	width: 100%;
+}
+
+@media (min-width: 450px) {
+	.slider-container {
+		height: 100px;
+	}
 }
 
 .data-size {
