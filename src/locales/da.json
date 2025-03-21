@@ -283,6 +283,7 @@
      "title":"Titel",
      "genre":"Genre",
      "copy": "Del link",
+     "copyWithTime": "{copy} ved {timestamp}",
      "copyTitleSuccess":"Linket er nu kopieret",
      "copyMessageSuccess":"",
      "copyTitleFailed":"Kopiering fejlede.",
