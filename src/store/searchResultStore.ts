@@ -195,6 +195,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		facetResult.value = {} as FacetResultType;
 		channelFilters.value = [];
 		categoryFilters.value = [];
+		preliminaryFilter.value = '';
 	};
 
 	const resetAutocomplete = () => {
