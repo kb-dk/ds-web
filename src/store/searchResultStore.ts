@@ -3,13 +3,14 @@ import { FacetResultType, FacetsType, GenericSearchResultType } from '@/types/Ge
 import { APIService } from '@/api/api-service';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
-import { inject, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import { max } from 'date-fns';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -47,6 +48,16 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const currentChannelFacetString = ref('');
 	const loadingChannels = ref(false);
 	const loadingGenres = ref(false);
+	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
+	//We normally display 10 or 40 items per page. This'll make it dynamic
+	const maxPages = computed(() =>
+		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
+	);
+
+	const pageNumber = computed(() => {
+		const pageStart = start.value ? Number(start.value) : 0;
+		return (pageStart + Number(rowCount.value)) / Number(rowCount.value);
+	});
 
 	const setStart = (value: string) => {
 		start.value = value;
@@ -415,5 +426,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setRowCountFromURL,
 		setRotationalResult,
 		setCuratedContent,
+		pageNumber,
+		totalPages,
+		maxPages,
 	};
 });

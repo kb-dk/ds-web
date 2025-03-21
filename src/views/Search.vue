@@ -28,6 +28,16 @@
 									<NoHits />
 								</div>
 							</Transition>
+							<Transition name="fade">
+								<div
+									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
+									class="page-count"
+								>
+									{{ Number(searchResultStore.start) + 1 }} -
+									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }} {{ $t('search.outOf') }}
+									{{ new Intl.NumberFormat('de-DE').format(searchResultStore.numFound) }}
+								</div>
+							</Transition>
 							<Pagination
 								v-show="searchResultStore.searchResult.length > 0"
 								:items-per-page="Number(searchResultStore.rowCount)"
