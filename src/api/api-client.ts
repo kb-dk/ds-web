@@ -4,6 +4,7 @@ import {
 	APIAuthMessagesType,
 	APIAuthResponseType,
 	APIAutocompleteResponseType,
+	APIDrupalDataType,
 	APIMoreLikeThisResponseType,
 	APIRecordResponseType,
 	APISearchResponseType,
@@ -231,5 +232,13 @@ export class APIServiceClient {
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
 		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&vid_slices=10`);
+	}
+
+	async getDrupalData(): Promise<APIDrupalDataType> {
+		return await this.httpClient.get(`bff/v1/proxy/kbdrupal-da/`);
+	}
+
+	async getDrupalDataEnglish(): Promise<APIDrupalDataType> {
+		return await this.httpClient.get(`bff/v1/proxy/kbdrupal-en/`);
 	}
 }
