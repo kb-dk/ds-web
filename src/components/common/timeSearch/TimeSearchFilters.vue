@@ -75,7 +75,7 @@
 			icon="event"
 			:subline="getSublineForYears(startDate, endDate, t)"
 		>
-			<div class="picker-background"><DatePicker @span-updated="emitNewSearch()"></DatePicker></div>
+			<div class="picker-background"><DatePicker></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
@@ -239,7 +239,7 @@
 		>
 			<button
 				class="apply-time-facets"
-				:disabled="!timeSearchStore.newSearchReqMet"
+				:disabled="!timeSearchStore.filterSearchReady"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
@@ -438,7 +438,7 @@ export default defineComponent({
 			if (yearSearch.value && yearSearch.value.expanderOpen) {
 				emit('newSearch', true);
 			} else {
-				if (props.timeline) {
+				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
 					endDate.value.setFullYear(timeSliderValues.value[1]);
 				}
@@ -452,24 +452,25 @@ export default defineComponent({
 				});
 			}
 			timeSearchStore.setNewSearchReqMet(false);
+			timeSearchStore.setFilterSearchReady(false);
 		};
 
 		const updateStartYear = (val: number) => {
 			timeSliderValues.value[0] = Number(val);
-			startDate.value.setFullYear(val);
+			startDate.value !== null ? startDate.value.setFullYear(val) : null;
 			if (Number(val) > timeSliderValues.value[1]) {
 				timeSliderValues.value[1] = Number(val);
-				endDate.value.setFullYear(val);
+				endDate.value !== null ? endDate.value.setFullYear(val) : null;
 			}
 			emitNewSearch();
 		};
 
 		const updateEndYear = (val: number) => {
-			endDate.value.setFullYear(val);
+			endDate.value !== null ? endDate.value.setFullYear(val) : null;
 			timeSliderValues.value[1] = Number(val);
 			if (Number(val) < timeSliderValues.value[0]) {
 				timeSliderValues.value[0] = Number(val);
-				startDate.value.setFullYear(val);
+				startDate.value !== null ? startDate.value.setFullYear(val) : null;
 			}
 			emitNewSearch();
 		};
@@ -1011,8 +1012,8 @@ fieldset {
 	align-items: center;
 	box-shadow: 1px 1px 2px #00000000;
 	border: 1px solid #d9d8d8;
-	background: #002e70;
-	color: white;
+	background: #49da87;
+	color: #002e70;
 	border-radius: 4px;
 	transition: all 0s linear 0s;
 	z-index: 1;

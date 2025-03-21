@@ -34,8 +34,8 @@ const resetAllSelectorValues = (array: SelectorData[]) => {
 const getTimeResults = (allowYearSearch: boolean) => {
 	const timeSearchStore = useTimeSearchStore();
 	timeSearchStore.getTimeSearchResults(
-		allowYearSearch ? startDate.value.toISOString() : '',
-		allowYearSearch ? endDate.value.toISOString() : '',
+		allowYearSearch && startDate.value !== null ? startDate.value.toISOString() : '',
+		allowYearSearch && endDate.value !== null ? endDate.value.toISOString() : '',
 		getSelectedFromArray(months.value),
 		getSelectedFromArray(days.value),
 		getSelectedFromArray(timeslots.value),
@@ -59,21 +59,25 @@ const getQueryStringFromArray = (array: string[], prefix: string) => {
 	return selected;
 };
 
-const getSublineForYears = (startDate: Date, endDate: Date, t: ComposerTranslation) => {
-	const startYear = startDate.getFullYear();
-	const endYear = endDate.getFullYear();
+const getSublineForYears = (startDate: Date | null, endDate: Date | null, t: ComposerTranslation) => {
+	if (startDate && endDate) {
+		const startYear = startDate.getFullYear();
+		const endYear = endDate.getFullYear();
 
-	let yearsDifference = endYear - startYear + 1;
+		let yearsDifference = endYear - startYear + 1;
 
-	const isBeforeStartDate =
-		endDate.getMonth() < startDate.getMonth() ||
-		(endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+		const isBeforeStartDate =
+			endDate.getMonth() < startDate.getMonth() ||
+			(endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
 
-	if (isBeforeStartDate) {
-		yearsDifference--;
+		if (isBeforeStartDate) {
+			yearsDifference--;
+		}
+
+		return `${yearsDifference} ${t('timeSearch.year', yearsDifference)}`;
+	} else {
+		return `${t('datepicker.unknownLength')}`;
 	}
-
-	return `${yearsDifference} ${t('timeSearch.year', yearsDifference)}`;
 };
 
 const getSublineForMonths = (months: SelectorData[], t: ComposerTranslation) => {
@@ -88,7 +92,7 @@ const getSublineForDays = (days: SelectorData[], t: ComposerTranslation) => {
 	if (getDays(days).length === 0 || getDays(days).length === 7) {
 		return `${t('timeSearch.allDays')}`;
 	} else {
-		return `${getDays(days).length} ${t('timeSearch.day', getDays(days).length)}`;
+		return `${getDays(days).length} ${t('timeSearch.weekday', getDays(days).length)}`;
 	}
 };
 

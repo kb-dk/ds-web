@@ -6,8 +6,8 @@ const initStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 20
 const initEndDate = ref<Date>(new Date(2015, 11, 31, 23, 59, 59)); // December 31, 2015, 23:59:59
 
 const timeSliderValues = ref<number[]>(initSliderValues.value);
-const startDate = ref<Date>(initStartDate.value); // January 1, 2015, 00:00:00
-const endDate = ref<Date>(initEndDate.value); // December 31, 2015, 23:59:59
+const startDate = ref<Date | null>(initStartDate.value); // January 1, 2015, 00:00:00
+const endDate = ref<Date | null>(initEndDate.value); // December 31, 2015, 23:59:59
 
 /* these are just the preset values. Should be updated when we got the new index in solr */
 const startYear = ref<Date>(new Date(2006, 0, 1, 0, 0, 0));
