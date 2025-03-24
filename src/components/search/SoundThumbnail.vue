@@ -9,7 +9,7 @@
 		</div>
 		<span
 			role="img"
-			:aria-label="`${t('app.a11y.soundIcon')}`"
+			:aria-label="t('app.a11y.soundIcon')"
 			class="material-icons play"
 			aria-hidden="true"
 		>

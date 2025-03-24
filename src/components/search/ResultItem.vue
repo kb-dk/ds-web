@@ -22,7 +22,7 @@
 							<div
 								role="img"
 								class="material-icons arrow"
-								:aria-label="`${t('app.a11y.goToPost')}`"
+								:aria-label="t('app.a11y.goToPost')"
 							>
 								keyboard_arrow_right
 							</div>
@@ -33,7 +33,7 @@
 								:class="`icons schedule material-icons ${
 									resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
 								}`"
-								:aria-label="`${t('app.a11y.broadcastTimeAndPlace')}`"
+								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							>
 								play_circle_filled
 							</span>
@@ -42,7 +42,7 @@
 							<div
 								role="img"
 								class="material-icons icons schedule timeSVG"
-								:aria-label="`${t('app.a11y.broadcastDuration')}`"
+								:aria-label="t('app.a11y.broadcastDuration')"
 								aria-hidden="true"
 							>
 								schedule
@@ -90,7 +90,7 @@
 					<div class="placeholder-w">
 						<div
 							role="img"
-							:aria-label="`${t('app.a11y.broadcastTimeAndPlace')}`"
+							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							class="material-icons ph-icon"
 						>
 							play_circle_filled
@@ -102,7 +102,7 @@
 						<div
 							role="img"
 							class="material-icons ph-icon"
-							:aria-label="`${t('app.a11y.broadcastDuration')}`"
+							:aria-label="t('app.a11y.broadcastDuration')"
 						>
 							schedule
 						</div>

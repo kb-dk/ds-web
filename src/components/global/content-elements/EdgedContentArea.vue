@@ -259,13 +259,6 @@ h3:first-letter {
 		padding-right: 18px;
 	}
 }
-/* MEDIA QUERY 1280 */
-@media (min-width: 1280px) {
-	.time-search .container {
-		/* padding-right: 0;
-		padding-left: 0; */
-	}
-}
 @media (min-width: 4000px) {
 	.top-edge {
 		transform: rotateZ(0deg) !important;

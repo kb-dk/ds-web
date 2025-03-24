@@ -98,7 +98,7 @@
 									:data-testid="addTestDataEnrichment('link', 'footer', `facebook-column4`, 0)"
 								>
 									<i
-										:aria-label="`${t('app.a11y.facebook')}`"
+										:aria-label="t('app.a11y.facebook')"
 										role="img"
 										class="rdl-icons"
 									>
@@ -114,7 +114,7 @@
 									:data-testid="addTestDataEnrichment('link', 'footer', `instagram-column4`, 0)"
 								>
 									<i
-										:aria-label="`${t('app.a11y.instagram')}`"
+										:aria-label="t('app.a11y.instagram')"
 										role="img"
 										class="rdl-icons"
 									>
@@ -130,7 +130,7 @@
 									:data-testid="addTestDataEnrichment('link', 'footer', `linkedin-column4`, 0)"
 								>
 									<i
-										:aria-label="`${t('app.a11y.linkedin')}`"
+										:aria-label="t('app.a11y.linkedin')"
 										role="img"
 										class="rdl-icons"
 									>
