@@ -384,6 +384,9 @@ export default defineComponent({
 
 		const newSearch = (yearSearch: boolean) => {
 			const routeQueries = cloneRouteQuery(route);
+			if (routeQueries.q === '') {
+				routeQueries.q = '*:*';
+			}
 			routeQueries.start = 0;
 			routeQueries.sort = yearSearch ? 'startTime asc' : '';
 			const dayString = days.value
