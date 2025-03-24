@@ -475,7 +475,6 @@ export default defineComponent({
 .filter-options {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
 	justify-content: flex-end;
 	flex-direction: column-reverse;
 	z-index: 1;
@@ -543,6 +542,7 @@ export default defineComponent({
 	padding: 6px 12px 9px 12px;
 	font-family: noway, sans-serif;
 	transition: all 0.25s linear 0s;
+	align-items: baseline;
 }
 .filter-button:hover {
 	background-color: #c4f1ed;
