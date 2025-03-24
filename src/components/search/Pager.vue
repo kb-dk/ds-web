@@ -443,6 +443,11 @@ button span,
 	top: 7px;
 	line-height: 9px;
 }
+
+.topOfScreen .material-icons {
+	display: initial;
+}
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.pager-buttons {
