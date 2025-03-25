@@ -267,6 +267,7 @@
     },
     "frontpageGuide": {
       "title":"Hvordan søger jeg bedst?",
+      "disclaimer":"",
       "first":{
         "part1": "Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis",
         "cursive1": "hotel",

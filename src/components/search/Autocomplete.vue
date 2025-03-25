@@ -1,10 +1,7 @@
 <!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div
-		v-if="searchResultStore.autocompleteResult.length > 0"
-		class="autocomplete"
-	>
+	<div :class="searchResultStore.autocompleteResult.length > 0 ? 'autocomplete active' : 'autocomplete'">
 		<Transition
 			name="fade"
 			mode="out-in"
@@ -40,6 +37,7 @@
 		</Transition>
 	</div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -180,13 +178,16 @@ export default defineComponent({
 	background-color: white;
 	width: 50%;
 	padding: 0px 0px;
-	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-	border-radius: 0px 0px 2px 2px;
 	margin-top: -1px;
 	margin-left: 0px;
 	width: calc(80% - 2px);
 	border: 1px solid #757575;
 	border-top: 0px solid #757575;
+}
+
+.autocomplete.active {
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
+	border-radius: 0px 0px 2px 2px;
 }
 
 .autocomplete button {

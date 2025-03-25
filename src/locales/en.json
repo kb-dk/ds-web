@@ -133,7 +133,7 @@
       "selection":"A selection of the results",
       "dateSubtitle": "Here you can select a specific date and see what was aired that day. You can change the year by clicking on the year at the top of the calendar.",
       "timeMachineSubtitle": "Here you can select years, months, and days of the week, if you are looking for programmes from a specific period in time. When you click through to the list of results, you will get more filtering options.",
-      "searchCategoriesSubtitle": "Select a category and explore the programmes. The categories primarily contain TV programmes, while you'll find most of the radio programmes in the “Radio jumble box.”",
+      "searchCategoriesSubtitle": "Select a category and explore the programmes. The categories primarily contain TV programmes, while you will find most of the radio programmes in the “Radio jumble box.”",
       "monthHeadline":"Select months",
       "dayHeadline":"Select days of the week",
       "timeslotHeadline":"Select hours",
@@ -269,18 +269,19 @@
      },
     "frontpageGuide": {
       "title":"How do I optimise my search?",
+      "disclaimer":"Since the contents in DR-arkivet are in Danish, you will get the best results, if you use Danish words for your search.",
       "first":{
-         "part1": "The search function only finds results where your keywords appear in the title or description in exactly the form and spelling you have written them. This means that a search for, for example,",
-         "cursive1": "tower",
-         "part2": "will not find results that say",
-         "cursive2": "towers",
+         "part1": "The search function only finds results where your keywords appear in the title or description in exactly the form and spelling you have written them. For example, a search for",
+         "cursive1": "stunt",
+         "part2": "will not find results with the words",
+         "cursive2": "stunts",
          "part3": "or",
-         "cursive3": "watchtower."
+         "cursive3": "stuntman."
       },
       "second":"If you want to include multiple forms of the search words, you can use * at the end and/or beginning of the word.",
       "third":"Please note: When you search in the search box, your previous selection of filters will be reset - for example category, channel or time.",
       "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search",
-      "linktext":"Read more advice about searching "
+      "linktext":"Find more advice on searching"
     },
      "contactUs": "Contact us if you need help"
   },
@@ -322,27 +323,27 @@
          "links": {
             "1": {
                "title": "About the DR-archive",
-               "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+               "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet"
             },
             "2": {
                "title": "Find materials",
-               "link": "https://www.kb.dk/find-materiale"
+               "link": "https://www.kb.dk/en/find-materials"
             },
             "3": {
                "title": "Inspiration",
-               "link": "https://www.kb.dk/inspiration"
+               "link": "https://www.kb.dk/en/inspiration"
             },
             "4": {
                "title": "Events",
-               "link": "https://www.kb.dk/arrangementer"
+               "link": "https://www.kb.dk/en/events"
             },
             "5": {
                "title": "Services",
-               "link": "https://www.kb.dk/services"
+               "link": "https://www.kb.dk/en/services"
             },
             "6": {
                "title": "Visit us",
-               "link": "https://www.kb.dk/besoeg-os"
+               "link": "https://www.kb.dk/en/visit-us"
             }
          }
       },
@@ -351,7 +352,7 @@
          "links": {
             "1": {
              "title": "Mediestream",
-             "link": "https://www2.statsbiblioteket.dk/mediestream/"
+             "link": "https://www.kb.dk/en/find-materials/systems-and-services/mediestream"
             },
             "2": {
                "title": "Digital collections",
@@ -359,15 +360,15 @@
             },
             "3": {
                "title": "The Radio- and TV collection",
-               "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
+               "link": "https://www.kb.dk/en/find-materials/collections/radio-and-tv-collection"
             },
             "4": {
                "title": "Find Danish radio and TV programmes",
-               "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+               "link": "https://www.kb.dk/en/find-materials/guides/how-find-danish-radio-and-tv-programmes"
             },
             "5": {
                "title": "The Library system",
-               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
+               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=en"
             }
          }
       },
