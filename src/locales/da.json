@@ -179,6 +179,7 @@
    },
   "search":{
      "showing":"Viser",
+     "outOf":"ud af",
      "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet med | resultater fundet med",

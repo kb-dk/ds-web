@@ -35,7 +35,11 @@
 								>
 									{{ Number(searchResultStore.start) + 1 }} -
 									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }} {{ $t('search.outOf') }}
-									{{ new Intl.NumberFormat('de-DE').format(searchResultStore.numFound) }}
+									{{
+										searchResultStore.numFound > 1000
+											? '1000+'
+											: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound)
+									}}
 								</div>
 							</Transition>
 							<Pagination

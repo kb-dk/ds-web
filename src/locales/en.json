@@ -180,6 +180,7 @@
    },
   "search":{
       "showing":"Showing",
+      "outOf":"out of",
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
      "hitcount": " result fund with | results found with",
