@@ -313,27 +313,27 @@
          "links": {
             "1": {
                "title": "About the DR-archive",
-               "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+               "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet"
             },
             "2": {
                "title": "Find materials",
-               "link": "https://www.kb.dk/find-materiale"
+               "link": "https://www.kb.dk/en/find-materials"
             },
             "3": {
                "title": "Inspiration",
-               "link": "https://www.kb.dk/inspiration"
+               "link": "https://www.kb.dk/en/inspiration"
             },
             "4": {
                "title": "Events",
-               "link": "https://www.kb.dk/arrangementer"
+               "link": "https://www.kb.dk/en/events"
             },
             "5": {
                "title": "Services",
-               "link": "https://www.kb.dk/services"
+               "link": "https://www.kb.dk/en/services"
             },
             "6": {
                "title": "Visit us",
-               "link": "https://www.kb.dk/besoeg-os"
+               "link": "https://www.kb.dk/en/visit-us"
             }
          }
       },
@@ -342,7 +342,7 @@
          "links": {
             "1": {
              "title": "Mediestream",
-             "link": "https://www2.statsbiblioteket.dk/mediestream/"
+             "link": "https://www.kb.dk/en/find-materials/systems-and-services/mediestream"
             },
             "2": {
                "title": "Digital collections",
@@ -350,15 +350,15 @@
             },
             "3": {
                "title": "The Radio- and TV collection",
-               "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
+               "link": "https://www.kb.dk/en/find-materials/collections/radio-and-tv-collection"
             },
             "4": {
                "title": "Find Danish radio and TV programmes",
-               "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+               "link": "https://www.kb.dk/en/find-materials/guides/how-find-danish-radio-and-tv-programmes"
             },
             "5": {
                "title": "The Library system",
-               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
+               "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=en"
             }
          }
       },

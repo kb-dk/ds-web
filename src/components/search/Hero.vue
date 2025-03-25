@@ -43,7 +43,7 @@
 					<div class="link-container">
 						<a
 							class="link"
-							href="https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+							href="https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet#search"
 						>
 							{{ t('hero.link') }}
 						</a>
