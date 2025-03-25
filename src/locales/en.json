@@ -205,11 +205,11 @@
      "goToPage":"Go to page {n}",
      "goToThePage": "Go to the page",
      "morePagesMessage":{
-      "1": "To give you the best experience, we have omitted a few posts in the system, other than the approximately 1.000 theres already shown.",
-      "2": "You have",
-      "3": "{totalHits}",
-      "4": "results that you can specify with search words or",
-      "5": "sorts at the top of results."
+      "1": "In order to show you a good search result as quickly as possible, we have chosen to only load approximately 1,000 of the ",
+      "2": "{totalHits}",
+      "3": "esults found by your search. If you want to see a different selection of results, you can use ",
+      "4": "the sorting options.",
+      "5":"Alternatively, you can try adjusting your search by using filters or different keywords."
     },
      "sortAfter":"Sorted by ",
      "sortBy":"Sort by",
@@ -256,16 +256,17 @@
         "title":"Advice about searching",
         "subtitle": "Perhaps you can improve your search with one of these methods",
         "first": "Try using fewer or different keywords",
+        "secondEnglish":"Use Danish keywords for your search - the contents of the archive are in Danish",
         "second": {
            "line1": "Check the spelling. If you're unsure, you can write ? as a substitute for a letter - for example Son?a",
            "line2": "Then you search both Sonia and Sonja"
         },
         "third": {
-           "line1": "Try writing * at the end of a word, for example forest*",
-           "line2": "Then you search for forest, forest's, forester and so on"
+           "line1": "Try writing * at the end of a word, for example stunt*",
+           "line2": "Then you search for stunt, stunts, stuntman and so on"
         },
-        "fourth": "Use searching via date or periode on the frontpage of DR-arkivet, if you have a sense of when the programme was sent",
-        "readMore": "Read more about search tips",
+        "fourth": "Try searching via date or periode on the frontpage of DR-arkivet, if you have a sense of when the programme was sent",
+        "readMore": "Find more advice on searching",
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search"
      },
     "frontpageGuide": {

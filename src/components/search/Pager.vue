@@ -8,18 +8,19 @@
 			>
 				<div>
 					{{ $t('search.morePagesMessage.1') }}
-					{{ $t('search.morePagesMessage.2') }}
 					<div class="totalHits">
-						{{ $t('search.morePagesMessage.3', { totalHits: totalHits.toLocaleString('da-dk') }) }}
+						{{ $t('search.morePagesMessage.2', { totalHits: totalHits.toLocaleString('da-dk') }) }}
 					</div>
-					{{ $t('search.morePagesMessage.4') }}
+					{{ $t('search.morePagesMessage.3') }}
 					<span
 						class="topOfScreen"
 						@click="scrollToTop()"
 					>
 						<span class="material-icons">sort</span>
-						{{ $t('search.morePagesMessage.5') }}
+						{{ $t('search.morePagesMessage.4') }}
 					</span>
+					<br />
+					<span class="">{{ $t('search.morePagesMessage.5') }}</span>
 				</div>
 			</div>
 		</div>

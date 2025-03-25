@@ -48,6 +48,11 @@
 							<li>
 								<div>{{ $t('search.searchGuide.first') }}</div>
 							</li>
+							<li v-if="locale === 'en'">
+								<div>
+									{{ $t('search.searchGuide.secondEnglish') }}
+								</div>
+							</li>
 							<li>
 								<div>
 									{{ $t('search.searchGuide.second.line1') }}
@@ -113,6 +118,7 @@ import EdgedContentArea from '@/components/global/content-elements/EdgedContentA
 import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NoHits',
@@ -125,6 +131,8 @@ export default defineComponent({
 		EdgedContentArea,
 	},
 	setup() {
+		const { t, locale } = useI18n();
+
 		const categories = [
 			'Nyheder & aktualitet',
 			'Dokumentar',
@@ -136,7 +144,7 @@ export default defineComponent({
 			'Kategori #8',
 		];
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore, categories };
+		return { searchResultStore, categories, t, locale };
 	},
 	methods: { addTestDataEnrichment },
 });

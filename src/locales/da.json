@@ -204,11 +204,11 @@
      "goToPage":"Gå til side {n}",
     "goToThePage": "Gå til siden",
     "morePagesMessage":{
-      "1": "For at give dig den bedste oplevelse, har vi udladt nogle poster i systemet, der ligger ud over de ca. 1.000 der allerede vises.",
-      "2": "Du har",
-      "3": "{totalHits}",
-      "4": "resultater, som du kan forsøge at indskærpe via søgeord, eller de",
-      "5": "sorteringer vi giver dig i toppen af resultatet."
+      "1": "For hurtigst muligt at kunne vise dig et godt søgeresultat, har vi valgt kun at hente ca. 1.000 af de ",
+      "2": "{totalHits}",
+      "3": "resultater, din søgning finder. Hvis du ønsker at se et andet udsnit af resultaterne, kan du benytte dig af ",
+      "4": "sorteringsmulighederne.",
+      "5":"Alternativt kan du prøve at justere din søgning via filtrering eller nye søgeord."
     },
      "sortAfter":"Sorteret efter ",
      "sortBy": "Sorter efter",
@@ -254,6 +254,7 @@
       "title":"Gode råd til din søgning",
       "subtitle": "Måske kan du forbedre din søgning med en af disse metoder",
       "first": "Prøv med færre eller andre søgeord",
+      "secondEnglish":"",
       "second": {
         "line1": "Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a",
         "line2": "Så søger du både på Sonia og Sonja"
