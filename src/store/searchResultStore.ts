@@ -10,7 +10,6 @@ import { LocationQueryValue } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
-import { max } from 'date-fns';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
