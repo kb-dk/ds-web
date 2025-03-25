@@ -53,6 +53,8 @@ export class APIServiceClient {
 				const config = error.config as CustomAxiosRequestConfig;
 				// If server throws 401 we know something is up with the users authorization and we try to help
 				if (error.response?.status === 401) {
+					// We reset the pendingRequestRetryCount, otherwise, after 2 expired authorizations, this stops working completely.
+					this.pendingRequestRetryCount = 0;
 					const authStore = useAuthStore();
 
 					// I threw this check in just in case but it shouldn't happen
