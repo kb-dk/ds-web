@@ -1,5 +1,6 @@
 <template>
 	<div class="sort">
+		<span class="material-icons sort-icon">sort</span>
 		<p class="sort-by">{{ t('search.sortBy') }}:</p>
 		<button
 			ref="relevanceRef"
@@ -149,7 +150,7 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 
-.sort .material-icons {
+.sort > button > .material-icons {
 	color: rgba(71, 71, 71, 0);
 }
 
@@ -185,6 +186,10 @@ export default defineComponent({
 	border-bottom: 2px solid transparent;
 	padding-right: 5px;
 }
+.sort-icon {
+	color: #002e70;
+}
+
 @media (min-width: 640px) {
 	.sort-by {
 		margin-right: initial;

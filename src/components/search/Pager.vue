@@ -1,7 +1,11 @@
 <template>
 	<div :class="searchResultStore.loading ? 'pager disabled' : 'pager'">
 		<div class="morePagesMessage">
-			<div v-if="totalPages > maxPages && currentPageRef === maxPages">
+			<div
+				v-if="
+					searchResultStore.totalPages > searchResultStore.maxPages && currentPageRef === searchResultStore.maxPages
+				"
+			>
 				<div>
 					{{ $t('search.morePagesMessage.1') }}
 					{{ $t('search.morePagesMessage.2') }}
@@ -54,7 +58,7 @@
 				</button>
 			</span>
 			<button
-				:disabled="currentPageRef === maxPages"
+				:disabled="currentPageRef === searchResultStore.maxPages"
 				:title="$t('search.nextPage')"
 				:aria-label="$t('search.nextPage')"
 				@click="nextPage"
@@ -112,11 +116,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const selectPage = ref('');
 		const inputIncorrect = ref(false);
-		const totalPages = computed(() => Math.ceil(props.totalHits / props.itemsPerPage));
-		//We normally display 10 or 40 items per page. This'll make it dynamic2
-		const maxPages = computed(() =>
-			totalPages.value > 1000 / props.itemsPerPage ? 1000 / props.itemsPerPage : totalPages.value,
-		);
+
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const { t } = useI18n({ useScope: 'global' });
 		const inputRef = ref<HTMLInputElement | null>();
@@ -124,7 +124,7 @@ export default defineComponent({
 			() => selectPage.value,
 			(newVal) => {
 				if (newVal) {
-					if (parseInt(newVal) <= 0 || parseInt(newVal) > maxPages.value) {
+					if (parseInt(newVal) <= 0 || parseInt(newVal) > searchResultStore.maxPages) {
 						inputIncorrect.value = true;
 					} else {
 						inputIncorrect.value = false;
@@ -138,7 +138,7 @@ export default defineComponent({
 			}
 		};
 		const submitPage = () => {
-			if (parseInt(selectPage.value) <= maxPages.value && parseInt(selectPage.value) > 0) {
+			if (parseInt(selectPage.value) <= searchResultStore.maxPages && parseInt(selectPage.value) > 0) {
 				goToPage(parseInt(selectPage.value));
 			} else {
 				errorManager.submitCustomError(
@@ -163,7 +163,7 @@ export default defineComponent({
 		};
 
 		const nextPage = () => {
-			if (currentPageRef.value < maxPages.value) {
+			if (currentPageRef.value < searchResultStore.maxPages) {
 				currentPageRef.value++;
 				navigate();
 			}
@@ -177,7 +177,7 @@ export default defineComponent({
 		};
 
 		const goToPage = (page: number) => {
-			if (page >= 1 && page <= maxPages.value) {
+			if (page >= 1 && page <= searchResultStore.maxPages) {
 				currentPageRef.value = page;
 				navigate();
 			}
@@ -187,8 +187,8 @@ export default defineComponent({
 			//Array to hold them page numbers
 			const pages = [];
 			//If the page count doesn't exceed our number of pages to show we just push all pages
-			if (maxPages.value <= props.numPagesToShow) {
-				for (let i = 1; i <= maxPages.value; i++) {
+			if (searchResultStore.maxPages <= props.numPagesToShow) {
+				for (let i = 1; i <= searchResultStore.maxPages; i++) {
 					pages.push(i);
 				}
 				/*If the page count does exceed our number of pages to show we calculate
@@ -204,8 +204,8 @@ export default defineComponent({
 				 	and the start page is calculated from endPage and 'number of pages to show' values. We +1
 					or else there would be shown one more page in the pager than specified in props.numPagesToShow
 				 */
-				if (endPage > maxPages.value) {
-					endPage = maxPages.value;
+				if (endPage > searchResultStore.maxPages) {
+					endPage = searchResultStore.maxPages;
 					startPage = endPage - props.numPagesToShow + 1;
 				}
 				if (startPage > 1) {
@@ -230,11 +230,11 @@ export default defineComponent({
 				so we push them to the pages array. If this condition is not met we know this is the end of line
 				and push the total page count to the array as the last thing before we return pages
 				*/
-				if (endPage < maxPages.value) {
-					if (endPage < maxPages.value - 1) {
+				if (endPage < searchResultStore.maxPages) {
+					if (endPage < searchResultStore.maxPages - 1) {
 						pages.push('...');
 					}
-					pages.push(maxPages.value);
+					pages.push(searchResultStore.maxPages);
 				}
 			}
 			return pages;
@@ -273,8 +273,6 @@ export default defineComponent({
 		};
 		return {
 			currentPageRef,
-			totalPages,
-			maxPages,
 			nextPage,
 			prevPage,
 			goToPage,

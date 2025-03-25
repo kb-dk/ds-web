@@ -112,24 +112,29 @@
 				>
 					<Sort></Sort>
 					<div class="search-options">
-						<Transition name="fade">
-							<div
-								v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
-								class="page-count"
-							>
-								{{ t('search.page') }}
-								{{
-									(Number(searchResultStore.start) + Number(searchResultStore.rowCount)) /
-									Number(searchResultStore.rowCount)
-								}}
-								{{ t('search.of') }}
-								{{
-									new Intl.NumberFormat('de-DE').format(
-										Math.ceil(searchResultStore.numFound / Number(searchResultStore.rowCount)),
-									)
-								}}
-							</div>
-						</Transition>
+						<div class="page-result-display">
+							<Transition name="fade">
+								<div
+									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
+									class="page-count"
+								>
+									{{ t('search.page') }}
+									{{ searchResultStore.pageNumber }}
+									{{ t('search.of') }}
+									{{ searchResultStore.maxPages }}
+								</div>
+							</Transition>
+							<Transition name="fade">
+								<div
+									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
+									class="page-count"
+								>
+									{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} -
+									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }}
+								</div>
+							</Transition>
+						</div>
+
 						<button
 							:class="
 								searchResultStore.loading
@@ -375,6 +380,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.page-result-display {
+	display: flex;
+	flex-direction: column;
+	text-align: right;
+}
+
 .display-option {
 	background-color: transparent;
 	border: 0px;

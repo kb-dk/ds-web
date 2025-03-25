@@ -178,6 +178,7 @@
       "unknownLength":"Ukendt tidsperiode"
    },
   "search":{
+     "showing":"Viser",
      "recordThumbnail":"Miniaturebillede af {title}",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet med | resultater fundet med",

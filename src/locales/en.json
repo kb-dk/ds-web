@@ -179,6 +179,7 @@
 
    },
   "search":{
+      "showing":"Showing",
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
      "hitcount": " result fund with | results found with",
