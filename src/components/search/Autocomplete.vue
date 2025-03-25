@@ -37,6 +37,7 @@
 		</Transition>
 	</div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';

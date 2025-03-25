@@ -157,6 +157,7 @@ temporary styling until patterns from design system are implemented
 	min-height: 200px;
 	z-index: 5;
 	position: relative;
+	width: 100vw;
 }
 
 .no-padding {
@@ -256,13 +257,6 @@ h3:first-letter {
 	.time-search .container {
 		padding-left: 18px;
 		padding-right: 18px;
-	}
-}
-/* MEDIA QUERY 1280 */
-@media (min-width: 1280px) {
-	.time-search .container {
-		padding-right: 0;
-		padding-left: 0;
 	}
 }
 @media (min-width: 4000px) {

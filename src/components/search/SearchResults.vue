@@ -24,6 +24,8 @@
 					:placeholder="getPlaceholderImage()"
 					:index="index"
 				></ResultItem>
+				<div class="vert-dot">•</div>
+				<div class="hors-dot">•</div>
 			</div>
 		</TransitionGroup>
 	</div>
@@ -125,8 +127,8 @@ export default defineComponent({
 	margin-bottom: 40px;
 }
 
-.hit-box.data:hover:after,
-.hit-box.data:hover:before {
+.hit-box.data:hover .vert-dot,
+.hit-box.data:hover .hors-dot {
 	background-color: transparent;
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
@@ -134,15 +136,14 @@ export default defineComponent({
 		background-color 0.1s ease-in-out 0s;
 }
 
-.hit-box:after,
-.hit-box:before {
+.hit-box .vert-dot,
+.hit-box .hors-dot {
 	transition:
 		transform 0.3s ease-in-out 0s,
 		background-color 0.1s ease-in-out 0.2s;
 }
 
-.hit-box:after {
-	content: '•';
+.hors-dot {
 	position: absolute;
 	height: 10px;
 	text-align: center;
@@ -155,11 +156,10 @@ export default defineComponent({
 	transform-origin: center;
 	will-change: transform;
 	background-color: white;
+	z-index: 1;
 }
 
-.hit-box:before {
-	content: '•';
-	content: '•';
+.vert-dot {
 	position: absolute;
 	height: 16px;
 	text-align: center;
@@ -172,6 +172,7 @@ export default defineComponent({
 	left: 0px;
 	display: none;
 	background: white;
+	z-index: 1;
 }
 
 .search-results {
@@ -187,10 +188,10 @@ export default defineComponent({
 	gap: 20px;
 }
 
-.search-results.grid .hit-box:before {
+.search-results.grid .vert-dot {
 	display: none;
 }
-.search-results.grid .hit-box:after {
+.search-results.grid .hors-dot {
 	display: none;
 }
 
@@ -209,7 +210,7 @@ export default defineComponent({
 
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
-	.hit-box:before {
+	.vert-dot {
 		display: block;
 	}
 }

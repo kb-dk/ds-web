@@ -73,6 +73,8 @@
 				ref="inputRef"
 				v-model="selectPage"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
+				:aria-label="$t('search.goToThePage')"
+				autocomplete="off"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>
@@ -412,6 +414,11 @@ button span,
 	text-align: left;
 }
 
+.material-icons {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .morePagesMessage {
 	width: 100%;
 	position: relative;
@@ -436,6 +443,11 @@ button span,
 	top: 7px;
 	line-height: 9px;
 }
+
+.topOfScreen .material-icons {
+	display: initial;
+}
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.pager-buttons {

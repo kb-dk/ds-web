@@ -23,6 +23,7 @@
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
 				:data-testid="addTestDataEnrichment('button', 'custom-expander', `${headline}-status-toggle`, 0)"
 				:title="expanderOpen ? 'Close options' : 'Open options'"
+				:aria-expanded="expanderOpen"
 				@click="toggleExpander($event)"
 			>
 				{{ expanderOpen ? '-' : '+' }}

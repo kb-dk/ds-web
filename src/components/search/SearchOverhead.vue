@@ -475,7 +475,6 @@ export default defineComponent({
 .filter-options {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
 	justify-content: flex-end;
 	flex-direction: column-reverse;
 	z-index: 1;
@@ -527,6 +526,7 @@ export default defineComponent({
 }
 
 .filter-button {
+	display: flex;
 	position: relative;
 	border: 1px solid #002e70;
 	line-height: 24px;
@@ -542,6 +542,7 @@ export default defineComponent({
 	padding: 6px 12px 9px 12px;
 	font-family: noway, sans-serif;
 	transition: all 0.25s linear 0s;
+	align-items: baseline;
 }
 .filter-button:hover {
 	background-color: #c4f1ed;
@@ -558,13 +559,18 @@ export default defineComponent({
 	top: 5px;
 }
 
+.material-icons {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .filter-button-text {
 	padding-left: 5px;
 }
 
 .source-facet-button {
 	cursor: pointer;
-	padding: 3px 3px;
+	padding: 3px 2px;
 	font-size: 18px;
 	width: fit-content;
 	display: flex;

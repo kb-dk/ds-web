@@ -28,24 +28,12 @@
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
-				:duration="transitionName === 'swipe' ? { enter: td * 1000, leave: td * 1000 } : 500"
+				:duration="{ enter: 500, leave: 500 }"
 				mode="out-in"
-				@before-leave="onBeforeLeave(transitionName)"
-				@before-enter="onBeforeEnter(transitionName)"
 			>
 				<component :is="Component" />
 			</transition>
 		</router-view>
-		<div
-			ref="wipe"
-			class="wipe"
-		>
-			<img
-				title="forside"
-				alt="Logo of the Royal Danish Library"
-				:src="getImgServerSrcURL()"
-			/>
-		</div>
 	</main>
 	<Footer />
 </template>
@@ -54,7 +42,6 @@
 import { defineComponent, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import gsap from 'gsap';
 import Notifier from '@/components/global/notification/Notifier.vue';
 import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
@@ -80,7 +67,6 @@ export default defineComponent({
 		let leaveDone = false;
 		let currentLocale = ref('da');
 		const transitionName = ref('fade');
-		const wipe = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const route = useRoute();
 		const { locale, t } = useI18n({ useScope: 'global' });
@@ -102,53 +88,6 @@ export default defineComponent({
 			} else {
 				router.push({ path: e.detail.path });
 			}
-		};
-
-		const getImgServerSrcURL = () => {
-			return new URL(`@/assets/images/crown.png`, import.meta.url).href;
-		};
-
-		const onBeforeLeave = (transitionName: string) => {
-			if (transitionName !== 'swipe') {
-				return;
-			}
-			gsap.set(wipe.value, { clipPath: 'polygon(0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%)' });
-			gsap.to(wipe.value, {
-				clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,0% 100%,100% 0%)',
-				duration: td.value / 2,
-				ease: 'linear',
-				overwrite: true,
-				onComplete: () => {
-					gsap.to(wipe.value, {
-						clipPath: 'polygon(100% 0%,0% 0%,0% 0%,0% 100%,100% 100%,100% 100%)',
-						duration: td.value / 2,
-						ease: 'linear',
-						overwrite: true,
-					});
-					leaveDone = true;
-				},
-			});
-		};
-
-		const onBeforeEnter = (transitionName: string) => {
-			if (transitionName !== 'swipe' || !leaveDone) {
-				return;
-			}
-			gsap.to(wipe.value, {
-				duration: td.value / 2,
-				overwrite: true,
-				clipPath: 'polygon(100% 0%,100% 0%,0% 100%,0% 100%,100% 100%,100% 100%)',
-				ease: 'linear',
-				onComplete: () => {
-					gsap.to(wipe.value, {
-						clipPath: 'polygon(100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%)',
-						duration: td.value / 2,
-						ease: 'linear',
-						overwrite: true,
-					});
-					leaveDone = false;
-				},
-			});
 		};
 
 		router.beforeEach((to, from) => {
@@ -353,11 +292,7 @@ export default defineComponent({
 			route,
 			leaveDone,
 			currentLocale,
-			wipe,
 			transitionName,
-			getImgServerSrcURL,
-			onBeforeEnter,
-			onBeforeLeave,
 			isDevelopment,
 			returnCurrentEnv,
 			t,
@@ -618,25 +553,6 @@ body {
 		max-height: initial;
 		overflow: initial;
 	}
-}
-
-.wipe {
-	opacity: 1;
-	pointer-events: none;
-	z-index: 50;
-	top: 0;
-	margin: 0;
-	left: 0;
-	padding: 0;
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-wrap: wrap;
-	background-color: #002e70;
 }
 
 #app {

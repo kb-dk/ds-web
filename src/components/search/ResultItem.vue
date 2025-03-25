@@ -1,5 +1,6 @@
 <template>
 	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
+		<div class="backfade"></div>
 		<Transition
 			name="result"
 			mode="out-in"
@@ -18,15 +19,34 @@
 							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
-							<span class="material-icons arrow">keyboard_arrow_right</span>
+							<div
+								role="img"
+								class="material-icons arrow"
+								:aria-label="t('app.a11y.goToPost')"
+							>
+								keyboard_arrow_right
+							</div>
 						</router-link>
 						<div class="subtitle">
-							<span class="material-icons icons schedule">
-								{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+							<span
+								role="img"
+								:class="`icons schedule material-icons ${
+									resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
+								}`"
+								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+							>
+								play_circle_filled
 							</span>
 							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
 							<span class="when">{{ starttime }}</span>
-							<span class="material-icons icons schedule">schedule</span>
+							<div
+								role="img"
+								class="material-icons icons schedule timeSVG"
+								:aria-label="t('app.a11y.broadcastDuration')"
+								aria-hidden="true"
+							>
+								schedule
+							</div>
 							<span class="duration">{{ duration }}</span>
 						</div>
 						<div class="summary">{{ resultdata.description }}</div>
@@ -61,10 +81,6 @@
 				v-else
 				class="loading container"
 			>
-				<div
-					:style="`animation-delay:${Math.random() * 2}s`"
-					class="shimmer"
-				></div>
 				<div class="information">
 					<div
 						ref="placeholderTitleRef"
@@ -72,12 +88,24 @@
 						:style="`width:${Math.random() * 20 + 20 + '%'}`"
 					></div>
 					<div class="placeholder-w">
-						<span class="material-icons ph-icon">play_circle_filled</span>
+						<div
+							role="img"
+							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+							class="material-icons ph-icon"
+						>
+							play_circle_filled
+						</div>
 						<span
 							class="line"
 							:style="`width:${Math.random() * 10 + 10 + '%'}`"
 						></span>
-						<span class="material-icons ph-icon">schedule</span>
+						<div
+							role="img"
+							class="material-icons ph-icon"
+							:aria-label="t('app.a11y.broadcastDuration')"
+						>
+							schedule
+						</div>
 						<span
 							class="line"
 							:style="`width:${Math.random() * 10 + 5 + '%'}`"
@@ -256,6 +284,8 @@ export default defineComponent({
 }
 
 .outer-container {
+	z-index: 1;
+	position: relative;
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
 
@@ -301,16 +331,15 @@ export default defineComponent({
 
 .container {
 	display: flex;
-	flex-direction: row;
-	height: 175px;
+	flex-direction: column-reverse;
 	justify-content: space-between;
-	gap: 30px;
+	gap: 0px;
 	width: 100%;
 }
 
 .information {
 	text-overflow: ellipsis;
-	width: calc(100% - (120px + 30px));
+	width: 100%;
 	overflow: hidden;
 	max-width: 100%;
 }
@@ -334,8 +363,8 @@ export default defineComponent({
 }
 
 .result-image-wrapper {
-	width: 200px;
-	height: 105px;
+	width: 100%;
+	height: 150px;
 }
 
 .where,
@@ -399,6 +428,7 @@ export default defineComponent({
 	background-color: #002e70;
 	height: 14px;
 	margin-bottom: 15px;
+	position: relative;
 }
 
 .placeholder-extra {
@@ -428,6 +458,7 @@ export default defineComponent({
 
 .placeholder-w {
 	margin-bottom: 14px;
+	position: relative;
 }
 
 .placeholder-w .line {
@@ -460,6 +491,7 @@ export default defineComponent({
 	align-items: flex-start;
 	align-content: flex-start;
 	margin-left: -3px;
+	position: relative;
 }
 
 .result-image-wrapper.skeleton {
@@ -493,15 +525,55 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
-	position: absolute;
-	top: 110px;
+	position: relative;
 	margin-top: 10px;
+}
+
+.placeholder-t:before,
+.placeholder-w .line:before,
+.placeholder-s .ph-span:before {
+	content: '';
+	animation: loading 3s ease-in-out 0s infinite;
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		117deg,
+		rgba(255, 255, 255, 0) 44%,
+		rgba(255, 255, 255, 0.7455357142857143) 64%,
+		rgba(255, 255, 255, 0) 77%
+	);
+	position: absolute;
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	mix-blend-mode: soft-light;
+	overflow: hidden;
+	background-size: 200% 100%;
+	background-position: 160% center;
+}
+
+@media (min-width: 400px) {
+	.container {
+		gap: 30px;
+		height: 175px;
+		flex-direction: row;
+	}
+	.information {
+		width: calc(100% - (120px + 30px));
+	}
+	.summary {
+		position: absolute;
+		top: 110px;
+	}
+	.result-image-wrapper {
+		width: 200px;
+		height: 105px;
+	}
 }
 
 @media (min-width: 640px) {
 	.information {
 		text-overflow: ellipsis;
-		width: calc(100% - (200px + 30px));
+		width: calc(100% - (120px + 30px));
 		overflow: hidden;
 		max-width: 100%;
 	}
@@ -532,7 +604,8 @@ export default defineComponent({
 		border-left: 1px solid rgba(230, 230, 230, 1);
 	}
 
-	.result-item-wrapper.data:before {
+	.backfade {
+		background: white;
 		transition: all 0.3s ease-in-out 0s;
 		content: '';
 		z-index: 0;
@@ -549,10 +622,18 @@ export default defineComponent({
 		width: calc(100%);
 		height: calc(100%);
 		pointer-events: none;
+		visibility: hidden; /* Initially hidden */
+		transition:
+			opacity 0.3s ease-in-out,
+			visibility 0s linear 0.3s; /* Delay visibility hiding */
 	}
 
-	.result-item-wrapper.data:hover:before {
+	.result-item-wrapper.data:hover .backfade {
 		opacity: 0.6;
+		visibility: visible; /* Show immediately */
+		transition:
+			opacity 0.3s ease-in-out,
+			visibility 0s linear 0s; /* Make visible immediately */
 	}
 }
 

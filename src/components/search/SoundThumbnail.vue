@@ -7,12 +7,20 @@
 				:alt="`Image of soundwaves for ${resultTitle}`"
 			/>
 		</div>
-		<span class="material-icons play">play_circle_filled</span>
+		<span
+			role="img"
+			:aria-label="t('app.a11y.soundIcon')"
+			class="material-icons play"
+			aria-hidden="true"
+		>
+			play_circle_filled
+		</span>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'SoundThumbnail',
@@ -20,10 +28,12 @@ export default defineComponent({
 		resultTitle: { type: String as PropType<string>, required: true },
 	},
 	setup() {
+		const { t } = useI18n();
+
 		const getImgServerSrcURL = () => {
 			return new URL(`@/assets/images/soundwave.svg`, import.meta.url).href;
 		};
-		return { getImgServerSrcURL };
+		return { getImgServerSrcURL, t };
 	},
 });
 </script>

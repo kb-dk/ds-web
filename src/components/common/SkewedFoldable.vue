@@ -210,7 +210,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .content {
-	height: 165px;
+	height: 250px;
 	overflow-y: hidden;
 	box-sizing: border-box;
 	display: flex;
@@ -220,6 +220,12 @@ export default defineComponent({
 	overflow-x: hidden;
 	z-index: 4;
 	padding-bottom: 25px;
+}
+
+@media (min-width: 400px) {
+	.content {
+		height: 165px;
+	}
 }
 
 .dotted {
@@ -268,6 +274,8 @@ h1::first-letter {
 	line-height: 1.4;
 	margin-top: 4px;
 	max-width: 720px;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .content .headline h1 {

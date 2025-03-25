@@ -15,6 +15,15 @@
       "frontPages": {
          "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive",
          "loadingError": "Loading error"
+      },
+      "a11y": {
+         "imageComponentTitle":"icon for the image",
+         "facebook":"Link to Facebook",
+         "linkedin":"Link to LinkedIn",
+         "instagram":"Link to Instagram",
+         "goToPost":"Go to post",
+         "broadcastTimeAndPlace":"Broadcast channel and time",
+         "broadcastDuration":"Broadcast duration"
       }
    },
 
@@ -77,7 +86,7 @@
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
-      "genresSubtitle": "Select a category and explore the programmes. ",
+      "genresSubtitle": "Select a category and explore the programmes.",
       "allChannels":"all channels",
       "channels":"channel | channels",
       "chosen":"chosen",
