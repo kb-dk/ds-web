@@ -100,6 +100,11 @@
 					modal-align="right"
 				>
 					<div class="search-help">
+						<span v-if="locale === 'en'">
+							{{ t('search.frontpageGuide.disclaimer') }}
+							<br />
+							<br />
+						</span>
 						<span>
 							{{ t('search.frontpageGuide.first.part1') + ' ' }}
 						</span>
@@ -150,7 +155,7 @@ export default defineComponent({
 		InfoComponent,
 	},
 	setup() {
-		const { t } = useI18n();
+		const { t, locale } = useI18n();
 		const router = useRouter();
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
@@ -222,6 +227,7 @@ export default defineComponent({
 
 		return {
 			t,
+			locale,
 			addTestDataEnrichment,
 			lastPath,
 			searchResultStore,
