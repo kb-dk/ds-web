@@ -116,6 +116,7 @@
 
    },
   "search":{
+      "showing":"Showing",
      "recordThumbnail":"Thumbnail from {title}",
      "searchbtn":"Search",
      "hitcount": " result fund with | results found with",
@@ -140,7 +141,6 @@
      "page": "Page",
      "goToPage":"Go to page {n}",
      "goToThePage": "Go to the page",
-     "outOf": "out of",
      "morePagesMessage":{
       "1": "To give you the best experience, we have omitted a few posts in the system, other than the approximately 1.000 theres already shown.",
       "2": "You have",

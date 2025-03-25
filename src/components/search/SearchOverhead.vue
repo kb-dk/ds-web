@@ -129,9 +129,8 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ Number(searchResultStore.start) + 1 }} -
-									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }} {{ $t('search.outOf') }}
-									{{ new Intl.NumberFormat('de-DE').format(searchResultStore.numFound) }}
+									{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} -
+									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }}
 								</div>
 							</Transition>
 						</div>
