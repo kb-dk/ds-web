@@ -4,6 +4,19 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-03-26
+### Added
+- Added a check for maximum 100 pages og results shown.
+- Added input fields for the calendars.
+- Added various missing test-ids.
+
+### Changed
+- Updates to translations.
+- Various small UX tweaks and fixes.
+- Fixed an authentication bug where a loop was not reset before retrying.
+- Various accessability updates.
+- genre call changed to genre_facet.
+
 ## [1.0.16] - 2024-02-11
 ### Changed
 - Fixed a broken link due to changes in genre_facets.
