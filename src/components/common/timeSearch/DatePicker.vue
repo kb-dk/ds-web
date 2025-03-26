@@ -34,7 +34,7 @@
 					v-if="!validStartDate"
 					class="from-error-container"
 				>
-					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+					{{ t('datepicker.error', { start: formatDate(startYear), end: formatDate(endYear) }) }}
 				</div>
 			</Transition>
 		</div>
@@ -72,7 +72,7 @@
 					v-if="!validEndDate"
 					class="to-error-container"
 				>
-					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+					{{ t('datepicker.error', { start: formatDate(startYear), end: formatDate(endYear) }) }}
 				</div>
 			</Transition>
 		</div>
@@ -174,6 +174,11 @@ export default defineComponent({
 
 		const executeEndUpdate = (e: Event) => {
 			updateSelectedDate(e, endInputTimer, validEndDate, endDate, validateEndInput);
+		};
+
+		const formatDate = (date: Date) => {
+			if (!(date instanceof Date)) return '';
+			return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 		};
 
 		const setupStartInputTimer = (e: Event) => {
@@ -334,6 +339,7 @@ export default defineComponent({
 			executeStartUpdate,
 			setupStartInputTimer,
 			setupEndInputTimer,
+			formatDate,
 		};
 	},
 });

@@ -31,7 +31,7 @@
 					v-if="!validDate"
 					class="error-container"
 				>
-					{{ t('datepicker.error', { start: startYear.getFullYear(), end: endYear.getFullYear() }) }}
+					{{ t('datepicker.error', { start: formatDate(startYear), end: formatDate(endYear) }) }}
 				</div>
 			</Transition>
 		</div>
@@ -139,6 +139,11 @@ export default defineComponent({
 			}, 750); // 750 milliseconds (0.75 second) delay
 		};
 
+		const formatDate = (date: Date) => {
+			if (!(date instanceof Date)) return '';
+			return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+		};
+
 		const textInputOptions = {
 			format: 'd-M-yyyy',
 		};
@@ -240,6 +245,7 @@ export default defineComponent({
 			inputTimer,
 			validDate,
 			executeUpdate,
+			formatDate,
 			t,
 		};
 	},

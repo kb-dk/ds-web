@@ -207,7 +207,7 @@
      "goToPage":"Go to page {n}",
      "goToThePage": "Go to the page",
      "morePagesMessage":{
-      "1": "In order to show you a good search result as quickly as possible, we have chosen to only load approximately 1,000 of the ",
+      "1": "In order to show you a good search result as quickly as possible, we have chosen to only load approximately 1.000 of the ",
       "2": "{totalHits}",
       "3": "results found by your search. If you want to see a different selection of results, you can use ",
       "4": "the sorting options.",
