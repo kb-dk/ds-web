@@ -370,20 +370,6 @@ export default defineComponent({
 		});
 
 		watch(
-			() => timeSearchStore.filterSearchReady,
-			(newValue) => {
-				console.log('filterSearchReady changed:', newValue);
-			},
-		);
-
-		watch(
-			() => timeSearchStore.newSearchReqMet,
-			(newValue) => {
-				console.log('newSearchReqMet changed:', newValue);
-			},
-		);
-
-		watch(
 			() => vueSliderRef.value,
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
