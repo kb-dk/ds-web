@@ -242,7 +242,7 @@ export default defineComponent({
 		});
 
 		const initializePager = () => {
-			const startParam = Number(route.query.start);
+			const startParam = Number(searchResultStore.start);
 			if (!isNaN(startParam) && startParam >= 0) {
 				const initialPage = Math.floor(startParam / props.itemsPerPage) + 1;
 				currentPageRef.value = initialPage;

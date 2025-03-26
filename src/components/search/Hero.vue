@@ -43,9 +43,9 @@
 					<div class="link-container">
 						<a
 							class="link"
-							href="https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet#search"
+							:href="t('hero.link')"
 						>
-							{{ t('hero.link') }}
+							{{ t('hero.linkText') }}
 						</a>
 					</div>
 				</div>

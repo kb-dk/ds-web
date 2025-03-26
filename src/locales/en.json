@@ -21,6 +21,7 @@
          "facebook":"Link to Facebook",
          "linkedin":"Link to LinkedIn",
          "instagram":"Link to Instagram",
+         "soundIcon":"sound play icon",
          "goToPost":"Go to post",
          "broadcastTimeAndPlace":"Broadcast channel and time",
          "broadcastDuration":"Broadcast duration"
@@ -131,7 +132,7 @@
       "allDays":"All days of the week in the period ",
       "allTimeslots":"All hours",
       "selection":"A selection of the results",
-      "dateSubtitle": "Here you can select a specific date and see what was aired that day. You can change the year by clicking on the year at the top of the calendar.",
+      "dateSubtitle": "Here you can select a specific date and see what was aired that day.",
       "timeMachineSubtitle": "Here you can select years, months, and days of the week, if you are looking for programmes from a specific period in time. When you click through to the list of results, you will get more filtering options.",
       "searchCategoriesSubtitle": "Select a category and explore the programmes. The categories primarily contain TV programmes, while you will find most of the radio programmes in the “Radio jumble box.”",
       "monthHeadline":"Select months",
@@ -172,7 +173,7 @@
      }
    },
    "datepicker": {
-      "error":"Not a valid date. The archive currently covers the period from {start} to {end}.",
+      "error":"Enter a date between {start} and {end}.",
       "date":"Date",
       "to":"To",
       "unknownLength":"Unknown timespan"
@@ -191,7 +192,7 @@
         "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
         "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",
         "readMore": "Read more about what the archive contains.",
-        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive",
+        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet",
         "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
      },
      "pageNumberPlaceholder": "Enter page",
@@ -208,7 +209,7 @@
      "morePagesMessage":{
       "1": "In order to show you a good search result as quickly as possible, we have chosen to only load approximately 1,000 of the ",
       "2": "{totalHits}",
-      "3": "esults found by your search. If you want to see a different selection of results, you can use ",
+      "3": "results found by your search. If you want to see a different selection of results, you can use ",
       "4": "the sorting options.",
       "5":"Alternatively, you can try adjusting your search by using filters or different keywords."
     },
@@ -244,7 +245,9 @@
          "booksAndMaterials":"Books and journals",
          "kbdk":"Search kb.dk",
          "webshop":"Webshop",
-         "seeAllMaterials":"See all materials"
+         "seeAllMaterials":"See all materials",
+         "allMaterialsLink":"https://www.kb.dk/en/find-materials"
+
       },
       "placeholders": {
          "drArchive":"Search for example by title, year or category",
@@ -268,7 +271,7 @@
         },
         "fourth": "Try searching via date or periode on the frontpage of DR-arkivet, if you have a sense of when the programme was sent",
         "readMore": "Find more advice on searching",
-        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search"
+        "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet#search"
      },
     "frontpageGuide": {
       "title":"How do I optimise my search?",
@@ -283,7 +286,7 @@
       },
       "second":"If you want to include multiple forms of the search words, you can use * at the end and/or beginning of the word.",
       "third":"Please note: When you search in the search box, your previous selection of filters will be reset - for example category, channel or time.",
-      "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-archive#search",
+      "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet#search",
       "linktext":"Find more advice on searching"
     },
      "contactUs": "Contact us if you need help"
@@ -408,7 +411,7 @@
          "links": {
             "1": {
                "title": "Ask the library",
-               "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive/ask-about-dr-archive"
+               "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-archive/ask-about-dr-arkivet"
             },
             "2": {
                "title": "kb@kb.dk",
@@ -503,7 +506,8 @@
    "subtitle":"Royal Danish Library's",
    "progress":"We have reached {index}%...",
    "explanation":"In DR-arkivet, you will find a large amount of DR's self-produced TV and radio programmes from 2006 onwards. We continuously add both newer and older programmes so that the archive becomes bigger and better.",
-   "link":"Read more about DR-arkivet"
+   "linkText":"Read more about DR-arkivet",
+   "link":"https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet"
    },
    "categories": {
       "brn-og-unge":"Children and adolescents",

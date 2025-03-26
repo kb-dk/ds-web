@@ -437,19 +437,17 @@ export default defineComponent({
 		const emitNewSearch = () => {
 			if (yearSearch.value && yearSearch.value.expanderOpen) {
 				emit('newSearch', true);
+				const resultContainer = document.getElementsByClassName('hits')[0];
+				resultContainer?.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start',
+				});
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
 					endDate.value.setFullYear(timeSliderValues.value[1]);
 				}
 				emit('newSearch', false);
-			}
-			if (yearSearch.value) {
-				const resultContainer = document.getElementsByClassName('hits')[0];
-				resultContainer?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-				});
 			}
 			timeSearchStore.setNewSearchReqMet(false);
 			timeSearchStore.setFilterSearchReady(false);

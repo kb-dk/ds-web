@@ -384,6 +384,7 @@ export default defineComponent({
 
 		const newSearch = (yearSearch: boolean) => {
 			const routeQueries = cloneRouteQuery(route);
+			routeQueries.q = searchResultStore.currentQuery;
 			if (routeQueries.q === '') {
 				routeQueries.q = '*:*';
 			}

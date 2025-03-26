@@ -21,7 +21,7 @@
          "facebook":"Link til Facebook",
          "linkedin":"Link til LinkedIn",
          "instagram":"Link til Instagram",
-         "soundIcon":"lyd afspilnings icon",
+         "soundIcon":"lyd afspilnings ikon",
          "goToPost":"Gå til udsendelse",
          "broadcastTimeAndPlace":"Afspilningskanal og tid",
          "broadcastDuration":"Udsendelsens varighed"
@@ -131,7 +131,7 @@
       "allDays":"Alle ugedage i perioden",
       "allTimeslots":"Hele døgnet",
       "selection":"Et udpluk af resultaterne",
-     "dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag. Du kan skifte år ved at klikke på årstallet øverst i kalenderen.",
+     "dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag.",
      "timeMachineSubtitle": "Her kan du vælge årstal, måneder og ugedage, hvis du søger udsendelser sendt i en bestemt periode. Når du klikker dig videre til resultatlisten, får du flere filtreringsmuligheder.",
      "searchCategoriesSubtitle": "Vælg en kategori og gå på opdagelse i udsendelserne. Kategorierne indeholder primært TV-udsendelser, mens du finder de fleste af radioudsendelserne i “Radio-rodekassen.”",
       "monthHeadline":"Vælg måneder",
@@ -172,7 +172,7 @@
      }
    },
   "datepicker": {
-      "error":"Ikke gyldig dato. I øjeblikket dækker arkivet fra {start} til {end}",
+      "error":"Skriv en dato mellem {start} og {end}",
       "date":"Dato",
       "to":"Til",
       "unknownLength":"Ukendt tidsperiode"
@@ -243,7 +243,8 @@
          "booksAndMaterials":"Bøger og tidskrifter",
          "kbdk":"Søg på kb.dk",
          "webshop":"Webshop",
-         "seeAllMaterials":"Se alt materiale"
+         "seeAllMaterials":"Se alt materiale",
+         "allMaterialsLink":"https://www.kb.dk/find-materiale"
       },
       "placeholders": {
          "drArchive":"Søg for eksempel på titel, år eller kategori",
@@ -499,7 +500,8 @@
       "subtitle":"Det Kgl. Biblioteks",
       "progress":"Vi er nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's egenproducerede TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre",
-      "link":"Læs mere om DR-arkivet"
+      "linkText":"Læs mere om DR-arkivet",
+      "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
    },
    "categories": {
       "brn-og-unge":"Børn og unge",

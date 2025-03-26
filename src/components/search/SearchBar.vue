@@ -168,7 +168,7 @@
 													<a
 														:title="t(`search.portals.${selectorValues[4].name}`)"
 														class="dropdown-item"
-														:href="'https://www.kb.dk/find-materiale'"
+														:href="t('search.portals.allMaterialsLink')"
 														:data-testid="addTestDataEnrichment('link', 'portal', 'all-materials', 0)"
 													>
 														<span class="text">
