@@ -24,6 +24,7 @@
 				@update-month-year="HandleMonthYear"
 				@keydown="setupInputTimer"
 				@keydown.enter="executeUpdate($event)"
+				@blur="validDate = true"
 			></VueDatePicker>
 			<Transition name="fade">
 				<div
@@ -122,6 +123,9 @@ export default defineComponent({
 		watch(
 			() => selectedDate.value,
 			() => {
+				if (inputTimer !== null) {
+					clearTimeout(inputTimer);
+				}
 				updateSeeMoreLink();
 			},
 		);
