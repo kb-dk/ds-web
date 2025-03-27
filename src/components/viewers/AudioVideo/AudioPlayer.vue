@@ -109,9 +109,6 @@ export default defineComponent({
 						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
 				});
 				document.querySelector('#audio-player')?.setAttribute('data-testid', 'audio-player-kaltura-container-0');
-				audioPlayer.ready().then(() => {
-					audioPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
-				});
 			} catch (e) {
 				handleErrorDispatch('');
 			}

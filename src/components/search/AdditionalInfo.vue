@@ -28,7 +28,7 @@
 					v-for="(item, index) in thumbnailImages"
 					:key="index"
 					draggable="false"
-					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true, startAt: timeStamps[index] / 1000 } }"
+					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true } }"
 					role="link"
 					class="extra-thumbnail"
 					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"

@@ -124,9 +124,6 @@ export default defineComponent({
 						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
 				});
 				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
-				videoPlayer.ready().then(() => {
-					videoPlayer.currentTime = route.query.startAt ? Number(route.query.startAt) : 0;
-				});
 				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
 					if (error.code === 1002 && !restrictedErrorDispatched.value) {
@@ -159,18 +156,6 @@ export default defineComponent({
 			} else {
 				setupPlayer();
 			}
-
-			watch(
-				() => route.query.startAt as string,
-				(newStartAt: string, prevStartAt: string) => {
-					if (newStartAt !== prevStartAt) {
-						if (videoPlayer) {
-							videoPlayer.currentTime = Number(route.query.startAt);
-							videoPlayer.play();
-						}
-					}
-				},
-			);
 		});
 
 		watch(

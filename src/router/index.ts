@@ -18,7 +18,6 @@ const routes: Array<RouteRecordRaw> = [
 		props: (route) => ({
 			id: route.params.id,
 			autoplay: route.query.autoplay || null,
-			startAt: route.query.startAt || null,
 		}),
 	},
 	{
