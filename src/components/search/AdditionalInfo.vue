@@ -84,7 +84,7 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		const thumbnailImages = ref(10);
+		const thumbnailImages = ref(20);
 		const extraContentShown = ref(false);
 		const thumbnailImageData = ref([] as string[]);
 		const timeStamps = ref([] as number[]);
@@ -138,7 +138,7 @@ export default defineComponent({
 						imgData.objectPos = `-${200 * index}px 0px`;
 						imgData.imgOption = 'none';
 						thumbnailImageData.value.push(JSON.stringify(imgData));
-						timeStamps.value.push((props.duration / 10) * index + 3000 + index * 3000);
+						timeStamps.value.push((props.duration / thumbnailImages.value) * index + 3000 + index * 3000);
 					});
 				})
 				//Just in case the service fail - we fail silently and swoop in with the placeholder

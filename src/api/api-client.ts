@@ -232,6 +232,6 @@ export class APIServiceClient {
 	}
 
 	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&vid_slices=10`);
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&numberOfThumbnails=20`);
 	}
 }
