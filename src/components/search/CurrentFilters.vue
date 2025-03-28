@@ -1,130 +1,137 @@
 <template>
-	<div class="appliedFilters">
-		<TransitionGroup name="fade">
-			<span
-				v-if="filtersActive"
-				key="1"
-			>
-				{{ $t('search.selected') }}:
-			</span>
-			<button
-				v-if="searchResultStore.channelFilters.length !== 0"
-				key="2"
-				@click="removeFilterAndSearch('creator_affiliation_facet')"
-			>
-				<span>
-					{{
-						`${searchResultStore.channelFilters.length} ${t(
-							'facets.channels',
-							searchResultStore.channelFilters.length,
-						)}`
-					}}
+	<Transition name="fade">
+		<div
+			v-if="filtersActive"
+			class="appliedFilters"
+		>
+			<TransitionGroup name="fade">
+				<span
+					v-if="filtersActive"
+					key="1"
+				>
+					{{ $t('search.selected') }}:
 				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="searchResultStore.categoryFilters.length !== 0"
-				key="3"
-				@click="removeFilterAndSearch('genre')"
-			>
-				<span>
-					{{
-						`${searchResultStore.categoryFilters.length} ${t(
-							'facets.genres',
-							searchResultStore.categoryFilters.length,
-						)}`
-					}}
+				<button
+					v-if="searchResultStore.channelFilters.length !== 0"
+					key="2"
+					@click="removeFilterAndSearch('creator_affiliation_facet')"
+				>
+					<span>
+						{{
+							`${searchResultStore.channelFilters.length} ${t(
+								'facets.channels',
+								searchResultStore.channelFilters.length,
+							)}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="searchResultStore.categoryFilters.length !== 0"
+					key="3"
+					@click="removeFilterAndSearch('genre')"
+				>
+					<span>
+						{{
+							`${searchResultStore.categoryFilters.length} ${t(
+								'facets.genres',
+								searchResultStore.categoryFilters.length,
+							)}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="months.filter((entity) => entity.selected === true).length > 0"
+					@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
+				>
+					<span>
+						{{
+							`${months.filter((entity) => entity.selected === true).length} ${t(
+								'timeSearch.month',
+								months.filter((entity) => entity.selected === true).length,
+							)}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="days.filter((entity) => entity.selected === true).length > 0"
+					@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
+				>
+					<span>
+						{{
+							`${days.filter((entity) => entity.selected === true).length} ${t(
+								'timeSearch.weekday',
+								days.filter((entity) => entity.selected === true).length,
+							)}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="timeslots.filter((entity) => entity.selected === true).length > 0"
+					@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
+				>
+					<span>
+						{{
+							`${timeslots.filter((entity) => entity.selected === true).length} ${t(
+								'timeSearch.timePeriods',
+								timeslots.filter((entity) => entity.selected === true).length,
+							)}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="
+						((startDate !== null &&
+							(startDate as unknown as string) !== '' &&
+							startDate.getTime() !== startYear.getTime()) ||
+							(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())) &&
+						!timeSearchStore.newSearchReqMet
+					"
+					@click="resetYearsAndSearch('startTime')"
+				>
+					<span>
+						{{ presentDateSpan() }}
+						{{ approxTimeDifference() }}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<button
+					v-if="searchResultStore.preliminaryFilter !== ''"
+					key="5"
+					@click="removePreliminaryFilterAndSearch()"
+				>
+					<span>
+						{{
+							`${
+								decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
+							}`
+						}}
+					</span>
+					<span class="material-icons">close</span>
+				</button>
+				<span
+					v-if="filtersActive"
+					key="6"
+					class="seperator"
+				>
+					|
 				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="months.filter((entity) => entity.selected === true).length > 0 && !timeSearchStore.newSearchReqMet"
-				@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-			>
-				<span>
-					{{
-						`${months.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.month',
-							months.filter((entity) => entity.selected === true).length,
-						)}`
-					}}
-				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="days.filter((entity) => entity.selected === true).length > 0 && !timeSearchStore.newSearchReqMet"
-				@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-			>
-				<span>
-					{{
-						`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.weekday',
-							days.filter((entity) => entity.selected === true).length,
-						)}`
-					}}
-				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="timeslots.filter((entity) => entity.selected === true).length > 0 && !timeSearchStore.newSearchReqMet"
-				@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-			>
-				<span>
-					{{
-						`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.timePeriods',
-							timeslots.filter((entity) => entity.selected === true).length,
-						)}`
-					}}
-				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="
-					((startDate !== null &&
-						(startDate as unknown as string) !== '' &&
-						startDate.getTime() !== startYear.getTime()) ||
-						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())) &&
-					!timeSearchStore.newSearchReqMet
-				"
-				@click="resetYearsAndSearch('startTime')"
-			>
-				<span>
-					{{ presentDateSpan() }}
-					{{ approxTimeDifference() }}
-				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<button
-				v-if="searchResultStore.preliminaryFilter !== ''"
-				key="5"
-				@click="removePreliminaryFilterAndSearch()"
-			>
-				<span>
-					{{
-						`${decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]}`
-					}}
-				</span>
-				<span class="material-icons">close</span>
-			</button>
-			<span
-				v-if="filtersActive"
-				key="6"
-				class="seperator"
-			>
-				|
-			</span>
-			<button
-				v-if="filtersActive"
-				key="7"
-				class="resetFilters"
-				@click="resetAllFilters"
-			>
-				<span>{{ `${t('facets.reset')}` }}</span>
-				<span class="material-icons">close</span>
-			</button>
-		</TransitionGroup>
-	</div>
+				<button
+					v-if="filtersActive"
+					key="7"
+					class="resetFilters"
+					@click="resetAllFilters"
+				>
+					<span>{{ `${t('facets.reset')}` }}</span>
+					<span class="material-icons">close</span>
+				</button>
+			</TransitionGroup>
+		</div>
+	</Transition>
 </template>
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
@@ -171,7 +178,8 @@ export default defineComponent({
 						startDate.value.getTime() !== startYear.value.getTime() ||
 						endDate.value.getTime() !== endYear.value.getTime() ||
 						searchResultStore.preliminaryFilter !== '') &&
-					!timeSearchStore.newSearchReqMet
+					route.query.fq !== undefined &&
+					route.query.fq?.length !== 0
 				) {
 					return true;
 				} else {

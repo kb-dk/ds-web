@@ -250,24 +250,21 @@ export default defineComponent({
 
 		watch(
 			() => startDate.value,
-			() => {
-				validateStartInput();
-				enableApplyButtonIfSearchisValid();
+			(newValue, oldValue) => {
+				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
+					validateStartInput();
+					enableApplyButtonIfSearchisValid();
+				}
 			},
 		);
 
 		watch(
 			() => endDate.value,
-			() => {
-				validateEndInput();
-				enableApplyButtonIfSearchisValid();
-			},
-		);
-
-		watch(
-			() => [validStartDate.value, validEndDate.value],
-			() => {
-				enableApplyButtonIfSearchisValid();
+			(newValue, oldValue) => {
+				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
+					validateEndInput();
+					enableApplyButtonIfSearchisValid();
+				}
 			},
 		);
 
@@ -278,7 +275,6 @@ export default defineComponent({
 			if (picker === 'start') {
 				validStartDate.value = true;
 			}
-			enableApplyButtonIfSearchisValid();
 		};
 
 		const highlightedDays = computed(() => {

@@ -239,7 +239,7 @@
 		>
 			<button
 				class="apply-time-facets"
-				:disabled="!timeSearchStore.filterSearchReady"
+				:disabled="!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
@@ -285,6 +285,7 @@ import {
 } from '@/utils/time-search-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
 	name: 'TimeSearchFilters',
@@ -331,6 +332,7 @@ export default defineComponent({
 		const expToggled = ref(false);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
 		const searchResultStore = useSearchResultStore();
+		const route = useRoute();
 
 		onMounted(() => {
 			if (props.init) {
@@ -435,13 +437,15 @@ export default defineComponent({
 		};
 
 		const emitNewSearch = () => {
-			if (yearSearch.value && yearSearch.value.expanderOpen) {
+			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
 				const resultContainer = document.getElementsByClassName('hits')[0];
 				resultContainer?.scrollIntoView({
 					behavior: 'smooth',
 					block: 'start',
 				});
+				timeSearchStore.setNewSearchReqMet(false);
+				timeSearchStore.setFilterSearchReady(false);
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
@@ -449,8 +453,6 @@ export default defineComponent({
 				}
 				emit('newSearch', false);
 			}
-			timeSearchStore.setNewSearchReqMet(false);
-			timeSearchStore.setFilterSearchReady(false);
 		};
 
 		const updateStartYear = (val: number) => {

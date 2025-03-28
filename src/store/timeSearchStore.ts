@@ -33,7 +33,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const { t } = useI18n();
 	const newSearchReqMet = ref(false);
 	const timeFacetsOpen = ref(false);
-	const filterSearchReady = ref(true);
+	const filterSearchReady = ref(false);
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
 		const dateA = new Date(a.startTime).getTime();
@@ -108,15 +108,14 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 						}
 					}
 				});
-				const foundString = filters.find((str) => str?.includes('startTime'));
-				if (!foundString) {
+				const timeFilters = ['startTime', 'temporal_start_day_da', 'temporal_start_month', 'temporal_start_hour_da'];
+				const foundTimeFilter = filters.some((str) => timeFilters.some((keyword) => str?.includes(keyword)));
+				if (!foundTimeFilter) {
 					const startHolder = new Date(startYear.value.getTime());
 					const endHolder = new Date(endYear.value.getTime());
 					startDate.value = startHolder;
 					endDate.value = endHolder;
 					setTimeFacetsOpen(false);
-				} else {
-					setTimeFacetsOpen(true);
 				}
 			}
 			setNewSearchReqMet(false);
