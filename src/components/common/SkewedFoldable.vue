@@ -35,7 +35,7 @@
 					:style="`color:${text}`"
 					class="headline"
 				>
-					<h1>{{ title }}</h1>
+					<h2>{{ title }}</h2>
 					<span>{{ subtitle }}</span>
 				</div>
 			</button>
@@ -44,7 +44,7 @@
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h1>{{ title }}</h1>
+					<h2>{{ title }}</h2>
 					<span>{{ subtitle }}</span>
 				</div>
 			</div>
@@ -246,13 +246,13 @@ export default defineComponent({
 	max-width: 100vw;
 }
 
-h1 {
+h2 {
 	font-family: noway, sans-serif;
 	font-weight: 100;
 	text-transform: lowercase;
 }
 
-h1::first-letter {
+h2::first-letter {
 	text-transform: capitalize;
 }
 
@@ -278,7 +278,7 @@ h1::first-letter {
 	flex-wrap: wrap;
 }
 
-.content .headline h1 {
+.content .headline h2 {
 	padding: 0px;
 	margin: 0px;
 }
@@ -445,7 +445,7 @@ h1::first-letter {
 		color: #0a2e70 !important;
 	}
 
-	.closed:hover .content .headline h1 {
+	.closed:hover .content .headline h2 {
 		color: #0a2e70 !important;
 	}
 
@@ -475,7 +475,7 @@ h1::first-letter {
 		width: 100%;
 	}
 
-	h1 {
+	h2 {
 		font-family: 'LibreBaskerville';
 		font-weight: 100;
 

@@ -5,7 +5,7 @@
 				class="header"
 				:style="`color: ${text}`"
 			>
-				<h1>{{ title }}</h1>
+				<h2>{{ title }}</h2>
 				<span>{{ subtitle }}</span>
 			</div>
 			<TimeSearchFilters
@@ -211,7 +211,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-h1 {
+h2 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	color: #002e70;
@@ -339,7 +339,7 @@ h1 {
 	display: none;
 }
 
-.header h1 {
+.header h2 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	text-transform: none;
