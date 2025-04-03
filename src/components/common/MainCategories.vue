@@ -4,7 +4,7 @@
 		class="header"
 		:style="`color: ${text}`"
 	>
-		<h1>{{ title }}</h1>
+		<h2>{{ title }}</h2>
 		<span>{{ subtitle }}</span>
 	</div>
 	<div class="head-categories">
@@ -158,7 +158,7 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 
-.header h1 {
+.header h2 {
 	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	font-size: 32px;
