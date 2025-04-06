@@ -336,6 +336,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			//window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
+			spellCheck.value = {} as unknown as SpellCheckType;
 			const responseData = await APIService.getSearchResults(
 				query,
 				searchFilters,
