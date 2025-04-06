@@ -20,14 +20,16 @@ const routes: Array<RouteRecordRaw> = [
 			autoplay: route.query.autoplay || null,
 		}),
 		beforeEnter: (to, from, next) => {
-			if ('kalturaStartTime' in to.query || 'KalturaStartTime' in to.query) {
-				const rest = { ...to.query };
-				delete rest.kalturaStartTime;
-				delete rest.KalturaStartTime;
+			const query = { ...to.query };
+			const targetKey = Object.keys(query).find((key) => key.toLowerCase() === 'kalturastarttime');
+
+			if (targetKey) {
+				delete query[targetKey];
+
 				next({
 					name: to.name,
 					params: to.params,
-					query: rest,
+					query,
 					replace: true,
 				});
 			} else {
