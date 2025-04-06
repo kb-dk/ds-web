@@ -19,6 +19,21 @@ const routes: Array<RouteRecordRaw> = [
 			id: route.params.id,
 			autoplay: route.query.autoplay || null,
 		}),
+		beforeEnter: (to, from, next) => {
+			if ('kalturaStartTime' in to.query || 'KalturaStartTime' in to.query) {
+				const rest = { ...to.query };
+				delete rest.kalturaStartTime;
+				delete rest.KalturaStartTime;
+				next({
+					name: to.name,
+					params: to.params,
+					query: rest,
+					replace: true,
+				});
+			} else {
+				next();
+			}
+		},
 	},
 	{
 		path: '/:pathMatch(.*)*', // Catch-all route
