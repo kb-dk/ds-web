@@ -81,6 +81,7 @@ import SearchOverhead from '@/components/search/SearchOverhead.vue';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import { Priority, Severity } from '@/types/NotificationType';
+import { normalizeFq } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'Search',
@@ -161,11 +162,7 @@ export default defineComponent({
 					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
 					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
 					searchResultStore.getSearchResults(route.query.q as string);
-					document.title = (t('app.titles.search') +
-						'"' +
-						route.query.q +
-						'"' +
-						t('app.titles.frontpage.archive.suffix')) as string;
+					setCurrentTitleForPage();
 				} else if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
 				}
@@ -191,11 +188,7 @@ export default defineComponent({
 					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
 					searchResultStore.getSearchResults(route.query.q as string);
 
-					document.title = (t('app.titles.search') +
-						'"' +
-						route.query.q +
-						'"' +
-						t('app.titles.frontpage.archive.suffix')) as string;
+					setCurrentTitleForPage();
 				}
 				if (route.query.q === undefined) {
 					document.title = t('app.titles.frontpage.archive.name') as string;
@@ -216,6 +209,88 @@ export default defineComponent({
 				newParams.query.sort !== prevParams.query.sort ||
 				newParams.query.rows !== prevParams.query.rows
 			);
+		};
+
+		const setCurrentTitleForPage = () => {
+			console.log(route.query);
+			if (route.query.q !== '*:*') {
+				document.title = (t('app.titles.search') +
+					'"' +
+					route.query.q +
+					'"' +
+					t('app.titles.frontpage.archive.suffix')) as string;
+			} else {
+				const fq = normalizeFq(route.query.fq as string[]);
+				if (fq && fq.length > 0) {
+					if (fq.length === 1) {
+						if (fq[0].includes('startTime')) {
+							const decoded = decodeURIComponent(fq[0]);
+							const timeRange = decoded.split('[')[1].split(']')[0];
+							let [startRaw, endRaw] = timeRange.split(' TO ');
+							let startDate = new Date(startRaw);
+							startDate.setUTCDate(startDate.getUTCDate() + 1);
+							let endDate = new Date(endRaw);
+							const formatDate = (date: Date) => {
+								const dd = String(date.getUTCDate()).padStart(2, '0');
+								const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+								const yyyy = date.getUTCFullYear();
+								return `${dd}-${mm}-${yyyy}`;
+							};
+							document.title = `Søgning i perioden ${formatDate(startDate)} til ${formatDate(endDate)}`;
+						} else if (
+							fq[0].includes('temporal_start_day_da') ||
+							fq[0].includes('temporal_start_month') ||
+							fq[0].includes('temporal_start_hour_da')
+						) {
+							const decoded = decodeURIComponent(fq[0]);
+							const splitFilter = decoded.split(':');
+							const allParamString = splitFilter[1].replace(')', '').replace('(', '');
+							console.log(splitFilter);
+							const filterParams = allParamString.split(' OR ');
+							document.title = `Søgning på ${filterParams.length} app.titles.${splitFilter[0]}`;
+							console.log(`Søgning på ${filterParams.length} app.titles.${splitFilter[0]}`);
+						} else {
+							const allFilters = [] as string[];
+							let filterTitle = '';
+							fq.forEach((filter) => {
+								const decoded = decodeURIComponent(filter);
+								const fqPart = decoded.split('fq=')[1] || decoded; // fallback if no 'fq='
+
+								// Only slice if parentheses are present
+								let clean = fqPart;
+								if (fqPart.startsWith('(') && fqPart.endsWith(')')) {
+									clean = fqPart.slice(1, -1);
+								}
+								const filters = clean.split(' OR ').map((part) => {
+									const parts = part.split(':');
+									filterTitle = parts[0];
+									return decodeURIComponent(parts[1]);
+								});
+
+								allFilters.push(...filters);
+							});
+
+							let formattedFilters = '';
+							if (allFilters.length === 1) {
+								formattedFilters = allFilters[0];
+							} else if (allFilters.length === 2) {
+								formattedFilters = `${allFilters[0]} og ${allFilters[1]}`;
+							} else if (allFilters.length > 2) {
+								const allButLast = allFilters.slice(0, -1).join(', ');
+								const last = allFilters[allFilters.length - 1];
+								formattedFilters = `${allButLast} og ${last}`;
+							}
+
+							document.title = `Søgning med ${t('app.titles.' + filterTitle)} ${formattedFilters}`;
+							console.log(`Søgning med ${t('app.titles.' + filterTitle)} ${formattedFilters}`);
+						}
+					} else {
+						document.title = `Søgning med ${fq.length} filtre`;
+					}
+				} else {
+					document.title = `Søgning i DR-arkivet`;
+				}
+			}
 		};
 
 		return {
