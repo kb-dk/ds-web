@@ -411,9 +411,14 @@ export default defineComponent({
 
 			const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
 
-			if (yearSearch && startDate.value !== null && endDate.value !== null) {
-				startDate.value.setHours(0, 0, 0, 0); // Start of the day
-				endDate.value.setHours(23, 59, 59, 999); // End of the day
+			if (
+				yearSearch &&
+				startDate.value !== null &&
+				endDate.value !== null &&
+				(startDate.value.getTime() !== startYear.value.getTime() || endDate.value.getTime() !== endYear.value.getTime())
+			) {
+				startDate.value.setHours(0, 0, 0); // Start of the day
+				endDate.value.setHours(23, 59, 59); // End of the day
 				existingFq.push(
 					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 				);
