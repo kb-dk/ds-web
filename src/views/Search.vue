@@ -246,18 +246,11 @@ export default defineComponent({
 							const decoded = decodeURIComponent(fq[0]);
 							const splitFilter = decoded.split(':');
 							const allParamString = splitFilter[1].replace(')', '').replace('(', '');
-							console.log(splitFilter);
 							const filterParams = allParamString.split(' OR ');
 							document.title = `${t('app.titles.search')} ${filterParams.length} ${t(
 								'app.titles.' + splitFilter[0],
 								filterParams.length,
 							)}`;
-							console.log(
-								`${t('app.titles.search')} ${filterParams.length} ${t(
-									'app.titles.' + splitFilter[0],
-									filterParams.length,
-								)}`,
-							);
 						} else {
 							const allFilters = [] as string[];
 							let filterTitle = '';
@@ -294,12 +287,6 @@ export default defineComponent({
 								'app.titles.' + filterTitle,
 								allFilters.length,
 							)} ${formattedFilters}`;
-							console.log(
-								`${t('app.titles.SearchWith')} ${t(
-									'app.titles.' + filterTitle,
-									allFilters.length,
-								)} ${formattedFilters}`,
-							);
 						}
 					} else {
 						document.title = `${t('app.titles.SearchWith')} ${fq.length} ${t('app.titles.filter', fq.length)}`;
