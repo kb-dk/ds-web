@@ -281,6 +281,7 @@ export default defineComponent({
 			}
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
 			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
 			if (existingFq) {
 				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
