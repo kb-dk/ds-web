@@ -10,7 +10,17 @@
             },
             "about": "About"
          },
-         "search":" Search for"
+         "search":" Search for",
+         "SearchWith":"Søgning with",
+         "PeriodSearch":"Søgning in the period",
+         "to":"to",
+         "filter":"filter | filters",
+         "default":"Search in DR-arkivet",
+         "genre_facet":"the category | the categories",
+         "creator_affiliation_facet":"the channel | the channels",
+         "temporal_start_month":"month | months",
+         "temporal_start_day_da":"day | days",
+         "temporal_start_hour_da": "time span | time spans"
       },
       "frontPages": {
          "TVRadioDR":"Welcome to the Royal Danish Librarys DR-archive",
