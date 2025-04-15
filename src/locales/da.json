@@ -10,7 +10,17 @@
             },
            "about": "Om"
          },
-         "search":" Søgning på "
+         "search":" Søgning på",
+         "SearchWith":"Søgning med",
+         "PeriodSearch":"Søgning i perioden",
+         "to":"til",
+         "filter":"filter | filtre",
+         "default":"Søgning i DR-arkivet",
+         "genre_facet":"kategorien | kategorierne",
+         "creator_affiliation_facet":"kanalen | kanalerne",
+         "temporal_start_month":"måned | måneder",
+         "temporal_start_day_da":"dag | dage",
+         "temporal_start_hour_da": "tidspunkt | tidspunkter"
       },
       "frontPages": {
          "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv",
