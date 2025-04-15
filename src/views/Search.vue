@@ -112,7 +112,7 @@ export default defineComponent({
 			const pastPage = router.options.history.state.back as string;
 			if (pastPage && pastPage.startsWith('/post/') && searchResultStore.searchResult.length !== 0) {
 				document.title = (t('app.titles.search') +
-					'"' +
+					' "' +
 					route.query.q +
 					'"' +
 					t('app.titles.frontpage.archive.suffix')) as string;
@@ -212,7 +212,6 @@ export default defineComponent({
 		};
 
 		const setCurrentTitleForPage = () => {
-			console.log(route.query);
 			if (route.query.q !== '*:*') {
 				document.title = (t('app.titles.search') +
 					'"' +
@@ -236,7 +235,9 @@ export default defineComponent({
 								const yyyy = date.getUTCFullYear();
 								return `${dd}-${mm}-${yyyy}`;
 							};
-							document.title = `Søgning i perioden ${formatDate(startDate)} til ${formatDate(endDate)}`;
+							document.title = `${t('app.titles.PeriodSearch')} ${formatDate(startDate)} ${t(
+								'app.titles.to',
+							)} ${formatDate(endDate)}`;
 						} else if (
 							fq[0].includes('temporal_start_day_da') ||
 							fq[0].includes('temporal_start_month') ||
@@ -247,8 +248,16 @@ export default defineComponent({
 							const allParamString = splitFilter[1].replace(')', '').replace('(', '');
 							console.log(splitFilter);
 							const filterParams = allParamString.split(' OR ');
-							document.title = `Søgning på ${filterParams.length} app.titles.${splitFilter[0]}`;
-							console.log(`Søgning på ${filterParams.length} app.titles.${splitFilter[0]}`);
+							document.title = `${t('app.titles.search')} ${filterParams.length} ${t(
+								'app.titles.' + splitFilter[0],
+								filterParams.length,
+							)}`;
+							console.log(
+								`${t('app.titles.search')} ${filterParams.length} ${t(
+									'app.titles.' + splitFilter[0],
+									filterParams.length,
+								)}`,
+							);
 						} else {
 							const allFilters = [] as string[];
 							let filterTitle = '';
@@ -281,14 +290,22 @@ export default defineComponent({
 								formattedFilters = `${allButLast} og ${last}`;
 							}
 
-							document.title = `Søgning med ${t('app.titles.' + filterTitle)} ${formattedFilters}`;
-							console.log(`Søgning med ${t('app.titles.' + filterTitle)} ${formattedFilters}`);
+							document.title = `${t('app.titles.SearchWith')} ${t(
+								'app.titles.' + filterTitle,
+								allFilters.length,
+							)} ${formattedFilters}`;
+							console.log(
+								`${t('app.titles.SearchWith')} ${t(
+									'app.titles.' + filterTitle,
+									allFilters.length,
+								)} ${formattedFilters}`,
+							);
 						}
 					} else {
-						document.title = `Søgning med ${fq.length} filtre`;
+						document.title = `${t('app.titles.SearchWith')} ${fq.length} ${t('app.titles.filter', fq.length)}`;
 					}
 				} else {
-					document.title = `Søgning i DR-arkivet`;
+					document.title = `${t('app.titles.default')}`;
 				}
 			}
 		};
