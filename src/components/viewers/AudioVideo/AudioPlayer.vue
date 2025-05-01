@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onBeforeUnmount, onMounted, watch } from 'vue';
+import { defineComponent, inject, onBeforeUnmount, onMounted, watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
@@ -18,6 +18,14 @@ import { Priority, Severity } from '@/types/NotificationType';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
+
+interface KalturaErrorEvent {
+	payload: {
+		code: number;
+		message: string;
+	};
+}
+
 export default defineComponent({
 	name: 'AudioPlayer',
 	props: {
@@ -34,6 +42,7 @@ export default defineComponent({
 		let audioPlayer: PlayerType;
 		const route = useRoute();
 		const authStore = useAuthStore();
+		const restrictedErrorDispatched = ref(false);
 
 		const handleErrorDispatch = (type: string) => {
 			switch (type) {
@@ -107,8 +116,27 @@ export default defineComponent({
 					document
 						.querySelector('.playkit-pre-playback-play-button')
 						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+					const audio = document.querySelector('#audio-player') as HTMLElement | null;
+					if (audio) {
+						const innerVideo = audio?.querySelector('video') as HTMLVideoElement | null;
+						if (innerVideo) innerVideo.disablePictureInPicture = true;
+					}
+					audio ? audio.setAttribute('data-testid', 'audio-player-kaltura-container-0') : null;
 				});
-				document.querySelector('#audio-player')?.setAttribute('data-testid', 'audio-player-kaltura-container-0');
+				audioPlayer.addEventListener(audioPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
+					const error = e.payload;
+					if (error.code === 1002 && !restrictedErrorDispatched.value) {
+						restrictedErrorDispatched.value = true;
+						errorManager.submitCustomError(
+							'player-error',
+							t('error.title'),
+							`${t('error.record.restricted')}\n\n${t('error.record.restrictedExplained')}`,
+							Severity.INFO,
+							true,
+							Priority.MEDIUM,
+						);
+					}
+				});
 			} catch (e) {
 				handleErrorDispatch('');
 			}

@@ -122,8 +122,13 @@ export default defineComponent({
 					document
 						.querySelector('.playkit-pre-playback-play-button')
 						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+					const video = document.querySelector('#video-player') as HTMLElement | null;
+					if (video) {
+						const innerVideo = video?.querySelector('video') as HTMLVideoElement | null;
+						if (innerVideo) innerVideo.disablePictureInPicture = true;
+					}
+					video ? video.setAttribute('data-testid', 'video-player-kaltura-container-0') : null;
 				});
-				document.querySelector('#video-player')?.setAttribute('data-testid', 'video-player-kaltura-container-0');
 				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
 					if (error.code === 1002 && !restrictedErrorDispatched.value) {
