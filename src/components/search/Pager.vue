@@ -25,11 +25,13 @@
 			</div>
 		</div>
 		<div class="pager-buttons">
-			<button
-				:disabled="currentPageRef === 1"
+			<router-link
+				v-if="currentPageRef !== 1"
+				class="arrow-pager"
+				:to="navLink(currentPageRef - 1)"
 				:title="$t('search.previousPage')"
 				:aria-label="$t('search.previousPage')"
-				@click="prevPage"
+				@click="scrollToHitsContainer()"
 			>
 				<i
 					class="material-icons"
@@ -37,7 +39,18 @@
 				>
 					chevron_left
 				</i>
-			</button>
+			</router-link>
+			<span
+				v-else
+				class="disabled-chevron"
+			>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_left
+				</i>
+			</span>
 			<span
 				v-for="(pageNumber, index) in computedPages"
 				:key="index"
@@ -48,20 +61,23 @@
 				>
 					{{ pageNumber }}
 				</span>
-				<button
+				<router-link
 					v-else
+					:to="navLink(pageNumber as number)"
 					:class="{ active: pageNumber === currentPageRef }"
 					:title="`${$t('search.page')} ${pageNumber}`"
 					:aria-label="$t('search.goToPage', Number(pageNumber))"
 					@click="goToPage(pageNumber as number)"
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
-				</button>
+				</router-link>
 			</span>
-			<button
-				:disabled="currentPageRef === searchResultStore.maxPages"
+			<router-link
+				v-if="currentPageRef !== searchResultStore.maxPages"
+				:to="navLink(currentPageRef + 1)"
 				:title="$t('search.nextPage')"
 				:aria-label="$t('search.nextPage')"
+				class="arrow-pager"
 				@click="nextPage"
 			>
 				<i
@@ -70,7 +86,18 @@
 				>
 					chevron_right
 				</i>
-			</button>
+			</router-link>
+			<span
+				v-else
+				class="disabled-chevron"
+			>
+				<i
+					class="material-icons"
+					aria-hidden="true"
+				>
+					chevron_right
+				</i>
+			</span>
 		</div>
 		<span class="pager-input">
 			<div class="input-label">{{ $t('search.page') }}</div>
@@ -96,7 +123,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
@@ -156,6 +183,24 @@ export default defineComponent({
 			const start = (currentPageRef.value - 1) * props.itemsPerPage;
 			const query = { ...route.query, start };
 			router.push({ query });
+			const resultContainer = document.getElementsByClassName('hits')[0];
+			resultContainer?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
+		};
+
+		const navLink = (page: number): RouteLocationRaw => {
+			const route = useRoute();
+			const newQuery = { ...route.query };
+			newQuery.start = String((page - 1) * props.itemsPerPage);
+			return {
+				name: route.name as string,
+				query: newQuery,
+			};
+		};
+
+		const scrollToHitsContainer = () => {
 			const resultContainer = document.getElementsByClassName('hits')[0];
 			resultContainer?.scrollIntoView({
 				behavior: 'smooth',
@@ -285,6 +330,8 @@ export default defineComponent({
 			inputRef,
 			submitPage,
 			scrollToTop,
+			navLink,
+			scrollToHitsContainer,
 		};
 	},
 });
@@ -305,9 +352,25 @@ export default defineComponent({
 
 .pager.disabled button span,
 .pager.disabled .dots,
-.pager.disabled button i {
+.pager.disabled button i,
+.disabled-chevron {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676 !important;
+	cursor: auto !important;
+}
+
+.pager-buttons a {
+	text-decoration: none;
+	padding: 2px 5px !important;
+}
+
+.pager-buttons a span {
+	padding: 0px 5px;
+	border-radius: 2px;
+}
+
+.arrow-pager {
+	text-decoration: none !important;
 }
 
 .active span {
@@ -316,13 +379,23 @@ export default defineComponent({
 	text-decoration: none;
 }
 
-button {
+button,
+.disabled-chevron {
 	border: 0px transparent;
 	background-color: transparent;
 	font-size: 14px;
 	cursor: pointer;
 	margin: 0px 2px;
 	padding: 2px 2px;
+}
+
+.pager-buttons a {
+	text-decoration: underline;
+	color: #002e70;
+}
+
+.pager-buttons a:visited {
+	color: #002e70;
 }
 
 :disabled {
@@ -360,6 +433,7 @@ button span,
 	align-self: center;
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 .page-select-input {
@@ -452,7 +526,8 @@ button span,
 	.pager-buttons {
 		font-size: 16px;
 	}
-	button {
+	button,
+	a {
 		padding: 2px 5px;
 	}
 }
