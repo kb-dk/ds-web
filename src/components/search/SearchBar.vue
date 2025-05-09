@@ -6,7 +6,7 @@
 					<div class="col">
 						<form
 							ref="searchFormRef"
-							class="searchform"
+							:class="route.query.q === undefined ? 'searchform find' : 'searchform'"
 							action=" "
 							method=" "
 							role="search"
@@ -214,6 +214,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
 import router from '@/router';
+import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
@@ -236,6 +237,7 @@ export default defineComponent({
 		const searchFormRef = ref<HTMLFormElement | null>(null);
 		const showPortalSelector = ref(false);
 		const selectedPortal = ref('drArchive');
+		const route = useRoute();
 		const selectButtonRef = ref<HTMLButtonElement | null>(null);
 		const selectorValues: PortalSelectItem[] = [
 			{
@@ -431,6 +433,7 @@ export default defineComponent({
 			selectButtonRef,
 			selectedPortal,
 			selectorValues,
+			route,
 		};
 	},
 });
@@ -495,6 +498,10 @@ input[type='search']::-webkit-search-results-decoration {
 	color: #767676;
 }
 
+.searchform.find .rdl-advanced-search {
+	border: 1px solid #002e70;
+}
+
 :host {
 	max-width: 100vw;
 	height: 100%;
@@ -502,7 +509,9 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .searchform {
+	transition: all 0.25s linear 0s;
 	overflow: visible;
+	border: 1px solid transparent;
 }
 
 .search-box {
@@ -971,7 +980,7 @@ input:focus {
 	}
 
 	.dropdown-toggle {
-		height: 72px;
+		height: 71px;
 		padding: 20px 12px;
 	}
 
@@ -1053,7 +1062,7 @@ input:focus {
 	}
 	.form-control {
 		padding: 20px 12px;
-		height: 72px;
+		height: 71px;
 		border: none;
 		display: block;
 		width: 100%;

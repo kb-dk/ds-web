@@ -531,5 +531,12 @@
       "nyheder-politik-og-samfund":"News, politics, and society",
       "radio-rodekasse":"Radio jumble box",
       "tv-rodekasse":"TV jumble box"
-   } 
+   },
+   "find":{
+      "headline":"What do you want to search for?",
+      "subtitle":"Use the search field or select a category to begin your search.",
+      "maybeYouWantTo":"Or maybe you would rather:",
+      "restoreFilters":"Restore filters from previous search",
+      "GoToFrontpage":"Go to the front page of DR-arkivet"
+   }
 }

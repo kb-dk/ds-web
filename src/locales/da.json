@@ -525,5 +525,12 @@
       "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
       "radio-rodekasse":"Radio-rodekasse",
       "tv-rodekasse":"TV-rodekasse"
+   },
+   "find":{
+      "headline":"Hvad vil du søge efter?",
+      "subtitle":"Skriv i søgefeltet eller vælg en kategori for at begynde din søgning.",
+      "maybeYouWantTo":"Eller måske vil du hellere:",
+      "restoreFilters":"Gendanne filtre fra sidste søgning",
+      "GoToFrontpage":"Til forsiden af DR-arkivet"
    }
 }
