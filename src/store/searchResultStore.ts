@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
-import { LocationQueryValue } from 'vue-router';
+import { LocationQueryValue, RouteLocationNormalizedLoadedGeneric } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
@@ -48,6 +48,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const loadingChannels = ref(false);
 	const loadingGenres = ref(false);
 	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
+	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -403,6 +404,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		loadingGenres,
 		loadingChannels,
 		curatedContent,
+		previousRoute,
 		addFilter,
 		resetFilters,
 		removeFilter,

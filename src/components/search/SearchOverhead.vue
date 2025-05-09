@@ -259,11 +259,17 @@ export default defineComponent({
 				startDate.value.setTime(startYear.value.getTime());
 				endDate.value.setTime(endYear.value.getTime());
 			}
+
+			if (routeQueries.q === '*:*') {
+				delete routeQueries.q;
+			}
+			delete routeQueries.start;
+			delete routeQueries.fq;
+			delete routeQueries.sort;
+
 			router.push({
 				name: 'Search',
-				query: {
-					q: routeQueries.q,
-				},
+				query: routeQueries,
 			});
 		};
 
