@@ -60,7 +60,7 @@
 					<h2>{{ t('find.maybeYouWantTo') }}</h2>
 					<div class="extra-options">
 						<router-link :to="searchResultStore.previousRoute">{{ t('find.restoreFilters') }}</router-link>
-						<router-link to="Home">{{ t('find.GoToFrontpage') }}</router-link>
+						<router-link :to="{ name: 'Home' }">{{ t('find.GoToFrontpage') }}</router-link>
 					</div>
 					<EdgedContentArea
 						:lines="true"
