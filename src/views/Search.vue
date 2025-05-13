@@ -429,6 +429,8 @@ h3 {
 .extra-options {
 	display: flex;
 	gap: 25px;
+	flex-direction: column;
+	margin-bottom: 45px;
 }
 
 .extra-options a {
@@ -482,6 +484,9 @@ h3 {
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
+	.extra-options {
+		flex-direction: row;
+	}
 	.container {
 		max-width: 990px;
 	}
@@ -496,6 +501,9 @@ h3 {
 @media (min-width: 990px) {
 	.mobile-edge {
 		display: none;
+	}
+	.extra-options {
+		margin-bottom: 0px;
 	}
 	.container {
 		display: flex;
