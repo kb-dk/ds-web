@@ -6,7 +6,7 @@
 					<div class="col">
 						<form
 							ref="searchFormRef"
-							:class="route.query.q === undefined ? 'searchform find' : 'searchform'"
+							:class="route.query.q === undefined && route.name === 'Search' ? 'searchform find' : 'searchform'"
 							action=" "
 							method=" "
 							role="search"
