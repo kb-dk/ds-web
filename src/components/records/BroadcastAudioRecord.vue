@@ -289,6 +289,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	margin-bottom: 45px;
 }
 
 .accordion {

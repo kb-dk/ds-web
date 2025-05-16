@@ -35,6 +35,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	margin-bottom: 30px;
 }
 .imageAndTextContainer .con {
 	width: 100%;
@@ -45,6 +46,10 @@ temporary styling until patterns from design system are implemented
 }
 .imageAndTextContainer .con .li {
 	font-size: 50px;
+}
+
+.hide-image {
+	display: none !important;
 }
 
 @media (min-width: 450px) {
@@ -60,6 +65,13 @@ temporary styling until patterns from design system are implemented
 		background: pink;
 	}
 }
+
+@media (min-width: 840px) {
+	.hide-image {
+		display: flex !important;
+	}
+}
+
 @media (min-width: 840px) {
 	.imageAndTextContainer {
 		flex-direction: row;
