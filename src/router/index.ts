@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -50,6 +51,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
+	const searchResultStore = useSearchResultStore();
+	searchResultStore.previousRoute = from;
 	if (from.query.locale && !to.query.locale) {
 		to.query.locale = from.query.locale;
 		return to;

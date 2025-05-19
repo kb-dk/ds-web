@@ -51,9 +51,45 @@
 						</div>
 					</div>
 				</div>
-
 				<div
-					v-if="route.fullPath === '/find'"
+					v-if="route.query.q === undefined"
+					class="container find"
+				>
+					<h1>{{ t('find.headline') }}</h1>
+					<p>{{ t('find.subtitle') }}</p>
+					<h2>{{ t('find.maybeYouWantTo') }}</h2>
+					<div class="extra-options">
+						<router-link :to="searchResultStore.previousRoute">
+							<span class="material-icons tune">tune</span>
+							{{ t('find.restoreFilters') }}
+						</router-link>
+						<router-link :to="{ name: 'Home' }">{{ t('find.GoToFrontpage') }}</router-link>
+					</div>
+					<EdgedContentArea
+						:lines="true"
+						:title="$t('search.mainCategories')"
+						class="main-categories-header"
+						:reverse="true"
+					>
+						<template #content>
+							<div class="showcase-container">
+								<MainCategories
+									:title="$t('timeSearch.searchCategories')"
+									text="white"
+									:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
+									:show-header="false"
+								></MainCategories>
+							</div>
+						</template>
+					</EdgedContentArea>
+					<ContactUs
+						class="contact-us"
+						:relative-position="false"
+					></ContactUs>
+					<div class="expanded-area"></div>
+				</div>
+				<div
+					v-if="route.fullPath === '/find' && route.query.q !== undefined"
 					key="2"
 					class="container"
 				>
@@ -82,6 +118,9 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import { Priority, Severity } from '@/types/NotificationType';
 import { normalizeFq } from '@/utils/filter-utils';
+import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+import MainCategories from '@/components/common/MainCategories.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'Search',
@@ -90,6 +129,9 @@ export default defineComponent({
 		Pagination,
 		SearchOverhead,
 		NoHits,
+		EdgedContentArea,
+		MainCategories,
+		ContactUs,
 	},
 
 	setup() {
@@ -302,6 +344,8 @@ export default defineComponent({
 			numPagesToShow,
 			route,
 			updateResizeProperty,
+			router,
+			t,
 		};
 	},
 });
@@ -374,6 +418,54 @@ h3 {
 	flex-direction: column;
 }
 
+.expanded-area {
+	height: 3vw;
+}
+
+.tune {
+	padding-right: 5px;
+}
+
+.extra-options {
+	display: flex;
+	gap: 25px;
+	flex-direction: column;
+	margin-bottom: 45px;
+}
+
+.extra-options a {
+	color: white;
+	background-color: #002e70;
+	border-color: #f2f4f8;
+	text-decoration: none;
+	padding: 1px 2rem;
+	line-height: 1.25rem;
+	border-radius: 5px;
+	height: 45px;
+	display: flex;
+	align-items: center;
+	transition:
+		color 0.15s ease-in-out,
+		background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out,
+		box-shadow 0.15s ease-in-out;
+}
+
+.extra-options a:hover {
+	background-color: #c4f1ed;
+	color: #002e70;
+	border-color: #002e70;
+	outline: 1px solid #002e70;
+}
+
+.find h1 {
+	font-weight: normal;
+}
+
+.find h2 {
+	color: #002e70;
+}
+
 .container {
 	text-align: left;
 	margin-right: auto;
@@ -392,6 +484,9 @@ h3 {
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
+	.extra-options {
+		flex-direction: row;
+	}
 	.container {
 		max-width: 990px;
 	}
@@ -406,6 +501,9 @@ h3 {
 @media (min-width: 990px) {
 	.mobile-edge {
 		display: none;
+	}
+	.extra-options {
+		margin-bottom: 0px;
 	}
 	.container {
 		display: flex;
