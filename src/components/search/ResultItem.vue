@@ -355,7 +355,7 @@ export default defineComponent({
 	width: 75ch;
 	text-transform: uppercase;
 	text-decoration: none;
-	height: 18px;
+	height: 22px;
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
