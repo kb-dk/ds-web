@@ -1,6 +1,10 @@
 # ds-web
 This is a frontend for showing digital cultural heritage.
 
+## ⚠️ Warning: Copyright Notice
+Vær opmærksom på, at det ikke er lovligt at downloade og/eller på anden vis videreanvende indholdet i Det Kgl. Biblioteks DR-arkiv.
+
+
 ## Project setup
 The project requires node v20.10.0.
 
