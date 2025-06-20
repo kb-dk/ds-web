@@ -3,6 +3,7 @@
 		<AudioPlayer
 			v-if="entryId !== ''"
 			:entry-id="entryId"
+			:channel="recordData.publication.publishedOn.broadcastDisplayName"
 		></AudioPlayer>
 		<div
 			v-else

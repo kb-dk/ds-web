@@ -15,6 +15,7 @@ import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import { useRoute } from 'vue-router';
 import { Priority, Severity } from '@/types/NotificationType';
+import startPicture from '@/assets/dr_lyd.jpg';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
@@ -30,6 +31,12 @@ export default defineComponent({
 	name: 'AudioPlayer',
 	props: {
 		entryId: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		channel: {
 			type: String,
 			default() {
 				return '';
@@ -80,6 +87,12 @@ export default defineComponent({
 				}
 			}
 		};
+
+		const getThumbnailPicture = (channel: string) => {
+			console.log('we got picture!', channel);
+			return startPicture;
+		};
+
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
 			kalturaScript.setAttribute(
@@ -110,6 +123,9 @@ export default defineComponent({
 						partnerId: authStore.partnerId !== '' ? authStore.partnerId : import.meta.env.VITE_KALTURA_PARTNER_ID,
 						uiConfId:
 							authStore.audioUiConfId !== '' ? authStore.audioUiConfId : import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
+					},
+					sources: {
+						poster: getThumbnailPicture(props.channel),
 					},
 				});
 				audioPlayer.loadMedia({ entryId: props.entryId }).then(() => {
