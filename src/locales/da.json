@@ -244,7 +244,7 @@
      "of":"af",
      "startTime":"starttid",
     "dataQuantity":{
-      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er dermeget materiale, og i andre er der kun lidt eller ingenting.",
+      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der meget materiale, og i andre er der kun lidt eller ingenting.",
       "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
     },
     "showContent": "Anvend",
