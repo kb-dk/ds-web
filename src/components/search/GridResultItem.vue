@@ -336,7 +336,7 @@ export default defineComponent({
 
 .date .material-icons,
 .duration .material-icons {
-	font-size: 20px;
+	font-size: 16px;
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -429,9 +429,10 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	line-height: 20px; /* fallback for firefox */
-	max-height: calc(20px * 3); /* fallback for firefox */
-	min-height: calc(20px * 3); /* fallback for firefox */
+	line-height: 1.5; /* fallback for firefox */
+	font-size: 16px;
+	max-height: calc(25px * 3); /* fallback for firefox */
+	min-height: calc(25px * 3); /* fallback for firefox */
 }
 
 @media (min-width: 480px) {
