@@ -209,6 +209,7 @@ h2 {
 	flex-wrap: nowrap;
 	background-color: transparent;
 	border: 0px;
+	margin-bottom: 10px;
 }
 .headline-container.open {
 	padding-top: 8px;

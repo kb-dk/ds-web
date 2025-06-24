@@ -99,7 +99,7 @@
 							</div>
 							<CustomExpander
 								:headline="$t('facets.choose') + ' ' + $t('facets.channels', 2)"
-								icon="ondemand_video"
+								icon="toc"
 								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
 								:fade="true"
 								:item-array="channelsArray"
