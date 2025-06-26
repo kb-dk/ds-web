@@ -207,6 +207,12 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+h3 {
+	margin-top: 0;
+}
+h4 {
+	margin-bottom: 0;
+}
 :host {
 	margin-top: -1px;
 	position: relative;
@@ -231,6 +237,14 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	gap: 7px;
 	flex-wrap: wrap;
+	font-weight: 700;
+	line-height: 1.5;
+	font-size: 18px;
+}
+
+.info .material-icons {
+	font-size: 20px;
+	margin-right: 3px;
 }
 
 .no-streaming {
