@@ -6,6 +6,7 @@ export interface BroadcastRecordType {
 	id: string;
 	name: NameType[];
 	publication: PublicationType;
+	encodesCreativeWork: CreativeWork;
 	description: string;
 	startTime: string;
 	endTime: string;
@@ -49,4 +50,13 @@ interface KbInternal {
 	'kb:has_subtitles_for_hearing_impaired': boolean;
 	'kb:is_teletext': boolean;
 	'kb:showviewcode': string;
+}
+
+interface CreativeWork {
+	'@type': string;
+	partOfSeason: {
+		'@type': string;
+		numberOfEpisodes: number;
+	};
+	episodeNumber: number;
 }
