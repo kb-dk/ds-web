@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
@@ -114,15 +114,11 @@ export default defineComponent({
 				return true;
 			},
 		},
-		facetType: {
-			type: String,
-			default: '',
-		},
 	},
 
 	setup(props) {
 		const { t } = useI18n();
-		const maxSelectedItems = ref(13);
+		const maxSelectedItems = ref(11);
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
@@ -159,20 +155,16 @@ export default defineComponent({
 		};
 		const updateMaxSelectedItems = () => {
 			maxSelectedItems.value = Math.round(window.innerWidth / 100 - 2);
-			if (maxSelectedItems.value > 13) {
-				maxSelectedItems.value = 13;
+			if (maxSelectedItems.value > 11) {
+				maxSelectedItems.value = 11;
 			}
 		};
 		onMounted(() => {
 			updateMaxSelectedItems();
-			if (props.facetType === 'creator_affiliation_facet') {
-				window.addEventListener('resize', updateMaxSelectedItems);
-			}
+			window.addEventListener('resize', updateMaxSelectedItems);
 		});
 		onUnmounted(() => {
-			if (props.facetType === 'creator_affiliation_facet') {
-				window.removeEventListener('resize', updateMaxSelectedItems);
-			}
+			window.removeEventListener('resize', updateMaxSelectedItems);
 		});
 		return {
 			t,
@@ -271,7 +263,7 @@ h2 {
 
 .selected-entity {
 	display: flex;
-	width: 64px;
+	width: 68px;
 	align-items: center;
 	justify-content: space-between;
 	border: 0px;
@@ -286,11 +278,11 @@ h2 {
 
 .selected-entity .entity-name {
 	text-transform: capitalize;
-	padding-right: 5px;
 }
 
 .selected-entity .close {
 	font-size: 20px;
+	float: right;
 }
 .overflow-enitity {
 	padding: 4px;

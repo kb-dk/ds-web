@@ -11,7 +11,6 @@
 			:pass-update="passAlongUpdate"
 			:filter-cuttof="filterNameCutoff"
 			:use-translation="useHeadlineTranslation"
-			:facet-type="facetType"
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
