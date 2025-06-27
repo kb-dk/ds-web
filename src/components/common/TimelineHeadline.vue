@@ -154,9 +154,14 @@ export default defineComponent({
 			}
 		};
 		const updateMaxSelectedItems = () => {
-			maxSelectedItems.value = Math.round(window.innerWidth / 100 - 2);
-			if (maxSelectedItems.value > 11) {
-				maxSelectedItems.value = 11;
+			const windowWidth = window.innerWidth;
+			if (windowWidth < 500 && windowWidth > 390) {
+				maxSelectedItems.value = 3;
+			} else {
+				maxSelectedItems.value = Math.floor(windowWidth / 100 - 2);
+				if (maxSelectedItems.value > 11) {
+					maxSelectedItems.value = 11;
+				}
 			}
 		};
 		onMounted(() => {
