@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from 'vue';
+import { defineComponent, PropType, computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
@@ -122,8 +122,7 @@ export default defineComponent({
 
 	setup(props) {
 		const { t } = useI18n();
-		const maxSelectedItems = ref(props.itemArray.length);
-		const overMaxSelectedItems = ref(0);
+		const maxSelectedItems = ref(13);
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
@@ -159,13 +158,13 @@ export default defineComponent({
 			}
 		};
 		const updateMaxSelectedItems = () => {
-			const screenWidth = window.innerWidth;
-			maxSelectedItems.value = Math.round(screenWidth / 100 - 2);
+			maxSelectedItems.value = Math.round(window.innerWidth / 100 - 2);
 			if (maxSelectedItems.value > 13) {
 				maxSelectedItems.value = 13;
 			}
 		};
 		onMounted(() => {
+			updateMaxSelectedItems();
 			if (props.facetType === 'creator_affiliation_facet') {
 				window.addEventListener('resize', updateMaxSelectedItems);
 			}
@@ -184,7 +183,6 @@ export default defineComponent({
 			addTestDataEnrichment,
 			santizeAndSimplify,
 			maxSelectedItems,
-			overMaxSelectedItems,
 		};
 	},
 });
