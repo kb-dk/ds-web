@@ -470,7 +470,6 @@ h3 {
 	text-align: left;
 	margin-right: auto;
 	margin-left: auto;
-	box-sizing: border-box;
 	padding-right: 12px;
 	padding-left: 12px;
 }
@@ -523,8 +522,8 @@ h3 {
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.container {
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>
