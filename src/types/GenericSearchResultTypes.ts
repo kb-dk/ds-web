@@ -25,6 +25,7 @@ export interface GenericSearchResultType {
 	place_of_production: string;
 	resource_description: string;
 	creator_affiliation: string;
+	creator_affiliation_facet: string;
 	shelf_location: string;
 	title: string;
 	topic: string[];

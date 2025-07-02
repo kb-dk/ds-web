@@ -17,7 +17,7 @@
 		<span
 			role="img"
 			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
-			class="type-symbol material-icons"
+			:class="data.iconLowerRight ? 'type-symbol material-icons lower-left' : 'type-symbol material-icons'"
 			:style="`color: ${data.iconColor}`"
 		>
 			{{ data.icon }}
@@ -47,6 +47,7 @@ export default defineComponent({
 					icon: '',
 					iconColor: '',
 					aspect: '',
+					iconLowerRight: false,
 				} as ImageComponentType);
 			},
 		},
@@ -98,11 +99,35 @@ export default defineComponent({
 }
 
 .type-symbol {
-	font-size: 55px;
+	font-size: 56px;
 	position: absolute !important;
 	left: 50% !important;
 	top: 50% !important;
 	transform: translate(-50%, -50%);
+	background-color: #002e70;
+	border: 1px solid #002e70;
+	height: 48px;
+	width: 48px;
+	border-radius: 90px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.lower-left {
+	font-size: 40px;
+	bottom: -10px;
+	right: -10px;
+	top: initial !important;
+	left: initial !important;
+	height: 34px;
+	width: 34px;
+	display: flex;
+	border: 1px solid #002e70;
+	border-radius: 90%;
+	align-items: center;
+	justify-content: center;
+	background-color: #002e70;
 }
 
 .image-wrapper {

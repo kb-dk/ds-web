@@ -8,4 +8,5 @@ export interface ImageComponentType extends HTMLElement {
 	iconColor?: string | undefined;
 	aspect: string | undefined;
 	placeholder: string | undefined;
+	iconLowerRight: boolean | undefined;
 }
