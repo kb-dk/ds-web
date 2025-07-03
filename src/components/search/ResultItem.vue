@@ -19,6 +19,7 @@
 							:title="resultdata.title"
 						>
 							{{ resultdata.title[0] }}
+
 							<div
 								role="img"
 								class="material-icons arrow"
@@ -28,26 +29,50 @@
 							</div>
 						</router-link>
 						<div class="subtitle">
-							<span
-								role="img"
-								:class="`icons schedule material-icons ${
-									resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
-								}`"
-								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
-							>
-								play_circle_filled
-							</span>
-							<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
-							<span class="when">{{ starttime }}</span>
-							<div
-								role="img"
-								class="material-icons icons schedule timeSVG"
-								:aria-label="t('app.a11y.broadcastDuration')"
-								aria-hidden="true"
-							>
-								schedule
+							<div class="subtitle-metadata">
+								<span
+									role="img"
+									:class="`icons schedule material-icons ${
+										resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
+									}`"
+									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+								>
+									play_circle_filled
+								</span>
+								<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
+								<span class="when">{{ starttime }}</span>
 							</div>
-							<span class="duration">{{ duration }}</span>
+							<div class="subtitle-metadata">
+								<div
+									role="img"
+									class="material-icons icons schedule timeSVG"
+									:aria-label="t('app.a11y.broadcastDuration')"
+									aria-hidden="true"
+								>
+									schedule
+								</div>
+								<span class="duration">{{ duration }}</span>
+							</div>
+							<div
+								v-if="resultdata.episode"
+								class="episode subtitle-metadata"
+							>
+								<span
+									role="img"
+									class="material-icons episode-split-icon"
+								>
+									segment
+								</span>
+								<span class="episode-text">
+									{{ `${t('search.episode')} ${resultdata.episode}` }}
+								</span>
+								<span
+									v-if="resultdata.number_of_episodes"
+									class="episode-text"
+								>
+									{{ `:${resultdata.number_of_episodes}` }}
+								</span>
+							</div>
 						</div>
 						<div class="summary">{{ resultdata.description }}</div>
 					</div>
@@ -361,7 +386,24 @@ export default defineComponent({
 	margin-bottom: 7px;
 	color: #002e70;
 }
-
+.subtitle {
+	display: flex;
+	flex-direction: column;
+}
+.subtitle-metadata {
+	display: inline-block;
+}
+.episode-text {
+	color: #002e70;
+	font-weight: bold;
+	font-size: 14px;
+}
+.episode-split-icon {
+	padding-right: 3px;
+	position: relative;
+	top: 2px;
+	font-size: 16px;
+}
 .result-image-wrapper {
 	width: 100%;
 	height: 150px;
@@ -375,6 +417,10 @@ export default defineComponent({
 	font-size: 14px;
 }
 .when {
+	padding-right: 20px;
+}
+
+.duration {
 	padding-right: 20px;
 }
 
@@ -576,6 +622,10 @@ export default defineComponent({
 		width: calc(100% - (120px + 30px));
 		overflow: hidden;
 		max-width: 100%;
+	}
+	.subtitle {
+		display: flex;
+		flex-direction: row;
 	}
 }
 

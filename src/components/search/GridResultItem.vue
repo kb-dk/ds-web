@@ -50,7 +50,26 @@
 							{{ resultdata.temporal_start_day_da }}
 						</span> -->
 					</div>
-
+					<div
+						v-if="resultdata.episode"
+						class="episode"
+					>
+						<span
+							role="img"
+							class="material-icons episode-split-icon"
+						>
+							segment
+						</span>
+						<span class="episode-text">
+							{{ `${$t('search.episode')} ${resultdata.episode}` }}
+						</span>
+						<span
+							v-if="resultdata.number_of_episodes"
+							class="episode-text"
+						>
+							{{ `:${resultdata.number_of_episodes}` }}
+						</span>
+					</div>
 					<div class="title">
 						{{ resultdata.title[0] }}
 					</div>
@@ -355,7 +374,17 @@ export default defineComponent({
 	position: relative;
 	padding-top: 15px;
 }
-
+.episode {
+	display: flex;
+}
+.episode-text {
+	color: #002e70;
+	font-weight: bold;
+}
+.episode-split-icon {
+	position: relative;
+	font-size: 20px;
+}
 .title.loading {
 	background-color: #002e70;
 	border-radius: 10px;

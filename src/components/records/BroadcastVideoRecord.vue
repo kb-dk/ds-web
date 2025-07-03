@@ -60,6 +60,21 @@
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
+					<div
+						v-if="recordData.encodesCreativeWork.episodeNumber"
+						class="info"
+					>
+						<span class="material-icons">segment</span>
+						<span class="episode-text">
+							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork.episodeNumber}` }}
+						</span>
+						<span
+							v-if="recordData.encodesCreativeWork.partOfSeason.numberOfEpisodes"
+							class="episode-text episode-text-outof"
+						>
+							{{ `${$t('search.outOf')} ${recordData.encodesCreativeWork.partOfSeason.numberOfEpisodes}` }}
+						</span>
+					</div>
 					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
 					<div v-if="recordData.genre">
 						<router-link
@@ -246,7 +261,9 @@ h4 {
 	font-size: 20px;
 	margin-right: 3px;
 }
-
+.episode-text-outof {
+	text-transform: lowercase;
+}
 .no-streaming {
 	width: 100%;
 	background-color: black;
