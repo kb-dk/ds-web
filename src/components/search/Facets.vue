@@ -158,7 +158,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -188,7 +188,6 @@ import {
 	startDate,
 	startYear,
 	timeslots,
-	calcEstimatedTimeSearchStringLength,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
