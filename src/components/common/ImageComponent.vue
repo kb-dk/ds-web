@@ -99,13 +99,13 @@ export default defineComponent({
 }
 
 .type-symbol {
-	font-size: 56px;
+	font-size: 58px;
 	position: absolute !important;
 	left: 50% !important;
 	top: 50% !important;
 	transform: translate(-50%, -50%);
-	background-color: #002e70;
-	border: 1px solid #002e70;
+	background: radial-gradient(circle, rgba(0, 46, 112, 1) 0%, rgba(0, 46, 112, 1) 50%, rgba(255, 255, 255, 0) 50%);
+	border: 2px solid #002e70;
 	height: 48px;
 	width: 48px;
 	border-radius: 90px;
@@ -115,7 +115,7 @@ export default defineComponent({
 }
 
 .lower-left {
-	font-size: 40px;
+	font-size: 41px;
 	bottom: -10px;
 	right: -10px;
 	top: initial !important;
@@ -123,11 +123,6 @@ export default defineComponent({
 	height: 34px;
 	width: 34px;
 	display: flex;
-	border: 1px solid #002e70;
-	border-radius: 90%;
-	align-items: center;
-	justify-content: center;
-	background-color: #002e70;
 }
 
 .image-wrapper {
