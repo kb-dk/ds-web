@@ -510,8 +510,8 @@ h1 {
 		padding: 5px 45px;
 	}
 	.container {
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 		width: 100%;
 		margin-left: initial;
 	}

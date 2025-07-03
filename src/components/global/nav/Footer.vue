@@ -336,8 +336,8 @@ a {
 @media (min-width: 1280px) {
 	.container {
 		margin: auto;
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

@@ -400,10 +400,4 @@ h2 {
 		margin-right: -30px;
 	}
 }
-
-@media (min-width: 1280px) {
-	.link {
-		left: 0px;
-	}
-}
 </style>

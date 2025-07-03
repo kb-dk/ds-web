@@ -506,8 +506,8 @@ export default defineComponent({
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.container {
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

@@ -244,6 +244,9 @@ export default defineComponent({
 .foldable-container {
 	font-family: noway, sans-serif;
 	max-width: 100vw;
+	padding-left: 0px;
+	padding-right: 0px;
+	box-sizing: border-box;
 }
 
 h2 {
