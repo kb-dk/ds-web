@@ -262,6 +262,10 @@
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
       },
+      "limitedFilters":{
+         "title":"For mange filtre",
+         "subtitle":"Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."
+      },
     "searchGuide": {
       "title":"Gode råd til din søgning",
       "subtitle": "Måske kan du forbedre din søgning med en af disse metoder",

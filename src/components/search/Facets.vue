@@ -47,6 +47,7 @@
 								:timeline="false"
 								:picker="true"
 								:init="false"
+								:disabled="searchResultStore.queryLimitReached"
 								@new-search="newSearch(true)"
 								@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 							></TimeSearchFilters>
@@ -91,6 +92,7 @@
 													:loading="searchResultStore.loadingGenres"
 													:update="updateCheckbox"
 													:parent-array="genreArray"
+													:disabled="searchResultStore.queryLimitReached"
 												/>
 											</div>
 										</TransitionGroup>
@@ -141,6 +143,7 @@
 													)
 												"
 												:loading="searchResultStore.loadingChannels"
+												:disabled="searchResultStore.queryLimitReached"
 											/>
 										</div>
 									</TransitionGroup>
@@ -155,7 +158,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -185,6 +188,7 @@ import {
 	startDate,
 	startYear,
 	timeslots,
+	calcEstimatedTimeSearchStringLength,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import CustomExpander from '@/components/common/CustomExpander.vue';
@@ -433,6 +437,12 @@ export default defineComponent({
 				name: 'Search',
 				query: routeQueries,
 			});
+
+			if (searchResultStore.filterQueryLength > 900) {
+				searchResultStore.queryLimitReached = true;
+			} else {
+				searchResultStore.queryLimitReached = false;
+			}
 		};
 
 		const toggleTimeFacets = () => {
