@@ -86,6 +86,13 @@ export class ErrorManager implements ErrorManagerType {
 		}, delayMs);
 	}
 
+	public removeErrorInstantlyFromHistory(error: string) {
+		const index = this.errorHistory.indexOf(error);
+		if (index !== -1) {
+			this.errorHistory.splice(index, 1);
+		}
+	}
+
 	private getNotifierMessage(
 		message: string,
 		title: string,

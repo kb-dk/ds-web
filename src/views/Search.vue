@@ -121,7 +121,6 @@ import { normalizeFq } from '@/utils/filter-utils';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
-
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -139,6 +138,7 @@ export default defineComponent({
 		const timeSearchStore = useTimeSearchStore();
 		const router = useRouter();
 		const route = useRoute();
+		const queryLimitReached = ref(false);
 
 		const numPagesToShow = ref(window.innerWidth < 850 ? 3 : 8);
 		const { t } = useI18n();
@@ -167,6 +167,10 @@ export default defineComponent({
 					const sort = route.query.sort as string;
 					searchResultStore.setStartFromURL(start);
 					searchResultStore.setSortFromURL(sort);
+
+					if (searchResultStore.filterQueryLength > 900) {
+						searchResultStore.queryLimitReached = true;
+					}
 					if (route.query.q) {
 						try {
 							const q = new URL(location.href).searchParams.get('q');
@@ -223,14 +227,23 @@ export default defineComponent({
 					} else {
 						searchResultStore.setStartFromURL(route.query.start as string);
 					}
-					searchResultStore.setFiltersFromURL(route.query.fq as string[]);
-					searchResultStore.setSortFromURL(route.query.sort as string);
-					searchResultStore.setCurrentQueryFromURL(route.query.q as string);
-					searchResultStore.setRowCountFromURL(route.query.rows as string);
-					timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
-					searchResultStore.getSearchResults(route.query.q as string);
 
-					setCurrentTitleForPage();
+					if (searchResultStore.filterQueryLength < 900) {
+						searchResultStore.queryLimitReached = false;
+					}
+					if (!queryLimitReached.value) {
+						searchResultStore.setFiltersFromURL(route.query.fq as string[]);
+						searchResultStore.setSortFromURL(route.query.sort as string);
+						searchResultStore.setCurrentQueryFromURL(route.query.q as string);
+						searchResultStore.setRowCountFromURL(route.query.rows as string);
+						timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
+						searchResultStore.getSearchResults(route.query.q as string);
+
+						setCurrentTitleForPage();
+					}
+					if (searchResultStore.filterQueryLength > 900) {
+						searchResultStore.queryLimitReached = true;
+					}
 				}
 				if (route.query.q === undefined) {
 					document.title = t('app.titles.frontpage.archive.name') as string;
@@ -346,6 +359,7 @@ export default defineComponent({
 			updateResizeProperty,
 			router,
 			t,
+			queryLimitReached,
 		};
 	},
 });

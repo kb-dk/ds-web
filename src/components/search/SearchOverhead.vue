@@ -250,6 +250,7 @@ export default defineComponent({
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
+			searchResultStore.queryLimitReached = false;
 			if (startDate.value !== null && endDate.value !== null) {
 				startDate.value.setTime(startYear.value.getTime());
 				endDate.value.setTime(endYear.value.getTime());

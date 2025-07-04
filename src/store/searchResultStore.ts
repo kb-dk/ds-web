@@ -3,13 +3,17 @@ import { FacetResultType, FacetsType, GenericSearchResultType } from '@/types/Ge
 import { APIService } from '@/api/api-service';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { AxiosError } from 'axios';
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SpellCheckType } from '@/types/SpellCheckType';
 import { LocationQueryValue, RouteLocationNormalizedLoadedGeneric } from 'vue-router';
 import { APIAutocompleteTerm } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import { normalizeFq } from '@/utils/filter-utils';
+import router from '@/router';
+import { calcEstimatedTimeSearchStringLength } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { useNotificationStore } from './notificationStore';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -34,6 +38,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const rowOffset = ref(10);
 	const currentQuery = ref('');
 	const lastSearchQuery = ref('');
+	const queryLimitReached = ref(false);
 	const noHits = ref(false);
 	const filters = ref([] as Array<string>);
 	const channelFilters = ref([] as Array<string>);
@@ -49,6 +54,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const loadingGenres = ref(false);
 	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
+	const notificationStore = useNotificationStore();
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -374,6 +380,34 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
+	const filterQueryLength = computed(() => {
+		const normalizedFq = normalizeFq(router.currentRoute.value.query.fq as string[]);
+		let filterQueryLength = 0;
+		for (const queryString of normalizedFq) {
+			filterQueryLength += queryString.length;
+		}
+
+		return filterQueryLength + calcEstimatedTimeSearchStringLength.value;
+	});
+
+	watch(
+		() => queryLimitReached.value,
+		(newVal) => {
+			if (newVal) {
+				errorManager.submitCustomError(
+					'limitedquery',
+					t('search.limitedFilters.title'),
+					t('search.limitedFilters.subtitle'),
+					Severity.INFO,
+					true,
+					Priority.MEDIUM,
+				);
+			} else {
+				notificationStore.removeNotificationByTitle(t('search.limitedFilters.title'));
+				errorManager.removeErrorInstantlyFromHistory('limitedquery');
+			}
+		},
+	);
 	return {
 		firstBackendFetchExecuted,
 		initFacets,
@@ -431,5 +465,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		pageNumber,
 		totalPages,
 		maxPages,
+		queryLimitReached,
+		filterQueryLength,
 	};
 });

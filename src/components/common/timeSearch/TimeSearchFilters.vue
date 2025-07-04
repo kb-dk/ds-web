@@ -98,8 +98,9 @@
 								<CustomTimelineCheckbox
 									:index="0"
 									name="timeSearch.all"
-									:val="false"
+									:val="allMonthsChecked"
 									:tilted="false"
+									:disabled="searchResultStore.queryLimitReached"
 									:update="updateAllCheckbox"
 									:parent-array="months"
 								></CustomTimelineCheckbox>
@@ -122,6 +123,7 @@
 											:val="months[index].selected"
 											:tilted="true"
 											:update="updateCheckbox"
+											:disabled="searchResultStore.queryLimitReached"
 											:parent-array="months"
 										></CustomTimelineCheckbox>
 									</div>
@@ -152,7 +154,8 @@
 									<CustomTimelineCheckbox
 										:index="1"
 										name="timeSearch.all"
-										:val="false"
+										:val="allDaysChecked"
+										:disabled="searchResultStore.queryLimitReached"
 										:tilted="false"
 										:parent-array="days"
 										:update="updateAllCheckbox"
@@ -169,6 +172,7 @@
 											:index="index"
 											:name="days[index].name"
 											:val="days[index].selected"
+											:disabled="searchResultStore.queryLimitReached"
 											:tilted="true"
 											:update="updateCheckbox"
 											:parent-array="days"
@@ -200,8 +204,9 @@
 									<CustomTimelineCheckbox
 										:index="2"
 										name="timeSearch.all"
-										:val="false"
+										:val="allTimeslotsChecked"
 										:tilted="false"
+										:disabled="searchResultStore.queryLimitReached"
 										:parent-array="timeslots"
 										:update="updateAllCheckbox"
 									></CustomTimelineCheckbox>
@@ -222,6 +227,7 @@
 											:name="timeslots[index].name"
 											:val="timeslots[index].selected"
 											:tilted="true"
+											:disabled="searchResultStore.queryLimitReached"
 											:update="updateCheckbox"
 											:parent-array="timeslots"
 										></CustomTimelineCheckbox>
@@ -239,7 +245,7 @@
 		>
 			<button
 				class="apply-time-facets"
-				:disabled="!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady"
+				:disabled="(!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady) || disabled"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
 				@click="emitNewSearch()"
 			>
@@ -269,6 +275,12 @@ import {
 	startYear,
 	timeSliderValues,
 	timeslots,
+	addToEstimatedQueryLength,
+	removeFromEstimatedQueryLength,
+	clearEstimatedQueryLength,
+	allDaysChecked,
+	allMonthsChecked,
+	allTimeslotsChecked,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { dataItem, markerData, pointItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
@@ -312,6 +324,12 @@ export default defineComponent({
 			},
 		},
 		picker: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		disabled: {
 			type: Boolean,
 			default() {
 				return false;
@@ -439,6 +457,7 @@ export default defineComponent({
 		const emitNewSearch = () => {
 			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
+				clearEstimatedQueryLength();
 				const resultContainer = document.getElementsByClassName('hits')[0];
 				resultContainer?.scrollIntoView({
 					behavior: 'smooth',
@@ -452,6 +471,7 @@ export default defineComponent({
 					endDate.value.setFullYear(timeSliderValues.value[1]);
 				}
 				emit('newSearch', false);
+				clearEstimatedQueryLength();
 			}
 		};
 
@@ -482,6 +502,12 @@ export default defineComponent({
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
 			timeSearchStore.setNewSearchReqMet(true);
+			if (val) {
+				addToEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
+			} else {
+				removeFromEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
+			}
+			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
 			if (!props.picker) {
 				emitNewSearch();
 			}
@@ -493,12 +519,15 @@ export default defineComponent({
 			if (val) {
 				array.forEach((item) => {
 					item.selected = true;
+					addToEstimatedQueryLength(item.value.length, item.name.split('.')[1], array);
 				});
 			} else {
 				array.forEach((item) => {
 					item.selected = false;
+					removeFromEstimatedQueryLength(item.value.length, item.name.split('.')[1], array);
 				});
 			}
+			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
 			if (!props.picker) {
 				emitNewSearch();
 			}
@@ -543,6 +572,10 @@ export default defineComponent({
 			addTestDataEnrichment,
 			vueSliderRef,
 			closeDataExplanation,
+			searchResultStore,
+			allDaysChecked,
+			allMonthsChecked,
+			allTimeslotsChecked,
 		};
 	},
 });

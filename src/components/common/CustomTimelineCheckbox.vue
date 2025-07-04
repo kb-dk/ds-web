@@ -5,16 +5,17 @@
 		:name="name"
 		type="checkbox"
 		:checked="val"
+		:disabled="disabled && !val"
 		:data-testid="addTestDataEnrichment('input', 'timeline-checkbox', name, index)"
 		@change="updateSelection($event)"
 	/>
 	<label
 		:title="$t(name)"
-		:class="tilted ? 'tilted' : ''"
+		:class="getClassStyle(false)"
 		:for="name + '-checkbox-' + index"
 	>
 		<span class="checkbox-title">{{ $t(name) }}</span>
-		<span :class="tilted ? 'checkbox-square tilted' : 'checkbox-square'">
+		<span :class="getClassStyle(true)">
 			<span class="checkbox-checkmark"></span>
 		</span>
 	</label>
@@ -64,11 +65,19 @@ export default defineComponent({
 				return [] as SelectorData[];
 			},
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	setup(props) {
 		const checkboxRef = ref<HTMLInputElement | null>(null);
 		const checkboxLabelRef = ref<HTMLLabelElement | null>(null);
+
+		const getClassStyle = (isCheckbox: boolean) => {
+			return { 'checkbox-square': isCheckbox, tilted: props.tilted, 'checkbox-disabled': props.disabled && !props.val };
+		};
 
 		watch(
 			() => props.val,
@@ -83,7 +92,7 @@ export default defineComponent({
 			props.update(props.parentArray, props.index, target.checked);
 		};
 
-		return { updateSelection, checkboxRef, checkboxLabelRef, addTestDataEnrichment };
+		return { updateSelection, checkboxRef, checkboxLabelRef, addTestDataEnrichment, getClassStyle };
 	},
 });
 </script>
@@ -190,5 +199,11 @@ export default defineComponent({
 	left: 10px;
 	top: -14px;
 	transform: rotateZ(-52deg) translate(-50%, -50%);
+}
+
+.checkbox-disabled {
+	cursor: default !important;
+	border-color: rgb(177, 177, 177) !important;
+	color: rgb(177, 177, 177) !important;
 }
 </style>

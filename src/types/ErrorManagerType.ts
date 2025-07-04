@@ -11,4 +11,5 @@ export interface ErrorManagerType {
 		userClose: boolean,
 		priority: Priority,
 	): void;
+	removeErrorInstantlyFromHistory(error: string): void;
 }

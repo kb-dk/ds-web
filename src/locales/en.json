@@ -267,6 +267,10 @@
          "webshop":"Search in our webshop",
          "seeAllMaterials":"See all materials"
       },
+      "limitedFilters":{
+         "title":"Too many filters",
+         "subtitle":"You have reached the limit of filters we support. To add another filter, you have to remove another."
+    },
      "searchGuide": {
         "title":"Advice about searching",
         "subtitle": "Perhaps you can improve your search with one of these methods",

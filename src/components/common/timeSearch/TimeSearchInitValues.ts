@@ -1,5 +1,5 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const initSliderValues = ref<number[]>([2015, 2015]);
 const initStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
@@ -13,6 +13,11 @@ const endDate = ref<Date | null>(initEndDate.value); // December 31, 2015, 23:59
 const startYear = ref<Date>(new Date(2006, 0, 1, 0, 0, 0));
 const endYear = ref<Date>(new Date(2024, 11, 31, 23, 59, 59));
 
+const estimatedQueryLength = ref({
+	weekdays: 0,
+	months: 0,
+	timeslots: 0,
+});
 const days = ref<SelectorData[]>([
 	{ name: 'timeSearch.weekdays.monday', value: 'Monday', selected: false, index: 0 },
 	{ name: 'timeSearch.weekdays.tuesday', value: 'Tuesday', selected: false, index: 1 },
@@ -43,7 +48,44 @@ const months = ref<SelectorData[]>([
 	{ name: 'timeSearch.months.november', value: '11', selected: false, index: 10 },
 	{ name: 'timeSearch.months.december', value: '12', selected: false, index: 11 },
 ]);
+const addToEstimatedQueryLength = (length: number, type: string, array: SelectorData[]) => {
+	let initialExtraString = 0;
+	if (getNumberOfChecked(array) === 1) {
+		initialExtraString = `&fq=temporal_start_${type}_da%253A(`.length;
+	} else {
+		initialExtraString = '%2520OR%2520'.length;
+	}
+	estimatedQueryLength.value[type as keyof typeof estimatedQueryLength.value] += length + initialExtraString;
+};
+const removeFromEstimatedQueryLength = (length: number, type: string, array: SelectorData[]) => {
+	let initialExtraString = `&fq=temporal_start_${type}_da%253A(`.length;
+	if (getNumberOfChecked(array) > 0) {
+		initialExtraString = '%2520OR%2520'.length;
+	}
+	estimatedQueryLength.value[type as keyof typeof estimatedQueryLength.value] -= length + initialExtraString;
+};
+const clearEstimatedQueryLength = () => {
+	estimatedQueryLength.value.months = 0;
+	estimatedQueryLength.value.weekdays = 0;
+	estimatedQueryLength.value.timeslots = 0;
+};
+const calcEstimatedTimeSearchStringLength = computed(() => {
+	return estimatedQueryLength.value.weekdays + estimatedQueryLength.value.timeslots + estimatedQueryLength.value.months;
+});
 
+const getNumberOfChecked = (array: SelectorData[]) => {
+	return array.filter((val) => val.selected).length;
+};
+
+const allDaysChecked = computed(() => {
+	return getNumberOfChecked(days.value) === days.value.length;
+});
+const allMonthsChecked = computed(() => {
+	return getNumberOfChecked(months.value) === months.value.length;
+});
+const allTimeslotsChecked = computed(() => {
+	return getNumberOfChecked(timeslots.value) === timeslots.value.length;
+});
 export {
 	timeSliderValues,
 	months,
@@ -56,4 +98,12 @@ export {
 	initStartDate,
 	startYear,
 	endYear,
+	estimatedQueryLength,
+	addToEstimatedQueryLength,
+	removeFromEstimatedQueryLength,
+	calcEstimatedTimeSearchStringLength,
+	clearEstimatedQueryLength,
+	allDaysChecked,
+	allMonthsChecked,
+	allTimeslotsChecked,
 };

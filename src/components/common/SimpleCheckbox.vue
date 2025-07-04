@@ -1,5 +1,5 @@
 <template>
-	<div :class="amount === '0' ? 'checkbox-container disabled' : 'checkbox-container'">
+	<div :class="getClassStyle()">
 		<label
 			:title="title"
 			class="label"
@@ -34,7 +34,7 @@
 				type="checkbox"
 				class="checkbox"
 				:name="title"
-				:disabled="amount === '0' && !checked"
+				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
 				@change="updateSelection(!checked, title, fqkey)"
@@ -92,6 +92,10 @@ export default defineComponent({
 				return [] as SelectorData[];
 			},
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
@@ -103,8 +107,10 @@ export default defineComponent({
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
 			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.channelFilters);
 		};
-
-		return { displayAmount, addTestDataEnrichment, updateSelection };
+		const getClassStyle = () => {
+			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
+		};
+		return { displayAmount, addTestDataEnrichment, updateSelection, getClassStyle };
 	},
 });
 </script>
