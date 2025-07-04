@@ -13,6 +13,7 @@ import { CuratedItemsType } from '@/types/CuratedItemsType';
 import { normalizeFq } from '@/utils/filter-utils';
 import router from '@/router';
 import { calcEstimatedTimeSearchStringLength } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { useNotificationStore } from './notificationStore';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -53,6 +54,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const loadingGenres = ref(false);
 	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
+	const notificationStore = useNotificationStore();
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -400,6 +402,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 					true,
 					Priority.MEDIUM,
 				);
+			} else {
+				notificationStore.removeNotificationByTitle(t('search.limitedFilters.title'));
+				errorManager.removeErrorInstantlyFromHistory('limitedquery');
 			}
 		},
 	);
