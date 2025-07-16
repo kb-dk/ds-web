@@ -48,10 +48,17 @@ export const useNotificationStore = defineStore('notificationStore', () => {
 		notifications.value.splice(notifications.value.indexOf(notification), 1);
 	};
 
+	const removeNotificationByTitle = (title: string) => {
+		const lookUpNotification = notifications.value.filter((notification) => notification.title === title)[0];
+		const index = notifications.value.indexOf(lookUpNotification);
+		notifications.value.splice(index, 1);
+	};
+
 	return {
 		notifications,
 		addNotification,
 		resetNotifications,
 		removeNotification,
+		removeNotificationByTitle,
 	};
 });

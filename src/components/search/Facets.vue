@@ -47,6 +47,7 @@
 								:timeline="false"
 								:picker="true"
 								:init="false"
+								:disabled="searchResultStore.queryLimitReached"
 								@new-search="newSearch(true)"
 								@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 							></TimeSearchFilters>
@@ -91,6 +92,7 @@
 													:loading="searchResultStore.loadingGenres"
 													:update="updateCheckbox"
 													:parent-array="genreArray"
+													:disabled="searchResultStore.queryLimitReached"
 												/>
 											</div>
 										</TransitionGroup>
@@ -141,6 +143,7 @@
 													)
 												"
 												:loading="searchResultStore.loadingChannels"
+												:disabled="searchResultStore.queryLimitReached"
 											/>
 										</div>
 									</TransitionGroup>
@@ -433,6 +436,12 @@ export default defineComponent({
 				name: 'Search',
 				query: routeQueries,
 			});
+
+			if (searchResultStore.filterQueryLength > 900) {
+				searchResultStore.queryLimitReached = true;
+			} else {
+				searchResultStore.queryLimitReached = false;
+			}
 		};
 
 		const toggleTimeFacets = () => {
