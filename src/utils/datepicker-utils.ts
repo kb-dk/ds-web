@@ -23,7 +23,6 @@ const updateSelectedDate = (
 			// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
 			if (year.toString().length === 2) year = Number(`20${year}`);
 			const setDate = new Date(year, month - 1, day);
-			console.log(setDate);
 			// Ensure the date is valid
 			if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
 				// Validate if the date is within the range
@@ -36,22 +35,15 @@ const updateSelectedDate = (
 					updateLink();
 					isDateValid.value = true;
 				} else {
-					console.log('NOP!');
 					isDateValid.value = false;
 				}
 			} else {
-				console.log('NOP!2');
-
 				isDateValid.value = false;
 			}
 		} else {
-			console.log('NOP3!');
-
 			isDateValid.value = false;
 		}
 	} else {
-		console.log('NOP4!');
-
 		isDateValid.value = false;
 	}
 };
