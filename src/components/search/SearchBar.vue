@@ -77,7 +77,6 @@
 										type="button"
 										class="btn dropdown-toggle btn-outline-primary"
 										data-toggle="dropdown"
-										role="combobox"
 										aria-haspopup="listbox"
 										aria-expanded="false"
 										title="Select portal"

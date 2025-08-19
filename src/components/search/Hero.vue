@@ -11,7 +11,7 @@
 		<div class="bluify"></div>
 		<div class="noise"></div>
 		<div class="container">
-			<h1>
+			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
 				<span class="subtitle">
 					<span class="text">{{ t('hero.subtitle') }}</span>
 				</span>

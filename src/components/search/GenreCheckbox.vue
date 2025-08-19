@@ -37,6 +37,7 @@
 				role="checkbox"
 				type="checkbox"
 				class="checkbox"
+				autocomplete="off"
 				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'genre-checkbox', title, number)"

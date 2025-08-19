@@ -34,14 +34,14 @@
 				</span>
 				{{ notification.key ? $t(notification.title) : notification.title }}
 			</span>
-			<span
+			<button
 				v-if="notification.userClose"
 				class="material-icons close"
 				:aria-label="$t('notification.close')"
 				@click="close(notification)"
 			>
-				close
-			</span>
+				<span aria-hidden="true">close</span>
+			</button>
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
@@ -209,11 +209,9 @@ export default defineComponent({
 	content: '';
 	display: block;
 	position: absolute;
-	width: 28px;
-	height: 28px;
+	width: 30px;
+	height: 30px;
 	z-index: -1;
-	margin-left: 1px;
-	margin-top: 1px;
 	top: 0;
 }
 

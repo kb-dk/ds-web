@@ -314,6 +314,16 @@ export default defineComponent({
 	top: 0;
 }
 
+:focus {
+	outline: none;
+}
+
+:focus-visible {
+	box-shadow: 0 0 0 3px rgba(38, 139, 255, 0.7) !important;
+	border-radius: 4px !important;
+	transition: box-shadow 0.2s ease-in-out;
+}
+
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;
