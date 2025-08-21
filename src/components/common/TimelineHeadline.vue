@@ -260,9 +260,9 @@ h2 {
 	flex-wrap: wrap;
 	margin-left: auto;
 	max-width: 40%;
-	gap: 5px;
+	gap: 10px;
 	justify-content: flex-end;
-	max-height: 55px;
+	max-height: 60px;
 	overflow: hidden;
 }
 
@@ -292,6 +292,9 @@ h2 {
 .overflow-enitity {
 	padding: 4px;
 	justify-content: center;
+	background-color: #c4f1ed;
+	border: 1px solid #002e70;
+	color: #002e70;
 }
 @media (min-width: 990px) {
 	.headline-container {
@@ -310,6 +313,10 @@ h2 {
 	}
 	.headline-container:hover h2 {
 		text-decoration: underline;
+	}
+	.selected-items {
+		gap: 5px;
+		max-height: 55px;
 	}
 }
 </style>
