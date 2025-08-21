@@ -300,6 +300,8 @@ a {
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
+		padding-right: 24px;
+		padding-left: 24px;
 	}
 	.column {
 		flex: 0 0 50%;
