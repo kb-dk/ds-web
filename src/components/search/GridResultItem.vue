@@ -70,6 +70,10 @@
 							{{ `:${resultdata.number_of_episodes}` }}
 						</span>
 					</div>
+					<div
+						v-else
+						class="episode no-episode"
+					></div>
 					<div class="title">
 						{{ resultdata.title[0] }}
 					</div>
@@ -331,6 +335,7 @@ export default defineComponent({
 .duration {
 	display: flex;
 	flex-wrap: wrap;
+	padding-bottom: 5px;
 }
 
 .loading-icon {
@@ -376,6 +381,9 @@ export default defineComponent({
 }
 .episode {
 	display: flex;
+}
+.no-episode {
+	height: 20px;
 }
 .episode-text {
 	color: #002e70;
