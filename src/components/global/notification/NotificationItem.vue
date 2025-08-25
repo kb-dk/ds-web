@@ -3,34 +3,36 @@
 		ref="notificationBox"
 		:class="[
 			notification.userClose ? 'single-notification user' : 'single-notification passing',
-			notification.severity === Severity.ERROR
-				? 'high-severity'
-				: notification.severity === Severity.SUCCESS
-				  ? 'low-severity'
-				  : 'info-severity',
+			severityClassMap[notification.severity],
 		]"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
 	>
-		<h3>
+		<h3 class="notification-title">
 			<span class="title-span">
 				<span
 					v-if="notification.severity === Severity.SUCCESS"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					check
 				</span>
 				<span
 					v-if="notification.severity === Severity.ERROR"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					warning
 				</span>
 				<span
 					v-if="notification.severity === Severity.INFO"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					info
+				</span>
+				<span
+					v-if="notification.severity === Severity.WARNING"
+					class="material-icons title-icon"
+				>
+					notifications
 				</span>
 				{{ notification.key ? $t(notification.title) : notification.title }}
 			</span>
@@ -62,6 +64,13 @@ import { defineComponent, onMounted, PropType, ref } from 'vue';
 import gsap from 'gsap';
 import { useI18n } from 'vue-i18n';
 import { NotificationType, Severity } from '@/types/NotificationType';
+
+const severityClassMap = {
+	[Severity.ERROR]: 'high-severity',
+	[Severity.SUCCESS]: 'low-severity',
+	[Severity.INFO]: 'info-severity',
+	[Severity.WARNING]: 'warning-severity',
+};
 
 export default defineComponent({
 	name: 'NotificationItem',
@@ -102,7 +111,7 @@ export default defineComponent({
 			}
 		};
 
-		return { t, countdown, pauseAnimation, resumeAnimation, Severity };
+		return { t, countdown, pauseAnimation, resumeAnimation, Severity, severityClassMap };
 	},
 });
 </script>
@@ -159,6 +168,13 @@ export default defineComponent({
 	transition: opacity 0.4s;
 }
 
+.notification-title {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	align-items: center;
+}
+
 .timer {
 	width: 100%;
 	height: 24px;
@@ -185,6 +201,10 @@ export default defineComponent({
 	padding: 0;
 	z-index: 100;
 	vertical-align: text-bottom;
+}
+
+.title-icon {
+	margin-right: 10px;
 }
 
 .close-border {
@@ -222,7 +242,10 @@ h3 {
 .title-span {
 	max-width: 90%;
 	z-index: 90;
+	display: flex;
+	align-items: center;
 }
+
 .low-severity {
 	background-color: #49da87;
 	color: #002e70;
@@ -238,6 +261,20 @@ h3 {
 	background-color: white;
 	color: #002e70;
 	border: 1px solid #002e70;
+}
+
+.warning-severity {
+	background-color: #f7ae3b;
+	color: #000;
+	border: 1px solid #000;
+}
+
+.warning-severity .title-span span {
+	border: 1px solid black;
+	border-radius: 90px;
+	background-color: black;
+	color: #f7ae3b;
+	font-size: 16px;
 }
 
 .high-severity .close {

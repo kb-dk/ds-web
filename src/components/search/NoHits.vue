@@ -178,7 +178,6 @@ export default defineComponent({
 	color: white;
 	flex-wrap: wrap;
 	align-content: center;
-	padding: 20px 50px;
 	box-sizing: border-box;
 }
 

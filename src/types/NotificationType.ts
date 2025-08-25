@@ -13,6 +13,7 @@ export enum Severity {
 	ERROR,
 	INFO,
 	SUCCESS,
+	WARNING,
 }
 
 export enum Priority {
