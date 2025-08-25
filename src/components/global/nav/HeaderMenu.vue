@@ -97,7 +97,7 @@
 								<li
 									v-for="(item, index) in currentLocaleMessages.primary"
 									:key="index"
-									role="menuitem"
+									role="none"
 									:class="item.id === 'searchToggle' ? 'search' : ''"
 								>
 									<button
@@ -105,6 +105,7 @@
 										:aria-expanded="true"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										:class="`nav-item level-1  ${item.id ? 'cursive' : ''}`"
+										role="menuitem"
 										@click="toggleSearchBar"
 									>
 										<span :class="item.id === 'searchToggle' ? 'cursive' : ''">
@@ -123,6 +124,7 @@
 										:href="item.link"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
+										role="menuitem"
 									>
 										{{ item.title }}
 										<i
@@ -144,13 +146,14 @@
 								<li
 									v-for="(item, index) in currentLocaleMessages.secondary"
 									:key="index"
-									role="menuitem"
+									role="none"
 									:class="item.icon"
 								>
 									<button
 										v-if="item.id"
 										class="nav-item level-1"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
+										role="menuitem"
 										@click="switchLocale"
 									>
 										<span>
@@ -169,6 +172,7 @@
 										:href="item.link"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
+										role="menuitem"
 									>
 										<span v-text="item.title"></span>
 										<i

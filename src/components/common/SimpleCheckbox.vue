@@ -33,6 +33,7 @@
 				role="checkbox"
 				type="checkbox"
 				class="checkbox"
+				autocomplete="off"
 				:name="title"
 				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
 				:checked="checked"

@@ -4,6 +4,7 @@
 		ref="checkboxRef"
 		:name="name"
 		type="checkbox"
+		autocomplete="off"
 		:checked="val"
 		:disabled="disabled && !val"
 		:data-testid="addTestDataEnrichment('input', 'timeline-checkbox', name, index)"

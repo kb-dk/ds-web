@@ -334,7 +334,7 @@
   },
 
   "notification": {
-      "close":"Close"
+      "close":"Close notification"
    },
    "footer": {
       "contactInfo":"Contact information",

@@ -16,7 +16,7 @@
 		/>
 		<span
 			role="img"
-			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
+			:aria-label="`${t('app.a11y.imageComponentTitle')}`"
 			class="type-symbol material-icons"
 			:style="`color: ${data.iconColor}`"
 		>

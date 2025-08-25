@@ -52,11 +52,11 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			/* notificationStore.addNotification(
+			/* 			notificationStore.addNotification(
 				'test notitication',
 				'this is a test this is a test this is a test this is a test this is a test this is a test this is a test',
 				false,
-				Severity.WARNING,
+				Severity.ERROR,
 				true,
 				Priority.HIGH,
 			); */

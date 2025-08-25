@@ -5,6 +5,8 @@
 				:src="getImgServerSrcURL()"
 				title="Thumbnail for audio results"
 				:alt="`Image of soundwaves for ${resultTitle}`"
+				role="img"
+				:aria-label="`Image of soundwaves for ${resultTitle}`"
 			/>
 		</div>
 		<span
