@@ -506,6 +506,7 @@
       "header": "Vi kan desværre ikke finde den side, du søger :(",
       "text": "Prøv at lave en søgning i søgefeltet eller gå til forsiden af DR-arkivet for at benytte de forskellige indgange til arkivmaterialet.",
       "altHeader": "Måske leder du efter",
+      "notAllowedButtonHeader": "Du kan komme videre til",
       "frontPage": "Forsiden af DR-arkivet",
       "kbPage": "Forsiden af Det Kgl. Bibliotek"
     }

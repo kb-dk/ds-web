@@ -5,24 +5,7 @@
 				<VideoPlayer></VideoPlayer>
 			</div>
 		</div>
-
-		<div class="btn-blue back-link btn">
-			<router-link
-				v-if="backLink !== '/'"
-				:to="backLink"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
-			>
-				{{ $t('record.back') }}
-			</router-link>
-			<router-link
-				v-else
-				:to="{ name: 'Home' }"
-				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
-			>
-				{{ $t('record.toFrontpage') }}
-			</router-link>
-		</div>
-		<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
+		<h2>{{ t('error.wrongUrl.notAllowedButtonHeader') }}</h2>
 		<div class="extra-suggest">
 			<a
 				class="btn-blue btn"

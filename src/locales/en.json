@@ -512,6 +512,7 @@
       "header": "Sorry, we cannot find the page you are looking for :(",
       "text": "Try entering a search in the search box or go to the front page of DR-arkivet to use the various entries to the archive material.",
       "altHeader": "Perhaps you are looking for",
+      "notAllowedButtonHeader": "You can proceed to",
       "frontPage": "Front page of DR-arkivet",
       "kbPage": "Front page of Royal Danish Library"
    }
