@@ -302,6 +302,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+#cookiescript_reportdate a,
+#cookiescript_cookiescriptlink,
+#cookiescript_reportlink {
+	text-decoration: underline !important;
+}
+
 .skip-link {
 	position: absolute;
 	top: -40px;
