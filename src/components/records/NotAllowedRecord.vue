@@ -5,8 +5,9 @@
 				<VideoPlayer></VideoPlayer>
 			</div>
 		</div>
-		<h2>{{ t('error.wrongUrl.notAllowedButtonHeader') }}</h2>
+
 		<div class="extra-suggest">
+			<h2>{{ t('error.wrongUrl.notAllowedButtonHeader') }}</h2>
 			<a
 				class="btn-blue btn"
 				href="/find-materiale/dr-arkivet/"
@@ -28,9 +29,9 @@
 			>
 				{{ t('error.wrongUrl.kbPage') }}
 			</a>
-		</div>
-		<div class="contactus">
-			<ContactUs :relative-position="false" />
+			<div class="contactus">
+				<ContactUs :relative-position="false" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -312,9 +313,20 @@ temporary styling until patterns from design system are implemented
 	background: #c4f1ed;
 	color: #0a2e70;
 }
+.extra-suggest {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+.extra-suggest > .contactus > div {
+	margin-left: 0;
+}
 /* First breakpoint for tablet */
 
 @media (min-width: 640px) {
+	.extra-suggest {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
 	.boardcast-record-data {
 		flex-direction: row;
 		margin-left: 0px;
