@@ -29,6 +29,9 @@
 				{{ t('error.wrongUrl.kbPage') }}
 			</a>
 		</div>
+		<div class="contactus">
+			<ContactUs :relative-position="false" />
+		</div>
 	</div>
 </template>
 
@@ -39,11 +42,13 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import ContactUs from '../search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'NotAllowedRecord',
 	components: {
 		VideoPlayer,
+		ContactUs,
 	},
 	props: {
 		backLink: {
@@ -411,6 +416,12 @@ temporary styling until patterns from design system are implemented
 	.right-side {
 		flex: 0 0 25%;
 		max-width: 25%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.contactus {
+		margin-bottom: -6vh;
 	}
 }
 </style>
