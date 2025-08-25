@@ -264,10 +264,22 @@ export default defineComponent({
 					'messages-error',
 					t('error.title'),
 					typedResponse.data.alert1,
-					Severity.ERROR,
+					getSevertiyFromResponse(typedResponse.data.severity),
 					true,
 					Priority.HIGH,
 				);
+			}
+		};
+
+		const getSevertiyFromResponse = (severity?: Severity): Severity => {
+			if (severity === 1) {
+				return Severity.SUCCESS;
+			} else if (severity === 2) {
+				return Severity.INFO;
+			} else if (severity === 3) {
+				return Severity.WARNING;
+			} else {
+				return Severity.ERROR;
 			}
 		};
 
