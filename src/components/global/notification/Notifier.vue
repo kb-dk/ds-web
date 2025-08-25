@@ -38,7 +38,7 @@ import { defineComponent, onMounted, onUnmounted } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
 import NotificationItem from '@/components/global/notification/NotificationItem.vue';
 import { NotificationType } from '@/types/NotificationType';
-import { Severity, Priority } from '@/types/NotificationType';
+// import { Severity, Priority } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'Notifier',
