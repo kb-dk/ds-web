@@ -5,36 +5,13 @@
 				<VideoPlayer></VideoPlayer>
 			</div>
 		</div>
-		<div class="boardcast-record-data">
-			<div class="main-record-data">
-				<div class="record-data">
-					<h2>{{ $t('error.record.unknown') }}</h2>
-				</div>
-			</div>
-			<div class="right-side">
-				<div class="right-side-metadata-box">
-					<h3>Sendt</h3>
-					<div class="info">
-						<span class="material-icons blue">event</span>
-					</div>
-					<div class="info">
-						<span class="material-icons blue">schedule</span>
-					</div>
-					<div class="info">
-						<span class="material-icons blue">tv</span>
-					</div>
-					<h4>{{ $t('record.genre') }}</h4>
-				</div>
-				<div class="divider darkblue"></div>
-			</div>
-		</div>
-		<div class="back-link">
+
+		<div class="btn-blue back-link btn">
 			<router-link
 				v-if="backLink !== '/'"
 				:to="backLink"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 			>
-				<span class="material-icons offset">chevron_left</span>
 				{{ $t('record.back') }}
 			</router-link>
 			<router-link
@@ -42,11 +19,33 @@
 				:to="{ name: 'Home' }"
 				:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 			>
-				<span class="material-icons offset">chevron_left</span>
 				{{ $t('record.toFrontpage') }}
 			</router-link>
 		</div>
-		<div class="extra-record-data"></div>
+		<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
+		<div class="extra-suggest">
+			<a
+				class="btn-blue btn"
+				href="/find-materiale/dr-arkivet/"
+				:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-home', 0)"
+			>
+				{{ t('error.wrongUrl.frontPage') }}
+			</a>
+			<a
+				class="btn-blue btn"
+				:href="t('footer.column1.links.1.link')"
+				:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-about', 0)"
+			>
+				{{ t('footer.column1.links.1.title') }}
+			</a>
+			<a
+				class="btn-blue btn"
+				href="https://www.kb.dk"
+				:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-kb', 0)"
+			>
+				{{ t('error.wrongUrl.kbPage') }}
+			</a>
+		</div>
 	</div>
 </template>
 
@@ -107,17 +106,21 @@ temporary styling until patterns from design system are implemented
 }
 
 .back-link {
-	width: fit-content;
-	margin-bottom: 10px;
+	text-decoration: none;
+	padding: 8px 14px 9px;
+	margin-top: 2em;
 }
 
 .back-link a {
 	text-decoration: none;
+	padding: 8px 14px 9px;
+	color: inherit;
 }
 
 .video-container {
 	min-height: 300px;
 	width: 100%;
+	max-height: 50%;
 }
 
 .info {
@@ -286,6 +289,40 @@ temporary styling until patterns from design system are implemented
 }
 .link-container a {
 	white-space: nowrap;
+}
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	color: #171717;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: transparent;
+	padding: 13px 2.875rem;
+	font-size: 18px;
+	line-height: 1.25rem;
+	border-radius: 4px;
+	transition:
+		color 0.15s ease-in-out,
+		background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out,
+		box-shadow 0.15s ease-in-out;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	white-space: nowrap;
+	border: 1px solid #0a2e70;
+}
+.btn-blue {
+	color: white;
+	background-color: #002e70;
+}
+.btn:hover {
+	background: #c4f1ed;
+	color: #0a2e70;
 }
 /* First breakpoint for tablet */
 
