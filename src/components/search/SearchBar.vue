@@ -485,6 +485,12 @@ input[type='search']::-webkit-search-results-decoration {
 	transition: color 0.1s linear 0s;
 }
 
+#focusSearchInput:focus-visible {
+	box-shadow: 0 0 0 0px #002f7091 !important;
+	border-radius: 4px !important;
+	transition: box-shadow 0.2s ease-in-out;
+}
+
 .locked {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;

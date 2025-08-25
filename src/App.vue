@@ -337,7 +337,7 @@ export default defineComponent({
 }
 
 :focus-visible {
-	box-shadow: 0 0 0 3px rgba(38, 139, 255, 0.7) !important;
+	box-shadow: 0 0 0 3px #02204bea !important;
 	border-radius: 4px !important;
 	transition: box-shadow 0.2s ease-in-out;
 }

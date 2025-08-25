@@ -285,6 +285,18 @@ h3 {
 	background-color: #b30018;
 }
 
+.warning-severity .close:before {
+	background-color: #f7ae3b;
+}
+
+.low-severity .close:before {
+	background-color: #49da87;
+}
+
+.info-severity .close:before {
+	background-color: white;
+}
+
 .timer-max {
 	border-top: 1px solid #002e70;
 }
