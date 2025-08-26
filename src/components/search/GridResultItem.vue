@@ -359,10 +359,13 @@ export default defineComponent({
 }
 
 .date .material-icons,
-.duration .material-icons {
+.duration .material-icons,
+.episode-split-icon {
 	font-size: 16px;
 	display: flex;
-	flex-wrap: wrap;
+	margin-right: 3px;
+	position: relative;
+	align-items: center;
 }
 
 .title {
@@ -388,10 +391,6 @@ export default defineComponent({
 .episode-text {
 	color: #002e70;
 	font-weight: bold;
-}
-.episode-split-icon {
-	position: relative;
-	font-size: 20px;
 }
 .title.loading {
 	background-color: #002e70;
