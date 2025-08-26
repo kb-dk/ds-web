@@ -33,8 +33,12 @@
 						<span class="material-icons">
 							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
 						</span>
-						{{ resultdata.creator_affiliation + ', ' }}
-						{{ getStartTime(resultdata) }}
+						<div
+							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
+							class="date-elipsis-container"
+						>
+							{{ resultdata.creator_affiliation + ', ' }} {{ getStartTime(resultdata) }}
+						</div>
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
@@ -203,8 +207,9 @@ export default defineComponent({
 
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
-				? `${getBroadcastDate(resultItem.startTime as string, locale.value)}
-				${t('record.timestamp')}${getBroadcastTime(resultItem.startTime as string)}`
+				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} ${t('record.timestamp')}${getBroadcastTime(
+						resultItem.startTime as string,
+				  )}`
 				: t('record.noBroadcastData');
 		};
 
@@ -350,7 +355,21 @@ export default defineComponent({
 	display: flex;
 	padding-top: 12px;
 	padding-bottom: 5px;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+.date-elipsis-container {
+	transition: all 0.5s ease-in-out 0s;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
 }
 
 .date.loading {
