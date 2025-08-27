@@ -68,10 +68,10 @@
 							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork?.episodeNumber}` }}
 						</span>
 						<span
-							v-if="recordData.encodesCreativeWork.partOfSeason.numberOfEpisodes"
+							v-if="recordData.encodesCreativeWork?.partOfSeason?.numberOfEpisodes"
 							class="episode-text episode-text-outof"
 						>
-							{{ `${$t('search.outOf')} ${recordData.encodesCreativeWork.partOfSeason.numberOfEpisodes}` }}
+							{{ `${$t('search.outOf')} ${recordData.encodesCreativeWork?.partOfSeason?.numberOfEpisodes}` }}
 						</span>
 					</div>
 					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
