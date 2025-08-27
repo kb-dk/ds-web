@@ -6,7 +6,7 @@ export interface BroadcastRecordType {
 	id: string;
 	name: NameType[];
 	publication: PublicationType;
-	encodesCreativeWork: CreativeWork;
+	encodesCreativeWork?: CreativeWork;
 	description: string;
 	startTime: string;
 	endTime: string;

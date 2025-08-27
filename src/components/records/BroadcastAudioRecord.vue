@@ -60,12 +60,12 @@
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<div
-						v-if="recordData.encodesCreativeWork.episodeNumber"
+						v-if="recordData.encodesCreativeWork?.episodeNumber"
 						class="info"
 					>
 						<span class="material-icons">segment</span>
 						<span class="episode-text">
-							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork.episodeNumber}` }}
+							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork?.episodeNumber}` }}
 						</span>
 						<span
 							v-if="recordData.encodesCreativeWork.partOfSeason.numberOfEpisodes"
