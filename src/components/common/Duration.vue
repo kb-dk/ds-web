@@ -52,5 +52,7 @@ export default defineComponent({
 .set-duration {
 	display: flex;
 	flex-wrap: wrap;
+	position: relative;
+	margin-top: 4px;
 }
 </style>
