@@ -4,6 +4,20 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2025-08-27
+
+## Changed
+- Expansion of the alert possibilities from messages service.
+- A few accessability fixes here and there.
+- Styling updates according to UX/Design.
+- Removed pop-up error when reaching a 404 record page, no need for it since page says it all.
+- Changed how we handle 404 requests on the fullRecord page.
+- New SOME image when sharing links to the platform.
+- Error-handling before users add too many fliters added.
+- General cleanup with unused imports and unneeded code.
+- Added episode number on search result and record page.
+- Added new copyright notice to the repo.
+
 ## [1.1.4] - 2025-05-22 
 
 ### Changed
