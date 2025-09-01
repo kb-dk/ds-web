@@ -107,6 +107,24 @@
 				</div>
 			</div>
 		</div>
+		<div class="daily-program">
+			<button
+				class="link-container"
+				@click="dailyProgramExpanded = !dailyProgramExpanded"
+			>
+				Vis dagens program
+			</button>
+			<div :class="{ 'daily-program-expanded': dailyProgramExpanded, 'daily-program-closed': !dailyProgramExpanded }">
+				<GridDisplay
+					v-if="dailyProgramExpanded"
+					:row-nr="recordsForTheDay.length"
+					:spots="recordsForTheDay"
+					:spot-nr="recordsForTheDay.length"
+					:draggable="true"
+					:loaded="recordsForTheDay.length > 0"
+				></GridDisplay>
+			</div>
+		</div>
 		<h3>{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
@@ -133,7 +151,7 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -144,6 +162,7 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
+import GridDisplay from '@/components/common/GridDisplay.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -153,6 +172,7 @@ export default defineComponent({
 		VideoPlayer,
 		Duration,
 		GridResultItem,
+		GridDisplay,
 	},
 
 	props: {
@@ -171,6 +191,13 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: true,
 		},
+		recordsForTheDay: {
+			type: Array as PropType<GenericSearchResultType[]>,
+			required: false,
+			default() {
+				return [];
+			},
+		},
 	},
 
 	setup(props) {
@@ -179,7 +206,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const entryId = ref('');
 		entryId.value = getEntryId(props.recordData);
-
+		const dailyProgramExpanded = ref(false);
 		const emptySearchResults = () => {
 			searchResultStore.searchResult = [];
 		};
@@ -199,7 +226,9 @@ export default defineComponent({
 			},
 			{ deep: true },
 		);
-
+		onUnmounted(() => {
+			dailyProgramExpanded.value = false;
+		});
 		return {
 			lastPath,
 			locale,
@@ -213,6 +242,7 @@ export default defineComponent({
 			quotation,
 			emptySearchResults,
 			santizeAndSimplify,
+			dailyProgramExpanded,
 		};
 	},
 });
@@ -458,6 +488,40 @@ h4 {
 	border-radius: 4px;
 	width: fit-content;
 	height: auto;
+}
+
+.daily-program-expanded {
+	overflow-y: hidden;
+	width: 100%;
+	max-height: 20em;
+	animation: expand-programs 0.8s none;
+}
+.daily-program-expanded > * > * {
+	flex-wrap: nowrap;
+	width: 100%;
+}
+.daily-program-expanded > * > * > * {
+	max-width: 13em;
+}
+.daily-program-closed {
+	animation: close-programs 0.5s none;
+}
+
+@keyframes expand-programs {
+	0% {
+		max-height: 0em;
+	}
+	100% {
+		max-height: 20em;
+	}
+}
+@keyframes close-programs {
+	0% {
+		height: 20em;
+	}
+	100% {
+		height: 0em;
+	}
 }
 
 /* First breakpoint for tablet */
