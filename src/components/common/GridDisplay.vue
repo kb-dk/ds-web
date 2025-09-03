@@ -11,6 +11,7 @@
 					:resultdata="spots[i]"
 					:index="i"
 					background="#ffffff"
+					:class="{ 'current-record': current === i }"
 				></GridResultItem>
 			</div>
 		</div>
@@ -33,6 +34,13 @@ export default defineComponent({
 		spotNr: { type: Number, required: true },
 		draggable: { type: Boolean, required: false },
 		loaded: { type: Boolean, required: true },
+		current: {
+			type: Number,
+			required: false,
+			default() {
+				return -1;
+			},
+		},
 	},
 	data() {
 		return {
@@ -158,6 +166,12 @@ temporary styling until patterns from design system are implemented
 
 .draggable {
 	flex-wrap: wrap;
+}
+
+.current-record {
+	background-color: #c4f1ed !important;
+	border: 1px solid #0a2e70;
+	box-shadow: 0 0 15 black;
 }
 
 @media (min-width: 321px) {

@@ -14,6 +14,7 @@
 				:spot-nr="recordsForTheDay.length"
 				:draggable="true"
 				:loaded="recordsForTheDay.length > 0"
+				:current="currentRecordIndex"
 			></GridDisplay>
 		</div>
 	</div>
@@ -35,6 +36,13 @@ export default defineComponent({
 			required: false,
 			default() {
 				return [];
+			},
+		},
+		currentRecordIndex: {
+			type: Number,
+			required: false,
+			default() {
+				return -1;
 			},
 		},
 	},

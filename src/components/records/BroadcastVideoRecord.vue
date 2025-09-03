@@ -107,7 +107,10 @@
 				</div>
 			</div>
 		</div>
-		<ProgramGuide :records-for-the-day="recordsForTheDay"></ProgramGuide>
+		<ProgramGuide
+			:records-for-the-day="recordsForTheDay"
+			:current-record-index="currentRecord"
+		></ProgramGuide>
 		<h3>{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
@@ -134,7 +137,7 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -200,7 +203,11 @@ export default defineComponent({
 		const quotation = (name: string) => {
 			return `"${name}"`;
 		};
-
+		const currentRecord = computed(() => {
+			return props.recordsForTheDay.findIndex((record) => {
+				return record.id === props.recordData.id;
+			});
+		});
 		watch(
 			() => props.recordData.id,
 			() => {
@@ -222,6 +229,7 @@ export default defineComponent({
 			quotation,
 			emptySearchResults,
 			santizeAndSimplify,
+			currentRecord,
 		};
 	},
 });
