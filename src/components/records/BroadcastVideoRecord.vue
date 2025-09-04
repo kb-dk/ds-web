@@ -107,7 +107,7 @@
 				</div>
 			</div>
 		</div>
-		<h3>{{ $t('search.relatedContent') }}</h3>
+		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
@@ -278,23 +278,12 @@ h4 {
 }
 .share-button {
 	width: 100%;
-	justify-content: center;
+	justify-content: flex-start;
 	display: flex;
 }
 
 .get-link {
-	font-family: noway, sans-serif;
-	background-color: transparent;
-	border: 0px;
 	cursor: pointer;
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 25px;
-}
-
-.get-link .link-text {
-	text-decoration: underline;
 }
 
 .get-link .material-icons {
@@ -393,7 +382,9 @@ h4 {
 	padding: 0px 20px;
 	max-width: 100%;
 }
-
+.related-content-title {
+	padding: 0px 20px;
+}
 .related-record {
 	flex: 0 0 90%;
 	box-sizing: border-box;
@@ -407,7 +398,7 @@ h4 {
 
 .link-container {
 	background-color: #0a2e70;
-	width: 33.3%;
+	width: fit-content;
 	color: white;
 	text-align: center;
 	text-decoration: none;
@@ -417,7 +408,7 @@ h4 {
 	display: flex;
 	box-sizing: border-box;
 	margin-bottom: 15px;
-	padding: 5px 25px;
+	padding: 5px 14px 9px 14px;
 	font-family: 'noway';
 	font-weight: 100;
 	flex-direction: row;
@@ -491,6 +482,9 @@ h4 {
 		padding: 0px;
 		width: 33.3%;
 	}
+	.related-content-title {
+		padding: 0px;
+	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
 		max-width: calc(100%);
@@ -498,9 +492,6 @@ h4 {
 	}
 	.share-button {
 		justify-content: flex-end;
-	}
-	.get-link {
-		width: 50%;
 	}
 	.share-icon {
 		margin-right: 5px;
