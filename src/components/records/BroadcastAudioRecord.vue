@@ -280,7 +280,7 @@ h4 {
 
 .share-button {
 	width: 100%;
-	justify-content: center;
+	justify-content: flex-start;
 	display: flex;
 }
 
