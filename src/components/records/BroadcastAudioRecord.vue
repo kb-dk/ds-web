@@ -285,14 +285,7 @@ h4 {
 }
 
 .get-link {
-	font-family: noway, sans-serif;
-	background-color: transparent;
-	border: 0px;
 	cursor: pointer;
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 25px;
 }
 
 .get-link .link-text {
@@ -405,7 +398,7 @@ h4 {
 
 .link-container {
 	background-color: #0a2e70;
-	width: 33.3%;
+	width: fit-content;
 	color: white;
 	text-align: center;
 	text-decoration: none;
@@ -415,7 +408,7 @@ h4 {
 	display: flex;
 	box-sizing: border-box;
 	margin-bottom: 15px;
-	padding: 5px 25px;
+	padding: 5px 14px 9px 14px;
 	font-family: 'noway';
 	font-weight: 100;
 	flex-direction: row;
@@ -494,9 +487,6 @@ h4 {
 	}
 	.share-button {
 		justify-content: flex-end;
-	}
-	.get-link {
-		width: 50%;
 	}
 	.share-icon {
 		margin-right: 5px;
