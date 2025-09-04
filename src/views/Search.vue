@@ -33,8 +33,7 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ Number(searchResultStore.start) + 1 }} -
-									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }} {{ $t('search.outOf') }}
+									{{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }} {{ $t('search.outOf') }}
 									{{
 										searchResultStore.numFound > 1000
 											? '1000+'
@@ -106,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, defineComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import SearchResults from '@/components/search/SearchResults.vue';
@@ -147,6 +146,12 @@ export default defineComponent({
 		const updateResizeProperty = () => {
 			numPagesToShow.value = window.innerWidth < 850 ? 3 : 8;
 		};
+
+		const calcRowCount = computed(() => {
+			const rowCount = searchResultStore.pageNumber * Number(searchResultStore.rowCount);
+			return rowCount < searchResultStore.numFound ? rowCount : searchResultStore.numFound;
+		});
+
 		onMounted(() => {
 			// we set the title of the archive here - needed if we go back from a page that sets it otherwise.
 			window.addEventListener('resize', updateResizeProperty);
@@ -360,6 +365,7 @@ export default defineComponent({
 			router,
 			t,
 			queryLimitReached,
+			calcRowCount,
 		};
 	},
 });
