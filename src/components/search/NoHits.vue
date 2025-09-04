@@ -11,6 +11,21 @@
 						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
 				}}
 			</div>
+			<EdgedContentArea
+				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
+				:lines="true"
+				:dotted-edges="false"
+				background-color="#c4f1ed"
+				align-items="start"
+				:line-padding="false"
+			>
+				<template #content>
+					<h2>{{ $t('search.maybeYouMeant') }}</h2>
+					<div class="no-hits">
+						<SpellChecker :spell-check="searchResultStore.spellCheck" />
+					</div>
+				</template>
+			</EdgedContentArea>
 			<div class="no-hits-heading-subtitle">
 				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
 				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
@@ -22,20 +37,7 @@
 				</a>
 				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
-			<EdgedContentArea
-				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
-				:lines="true"
-				:dotted-edges="false"
-				background-color="#c4f1ed"
-				align-items="start"
-			>
-				<template #content>
-					<h2>{{ $t('search.maybeYouMeant') }}</h2>
-					<div class="no-hits">
-						<SpellChecker :spell-check="searchResultStore.spellCheck" />
-					</div>
-				</template>
-			</EdgedContentArea>
+
 			<TiltedDivider
 				:title="$t('search.searchGuide.title')"
 				:right="true"
@@ -176,7 +178,6 @@ export default defineComponent({
 	color: white;
 	flex-wrap: wrap;
 	align-content: center;
-	padding: 20px 50px;
 	box-sizing: border-box;
 }
 

@@ -11,7 +11,7 @@
 		<div class="bluify"></div>
 		<div class="noise"></div>
 		<div class="container">
-			<h1>
+			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
 				<span class="subtitle">
 					<span class="text">{{ t('hero.subtitle') }}</span>
 				</span>
@@ -510,8 +510,8 @@ h1 {
 		padding: 5px 45px;
 	}
 	.container {
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 		width: 100%;
 		margin-left: initial;
 	}

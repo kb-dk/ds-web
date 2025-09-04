@@ -37,7 +37,8 @@
 				role="checkbox"
 				type="checkbox"
 				class="checkbox"
-				:disabled="amount === '0' && !checked"
+				autocomplete="off"
+				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'genre-checkbox', title, number)"
 				:name="title"
@@ -97,19 +98,20 @@ export default defineComponent({
 				return [] as SelectorData[];
 			},
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 		const getStyles = () => {
-			let classes = 'category-item';
-			if (props.checked) {
-				classes += ' checked';
-			}
-			if (props.amount === '0') {
-				classes += ' disabled';
-			}
-			return classes;
+			return {
+				'category-item': true,
+				checked: props.checked,
+				disabled: props.amount === '0' || (props.disabled && !props.checked),
+			};
 		};
 
 		const displayAmount = (value: string | undefined) => {

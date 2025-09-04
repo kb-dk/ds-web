@@ -60,6 +60,21 @@
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
+					<div
+						v-if="recordData.encodesCreativeWork?.episodeNumber"
+						class="info"
+					>
+						<span class="material-icons">segment</span>
+						<span class="episode-text">
+							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork?.episodeNumber}` }}
+						</span>
+						<span
+							v-if="recordData.encodesCreativeWork?.partOfSeason?.numberOfEpisodes"
+							class="episode-text episode-text-outof"
+						>
+							{{ `${$t('search.outOf')} ${recordData.encodesCreativeWork?.partOfSeason?.numberOfEpisodes}` }}
+						</span>
+					</div>
 					<h4 v-if="recordData.genre">{{ $t('record.genre') }}</h4>
 					<div v-if="recordData.genre">
 						<router-link
@@ -207,6 +222,12 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+h3 {
+	margin-top: 0;
+}
+h4 {
+	margin-bottom: 0;
+}
 :host {
 	margin-top: -1px;
 	position: relative;
@@ -231,8 +252,18 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	gap: 7px;
 	flex-wrap: wrap;
+	font-weight: 700;
+	line-height: 1.5;
+	font-size: 18px;
 }
 
+.info .material-icons {
+	font-size: 20px;
+	margin-right: 3px;
+}
+.episode-text-outof {
+	text-transform: lowercase;
+}
 .no-streaming {
 	width: 100%;
 	background-color: black;

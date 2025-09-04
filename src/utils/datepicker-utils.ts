@@ -16,12 +16,19 @@ const updateSelectedDate = (
 	dateInput = dateInput.replace(/[.-]/g, '/');
 	const splitDateInput = dateInput.split('/');
 	if (splitDateInput.length === 3) {
-		const [day, month, year] = splitDateInput.map(Number);
+		const [day, month, yearInitial] = splitDateInput.map(Number);
+		let year = yearInitial;
 		// Validate if day, month, and year are numbers
 		if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
 			// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
+			if (year.toString().length === 2) {
+				if (year < Number(new Date().getFullYear().toString().slice(-2))) {
+					year = Number(`20${year}`);
+				} else {
+					year = Number(`19${year}`);
+				}
+			}
 			const setDate = new Date(year, month - 1, day);
-
 			// Ensure the date is valid
 			if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
 				// Validate if the date is within the range

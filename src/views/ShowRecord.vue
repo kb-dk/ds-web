@@ -33,7 +33,7 @@
 				<div v-if="!loading && recordData === null && contentNotAllowed">
 					<NotAllowedRecord :back-link="backLink" />
 				</div>
-				<div v-if="recordType === null && backendError && !loading">
+				<div v-if="recordType === null && backendError && !loading && !contentNotAllowed">
 					<UnavailableRecord />
 				</div>
 			</div>
@@ -145,7 +145,7 @@ export default defineComponent({
 						authStore.isAllowedToDisplayContent = false;
 						errorMsg = t('error.record.notAllowed');
 						contentNotAllowed.value = true;
-					} else {
+					} else if (err.response?.status !== 404) {
 						errorMsg = t('error.record.loadingFailed');
 						errorManager.submitCustomError(
 							'record-error',

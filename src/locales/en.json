@@ -205,6 +205,7 @@
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet",
         "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
      },
+     "episode":"Episode",
      "pageNumberPlaceholder": "Enter page",
      "tipsTitle": "A few tips for your search",
      "mainCategories": "Browse through our main categories",
@@ -266,6 +267,10 @@
          "webshop":"Search in our webshop",
          "seeAllMaterials":"See all materials"
       },
+      "limitedFilters":{
+         "title":"Too many filters",
+         "subtitle":"You have reached the limit of filters we support. To add another filter, you have to remove another."
+    },
      "searchGuide": {
         "title":"Advice about searching",
         "subtitle": "Perhaps you can improve your search with one of these methods",
@@ -329,7 +334,7 @@
   },
 
   "notification": {
-      "close":"Close"
+      "close":"Close notification"
    },
    "footer": {
       "contactInfo":"Contact information",
@@ -507,6 +512,7 @@
       "header": "Sorry, we cannot find the page you are looking for :(",
       "text": "Try entering a search in the search box or go to the front page of DR-arkivet to use the various entries to the archive material.",
       "altHeader": "Perhaps you are looking for",
+      "notAllowedButtonHeader": "You can proceed to",
       "frontPage": "Front page of DR-arkivet",
       "kbPage": "Front page of Royal Danish Library"
    }

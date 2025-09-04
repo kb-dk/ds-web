@@ -201,6 +201,7 @@
        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
        "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
      },
+     "episode":"Episode",
     "pageNumberPlaceholder": "Indtast sidetal",
      "tipsTitle": "Et par fif til din søgning",
      "mainCategories": "led videre i vores hovedkategorier",
@@ -244,7 +245,7 @@
      "of":"af",
      "startTime":"starttid",
     "dataQuantity":{
-      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er dermeget materiale, og i andre er der kun lidt eller ingenting.",
+      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der meget materiale, og i andre er der kun lidt eller ingenting.",
       "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
     },
     "showContent": "Anvend",
@@ -261,6 +262,10 @@
          "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
+      },
+      "limitedFilters":{
+         "title":"For mange filtre",
+         "subtitle":"Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."
       },
     "searchGuide": {
       "title":"Gode råd til din søgning",
@@ -324,7 +329,7 @@
    "unknown":"Ukendt længde"
   },
   "notification": {
-      "close":"Luk"
+      "close":"Luk notifikation"
   },
   "footer": {
     "contactInfo":"Kontaktinformationer",
@@ -501,6 +506,7 @@
       "header": "Vi kan desværre ikke finde den side, du søger :(",
       "text": "Prøv at lave en søgning i søgefeltet eller gå til forsiden af DR-arkivet for at benytte de forskellige indgange til arkivmaterialet.",
       "altHeader": "Måske leder du efter",
+      "notAllowedButtonHeader": "Du kan komme videre til",
       "frontPage": "Forsiden af DR-arkivet",
       "kbPage": "Forsiden af Det Kgl. Bibliotek"
     }

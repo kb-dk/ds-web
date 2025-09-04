@@ -3,45 +3,47 @@
 		ref="notificationBox"
 		:class="[
 			notification.userClose ? 'single-notification user' : 'single-notification passing',
-			notification.severity === Severity.ERROR
-				? 'high-severity'
-				: notification.severity === Severity.SUCCESS
-				  ? 'low-severity'
-				  : 'info-severity',
+			severityClassMap[notification.severity],
 		]"
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
 	>
-		<h3>
+		<h3 class="notification-title">
 			<span class="title-span">
 				<span
 					v-if="notification.severity === Severity.SUCCESS"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					check
 				</span>
 				<span
 					v-if="notification.severity === Severity.ERROR"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					warning
 				</span>
 				<span
 					v-if="notification.severity === Severity.INFO"
-					class="material-icons"
+					class="material-icons title-icon"
 				>
 					info
 				</span>
+				<span
+					v-if="notification.severity === Severity.WARNING"
+					class="material-icons title-icon"
+				>
+					notifications
+				</span>
 				{{ notification.key ? $t(notification.title) : notification.title }}
 			</span>
-			<span
+			<button
 				v-if="notification.userClose"
 				class="material-icons close"
 				:aria-label="$t('notification.close')"
 				@click="close(notification)"
 			>
-				close
-			</span>
+				<span aria-hidden="true">close</span>
+			</button>
 		</h3>
 		<p>{{ notification.key ? $t(notification.desc) : notification.desc }}</p>
 		<div
@@ -62,6 +64,13 @@ import { defineComponent, onMounted, PropType, ref } from 'vue';
 import gsap from 'gsap';
 import { useI18n } from 'vue-i18n';
 import { NotificationType, Severity } from '@/types/NotificationType';
+
+const severityClassMap = {
+	[Severity.ERROR]: 'high-severity',
+	[Severity.SUCCESS]: 'low-severity',
+	[Severity.INFO]: 'info-severity',
+	[Severity.WARNING]: 'warning-severity',
+};
 
 export default defineComponent({
 	name: 'NotificationItem',
@@ -102,7 +111,7 @@ export default defineComponent({
 			}
 		};
 
-		return { t, countdown, pauseAnimation, resumeAnimation, Severity };
+		return { t, countdown, pauseAnimation, resumeAnimation, Severity, severityClassMap };
 	},
 });
 </script>
@@ -159,6 +168,13 @@ export default defineComponent({
 	transition: opacity 0.4s;
 }
 
+.notification-title {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	align-items: center;
+}
+
 .timer {
 	width: 100%;
 	height: 24px;
@@ -187,6 +203,10 @@ export default defineComponent({
 	vertical-align: text-bottom;
 }
 
+.title-icon {
+	margin-right: 10px;
+}
+
 .close-border {
 	background-color: #002e70;
 	position: absolute;
@@ -209,11 +229,9 @@ export default defineComponent({
 	content: '';
 	display: block;
 	position: absolute;
-	width: 28px;
-	height: 28px;
+	width: 30px;
+	height: 30px;
 	z-index: -1;
-	margin-left: 1px;
-	margin-top: 1px;
 	top: 0;
 }
 
@@ -224,7 +242,10 @@ h3 {
 .title-span {
 	max-width: 90%;
 	z-index: 90;
+	display: flex;
+	align-items: center;
 }
+
 .low-severity {
 	background-color: #49da87;
 	color: #002e70;
@@ -242,12 +263,38 @@ h3 {
 	border: 1px solid #002e70;
 }
 
+.warning-severity {
+	background-color: #f7ae3b;
+	color: #000;
+	border: 1px solid #000;
+}
+
+.warning-severity .title-span span {
+	border: 1px solid black;
+	border-radius: 90px;
+	background-color: black;
+	color: #f7ae3b;
+	font-size: 16px;
+}
+
 .high-severity .close {
 	color: white;
 }
 
 .high-severity .close:before {
 	background-color: #b30018;
+}
+
+.warning-severity .close:before {
+	background-color: #f7ae3b;
+}
+
+.low-severity .close:before {
+	background-color: #49da87;
+}
+
+.info-severity .close:before {
+	background-color: white;
 }
 
 .timer-max {

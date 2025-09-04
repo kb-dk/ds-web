@@ -18,7 +18,7 @@
 		</div>
 		<div class="selected-items">
 			<button
-				v-for="(item, index) in selectedItems"
+				v-for="(item, index) in selectedItems.selectedItems"
 				:key="`${index}-${item.name}`"
 				:title="useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name"
 				class="selected-entity"
@@ -46,12 +46,18 @@
 				</span>
 				<span class="close">×</span>
 			</button>
+			<button
+				v-if="selectedItems.overflow > 0"
+				class="selected-entity overflow-enitity"
+			>
+				{{ selectedItems.overflow }}+
+			</button>
 		</div>
 	</button>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue';
+import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
@@ -112,6 +118,7 @@ export default defineComponent({
 
 	setup(props) {
 		const { t } = useI18n();
+		const maxSelectedItems = ref(11);
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
@@ -119,7 +126,15 @@ export default defineComponent({
 		};
 
 		const selectedItems = computed(() => {
-			return props.itemArray.filter((item: SelectorData) => item.selected);
+			const selectedItems = props.itemArray.filter((item: SelectorData) => item.selected);
+			if (selectedItems.length > maxSelectedItems.value) {
+				return {
+					selectedItems: selectedItems.slice(0, maxSelectedItems.value),
+					overflow: selectedItems.length - maxSelectedItems.value,
+				};
+			} else {
+				return { selectedItems: selectedItems, overflow: 0 };
+			}
 		});
 
 		const handleTimeFacetRemoval = (index: number, e: Event) => {
@@ -138,7 +153,24 @@ export default defineComponent({
 				return val;
 			}
 		};
-
+		const updateMaxSelectedItems = () => {
+			const windowWidth = window.innerWidth;
+			if (windowWidth < 500 && windowWidth > 390) {
+				maxSelectedItems.value = 3;
+			} else {
+				maxSelectedItems.value = Math.floor(windowWidth / 100 - 2);
+				if (maxSelectedItems.value > 11) {
+					maxSelectedItems.value = 11;
+				}
+			}
+		};
+		onMounted(() => {
+			updateMaxSelectedItems();
+			window.addEventListener('resize', updateMaxSelectedItems);
+		});
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateMaxSelectedItems);
+		});
 		return {
 			t,
 			dispatchClick,
@@ -147,6 +179,7 @@ export default defineComponent({
 			formatStringForTime,
 			addTestDataEnrichment,
 			santizeAndSimplify,
+			maxSelectedItems,
 		};
 	},
 });
@@ -209,6 +242,7 @@ h2 {
 	flex-wrap: nowrap;
 	background-color: transparent;
 	border: 0px;
+	margin-bottom: 10px;
 }
 .headline-container.open {
 	padding-top: 8px;
@@ -226,14 +260,15 @@ h2 {
 	flex-wrap: wrap;
 	margin-left: auto;
 	max-width: 40%;
-	gap: 5px;
+	gap: 10px;
 	justify-content: flex-end;
-	max-height: 55px;
+	max-height: 60px;
 	overflow: hidden;
 }
 
 .selected-entity {
 	display: flex;
+	width: 68px;
 	align-items: center;
 	justify-content: space-between;
 	border: 0px;
@@ -248,11 +283,18 @@ h2 {
 
 .selected-entity .entity-name {
 	text-transform: capitalize;
-	padding-right: 5px;
 }
 
 .selected-entity .close {
 	font-size: 20px;
+	float: right;
+}
+.overflow-enitity {
+	padding: 4px;
+	justify-content: center;
+	background-color: #c4f1ed;
+	border: 1px solid #002e70;
+	color: #002e70;
 }
 @media (min-width: 990px) {
 	.headline-container {
@@ -271,6 +313,10 @@ h2 {
 	}
 	.headline-container:hover h2 {
 		text-decoration: underline;
+	}
+	.selected-items {
+		gap: 5px;
+		max-height: 55px;
 	}
 }
 </style>

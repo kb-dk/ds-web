@@ -38,6 +38,7 @@ import { defineComponent, onMounted, onUnmounted } from 'vue';
 import { useNotificationStore } from '@/store/notificationStore';
 import NotificationItem from '@/components/global/notification/NotificationItem.vue';
 import { NotificationType } from '@/types/NotificationType';
+// import { Severity, Priority } from '@/types/NotificationType';
 
 export default defineComponent({
 	name: 'Notifier',
@@ -51,14 +52,14 @@ export default defineComponent({
 			window.addEventListener('notify-user', newNotification);
 
 			/* just for testing */
-			// notificationStore.addNotification(
-			// 	'test notitication',
-			// 	'this is a test this is a test this is a test this is a test this is a test this is a test this is a test',
-			// 	false,
-			// 	Severity.INFO,
-			// 	false,
-			// 	Priority.HIGH,
-			// );
+			/* 			notificationStore.addNotification(
+				'test notitication',
+				'this is a test this is a test this is a test this is a test this is a test this is a test this is a test',
+				false,
+				Severity.ERROR,
+				true,
+				Priority.HIGH,
+			); */
 		});
 
 		onUnmounted(() => {

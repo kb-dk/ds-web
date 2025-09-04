@@ -33,8 +33,12 @@
 						<span class="material-icons">
 							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
 						</span>
-						{{ resultdata.creator_affiliation + ', ' }}
-						{{ getStartTime(resultdata) }}
+						<div
+							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
+							class="date-elipsis-container"
+						>
+							{{ resultdata.creator_affiliation + ', ' }} {{ getStartTime(resultdata) }}
+						</div>
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
@@ -50,7 +54,30 @@
 							{{ resultdata.temporal_start_day_da }}
 						</span> -->
 					</div>
-
+					<div
+						v-if="resultdata.episode"
+						class="episode"
+					>
+						<span
+							role="img"
+							class="material-icons episode-split-icon"
+						>
+							segment
+						</span>
+						<span class="episode-text">
+							{{ `${$t('search.episode')} ${resultdata.episode}` }}
+						</span>
+						<span
+							v-if="resultdata.number_of_episodes"
+							class="episode-text"
+						>
+							{{ `:${resultdata.number_of_episodes}` }}
+						</span>
+					</div>
+					<div
+						v-else
+						class="episode no-episode"
+					></div>
 					<div class="title">
 						{{ resultdata.title[0] }}
 					</div>
@@ -180,8 +207,9 @@ export default defineComponent({
 
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
-				? `${getBroadcastDate(resultItem.startTime as string, locale.value)}
-				${t('record.timestamp')}${getBroadcastTime(resultItem.startTime as string)}`
+				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} ${t('record.timestamp')}${getBroadcastTime(
+						resultItem.startTime as string,
+				  )}`
 				: t('record.noBroadcastData');
 		};
 
@@ -312,6 +340,7 @@ export default defineComponent({
 .duration {
 	display: flex;
 	flex-wrap: wrap;
+	padding-bottom: 5px;
 }
 
 .loading-icon {
@@ -326,7 +355,21 @@ export default defineComponent({
 	display: flex;
 	padding-top: 12px;
 	padding-bottom: 5px;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+.date-elipsis-container {
+	transition: all 0.5s ease-in-out 0s;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
 }
 
 .date.loading {
@@ -335,10 +378,13 @@ export default defineComponent({
 }
 
 .date .material-icons,
-.duration .material-icons {
-	font-size: 20px;
+.duration .material-icons,
+.episode-split-icon {
+	font-size: 16px;
 	display: flex;
-	flex-wrap: wrap;
+	margin-right: 3px;
+	position: relative;
+	align-items: center;
 }
 
 .title {
@@ -355,7 +401,16 @@ export default defineComponent({
 	position: relative;
 	padding-top: 15px;
 }
-
+.episode {
+	display: flex;
+}
+.no-episode {
+	height: 20px;
+}
+.episode-text {
+	color: #002e70;
+	font-weight: bold;
+}
 .title.loading {
 	background-color: #002e70;
 	border-radius: 10px;
@@ -429,9 +484,10 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	line-height: 20px; /* fallback for firefox */
-	max-height: calc(20px * 3); /* fallback for firefox */
-	min-height: calc(20px * 3); /* fallback for firefox */
+	line-height: 1.5; /* fallback for firefox */
+	font-size: 16px;
+	max-height: calc(25px * 3); /* fallback for firefox */
+	min-height: calc(25px * 3); /* fallback for firefox */
 }
 
 @media (min-width: 480px) {
@@ -476,8 +532,8 @@ export default defineComponent({
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.container {
-		padding-right: 0;
-		padding-left: 0;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

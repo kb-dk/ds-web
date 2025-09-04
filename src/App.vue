@@ -264,10 +264,22 @@ export default defineComponent({
 					'messages-error',
 					t('error.title'),
 					typedResponse.data.alert1,
-					Severity.ERROR,
+					getSevertiyFromResponse(typedResponse.data.severity),
 					true,
 					Priority.HIGH,
 				);
+			}
+		};
+
+		const getSevertiyFromResponse = (severity?: Severity): Severity => {
+			if (severity === 1) {
+				return Severity.SUCCESS;
+			} else if (severity === 2) {
+				return Severity.INFO;
+			} else if (severity === 3) {
+				return Severity.WARNING;
+			} else {
+				return Severity.ERROR;
 			}
 		};
 
@@ -302,6 +314,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+#cookiescript_reportdate a,
+#cookiescript_cookiescriptlink,
+#cookiescript_reportlink {
+	text-decoration: underline !important;
+}
+
 .skip-link {
 	position: absolute;
 	top: -40px;
@@ -312,6 +330,16 @@ export default defineComponent({
 }
 .skip-link:focus {
 	top: 0;
+}
+
+:focus {
+	outline: none;
+}
+
+:focus-visible {
+	box-shadow: 0 0 0 3px #02204bea !important;
+	border-radius: 4px !important;
+	transition: box-shadow 0.2s ease-in-out;
 }
 
 .result-enter-active,

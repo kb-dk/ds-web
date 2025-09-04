@@ -77,7 +77,6 @@
 										type="button"
 										class="btn dropdown-toggle btn-outline-primary"
 										data-toggle="dropdown"
-										role="combobox"
 										aria-haspopup="listbox"
 										aria-expanded="false"
 										title="Select portal"
@@ -484,6 +483,12 @@ input[type='search']::-webkit-search-results-decoration {
 #focusSearchInput,
 .rdl-advanced-radio {
 	transition: color 0.1s linear 0s;
+}
+
+#focusSearchInput:focus-visible {
+	box-shadow: 0 0 0 0px #002f7091 !important;
+	border-radius: 4px !important;
+	transition: box-shadow 0.2s ease-in-out;
 }
 
 .locked {
@@ -1103,8 +1108,8 @@ input:focus {
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.container {
-		/* padding-right: 0;
-				padding-left: 0; */
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>
