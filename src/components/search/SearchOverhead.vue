@@ -130,7 +130,7 @@
 									class="page-count"
 								>
 									{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} -
-									{{ searchResultStore.pageNumber * Number(searchResultStore.rowCount) }}
+									{{ calcRowCount }}
 								</div>
 							</Transition>
 						</div>
@@ -170,7 +170,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -215,6 +215,10 @@ export default defineComponent({
 			radio: 'origin:"ds.radio"',
 		};
 
+		const calcRowCount = computed(() => {
+			const rowCount = searchResultStore.pageNumber * Number(searchResultStore.rowCount);
+			return rowCount < searchResultStore.numFound ? rowCount : searchResultStore.numFound;
+		});
 		onMounted(() => {
 			searchResultStore.toggleShowFacets(false);
 		});
@@ -382,6 +386,7 @@ export default defineComponent({
 			toggleTV,
 			resetFilters,
 			addTestDataEnrichment,
+			calcRowCount,
 		};
 	},
 });
