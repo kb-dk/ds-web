@@ -106,7 +106,7 @@
 				</div>
 			</div>
 		</div>
-		<h3>{{ $t('search.relatedContent') }}</h3>
+		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
@@ -389,7 +389,9 @@ h4 {
 	padding: 0px 20px;
 	max-width: 100%;
 }
-
+.related-content-title {
+	padding: 0px 20px;
+}
 .related-record {
 	flex: 0 0 90%;
 	box-sizing: border-box;
@@ -481,6 +483,9 @@ h4 {
 	.related-content {
 		padding: 0px;
 		width: 33.3%;
+	}
+	.related-content-title {
+		padding: 0px;
 	}
 	.extra-record-data {
 		flex: 0 0 calc(100%);
