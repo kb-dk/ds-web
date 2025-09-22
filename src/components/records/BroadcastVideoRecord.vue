@@ -107,7 +107,10 @@
 				</div>
 			</div>
 		</div>
+		<h3>{{ $t('search.programGuide') }}</h3>
 		<ProgramGuide
+			:creator="recordData.publication.publishedOn.broadcastDisplayName"
+			:start-date="getBroadcastDate(recordData.startTime, locale)"
 			:records-for-the-day="recordsForTheDay"
 			:current-record-index="currentRecord"
 		></ProgramGuide>
@@ -149,6 +152,7 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import { startDate } from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'BroadcastRecord',

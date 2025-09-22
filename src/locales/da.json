@@ -231,6 +231,7 @@
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
     "relatedContent": "Relateret indhold",
+    "programGuide":"Programoversigt",
      "didYouMean": "Mente du \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} resultater)",
      "maybeYouMeant": "Måske mente du?",

@@ -17,6 +17,7 @@
 							:back-link="backLink"
 							:more-like-this-records="moreLikeThisRecords"
 							:record-data="recordData as BroadcastRecordType"
+							:records-for-the-day="recordsForTheDay"
 						/>
 					</div>
 					<div

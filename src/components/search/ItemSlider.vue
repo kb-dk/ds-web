@@ -1,14 +1,30 @@
 <template>
-	<div
-		ref="itemSliderRef"
-		:class="setSliderClasses()"
-	>
-		<slot :disable-links="move"></slot>
+	<div class="slider-container">
+		<div
+			v-if="displaySliderArrows && scrollLeft >= 25"
+			class="direction-arrow left"
+			@click="moveSlider(-250)"
+		>
+			<span class="material-icons">arrow_back_ios</span>
+		</div>
+		<div
+			ref="itemSliderRef"
+			:class="setSliderClasses()"
+		>
+			<slot :disable-links="move"></slot>
+		</div>
+		<div
+			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
+			class="direction-arrow right"
+			@click="moveSlider(250)"
+		>
+			<span class="material-icons">arrow_forward_ios</span>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { onUnmounted } from 'vue';
+import { computed, onUnmounted, watch } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
@@ -18,6 +34,7 @@ export default defineComponent({
 		bg: { type: String, default: 'white' },
 		bgScrollWhite: { type: String, default: '' },
 		padding: { type: Boolean, default: false },
+		displaySliderArrows: { type: Boolean, default: false },
 	},
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
@@ -25,13 +42,14 @@ export default defineComponent({
 		const startX = ref(0);
 		const scrollLeft = ref(0);
 		const move = ref(false);
-
+		const maxScrollWidth = ref(0);
 		onMounted(() => {
 			if (itemSliderRef.value) {
 				itemSliderRef.value.addEventListener('mousedown', startAndCalculateOffset);
 				itemSliderRef.value.addEventListener('mouseleave', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mouseup', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mousemove', calculateMovement);
+				// itemSliderRef.value.addEventListener('scroll', updateSrollLeft);
 				itemSliderRef.value.style.backgroundColor = props.bg;
 			}
 		});
@@ -42,6 +60,7 @@ export default defineComponent({
 				itemSliderRef.value.removeEventListener('mouseleave', stopMovementOnParent);
 				itemSliderRef.value.removeEventListener('mouseup', stopMovementOnParent);
 				itemSliderRef.value.removeEventListener('mousemove', calculateMovement);
+				// itemSliderRef.value.removeEventListener('scroll', updateSrollLeft);
 			}
 		});
 
@@ -57,6 +76,7 @@ export default defineComponent({
 
 			if (itemSliderRef.value) {
 				isDown.value = false;
+				scrollLeft.value = itemSliderRef.value.scrollLeft;
 			}
 		};
 		const calculateMovement = (e: MouseEvent) => {
@@ -82,14 +102,41 @@ export default defineComponent({
 			if (props.padding) {
 				activeClasses += ' padding';
 			}
+			if (props.displaySliderArrows) {
+				activeClasses += ' arrow-slider';
+			}
+			if (itemSliderRef.value) {
+				maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
+			}
 			return activeClasses;
 		};
 
-		return { itemSliderRef, move, setSliderClasses };
+		const moveSlider = (moveBy: number) => {
+			if (scrollLeft.value + moveBy < 0) {
+				scrollLeft.value = 0;
+			} else if (scrollLeft.value + moveBy > maxScrollWidth.value) {
+				scrollLeft.value = maxScrollWidth.value;
+			} else {
+				scrollLeft.value += moveBy;
+			}
+			if (itemSliderRef.value) {
+				itemSliderRef.value.scrollLeft = scrollLeft.value;
+			}
+		};
+
+		return { itemSliderRef, move, setSliderClasses, moveSlider, maxScrollWidth, scrollLeft };
 	},
 });
 </script>
 <style>
+.slider-container {
+	z-index: 0;
+	overflow-x: auto;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	justify-content: flex-start;
+}
 .item-slider {
 	position: relative;
 	overflow: hidden;
@@ -133,5 +180,35 @@ export default defineComponent({
 
 .item-slider::-webkit-scrollbar-thumb {
 	background-color: rgb(255, 255, 255);
+}
+.arrow-slider {
+	flex-direction: column;
+	align-items: flex-start;
+}
+.direction-arrow {
+	position: absolute;
+	height: 100%;
+	text-align: center;
+	width: 2em;
+	color: rgba(0, 0, 0, 0.719);
+	display: flex;
+	align-items: center;
+	z-index: 10;
+	background-color: rgba(255, 255, 255, 0.438);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: pointer;
+	pointer-events: all;
+}
+.direction-arrow.right {
+	right: 0px;
+	justify-content: flex-start;
+}
+.direction-arrow.left {
+	left: 0px;
+	justify-content: flex-end;
 }
 </style>
