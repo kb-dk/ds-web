@@ -35,6 +35,7 @@ export default defineComponent({
 		bgScrollWhite: { type: String, default: '' },
 		padding: { type: Boolean, default: false },
 		displaySliderArrows: { type: Boolean, default: false },
+		visible: { type: Boolean, required: false },
 	},
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
@@ -105,9 +106,7 @@ export default defineComponent({
 			if (props.displaySliderArrows) {
 				activeClasses += ' arrow-slider';
 			}
-			if (itemSliderRef.value) {
-				maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
-			}
+
 			return activeClasses;
 		};
 
@@ -123,7 +122,14 @@ export default defineComponent({
 				itemSliderRef.value.scrollLeft = scrollLeft.value;
 			}
 		};
-
+		watch(
+			() => props.visible,
+			() => {
+				if (itemSliderRef.value) {
+					maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
+				}
+			},
+		);
 		return { itemSliderRef, move, setSliderClasses, moveSlider, maxScrollWidth, scrollLeft };
 	},
 });

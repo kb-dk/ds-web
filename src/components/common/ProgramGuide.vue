@@ -23,6 +23,7 @@
 				bg="#f0fbff"
 				item-class="extra-thumbnail"
 				:display-slider-arrows="true"
+				:visible="dailyProgramExpanded"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
