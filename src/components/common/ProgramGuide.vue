@@ -172,14 +172,6 @@ export default defineComponent({
 			const minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
 			return minutesBetween;
 		};
-		watch(
-			() => programSliderRef.value,
-			(newVal: HTMLElement | null) => {
-				if (newVal) {
-					console.log(newVal);
-				}
-			},
-		);
 		onUnmounted(() => {
 			dailyProgramExpanded.value = false;
 		});
