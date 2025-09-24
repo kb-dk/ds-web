@@ -24,6 +24,7 @@
 				item-class="extra-thumbnail"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
+				:current-element="extraContentCurrentRef"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
@@ -86,7 +87,7 @@
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { computed, defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
+import { ComponentPublicInstance, computed, defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -123,7 +124,7 @@ export default defineComponent({
 	setup() {
 		const dailyProgramExpanded = ref(false);
 		const extraContentRef = ref<HTMLElement | null>(null);
-		const extraContentCurrentRef = ref<Array<HTMLAnchorElement> | null>(null);
+		const extraContentCurrentRef = ref<Array<ComponentPublicInstance<HTMLElement> | null>>([]);
 		const programSliderRef = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const showThumbnails = () => {
@@ -178,6 +179,7 @@ export default defineComponent({
 		const timelapseImage = computed(() => {
 			return new URL(`@/assets/images/timegoes.svg`, import.meta.url).href;
 		});
+
 		return {
 			dailyProgramExpanded,
 			calcProgramDurationMinutes,
@@ -251,7 +253,6 @@ export default defineComponent({
 	margin-left: 1px;
 	transition: all 0.25s linear 0s;
 	margin-right: 1px;
-	min-width: 40px;
 }
 .programs:hover {
 	background-color: #c4f1ed;
@@ -347,8 +348,15 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	color: #002e70;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 .hour-display > * {
+	font-size: clamp(1rem, 2vw, 2em);
+	font-size: 16px;
 	width: 360px;
 }
 .hour-display > *:last-child {

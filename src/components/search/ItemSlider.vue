@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { computed, onUnmounted, watch } from 'vue';
+import { ComponentPublicInstance, computed, onUnmounted, PropType, watch } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
@@ -36,6 +36,7 @@ export default defineComponent({
 		padding: { type: Boolean, default: false },
 		displaySliderArrows: { type: Boolean, default: false },
 		visible: { type: Boolean, required: false },
+		currentElement: { type: Array<ComponentPublicInstance<HTMLElement> | null>, required: false, default: null },
 	},
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
@@ -67,6 +68,7 @@ export default defineComponent({
 
 		const startAndCalculateOffset = (e: MouseEvent) => {
 			if (itemSliderRef.value) {
+				if (props.displaySliderArrows) itemSliderRef.value.style.transform = 'scaleX(1.0)';
 				isDown.value = true;
 				startX.value = e.pageX - itemSliderRef.value.offsetLeft;
 				scrollLeft.value = itemSliderRef.value.scrollLeft;
@@ -119,7 +121,7 @@ export default defineComponent({
 				scrollLeft.value += moveBy;
 			}
 			if (itemSliderRef.value) {
-				itemSliderRef.value.scrollLeft = scrollLeft.value;
+				itemSliderRef.value.scrollTo({ behavior: 'smooth', left: scrollLeft.value });
 			}
 		};
 		watch(
@@ -127,9 +129,38 @@ export default defineComponent({
 			() => {
 				if (itemSliderRef.value) {
 					maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
+					if (props.currentElement[0]) {
+						console.log(props.currentElement);
+						props.currentElement[0].$el.scrollIntoView({
+							behavior: 'smooth',
+							block: 'center',
+							inline: 'center',
+							top: 0,
+						});
+					}
 				}
 			},
 		);
+		// watch(
+		// 	() => props.currentElement,
+		// 	(element) => {
+		// 		if (element) {
+		// 			element.scrollIntoView();
+		// 		}
+		// 	},
+		// );
+		// watch(
+		// 	() => scrollLeft.value,
+		// 	() => {
+		// 		if (props.displaySliderArrows) {
+		// 			setTimeout(() => {
+		// 				if (itemSliderRef.value) {
+		// 					itemSliderRef.value.style.transform = 'scaleX(3.0)';
+		// 				}
+		// 			}, 500);
+		// 		}
+		// 	},
+		// );
 		return { itemSliderRef, move, setSliderClasses, moveSlider, maxScrollWidth, scrollLeft };
 	},
 });
@@ -157,6 +188,7 @@ export default defineComponent({
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
 	box-sizing: border-box;
+	scale: '1.0';
 }
 
 .item-slider.padding {
