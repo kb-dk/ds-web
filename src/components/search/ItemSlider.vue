@@ -38,7 +38,8 @@ export default defineComponent({
 		visible: { type: Boolean, required: false },
 		currentElement: { type: Array<ComponentPublicInstance<HTMLElement> | null>, required: false, default: null },
 	},
-	setup(props) {
+	emits: ['upscaleSmallElements'],
+	setup(props, { emit }) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
 		const isDown = ref(false);
 		const startX = ref(0);
@@ -68,7 +69,7 @@ export default defineComponent({
 
 		const startAndCalculateOffset = (e: MouseEvent) => {
 			if (itemSliderRef.value) {
-				if (props.displaySliderArrows) itemSliderRef.value.style.transform = 'scaleX(1.0)';
+				if (props.displaySliderArrows) emit('upscaleSmallElements', false);
 				isDown.value = true;
 				startX.value = e.pageX - itemSliderRef.value.offsetLeft;
 				scrollLeft.value = itemSliderRef.value.scrollLeft;
@@ -80,6 +81,11 @@ export default defineComponent({
 			if (itemSliderRef.value) {
 				isDown.value = false;
 				scrollLeft.value = itemSliderRef.value.scrollLeft;
+			}
+			if (props.displaySliderArrows) {
+				setTimeout(() => {
+					emit('upscaleSmallElements', true);
+				}, 1500);
 			}
 		};
 		const calculateMovement = (e: MouseEvent) => {
@@ -130,7 +136,6 @@ export default defineComponent({
 				if (itemSliderRef.value) {
 					maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
 					if (props.currentElement[0]) {
-						console.log(props.currentElement);
 						props.currentElement[0].$el.scrollIntoView({
 							behavior: 'smooth',
 							block: 'center',
@@ -141,26 +146,6 @@ export default defineComponent({
 				}
 			},
 		);
-		// watch(
-		// 	() => props.currentElement,
-		// 	(element) => {
-		// 		if (element) {
-		// 			element.scrollIntoView();
-		// 		}
-		// 	},
-		// );
-		// watch(
-		// 	() => scrollLeft.value,
-		// 	() => {
-		// 		if (props.displaySliderArrows) {
-		// 			setTimeout(() => {
-		// 				if (itemSliderRef.value) {
-		// 					itemSliderRef.value.style.transform = 'scaleX(3.0)';
-		// 				}
-		// 			}, 500);
-		// 		}
-		// 	},
-		// );
 		return { itemSliderRef, move, setSliderClasses, moveSlider, maxScrollWidth, scrollLeft };
 	},
 });

@@ -25,12 +25,15 @@
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
 				:current-element="extraContentCurrentRef"
+				@upscale-small-elements="upscalePrograms"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
 						<div
 							v-for="hour in 25"
 							:key="hour"
+							class="hour"
+							:style="{ width: `${calcProgramMinutes('1:00:00')}px` }"
 						>
 							{{ `| ${hour - 1}:00` }}
 						</div>
@@ -44,7 +47,7 @@
 							<div
 								v-if="index === 0"
 								class="between-program"
-								:style="{ width: `${calcMinutesBetween(item, null) * 6 - 2}px` }"
+								:style="{ width: `${calcMinutesBetween(item, null) - 2}px` }"
 							></div>
 							<router-link
 								v-if="
@@ -59,8 +62,10 @@
 								role="link"
 								:title="item.title[0]"
 								class="programs"
-								:style="{ width: `${calcProgramDurationMinutes(item) * 6 - 2}px` }"
+								:style="{ width: `${calcProgramDurationMinutes(item) - 2}px` }"
 								:replace="router.currentRoute.value.name === 'Record' ? true : false"
+								:start-time="item.temporal_start_time_da_string"
+								:duration="`${calcProgramDurationMinutes(item) - 2}px`"
 								:data-testid="
 									addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${'item.id'}`, index)
 								"
@@ -70,12 +75,12 @@
 							<div
 								v-if="index === recordsForTheDay.length - 1"
 								class="between-program test"
-								:style="{ width: `${calcProgramGuideEnd(item) * 6 - 2}px` }"
+								:style="{ width: `${calcProgramGuideEnd(item) - 2}px` }"
 							></div>
 							<div
 								v-if="index < recordsForTheDay.length - 1"
 								class="between-program"
-								:style="{ width: `${calcMinutesBetween(item, recordsForTheDay[index + 1]) * 6 - 2}px` }"
+								:style="{ width: `${calcMinutesBetween(item, recordsForTheDay[index + 1]) - 2}px` }"
 							></div>
 						</div>
 					</div>
@@ -87,7 +92,7 @@
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { ComponentPublicInstance, computed, defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
+import { ComponentPublicInstance, computed, defineComponent, h, onUnmounted, PropType, ref, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -163,15 +168,71 @@ export default defineComponent({
 				return Number(v);
 			});
 			const minutes = (time[time.length - 1] >= 50 ? 1 : 0) + time[1] + time[0] * 60;
-			return minutes;
+			return minutes * 6;
 		};
 		const calcProgramDurationMinutes = (program: GenericSearchResultType) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
-			return Math.round(durationMinutes);
+			return Math.round(durationMinutes) * 6;
 		};
 		const calcProgramGuideEnd = (program: GenericSearchResultType) => {
 			const minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
 			return minutesBetween;
+		};
+
+		const upscalePrograms = (toUpscale: boolean) => {
+			const programs = document.querySelectorAll('.programs');
+
+			programs.forEach((p) => {
+				// console.log('HELLO', p);
+				if (p.clientWidth <= 40) {
+					const widthDifference = 40 - p.clientWidth;
+					const programStartHour = p.attributes.getNamedItem('start-time')?.value.split(':')[0];
+					if (toUpscale) {
+						gsap.to(p, {
+							width: 40 + 'px',
+							duration: 0.2,
+							onComplete: () => {
+								if (programStartHour) {
+									hourDisplayWidthChange(programStartHour, true, widthDifference);
+								}
+							},
+						});
+					} else {
+						gsap.to(p, {
+							width: p.attributes.getNamedItem('duration')?.value,
+							duration: 0.2,
+							onComplete: () => {
+								if (programStartHour) {
+									hourDisplayWidthChange(programStartHour, false, 0);
+								}
+							},
+						});
+					}
+				}
+			});
+		};
+		const hourDisplayWidthChange = (programHour: string, toUpscale: boolean, changeAmount: number) => {
+			const hourDisplay = document.querySelectorAll('.hour');
+			for (const hour of hourDisplay) {
+				let hourText = hour.TEXT_NODE.toString().split(':')[0];
+				if (hourText.length === 1) hourText = '0' + hourText;
+				if (hourText === programHour) {
+					console.log('hours', hourText === programHour);
+					if (toUpscale) {
+						gsap.to(hour, {
+							width: calcProgramMinutes('1:00:00') + changeAmount + 'px',
+							duration: 0.2,
+						});
+					} else {
+						gsap.to(hour, {
+							width: calcProgramMinutes('1:00:00') + 'px',
+							duration: 0.2,
+						});
+					}
+
+					break;
+				}
+			}
 		};
 		onUnmounted(() => {
 			dailyProgramExpanded.value = false;
@@ -192,6 +253,8 @@ export default defineComponent({
 			extraContentCurrentRef,
 			programSliderRef,
 			calcProgramGuideEnd,
+			upscalePrograms,
+			calcProgramMinutes,
 		};
 	},
 });
@@ -357,7 +420,6 @@ export default defineComponent({
 .hour-display > * {
 	font-size: clamp(1rem, 2vw, 2em);
 	font-size: 16px;
-	width: 360px;
 }
 .hour-display > *:last-child {
 	width: 50px;
