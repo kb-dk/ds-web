@@ -1,5 +1,5 @@
 <template>
-	<div class="slider-container">
+	<div :class="{ 'slider-container': displaySliderArrows }">
 		<div
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="direction-arrow left"
@@ -69,7 +69,6 @@ export default defineComponent({
 
 		const startAndCalculateOffset = (e: MouseEvent) => {
 			if (itemSliderRef.value) {
-				if (props.displaySliderArrows) emit('upscaleSmallElements', false);
 				isDown.value = true;
 				startX.value = e.pageX - itemSliderRef.value.offsetLeft;
 				scrollLeft.value = itemSliderRef.value.scrollLeft;
@@ -81,11 +80,6 @@ export default defineComponent({
 			if (itemSliderRef.value) {
 				isDown.value = false;
 				scrollLeft.value = itemSliderRef.value.scrollLeft;
-			}
-			if (props.displaySliderArrows) {
-				setTimeout(() => {
-					emit('upscaleSmallElements', true);
-				}, 1500);
 			}
 		};
 		const calculateMovement = (e: MouseEvent) => {
@@ -126,14 +120,14 @@ export default defineComponent({
 			} else {
 				scrollLeft.value += moveBy;
 			}
-			if (itemSliderRef.value) {
+			if (itemSliderRef.value && props.displaySliderArrows) {
 				itemSliderRef.value.scrollTo({ behavior: 'smooth', left: scrollLeft.value });
 			}
 		};
 		watch(
 			() => props.visible,
 			() => {
-				if (itemSliderRef.value) {
+				if (itemSliderRef.value && props.displaySliderArrows) {
 					maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
 					if (props.currentElement[0]) {
 						props.currentElement[0].$el.scrollIntoView({
@@ -143,6 +137,7 @@ export default defineComponent({
 							top: 0,
 						});
 					}
+					emit('upscaleSmallElements');
 				}
 			},
 		);
@@ -150,7 +145,7 @@ export default defineComponent({
 	},
 });
 </script>
-<style>
+<style scoped>
 .slider-container {
 	z-index: 0;
 	overflow-x: auto;

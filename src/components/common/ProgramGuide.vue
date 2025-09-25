@@ -92,7 +92,17 @@
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { ComponentPublicInstance, computed, defineComponent, h, onUnmounted, PropType, ref, watch } from 'vue';
+import {
+	ComponentPublicInstance,
+	computed,
+	defineComponent,
+	h,
+	onUnmounted,
+	PropType,
+	ref,
+	watch,
+	withKeys,
+} from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -179,66 +189,22 @@ export default defineComponent({
 			return minutesBetween;
 		};
 
-		const upscalePrograms = (toUpscale: boolean) => {
-			const programs = document.querySelectorAll('.programs');
-
-			programs.forEach((p) => {
-				// console.log('HELLO', p);
-				if (p.clientWidth <= 40) {
-					const widthDifference = 40 - p.clientWidth;
-					const programStartHour = p.attributes.getNamedItem('start-time')?.value.split(':')[0];
-					if (toUpscale) {
-						gsap.to(p, {
-							width: 40 + 'px',
-							duration: 0.2,
-							onComplete: () => {
-								if (programStartHour) {
-									hourDisplayWidthChange(programStartHour, true, widthDifference);
-								}
-							},
-						});
-					} else {
-						gsap.to(p, {
-							width: p.attributes.getNamedItem('duration')?.value,
-							duration: 0.2,
-							onComplete: () => {
-								if (programStartHour) {
-									hourDisplayWidthChange(programStartHour, false, 0);
-								}
-							},
-						});
+		const upscalePrograms = () => {
+			const programs = document.querySelectorAll<HTMLElement>('.programs');
+			for (let i = 0; i < programs.length; i++) {
+				if (programs[i].clientWidth < 30) {
+					const widthDifference = 30 - programs[i].clientWidth;
+					if (programs[i + 1] && programs[i + 1].clientWidth > 30) {
+						console.log(`${programs[i].clientWidth + widthDifference}px`);
+						programs[i].style.width = `${programs[i].clientWidth + widthDifference}px !important`;
+						programs[i + 1].style.width = `${programs[i + 1].clientWidth - widthDifference}px`;
 					}
-				}
-			});
-		};
-		const hourDisplayWidthChange = (programHour: string, toUpscale: boolean, changeAmount: number) => {
-			const hourDisplay = document.querySelectorAll('.hour');
-			for (const hour of hourDisplay) {
-				let hourText = hour.TEXT_NODE.toString().split(':')[0];
-				if (hourText.length === 1) hourText = '0' + hourText;
-				if (hourText === programHour) {
-					console.log('hours', hourText === programHour);
-					if (toUpscale) {
-						gsap.to(hour, {
-							width: calcProgramMinutes('1:00:00') + changeAmount + 'px',
-							duration: 0.2,
-						});
-					} else {
-						gsap.to(hour, {
-							width: calcProgramMinutes('1:00:00') + 'px',
-							duration: 0.2,
-						});
-					}
-
-					break;
 				}
 			}
 		};
+
 		onUnmounted(() => {
 			dailyProgramExpanded.value = false;
-		});
-		const timelapseImage = computed(() => {
-			return new URL(`@/assets/images/timegoes.svg`, import.meta.url).href;
 		});
 
 		return {
@@ -247,7 +213,6 @@ export default defineComponent({
 			extraContentRef,
 			router,
 			showThumbnails,
-			timelapseImage,
 			addTestDataEnrichment,
 			calcMinutesBetween,
 			extraContentCurrentRef,
@@ -328,7 +293,9 @@ export default defineComponent({
 	border: 1px solid #0a2e70;
 }
 .between-program {
-	height: 2em;
+	margin-top: 15px;
+	height: 3em;
+	background-color: rgb(196, 196, 196);
 }
 
 .time-slider {
