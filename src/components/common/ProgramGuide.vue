@@ -61,7 +61,7 @@
 								role="link"
 								:title="item.title[0]"
 								class="programs"
-								:style="{ width: `${calcProgramDurationMinutes(item, index) - 2}px` }"
+								:style="{ width: `${calcProgramDurationMinutes(item) - 2}px` }"
 								:replace="router.currentRoute.value.name === 'Record' ? true : false"
 								:data-testid="
 									addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${'item.id'}`, index)
@@ -169,7 +169,7 @@ export default defineComponent({
 			const minutes = (time[time.length - 1] >= 50 ? 1 : 0) + time[1] + time[0] * 60;
 			return minutes * 6;
 		};
-		const calcProgramDurationMinutes = (program: GenericSearchResultType, index: number) => {
+		const calcProgramDurationMinutes = (program: GenericSearchResultType) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
 			let durationWidth = Math.round(durationMinutes) * 6;
 			if (durationWidth < 30) {
