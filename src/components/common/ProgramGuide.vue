@@ -177,8 +177,6 @@ export default defineComponent({
 				durationWidth += addedAmount;
 				shortPrograms.value.push(addedAmount);
 			} else {
-				console.log(index);
-
 				durationWidth -= checkIfProgramReduction(durationWidth);
 			}
 
