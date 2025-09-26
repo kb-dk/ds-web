@@ -25,7 +25,6 @@
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
 				:current-element="extraContentCurrentRef"
-				@upscale-small-elements="upscalePrograms"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
@@ -62,10 +61,8 @@
 								role="link"
 								:title="item.title[0]"
 								class="programs"
-								:style="{ width: `${calcProgramDurationMinutes(item) - 2}px` }"
+								:style="{ width: `${calcProgramDurationMinutes(item, index) - 2}px` }"
 								:replace="router.currentRoute.value.name === 'Record' ? true : false"
-								:start-time="item.temporal_start_time_da_string"
-								:duration="`${calcProgramDurationMinutes(item) - 2}px`"
 								:data-testid="
 									addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${'item.id'}`, index)
 								"
@@ -92,17 +89,7 @@
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import {
-	ComponentPublicInstance,
-	computed,
-	defineComponent,
-	h,
-	onUnmounted,
-	PropType,
-	ref,
-	watch,
-	withKeys,
-} from 'vue';
+import { ComponentPublicInstance, defineComponent, onUnmounted, PropType, ref } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -142,6 +129,7 @@ export default defineComponent({
 		const extraContentCurrentRef = ref<Array<ComponentPublicInstance<HTMLElement> | null>>([]);
 		const programSliderRef = ref<HTMLElement | null>(null);
 		const router = useRouter();
+		const shortPrograms = ref<Array<number>>([]);
 		const showThumbnails = () => {
 			dailyProgramExpanded.value = !dailyProgramExpanded.value;
 			if (dailyProgramExpanded.value === true) {
@@ -166,11 +154,12 @@ export default defineComponent({
 		};
 		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null) => {
 			if (p2 === null) {
-				return calcProgramMinutes(p1.temporal_start_time_da_string);
+				let minutesBetween = calcProgramMinutes(p1.temporal_start_time_da_string);
+				return minutesBetween - checkIfProgramReduction(minutesBetween);
 			} else {
 				const minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
-				return minutesBetween;
+				return minutesBetween - checkIfProgramReduction(minutesBetween);
 			}
 		};
 		const calcProgramMinutes = (programTime: string) => {
@@ -180,27 +169,35 @@ export default defineComponent({
 			const minutes = (time[time.length - 1] >= 50 ? 1 : 0) + time[1] + time[0] * 60;
 			return minutes * 6;
 		};
-		const calcProgramDurationMinutes = (program: GenericSearchResultType) => {
+		const calcProgramDurationMinutes = (program: GenericSearchResultType, index: number) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
-			return Math.round(durationMinutes) * 6;
+			let durationWidth = Math.round(durationMinutes) * 6;
+			if (durationWidth < 30) {
+				const addedAmount = 30 - durationWidth;
+				durationWidth += addedAmount;
+				shortPrograms.value.push(addedAmount);
+			} else {
+				console.log(index);
+
+				durationWidth -= checkIfProgramReduction(durationWidth);
+			}
+
+			return durationWidth;
 		};
 		const calcProgramGuideEnd = (program: GenericSearchResultType) => {
-			const minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
+			let minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
+			minutesBetween -= checkIfProgramReduction(minutesBetween);
 			return minutesBetween;
 		};
-
-		const upscalePrograms = () => {
-			const programs = document.querySelectorAll<HTMLElement>('.programs');
-			for (let i = 0; i < programs.length; i++) {
-				if (programs[i].clientWidth < 30) {
-					const widthDifference = 30 - programs[i].clientWidth;
-					if (programs[i + 1] && programs[i + 1].clientWidth > 30) {
-						console.log(`${programs[i].clientWidth + widthDifference}px`);
-						programs[i].style.width = `${programs[i].clientWidth + widthDifference}px !important`;
-						programs[i + 1].style.width = `${programs[i + 1].clientWidth - widthDifference}px`;
-					}
+		const checkIfProgramReduction = (currentWidth: number) => {
+			if (currentWidth > 55) {
+				if (shortPrograms.value[0]) {
+					const reduceBy = shortPrograms.value[0];
+					shortPrograms.value.shift();
+					return reduceBy;
 				}
 			}
+			return 0;
 		};
 
 		onUnmounted(() => {
@@ -218,8 +215,8 @@ export default defineComponent({
 			extraContentCurrentRef,
 			programSliderRef,
 			calcProgramGuideEnd,
-			upscalePrograms,
 			calcProgramMinutes,
+			shortPrograms,
 		};
 	},
 });

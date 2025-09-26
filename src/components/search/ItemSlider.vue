@@ -39,7 +39,7 @@ export default defineComponent({
 		currentElement: { type: Array<ComponentPublicInstance<HTMLElement> | null>, required: false, default: null },
 	},
 	emits: ['upscaleSmallElements'],
-	setup(props, { emit }) {
+	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
 		const isDown = ref(false);
 		const startX = ref(0);
@@ -137,7 +137,6 @@ export default defineComponent({
 							top: 0,
 						});
 					}
-					emit('upscaleSmallElements');
 				}
 			},
 		);
