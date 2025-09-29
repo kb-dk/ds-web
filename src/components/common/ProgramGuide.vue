@@ -7,7 +7,8 @@
 				:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
 				@click="showThumbnails()"
 			>
-				{{ `${creator} ${startDate}` }}
+				<span class="material-icons calendar-view-icon">calendar_view_day</span>
+				{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
 				<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
 					expand_more
 				</span>
@@ -20,22 +21,24 @@
 			<ItemSlider
 				ref="programSliderRef"
 				:padding="true"
-				bg="#f0fbff"
+				bg="#f3f3f3"
 				item-class="extra-thumbnail"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
 				:current-element="extraContentCurrentRef"
+				bg-scroll-white="true"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
 						<div
-							v-for="hour in 25"
+							v-for="hour in 24"
 							:key="hour"
 							class="hour"
 							:style="{ width: `${calcProgramMinutes('1:00:00')}px` }"
 						>
-							{{ `| ${hour - 1}:00` }}
+							{{ `| ${hour - 1 < 10 ? `0${hour - 1}` : hour - 1}:00` }}
 						</div>
+						<div class="hour">| 24:00</div>
 					</div>
 					<div class="program-display">
 						<div
@@ -45,9 +48,15 @@
 						>
 							<div
 								v-if="index === 0"
+								:title="$t('search.noGuideContent')"
 								class="between-program"
-								:style="{ width: `${calcMinutesBetween(item, null) - 2}px` }"
-							></div>
+								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+							>
+								<div class="between-program-content">
+									<span class="material-icons">remove</span>
+									{{ $t('search.noGuideContent') }}
+								</div>
+							</div>
 							<router-link
 								v-if="
 									index === recordsForTheDay.length - 1 ||
@@ -59,37 +68,62 @@
 								draggable="false"
 								:to="{ name: 'Record', params: { id: item.id }, query: { autoplay: true } }"
 								role="link"
-								:title="item.title[0]"
+								:title="`${$t('search.title')} - ${item.title[0]}\n${$t('search.startTime')} - ${
+									item.temporal_start_time_da_string
+								}`"
 								class="programs"
-								:style="{ width: `${calcProgramDurationMinutes(item) - 2}px` }"
+								:style="{ width: `${getProgramWidth(`programs${index}`) - 8}px` }"
 								:replace="router.currentRoute.value.name === 'Record' ? true : false"
 								:data-testid="
 									addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${'item.id'}`, index)
 								"
+								@load="calcProgramDurationMinutes(item, `programs${index}`)"
 							>
-								{{ item.title[0] }}
+								<div class="program-text">
+									<span class="material-icons">play_circle</span>
+									{{ item.title[0] }}
+								</div>
+								<div class="program-text">
+									<span class="material-icons">schedule</span>
+									{{ item.temporal_start_time_da_string }}
+								</div>
 							</router-link>
 							<div
 								v-if="index === recordsForTheDay.length - 1"
 								class="between-program test"
-								:style="{ width: `${calcProgramGuideEnd(item) - 2}px` }"
-							></div>
+								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+							>
+								<div
+									:title="$t('search.noGuideContent')"
+									class="between-program-content"
+								>
+									<span class="material-icons">remove</span>
+									{{ $t('search.noGuideContent') }}
+								</div>
+							</div>
 							<div
 								v-if="index < recordsForTheDay.length - 1"
+								:title="$t('search.noGuideContent')"
 								class="between-program"
-								:style="{ width: `${calcMinutesBetween(item, recordsForTheDay[index + 1]) - 2}px` }"
-							></div>
+								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+							>
+								<div class="between-program-content">
+									<span class="material-icons">remove</span>
+									{{ $t('search.noGuideContent') }}
+								</div>
+							</div>
 						</div>
 					</div>
 				</template>
 			</ItemSlider>
 		</div>
+		<div class="hors-dot">•</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { ComponentPublicInstance, defineComponent, onUnmounted, PropType, ref } from 'vue';
+import { ComponentPublicInstance, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -123,13 +157,14 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	setup() {
+	setup(props) {
 		const dailyProgramExpanded = ref(false);
 		const extraContentRef = ref<HTMLElement | null>(null);
 		const extraContentCurrentRef = ref<Array<ComponentPublicInstance<HTMLElement> | null>>([]);
 		const programSliderRef = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const shortPrograms = ref<Array<number>>([]);
+		const programWidth = ref<Map<string, number>>(new Map());
 		const showThumbnails = () => {
 			dailyProgramExpanded.value = !dailyProgramExpanded.value;
 			if (dailyProgramExpanded.value === true) {
@@ -139,10 +174,12 @@ export default defineComponent({
 			}
 
 			gsap.to(extraContentRef.value, {
-				height: dailyProgramExpanded.value ? 'auto' : '0px',
+				height: dailyProgramExpanded.value ? '175px' : '0px',
 				opacity: dailyProgramExpanded.value ? '1' : '0',
-				marginBottom: dailyProgramExpanded.value ? '20px' : '0px',
-				duration: 0.2,
+				paddingTop: dailyProgramExpanded.value ? '20px' : '0px',
+				paddingBottom: dailyProgramExpanded.value ? '12px' : '0px',
+				duration: 0.5,
+				ease: 'expo.inOut',
 				onComplete: () => {
 					if (dailyProgramExpanded.value === false) {
 						gsap.set(extraContentRef.value, {
@@ -152,13 +189,29 @@ export default defineComponent({
 				},
 			});
 		};
-		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null) => {
+		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null, key: string) => {
 			if (p2 === null) {
 				let minutesBetween = calcProgramMinutes(p1.temporal_start_time_da_string);
+				if (minutesBetween < 38) {
+					const addedAmount = 38 - minutesBetween;
+					minutesBetween += addedAmount;
+					shortPrograms.value.push(addedAmount);
+				} else {
+					minutesBetween -= checkIfProgramReduction(minutesBetween);
+				}
+				programWidth.value.set(key, minutesBetween);
 				return minutesBetween - checkIfProgramReduction(minutesBetween);
 			} else {
-				const minutesBetween =
+				let minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
+				if (minutesBetween < 38) {
+					const addedAmount = 38 - minutesBetween;
+					minutesBetween += addedAmount;
+					shortPrograms.value.push(addedAmount);
+				} else {
+					minutesBetween -= checkIfProgramReduction(minutesBetween);
+				}
+				programWidth.value.set(key, minutesBetween);
 				return minutesBetween - checkIfProgramReduction(minutesBetween);
 			}
 		};
@@ -169,26 +222,29 @@ export default defineComponent({
 			const minutes = (time[time.length - 1] >= 50 ? 1 : 0) + time[1] + time[0] * 60;
 			return minutes * 6;
 		};
-		const calcProgramDurationMinutes = (program: GenericSearchResultType) => {
+		const calcProgramDurationMinutes = (program: GenericSearchResultType, key: string) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
 			let durationWidth = Math.round(durationMinutes) * 6;
-			if (durationWidth < 30) {
-				const addedAmount = 30 - durationWidth;
+			if (durationWidth < 38) {
+				const addedAmount = 38 - durationWidth;
 				durationWidth += addedAmount;
 				shortPrograms.value.push(addedAmount);
 			} else {
 				durationWidth -= checkIfProgramReduction(durationWidth);
 			}
+			programWidth.value.set(key, durationWidth);
+			console.log(programWidth.value);
 
 			return durationWidth;
 		};
-		const calcProgramGuideEnd = (program: GenericSearchResultType) => {
+		const calcProgramGuideEnd = (program: GenericSearchResultType, key: string) => {
 			let minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
 			minutesBetween -= checkIfProgramReduction(minutesBetween);
+			programWidth.value.set(key, minutesBetween);
 			return minutesBetween;
 		};
 		const checkIfProgramReduction = (currentWidth: number) => {
-			if (currentWidth > 55) {
+			if (currentWidth > 65) {
 				if (shortPrograms.value[0]) {
 					const reduceBy = shortPrograms.value[0];
 					shortPrograms.value.shift();
@@ -197,7 +253,27 @@ export default defineComponent({
 			}
 			return 0;
 		};
+		const getProgramWidth = (key: string) => {
+			const width = programWidth.value.get(key);
 
+			return width ? width : 0;
+		};
+		watch(
+			() => props.recordsForTheDay,
+			() => {
+				for (let i = 0; i < props.recordsForTheDay.length; i++) {
+					if (i === 0) {
+						calcMinutesBetween(props.recordsForTheDay[i], null, `between-programs0`);
+					}
+					calcProgramDurationMinutes(props.recordsForTheDay[i], `programs${i}`);
+					if (i === props.recordsForTheDay.length - 1) {
+						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
+					} else {
+						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `programs-between${i}`);
+					}
+				}
+			},
+		);
 		onUnmounted(() => {
 			dailyProgramExpanded.value = false;
 		});
@@ -215,6 +291,8 @@ export default defineComponent({
 			calcProgramGuideEnd,
 			calcProgramMinutes,
 			shortPrograms,
+			programWidth,
+			getProgramWidth,
 		};
 	},
 });
@@ -225,7 +303,6 @@ export default defineComponent({
 	cursor: pointer;
 	border: 1px solid rgba(230, 230, 230, 1);
 	border-radius: 0px;
-	background-color: transparent;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -238,6 +315,51 @@ export default defineComponent({
 	padding: 5px 15px;
 	width: fit-content;
 	font-size: 18px;
+	border-radius: var(--Rounded-md, 4px) var(--Rounded-md, 4px) 0 0;
+	border: 1px solid #002e70;
+	background-color: #f0fbff;
+}
+.guide-button.active {
+	background-color: #00255a;
+	color: white;
+}
+.guide-button:hover {
+	background-color: #c4f1ed;
+	color: #0a2e70;
+}
+.daily-program {
+	--bg-color: #ffffff;
+
+	color: #323232;
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	margin-bottom: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+	background-color: transparent;
+}
+.daily-program:hover .hors-dot {
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0s;
+}
+.hors-dot {
+	position: absolute;
+	height: 10px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	left: 50%;
+	width: 20px;
+	line-height: 0.5;
+	margin-top: -3px;
+	transform-origin: center;
+	will-change: transform;
+	background-color: transparent;
+	z-index: 1;
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0.2s;
 }
 .daily-program-expanded {
 	overflow-y: hidden;
@@ -264,18 +386,22 @@ export default defineComponent({
 }
 .programs {
 	margin-top: 15px;
-	height: 3em;
-	background-color: #0a2e70;
+	height: 60px;
 	border: 1px solid white;
 	box-sizing: border-box;
 	word-break: keep-all;
 	overflow: hidden;
-	color: white;
+	background-color: white;
+	color: #0a2e70;
 	text-align: center;
 	text-decoration: none;
 	margin-left: 1px;
 	transition: all 0.25s linear 0s;
-	margin-right: 1px;
+	padding: 2px 2px 2px 8px;
+	margin-right: 8px;
+	font-size: 18px;
+	border-radius: 4px;
+	white-space: nowrap;
 }
 .programs:hover {
 	background-color: #c4f1ed;
@@ -288,11 +414,34 @@ export default defineComponent({
 	border: 1px solid #0a2e70;
 }
 .between-program {
+	width: 0px;
 	margin-top: 15px;
-	height: 3em;
+	margin-right: 8px;
+	height: 60px;
 	background-color: rgb(196, 196, 196);
+	border-radius: 4px;
 }
-
+.between-program-content {
+	font-size: 18px;
+	max-width: 100%;
+	width: fit-content;
+	height: 100%;
+	position: -webkit-sticky;
+	position: sticky;
+	left: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-decoration: none;
+	word-break: keep-all;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+	color: #757575;
+	box-sizing: border-box;
+}
+.between-program-content > .material-icons {
+	color: #002e70;
+}
 .time-slider {
 	flex-direction: column;
 	align-items: flex-start;
@@ -303,23 +452,13 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	padding-bottom: 10px;
-	background-color: #f0fbff;
+	background-color: #f3f3f3;
 	position: relative;
-	border: 1px solid #0a2e70;
 	box-sizing: border-box;
+	padding: 20px 12px 12px 12px;
+	box-shadow: 0 0 14px 0 rgba(153, 153, 153, 0.34) inset;
 }
-.extra-content:after {
-	z-index: 1;
-	display: block;
-	content: '';
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-}
+
 .extra-thumbnail {
 	position: relative;
 	z-index: 1;
@@ -338,10 +477,25 @@ export default defineComponent({
 	-ms-user-drag: none;
 	-o-user-drag: none;
 	user-drag: none;
+	overflow: visible;
 }
 .program-display {
 	display: flex;
 	flex-direction: row;
+	align-items: start;
+}
+.program-text {
+	display: flex;
+	align-items: center;
+	text-align: left;
+}
+.program-text > .material-icons {
+	font-size: 18px;
+	margin-right: 2px;
+	justify-content: center;
+}
+.calendar-view-icon {
+	font-size: 18px;
 }
 .same-time-program {
 	display: flex;
@@ -403,6 +557,14 @@ export default defineComponent({
 		height: 0em;
 	}
 }
+
+@media (min-width: 640px) {
+	.daily-program {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+
 @media (min-width: 800px) {
 	.thumbnail-button {
 		width: auto;
@@ -410,15 +572,6 @@ export default defineComponent({
 	}
 	.thumbnail-button.active {
 		margin-bottom: 0px;
-	}
-	.extra-content {
-		width: calc(100% - 20px);
-	}
-}
-
-@media (min-width: 1340px) {
-	.extra-content {
-		width: 100%;
 	}
 }
 </style>

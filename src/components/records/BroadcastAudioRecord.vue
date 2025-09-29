@@ -106,7 +106,6 @@
 				</div>
 			</div>
 		</div>
-		<h3>{{ $t('search.programGuide') }}</h3>
 		<ProgramGuide
 			:creator="recordData.publication.publishedOn.broadcastDisplayName"
 			:start-date="getBroadcastDate(recordData.startTime, locale)"

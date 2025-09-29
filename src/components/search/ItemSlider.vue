@@ -5,7 +5,9 @@
 			class="direction-arrow left"
 			@click="moveSlider(-250)"
 		>
-			<span class="material-icons">arrow_back_ios</span>
+			<div class="direction-arrow-inner">
+				<span class="material-icons">arrow_back_ios</span>
+			</div>
 		</div>
 		<div
 			ref="itemSliderRef"
@@ -18,7 +20,7 @@
 			class="direction-arrow right"
 			@click="moveSlider(250)"
 		>
-			<span class="material-icons">arrow_forward_ios</span>
+			<div class="direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
 		</div>
 	</div>
 </template>
@@ -132,7 +134,7 @@ export default defineComponent({
 					if (props.currentElement[0]) {
 						props.currentElement[0].$el.scrollIntoView({
 							behavior: 'smooth',
-							block: 'center',
+							block: 'nearest',
 							inline: 'center',
 							top: 0,
 						});
@@ -182,7 +184,9 @@ export default defineComponent({
 .item-slider.white-scrollbar::-webkit-scrollbar-thumb {
 	background-color: rgb(66, 66, 66);
 }
-
+.arrow-slider.item-slider.white-scrollbar::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+}
 .item-slider::-webkit-scrollbar-track {
 	background-color: #002e70;
 }
@@ -190,42 +194,68 @@ export default defineComponent({
 .item-slider.active a {
 	pointer-events: none;
 }
-
 .item-slider::-webkit-scrollbar {
 	height: 18px;
 }
-
+.arrow-slider.item-slider.white-scrollbar::-webkit-scrollbar {
+	height: 10px;
+}
 .item-slider::-webkit-scrollbar-thumb {
 	background-color: rgb(255, 255, 255);
 }
 .arrow-slider {
 	flex-direction: column;
 	align-items: flex-start;
+	gap: 0px;
 }
 .direction-arrow {
 	position: absolute;
-	height: 100%;
-	text-align: center;
-	width: 2em;
+	height: 48px;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+	width: 48px;
 	color: rgba(0, 0, 0, 0.719);
 	display: flex;
+	opacity: 0;
 	align-items: center;
 	z-index: 10;
-	background-color: rgba(255, 255, 255, 0.438);
+	background-color: rgb(255, 255, 255);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
 	cursor: pointer;
-	pointer-events: all;
+	pointer-events: none;
+	top: 45px;
+	border-radius: 30px;
 }
 .direction-arrow.right {
 	right: 0px;
-	justify-content: flex-start;
+	justify-content: center;
 }
 .direction-arrow.left {
 	left: 0px;
-	justify-content: flex-end;
+	justify-content: center;
+}
+.direction-arrow-inner {
+	height: 40px;
+	width: 40px;
+	border-radius: 30px;
+	background-color: #002e70;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	display: flex;
+	text-align: center;
+}
+.direction-arrow.left > .direction-arrow-inner > .material-icons {
+	margin-left: 5px;
+}
+
+@media (min-width: 990px) {
+	.direction-arrow {
+		opacity: 1;
+		pointer-events: all;
+	}
 }
 </style>

@@ -234,6 +234,7 @@
      "relatedSubjects":"Related subjects",
      "relatedContent": "Related content",
       "programGuide":"Program guide",
+          "noGuideContent":"Nothing in the archive",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} results)",
      "maybeYouMeant": "Maybe you meant?",
