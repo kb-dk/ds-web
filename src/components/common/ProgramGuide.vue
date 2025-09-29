@@ -233,7 +233,6 @@ export default defineComponent({
 				durationWidth -= checkIfProgramReduction(durationWidth);
 			}
 			programWidth.value.set(key, durationWidth);
-			console.log(programWidth.value);
 
 			return durationWidth;
 		};

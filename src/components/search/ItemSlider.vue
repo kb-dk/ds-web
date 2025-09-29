@@ -1,11 +1,11 @@
 <template>
-	<div :class="{ 'slider-container': displaySliderArrows }">
+	<div :class="{ 'item-slider-container': displaySliderArrows }">
 		<div
 			v-if="displaySliderArrows && scrollLeft >= 25"
-			class="direction-arrow left"
+			class="item-slider-direction-arrow left"
 			@click="moveSlider(-250)"
 		>
-			<div class="direction-arrow-inner">
+			<div class="item-slider-direction-arrow-inner">
 				<span class="material-icons">arrow_back_ios</span>
 			</div>
 		</div>
@@ -17,10 +17,10 @@
 		</div>
 		<div
 			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
-			class="direction-arrow right"
+			class="item-slider-direction-arrow right"
 			@click="moveSlider(250)"
 		>
-			<div class="direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
+			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
 		</div>
 	</div>
 </template>
@@ -54,7 +54,6 @@ export default defineComponent({
 				itemSliderRef.value.addEventListener('mouseleave', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mouseup', stopMovementOnParent);
 				itemSliderRef.value.addEventListener('mousemove', calculateMovement);
-				// itemSliderRef.value.addEventListener('scroll', updateSrollLeft);
 				itemSliderRef.value.style.backgroundColor = props.bg;
 			}
 		});
@@ -65,7 +64,6 @@ export default defineComponent({
 				itemSliderRef.value.removeEventListener('mouseleave', stopMovementOnParent);
 				itemSliderRef.value.removeEventListener('mouseup', stopMovementOnParent);
 				itemSliderRef.value.removeEventListener('mousemove', calculateMovement);
-				// itemSliderRef.value.removeEventListener('scroll', updateSrollLeft);
 			}
 		});
 
@@ -146,8 +144,9 @@ export default defineComponent({
 	},
 });
 </script>
-<style scoped>
-.slider-container {
+<!--Should not be scoped, in order to keep the pointer event none when moving-->
+<style>
+.item-slider-container {
 	z-index: 0;
 	overflow-x: auto;
 	position: relative;
@@ -208,7 +207,7 @@ export default defineComponent({
 	align-items: flex-start;
 	gap: 0px;
 }
-.direction-arrow {
+.item-slider-direction-arrow {
 	position: absolute;
 	height: 48px;
 	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
@@ -229,15 +228,15 @@ export default defineComponent({
 	top: 45px;
 	border-radius: 30px;
 }
-.direction-arrow.right {
+.item-slider-direction-arrow.right {
 	right: 0px;
 	justify-content: center;
 }
-.direction-arrow.left {
+.item-slider-direction-arrow.left {
 	left: 0px;
 	justify-content: center;
 }
-.direction-arrow-inner {
+.item-slider-direction-arrow-inner {
 	height: 40px;
 	width: 40px;
 	border-radius: 30px;
@@ -248,12 +247,12 @@ export default defineComponent({
 	display: flex;
 	text-align: center;
 }
-.direction-arrow.left > .direction-arrow-inner > .material-icons {
+.item-slider-direction-arrow.left > .item-slider-direction-arrow-inner > .material-icons {
 	margin-left: 5px;
 }
 
 @media (min-width: 990px) {
-	.direction-arrow {
+	.item-slider-direction-arrow {
 		opacity: 1;
 		pointer-events: all;
 	}
