@@ -26,7 +26,7 @@
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
 				:current-element="extraContentCurrentRef"
-				bg-scroll-white="true"
+				bg-scroll-blue="true"
 			>
 				<template #default="slotProps">
 					<div class="hour-display">
@@ -50,11 +50,14 @@
 								v-if="index === 0"
 								:title="$t('search.noGuideContent')"
 								class="between-program"
-								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+								:style="{
+									width: `${getProgramWidth(`first-between-programs`) - 8}px`,
+									marginRight: getProgramWidth(`first-between-programs`) > 0 ? '8px' : '0px',
+								}"
 							>
 								<div class="between-program-content">
 									<span class="material-icons">remove</span>
-									{{ $t('search.noGuideContent') }}
+									{{ `${getProgramWidth(`first-between-programs`) > 60 ? $t('search.noGuideContent') : ''} ` }}
 								</div>
 							</div>
 							<router-link
@@ -91,25 +94,31 @@
 							<div
 								v-if="index === recordsForTheDay.length - 1"
 								class="between-program test"
-								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+								:style="{
+									width: `${getProgramWidth(`between-programs${index}`) - 8}px`,
+									marginRight: getProgramWidth(`between-programs${index}`) > 0 ? '8px' : '0px',
+								}"
 							>
 								<div
 									:title="$t('search.noGuideContent')"
 									class="between-program-content"
 								>
 									<span class="material-icons">remove</span>
-									{{ $t('search.noGuideContent') }}
+									{{ `${getProgramWidth(`between-programs${index}`) > 60 ? $t('search.noGuideContent') : ''} ` }}
 								</div>
 							</div>
 							<div
 								v-if="index < recordsForTheDay.length - 1"
 								:title="$t('search.noGuideContent')"
 								class="between-program"
-								:style="{ width: `${getProgramWidth(`between-programs${index}`) - 8}px` }"
+								:style="{
+									width: `${getProgramWidth(`between-programs${index}`) - 8}px`,
+									marginRight: getProgramWidth(`between-programs${index}`) > 0 ? '8px' : '0px',
+								}"
 							>
 								<div class="between-program-content">
 									<span class="material-icons">remove</span>
-									{{ $t('search.noGuideContent') }}
+									{{ `${getProgramWidth(`between-programs${index}`) > 60 ? $t('search.noGuideContent') : ''} ` }}
 								</div>
 							</div>
 						</div>
@@ -123,7 +132,7 @@
 
 <script lang="ts">
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { ComponentPublicInstance, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue';
+import { ComponentPublicInstance, defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
 import ItemSlider from '@/components/search/ItemSlider.vue';
@@ -192,27 +201,23 @@ export default defineComponent({
 		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null, key: string) => {
 			if (p2 === null) {
 				let minutesBetween = calcProgramMinutes(p1.temporal_start_time_da_string);
-				if (minutesBetween < 38) {
+
+				if (minutesBetween < 38 && minutesBetween > 0) {
 					const addedAmount = 38 - minutesBetween;
 					minutesBetween += addedAmount;
 					shortPrograms.value.push(addedAmount);
-				} else {
-					minutesBetween -= checkIfProgramReduction(minutesBetween);
 				}
-				programWidth.value.set(key, minutesBetween);
-				return minutesBetween - checkIfProgramReduction(minutesBetween);
+				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
 			} else {
 				let minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
-				if (minutesBetween < 38) {
+				if (minutesBetween < 38 && minutesBetween > 0) {
 					const addedAmount = 38 - minutesBetween;
 					minutesBetween += addedAmount;
 					shortPrograms.value.push(addedAmount);
-				} else {
-					minutesBetween -= checkIfProgramReduction(minutesBetween);
 				}
-				programWidth.value.set(key, minutesBetween);
-				return minutesBetween - checkIfProgramReduction(minutesBetween);
+				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
+				console.log(key, minutesBetween, programWidth.value);
 			}
 		};
 		const calcProgramMinutes = (programTime: string) => {
@@ -229,18 +234,20 @@ export default defineComponent({
 				const addedAmount = 38 - durationWidth;
 				durationWidth += addedAmount;
 				shortPrograms.value.push(addedAmount);
-			} else {
-				durationWidth -= checkIfProgramReduction(durationWidth);
 			}
-			programWidth.value.set(key, durationWidth);
-
-			return durationWidth;
+			programWidth.value.set(key, durationWidth - checkIfProgramReduction(durationWidth));
 		};
 		const calcProgramGuideEnd = (program: GenericSearchResultType, key: string) => {
-			let minutesBetween = calcProgramMinutes('23:59:59') - calcProgramMinutes(program.temporal_end_time_da_string);
-			minutesBetween -= checkIfProgramReduction(minutesBetween);
+			const latestTime = calcProgramMinutes(program.temporal_end_time_da_string);
+			const endTime = calcProgramMinutes('23:59:59');
+			let minutesBetween = 0;
+			if (latestTime < endTime) {
+				if (endTime - latestTime > 0) {
+					minutesBetween -= checkIfProgramReduction(minutesBetween);
+				}
+			}
+
 			programWidth.value.set(key, minutesBetween);
-			return minutesBetween;
 		};
 		const checkIfProgramReduction = (currentWidth: number) => {
 			if (currentWidth > 65) {
@@ -262,13 +269,13 @@ export default defineComponent({
 			() => {
 				for (let i = 0; i < props.recordsForTheDay.length; i++) {
 					if (i === 0) {
-						calcMinutesBetween(props.recordsForTheDay[i], null, `between-programs0`);
+						calcMinutesBetween(props.recordsForTheDay[i], null, `first-between-programs`);
 					}
 					calcProgramDurationMinutes(props.recordsForTheDay[i], `programs${i}`);
 					if (i === props.recordsForTheDay.length - 1) {
 						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
-					} else {
-						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `programs-between${i}`);
+					} else if (i > 0) {
+						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `between-programs${i}`);
 					}
 				}
 			},
@@ -415,7 +422,6 @@ export default defineComponent({
 .between-program {
 	width: 0px;
 	margin-top: 15px;
-	margin-right: 8px;
 	height: 60px;
 	background-color: rgb(196, 196, 196);
 	border-radius: 4px;
@@ -439,6 +445,9 @@ export default defineComponent({
 	box-sizing: border-box;
 }
 .between-program-content > .material-icons {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 	color: #002e70;
 }
 .time-slider {

@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { ComponentPublicInstance, computed, onUnmounted, PropType, watch } from 'vue';
+import { ComponentPublicInstance, onUnmounted, watch } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
@@ -35,6 +35,7 @@ export default defineComponent({
 		itemClass: { type: String, required: true },
 		bg: { type: String, default: 'white' },
 		bgScrollWhite: { type: String, default: '' },
+		bgScrollBlue: { type: String, default: '' },
 		padding: { type: Boolean, default: false },
 		displaySliderArrows: { type: Boolean, default: false },
 		visible: { type: Boolean, required: false },
@@ -101,6 +102,8 @@ export default defineComponent({
 			}
 			if (props.bgScrollWhite) {
 				activeClasses += ' white-scrollbar';
+			} else if (props.bgScrollBlue) {
+				activeClasses += ' blue-scrollbar';
 			}
 			if (props.padding) {
 				activeClasses += ' padding';
@@ -175,7 +178,7 @@ export default defineComponent({
 	padding-left: 15px;
 	padding-right: 15px;
 }
-
+.item-slider.blue-scrollbar::-webkit-scrollbar-track,
 .item-slider.white-scrollbar::-webkit-scrollbar-track {
 	background-color: #ffffff00;
 }
@@ -183,7 +186,10 @@ export default defineComponent({
 .item-slider.white-scrollbar::-webkit-scrollbar-thumb {
 	background-color: rgb(66, 66, 66);
 }
-.arrow-slider.item-slider.white-scrollbar::-webkit-scrollbar-thumb {
+.item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
+	background-color: #002e70;
+}
+.item-slider::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 .item-slider::-webkit-scrollbar-track {
@@ -196,7 +202,7 @@ export default defineComponent({
 .item-slider::-webkit-scrollbar {
 	height: 18px;
 }
-.arrow-slider.item-slider.white-scrollbar::-webkit-scrollbar {
+.item-slider::-webkit-scrollbar {
 	height: 10px;
 }
 .item-slider::-webkit-scrollbar-thumb {

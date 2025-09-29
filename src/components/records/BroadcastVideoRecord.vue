@@ -112,6 +112,7 @@
 			:start-date="getBroadcastDate(recordData.startTime, locale)"
 			:records-for-the-day="recordsForTheDay"
 			:current-record-index="currentRecord"
+			class="program-guide"
 		></ProgramGuide>
 		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
@@ -151,7 +152,6 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
-import { startDate } from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -469,6 +469,9 @@ h4 {
 	border-radius: 4px;
 	width: fit-content;
 	height: auto;
+}
+.program-guide {
+	margin-bottom: 20px;
 }
 
 /* First breakpoint for tablet */

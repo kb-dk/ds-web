@@ -111,6 +111,7 @@
 			:start-date="getBroadcastDate(recordData.startTime, locale)"
 			:records-for-the-day="recordsForTheDay"
 			:current-record-index="currentRecord"
+			class="program-guide"
 		></ProgramGuide>
 		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
@@ -464,7 +465,9 @@ h4 {
 	width: fit-content;
 	height: auto;
 }
-
+.program-guide {
+	margin-bottom: 20px;
+}
 /* First breakpoint for tablet */
 
 @media (min-width: 640px) {
