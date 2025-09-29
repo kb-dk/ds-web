@@ -61,7 +61,7 @@ export default defineComponent({
 	name: 'Hero',
 
 	setup() {
-		const currentProgress = ref(30);
+		const currentProgress = ref(37);
 		const { t } = useI18n();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
