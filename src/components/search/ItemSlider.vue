@@ -239,7 +239,6 @@ export default defineComponent({
 	justify-content: center;
 }
 .item-slider-direction-arrow.left {
-	left: 0px;
 	justify-content: center;
 }
 .item-slider-direction-arrow-inner {
@@ -248,15 +247,14 @@ export default defineComponent({
 	border-radius: 30px;
 	background-color: #002e70;
 	justify-content: center;
-	align-items: center;
 	color: white;
+	align-items: center;
 	display: flex;
 	text-align: center;
 }
 .item-slider-direction-arrow.left > .item-slider-direction-arrow-inner > .material-icons {
-	margin-left: 5px;
+	margin-left: 7px;
 }
-
 @media (min-width: 990px) {
 	.item-slider-direction-arrow {
 		opacity: 1;

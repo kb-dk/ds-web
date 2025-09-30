@@ -211,13 +211,14 @@ export default defineComponent({
 			} else {
 				let minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
+				console.log(p2.temporal_start_time_da_string, p1.temporal_end_time_da_string);
+
 				if (minutesBetween < 38 && minutesBetween > 0) {
 					const addedAmount = 38 - minutesBetween;
 					minutesBetween += addedAmount;
 					shortPrograms.value.push(addedAmount);
 				}
 				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
-				console.log(key, minutesBetween, programWidth.value);
 			}
 		};
 		const calcProgramMinutes = (programTime: string) => {
@@ -241,8 +242,10 @@ export default defineComponent({
 			const latestTime = calcProgramMinutes(program.temporal_end_time_da_string);
 			const endTime = calcProgramMinutes('23:59:59');
 			let minutesBetween = 0;
+
 			if (latestTime < endTime) {
 				if (endTime - latestTime > 0) {
+					minutesBetween = endTime - latestTime;
 					minutesBetween -= checkIfProgramReduction(minutesBetween);
 				}
 			}
@@ -274,7 +277,9 @@ export default defineComponent({
 					calcProgramDurationMinutes(props.recordsForTheDay[i], `programs${i}`);
 					if (i === props.recordsForTheDay.length - 1) {
 						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
-					} else if (i > 0) {
+					} else {
+						// console.log(i, props.recordsForTheDay[i], props.recordsForTheDay[i + 1]);
+
 						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `between-programs${i}`);
 					}
 				}
