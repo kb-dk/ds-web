@@ -239,7 +239,6 @@ export default defineComponent({
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
-			console.log(imageData);
 		};
 
 		const getImageData = () => {
