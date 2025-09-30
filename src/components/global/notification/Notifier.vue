@@ -166,6 +166,7 @@ ul {
 	.passive-notifications {
 		right: 1%;
 		transform: none;
+		max-width: 500px;
 	}
 }
 </style>

@@ -115,13 +115,13 @@ export default defineComponent({
 }
 
 .lower-left {
-	font-size: 41px;
+	font-size: 36px;
 	bottom: -10px;
 	right: -10px;
 	top: initial !important;
 	left: initial !important;
-	height: 34px;
-	width: 34px;
+	height: 30px;
+	width: 30px;
 	display: flex;
 }
 

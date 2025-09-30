@@ -181,6 +181,7 @@ import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import { Severity } from '@/types/NotificationType';
 import {
 	days,
 	timeslots,
@@ -344,10 +345,10 @@ export default defineComponent({
 		const notifyUserForAtLeastOneSource = () => {
 			const customEvent = new CustomEvent('notify-user', {
 				detail: {
-					title: 'Der skal være valgt et materiale',
-					message: 'Der skal være valgt mindst et materiale for at få et søgeresultat.',
+					title: t('error.choseMaterialTitle'),
+					message: t('error.ChoseMaterialDesc'),
 					key: false,
-					severity: 'low',
+					severity: Severity.INFO,
 					userClose: false,
 				},
 			});
