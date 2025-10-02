@@ -37,7 +37,7 @@
 									}`"
 									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 								>
-									play_circle_filled
+									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
 								</span>
 								<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
 								<span class="when">{{ starttime }}</span>
