@@ -80,7 +80,9 @@
 								:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-program-${item.id}`, index)"
 							>
 								<div class="program-text">
-									<span class="material-icons">play_circle</span>
+									<span class="material-icons">
+										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+									</span>
 									{{ item.title[0] }}
 								</div>
 								<div class="program-text">

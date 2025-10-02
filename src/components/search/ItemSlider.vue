@@ -3,7 +3,7 @@
 		<div
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
-			@click="moveSlider(-250)"
+			@click="moveSlider(-550)"
 		>
 			<div class="item-slider-direction-arrow-inner">
 				<span class="material-icons">arrow_back_ios</span>
@@ -18,7 +18,7 @@
 		<div
 			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
 			class="item-slider-direction-arrow right"
-			@click="moveSlider(250)"
+			@click="moveSlider(550)"
 		>
 			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
 		</div>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { ComponentPublicInstance, onUnmounted, watch } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
-
+import gsap from 'gsap';
 export default defineComponent({
 	name: 'ItemSlider',
 	props: {
@@ -91,7 +91,12 @@ export default defineComponent({
 				move.value = true;
 				e.preventDefault();
 				const x = e.pageX - itemSliderRef.value.offsetLeft;
-				itemSliderRef.value.scrollLeft = scrollLeft.value - (x - startX.value);
+				gsap.to(itemSliderRef.value, {
+					duration: 1.5,
+					ease: 'power3.out',
+					scrollLeft: scrollLeft.value - (x * 1.5 - startX.value * 1.5),
+				});
+				// itemSliderRef.value.scrollLeft = scrollLeft.value - (x - startX.value);
 			}
 		};
 
