@@ -5,7 +5,7 @@
 				:class="dailyProgramExpanded ? 'guide-button active' : 'guide-button'"
 				:title="`${$t('search.programGuide')} - ${creator} ${startDate}`"
 				:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
-				@click="showThumbnails()"
+				@click="showProgramGuide()"
 			>
 				<span class="material-icons calendar-view-icon">calendar_view_day</span>
 				{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
@@ -22,7 +22,7 @@
 				ref="programSliderRef"
 				:padding="true"
 				bg="#f3f3f3"
-				item-class="extra-thumbnail"
+				item-class="extra-program"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
 				:current-element="extraContentCurrentRef"
@@ -44,7 +44,7 @@
 						<div
 							v-for="(item, index) in recordsForTheDay"
 							:key="item.id"
-							class="extra-thumbnail"
+							class="extra-program"
 						>
 							<div
 								v-if="index === 0"
@@ -77,10 +77,7 @@
 								class="programs"
 								:style="{ width: `${getProgramWidth(`programs${index}`) - 8}px` }"
 								:replace="router.currentRoute.value.name === 'Record' ? true : false"
-								:data-testid="
-									addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${'item.id'}`, index)
-								"
-								@load="calcProgramDurationMinutes(item, `programs${index}`)"
+								:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-program-${item.id}`, index)"
 							>
 								<div class="program-text">
 									<span class="material-icons">play_circle</span>
@@ -174,7 +171,7 @@ export default defineComponent({
 		const router = useRouter();
 		const shortPrograms = ref<Array<number>>([]);
 		const programWidth = ref<Map<string, number>>(new Map());
-		const showThumbnails = () => {
+		const showProgramGuide = () => {
 			dailyProgramExpanded.value = !dailyProgramExpanded.value;
 			if (dailyProgramExpanded.value === true) {
 				gsap.set(extraContentRef.value, {
@@ -294,7 +291,7 @@ export default defineComponent({
 			calcProgramDurationMinutes,
 			extraContentRef,
 			router,
-			showThumbnails,
+			showProgramGuide,
 			addTestDataEnrichment,
 			calcMinutesBetween,
 			extraContentCurrentRef,
@@ -472,7 +469,7 @@ export default defineComponent({
 	box-shadow: 0 0 14px 0 rgba(153, 153, 153, 0.34) inset;
 }
 
-.extra-thumbnail {
+.extra-program {
 	position: relative;
 	z-index: 1;
 	object-fit: none;
@@ -514,24 +511,24 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 }
-.extra-thumbnail.disabled {
+.extra-program.disabled {
 	pointer-events: none;
 }
 
-.extra-thumbnail .img-wrap {
+.extra-program .img-wrap {
 	margin-bottom: 10px;
 	height: 105px;
 	margin-top: 20px;
 }
 
-.extra-thumbnail .img-stamp {
+.extra-program .img-stamp {
 	text-align: center;
 	font-size: 12px;
 	color: white;
 	height: 15px;
 	position: relative;
 }
-.extra-thumbnail:hover .link-arrow {
+.extra-program:hover .link-arrow {
 	opacity: 1;
 	transform: translateX(5px);
 }
@@ -579,11 +576,11 @@ export default defineComponent({
 }
 
 @media (min-width: 800px) {
-	.thumbnail-button {
+	.program-button {
 		width: auto;
 		margin-bottom: 0px;
 	}
-	.thumbnail-button.active {
+	.program-button.active {
 		margin-bottom: 0px;
 	}
 }
