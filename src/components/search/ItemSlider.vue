@@ -240,10 +240,11 @@ export default defineComponent({
 	border-radius: 30px;
 }
 .item-slider-direction-arrow.right {
-	right: 0px;
+	right: 12px;
 	justify-content: center;
 }
 .item-slider-direction-arrow.left {
+	left: 12px;
 	justify-content: center;
 }
 .item-slider-direction-arrow-inner {
