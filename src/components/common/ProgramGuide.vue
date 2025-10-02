@@ -341,6 +341,10 @@ export default defineComponent({
 	margin-right: 20px;
 	background-color: transparent;
 }
+
+.daily-program button {
+	font-family: noway, sans-serif;
+}
 .daily-program:hover .hors-dot {
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
@@ -461,7 +465,7 @@ export default defineComponent({
 	background-color: #f3f3f3;
 	position: relative;
 	box-sizing: border-box;
-	padding: 20px 12px 12px 12px;
+	padding: 20px 0px 12px 0px;
 	box-shadow: 0 0 14px 0 rgba(153, 153, 153, 0.34) inset;
 }
 
