@@ -208,8 +208,6 @@ export default defineComponent({
 			} else {
 				let minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
-				console.log(p2.temporal_start_time_da_string, p1.temporal_end_time_da_string);
-
 				if (minutesBetween < 38 && minutesBetween > 0) {
 					const addedAmount = 38 - minutesBetween;
 					minutesBetween += addedAmount;
@@ -275,8 +273,6 @@ export default defineComponent({
 					if (i === props.recordsForTheDay.length - 1) {
 						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
 					} else {
-						// console.log(i, props.recordsForTheDay[i], props.recordsForTheDay[i + 1]);
-
 						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `between-programs${i}`);
 					}
 				}
