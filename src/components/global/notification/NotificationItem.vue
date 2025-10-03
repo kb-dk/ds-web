@@ -141,7 +141,6 @@ export default defineComponent({
 
 .title-span {
 	font: normal normal normal 26px/28px Noway;
-	white-space: nowrap;
 }
 .title-span span {
 	font-size: 30px;

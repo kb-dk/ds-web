@@ -509,7 +509,9 @@
       "notAllowedButtonHeader": "Du kan komme videre til",
       "frontPage": "Forsiden af DR-arkivet",
       "kbPage": "Forsiden af Det Kgl. Bibliotek"
-    }
+    },
+    "choseMaterialTitle":"Der skal være valgt et materiale",
+    "ChoseMaterialDesc":"Der skal være valgt mindst et materiale for at få et søgeresultat."
   },
   "hero": {
       "title":"DR-arkiv",

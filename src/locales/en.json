@@ -480,8 +480,7 @@
                "fileInit":"Something went wrong - we can't locate this audio clip",
                "playerInit":"The audio player is not available at the moment",
                "generic":"Something went wrong - we can't play this audio clip at the moment"
-            }
-            
+            }  
        },
       "backend": {
          "bff": {
@@ -490,6 +489,11 @@
          "solr": {
             "notResponsive":"There was an error in the system, that we're working to fix as soon as possible. We hope for your understanding and patience"
          }
+      },
+      "auth": {
+          "serviceFailed":"The application's underlying services are currently unavailable - please try again later.",
+          "notAllowedHeader": "SORRY, YOU DO NOT HAVE ACCESS TO THIS PROGRAMME",
+          "notAllowedText": "This may be because the programme is subject to  copyright or is restricted, for example due to particularly vulnerable contributors."
       },
       "infoError": {
          "title": "An error occurred",
@@ -501,11 +505,6 @@
          "searchResult": "Search result is not responding - try again later.",
          "pageNumber": "The page number does not exist."
       },
-       "auth": {
-          "serviceFailed":"The application's underlying services are currently unavailable - please try again later.",
-          "notAllowedHeader": "SORRY, YOU DO NOT HAVE ACCESS TO THIS PROGRAMME",
-          "notAllowedText": "This may be because the programme is subject to  copyright or is restricted, for example due to particularly vulnerable contributors."
-      },
    "searchfailed":"The search request could not be performed",
    "malformeduri": "Something went wrong with your search terms - try to change some of them",
    "wrongUrl": {
@@ -515,7 +514,9 @@
       "notAllowedButtonHeader": "You can proceed to",
       "frontPage": "Front page of DR-arkivet",
       "kbPage": "Front page of Royal Danish Library"
-   }
+   },
+   "choseMaterialTitle":"A material must be selected.",
+   "ChoseMaterialDesc":"At least one material must be selected to get a search result."
   },
   "hero": {
    "title":"DR-arkiv",
