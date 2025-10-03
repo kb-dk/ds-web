@@ -233,6 +233,8 @@
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
      "relatedContent": "Related content",
+      "programGuide":"Program guide",
+          "noGuideContent":"Nothing in the archive",
      "didYouMean": "Did you mean \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} results)",
      "maybeYouMeant": "Maybe you meant?",
@@ -494,6 +496,7 @@
       "infoError": {
          "title": "An error occurred",
          "relatedContent": "Related content is not responding.",
+         "programGuide": "Content could not be found",
          "featuredContent": "Featured content from this month is not responding.",
          "thumbnails": "Thumbnails are not responding.",
          "thumbnail": "Thumbnails are not responding.",

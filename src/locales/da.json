@@ -231,6 +231,8 @@
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
     "relatedContent": "Relateret indhold",
+    "programGuide":"Programoversigt",
+    "noGuideContent":"Ikke noget i arkivet",
      "didYouMean": "Mente du \"{spellCheckQuery}\"?",
      "didYouMeanCount": "({spellCheckHits} resultater)",
      "maybeYouMeant": "Måske mente du?",
@@ -493,6 +495,7 @@
     "infoError": {
       "title": "Der skete en fejl",
       "relatedContent": "Relateret indhold svarer ikke.",
+      "programGuide": "Indholdet kunne ikke hentes",
       "featuredContent": "Fremhævet indhold under DR gennem tiden svarer ikke.",
       "thumbnails": "Billede-oversigten svarer ikke.",
       "thumbnail": "Miniaturebilleder kan ikke hentes.",

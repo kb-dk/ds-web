@@ -107,6 +107,13 @@
 				</div>
 			</div>
 		</div>
+		<ProgramGuide
+			:creator="recordData.publication.publishedOn.broadcastDisplayName"
+			:start-date="getBroadcastDate(recordData.startTime, locale)"
+			:records-for-the-day="recordsForTheDay"
+			:current-record-index="currentRecord"
+			class="program-guide"
+		></ProgramGuide>
 		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
@@ -133,7 +140,7 @@
 <script lang="ts">
 import { BroadcastRecordType } from '@/types/BroadcastRecordType';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
 import VideoPlayer from '@/components/viewers/AudioVideo/VideoPlayer.vue';
 import Duration from '@/components/common/Duration.vue';
 import { copyTextToClipboard } from '@/utils/copy-script';
@@ -144,6 +151,7 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
+import ProgramGuide from '@/components/common/ProgramGuide.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -153,6 +161,7 @@ export default defineComponent({
 		VideoPlayer,
 		Duration,
 		GridResultItem,
+		ProgramGuide,
 	},
 
 	props: {
@@ -171,6 +180,13 @@ export default defineComponent({
 			type: String as PropType<string>,
 			required: true,
 		},
+		recordsForTheDay: {
+			type: Array as PropType<GenericSearchResultType[]>,
+			required: false,
+			default() {
+				return [];
+			},
+		},
 	},
 
 	setup(props) {
@@ -179,7 +195,6 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const entryId = ref('');
 		entryId.value = getEntryId(props.recordData);
-
 		const emptySearchResults = () => {
 			searchResultStore.searchResult = [];
 		};
@@ -191,7 +206,11 @@ export default defineComponent({
 		const quotation = (name: string) => {
 			return `"${name}"`;
 		};
-
+		const currentRecord = computed(() => {
+			return props.recordsForTheDay.findIndex((record) => {
+				return record.id === props.recordData.id;
+			});
+		});
 		watch(
 			() => props.recordData.id,
 			() => {
@@ -213,6 +232,7 @@ export default defineComponent({
 			quotation,
 			emptySearchResults,
 			santizeAndSimplify,
+			currentRecord,
 		};
 	},
 });
@@ -449,6 +469,9 @@ h4 {
 	border-radius: 4px;
 	width: fit-content;
 	height: auto;
+}
+.program-guide {
+	margin-bottom: 20px;
 }
 
 /* First breakpoint for tablet */
