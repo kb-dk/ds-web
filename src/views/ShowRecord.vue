@@ -169,7 +169,7 @@ export default defineComponent({
 						currentSearchUUID,
 					);
 				} catch (err) {
-					handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
+					handleShowRecordError(err as AxiosError, 'programGuideCall');
 				}
 			}
 		};
@@ -204,6 +204,15 @@ export default defineComponent({
 						Priority.MEDIUM,
 					);
 					break;
+				case 'programGuideCall':
+					errorManager.submitCustomError(
+						'program-guide-error',
+						t('error.infoError.title'),
+						t('error.infoError.programGuide'),
+						Severity.INFO,
+						false,
+						Priority.MEDIUM,
+					);
 			}
 		};
 
@@ -237,8 +246,8 @@ export default defineComponent({
 			let startEnd: string[] = [];
 			if (recordData.value as BroadcastRecordType) {
 				const startTime = (recordData.value as BroadcastRecordType).startTime;
-				startEnd[0] = startTime.replace(/T(.*)/, 'T00:00:00.000Z');
-				startEnd[1] = startTime.replace(/T(.*)/, 'T23:59:59.000Z');
+				startEnd[0] = startTime.replace(/T(.*)/, 'T00:00:00Z');
+				startEnd[1] = startTime.replace(/T(.*)/, 'T23:59:59Z');
 			}
 			return startEnd;
 		};

@@ -229,10 +229,6 @@ export default defineComponent({
 	align-items: center;
 	z-index: 10;
 	background-color: rgb(255, 255, 255);
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
 	user-select: none;
 	cursor: pointer;
 	pointer-events: none;

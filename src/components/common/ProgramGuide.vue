@@ -76,7 +76,6 @@
 								}`"
 								class="programs"
 								:style="{ width: `${getProgramWidth(`programs${index}`) - 8}px` }"
-								:replace="router.currentRoute.value.name === 'Record' ? true : false"
 								:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-program-${item.id}`, index)"
 							>
 								<div class="program-text">
@@ -485,10 +484,6 @@ export default defineComponent({
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	-webkit-user-drag: none;
-	-moz-user-drag: none;
-	-ms-user-drag: none;
-	-o-user-drag: none;
 	user-drag: none;
 	overflow: visible;
 }
@@ -540,10 +535,6 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	color: #002e70;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
 	user-select: none;
 }
 .hour-display > * {
