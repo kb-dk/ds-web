@@ -300,7 +300,7 @@ export default defineComponent({
 				if (!props.searchBarOpen) {
 					gsap.to(searchFormRef.value, {
 						height: '0px',
-						duration: 0.5,
+						duration: 0.3,
 						overwrite: true,
 						opacity: 1,
 						overflow: 'hidden',
@@ -318,7 +318,7 @@ export default defineComponent({
 						onComplete: () => {
 							gsap.to(searchFormRef.value, {
 								height: 'auto',
-								duration: 0.5,
+								duration: 0.3,
 								overwrite: true,
 								opacity: 1,
 								onComplete: () => {
