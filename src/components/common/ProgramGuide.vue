@@ -389,10 +389,11 @@ export default defineComponent({
 }
 .expand-icon {
 	transition: all 0.3s ease-in-out 0s;
+	position: relative;
 	padding-right: 5px;
 }
 .expand-icon.turned {
-	transform: rotateZ(180deg);
+	transform: rotateX(0.5turn);
 }
 .programs {
 	margin-top: 15px;

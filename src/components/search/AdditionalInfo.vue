@@ -202,7 +202,7 @@ export default defineComponent({
 }
 
 .expand-icon.turned {
-	transform: rotateZ(180deg);
+	transform: rotateX(180deg);
 }
 
 .link-arrow {
