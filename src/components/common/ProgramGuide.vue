@@ -86,7 +86,7 @@
 								</div>
 								<div class="program-text">
 									<span class="material-icons">schedule</span>
-									{{ item.temporal_start_time_da_string }}
+									{{ item.temporal_start_time_da_string.slice(0, 5) }}
 								</div>
 							</router-link>
 							<div
@@ -210,6 +210,8 @@ export default defineComponent({
 				},
 			});
 		};
+		//We make exceptions for 38. 38 would be what anything below 5 minutes.
+		//Each minutes is 6 pixels. And then we have a padding of 8 pixels.
 		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null, key: string) => {
 			if (p2 === null) {
 				let minutesBetween = calcProgramMinutes(p1.temporal_start_time_da_string);
@@ -231,13 +233,16 @@ export default defineComponent({
 				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
 			}
 		};
+		//We calculate how many minutes for a timestamp hh:MM:ss. we round up from 30 seconds.
+		//We wish for the length of the programs are so each minute is 6 pixels.
 		const calcProgramMinutes = (programTime: string) => {
 			const time = programTime.split(':').map((v) => {
 				return Number(v);
 			});
-			const minutes = (time[time.length - 1] >= 50 ? 1 : 0) + time[1] + time[0] * 60;
+			const minutes = (time[time.length - 1] >= 30 ? 1 : 0) + time[1] + time[0] * 60;
 			return minutes * 6;
 		};
+		//We get the duration in ms. So we calculate it to minutes.
 		const calcProgramDurationMinutes = (program: GenericSearchResultType, key: string) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
 			let durationWidth = Math.round(durationMinutes) * 6;
@@ -285,7 +290,10 @@ export default defineComponent({
 						calcMinutesBetween(props.recordsForTheDay[i], null, `first-between-programs`);
 					}
 					calcProgramDurationMinutes(props.recordsForTheDay[i], `programs${i}`);
-					if (i === props.recordsForTheDay.length - 1) {
+					if (
+						i === props.recordsForTheDay.length - 1 &&
+						props.recordsForTheDay[i].temporal_end_time_da_string !== '00:00:00'
+					) {
 						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
 					} else {
 						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `between-programs${i}`);

@@ -163,7 +163,7 @@ export default defineComponent({
 						encodeURIComponent(`&fq=startTime:[${startTime} TO ${endTime}]&fq=(creator_affiliation_facet:"${creator}")`)
 							.replace(/%26/g, '&')
 							.replace(/%3D/g, '='),
-						'10',
+						'100',
 						'',
 						'&sort=startTime asc',
 						currentSearchUUID,
