@@ -121,7 +121,7 @@
 							</div>
 						</div>
 						<div
-							v-if="recordsForTheDay.length === 0"
+							v-if="!loaded"
 							class="extra-program"
 						>
 							<div
@@ -186,6 +186,7 @@ export default defineComponent({
 		const router = useRouter();
 		const shortPrograms = ref<Array<number>>([]);
 		const programWidth = ref<Map<string, number>>(new Map());
+		const loaded = ref(false);
 		const showProgramGuide = () => {
 			dailyProgramExpanded.value = !dailyProgramExpanded.value;
 			if (dailyProgramExpanded.value === true) {
@@ -284,19 +285,21 @@ export default defineComponent({
 		};
 		watch(
 			() => props.recordsForTheDay,
-			() => {
-				for (let i = 0; i < props.recordsForTheDay.length; i++) {
+			(records) => {
+				if (records.length > 0) {
+					loaded.value = true;
+				}
+				for (let i = 0; i < records.length; i++) {
 					if (i === 0) {
-						calcMinutesBetween(props.recordsForTheDay[i], null, `first-between-programs`);
+						calcMinutesBetween(records[i], null, `first-between-programs`);
 					}
-					calcProgramDurationMinutes(props.recordsForTheDay[i], `programs${i}`);
-					if (
-						i === props.recordsForTheDay.length - 1 &&
-						props.recordsForTheDay[i].temporal_end_time_da_string !== '00:00:00'
-					) {
-						calcProgramGuideEnd(props.recordsForTheDay[i], `between-programs${i}`);
+					calcProgramDurationMinutes(records[i], `programs${i}`);
+					if (i === records.length - 1) {
+						if (records[i].temporal_end_time_da_string !== '00:00:00') {
+							calcProgramGuideEnd(records[i], `between-programs${i}`);
+						}
 					} else {
-						calcMinutesBetween(props.recordsForTheDay[i], props.recordsForTheDay[i + 1], `between-programs${i}`);
+						calcMinutesBetween(records[i], records[i + 1], `between-programs${i}`);
 					}
 				}
 			},
@@ -319,6 +322,7 @@ export default defineComponent({
 			calcProgramMinutes,
 			shortPrograms,
 			programWidth,
+			loaded,
 			getProgramWidth,
 		};
 	},
