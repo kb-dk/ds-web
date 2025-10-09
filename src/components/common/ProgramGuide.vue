@@ -7,7 +7,7 @@
 				:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
 				@click="showProgramGuide()"
 			>
-				<span class="material-icons calendar-view-icon">calendar_view_day</span>
+				<span class="material-icons calendar-view-icon">view_day</span>
 				{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
 				<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
 					expand_more
@@ -21,7 +21,7 @@
 			<ItemSlider
 				ref="programSliderRef"
 				:padding="true"
-				bg="#f3f3f3"
+				bg="transparent"
 				item-class="extra-program"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
@@ -317,7 +317,7 @@ export default defineComponent({
 		margin-bottom 0s linear 0s;
 	top: 1px;
 	position: relative;
-	padding: 5px 15px;
+	padding: 10px 5px 11px 15px;
 	width: fit-content;
 	font-size: 18px;
 	border-radius: var(--Rounded-md, 4px) var(--Rounded-md, 4px) 0 0;
@@ -504,6 +504,7 @@ export default defineComponent({
 }
 .calendar-view-icon {
 	font-size: 18px;
+	margin-right: 6px;
 }
 .same-time-program {
 	display: flex;
