@@ -92,11 +92,10 @@ export default defineComponent({
 				e.preventDefault();
 				const x = e.pageX - itemSliderRef.value.offsetLeft;
 				gsap.to(itemSliderRef.value, {
-					duration: 1.5,
+					duration: 0.5,
 					ease: 'power3.out',
-					scrollLeft: scrollLeft.value - (x * 1.5 - startX.value * 1.5),
+					scrollLeft: scrollLeft.value - (x * 1.7 - startX.value * 1.7),
 				});
-				// itemSliderRef.value.scrollLeft = scrollLeft.value - (x - startX.value);
 			}
 		};
 
