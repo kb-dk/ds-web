@@ -120,6 +120,20 @@
 								</div>
 							</div>
 						</div>
+						<div
+							v-if="recordsForTheDay.length === 0"
+							class="extra-program"
+						>
+							<div
+								class="between-program"
+								:style="{ width: '8640px' }"
+							>
+								<div class="between-program-content">
+									<span class="material-icons">remove</span>
+									{{ $t('error.infoError.programGuide') }}
+								</div>
+							</div>
+						</div>
 					</div>
 				</template>
 			</ItemSlider>
