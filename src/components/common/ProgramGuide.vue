@@ -246,7 +246,6 @@ export default defineComponent({
 		//We get the duration in ms. So we calculate it to minutes.
 		const calcProgramDurationMinutes = (program: GenericSearchResultType, key: string) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
-			console.log(durationMinutes);
 
 			let durationWidth = Math.round(durationMinutes) * 6;
 			if (durationWidth < 38) {
