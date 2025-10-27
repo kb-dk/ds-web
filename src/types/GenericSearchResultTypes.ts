@@ -41,6 +41,8 @@ export interface GenericSearchResultType {
 	temporal_start_year: string;
 	temporal_start_day_da: string;
 	temporal_start_hour_da: number;
+	temporal_start_time_da_string: string;
+	temporal_end_time_da_string: string;
 }
 
 export interface FacetsType {

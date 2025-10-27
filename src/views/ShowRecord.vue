@@ -9,6 +9,7 @@
 							:back-link="backLink"
 							:more-like-this-records="moreLikeThisRecords"
 							:record-data="recordData as BroadcastRecordType"
+							:records-for-the-day="recordsForTheDay"
 						/>
 					</div>
 					<div v-if="recordType === 'AudioObject'">
@@ -16,6 +17,7 @@
 							:back-link="backLink"
 							:more-like-this-records="moreLikeThisRecords"
 							:record-data="recordData as BroadcastRecordType"
+							:records-for-the-day="recordsForTheDay"
 						/>
 					</div>
 					<div
@@ -42,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { APIService } from '@/api/api-service';
 import GenericRecordMetadataView from '@/components/records/GenericRecord.vue';
@@ -85,7 +87,7 @@ export default defineComponent({
 		const contentNotAllowed = ref(false);
 		const backLink = ref('');
 		const backendError = ref(false);
-
+		const recordsForTheDay = ref<Array<GenericSearchResultType>>([]);
 		onMounted(async () => {
 			let back = router.options.history.state.back as string;
 			if (back && back.substring(0, 5) === '/find') {
@@ -137,6 +139,40 @@ export default defineComponent({
 				handleShowRecordError(err as AxiosError, 'moreLikeThisCall');
 			}
 		};
+		const getMoreRecordsThisDayAndCreator = async () => {
+			if (recordData.value as BroadcastRecordType) {
+				try {
+					const creator = (recordData.value as BroadcastRecordType).publication.publishedOn.alternateName;
+					const url = URL.createObjectURL(new Blob());
+					const currentSearchUUID = url.toString().split('/').reverse()[0];
+					const recordTime = (recordData.value as BroadcastRecordType).startTime;
+					const startTimeDate = new Date(recordTime);
+					startTimeDate.setMinutes(startTimeDate.getMinutes() - startTimeDate.getTimezoneOffset());
+
+					//Offset Timezone because backend will add the timezone as well.
+					//So with this we start at midnight and end on the last minute of the day.
+					startTimeDate.setUTCHours(23 + startTimeDate.getTimezoneOffset() / 60, 59, 59, 0);
+					const endTime = startTimeDate.toISOString();
+					startTimeDate.setDate(startTimeDate.getDate() - 1);
+					startTimeDate.setUTCHours(24 + startTimeDate.getTimezoneOffset() / 60, 0, 0, 0);
+					const startTime = startTimeDate.toISOString();
+					//Some of the special characters does not need to be encoded.
+					//This gives the same result as adding creator and a single day with facets.
+					return await APIService.getSearchResults(
+						'*:*',
+						encodeURIComponent(`&fq=startTime:[${startTime} TO ${endTime}]&fq=(creator_affiliation_facet:"${creator}")`)
+							.replace(/%26/g, '&')
+							.replace(/%3D/g, '='),
+						'100',
+						'',
+						'&sort=startTime asc',
+						currentSearchUUID,
+					);
+				} catch (err) {
+					handleShowRecordError(err as AxiosError, 'programGuideCall');
+				}
+			}
+		};
 		const handleShowRecordError = (err: AxiosError, type: string) => {
 			switch (type) {
 				case 'recordCall': {
@@ -168,6 +204,15 @@ export default defineComponent({
 						Priority.MEDIUM,
 					);
 					break;
+				case 'programGuideCall':
+					errorManager.submitCustomError(
+						'program-guide-error',
+						t('error.infoError.title'),
+						t('error.infoError.programGuide'),
+						Severity.INFO,
+						false,
+						Priority.MEDIUM,
+					);
 			}
 		};
 
@@ -189,6 +234,7 @@ export default defineComponent({
 			}
 			if (moreLikeThisRecords.value.length === 0) {
 				const startAndEnd = getStartAndEndFromStartTime();
+
 				if (startAndEnd.length > 0) {
 					const moreLikeThisDate = await getMoreLikeThisDate(startAndEnd[0], startAndEnd[1], idStr);
 					if (moreLikeThisDate) moreLikeThisRecords.value = moreLikeThisDate.data.response.docs;
@@ -214,8 +260,29 @@ export default defineComponent({
 				});
 			},
 		);
-
-		return { recordData, recordType, moreLikeThisRecords, loading, contentNotAllowed, backLink, backendError };
+		watch(
+			() => recordData.value,
+			async () => {
+				getMoreRecordsThisDayAndCreator().then((records) => {
+					if (records) {
+						recordsForTheDay.value = records.data.response.docs;
+					}
+				});
+			},
+		);
+		onUnmounted(() => {
+			recordsForTheDay.value = [];
+		});
+		return {
+			recordData,
+			recordType,
+			moreLikeThisRecords,
+			loading,
+			contentNotAllowed,
+			backLink,
+			backendError,
+			recordsForTheDay,
+		};
 	},
 	computed: {
 		GenericRecord() {

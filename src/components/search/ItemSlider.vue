@@ -1,31 +1,54 @@
 <template>
-	<div
-		ref="itemSliderRef"
-		:class="setSliderClasses()"
-	>
-		<slot :disable-links="move"></slot>
+	<div :class="{ 'item-slider-container': displaySliderArrows }">
+		<div
+			v-if="displaySliderArrows && scrollLeft >= 25"
+			class="item-slider-direction-arrow left"
+			@click="moveSlider(-550)"
+		>
+			<div class="item-slider-direction-arrow-inner">
+				<span class="material-icons">arrow_back_ios</span>
+			</div>
+		</div>
+		<div
+			ref="itemSliderRef"
+			:class="setSliderClasses()"
+		>
+			<slot :disable-links="move"></slot>
+		</div>
+		<div
+			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
+			class="item-slider-direction-arrow right"
+			@click="moveSlider(550)"
+		>
+			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { onUnmounted } from 'vue';
+import { ComponentPublicInstance, onUnmounted, watch } from 'vue';
 import { defineComponent, onMounted, ref } from 'vue';
-
+import gsap from 'gsap';
 export default defineComponent({
 	name: 'ItemSlider',
 	props: {
 		itemClass: { type: String, required: true },
 		bg: { type: String, default: 'white' },
 		bgScrollWhite: { type: String, default: '' },
+		bgScrollBlue: { type: String, default: '' },
 		padding: { type: Boolean, default: false },
+		displaySliderArrows: { type: Boolean, default: false },
+		visible: { type: Boolean, required: false },
+		currentElement: { type: Array<ComponentPublicInstance<HTMLElement> | null>, required: false, default: null },
 	},
+	emits: ['upscaleSmallElements'],
 	setup(props) {
 		const itemSliderRef = ref<HTMLElement | null>(null);
 		const isDown = ref(false);
 		const startX = ref(0);
 		const scrollLeft = ref(0);
 		const move = ref(false);
-
+		const maxScrollWidth = ref(0);
 		onMounted(() => {
 			if (itemSliderRef.value) {
 				itemSliderRef.value.addEventListener('mousedown', startAndCalculateOffset);
@@ -57,6 +80,7 @@ export default defineComponent({
 
 			if (itemSliderRef.value) {
 				isDown.value = false;
+				scrollLeft.value = itemSliderRef.value.scrollLeft;
 			}
 		};
 		const calculateMovement = (e: MouseEvent) => {
@@ -67,7 +91,11 @@ export default defineComponent({
 				move.value = true;
 				e.preventDefault();
 				const x = e.pageX - itemSliderRef.value.offsetLeft;
-				itemSliderRef.value.scrollLeft = scrollLeft.value - (x - startX.value);
+				gsap.to(itemSliderRef.value, {
+					duration: 0.5,
+					ease: 'power3.out',
+					scrollLeft: scrollLeft.value - (x * 1.7 - startX.value * 1.7),
+				});
 			}
 		};
 
@@ -78,18 +106,61 @@ export default defineComponent({
 			}
 			if (props.bgScrollWhite) {
 				activeClasses += ' white-scrollbar';
+			} else if (props.bgScrollBlue) {
+				activeClasses += ' blue-scrollbar';
 			}
 			if (props.padding) {
 				activeClasses += ' padding';
 			}
+			if (props.displaySliderArrows) {
+				activeClasses += ' arrow-slider';
+			}
+
 			return activeClasses;
 		};
 
-		return { itemSliderRef, move, setSliderClasses };
+		const moveSlider = (moveBy: number) => {
+			if (scrollLeft.value + moveBy < 0) {
+				scrollLeft.value = 0;
+			} else if (scrollLeft.value + moveBy > maxScrollWidth.value) {
+				scrollLeft.value = maxScrollWidth.value;
+			} else {
+				scrollLeft.value += moveBy;
+			}
+			if (itemSliderRef.value && props.displaySliderArrows) {
+				itemSliderRef.value.scrollTo({ behavior: 'smooth', left: scrollLeft.value });
+			}
+		};
+		watch(
+			() => props.visible,
+			() => {
+				if (itemSliderRef.value && props.displaySliderArrows) {
+					maxScrollWidth.value = itemSliderRef.value.scrollWidth - itemSliderRef.value?.offsetWidth;
+					if (props.currentElement[0]) {
+						props.currentElement[0].$el.scrollIntoView({
+							behavior: 'smooth',
+							block: 'nearest',
+							inline: 'center',
+							top: 0,
+						});
+					}
+				}
+			},
+		);
+		return { itemSliderRef, move, setSliderClasses, moveSlider, maxScrollWidth, scrollLeft };
 	},
 });
 </script>
+<!--Should not be scoped, in order to keep the pointer event none when moving-->
 <style>
+.item-slider-container {
+	z-index: 0;
+	overflow-x: auto;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	justify-content: flex-start;
+}
 .item-slider {
 	position: relative;
 	overflow: hidden;
@@ -104,13 +175,14 @@ export default defineComponent({
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
 	box-sizing: border-box;
+	scale: '1.0';
 }
 
 .item-slider.padding {
 	padding-left: 15px;
 	padding-right: 15px;
 }
-
+.item-slider.blue-scrollbar::-webkit-scrollbar-track,
 .item-slider.white-scrollbar::-webkit-scrollbar-track {
 	background-color: #ffffff00;
 }
@@ -118,7 +190,12 @@ export default defineComponent({
 .item-slider.white-scrollbar::-webkit-scrollbar-thumb {
 	background-color: rgb(66, 66, 66);
 }
-
+.item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
+	background-color: #002e70;
+}
+.item-slider::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+}
 .item-slider::-webkit-scrollbar-track {
 	background-color: #002e70;
 }
@@ -126,12 +203,63 @@ export default defineComponent({
 .item-slider.active a {
 	pointer-events: none;
 }
-
 .item-slider::-webkit-scrollbar {
 	height: 18px;
 }
-
+.item-slider::-webkit-scrollbar {
+	height: 10px;
+}
 .item-slider::-webkit-scrollbar-thumb {
 	background-color: rgb(255, 255, 255);
+}
+.arrow-slider {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0px;
+}
+.item-slider-direction-arrow {
+	position: absolute;
+	height: 48px;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+	width: 48px;
+	color: rgba(0, 0, 0, 0.719);
+	display: flex;
+	opacity: 0;
+	align-items: center;
+	z-index: 10;
+	background-color: rgb(255, 255, 255);
+	user-select: none;
+	cursor: pointer;
+	pointer-events: none;
+	top: 45px;
+	border-radius: 30px;
+}
+.item-slider-direction-arrow.right {
+	right: 12px;
+	justify-content: center;
+}
+.item-slider-direction-arrow.left {
+	left: 12px;
+	justify-content: center;
+}
+.item-slider-direction-arrow-inner {
+	height: 40px;
+	width: 40px;
+	border-radius: 30px;
+	background-color: #002e70;
+	justify-content: center;
+	color: white;
+	align-items: center;
+	display: flex;
+	text-align: center;
+}
+.item-slider-direction-arrow.left > .item-slider-direction-arrow-inner > .material-icons {
+	margin-left: 7px;
+}
+@media (min-width: 990px) {
+	.item-slider-direction-arrow {
+		opacity: 1;
+		pointer-events: all;
+	}
 }
 </style>
