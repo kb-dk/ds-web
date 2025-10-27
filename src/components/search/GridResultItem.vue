@@ -209,7 +209,7 @@ export default defineComponent({
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
-			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation_facet || '');
+			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation || '');
 			imageDataObj.imgOption = 'cover';
 			imageDataObj.icon = 'play_circle_filled';
 			imageDataObj.iconColor = 'white';

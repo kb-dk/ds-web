@@ -15,6 +15,7 @@
 			@load="loaded = true"
 		/>
 		<span
+			v-if="data.icon"
 			role="img"
 			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
 			:class="data.iconLowerRight ? 'type-symbol material-icons lower-left' : 'type-symbol material-icons'"
