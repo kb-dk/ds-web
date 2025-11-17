@@ -113,5 +113,6 @@ export interface APIAuthMessagesType {
 		partnerId: string;
 		streamingBaseUrlAudio: string;
 		curatedItems: CuratedItemsType;
+		coverage: number;
 	};
 }

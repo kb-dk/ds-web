@@ -258,6 +258,7 @@ export default defineComponent({
 			authStore.videoUiConfId = typedResponse.data.videoUiConfId;
 			authStore.streamingBaseUrlAudio = typedResponse.data.streamingBaseUrlAudio;
 			authStore.streamingBaseUrlVideo = typedResponse.data.streamingBaseUrlVideo;
+			authStore.currentArchiveProgress = typedResponse.data.coverage;
 			authStore.kalturaIdFetchExecuted = true;
 			if (typedResponse.data.alert1) {
 				errorManager.submitCustomError(
