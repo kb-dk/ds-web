@@ -18,7 +18,7 @@
 			v-if="data.icon"
 			role="img"
 			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
-			:class="data.iconLowerRight ? 'type-symbol material-icons lower-left' : 'type-symbol material-icons'"
+			:class="data.iconLowerRight ? 'type-symbol material-icons lower-right' : 'type-symbol material-icons'"
 			:style="`color: ${data.iconColor}`"
 		>
 			{{ data.icon }}
@@ -115,7 +115,7 @@ export default defineComponent({
 	display: flex;
 }
 
-.lower-left {
+.lower-right {
 	font-size: 36px;
 	bottom: -10px;
 	right: -10px;

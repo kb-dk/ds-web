@@ -83,11 +83,6 @@
 						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
 					>
 						<ImageComponent :image-data="imageData"></ImageComponent>
-
-						<!-- <SoundThumbnail
-							v-else
-							:result-title="resultdata.title[0]"
-						></SoundThumbnail> -->
 					</router-link>
 				</div>
 
