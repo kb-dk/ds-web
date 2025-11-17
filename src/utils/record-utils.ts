@@ -1,5 +1,5 @@
 import type { BroadcastRecordType } from '@/types/BroadcastRecordType';
-import initial from '@/assets/images/audio-thumbnails/default-dr.png';
+import initial from '@/assets/images/audio-thumbnails/dr.jpg';
 import p1 from '@/assets/images/audio-thumbnails/p1.jpg';
 import p2 from '@/assets/images/audio-thumbnails/p2.jpg';
 import p3 from '@/assets/images/audio-thumbnails/p3.jpg';
