@@ -106,13 +106,13 @@
 				</div>
 			</div>
 		</div>
-		<ProgramGuide
+		<!-- <ProgramGuide
 			:creator="recordData.publication.publishedOn.broadcastDisplayName"
 			:start-date="getBroadcastDate(recordData.startTime, locale)"
 			:records-for-the-day="recordsForTheDay"
 			:current-record-index="currentRecord"
 			class="program-guide"
-		></ProgramGuide>
+		></ProgramGuide> -->
 		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
 		<div class="extra-record-data">
 			<div
@@ -150,7 +150,7 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
-import ProgramGuide from '@/components/common/ProgramGuide.vue';
+//import ProgramGuide from '@/components/common/ProgramGuide.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -160,7 +160,7 @@ export default defineComponent({
 		GridResultItem,
 		AudioPlayer,
 		Duration,
-		ProgramGuide,
+		//ProgramGuide,
 	},
 
 	props: {

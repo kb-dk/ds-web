@@ -94,6 +94,7 @@
 	transform: rotateZ(-35deg) translate(-50%, -50%) !important;
 	left: -25px !important;
 	background-color:white;
+	display:none;
 }
 
 .vue-slider-dot-tooltip-inner {
@@ -119,12 +120,12 @@
 	display: none;
 }
 
-.vue-slider-marks .vue-slider-mark:nth-child(2n) {
+.vue-slider-marks .vue-slider-mark {
 	display: none;
 }
 
-@media (min-width: 800px) {
-	.vue-slider-marks .vue-slider-mark:nth-child(2n) {
+@media (min-width: 640px) {
+	.vue-slider-marks .vue-slider-mark:nth-child(5n) {
 		display: block;
 	}
 }

@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('authStore', () => {
 	//video and audio streaming variables
 	const kalturaIdFetchExecuted = ref(false);
 	const partnerId = ref('');
+	const currentArchiveProgress = ref(35);
 	const audioUiConfId = ref('');
 	const videoUiConfId = ref('');
 	const streamingBaseUrlAudio = ref('');
@@ -85,5 +86,6 @@ export const useAuthStore = defineStore('authStore', () => {
 		streamingBaseUrlVideo,
 		kalturaIdFetchExecuted,
 		isAllowedToDisplayContent,
+		currentArchiveProgress,
 	};
 });

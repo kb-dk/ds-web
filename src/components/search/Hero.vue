@@ -22,17 +22,17 @@
 			<div class="hero-info">
 				<div class="info">
 					<div class="progress-headline">
-						<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
+						<h2>{{ t('hero.progress', { index: authStore.currentArchiveProgress }) }}</h2>
 						<p>
 							{{ t('hero.explanation') }}
 						</p>
 					</div>
 					<div class="process-bar">
 						<div
-							:style="`left:${currentProgress}%`"
+							:style="`left:${authStore.currentArchiveProgress}%`"
 							class="procentage"
 						>
-							{{ currentProgress }}%
+							{{ authStore.currentArchiveProgress }}%
 						</div>
 						<div
 							v-for="i in 20"
@@ -54,14 +54,15 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/store/authStore';
 
 export default defineComponent({
 	name: 'Hero',
 
 	setup() {
-		const currentProgress = ref(37);
+		const authStore = useAuthStore();
 		const { t } = useI18n();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
@@ -69,7 +70,7 @@ export default defineComponent({
 
 		const progress = (index: number) => {
 			const maxRange = 20;
-			let pt = Math.round((maxRange / 100) * currentProgress.value);
+			let pt = Math.round((maxRange / 100) * authStore.currentArchiveProgress);
 			if (index < pt) return 'step darkblue';
 			if (index === pt) return 'step darkblue';
 			if (index === pt + 1) return 'step blue';
@@ -81,8 +82,8 @@ export default defineComponent({
 
 		return {
 			backgroundImage,
+			authStore,
 			progress,
-			currentProgress,
 			t,
 		};
 	},
