@@ -174,12 +174,11 @@ export default defineComponent({
 		);
 
 		const setupPlayer = () => {
-			const no_script = !document.getElementById('kaltura-player-script');
-			if (no_script) {
-				appendScript();
-			} else {
-				bootstrapPlayer();
+			const script = document.getElementById('kaltura-player-script');
+			if (script) {
+				script.parentNode?.removeChild(script);
 			}
+			appendScript();
 		};
 
 		onBeforeUnmount(() => {

@@ -82,15 +82,7 @@
 						role="link"
 						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
 					>
-						<ImageComponent
-							v-if="resultdata.origin.split('.')[1] === 'tv'"
-							:image-data="imageData"
-						></ImageComponent>
-
-						<SoundThumbnail
-							v-else
-							:result-title="resultdata.title[0]"
-						></SoundThumbnail>
+						<ImageComponent :image-data="imageData"></ImageComponent>
 					</router-link>
 				</div>
 
@@ -172,7 +164,6 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
-import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import AdditionalInfo from '@/components/search/AdditionalInfo.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import { useI18n } from 'vue-i18n';
@@ -180,12 +171,12 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
+import { getThumbnailPicture } from '@/utils/record-utils';
 
 export default defineComponent({
 	name: 'ResultItem',
 	components: {
 		ImageComponent,
-		SoundThumbnail,
 		AdditionalInfo,
 	},
 	props: {
@@ -233,6 +224,18 @@ export default defineComponent({
 		);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
 
+		const getAudioImageData = () => {
+			const imageDataObj = {} as ImageComponentType;
+			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
+			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
+			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation);
+			imageDataObj.imgOption = 'cover';
+			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.iconColor = 'white';
+			imageDataObj.iconLowerRight = true;
+			imageData.value = JSON.stringify(imageDataObj);
+		};
+
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
@@ -275,6 +278,9 @@ export default defineComponent({
 					if (props.resultdata.origin.split('.')[1] === 'tv') {
 						getImageData();
 					}
+					if (props.resultdata.origin.split('.')[1] === 'radio') {
+						getAudioImageData();
+					}
 				}
 			},
 		);
@@ -282,6 +288,9 @@ export default defineComponent({
 		onMounted(() => {
 			if (props.resultdata.origin && props.resultdata.origin.split('.')[1] === 'tv') {
 				getImageData();
+			}
+			if (props.resultdata.origin && props.resultdata.origin.split('.')[1] === 'radio') {
+				getAudioImageData();
 			}
 		});
 

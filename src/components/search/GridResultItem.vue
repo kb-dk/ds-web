@@ -20,14 +20,7 @@
 					:data-testid="addTestDataEnrichment('link', 'grid-result-item', `link`, index)"
 				>
 					<div class="thumb-container">
-						<ImageComponent
-							v-if="resultdata.origin.split('.')[1] === 'tv'"
-							:image-data="imageData"
-						></ImageComponent>
-						<SoundThumbnail
-							v-else
-							:result-title="resultdata.title[0]"
-						></SoundThumbnail>
+						<ImageComponent :image-data="imageData"></ImageComponent>
 					</div>
 					<div class="date">
 						<span class="material-icons">
@@ -146,7 +139,6 @@ import { ImageComponentType } from '@/types/ImageComponentType';
 import { APIService } from '@/api/api-service';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import SoundThumbnail from '@/components/search/SoundThumbnail.vue';
 import { populateImageDataWithPlaceholder } from '@/utils/placeholder-utils';
 import Duration from '@/components/common/Duration.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
@@ -155,13 +147,13 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 import ImageComponent from '@/components/common/ImageComponent.vue';
+import { getThumbnailPicture } from '@/utils/record-utils';
 
 export default defineComponent({
 	name: 'GridResultItem',
 	components: {
 		ImageComponent,
 		NoFacetContent,
-		SoundThumbnail,
 		Duration,
 	},
 	props: {
@@ -213,6 +205,18 @@ export default defineComponent({
 				: t('record.noBroadcastData');
 		};
 
+		const getAudioImageData = () => {
+			const imageDataObj = {} as ImageComponentType;
+			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
+			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
+			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation || '');
+			imageDataObj.imgOption = 'cover';
+			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.iconColor = 'white';
+			imageDataObj.iconLowerRight = true;
+			imageData.value = JSON.stringify(imageDataObj);
+		};
+
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
@@ -252,7 +256,12 @@ export default defineComponent({
 			() => props.resultdata,
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
-					getImageData();
+					if (props.resultdata?.origin.split('.')[1] === 'tv') {
+						getImageData();
+					}
+					if (props.resultdata?.origin.split('.')[1] === 'radio') {
+						getAudioImageData();
+					}
 				}
 			},
 		);
@@ -262,8 +271,14 @@ export default defineComponent({
 				gridContainer.value.style.setProperty('--bg-color', props.background);
 			}
 
-			getImageData();
+			if (props.resultdata?.origin && props.resultdata.origin.split('.')[1] === 'tv') {
+				getImageData();
+			}
+			if (props.resultdata?.origin && props.resultdata.origin.split('.')[1] === 'radio') {
+				getAudioImageData();
+			}
 		});
+
 		return {
 			gridContainer,
 			getBroadcastDate,

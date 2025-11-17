@@ -15,6 +15,7 @@ import { KalturaPlayerType, PlayerType } from '@/types/KalturaTypes';
 import { useAuthStore } from '@/store/authStore';
 import { useRoute } from 'vue-router';
 import { Priority, Severity } from '@/types/NotificationType';
+import { getThumbnailPicture } from '@/utils/record-utils';
 
 // Third party script - global variable typing and declaring.
 declare const KalturaPlayer: KalturaPlayerType;
@@ -30,6 +31,12 @@ export default defineComponent({
 	name: 'AudioPlayer',
 	props: {
 		entryId: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		channel: {
 			type: String,
 			default() {
 				return '';
@@ -80,6 +87,7 @@ export default defineComponent({
 				}
 			}
 		};
+
 		const appendScript = () => {
 			let kalturaScript = document.createElement('script');
 			kalturaScript.setAttribute(
@@ -111,6 +119,9 @@ export default defineComponent({
 						uiConfId:
 							authStore.audioUiConfId !== '' ? authStore.audioUiConfId : import.meta.env.VITE_KALTURA_AUDIO_UI_CONF_ID,
 					},
+					sources: {
+						poster: getThumbnailPicture(props.channel),
+					},
 				});
 				audioPlayer.loadMedia({ entryId: props.entryId }).then(() => {
 					document
@@ -118,8 +129,8 @@ export default defineComponent({
 						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
 					const audio = document.querySelector('#audio-player') as HTMLElement | null;
 					if (audio) {
-						const innerVideo = audio?.querySelector('video') as HTMLVideoElement | null;
-						if (innerVideo) innerVideo.disablePictureInPicture = true;
+						const innerAudio = audio?.querySelector('video') as HTMLVideoElement | null;
+						if (innerAudio) innerAudio.disablePictureInPicture = true;
 					}
 					audio ? audio.setAttribute('data-testid', 'audio-player-kaltura-container-0') : null;
 				});
@@ -167,12 +178,11 @@ export default defineComponent({
 		);
 
 		const setupPlayer = () => {
-			const no_script = !document.getElementById('kaltura-player-script');
-			if (no_script) {
-				appendScript();
-			} else {
-				bootstrapPlayer();
+			const script = document.getElementById('kaltura-player-script');
+			if (script) {
+				script.parentNode?.removeChild(script);
 			}
+			appendScript();
 		};
 
 		onBeforeUnmount(() => {
@@ -186,7 +196,7 @@ export default defineComponent({
 
 <style scoped>
 .player {
-	aspect-ratio: 4 / 2.4;
+	aspect-ratio: 4 / 1;
 	width: 100%;
 	height: auto;
 }
@@ -211,13 +221,19 @@ export default defineComponent({
 
 @media (min-width: 640px) {
 	.player {
-		aspect-ratio: 4/2;
+		aspect-ratio: 4/1;
 	}
 
 	.audio-player-box {
 		margin-left: -36px;
 		width: 100vw;
 		max-width: calc(100% + 36px * 2);
+	}
+}
+
+@media (min-width: 769px) {
+	.player {
+		aspect-ratio: 4 / 1;
 	}
 }
 

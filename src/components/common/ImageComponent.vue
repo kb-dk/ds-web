@@ -15,9 +15,10 @@
 			@load="loaded = true"
 		/>
 		<span
+			v-if="data.icon"
 			role="img"
-			:aria-label="`${t('app.a11y.imageComponentTitle')}`"
-			class="type-symbol material-icons"
+			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
+			:class="data.iconLowerRight ? 'type-symbol material-icons lower-right' : 'type-symbol material-icons'"
 			:style="`color: ${data.iconColor}`"
 		>
 			{{ data.icon }}
@@ -47,6 +48,7 @@ export default defineComponent({
 					icon: '',
 					iconColor: '',
 					aspect: '',
+					iconLowerRight: false,
 				} as ImageComponentType);
 			},
 		},
@@ -98,11 +100,30 @@ export default defineComponent({
 }
 
 .type-symbol {
-	font-size: 55px;
+	font-size: 58px;
 	position: absolute !important;
 	left: 50% !important;
 	top: 50% !important;
 	transform: translate(-50%, -50%);
+	background: radial-gradient(circle, rgba(0, 46, 112, 1) 0%, rgba(0, 46, 112, 1) 50%, rgba(255, 255, 255, 0) 50%);
+	border: 2px solid #002e70;
+	height: 48px;
+	width: 48px;
+	border-radius: 90px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.lower-right {
+	font-size: 36px;
+	bottom: -10px;
+	right: -10px;
+	top: initial !important;
+	left: initial !important;
+	height: 30px;
+	width: 30px;
+	display: flex;
 }
 
 .image-wrapper {
