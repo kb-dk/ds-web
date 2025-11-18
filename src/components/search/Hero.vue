@@ -102,11 +102,7 @@ export default defineComponent({
 						duration: 2,
 						ease: 'power2.out',
 						snap: { value: 1 },
-						onUpdate() {
-							console.log(Math.round(currentProgress.value));
-						},
 					});
-					console.log('lets fucking go!');
 				}
 			},
 		);
