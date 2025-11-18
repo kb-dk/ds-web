@@ -19,44 +19,50 @@
 					<span class="text">{{ t('hero.title') }}</span>
 				</span>
 			</h1>
-			<div class="hero-info">
-				<div class="info">
-					<div class="progress-headline">
-						<h2>{{ t('hero.progress', { index: authStore.currentArchiveProgress }) }}</h2>
-						<p>
-							{{ t('hero.explanation') }}
-						</p>
-					</div>
-					<div class="process-bar">
-						<div
-							:style="`left:${authStore.currentArchiveProgress}%`"
-							class="procentage"
-						>
-							{{ authStore.currentArchiveProgress }}%
+			<transition name="fade">
+				<div
+					v-show="authStore.currentArchiveProgress !== 0"
+					class="hero-info"
+				>
+					<div class="info">
+						<div class="progress-headline">
+							<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
+							<p>
+								{{ t('hero.explanation') }}
+							</p>
 						</div>
-						<div
-							v-for="i in 20"
-							:key="i"
-							:class="progress(i)"
-						></div>
-					</div>
-					<div class="link-container">
-						<a
-							class="link"
-							:href="t('hero.link')"
-						>
-							{{ t('hero.linkText') }}
-						</a>
+						<div class="process-bar">
+							<div
+								:style="`left:${currentProgress}%`"
+								class="procentage"
+							>
+								{{ currentProgress }}%
+							</div>
+							<div
+								v-for="i in 20"
+								:key="i"
+								:class="progress(i)"
+							></div>
+						</div>
+						<div class="link-container">
+							<a
+								class="link"
+								:href="t('hero.link')"
+							>
+								{{ t('hero.linkText') }}
+							</a>
+						</div>
 					</div>
 				</div>
-			</div>
+			</transition>
 		</div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
+import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'Hero',
@@ -64,13 +70,20 @@ export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
+		const currentProgress = ref(0);
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
 		});
 
+		onMounted(() => {
+			if (authStore.currentArchiveProgress !== 0) {
+				currentProgress.value = authStore.currentArchiveProgress;
+			}
+		});
+
 		const progress = (index: number) => {
 			const maxRange = 20;
-			let pt = Math.round((maxRange / 100) * authStore.currentArchiveProgress);
+			let pt = Math.round((maxRange / 100) * currentProgress.value);
 			if (index < pt) return 'step darkblue';
 			if (index === pt) return 'step darkblue';
 			if (index === pt + 1) return 'step blue';
@@ -80,10 +93,29 @@ export default defineComponent({
 			if (index > pt + 4) return 'step white';
 		};
 
+		watch(
+			() => authStore.currentArchiveProgress,
+			(newVal: number) => {
+				if (newVal !== 0) {
+					gsap.to(currentProgress, {
+						value: authStore.currentArchiveProgress,
+						duration: 2,
+						ease: 'power2.out',
+						snap: { value: 1 },
+						onUpdate() {
+							console.log(Math.round(currentProgress.value));
+						},
+					});
+					console.log('lets fucking go!');
+				}
+			},
+		);
+
 		return {
 			backgroundImage,
 			authStore,
 			progress,
+			currentProgress,
 			t,
 		};
 	},
@@ -126,6 +158,7 @@ h1 {
 	height: 100%;
 	box-sizing: border-box;
 	border-left: 1px solid rgba(255, 255, 255, 0.05);
+	transition: all 0.15s ease-in-out 0s;
 }
 
 .step.darkblue {
