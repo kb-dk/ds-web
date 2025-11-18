@@ -519,8 +519,8 @@
   "hero": {
       "title":"DR-arkiv",
       "subtitle":"Det Kgl. Biblioteks",
-      "progress":"Vi er nået {index}%...",
-      "explanation":"I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser fra 2006 og frem. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
+      "progress":"Vi har nået {index}%...",
+      "explanation":"I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
       "linkText":"Læs mere om DR-arkivet",
       "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
    },
