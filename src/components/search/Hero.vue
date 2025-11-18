@@ -147,6 +147,7 @@ h1 {
 	transform: translate(-50%, 0%);
 	color: white;
 	font-size: 26px;
+	transition: all 0.1s linear 0s;
 }
 
 .step {
