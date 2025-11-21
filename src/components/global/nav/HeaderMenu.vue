@@ -36,15 +36,10 @@
 								</i>
 
 								<span
-									v-if="currentLocaleMessages"
 									class="search-label cursive'"
 									aria-hidden="true"
 								>
-									{{
-										searchBarOpen
-											? currentLocaleMessages.primary.filter((a) => a.id === 'searchToggle')[0].title
-											: currentLocaleMessages.primary.filter((a) => a.id === 'searchToggle')[0].altTitle
-									}}
+									{{ searchBarOpen ? $t('header.main.close.title') : $t('header.main.close.altTitle') }}
 								</span>
 							</button>
 						</div>
@@ -90,12 +85,12 @@
 							aria-label="Hovednavigation"
 						>
 							<ul
-								v-if="currentLocaleMessages"
+								v-if="header.mainHeader.get(locale)"
 								role="menubar"
 								class="rdl-primary-nav"
 							>
 								<li
-									v-for="(item, index) in currentLocaleMessages.primary"
+									v-for="(item, index) in header.mainHeader.get(locale)"
 									:key="index"
 									role="none"
 									:class="item.id === 'searchToggle' ? 'search' : ''"
@@ -109,10 +104,9 @@
 										@click="toggleSearchBar"
 									>
 										<span :class="item.id === 'searchToggle' ? 'cursive' : ''">
-											{{ searchBarOpen ? item.title : item.altTitle }}
+											{{ searchBarOpen ? $t('header.main.close.title') : $t('header.main.close.altTitle') }}
 										</span>
 										<i
-											v-if="item.icon"
 											class="material-icons"
 											:aria-hidden="true"
 										>
@@ -121,7 +115,7 @@
 									</button>
 									<a
 										v-else
-										:href="item.link"
+										:href="item.full_url"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 										role="menuitem"
@@ -139,12 +133,12 @@
 							</ul>
 
 							<ul
-								v-if="currentLocaleMessages"
+								v-if="header.serviceHeader.get(locale)"
 								role="menubar"
 								class="rdl-secondary-nav"
 							>
 								<li
-									v-for="(item, index) in currentLocaleMessages.secondary"
+									v-for="(item, index) in header.serviceHeader.get(locale)"
 									:key="index"
 									role="none"
 									:class="item.icon"
@@ -169,7 +163,7 @@
 									</button>
 									<a
 										v-else
-										:href="item.link"
+										:href="item.full_url"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										class="nav-item level-1"
 										role="menuitem"
@@ -197,10 +191,12 @@
 import { HeaderType } from '@/types/HeaderType';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { defineComponent, onMounted, PropType, ref, toRaw, watch } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
+import { DrupalHeaderType } from '@/types/DrupalDataType';
+import { useHeaderAndFooterStore } from '@/store/headerAndFooterStore';
 
 export default defineComponent({
 	name: 'HeaderMenu',
@@ -210,12 +206,16 @@ export default defineComponent({
 
 	emits: ['toggleSearchBar'],
 	setup(props, { emit }) {
-		const { t, messages, locale } = useI18n();
+		const { t, locale } = useI18n();
 		const currentLocaleMessages = ref(undefined as unknown as HeaderType);
 		const mainHeaderRef = ref<HTMLFormElement | null>(null);
 		const menuOpen = ref(false);
 		const router = useRouter();
 		const route = useRoute();
+		const loaded = ref(false);
+		const header = useHeaderAndFooterStore();
+		const serviceHeader = ref<Array<DrupalHeaderType> | null>(null);
+		const mainHeader = ref<Array<DrupalHeaderType> | null>(null);
 
 		const switchLocale = () => {
 			locale.value = locale.value === 'da' ? 'en' : 'da';
@@ -225,6 +225,7 @@ export default defineComponent({
 			const routeQueries = { ...route.query };
 			routeQueries.locale = locale.value;
 			router.replace({ query: routeQueries });
+			header.getDrupalData();
 		};
 
 		const toggleSearchBar = () => {
@@ -253,28 +254,20 @@ export default defineComponent({
 			}
 			menuOpen.value = !menuOpen.value;
 		};
-
-		onMounted(() => {
-			currentLocaleMessages.value = toRaw(messages.value[locale.value].header) as HeaderType;
-		});
-
-		watch(
-			() => locale.value,
-			(newLocale: string, prevLocale: string) => {
-				if (newLocale !== prevLocale) {
-					currentLocaleMessages.value = toRaw(messages.value[locale.value].header) as HeaderType;
-				}
-			},
-		);
 		return {
 			mainHeaderRef,
 			switchLocale,
 			t,
+			locale,
 			currentLocaleMessages,
 			addTestDataEnrichment,
 			toggleSearchBar,
 			toggleMainHeader,
 			menuOpen,
+			header,
+			loaded,
+			serviceHeader,
+			mainHeader,
 		};
 	},
 });

@@ -4,6 +4,7 @@ import { BroadcastRecordType } from './BroadcastRecordType';
 import { SpellCheckType } from './SpellCheckType';
 import { AxiosRequestConfig } from 'axios';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import { DrupalFooterType, DrupalHeaderType } from './DrupalDataType';
 
 export interface APISearchResponseType {
 	data: {
@@ -114,5 +115,24 @@ export interface APIAuthMessagesType {
 		streamingBaseUrlAudio: string;
 		curatedItems: CuratedItemsType;
 		coverage: number;
+	};
+}
+
+export interface APIDrupalDataType {
+	data: {
+		data: {
+			type: string;
+			id: string;
+			attributes: {
+				footer_column_1: Array<DrupalFooterType>;
+				footer_column_2: Array<DrupalFooterType>;
+				footer_column_3: Array<DrupalFooterType>;
+				footer_column_4: string;
+				footer_column_5: Array<DrupalFooterType>;
+				footer_column_6: Array<DrupalFooterType>;
+				service_menu: Array<DrupalHeaderType>;
+				main_menu: Array<DrupalHeaderType>;
+			};
+		};
 	};
 }
