@@ -1,6 +1,56 @@
 import { endYear, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { Ref } from 'vue';
 
+const updateDate = (
+	timer: ReturnType<typeof setTimeout> | null,
+	isDateValid: Ref<boolean>,
+	inputVar: Ref<Date>,
+	updateLink: () => void,
+) => {
+	if (timer) {
+		clearTimeout(timer);
+	}
+	const constructedDate =
+		inputVar.value.getDate() + '/' + Number(inputVar.value.getMonth() + 1) + '/' + inputVar.value.getFullYear();
+	const dateInput = constructedDate.replace(/[.-]/g, '/');
+	const splitDateInput = dateInput.split('/');
+	if (splitDateInput.length === 3) {
+		const [day, month, yearInitial] = splitDateInput.map(Number);
+		let year = yearInitial;
+		// Validate if day, month, and year are numbers
+		if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+			// Months in JavaScript Date are 0-indexed, so subtract 1 from the month
+			if (year.toString().length === 2) {
+				if (year < Number(new Date().getFullYear().toString().slice(-2))) {
+					year = Number(`20${year}`);
+				} else {
+					year = Number(`19${year}`);
+				}
+			}
+			const setDate = new Date(year, month - 1, day);
+			// Ensure the date is valid
+			if (setDate.getDate() === day && setDate.getMonth() === month - 1 && setDate.getFullYear() === year) {
+				// Validate if the date is within the range
+				const minDate = new Date(startYear.value);
+				const maxDate = new Date(endYear.value);
+
+				if (setDate >= minDate && setDate <= maxDate) {
+					updateLink();
+					isDateValid.value = true;
+				} else {
+					isDateValid.value = false;
+				}
+			} else {
+				isDateValid.value = false;
+			}
+		} else {
+			isDateValid.value = false;
+		}
+	} else {
+		isDateValid.value = false;
+	}
+};
+
 const updateSelectedDate = (
 	e: Event,
 	timer: ReturnType<typeof setTimeout> | null,
@@ -54,4 +104,4 @@ const updateSelectedDate = (
 	}
 };
 
-export { updateSelectedDate };
+export { updateSelectedDate, updateDate };
