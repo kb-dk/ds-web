@@ -8,7 +8,7 @@
 			:for="inputId"
 			class="visually-hidden"
 		>
-			Select date
+			{{ t('calendar.select') }}
 		</label>
 
 		<div class="input-wrap">
@@ -22,6 +22,7 @@
 				placeholder="DD-MM-YYYY"
 				autocomplete="off"
 				@keydown.enter.prevent="onInputEnter"
+				@blur="onInputEnter"
 			/>
 			<Transition name="fade">
 				<div
@@ -36,7 +37,7 @@
 				class="dp-toggle"
 				:aria-expanded="opened"
 				:aria-controls="calendarId"
-				:aria-label="opened ? 'Close calendar' : 'Open calendar'"
+				:aria-label="opened ? t('calendar.close') : t('calendar.open')"
 				@click="toggle"
 			>
 				<span class="material-icons">event</span>
@@ -47,7 +48,7 @@
 			:id="hintId"
 			class="visually-hidden"
 		>
-			Type a date in format DD-MM-YYYY or pick from the calendar.
+			{{ t('calendar.explanation') }}
 		</p>
 
 		<div
@@ -107,7 +108,6 @@
 					</button>
 				</div>
 			</div>
-
 			<div
 				ref="grid"
 				role="grid"
@@ -126,7 +126,6 @@
 						{{ day }}
 					</div>
 				</div>
-
 				<div role="rowgroup">
 					<div
 						v-for="(week, index) in weeks"
@@ -138,7 +137,7 @@
 							v-for="day in week"
 							:key="day.key"
 							class="dp-day"
-							:disabled="day.disabled ? true : false"
+							:disabled="day.disabled"
 							:class="{
 								'dp-day-selected': isSameDate(day.date, modelValue),
 								'dp-day-outside': !day.inMonth,
@@ -160,324 +159,322 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, defineProps, defineEmits, watch } from 'vue';
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { startYear, endYear } from './timeSearch/TimeSearchInitValues';
 import { CalendarDay } from '@/types/CalendarTypes';
+import { startYear, endYear } from './timeSearch/TimeSearchInitValues';
 
-const props = defineProps({
-	modelValue: {
-		type: Date,
-		default: null,
+export default defineComponent({
+	name: 'DatePicker',
+
+	props: {
+		modelValue: { type: Date, default: null },
+		startDate: { type: Date, default: null },
+		endDate: { type: Date, default: null },
 	},
-	startDate: {
-		type: Date,
-		default: null,
-	},
-	endDate: {
-		type: Date,
-		default: null,
-	},
-});
-const emit = defineEmits(['update:modelValue', 'check']);
 
-const { t, locale } = useI18n();
+	emits: ['update:modelValue', 'check'],
 
-const inputId = `dp-${Math.random().toString(36).slice(2, 9)}`;
-const calendarId = `dp-cal-${Math.random().toString(36).slice(2, 9)}`;
-const calendarHeadingId = `dp-h-${Math.random().toString(36).slice(2, 9)}`;
-const hintId = `dp-hint-${Math.random().toString(36).slice(2, 9)}`;
+	setup(props, { emit }) {
+		const { t, locale } = useI18n();
+		const inputTimer = ref<number | null>(null);
 
-const today = new Date();
-const opened = ref(false);
-const invalid = ref(false);
+		const today = new Date();
+		const opened = ref(false);
+		const invalid = ref(false);
 
-const input = ref<HTMLInputElement>();
-const calendar = ref<HTMLDivElement>();
+		const input = ref<HTMLInputElement>();
+		const calendar = ref<HTMLDivElement>();
 
-const currentView = ref(
-	props.modelValue
-		? new Date(props.modelValue.getFullYear(), props.modelValue.getMonth(), 1)
-		: new Date(today.getFullYear(), today.getMonth(), 1),
-);
+		const currentView = ref(
+			props.modelValue
+				? new Date(props.modelValue.getFullYear(), props.modelValue.getMonth(), 1)
+				: new Date(today.getFullYear(), today.getMonth(), 1),
+		);
 
-const focusDate = ref(props.modelValue ? new Date(props.modelValue) : new Date(today));
+		const focusDate = ref(props.modelValue ? new Date(props.modelValue) : new Date(today));
 
-const monthNames = computed(() => {
-	const formatter = new Intl.DateTimeFormat(locale.value, { month: 'long' });
-	return Array.from({ length: 12 }, (_, i) => formatter.format(new Date(2000, i, 1)));
-});
+		const inputId = `dp-${Math.random().toString(36).slice(2, 9)}`;
+		const calendarId = `dp-cal-${Math.random().toString(36).slice(2, 9)}`;
+		const calendarHeadingId = `dp-h-${Math.random().toString(36).slice(2, 9)}`;
+		const hintId = `dp-hint-${Math.random().toString(36).slice(2, 9)}`;
 
-const weekNames = computed(() => {
-	const formatter = new Intl.DateTimeFormat(locale.value, { weekday: 'short' });
-	const base = new Date(2024, 0, 1);
-
-	return Array.from({ length: 7 }, (_, i) => {
-		const w = formatter.format(new Date(base.getFullYear(), base.getMonth(), base.getDate() + i));
-		return w.slice(0, 2);
-	});
-});
-
-const selectedMonth = ref(currentView.value.getMonth());
-const selectedYear = ref(currentView.value.getFullYear());
-
-function onMonthChange() {
-	currentView.value = new Date(selectedYear.value, selectedMonth.value, 1);
-	focusDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
-}
-
-function onYearChange() {
-	if (minDate.value && selectedYear.value < minDate.value.getFullYear()) {
-		selectedYear.value = minDate.value.getFullYear();
-	}
-	if (maxDate.value && selectedYear.value > maxDate.value.getFullYear()) {
-		selectedYear.value = maxDate.value.getFullYear();
-	}
-	currentView.value = new Date(selectedYear.value, selectedMonth.value, 1);
-	focusDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
-}
-
-watch(currentView, (v) => {
-	selectedMonth.value = v.getMonth();
-	selectedYear.value = v.getFullYear();
-});
-
-const yearRange = computed(() => {
-	const start = minDate.value ? minDate.value.getFullYear() : today.getFullYear() - 100;
-	const end = maxDate.value ? maxDate.value.getFullYear() : today.getFullYear() + 20;
-
-	const years = [];
-	for (let y = start; y <= end; y++) years.push(y);
-	return years;
-});
-
-const minDate = computed(() =>
-	props.startDate
-		? new Date(props.startDate.getFullYear(), props.startDate.getMonth(), props.startDate.getDate())
-		: null,
-);
-
-const maxDate = computed(() =>
-	props.endDate ? new Date(props.endDate.getFullYear(), props.endDate.getMonth(), props.endDate.getDate()) : null,
-);
-
-function monthIsBefore(date: Date, min: Date | null) {
-	if (!min) return false;
-	return (
-		date.getFullYear() < min.getFullYear() ||
-		(date.getFullYear() === min.getFullYear() && date.getMonth() < min.getMonth())
-	);
-}
-
-function monthIsAfter(date: Date, max: Date | null) {
-	if (!max) return false;
-	return (
-		date.getFullYear() > max.getFullYear() ||
-		(date.getFullYear() === max.getFullYear() && date.getMonth() > max.getMonth())
-	);
-}
-
-const formatErrorDate = (date: Date) => {
-	if (!(date instanceof Date)) return '';
-	return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-};
-
-function formatDate(date: Date) {
-	if (!date) return '';
-	const dd = String(date.getDate()).padStart(2, '0');
-	const mm = String(date.getMonth() + 1).padStart(2, '0');
-	const yyyy = date.getFullYear();
-	return `${dd}-${mm}-${yyyy}`;
-}
-
-function parseInputToDate(str: string) {
-	const m = str.match(/^(\d{2})-(\d{2})-(\d{4})$/);
-	if (!m) return null;
-
-	const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
-	if (isNaN(d.getTime())) return null;
-
-	return d;
-}
-
-function isSameDate(a: Date, b: Date) {
-	if (!(a instanceof Date) || !(b instanceof Date)) return false;
-	return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-}
-
-const displayValue = computed({
-	get() {
-		return formatDate(props.modelValue);
-	},
-	set(value) {
-		const d = parseInputToDate(value);
-		invalid.value = !d;
-		if (d) {
-			currentView.value = new Date(d.getFullYear(), d.getMonth(), 1);
-		}
-	},
-});
-
-function open() {
-	opened.value = true;
-	requestAnimationFrame(focusSelectedOrToday);
-}
-function close() {
-	opened.value = false;
-}
-function toggle() {
-	opened.value ? close() : open();
-}
-
-function onInputEnter() {
-	if (!invalid.value) close();
-}
-
-const monthTitle = computed(() =>
-	currentView.value.toLocaleString(locale.value, {
-		month: 'long',
-		year: 'numeric',
-	}),
-);
-
-function buildCalendar(year: number, month: number) {
-	const first = new Date(year, month, 1);
-	const startDay = (first.getDay() + 6) % 7;
-	const daysInMonth = new Date(year, month + 1, 0).getDate();
-	const totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
-
-	const startDate = new Date(year, month, 1 - startDay);
-	const days: CalendarDay[] = [];
-
-	for (let i = 0; i < totalCells; i++) {
-		const date = new Date(startDate);
-		date.setDate(startDate.getDate() + i);
-
-		const isBeforeMin = !!minDate.value && date < minDate.value;
-		const isAfterMax = !!maxDate.value && date > maxDate.value;
-
-		const key = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
-
-		days.push({
-			date: date,
-			label: date.getDate(),
-			inMonth: date.getMonth() === month,
-			key,
-			disabled: isBeforeMin || isAfterMax,
-			ariaLabel: date.toLocaleDateString(locale.value, {
-				weekday: 'long',
-				year: 'numeric',
-				month: 'long',
-				day: 'numeric',
-			}),
+		const monthNames = computed(() => {
+			const formatter = new Intl.DateTimeFormat(locale.value, { month: 'long' });
+			return Array.from({ length: 12 }, (_, i) => formatter.format(new Date(2000, i, 1)));
 		});
-	}
 
-	const weeks = [];
-	for (let i = 0; i < days.length; i += 7) {
-		weeks.push(days.slice(i, i + 7));
-	}
-	return weeks;
-}
+		const weekNames = computed(() => {
+			const formatter = new Intl.DateTimeFormat(locale.value, { weekday: 'short' });
+			const base = new Date(2024, 0, 1);
+			return Array.from({ length: 7 }, (_, i) =>
+				formatter.format(new Date(base.getFullYear(), base.getMonth(), base.getDate() + i)).slice(0, 2),
+			);
+		});
 
-const weeks = computed(() => buildCalendar(currentView.value.getFullYear(), currentView.value.getMonth()));
+		const selectedMonth = ref(currentView.value.getMonth());
+		const selectedYear = ref(currentView.value.getFullYear());
 
-const flatDays = computed(() => weeks.value.flat());
+		const minDate = computed(() => (props.startDate ? new Date(props.startDate) : null));
+		const maxDate = computed(() => (props.endDate ? new Date(props.endDate) : null));
 
-function focusSelectedOrToday() {
-	const key = props.modelValue
-		? `${props.modelValue.getFullYear()}-${props.modelValue.getMonth()}-${props.modelValue.getDate()}`
-		: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+		const yearRange = computed(() => {
+			const start = minDate.value ? minDate.value.getFullYear() : today.getFullYear() - 100;
+			const end = maxDate.value ? maxDate.value.getFullYear() : today.getFullYear() + 20;
+			const arr = [];
+			for (let y = start; y <= end; y++) arr.push(y);
+			return arr;
+		});
 
-	const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${key}"]`);
-	el?.focus();
-}
+		watch(currentView, (v) => {
+			selectedMonth.value = v.getMonth();
+			selectedYear.value = v.getFullYear();
+		});
 
-function prevMonth() {
-	const prev = new Date(currentView.value.getFullYear(), currentView.value.getMonth() - 1, 1);
-	if (!monthIsBefore(prev, minDate.value)) {
-		currentView.value = prev;
-		focusDate.value = new Date(prev);
-	}
-}
-
-function nextMonth() {
-	const next = new Date(currentView.value.getFullYear(), currentView.value.getMonth() + 1, 1);
-	if (!monthIsAfter(next, maxDate.value)) {
-		currentView.value = next;
-		focusDate.value = new Date(next);
-	}
-}
-
-function selectDay(date: Date) {
-	emit('update:modelValue', new Date(date));
-	currentView.value = new Date(date.getFullYear(), date.getMonth(), 1);
-	focusDate.value = new Date(date);
-	requestAnimationFrame(() => {
-		const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-		const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${key}"]`);
-		el?.focus();
-	});
-}
-
-function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
-	const key = e.key;
-
-	const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-	const selectKeys = ['Enter', ' '];
-
-	if (![...arrowKeys, ...selectKeys].includes(key)) return;
-
-	if (day.disabled) {
-		e.preventDefault();
-		return;
-	}
-
-	e.preventDefault();
-
-	const allDays = flatDays.value;
-	const currentIndex = allDays.findIndex((d) => d.key === day.key);
-	if (currentIndex === -1) return;
-
-	if (selectKeys.includes(key)) {
-		return selectDay(day.date);
-	}
-	let targetIndex = currentIndex;
-	if (key === 'ArrowLeft') targetIndex -= 1;
-	if (key === 'ArrowRight') targetIndex += 1;
-	if (key === 'ArrowUp') targetIndex -= 7;
-	if (key === 'ArrowDown') targetIndex += 7;
-
-	let targetDay: CalendarDay | null = null;
-
-	if (targetIndex < 0 && key === 'ArrowUp') {
-		const prevMonth = new Date(currentView.value.getFullYear(), currentView.value.getMonth() - 1, 1);
-		const prevMonthWeeks = buildCalendar(prevMonth.getFullYear(), prevMonth.getMonth());
-		const lastWeek = prevMonthWeeks[prevMonthWeeks.length - 1];
-		const col = currentIndex % 7;
-		targetDay = lastWeek[col];
-		currentView.value = prevMonth;
-	} else if (targetIndex >= allDays.length && key === 'ArrowDown') {
-		const nextMonth = new Date(currentView.value.getFullYear(), currentView.value.getMonth() + 1, 1);
-		const nextMonthWeeks = buildCalendar(nextMonth.getFullYear(), nextMonth.getMonth());
-		const firstWeek = nextMonthWeeks[0];
-		const col = currentIndex % 7;
-		targetDay = firstWeek[col];
-		currentView.value = nextMonth;
-	} else if (targetIndex >= 0 && targetIndex < allDays.length) {
-		targetDay = allDays[targetIndex];
-		if (!targetDay.inMonth) {
-			currentView.value = new Date(targetDay.date.getFullYear(), targetDay.date.getMonth(), 1);
+		function formatDate(date: Date | null) {
+			if (!date) return '';
+			const dd = String(date.getDate()).padStart(2, '0');
+			const mm = String(date.getMonth() + 1).padStart(2, '0');
+			const yyyy = date.getFullYear();
+			return `${dd}-${mm}-${yyyy}`;
 		}
-	}
-	if (targetDay) {
-		requestAnimationFrame(() => {
-			const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${targetDay.key}"]`);
+
+		function parseInputToDate(str: string) {
+			const m = str.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+			if (!m) return null;
+			const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+			return isNaN(d.getTime()) ? null : d;
+		}
+
+		function isSameDate(a: Date, b: Date) {
+			if (!(a instanceof Date) || !(b instanceof Date)) return false;
+			return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+		}
+
+		const displayValue = ref(formatDate(props.modelValue));
+
+		watch(displayValue, (val) => {
+			if (inputTimer.value) clearTimeout(inputTimer.value);
+
+			inputTimer.value = window.setTimeout(() => {
+				const normalized = val.replace(/[^0-9]/g, (m, i) => (i === 2 || i === 5 ? '-' : ''));
+				if (normalized !== val) displayValue.value = normalized;
+
+				const parsed = parseInputToDate(normalized);
+				let isInvalid = !parsed;
+
+				if (parsed) {
+					const year = parsed.getFullYear();
+					if (year < startYear.value.getFullYear() || year > endYear.value.getFullYear()) isInvalid = true;
+				}
+
+				invalid.value = isInvalid;
+
+				emit('update:modelValue', parsed);
+			}, 700);
+		});
+
+		function onInputEnter() {
+			const parsed = parseInputToDate(displayValue.value);
+			if (!parsed) {
+				invalid.value = true;
+				return;
+			}
+			selectDay(parsed);
+			close();
+		}
+
+		function selectDay(date: Date) {
+			emit('update:modelValue', new Date(date));
+			currentView.value = new Date(date.getFullYear(), date.getMonth(), 1);
+			focusDate.value = new Date(date);
+			displayValue.value = formatDate(date);
+
+			requestAnimationFrame(() => {
+				const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+				const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${key}"]`);
+				el?.focus();
+			});
+		}
+
+		function onMonthChange() {
+			currentView.value = new Date(selectedYear.value, selectedMonth.value, 1);
+			focusDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
+		}
+
+		function onYearChange() {
+			if (minDate.value && selectedYear.value < minDate.value.getFullYear())
+				selectedYear.value = minDate.value.getFullYear();
+			if (maxDate.value && selectedYear.value > maxDate.value.getFullYear())
+				selectedYear.value = maxDate.value.getFullYear();
+			currentView.value = new Date(selectedYear.value, selectedMonth.value, 1);
+			focusDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
+		}
+
+		const monthTitle = computed(() =>
+			currentView.value.toLocaleString(locale.value, { month: 'long', year: 'numeric' }),
+		);
+
+		function buildCalendar(year: number, month: number) {
+			const first = new Date(year, month, 1);
+			const startDay = (first.getDay() + 6) % 7;
+			const daysInMonth = new Date(year, month + 1, 0).getDate();
+			const totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
+			const startDate = new Date(year, month, 1 - startDay);
+			const days: CalendarDay[] = [];
+
+			for (let i = 0; i < totalCells; i++) {
+				const date = new Date(startDate);
+				date.setDate(startDate.getDate() + i);
+				const isBeforeMin = !!minDate.value && date < minDate.value;
+				const isAfterMax = !!maxDate.value && date > maxDate.value;
+				const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+				days.push({
+					date,
+					label: date.getDate(),
+					inMonth: date.getMonth() === month,
+					key,
+					disabled: isBeforeMin || isAfterMax,
+					ariaLabel: date.toLocaleDateString(locale.value, {
+						weekday: 'long',
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					}),
+				});
+			}
+
+			const weeks = [];
+			for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
+			return weeks;
+		}
+
+		const weeks = computed(() => buildCalendar(currentView.value.getFullYear(), currentView.value.getMonth()));
+		const flatDays = computed(() => weeks.value.flat());
+
+		function focusSelectedOrToday() {
+			const key = props.modelValue
+				? `${props.modelValue.getFullYear()}-${props.modelValue.getMonth()}-${props.modelValue.getDate()}`
+				: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+			const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${key}"]`);
 			el?.focus();
-		});
-	}
-}
+		}
+
+		function prevMonth() {
+			const prev = new Date(currentView.value.getFullYear(), currentView.value.getMonth() - 1, 1);
+			if (!(minDate.value && prev < minDate.value)) {
+				currentView.value = prev;
+				focusDate.value = new Date(prev);
+			}
+		}
+
+		function nextMonth() {
+			const next = new Date(currentView.value.getFullYear(), currentView.value.getMonth() + 1, 1);
+			if (!(maxDate.value && next > maxDate.value)) {
+				currentView.value = next;
+				focusDate.value = new Date(next);
+			}
+		}
+
+		function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
+			const key = e.key;
+			const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+			const selectKeys = ['Enter', ' '];
+
+			if (![...arrowKeys, ...selectKeys].includes(key)) return;
+			if (day.disabled) {
+				e.preventDefault();
+				return;
+			}
+			e.preventDefault();
+
+			if (selectKeys.includes(key)) {
+				selectDay(day.date);
+				return;
+			}
+
+			let newDate = new Date(day.date);
+			if (key === 'ArrowLeft') newDate.setDate(newDate.getDate() - 1);
+			if (key === 'ArrowRight') newDate.setDate(newDate.getDate() + 1);
+			if (key === 'ArrowUp') newDate.setDate(newDate.getDate() - 7);
+			if (key === 'ArrowDown') newDate.setDate(newDate.getDate() + 7);
+
+			if (minDate.value && newDate < minDate.value) newDate = new Date(minDate.value);
+			if (maxDate.value && newDate > maxDate.value) newDate = new Date(maxDate.value);
+
+			if (
+				newDate.getMonth() !== currentView.value.getMonth() ||
+				newDate.getFullYear() !== currentView.value.getFullYear()
+			) {
+				currentView.value = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+			}
+
+			requestAnimationFrame(() => {
+				const key = `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
+				const el = calendar.value?.querySelector<HTMLElement>(`[data-key="${key}"]`);
+				el?.focus();
+			});
+		}
+
+		function formatErrorDate(date: Date) {
+			if (!(date instanceof Date)) return '';
+			return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+		}
+
+		function open() {
+			opened.value = true;
+			requestAnimationFrame(focusSelectedOrToday);
+		}
+		function close() {
+			opened.value = false;
+		}
+		function toggle() {
+			opened.value ? close() : open();
+		}
+
+		return {
+			t,
+			locale,
+			inputId,
+			calendarId,
+			calendarHeadingId,
+			hintId,
+			opened,
+			invalid,
+			input,
+			calendar,
+			currentView,
+			focusDate,
+			monthNames,
+			weekNames,
+			selectedMonth,
+			selectedYear,
+			yearRange,
+			minDate,
+			maxDate,
+			displayValue,
+			weeks,
+			flatDays,
+			monthTitle,
+			open,
+			close,
+			toggle,
+			onInputEnter,
+			onMonthChange,
+			onYearChange,
+			prevMonth,
+			nextMonth,
+			selectDay,
+			onDayKeydown,
+			isSameDate,
+			formatErrorDate,
+			startYear,
+			endYear,
+		};
+	},
+});
 </script>
 
 <style scoped>
@@ -502,6 +499,7 @@ function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
+	font-family: noway, sans-serif;
 }
 
 .dp-selectors {
@@ -516,6 +514,8 @@ function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
 	border-radius: 4px;
 	background: white;
 	text-align: center;
+	font-family: noway, sans-serif;
+	text-transform: capitalize;
 }
 
 .input-wrap {
@@ -535,6 +535,7 @@ function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
 	padding: 8px 10px;
 	width: calc(266px - 40px);
 	height: 20px;
+	font-family: noway, sans-serif;
 }
 .dp-toggle {
 	background: transparent;
@@ -573,6 +574,10 @@ function onDayKeydown(e: KeyboardEvent, day: CalendarDay) {
 	align-items: center;
 	width: 100%;
 	justify-content: space-between;
+}
+
+.dp-calender-prev-next h3 {
+	text-transform: capitalize;
 }
 
 .dp-calendar-selectors {

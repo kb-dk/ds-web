@@ -10,6 +10,8 @@ const updateDate = (
 	if (timer) {
 		clearTimeout(timer);
 	}
+	isDateValid.value = false;
+
 	const constructedDate =
 		inputVar.value.getDate() + '/' + Number(inputVar.value.getMonth() + 1) + '/' + inputVar.value.getFullYear();
 	const dateInput = constructedDate.replace(/[.-]/g, '/');
@@ -37,17 +39,9 @@ const updateDate = (
 				if (setDate >= minDate && setDate <= maxDate) {
 					updateLink();
 					isDateValid.value = true;
-				} else {
-					isDateValid.value = false;
 				}
-			} else {
-				isDateValid.value = false;
 			}
-		} else {
-			isDateValid.value = false;
 		}
-	} else {
-		isDateValid.value = false;
 	}
 };
 
