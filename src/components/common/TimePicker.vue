@@ -94,17 +94,19 @@
 					<button
 						type="button"
 						aria-label="Previous month"
+						class="material-icons"
 						@click="prevMonth"
 					>
-						‹
+						keyboard_arrow_left
 					</button>
 					<h3 :id="calendarHeadingId">{{ monthTitle }}</h3>
 					<button
 						type="button"
 						aria-label="Next month"
+						class="material-icons"
 						@click="nextMonth"
 					>
-						›
+						keyboard_arrow_right
 					</button>
 				</div>
 			</div>
@@ -516,6 +518,7 @@ export default defineComponent({
 	text-align: center;
 	font-family: noway, sans-serif;
 	text-transform: capitalize;
+	font-size: 16px;
 }
 
 .input-wrap {
@@ -534,9 +537,14 @@ export default defineComponent({
 .dp-input {
 	padding: 8px 10px;
 	width: calc(266px - 40px);
-	height: 20px;
+	height: 22px;
 	font-family: noway, sans-serif;
+	font-size: 20px;
+	color: #0a2e70;
+	border-radius: 4px;
+	border: 1px solid #0a2e70;
 }
+
 .dp-toggle {
 	background: transparent;
 	border: 1px solid #ccc;
@@ -544,10 +552,13 @@ export default defineComponent({
 	border-radius: 4px;
 	height: 40px;
 	width: 40px;
+	cursor: pointer;
+	border: 1px solid #0a2e70;
 }
 
 .dp-selectors select {
 	width: calc(50% - 5px);
+	cursor: pointer;
 }
 
 .dp-calendar {
@@ -574,6 +585,13 @@ export default defineComponent({
 	align-items: center;
 	width: 100%;
 	justify-content: space-between;
+}
+
+.dp-calender-prev-next button {
+	border: 0px;
+	background-color: transparent;
+	font-size: 32px;
+	cursor: pointer;
 }
 
 .dp-calender-prev-next h3 {
@@ -616,11 +634,11 @@ export default defineComponent({
 	border-radius: 4px;
 }
 .dp-day:focus {
-	outline: 2px solid #007acc;
+	outline: 2px solid #0a2e70;
 }
 .dp-day[aria-selected='true'],
 .dp-day-selected {
-	background-color: #007acc;
+	background-color: #0a2e70;
 	color: white;
 	font-weight: bold;
 }
