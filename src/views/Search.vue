@@ -179,6 +179,7 @@ export default defineComponent({
 					if (route.query.q) {
 						try {
 							const q = new URL(location.href).searchParams.get('q');
+
 							if (q !== null) {
 								searchResultStore.setCurrentQueryFromURL(q.toString());
 							}
