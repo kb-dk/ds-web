@@ -125,6 +125,7 @@ export default defineComponent({
 				start: 0,
 				rows: 10,
 				fq: [],
+				sort: `random_${Date.now()} ASC`,
 			},
 		});
 
@@ -137,7 +138,7 @@ export default defineComponent({
 
 		const fetchNewTimeResults = () => {
 			updateLink();
-			getTimeResults(true);
+			getTimeResults(true, `random_${Date.now()} ASC`);
 		};
 
 		onMounted(() => {
@@ -184,6 +185,7 @@ export default defineComponent({
 					start: 0,
 					rows: 10,
 					fq: fqArray,
+					sort: `random_${Date.now()} ASC`,
 				},
 			};
 		};

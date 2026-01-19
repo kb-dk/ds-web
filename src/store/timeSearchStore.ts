@@ -144,6 +144,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		months: string[],
 		days: string[],
 		timeslots: string[],
+		sort: string,
 	) => {
 		//https://stackoverflow.com/a/62359248
 		//to get a _GOOD_ uuid, we use the functionality from the createObjectURL method, that creates one, and just get that one.
@@ -156,7 +157,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 			const selectedMonths = getQueryStringFromArray(months, '&fq=temporal_start_month:(');
 			const selectedDays = getQueryStringFromArray(days, '&fq=temporal_start_day_da:(');
 			const selectedTimeslots = getQueryStringFromArray(timeslots, '&fq=temporal_start_hour_da:(');
-
 			searchFired.value = true;
 			loading.value = true;
 			const responseData = await APIService.getTimeSearchResults(
@@ -166,6 +166,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 				selectedDays,
 				selectedTimeslots,
 				currentSearchUUID,
+				sort,
 			);
 
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';

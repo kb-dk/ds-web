@@ -31,7 +31,7 @@ const resetAllSelectorValues = (array: SelectorData[]) => {
 	});
 };
 
-const getTimeResults = (allowYearSearch: boolean) => {
+const getTimeResults = (allowYearSearch: boolean, sort = 'startTime asc') => {
 	const timeSearchStore = useTimeSearchStore();
 	timeSearchStore.getTimeSearchResults(
 		allowYearSearch && startDate.value !== null ? startDate.value.toISOString() : '',
@@ -39,6 +39,7 @@ const getTimeResults = (allowYearSearch: boolean) => {
 		getSelectedFromArray(months.value),
 		getSelectedFromArray(days.value),
 		getSelectedFromArray(timeslots.value),
+		sort,
 	);
 };
 
