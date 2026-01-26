@@ -63,10 +63,15 @@ function calculateMediumDataCurve(logBase: number, y: number, minY: number, maxY
 	return 95 - ((getBaseLog(logBase, y + 1) - getBaseLog(logBase, minY + 1)) / rangeY) * 95;
 }
 function calculateDefaultDataCurve(logBase: number, y: number, minY: number, maxY: number, rangeY: number) {
-	if (y === 0) return 100;
+	if (y === 0) {
+		return 100;
+	}
 	let normalized = 100 - ((y - minY) / rangeY) * 100;
-	if (normalized > 99) normalized = calculateSmallDataCurve(logBase, y, minY, maxY);
-	if (normalized > 94) normalized = calculateMediumDataCurve(logBase, y, minY, maxY);
+	if (normalized > 99) {
+		normalized = calculateSmallDataCurve(logBase, y, minY, maxY);
+	} else if (normalized > 94) {
+		normalized = calculateMediumDataCurve(logBase, y, minY, maxY);
+	}
 	return normalized;
 }
 function getBaseLog(x: number, y: number): number {
