@@ -94,7 +94,7 @@
 					<button
 						type="button"
 						aria-label="Previous month"
-						class="material-icons"
+						class="material-icons change-month left"
 						@click="prevMonth"
 					>
 						keyboard_arrow_left
@@ -103,7 +103,7 @@
 					<button
 						type="button"
 						aria-label="Next month"
-						class="material-icons"
+						class="material-icons change-month right"
 						@click="nextMonth"
 					>
 						keyboard_arrow_right
@@ -527,6 +527,10 @@ export default defineComponent({
 	align-items: center;
 }
 
+.dp-day:hover {
+	background-color: #caf0fe;
+}
+
 .dp-day-disabled {
 	color: #ccc;
 	opacity: 0.4;
@@ -554,6 +558,19 @@ export default defineComponent({
 	width: 40px;
 	cursor: pointer;
 	border: 1px solid #0a2e70;
+	transition: all 0.15s linear 0s;
+}
+
+.dp-toggle span {
+	transition: all 0.15s linear 0s;
+}
+
+.dp-toggle:hover span {
+	color: #ffffff;
+}
+
+.dp-toggle:hover {
+	background-color: #0a2e70;
 }
 
 .dp-selectors select {
@@ -632,6 +649,7 @@ export default defineComponent({
 	background: transparent;
 	cursor: pointer;
 	border-radius: 4px;
+	transition: all 0.15s linear 0s;
 }
 .dp-day:focus {
 	outline: 2px solid #0a2e70;
