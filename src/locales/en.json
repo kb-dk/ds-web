@@ -39,57 +39,31 @@
    },
 
    "header":{
-      "secondary":
-         [
-            {
-               "title": "Collect and return",
-               "link": "https://www.kb.dk/en/services/loans-and-returns"
-            },{
-               "title": "New user", 
-               "link": "https://www.kb.dk/en/become-library-user"
-            },{
-               "title": "About us", 
-               "link": "https://www.kb.dk/en/about-us"
-            },{
-               "title": "Webshop", 
-               "link": "https://webshop.kb.dk/"
-            },{
-               "title": "Opening hours", 
-               "link": "https://www.kb.dk/en/opening-hours"
-            },{
-               "title": "På dansk", 
-               "link": "#",
-               "id": "localeSwitcher"
-            },{
-               "title": "Login", 
-               "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=en",
-               "icon": "account_circle"
-            }
-         ],
-      "primary":
-         [
-            {
-               "title": "Find materials",
-               "link": "https://www.kb.dk/en/find-materials"
-            },{
-               "title": "Inspiration", 
-               "link": "https://www.kb.dk/en/inspiration"
-            },{
-               "title": "Events", 
-               "link": "https://www.kb.dk/en/events"
-            },{
-               "title": "Services", 
-               "link": "https://www.kb.dk/en/services"
-            },{
-               "title": "Visit us", 
-               "link": "https://www.kb.dk/en/visit-us"
-            },{
-               "title": "Close",
-               "altTitle": "Search", 
-               "id": "searchToggle",
-               "icon": "search"
-            }
-         ]
+      "service":{
+         "inEnglish":{
+            "title": "På dansk", 
+            "link": "#",
+            "id": "localeSwitcher"
+         },
+         "login":{
+            "title": "Login", 
+            "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
+            "icon": "account_circle"
+         }
+      },
+      "main":{
+         "close":{
+            "title": "Close", 
+            "altTitle": "Search",
+            "link": "#",
+            "id": "searchToggle",
+            "icon": "search"
+         }
+      },
+      "error":{
+         "title":"Error message",
+         "text":"Header is not responding"
+      }
    },
    "frontpage": {
       "fromTheArchive":"The month of {month} on DR through time"

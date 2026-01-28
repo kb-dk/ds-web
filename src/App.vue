@@ -53,6 +53,7 @@ import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseT
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
+import { useHeaderAndFooterStore } from './store/headerAndFooterStore';
 
 export default defineComponent({
 	name: 'App',
@@ -72,6 +73,7 @@ export default defineComponent({
 		const { locale, t } = useI18n({ useScope: 'global' });
 		const authStore = useAuthStore();
 		const searchResultStore = useSearchResultStore();
+		const headerFooter = useHeaderAndFooterStore();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 
 		const html = document.querySelector('html');
@@ -248,6 +250,7 @@ export default defineComponent({
 				locale.value = 'da';
 				currentLocale.value = 'da';
 			}
+			headerFooter.getDrupalData();
 		});
 
 		const handleBffRsponse = (response: APIAuthMessagesType) => {
