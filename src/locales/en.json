@@ -548,5 +548,11 @@
       "maybeYouWantTo":"Or maybe you would rather:",
       "restoreFilters":"Restore filters from previous search",
       "GoToFrontpage":"Go to the front page of DR-arkivet"
+   },
+   "calendar": {
+      "open":"Open calendar",
+      "close": "Close calendar",
+      "explanation": "Type a date in format DD-MM-YYYY or pick from the calendar.",
+      "select": "Select date"
    }
 }

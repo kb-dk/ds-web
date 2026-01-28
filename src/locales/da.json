@@ -543,5 +543,11 @@
       "maybeYouWantTo":"Eller måske vil du hellere:",
       "restoreFilters":"Gendanne filtre fra sidste søgning",
       "GoToFrontpage":"Til forsiden af DR-arkivet"
+   },
+   "calendar": {
+      "open":"Åben kalender",
+      "close": "Luk kalender",
+      "explanation": "Skriv en dato i formatet DD-MM-ÅÅÅÅ eller vælg fra kalenderen.",
+      "select": "Vælg dato"
    }
 }
