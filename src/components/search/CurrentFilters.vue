@@ -250,7 +250,7 @@ export default defineComponent({
 			delete routeQueries.start;
 			delete routeQueries.fq;
 			delete routeQueries.sort;
-
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 			router.push({
 				name: 'Search',
 				query: routeQueries,
