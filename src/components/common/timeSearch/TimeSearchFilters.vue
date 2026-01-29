@@ -239,20 +239,6 @@
 				</fieldset>
 			</div>
 		</div>
-		<div
-			v-if="picker"
-			class="apply-time-facets-container"
-		>
-			<button
-				class="apply-time-facets"
-				:disabled="(!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady) || disabled"
-				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
-				@click="emitNewSearch()"
-			>
-				{{ t('timeSearch.filterApplyButton') }}
-				<span class="material-icons">search</span>
-			</button>
-		</div>
 	</div>
 </template>
 
@@ -458,11 +444,6 @@ export default defineComponent({
 			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
 				clearEstimatedQueryLength();
-				const resultContainer = document.getElementsByClassName('hits')[0];
-				resultContainer?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-				});
 				timeSearchStore.setNewSearchReqMet(false);
 				timeSearchStore.setFilterSearchReady(false);
 			} else {
@@ -508,9 +489,7 @@ export default defineComponent({
 				removeFromEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
@@ -528,9 +507,7 @@ export default defineComponent({
 				});
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const figuresImage = computed(() => {
