@@ -75,7 +75,7 @@
 			icon="event"
 			:subline="getSublineForYears(startDate, endDate, t)"
 		>
-			<div class="picker-background"><DatePicker></DatePicker></div>
+			<div class="picker-background"><DatePicker @date-search="emitNewSearch"></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">

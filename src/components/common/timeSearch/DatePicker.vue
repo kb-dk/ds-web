@@ -104,7 +104,8 @@ export default defineComponent({
 	components: {
 		VueDatePicker,
 	},
-	setup() {
+	emits: ['dateSearch'],
+	setup(props, { emit }) {
 		let startInputTimer: ReturnType<typeof setTimeout> | null = null;
 
 		let endInputTimer: ReturnType<typeof setTimeout> | null = null;
@@ -232,8 +233,10 @@ export default defineComponent({
 			}
 		};
 
-		const enableApplyButtonIfSearchisValid = () => {
-			timeSearchStore.setFilterSearchReady(validEndDate.value && validStartDate.value);
+		const filterSearchIfValidDate = () => {
+			if (validEndDate.value && validStartDate.value) {
+				emit('dateSearch');
+			}
 		};
 
 		const validateStartInput = () => {
@@ -253,7 +256,7 @@ export default defineComponent({
 			(newValue, oldValue) => {
 				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
 					validateStartInput();
-					enableApplyButtonIfSearchisValid();
+					filterSearchIfValidDate();
 				}
 			},
 		);
@@ -263,7 +266,7 @@ export default defineComponent({
 			(newValue, oldValue) => {
 				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
 					validateEndInput();
-					enableApplyButtonIfSearchisValid();
+					filterSearchIfValidDate();
 				}
 			},
 		);
