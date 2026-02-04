@@ -197,7 +197,7 @@ export default defineComponent({
 			}
 			endInputTimer = setTimeout(() => {
 				updateSelectedDate(e, endInputTimer, validEndDate, endDate, validateEndInput);
-			}, 750); // 750 milliseconds (0.75 second) delay
+			}, 1100); // 750 milliseconds (0.75 second) delay
 		};
 
 		/* This way might seem weird to update the endDate,

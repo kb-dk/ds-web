@@ -445,7 +445,6 @@ export default defineComponent({
 				emit('newSearch', true);
 				clearEstimatedQueryLength();
 				timeSearchStore.setNewSearchReqMet(false);
-				timeSearchStore.setFilterSearchReady(false);
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
