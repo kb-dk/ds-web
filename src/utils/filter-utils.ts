@@ -144,8 +144,6 @@ function removeChannelOrCategoryFilter(
 			// we now split it up into the segments between the OR operator
 			let filters = creatorAffiliationFilter.replace(/[()]/g, '').split(' OR ');
 			// remove the one we dont want
-			console.log(filters);
-
 			filters = filters.filter((filter) => filter !== filterToRemove);
 			// reassemble it
 			const finalFilter = `(${filters.join(' OR ')})`;
