@@ -94,14 +94,15 @@ function addChannelOrCategoryFilter(
 			}
 			// we now split it up into the segments between the OR operator
 			const filters = creatorAffiliationFilter.replace(/[()]/g, '').split(' OR ');
+
 			// we now push the new filter into the array we just created
-			filters.push(encodeURIComponent(`${newFilter}`));
+			filters.push(`${newFilter}`);
 			// and reassemble them all into a new string with the old filters and the new one.
 			const finalFilter = `(${filters.join(' OR ')})`;
-			existingFq.push(finalFilter);
+			existingFq.push(decodeURIComponent(finalFilter));
 		} else {
 			// if we couldn't find the array, we simply add the new filter to the fq array.
-			existingFq.push(encodeURIComponent(`${newFilter}`));
+			existingFq.push(decodeURIComponent(`${newFilter}`));
 		}
 		// replace the routeQueries.fq with our modified array.
 		routeQueries.fq = existingFq;
@@ -143,7 +144,9 @@ function removeChannelOrCategoryFilter(
 			// we now split it up into the segments between the OR operator
 			let filters = creatorAffiliationFilter.replace(/[()]/g, '').split(' OR ');
 			// remove the one we dont want
-			filters = filters.filter((filter) => filter !== encodeURIComponent(filterToRemove));
+			console.log(filters);
+
+			filters = filters.filter((filter) => filter !== filterToRemove);
 			// reassemble it
 			const finalFilter = `(${filters.join(' OR ')})`;
 			// if there is none left, we dont re-add it. Otherwise we do.

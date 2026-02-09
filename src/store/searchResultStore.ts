@@ -117,10 +117,12 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 						preliminaryFilter.value = filter;
 					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
-						channelFilters.value = cleanedString.split(' OR ');
+
+						// channelFilters.value = cleanedString.split(' OR ');
+						channelFilters.value = cleanedString.split(' OR ').map((filter) => encodeURIComponent(filter));
 					} else if (filter?.split('%3A')[0].includes('genre_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
-						categoryFilters.value = cleanedString.split(' OR ');
+						categoryFilters.value = cleanedString.split(' OR ').map((filter) => encodeURIComponent(filter));
 					} else {
 						filter !== '' ? filters.value.push(`fq=${filter}`) : null;
 					}
