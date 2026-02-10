@@ -91,7 +91,7 @@
 							</router-link>
 							<div
 								v-if="index === recordsForTheDay.length - 1"
-								class="between-program test"
+								class="between-program"
 								:style="{
 									width: `${getProgramWidth(`between-programs${index}`) - 8}px`,
 									marginRight: getProgramWidth(`between-programs${index}`) > 0 ? '8px' : '0px',
@@ -185,6 +185,7 @@ export default defineComponent({
 		const programSliderRef = ref<HTMLElement | null>(null);
 		const router = useRouter();
 		const shortPrograms = ref<Array<number>>([]);
+		const betweenProgramsCorrection = ref(0);
 		const programWidth = ref<Map<string, number>>(new Map());
 		const loaded = ref(false);
 		const showProgramGuide = () => {
@@ -216,21 +217,28 @@ export default defineComponent({
 		const calcMinutesBetween = (p1: GenericSearchResultType, p2: GenericSearchResultType | null, key: string) => {
 			if (p2 === null) {
 				let minutesBetween = calcProgramMinutes(p1.temporal_start_time_da_string);
-
-				if (minutesBetween < 38 && minutesBetween > 0) {
-					const addedAmount = 38 - minutesBetween;
-					minutesBetween += addedAmount;
-					shortPrograms.value.push(addedAmount);
+				if (minutesBetween < 9 && minutesBetween > 0) {
+					minutesBetween = 9;
 				}
 				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
 			} else {
 				let minutesBetween =
 					calcProgramMinutes(p2.temporal_start_time_da_string) - calcProgramMinutes(p1.temporal_end_time_da_string);
-				if (minutesBetween < 38 && minutesBetween > 0) {
-					const addedAmount = 38 - minutesBetween;
-					minutesBetween += addedAmount;
-					shortPrograms.value.push(addedAmount);
+
+				if (minutesBetween < 9 && minutesBetween > 0) {
+					minutesBetween = 9;
 				}
+				if (minutesBetween < 0) {
+					minutesBetween = minutesBetween / 2;
+					const index = Number(key.split('programs')[1]);
+					const before = programWidth.value.get('programs' + index);
+					if (before) {
+						programWidth.value.set('programs' + index, before + minutesBetween);
+					}
+					betweenProgramsCorrection.value = minutesBetween;
+					minutesBetween = 0;
+				}
+
 				programWidth.value.set(key, minutesBetween - checkIfProgramReduction(minutesBetween));
 			}
 		};
@@ -240,14 +248,17 @@ export default defineComponent({
 			const time = programTime.split(':').map((v) => {
 				return Number(v);
 			});
-			const minutes = (time[time.length - 1] >= 30 ? 1 : 0) + time[1] + time[0] * 60;
+			const minutes = (time[time.length - 1] >= 59 ? 1 : 0) + time[1] + time[0] * 60;
+
 			return minutes * 6;
 		};
 		//We get the duration in ms. So we calculate it to minutes.
 		const calcProgramDurationMinutes = (program: GenericSearchResultType, key: string) => {
 			const durationMinutes = Number(program.duration_ms) / 1000 / 60;
-
 			let durationWidth = Math.round(durationMinutes) * 6;
+			durationWidth += betweenProgramsCorrection.value;
+
+			betweenProgramsCorrection.value = 0;
 			if (durationWidth < 38) {
 				const addedAmount = 38 - durationWidth;
 				durationWidth += addedAmount;
@@ -280,8 +291,7 @@ export default defineComponent({
 			return 0;
 		};
 		const getProgramWidth = (key: string) => {
-			const width = programWidth.value.get(key);
-
+			let width = programWidth.value.get(key);
 			return width ? width : 0;
 		};
 		watch(
@@ -325,6 +335,7 @@ export default defineComponent({
 			programWidth,
 			loaded,
 			getProgramWidth,
+			betweenProgramsCorrection,
 		};
 	},
 });

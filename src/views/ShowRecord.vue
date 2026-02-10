@@ -265,7 +265,14 @@ export default defineComponent({
 			async () => {
 				getMoreRecordsThisDayAndCreator().then((records) => {
 					if (records) {
-						recordsForTheDay.value = records.data.response.docs;
+						const responseRecords = records.data.response.docs;
+						const uniqueRecords: GenericSearchResultType[] = [];
+						for (let i = 0; i < responseRecords.length; i++) {
+							if (!uniqueRecords.some((uRec) => uRec.dr_production_id === responseRecords[i].dr_production_id)) {
+								uniqueRecords.push(responseRecords[i]);
+							}
+						}
+						recordsForTheDay.value = uniqueRecords;
 					}
 				});
 			},
