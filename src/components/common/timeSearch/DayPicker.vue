@@ -67,6 +67,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
 import { updateSelectedDate } from '@/utils/datepicker-utils';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
 
 interface MonthYearEvent {
 	instance: number;
@@ -81,7 +82,7 @@ export default defineComponent({
 	},
 	setup() {
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
-
+		const timeSearchStore = useTimeSearchStore();
 		const singleDatePicker = ref<DatePickerInstance>();
 		const selectedDate = ref<Date | null>(new Date(2015, 0, 1, 0, 0, 0));
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
@@ -168,7 +169,7 @@ export default defineComponent({
 				endDate.value.setMonth(selectedDate.value.getMonth());
 				endDate.value.setDate(selectedDate.value.getDate());
 			}
-
+			timeSearchStore.setTimeFacetsOpen(true);
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
