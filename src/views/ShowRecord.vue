@@ -158,16 +158,9 @@ export default defineComponent({
 					const startTime = startTimeDate.toISOString();
 					//Some of the special characters does not need to be encoded.
 					//This gives the same result as adding creator and a single day with facets.
-					return await APIService.getSearchResults(
-						'*:*',
-						encodeURIComponent(`&fq=startTime:[${startTime} TO ${endTime}]&fq=(creator_affiliation_facet:"${creator}")`)
-							.replace(/%26/g, '&')
-							.replace(/%3D/g, '='),
-						'100',
-						'',
-						'&sort=startTime asc',
-						currentSearchUUID,
-					);
+					let facet = `&fq=${encodeURIComponent(`startTime:[${startTime} TO ${endTime}]`)}&`;
+					facet += `fq=${encodeURIComponent(`(creator_affiliation_facet:"${creator}"`)})`;
+					return await APIService.getSearchResults('*:*', facet, '100', '', '&sort=startTime asc', currentSearchUUID);
 				} catch (err) {
 					handleShowRecordError(err as AxiosError, 'programGuideCall');
 				}
