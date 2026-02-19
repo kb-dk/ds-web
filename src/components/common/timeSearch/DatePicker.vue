@@ -211,12 +211,6 @@ export default defineComponent({
 			holder.setFullYear(year);
 			holder.setHours(23, 59, 59, 999); // End of the day
 			endDate.value = holder;
-
-			if (endDate.value.getTime() !== endYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
-			}
 		};
 
 		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
@@ -226,11 +220,6 @@ export default defineComponent({
 			holder.setFullYear(year);
 			holder.setHours(0, 0, 0, 0); // Start of the day
 			startDate.value = holder;
-			if (startDate.value.getTime() !== startYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
-			}
 		};
 
 		const filterSearchIfValidDate = () => {
