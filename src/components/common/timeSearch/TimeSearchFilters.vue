@@ -75,7 +75,7 @@
 			icon="event"
 			:subline="getSublineForYears(startDate, endDate, t)"
 		>
-			<div class="picker-background"><DatePicker></DatePicker></div>
+			<div class="picker-background"><DatePicker @date-search="emitNewSearch"></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
@@ -238,20 +238,6 @@
 					</CustomExpander>
 				</fieldset>
 			</div>
-		</div>
-		<div
-			v-if="picker"
-			class="apply-time-facets-container"
-		>
-			<button
-				class="apply-time-facets"
-				:disabled="(!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady) || disabled"
-				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
-				@click="emitNewSearch()"
-			>
-				{{ t('timeSearch.filterApplyButton') }}
-				<span class="material-icons">search</span>
-			</button>
 		</div>
 	</div>
 </template>
@@ -458,13 +444,6 @@ export default defineComponent({
 			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
 				clearEstimatedQueryLength();
-				const resultContainer = document.getElementsByClassName('hits')[0];
-				resultContainer?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-				});
-				timeSearchStore.setNewSearchReqMet(false);
-				timeSearchStore.setFilterSearchReady(false);
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
@@ -501,21 +480,16 @@ export default defineComponent({
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
-			timeSearchStore.setNewSearchReqMet(true);
 			if (val) {
 				addToEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			} else {
 				removeFromEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			timeSearchStore.setNewSearchReqMet(true);
-
 			if (val) {
 				array.forEach((item) => {
 					item.selected = true;
@@ -528,9 +502,7 @@ export default defineComponent({
 				});
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const figuresImage = computed(() => {

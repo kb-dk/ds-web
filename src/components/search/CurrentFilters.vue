@@ -85,11 +85,10 @@
 				</button>
 				<button
 					v-if="
-						((startDate !== null &&
+						(startDate !== null &&
 							(startDate as unknown as string) !== '' &&
 							startDate.getTime() !== startYear.getTime()) ||
-							(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())) &&
-						!timeSearchStore.newSearchReqMet
+						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
 					"
 					@click="resetYearsAndSearch('startTime')"
 				>
