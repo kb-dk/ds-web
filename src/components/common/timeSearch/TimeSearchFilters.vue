@@ -444,7 +444,6 @@ export default defineComponent({
 			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
 				clearEstimatedQueryLength();
-				timeSearchStore.setNewSearchReqMet(false);
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
@@ -481,7 +480,6 @@ export default defineComponent({
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
-			timeSearchStore.setNewSearchReqMet(true);
 			if (val) {
 				addToEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			} else {
@@ -492,8 +490,6 @@ export default defineComponent({
 		};
 
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			timeSearchStore.setNewSearchReqMet(true);
-
 			if (val) {
 				array.forEach((item) => {
 					item.selected = true;

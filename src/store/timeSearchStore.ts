@@ -31,7 +31,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 	const errorManager = inject('errorManager') as ErrorManagerType;
 	const error = ref('');
 	const { t } = useI18n();
-	const newSearchReqMet = ref(false);
 	const timeFacetsOpen = ref(false);
 
 	const sortFunction = (a: GenericSearchResultType, b: GenericSearchResultType) => {
@@ -42,10 +41,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 
 	const setTimeFacetsOpen = (val: boolean) => {
 		timeFacetsOpen.value = val;
-	};
-
-	const setNewSearchReqMet = (val: boolean) => {
-		newSearchReqMet.value = val;
 	};
 
 	const setLoading = (value: boolean) => {
@@ -113,7 +108,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 					setTimeFacetsOpen(false);
 				}
 			}
-			setNewSearchReqMet(false);
 		}
 	};
 
@@ -194,8 +188,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		setLoading,
 		getTimeSearchResults,
 		numFound,
-		newSearchReqMet,
-		setNewSearchReqMet,
 		timeFacetsOpen,
 		setTimeFacetsOpen,
 		setFiltersFromUrl,
