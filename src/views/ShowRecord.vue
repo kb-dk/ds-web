@@ -269,7 +269,7 @@ export default defineComponent({
 										const uRecTime = new Date(uRec.endTime).getTime();
 										const respTime = new Date(responseRecords[i].startTime).getTime();
 										const differenceTime = respTime - uRecTime;
-										return differenceTime < -1000;
+										return differenceTime < Number(uRec.duration_ms) * 0.33;
 									}
 								})
 							) {
