@@ -267,10 +267,12 @@ export default defineComponent({
 			programWidth.value.set(key, durationWidth - checkIfProgramReduction(durationWidth));
 		};
 		const calcProgramGuideEnd = (program: GenericSearchResultType, key: string) => {
+			if (program.temporal_start_date_da_string !== program.temporal_end_date_da_string) {
+				return;
+			}
 			const latestTime = calcProgramMinutes(program.temporal_end_time_da_string);
 			const endTime = calcProgramMinutes('23:59:59');
 			let minutesBetween = 0;
-
 			if (latestTime < endTime) {
 				if (endTime - latestTime > 0) {
 					minutesBetween = endTime - latestTime;
@@ -306,9 +308,7 @@ export default defineComponent({
 					}
 					calcProgramDurationMinutes(records[i], `programs${i}`);
 					if (i === records.length - 1) {
-						if (records[i].temporal_end_time_da_string !== '00:00:00') {
-							calcProgramGuideEnd(records[i], `between-programs${i}`);
-						}
+						calcProgramGuideEnd(records[i], `between-programs${i}`);
 					} else {
 						calcMinutesBetween(records[i], records[i + 1], `between-programs${i}`);
 					}

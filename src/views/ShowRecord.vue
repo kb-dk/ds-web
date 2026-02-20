@@ -261,10 +261,22 @@ export default defineComponent({
 						const responseRecords = records.data.response.docs;
 						const uniqueRecords: GenericSearchResultType[] = [];
 						for (let i = 0; i < responseRecords.length; i++) {
-							if (!uniqueRecords.some((uRec) => uRec.dr_production_id === responseRecords[i].dr_production_id)) {
+							if (
+								!uniqueRecords.some((uRec) => {
+									if (uRec.dr_production_id && responseRecords[i].dr_production_id) {
+										return uRec.dr_production_id === responseRecords[i].dr_production_id;
+									} else {
+										const uRecTime = new Date(uRec.endTime).getTime();
+										const respTime = new Date(responseRecords[i].startTime).getTime();
+										const differenceTime = respTime - uRecTime;
+										return differenceTime < -1000;
+									}
+								})
+							) {
 								uniqueRecords.push(responseRecords[i]);
 							}
 						}
+
 						recordsForTheDay.value = uniqueRecords;
 					}
 				});
