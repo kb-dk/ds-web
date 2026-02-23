@@ -263,7 +263,7 @@
 
       },
       "placeholders": {
-         "drArchive":"Search for example by title, year or category",
+         "drArchive":"Search for example by title or year",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
