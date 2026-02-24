@@ -222,8 +222,8 @@ export default defineComponent({
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title;
 
-			if (props.resultdata?.file_id) {
-				APIService.getThumbnail(props.resultdata.file_id)
+			if (props.resultdata?.kaltura_id) {
+				APIService.getThumbnail(props.resultdata.kaltura_id)
 					.then((thumbServiceResponse) => {
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;

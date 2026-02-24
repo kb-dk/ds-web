@@ -16,6 +16,7 @@ export interface GenericSearchResultType {
 	description: string;
 	file_size: number;
 	file_id: string;
+	kaltura_id: string;
 	episode: number;
 	number_of_episodes: number;
 	id: string;
