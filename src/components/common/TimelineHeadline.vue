@@ -12,9 +12,9 @@
 		</div>
 		<div class="headline">
 			<legend>
-				<h2>{{ headline }}</h2>
+				<h2 class="label-medium">{{ headline }}</h2>
 			</legend>
-			<span>{{ subline }}</span>
+			<span class="label-regular">{{ subline }}</span>
 		</div>
 		<div class="selected-items">
 			<button
@@ -199,8 +199,6 @@ h2 {
 	padding: 0;
 	margin: 0;
 	height: 20px;
-	font-size: 20px;
-	font-weight: 100;
 	color: #002e70;
 	height: auto;
 	float: left;
@@ -210,9 +208,7 @@ h2 {
 .headline span {
 	padding: 0;
 	margin: 0;
-	height: 20px;
-	font-size: 14px;
-	font-weight: 700;
+	height: 1.5rem;
 	color: #002e70;
 	background-color: #d9f5fe;
 	border: 1px solid white;

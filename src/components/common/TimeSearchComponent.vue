@@ -17,9 +17,9 @@
 			></TimeSearchFilters>
 			<div class="result-container">
 				<div class="result-header">
-					<span class="selection-header">{{ t('timeSearch.selection') }}:</span>
+					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
 					<router-link
-						class="link"
+						class="link btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 						@click="scrollToTop()"
@@ -58,7 +58,7 @@
 						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
 					</div>
 					<router-link
-						class="link"
+						class="link btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
 						@click="scrollToTop()"
@@ -237,7 +237,6 @@ h2 {
 
 .selection-header {
 	color: #002e70;
-	font-size: 26px;
 	padding-top: 4px;
 }
 
@@ -248,7 +247,6 @@ h2 {
 	text-decoration: none;
 	padding: 8px 10px 12px 14px;
 	flex-direction: row-reverse;
-	font-size: 26px;
 	position: relative;
 	left: -10px;
 	height: 25px;
