@@ -6,7 +6,7 @@ import { provideErrorManager } from '@/components/global/error-handling/error-ma
 import { useAuthStore } from '@/store/authStore';
 
 import '@/assets/fonts/iconfont/material-icons.css';
-
+import '@/assets/styles/font-styles.css';
 /* Third party */
 import i18n from './i18n';
 import { createPinia } from 'pinia';
