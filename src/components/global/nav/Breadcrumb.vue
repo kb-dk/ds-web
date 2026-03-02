@@ -47,7 +47,7 @@
 				:title="t('breadcrumb.drArchive')"
 				@click="searchResultStore.resetSearch()"
 			>
-				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
+				<span class="btn-reg highlighted">{{ t('breadcrumb.drArchive') }}</span>
 			</router-link>
 			<span
 				v-if="$route.name === 'Search'"
@@ -381,7 +381,7 @@ export default defineComponent({
 	color: black;
 }
 
-.breadcrumb-title.highlighted {
+.btn-reg.highlighted {
 	color: white;
 	background-color: #002e70;
 	border-radius: 4px;
@@ -392,7 +392,7 @@ export default defineComponent({
 	white-space: pre;
 }
 
-.breadcrumb-title.highlighted:hover {
+.btn-reg.highlighted:hover {
 	background-color: #c4f1ed;
 	color: pink;
 }

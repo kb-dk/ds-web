@@ -12,10 +12,10 @@
 		<div class="noise"></div>
 		<div class="container">
 			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
-				<span class="subtitle">
+				<span class="subtitle h1-sub">
 					<span class="text">{{ t('hero.subtitle') }}</span>
 				</span>
-				<span class="headline">
+				<span class="headline h1-display">
 					<span class="text">{{ t('hero.title') }}</span>
 				</span>
 			</h1>
@@ -34,7 +34,7 @@
 						<div class="process-bar">
 							<div
 								:style="`left:${currentProgress}%`"
-								class="procentage"
+								class="procentage label-big"
 							>
 								{{ currentProgress }}%
 							</div>
@@ -46,7 +46,7 @@
 						</div>
 						<div class="link-container">
 							<a
-								class="link"
+								class="link btn-big"
 								:href="t('hero.link')"
 							>
 								{{ t('hero.linkText') }}
@@ -146,7 +146,6 @@ h1 {
 	text-align: center;
 	transform: translate(-50%, 0%);
 	color: white;
-	font-size: 26px;
 	transition: all 0.1s linear 0s;
 }
 
@@ -184,7 +183,6 @@ h1 {
 h1 .headline,
 h1 .subtitle {
 	display: block;
-	font-weight: 100;
 	background-color: white;
 	width: fit-content;
 	padding: 0px 10px;
@@ -192,12 +190,7 @@ h1 .subtitle {
 }
 
 h1 .subtitle {
-	font-size: 24px;
 	margin-top: 10%;
-}
-
-h1 .headline {
-	font-size: 40px;
 }
 
 .container {
@@ -243,12 +236,12 @@ h1 .headline {
 .hero-info .link-container {
 	padding: 5px 15px;
 	font-family: 'noway';
-	font-weight: 100;
 	color: #0a2e70;
 }
-
+.hero-info .link-container {
+	font-weight: 100;
+}
 .hero-info h2 {
-	font-size: 20px;
 	padding: 12px 25px 6px 25px;
 }
 
@@ -257,7 +250,6 @@ h1 {
 }
 
 .hero-info p {
-	font-size: 14px;
 	padding: 0px 25px 17px 25px;
 }
 
@@ -277,7 +269,6 @@ h1 {
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	font-size: 24px;
 	padding: 4px 10px 6px 10px;
 	border-radius: 4px;
 	height: 55px;
@@ -293,7 +284,6 @@ h1 {
 	text-align: center;
 	letter-spacing: 0px;
 	color: #0b0d0a;
-	font-size: 16px;
 }
 
 .headline {
@@ -302,7 +292,6 @@ h1 {
 	color: #0b0d0a;
 	text-transform: uppercase;
 	font-family: 'LibreBaskerville';
-	font-size: 28px;
 	position: relative;
 	top: -1px;
 }
@@ -415,9 +404,6 @@ h1 {
 	.container {
 		max-width: 990px;
 	}
-	.link-container .link {
-		font-size: 26px;
-	}
 }
 
 /* MEDIA QUERY 800 */
@@ -442,11 +428,9 @@ h1 {
 		margin: 20px 0px 0px 0px;
 	}
 	.hero-info h2 {
-		font-size: 26px;
 		padding: 14px 20px 0px 20px;
 	}
 	.hero-info p {
-		font-size: 16px;
 		padding: 6px 20px 20px 20px;
 	}
 
@@ -472,19 +456,11 @@ h1 {
 	.hero-container {
 		height: 500px;
 	}
-
-	.headline {
-		font-size: 49px;
-	}
-	.subtitle {
-		font-size: 24px;
-	}
 }
 
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.hero-info h2 {
-		font-size: 26px;
 		padding: 14px 25px 0px 25px;
 	}
 	.hero-info p {

@@ -1,0 +1,45 @@
+.h1-sub{
+    font-size: var(--fs-lg);
+    line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}
+.h1-display{
+    font-size: var(--fs-xxl);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-regular);
+}
+h2{
+    font-size: var(--fs-md);
+    line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}
+p{
+    font-size: var(--fs-base);
+    line-height: var(--lh-large);
+    font-weight: var(--fw-regular);
+}
+.label-regular{
+    font-size: var(--fs-base);
+    line-height: var(--lh-large);
+    font-weight: var(--fw-regular);
+}
+.label-medium{
+    font-size: var(--fs-lead);
+    line-height: var(--lh-large-tight);
+    font-weight: var(--fw-regular);
+}
+.label-big{
+    font-size: var(--fs-md);
+    line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}
+.btn-reg{
+    font-size: var(--fs-base);
+    line-height: var(--lh-large);
+    font-weight: var(--fw-regular);
+}
+.btn-big{
+    font-size: var(--fs-md);
+    line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}

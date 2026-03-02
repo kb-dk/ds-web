@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 
 import '@/assets/fonts/iconfont/material-icons.css';
 import '@/assets/styles/font-styles.css';
+import '@/assets/styles/base.css';
 /* Third party */
 import i18n from './i18n';
 import { createPinia } from 'pinia';

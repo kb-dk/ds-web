@@ -5,8 +5,10 @@
 				class="header"
 				:style="`color: ${text}`"
 			>
-				<h2>{{ title }}</h2>
-				<span>{{ subtitle }}</span>
+				<h2 class="h1-sub">{{ title }}</h2>
+				<p>
+					<span>{{ subtitle }}</span>
+				</p>
 			</div>
 			<TimeSearchFilters
 				:timeline="true"
@@ -215,9 +217,7 @@ export default defineComponent({
 <style scoped>
 h2 {
 	font-family: 'LibreBaskerville';
-	font-weight: 100;
 	color: #002e70;
-	font-size: 32px;
 }
 
 .result-container {
@@ -343,21 +343,19 @@ h2 {
 
 .header h2 {
 	font-family: 'LibreBaskerville';
-	font-weight: 100;
 	text-transform: none;
-	font-size: 32px;
 	margin: 0;
 }
 
 .header span {
 	margin: 0;
-	font-size: 16px;
 	display: block;
-	line-height: 1.4;
 	margin-top: 4px;
 	max-width: 720px;
 }
-
+.header p {
+	margin: 0;
+}
 @media (max-width: 480px) {
 	.time-result-item:nth-child(n + 3) {
 		display: none;
