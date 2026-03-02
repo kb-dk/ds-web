@@ -27,7 +27,7 @@
     /*h1.display*/
     --fs-xxl: clamp(2.5rem, 5vw, 3.625rem);  
     /*p.lead, menu.main, button.medium, label.medium*/
-    --fs-lead: clamp(1.625rem, 1.8vw, 1.25rem);
+    --fs-lead: clamp(1.0625rem, 1.8vw, 1.25rem);
     /*p.small, button.small, label.small, menu.secondary*/
     --fs-meta: clamp(0.8125rem, 1vw, 0.875rem);
     /*p, button, menu.footer*/

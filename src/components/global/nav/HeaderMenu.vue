@@ -566,12 +566,9 @@ li button i {
 .rdl-primary-nav {
 	padding-top: 24px;
 }
-.rdl-secondary-nav {
-	font-size: var(--fs-meta);
-	line-height: var(--lh-large);
-	font-weight: var(--fw-bold);
-}
-.rdl-primary-nav {
+
+.rdl-primary-nav .nav-item.level-1,
+.rdl-secondary-nav .nav-item.level-1 {
 	font-size: var(--fs-lead);
 	line-height: var(--lh-large-tight);
 	font-weight: var(--fw-bold);
@@ -699,6 +696,11 @@ li button i {
 
 	.rdl-secondary-nav li:first-of-type {
 		margin-top: initial;
+	}
+	.rdl-secondary-nav .nav-item.level-1 {
+		font-size: var(--fs-meta);
+		line-height: var(--lh-large);
+		font-weight: var(--fw-bold);
 	}
 	.global-header.open .header-bg-wrapper {
 		padding-bottom: 24px;
