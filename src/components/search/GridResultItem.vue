@@ -71,10 +71,12 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<div class="title">
+					<div class="title label-medium">
 						{{ resultdata.title[0] }}
 					</div>
-					<div class="summary">{{ resultdata.description }}</div>
+					<div class="summary">
+						<p>{{ resultdata.description }}</p>
+					</div>
 				</router-link>
 			</div>
 			<div
@@ -403,8 +405,7 @@ export default defineComponent({
 }
 
 .title {
-	font-size: 20px;
-	font-weight: bold;
+	font-weight: var(--fw-bold);
 	color: #002e70;
 	margin-bottom: 10px;
 	max-width: 100%;
@@ -504,7 +505,9 @@ export default defineComponent({
 	max-height: calc(25px * 3); /* fallback for firefox */
 	min-height: calc(25px * 3); /* fallback for firefox */
 }
-
+.summary p {
+	margin: 0;
+}
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
