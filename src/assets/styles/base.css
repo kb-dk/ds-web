@@ -43,8 +43,18 @@ p{
     line-height: var(--lh-large);
     font-weight: var(--fw-regular);
 }
+.btn-medium{
+    font-size: var(--fs-lead);
+    line-height: var(--lh-large-tight);
+    font-weight: var(--fw-regular);
+}
 .btn-big{
     font-size: var(--fs-md);
     line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}
+.input{
+    font-size: var(--fs-base);
+    line-height: var(--lh-large);
     font-weight: var(--fw-regular);
 }
