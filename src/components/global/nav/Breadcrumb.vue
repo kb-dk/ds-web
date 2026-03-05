@@ -192,7 +192,7 @@ export default defineComponent({
 			timeout.value = setTimeout(() => {
 				togglePreLinks(false);
 				toggleDots(true);
-			}, 1000);
+			}, 5000);
 		};
 
 		const showDotContent = () => {
