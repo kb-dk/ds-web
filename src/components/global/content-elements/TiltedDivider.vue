@@ -3,7 +3,7 @@
 		ref="dividerRef"
 		class="divider"
 	>
-		<h2>{{ title }}</h2>
+		<h2 class="heading-display">{{ title }}</h2>
 		<div class="bar"></div>
 	</div>
 </template>
@@ -65,13 +65,11 @@ h2 {
 	margin: 0px;
 	padding: 0;
 	text-align: center;
-	font: normal normal normal 49px/68px Libre Baskerville;
+	font-family: Libre Baskerville;
 	letter-spacing: 1.15px;
 	color: #002e70;
-	font-size: 32px;
 	top: 2px;
 	position: relative;
-	line-height: 1.2;
 }
 h2:first-letter {
 	text-transform: uppercase;
@@ -85,9 +83,6 @@ h2:first-letter {
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
-	h2 {
-		font-size: 36px;
-	}
 	.bar {
 		height: 28px;
 	}
@@ -99,9 +94,6 @@ h2:first-letter {
 	}
 }
 @media (min-width: 990px) {
-	h2 {
-		font-size: 40px;
-	}
 	.bar {
 		height: 42.5px;
 	}

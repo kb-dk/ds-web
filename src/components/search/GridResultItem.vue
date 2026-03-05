@@ -28,14 +28,14 @@
 						</span>
 						<div
 							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
-							class="date-elipsis-container"
+							class="date-elipsis-container label-small"
 						>
 							{{ resultdata.creator_affiliation + ', ' }} {{ getStartTime(resultdata) }}
 						</div>
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
-						<span class="record-duration">{{ $t('record.duration') }}:&nbsp;</span>
+						<span class="record-duration label-small">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
 							:end-date="resultdata.endTime"
@@ -57,12 +57,12 @@
 						>
 							segment
 						</span>
-						<span class="episode-text">
+						<span class="episode-text label-small">
 							{{ `${$t('search.episode')} ${resultdata.episode}` }}
 						</span>
 						<span
 							v-if="resultdata.number_of_episodes"
-							class="episode-text"
+							class="episode-text label-small"
 						>
 							{{ `:${resultdata.number_of_episodes}` }}
 						</span>
@@ -75,7 +75,7 @@
 						{{ resultdata.title[0] }}
 					</div>
 					<div class="summary">
-						<p>{{ resultdata.description }}</p>
+						<p class="label-small">{{ resultdata.description }}</p>
 					</div>
 				</router-link>
 			</div>

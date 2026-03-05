@@ -35,7 +35,7 @@
 					:style="`color:${text}`"
 					class="headline"
 				>
-					<h2 class="h1-sub">{{ title }}</h2>
+					<h2 class="heading-sub">{{ title }}</h2>
 					<p>
 						<span>{{ subtitle }}</span>
 					</p>
@@ -46,7 +46,7 @@
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h2 class="h1-sub">{{ title }}</h2>
+					<h2 class="heading-sub">{{ title }}</h2>
 					<p>
 						<span>{{ subtitle }}</span>
 					</p>

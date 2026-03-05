@@ -5,7 +5,7 @@
 				class="header"
 				:style="`color: ${text}`"
 			>
-				<h2 class="h1-sub">{{ title }}</h2>
+				<h2 class="heading-sub">{{ title }}</h2>
 				<p>
 					<span>{{ subtitle }}</span>
 				</p>
@@ -48,7 +48,7 @@
 			</div>
 			<div class="further-recap">
 				<div class="further-link">
-					<div class="recap">
+					<div class="recap label-small">
 						<span>{{ `${getYears(timeSliderValues)} ${t('timeSearch.year', getYears(timeSliderValues))}` }}</span>
 						/
 						<span>{{ getSublineForMonths(months, t) }}</span>
@@ -286,8 +286,6 @@ h2 {
 	width: fit-content;
 	padding-left: 3px;
 	padding-right: 3px;
-	font-weight: 700;
-	font-size: 16px;
 }
 
 .further-link {

@@ -12,10 +12,10 @@
 		<div class="noise"></div>
 		<div class="container">
 			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
-				<span class="subtitle h1-sub">
+				<span class="subtitle heading-sub">
 					<span class="text">{{ t('hero.subtitle') }}</span>
 				</span>
-				<span class="headline h1-display">
+				<span class="headline heading-display">
 					<span class="text">{{ t('hero.title') }}</span>
 				</span>
 			</h1>
