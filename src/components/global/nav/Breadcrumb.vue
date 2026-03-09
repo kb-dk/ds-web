@@ -25,7 +25,7 @@
 						class="level-1"
 						:title="t('breadcrumb.frontpage')"
 					>
-						<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
+						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.frontpage') }}</span>
 					</a>
 					<span class="line">/</span>
 
@@ -35,7 +35,7 @@
 						class="level-2"
 						:title="t('breadcrumb.findMaterials')"
 					>
-						<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
+						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.findMaterials') }}</span>
 					</a>
 					<span class="line level-2">/</span>
 				</div>
@@ -57,7 +57,7 @@
 			</span>
 			<span
 				v-if="$route.name === 'Search'"
-				class="level-4"
+				class="level-4 btn-reg"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
 			</span>
@@ -69,7 +69,7 @@
 			</span>
 			<router-link
 				v-if="$route.name === 'Record' && lastPath"
-				class="level-5"
+				class="level-5 btn-reg"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
 				:title="t('breadcrumb.search')"
@@ -78,7 +78,7 @@
 			</router-link>
 			<router-link
 				v-if="$route.name === 'Record' && !lastPath"
-				class="level-5"
+				class="level-5 btn-reg"
 				:to="{ name: 'Search' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-empty', 4)"
 				:title="t('breadcrumb.search')"
@@ -89,7 +89,7 @@
 			<span v-if="$route.name === 'Record'">/</span>
 			<span
 				v-if="$route.name === 'Record'"
-				class="level-6"
+				class="level-6 btn-reg"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
@@ -408,7 +408,6 @@ export default defineComponent({
 	text-decoration: none;
 	margin: 0px 2px;
 	color: black;
-	font-size: 12px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -455,16 +454,12 @@ export default defineComponent({
 		padding-right: 12px;
 		padding-left: 12px;
 	}
-	.breadcrumb-title {
-		font-size: 14px;
-	}
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.breadcrumb-title {
 		padding: 0px 3px;
 		margin: 0px 5px;
-		font-size: 16px;
 	}
 	.container {
 		max-width: 990px;
