@@ -14,7 +14,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
+					<h1>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h1>
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
@@ -22,7 +22,7 @@
 					<router-link
 						v-if="backLink !== '/'"
 						:to="backLink"
-						class="link-container return"
+						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 					>
 						{{ $t('record.back') }}
@@ -30,7 +30,7 @@
 					<router-link
 						v-else
 						:to="{ name: 'Home' }"
-						class="link-container return"
+						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 					>
 						{{ $t('record.toFrontpage') }}
@@ -40,11 +40,11 @@
 			<div class="right-side">
 				<div class="right-side-metadata-box">
 					<h3>{{ $t('record.aired') }}</h3>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">schedule</span>
 						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
 						{{ getBroadcastTime(recordData.endTime) }}
@@ -56,13 +56,13 @@
 							></duration>
 						</span>
 					</div>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<div
 						v-if="recordData.encodesCreativeWork?.episodeNumber"
-						class="info"
+						class="info label-medium"
 					>
 						<span class="material-icons">segment</span>
 						<span class="episode-text">
@@ -102,7 +102,7 @@
 						@click="getCurrentUrl()"
 					>
 						<span class="material-icons">share</span>
-						<a class="link">{{ $t('record.copy') }}</a>
+						<a class="link btn-medium">{{ $t('record.copy') }}</a>
 					</div>
 				</div>
 			</div>
@@ -114,7 +114,7 @@
 			:current-record-index="currentRecord"
 			class="program-guide"
 		></ProgramGuide> -->
-		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
+		<h2 class="related-content-title">{{ $t('search.relatedContent') }}</h2>
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
@@ -272,9 +272,6 @@ h4 {
 	align-items: center;
 	gap: 7px;
 	flex-wrap: wrap;
-	font-weight: 700;
-	line-height: 1.5;
-	font-size: 18px;
 }
 
 .info .material-icons {
@@ -422,7 +419,6 @@ h4 {
 	color: white;
 	text-align: center;
 	text-decoration: none;
-	font-size: 18px;
 	border-radius: 4px;
 	height: 40px;
 	display: flex;
@@ -430,7 +426,6 @@ h4 {
 	margin-bottom: 15px;
 	padding: 5px 14px 9px 14px;
 	font-family: 'noway';
-	font-weight: 100;
 	flex-direction: row;
 	justify-content: center;
 	white-space: nowrap;
@@ -444,7 +439,6 @@ h4 {
 
 .link {
 	position: relative;
-	top: 2px;
 }
 
 .back-link {

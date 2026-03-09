@@ -18,6 +18,11 @@ h2{
     line-height: var(--lh-medium-tight);
     font-weight: var(--fw-regular);
 }
+h3{
+    font-size: var(--fs-sm);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-bold);
+}
 p{
     font-size: var(--fs-base);
     line-height: var(--lh-large);
