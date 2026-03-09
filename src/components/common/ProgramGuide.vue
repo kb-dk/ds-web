@@ -36,9 +36,9 @@
 							class="hour"
 							:style="{ width: `${calcProgramMinutes('1:00:00')}px` }"
 						>
-							{{ `| ${hour - 1 < 10 ? `0${hour - 1}` : hour - 1}:00` }}
+							{{ `${hour - 1 < 10 ? `0${hour - 1}` : hour - 1}:00` }}
 						</div>
-						<div class="hour">| 24:00</div>
+						<div class="hour">24:00</div>
 					</div>
 					<div class="program-display">
 						<div
