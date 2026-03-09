@@ -143,6 +143,7 @@ export default defineComponent({
 }
 .sort button p {
 	position: relative;
+	height: 22px;
 }
 
 .sort .active p {

@@ -222,9 +222,7 @@ export default defineComponent({
 	color: #383838;
 	display: inline-block;
 	padding-left: 5px;
-	vertical-align: top;
 	height: 100%;
-	opacity: 0.8;
 }
 
 .loading.tag-number {
@@ -242,7 +240,7 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	max-width: calc(100% - 95px);
 	white-space: nowrap;
-	overflow: hidden;
+	overflow: clip;
 	text-transform: uppercase;
 	color: #002e70;
 	display: inline-block;
