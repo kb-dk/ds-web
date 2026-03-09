@@ -7,7 +7,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
 			@click="newSort($refs.relevanceRef, `score`)"
 		>
-			<p>{{ t('search.relevance') }}</p>
+			<p class="btn-reg">{{ t('search.relevance') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
@@ -15,7 +15,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
 			@click="newSort($refs.titleRef, `title_sort_da`)"
 		>
-			<p>{{ t('search.title') }}</p>
+			<p class="btn-reg">{{ t('search.title') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 		<button
@@ -23,7 +23,7 @@
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
 			@click="newSort($refs.timeRef, `startTime`)"
 		>
-			<p>{{ t('search.date') }}</p>
+			<p class="btn-reg">{{ t('search.date') }}</p>
 			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
 		</button>
 	</div>

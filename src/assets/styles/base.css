@@ -8,6 +8,11 @@
     line-height: var(--lh-small);
     font-weight: var(--fw-regular);
 }
+h1{
+    font-size: var(--fs-xl);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-regular);
+}
 h2{
     font-size: var(--fs-md);
     line-height: var(--lh-medium-tight);
