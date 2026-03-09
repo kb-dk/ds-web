@@ -4,14 +4,14 @@
 			:title="title"
 			class="label"
 		>
-			<span class="title">{{ title }}</span>
+			<span class="title label-small">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
 			>
 				<span
 					v-if="!loading"
-					class="tag-number"
+					class="tag-number label-small"
 				>
 					{{ displayAmount(amount) }}
 				</span>
@@ -219,13 +219,12 @@ export default defineComponent({
 }
 
 .tag-number {
-	font-size: 10px;
 	color: #383838;
 	display: inline-block;
 	padding-left: 5px;
-	vertical-align: bottom;
-	line-height: 24px;
+	vertical-align: top;
 	height: 100%;
+	opacity: 0.8;
 }
 
 .loading.tag-number {
@@ -240,15 +239,14 @@ export default defineComponent({
 }
 
 .title {
-	font-size: 14px;
 	text-overflow: ellipsis;
-	max-width: calc(100% - 85px);
+	max-width: calc(100% - 95px);
 	white-space: nowrap;
 	overflow: hidden;
-	display: inline-block;
 	text-transform: uppercase;
 	color: #002e70;
-	font-weight: bold;
+	display: inline-block;
+	font-weight: var(--fw-bold);
 }
 
 .loading .checkbox:after {

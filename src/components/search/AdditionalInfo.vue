@@ -3,6 +3,7 @@
 		<button
 			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
+			class="btn-reg"
 			:title="$t('search.thumbnailButton')"
 			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
 			@click="showThumbnails()"
@@ -43,13 +44,16 @@
 						<ImageComponent :image-data="thumbnailImageData[index]"></ImageComponent>
 					</div>
 					<div class="img-stamp">
-						{{ convertSecondstoShow(timeStamps[index]) }}
+						<p class="label-small">{{ convertSecondstoShow(timeStamps[index]) }}</p>
+
 						<span class="material-icons link-arrow">chevron_right</span>
 					</div>
 				</router-link>
 			</template>
 		</ItemSlider>
-		<div class="full-duration">{{ convertSecondstoShow(duration) }}</div>
+		<div class="full-duration">
+			<p class="label-medium">| {{ convertSecondstoShow(duration) }}</p>
+		</div>
 	</div>
 </template>
 
@@ -207,8 +211,6 @@ export default defineComponent({
 
 .link-arrow {
 	font-size: 20px;
-	top: -3px;
-	position: absolute;
 	opacity: 0;
 	transition: all 0.1s linear 0s;
 }
@@ -295,11 +297,12 @@ export default defineComponent({
 	padding-left: 6px;
 	color: white;
 	background-color: #002e70;
-	border-left: 1px solid white;
-	line-height: 18px;
+
 	opacity: 0.9;
 }
-
+.full-duration p {
+	margin: 0;
+}
 .extra-thumbnail {
 	flex: 0 0 200px;
 	position: relative;
@@ -336,8 +339,13 @@ export default defineComponent({
 	text-align: center;
 	font-size: 12px;
 	color: white;
-	height: 15px;
+	height: 0.9rem;
 	position: relative;
+	display: flex;
+	justify-content: center;
+}
+.img-stamp > .label-small {
+	margin: 0;
 }
 @media (min-width: 800px) {
 	.thumbnail-button {

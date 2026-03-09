@@ -367,7 +367,7 @@ export default defineComponent({
 	transition: all 0.5s ease-in-out 0s;
 }
 .summary span {
-	height: 15px;
+	height: 20px;
 	display: block;
 	border-radius: 15px;
 	margin-top: 5px;
@@ -398,9 +398,8 @@ export default defineComponent({
 	white-space: nowrap;
 	overflow: hidden;
 	width: 75ch;
-	text-transform: uppercase;
 	text-decoration: none;
-	height: 22px;
+	height: 26px;
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
@@ -653,7 +652,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 120px;
+		height: 130px;
 	}
 	.result-image-wrapper {
 		height: initial;
