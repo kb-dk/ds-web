@@ -55,7 +55,10 @@
 									marginRight: getProgramWidth(`first-between-programs`) > 0 ? '8px' : '0px',
 								}"
 							>
-								<div class="between-program-content">
+								<div
+									class="between-program-content"
+									:class="{ 'between-program-no-text': getProgramWidth(`first-between-programs`) < 60 }"
+								>
 									<span class="material-icons">remove</span>
 									{{ `${getProgramWidth(`first-between-programs`) > 60 ? $t('search.noGuideContent') : ''} ` }}
 								</div>
@@ -100,6 +103,7 @@
 								<div
 									:title="$t('search.noGuideContent')"
 									class="between-program-content"
+									:class="{ 'between-program-no-text': getProgramWidth(`between-programs${index}`) < 60 }"
 								>
 									<span class="material-icons">remove</span>
 									{{ `${getProgramWidth(`between-programs${index}`) > 60 ? $t('search.noGuideContent') : ''} ` }}
@@ -114,7 +118,10 @@
 									marginRight: getProgramWidth(`between-programs${index}`) > 0 ? '8px' : '0px',
 								}"
 							>
-								<div class="between-program-content">
+								<div
+									class="between-program-content"
+									:class="{ 'between-program-no-text': getProgramWidth(`between-programs${index}`) < 60 }"
+								>
 									<span class="material-icons">remove</span>
 									{{ `${getProgramWidth(`between-programs${index}`) > 60 ? $t('search.noGuideContent') : ''} ` }}
 								</div>
@@ -479,7 +486,7 @@ export default defineComponent({
 	white-space: nowrap;
 	text-decoration: none;
 	word-break: keep-all;
-	justify-content: center;
+	justify-content: flex-start;
 	display: flex;
 	align-items: center;
 	color: #757575;
@@ -490,6 +497,10 @@ export default defineComponent({
 	margin-left: auto;
 	margin-right: auto;
 	color: #002e70;
+}
+.between-program-no-text {
+	justify-content: center;
+	width: 100%;
 }
 .time-slider {
 	flex-direction: column;
