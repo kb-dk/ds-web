@@ -184,6 +184,7 @@ export default defineComponent({
 .material-icons {
 	display: block;
 	background: -webkit-linear-gradient(#eee, rgb(255, 220, 164));
+	background: -webkit-linear-gradient(#002e70);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-size: 50px;

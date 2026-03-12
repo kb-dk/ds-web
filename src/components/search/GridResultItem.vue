@@ -502,8 +502,8 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 1.5; /* fallback for firefox */
 	font-size: 16px;
-	max-height: calc(25px * 3); /* fallback for firefox */
-	min-height: calc(25px * 3); /* fallback for firefox */
+	max-height: calc(27px * 3); /* fallback for firefox */
+	min-height: calc(27px * 3); /* fallback for firefox */
 }
 .summary p {
 	margin: 0;
@@ -552,6 +552,10 @@ export default defineComponent({
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
+	}
+	.summary {
+		max-height: calc(35px * 3); /* fallback for firefox */
+		min-height: calc(35px * 3); /* fallback for firefox */
 	}
 }
 </style>

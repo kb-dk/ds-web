@@ -591,7 +591,7 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	max-height: calc(20px * 3); /* fallback for firefox */
+	max-height: calc(25px * 3); /* fallback for firefox */
 	position: relative;
 	margin-top: 10px;
 }
@@ -652,7 +652,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 130px;
+		height: 132px;
 	}
 	.result-image-wrapper {
 		height: initial;
