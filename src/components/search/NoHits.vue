@@ -4,13 +4,13 @@
 		mode="out-in"
 	>
 		<div>
-			<div class="no-hits-heading">
+			<h1 class="no-hits-heading">
 				{{
 					searchResultStore.lastSearchQuery === '*:*'
 						? $t('search.nohitWithFilter', { filterSearch: $t('search.filterSearch') })
 						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
 				}}
-			</div>
+			</h1>
 			<EdgedContentArea
 				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"
@@ -45,30 +45,30 @@
 			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
-						<h3>{{ $t('search.searchGuide.subtitle') }}</h3>
+						<h2>{{ $t('search.searchGuide.subtitle') }}</h2>
 						<ul>
 							<li>
-								<div>{{ $t('search.searchGuide.first') }}</div>
+								<p>{{ $t('search.searchGuide.first') }}</p>
 							</li>
 							<li v-if="locale === 'en'">
-								<div>
+								<p>
 									{{ $t('search.searchGuide.secondEnglish') }}
-								</div>
+								</p>
 							</li>
 							<li>
-								<div>
+								<p>
 									{{ $t('search.searchGuide.second.line1') }}
-								</div>
-								<div>{{ $t('search.searchGuide.second.line2') }}</div>
+								</p>
+								<p>{{ $t('search.searchGuide.second.line2') }}</p>
 							</li>
 							<li>
-								<div>{{ $t('search.searchGuide.third.line1') }}</div>
-								<div>{{ $t('search.searchGuide.third.line2') }}</div>
+								<p>{{ $t('search.searchGuide.third.line1') }}</p>
+								<p>{{ $t('search.searchGuide.third.line2') }}</p>
 							</li>
 							<li>
-								<div>
+								<p>
 									{{ $t('search.searchGuide.fourth') }}
-								</div>
+								</p>
 							</li>
 							<li>
 								<div>
@@ -202,7 +202,6 @@ export default defineComponent({
 }
 
 .no-hits-heading {
-	font-size: 36px;
 	word-wrap: break-word;
 	hyphens: auto;
 	max-width: 800px;
@@ -214,12 +213,19 @@ h2 {
 	margin-top: 10px;
 	max-width: 750px;
 }
+.no-hits-heading-subtitle a {
+	font-size: var(--fs-base);
+	line-height: var(--lh-large);
+	font-weight: var(--fw-regular);
+}
 .search-icon {
 	text-align: center;
 	font-size: 150px;
 	color: #002e70;
 }
-
+ul p {
+	margin: 0;
+}
 .contact-us {
 	margin-top: 0;
 	padding-bottom: 0;
