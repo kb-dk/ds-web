@@ -23,7 +23,7 @@
 								searchResultStore.channelFilters.length > 0 ||
 								searchResultStore.categoryFilters.length > 0
 							"
-							class="reset"
+							class="reset label-small"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
 							@click="resetFilters()"
 						>
@@ -706,7 +706,6 @@ export default defineComponent({
 	font-family: noway, sans-serif;
 	cursor: pointer;
 	padding: 10px 8px 10px 7px;
-	font-size: 16px;
 	width: fit-content;
 	display: flex;
 	align-items: center;
