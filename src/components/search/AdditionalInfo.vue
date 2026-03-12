@@ -25,17 +25,15 @@
 			item-class="extra-thumbnail"
 		>
 			<template #default="slotProps">
-				<router-link
+				<div
 					v-for="(item, index) in thumbnailImages"
 					:key="index"
 					draggable="false"
-					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true } }"
 					role="link"
 					class="extra-thumbnail"
 					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"
 					v-bind="slotProps"
 					:replace="router.currentRoute.value.name === 'Record' ? true : false"
-					:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, index)"
 				>
 					<div
 						ref="thumbnailRefs"
@@ -45,12 +43,19 @@
 					</div>
 					<div class="img-stamp">
 						<p class="label-small">{{ convertSecondstoShow(timeStamps[index]) }}</p>
-
-						<span class="material-icons link-arrow">chevron_right</span>
 					</div>
-				</router-link>
+				</div>
 			</template>
 		</ItemSlider>
+
+		<router-link
+			class="watch-program"
+			:to="{ name: 'Record', params: { id: id } }"
+			:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, 0)"
+		>
+			<p class="btn-reg">{{ $t('search.watchProgram') }}</p>
+			<span class="material-icons link-arrow">chevron_right</span>
+		</router-link>
 		<div class="full-duration">
 			<p class="label-medium">| {{ convertSecondstoShow(duration) }}</p>
 		</div>
@@ -209,17 +214,6 @@ export default defineComponent({
 	transform: rotateX(180deg);
 }
 
-.link-arrow {
-	font-size: 20px;
-	opacity: 0;
-	transition: all 0.1s linear 0s;
-}
-
-.extra-thumbnail:hover .link-arrow {
-	opacity: 1;
-	transform: translateX(5px);
-}
-
 .thumbnail-button {
 	cursor: pointer;
 	border: 1px solid rgba(230, 230, 230, 1);
@@ -303,6 +297,29 @@ export default defineComponent({
 .full-duration p {
 	margin: 0;
 }
+.watch-program {
+	position: absolute;
+	right: 15px;
+	z-index: 1;
+	align-items: center;
+	color: white;
+	background-color: #002e70;
+	top: calc(50% - 35px);
+	padding: 5px 14px 5px 14px;
+	text-decoration: none;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	box-sizing: border-box;
+}
+.watch-program > p {
+	margin: 0;
+}
+.watch-program:hover {
+	background-color: #c4f1ed;
+	color: #002e70;
+	border-color: #002e70;
+}
 .extra-thumbnail {
 	flex: 0 0 200px;
 	position: relative;
@@ -357,6 +374,9 @@ export default defineComponent({
 	}
 	.extra-content {
 		width: calc(100% - 20px);
+	}
+	.watch-program {
+		right: 75px;
 	}
 }
 
