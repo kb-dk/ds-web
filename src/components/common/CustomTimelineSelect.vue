@@ -1,11 +1,12 @@
 <template>
 	<div class="select-container">
-		<label>
+		<label class="label-big">
 			{{ label }}:
 			<select
 				v-model="selected"
 				:data-testid="addTestDataEnrichment('select', 'timeline-select', `${label}-select`, 0)"
 				:name="label"
+				class="btn-big"
 				@change="updated($event)"
 			>
 				<option
@@ -94,7 +95,6 @@ export default defineComponent({
 }
 
 .select-container select {
-	font-size: 26px;
 	border: 0px;
 	font-family: noway, sans-serif;
 	background-color: white;

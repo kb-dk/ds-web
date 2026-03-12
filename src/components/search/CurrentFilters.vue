@@ -8,6 +8,7 @@
 				<span
 					v-if="filtersActive"
 					key="1"
+					class="label-small"
 				>
 					{{ $t('search.selected') }}:
 				</span>
@@ -16,7 +17,7 @@
 					key="2"
 					@click="removeFilterAndSearch('creator_affiliation_facet')"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${searchResultStore.channelFilters.length} ${t(
 								'facets.channels',
@@ -31,7 +32,7 @@
 					key="3"
 					@click="removeFilterAndSearch('genre')"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${searchResultStore.categoryFilters.length} ${t(
 								'facets.genres',
@@ -45,7 +46,7 @@
 					v-if="months.filter((entity) => entity.selected === true).length > 0"
 					@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${months.filter((entity) => entity.selected === true).length} ${t(
 								'timeSearch.month',
@@ -59,7 +60,7 @@
 					v-if="days.filter((entity) => entity.selected === true).length > 0"
 					@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${days.filter((entity) => entity.selected === true).length} ${t(
 								'timeSearch.weekday',
@@ -73,7 +74,7 @@
 					v-if="timeslots.filter((entity) => entity.selected === true).length > 0"
 					@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${timeslots.filter((entity) => entity.selected === true).length} ${t(
 								'timeSearch.timePeriods',
@@ -92,7 +93,7 @@
 					"
 					@click="resetYearsAndSearch('startTime')"
 				>
-					<span>
+					<span class="label-small">
 						{{ presentDateSpan() }}
 						{{ approxTimeDifference() }}
 					</span>
@@ -103,7 +104,7 @@
 					key="5"
 					@click="removePreliminaryFilterAndSearch()"
 				>
-					<span>
+					<span class="label-small">
 						{{
 							`${
 								decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
@@ -125,7 +126,7 @@
 					class="resetFilters"
 					@click="resetAllFilters"
 				>
-					<span>{{ `${t('facets.reset')}` }}</span>
+					<span class="label-small">{{ `${t('facets.reset')}` }}</span>
 					<span class="material-icons">close</span>
 				</button>
 			</TransitionGroup>

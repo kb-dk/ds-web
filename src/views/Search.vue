@@ -31,7 +31,7 @@
 							<Transition name="fade">
 								<div
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
-									class="page-count"
+									class="page-count label-small"
 								>
 									{{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }} {{ $t('search.outOf') }}
 									{{

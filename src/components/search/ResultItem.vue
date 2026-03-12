@@ -18,15 +18,18 @@
 							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
 							:title="resultdata.title"
 						>
-							{{ resultdata.title[0] }}
-
-							<div
-								role="img"
-								class="material-icons arrow"
-								:aria-label="t('app.a11y.goToPost')"
-							>
-								keyboard_arrow_right
-							</div>
+							<p class="label-medium">
+								{{ resultdata.title[0] }}
+								<span>
+									<div
+										role="img"
+										class="material-icons arrow"
+										:aria-label="t('app.a11y.goToPost')"
+									>
+										keyboard_arrow_right
+									</div>
+								</span>
+							</p>
 						</router-link>
 						<div class="subtitle">
 							<div class="subtitle-metadata">
@@ -39,8 +42,10 @@
 								>
 									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
 								</span>
-								<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
-								<span class="when">{{ starttime }}</span>
+								<p class="label-small">
+									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
+									<span class="when">{{ starttime }}</span>
+								</p>
 							</div>
 							<div class="subtitle-metadata">
 								<div
@@ -51,7 +56,9 @@
 								>
 									schedule
 								</div>
-								<span class="duration">{{ duration }}</span>
+								<p class="label-small">
+									<span class="duration">{{ duration }}</span>
+								</p>
 							</div>
 							<div
 								v-if="resultdata.episode"
@@ -63,18 +70,22 @@
 								>
 									segment
 								</span>
-								<span class="episode-text">
-									{{ `${t('search.episode')} ${resultdata.episode}` }}
-								</span>
-								<span
-									v-if="resultdata.number_of_episodes"
-									class="episode-text"
-								>
-									{{ `:${resultdata.number_of_episodes}` }}
-								</span>
+								<p class="label-small">
+									<span class="episode-text">
+										{{ `${t('search.episode')} ${resultdata.episode}` }}
+									</span>
+									<span
+										v-if="resultdata.number_of_episodes"
+										class="episode-text"
+									>
+										{{ `:${resultdata.number_of_episodes}` }}
+									</span>
+								</p>
 							</div>
 						</div>
-						<div class="summary">{{ resultdata.description }}</div>
+						<div class="summary">
+							<p>{{ resultdata.description }}</p>
+						</div>
 					</div>
 					<router-link
 						:to="{ path: 'post/' + resultdata.id }"
@@ -357,7 +368,7 @@ export default defineComponent({
 	transition: all 0.5s ease-in-out 0s;
 }
 .summary span {
-	height: 15px;
+	height: 20px;
 	display: block;
 	border-radius: 15px;
 	margin-top: 5px;
@@ -379,18 +390,17 @@ export default defineComponent({
 	max-width: 100%;
 }
 
-.title {
+.title > .label-medium {
 	transition: all 0.5s ease-in-out 0s;
-	font-weight: bold;
+	font-weight: var(--fw-bold);
 	color: #002e70;
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	width: 75ch;
-	text-transform: uppercase;
 	text-decoration: none;
-	height: 22px;
+	height: 26px;
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
@@ -401,7 +411,10 @@ export default defineComponent({
 	flex-direction: column;
 }
 .subtitle-metadata {
-	display: inline-block;
+	display: flex;
+}
+.subtitle-metadata > .label-small {
+	margin: 0;
 }
 .episode-text {
 	color: #002e70;
@@ -568,7 +581,7 @@ export default defineComponent({
 	height: 14px;
 }
 
-.summary {
+.summary p {
 	transition: all 0.5s ease-in-out 0s;
 	overflow: hidden;
 	display: -webkit-box;
@@ -579,7 +592,6 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	line-height: 20px; /* fallback for firefox */
 	max-height: calc(20px * 3); /* fallback for firefox */
 	position: relative;
 	margin-top: 10px;
@@ -641,7 +653,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 120px;
+		height: 130px;
 	}
 	.result-image-wrapper {
 		height: initial;

@@ -28,14 +28,14 @@
 						</span>
 						<div
 							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
-							class="date-elipsis-container"
+							class="date-elipsis-container label-small"
 						>
 							{{ resultdata.creator_affiliation + ', ' }} {{ getStartTime(resultdata) }}
 						</div>
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
-						<span class="record-duration">{{ $t('record.duration') }}:&nbsp;</span>
+						<span class="record-duration label-small">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
 							:end-date="resultdata.endTime"
@@ -57,12 +57,12 @@
 						>
 							segment
 						</span>
-						<span class="episode-text">
+						<span class="episode-text label-small">
 							{{ `${$t('search.episode')} ${resultdata.episode}` }}
 						</span>
 						<span
 							v-if="resultdata.number_of_episodes"
-							class="episode-text"
+							class="episode-text label-small"
 						>
 							{{ `:${resultdata.number_of_episodes}` }}
 						</span>
@@ -71,10 +71,12 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<div class="title">
+					<div class="title label-medium">
 						{{ resultdata.title[0] }}
 					</div>
-					<div class="summary">{{ resultdata.description }}</div>
+					<div class="summary">
+						<p class="label-small">{{ resultdata.description }}</p>
+					</div>
 				</router-link>
 			</div>
 			<div
@@ -403,8 +405,7 @@ export default defineComponent({
 }
 
 .title {
-	font-size: 20px;
-	font-weight: bold;
+	font-weight: var(--fw-bold);
 	color: #002e70;
 	margin-bottom: 10px;
 	max-width: 100%;
@@ -504,7 +505,9 @@ export default defineComponent({
 	max-height: calc(25px * 3); /* fallback for firefox */
 	min-height: calc(25px * 3); /* fallback for firefox */
 }
-
+.summary p {
+	margin: 0;
+}
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;

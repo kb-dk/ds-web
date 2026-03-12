@@ -141,7 +141,7 @@
 							<ul
 								v-if="currentLocaleMessages"
 								role="menubar"
-								class="rdl-secondary-nav"
+								class="rdl-secondary-nav menu secondary"
 							>
 								<li
 									v-for="(item, index) in currentLocaleMessages.secondary"
@@ -337,7 +337,6 @@ a {
 	font-size: 20px;
 	cursor: pointer;
 }
-
 .container {
 	display: flex;
 	justify-content: space-between;
@@ -449,7 +448,6 @@ a {
 	text-transform: uppercase;
 	font-family: 'noway', sans-serif;
 	font-weight: 700;
-	font-size: 1.25rem;
 	line-height: 1.5rem;
 	padding-top: 13px;
 	padding-bottom: 13px;
@@ -569,6 +567,12 @@ li button i {
 	padding-top: 24px;
 }
 
+.rdl-primary-nav .nav-item.level-1,
+.rdl-secondary-nav .nav-item.level-1 {
+	font-size: var(--fs-lead);
+	line-height: var(--lh-large-tight);
+	font-weight: var(--fw-bold);
+}
 .rdl-secondary-nav li:first-of-type {
 	margin-top: -5px;
 }
@@ -693,6 +697,11 @@ li button i {
 	.rdl-secondary-nav li:first-of-type {
 		margin-top: initial;
 	}
+	.rdl-secondary-nav .nav-item.level-1 {
+		font-size: var(--fs-meta);
+		line-height: var(--lh-large);
+		font-weight: var(--fw-bold);
+	}
 	.global-header.open .header-bg-wrapper {
 		padding-bottom: 24px;
 	}
@@ -743,7 +752,6 @@ li button i {
 		display: none;
 	}
 	.rdl-secondary-nav {
-		font-size: 0.75rem;
 		padding-left: 0px;
 		padding-top: 0px;
 		padding-bottom: 0px;
@@ -757,7 +765,6 @@ li button i {
 	}
 
 	.rdl-primary-nav {
-		font-size: 1rem;
 		padding-left: 0px;
 		padding-top: 0px;
 		padding-bottom: 0px;
@@ -796,13 +803,11 @@ li button i {
 		margin-right: 4px;
 		margin-left: 4px;
 		padding-bottom: 0;
-		font-size: 0.75rem;
 	}
 
 	.rdl-primary-nav .nav-item.level-1 {
 		margin-right: 8px;
 		margin-left: 8px;
-		font-size: 1rem;
 	}
 
 	.collapse .rdl-main-navigation {
@@ -834,13 +839,9 @@ li button i {
 	.global-header .search i {
 		font-size: 1.25rem;
 	}
-	.rdl-secondary-nav .nav-item.level-1 {
-		line-height: 1.5rem;
-		font-size: 0.875rem;
-	}
+
 	.rdl-primary-nav .nav-item.level-1 {
 		padding-bottom: 2px;
-		font-size: 1.25rem;
 	}
 
 	.rdl-secondary-nav {

@@ -51,7 +51,7 @@
 					chevron_left
 				</i>
 			</span>
-			<span
+			<p
 				v-for="(pageNumber, index) in computedPages"
 				:key="index"
 			>
@@ -71,7 +71,7 @@
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
 				</router-link>
-			</span>
+			</p>
 			<router-link
 				v-if="currentPageRef !== searchResultStore.maxPages"
 				:to="navLink(currentPageRef + 1)"
@@ -100,11 +100,12 @@
 			</span>
 		</div>
 		<span class="pager-input">
-			<div class="input-label">{{ $t('search.page') }}</div>
+			<p class="input-label label-medium">{{ $t('search.page') }}</p>
 			<input
 				ref="inputRef"
 				v-model="selectPage"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
+				class="input"
 				:aria-label="$t('search.goToThePage')"
 				autocomplete="off"
 				@keydown="checkIfNumber($event)"
@@ -112,6 +113,7 @@
 			/>
 			<button
 				:class="`go-to-button ${inputIncorrect || selectPage === '' ? 'go-to-button-error' : ''}`"
+				class="btn-reg"
 				:disabled="inputIncorrect || selectPage === ''"
 				@click="submitPage()"
 			>
@@ -383,12 +385,14 @@ button,
 .disabled-chevron {
 	border: 0px transparent;
 	background-color: transparent;
-	font-size: 14px;
+
 	cursor: pointer;
 	margin: 0px 2px;
 	padding: 2px 2px;
 }
-
+.disabled-chevron {
+	font-size: 14px;
+}
 .pager-buttons a {
 	text-decoration: underline;
 	color: #002e70;
@@ -418,7 +422,6 @@ button span,
 
 .input-label {
 	color: #002e70;
-	font-size: 16px;
 	height: 31px;
 	width: fit-content;
 	display: inline;
@@ -443,7 +446,6 @@ button span,
 	border-radius: 2px;
 	height: 25px;
 	width: 80px;
-	font-size: 16px;
 	padding: 2px 5px;
 	outline: 1px solid #002e70;
 }
@@ -464,7 +466,6 @@ button span,
 	transition: all 0.3s linear 0s;
 	color: #002e70;
 	background-color: #49da87;
-	font-size: 16px;
 	height: 31px;
 	border-radius: 4px;
 	align-items: center;
