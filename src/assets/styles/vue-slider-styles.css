@@ -161,3 +161,9 @@
 .vue-slider-dot-tooltip-top {
 	top: -2px !important;
 }
+
+.vue-slider-dot-tooltip-text{
+	font-size: var(--fs-lead);
+    line-height: var(--lh-large-tight);
+    font-weight: var(--fw-regular);
+}

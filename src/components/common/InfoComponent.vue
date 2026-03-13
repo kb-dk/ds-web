@@ -1,6 +1,7 @@
 <template>
 	<button
 		:class="title !== '' ? 'info-btn' : 'info-btn icon-only'"
+		class="btn-reg"
 		:style="{
 			'--text-color': color,
 			'--bg-color': bgColor,

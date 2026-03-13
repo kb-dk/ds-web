@@ -13,7 +13,7 @@
 							@click="toggleFacets()"
 						>
 							<span class="material-icons">{{ !searchResultStore.showFacets ? 'tune' : 'close' }}</span>
-							<span class="filter-button-text">
+							<span class="filter-button-text btn-medium">
 								{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
 							</span>
 						</button>
@@ -23,7 +23,7 @@
 								searchResultStore.channelFilters.length > 0 ||
 								searchResultStore.categoryFilters.length > 0
 							"
-							class="reset"
+							class="reset label-small"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
 							@click="resetFilters()"
 						>
@@ -38,7 +38,7 @@
 							@click="toggleTV($event)"
 						>
 							<span class="material-icons second">play_circle_filled</span>
-							TV
+							<p class="btn-medium">TV</p>
 							<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
 								<span class="dot">
 									<TransitionGroup>
@@ -60,7 +60,7 @@
 							@click="toggleRadio($event)"
 						>
 							<span class="material-icons second">volume_up</span>
-							RADIO
+							<p class="btn-medium">RADIO</p>
 							<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
 								<span class="dot">
 									<TransitionGroup>
@@ -118,10 +118,12 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ t('search.page') }}
-									{{ searchResultStore.pageNumber }}
-									{{ t('search.of') }}
-									{{ searchResultStore.maxPages }}
+									<p class="label-small">
+										{{ t('search.page') }}
+										{{ searchResultStore.pageNumber }}
+										{{ t('search.of') }}
+										{{ searchResultStore.maxPages }}
+									</p>
 								</div>
 							</Transition>
 							<Transition name="fade">
@@ -129,8 +131,9 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} -
-									{{ calcRowCount }}
+									<p class="label-small">
+										{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }}
+									</p>
 								</div>
 							</Transition>
 						</div>
@@ -546,10 +549,11 @@ export default defineComponent({
 }
 
 .page-count {
-	font-size: 16px;
 	display: inline-block;
 }
-
+.page-count > .label-small {
+	margin: 0;
+}
 .filter-button {
 	display: flex;
 	position: relative;
@@ -702,7 +706,6 @@ export default defineComponent({
 	font-family: noway, sans-serif;
 	cursor: pointer;
 	padding: 10px 8px 10px 7px;
-	font-size: 16px;
 	width: fit-content;
 	display: flex;
 	align-items: center;

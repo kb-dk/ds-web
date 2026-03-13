@@ -5,7 +5,7 @@
 	>
 		<button
 			ref="dataButton"
-			class="data-size"
+			class="data-size btn-reg"
 			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 			@click="toggleExplanation()"
 		>
@@ -828,7 +828,6 @@ fieldset {
 	z-index: 10;
 	cursor: pointer;
 	font-family: noway, sans-serif;
-	font-size: 14px;
 	transition: all 0.1s linear 0s;
 }
 .data-size:hover {

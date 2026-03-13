@@ -31,7 +31,7 @@
 							<Transition name="fade">
 								<div
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
-									class="page-count"
+									class="page-count label-small"
 								>
 									{{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }} {{ $t('search.outOf') }}
 									{{
@@ -58,11 +58,19 @@
 					<p>{{ t('find.subtitle') }}</p>
 					<h2>{{ t('find.maybeYouWantTo') }}</h2>
 					<div class="extra-options">
-						<router-link :to="searchResultStore.previousRoute">
+						<router-link
+							:to="searchResultStore.previousRoute"
+							class="btn-medium"
+						>
 							<span class="material-icons tune">tune</span>
 							{{ t('find.restoreFilters') }}
 						</router-link>
-						<router-link :to="{ name: 'Home' }">{{ t('find.GoToFrontpage') }}</router-link>
+						<router-link
+							:to="{ name: 'Home' }"
+							class="btn-medium"
+						>
+							{{ t('find.GoToFrontpage') }}
+						</router-link>
 					</div>
 					<EdgedContentArea
 						:lines="true"
@@ -459,7 +467,6 @@ h3 {
 	border-color: #f2f4f8;
 	text-decoration: none;
 	padding: 1px 2rem;
-	line-height: 1.25rem;
 	border-radius: 5px;
 	height: 45px;
 	display: flex;
@@ -476,10 +483,6 @@ h3 {
 	color: #002e70;
 	border-color: #002e70;
 	outline: 1px solid #002e70;
-}
-
-.find h1 {
-	font-weight: normal;
 }
 
 .find h2 {
