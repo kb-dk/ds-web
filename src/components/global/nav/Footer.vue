@@ -9,7 +9,7 @@
 		>
 			<div class="row">
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column1.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column1.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column1.links"
@@ -25,7 +25,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column2.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column2.title }}</h2>
 
 					<ul>
 						<li
@@ -42,7 +42,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column3.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column3.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column3.links"
@@ -217,9 +217,7 @@ export default defineComponent({
 .column a:hover {
 	text-decoration: underline;
 }
-.label-medium {
-	font-weight: var(--fw-bold);
-}
+
 .rdl-logo-inverted {
 	background-image: url('@/assets/images/logo-white.svg');
 	height: 48px;
