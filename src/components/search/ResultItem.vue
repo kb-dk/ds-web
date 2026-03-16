@@ -100,7 +100,7 @@
 				<AdditionalInfo
 					:id="resultdata.id"
 					:type="resultdata.origin.split('.')[1]"
-					:file-id="resultdata.file_id ? resultdata.file_id : ''"
+					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
 					:duration="Number(resultdata.duration_ms)"
 					:nr="index"
 				></AdditionalInfo>
@@ -252,9 +252,10 @@ export default defineComponent({
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
-			if (props.resultdata?.file_id) {
-				APIService.getThumbnail(props.resultdata.file_id)
+			if (props.resultdata?.kaltura_id) {
+				APIService.getThumbnail(props.resultdata.kaltura_id)
 					.then((thumbServiceResponse) => {
+						console.log(thumbServiceResponse);
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';

@@ -34,7 +34,7 @@
 						<div class="process-bar">
 							<div
 								:style="`left:${currentProgress}%`"
-								class="procentage label-big"
+								class="percentage label-big"
 							>
 								{{ currentProgress }}%
 							</div>
@@ -70,7 +70,7 @@ export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
-		const currentProgress = ref(0);
+		const currentProgress = ref();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
 		});
@@ -141,10 +141,9 @@ h1 {
 	padding: 5px 15px;
 }
 
-.procentage {
+.percentage {
 	position: absolute;
 	text-align: center;
-	transform: translate(-50%, 0%);
 	color: white;
 	transition: all 0.1s linear 0s;
 }

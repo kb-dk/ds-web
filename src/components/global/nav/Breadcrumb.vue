@@ -59,7 +59,7 @@
 				v-if="$route.name === 'Search'"
 				class="level-4 btn-reg"
 			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</span>
 			<span
 				v-if="$route.name === 'Record' && lastPath"
@@ -74,7 +74,7 @@
 				:to="lastPath"
 				:title="t('breadcrumb.search')"
 			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>
 			<router-link
 				v-if="$route.name === 'Record' && !lastPath"
@@ -84,7 +84,7 @@
 				:title="t('breadcrumb.search')"
 			>
 				<span class="line">/</span>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>
 			<span v-if="$route.name === 'Record'">/</span>
 			<span
@@ -163,7 +163,15 @@ export default defineComponent({
 		const prelinksShown = ref(false);
 		const dotsShown = ref(true);
 		const timeout: Ref<number | null> = ref(null);
-
+		const searchWord = computed(() => {
+			if (searchResultStore.lastSearchQuery) {
+				if (searchResultStore.lastSearchQuery !== '*:*') {
+					return `: ${searchResultStore.lastSearchQuery}`;
+				}
+				return '';
+			}
+			return '';
+		});
 		const currentPage = computed(() => {
 			let page = route.name as string;
 			if (page) {
@@ -184,7 +192,7 @@ export default defineComponent({
 			timeout.value = setTimeout(() => {
 				togglePreLinks(false);
 				toggleDots(true);
-			}, 1000);
+			}, 5000);
 		};
 
 		const showDotContent = () => {
@@ -239,6 +247,7 @@ export default defineComponent({
 			hideDotContentOnDelay,
 			showDotContent,
 			resetTimeout,
+			searchWord,
 		};
 	},
 });
@@ -350,7 +359,13 @@ export default defineComponent({
 .search .level-4 {
 	display: initial;
 }
-
+.level-4,
+.level-5 {
+	white-space: nowrap;
+	max-width: 10rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .home-icon {
 	display: none;
 	font-size: 18px;
@@ -478,7 +493,10 @@ export default defineComponent({
 	.mobile-hidden {
 		display: initial;
 	}
-
+	.level-4,
+	.level-5 {
+		max-width: 15rem;
+	}
 	.level-1,
 	.level-2,
 	.level-3,
