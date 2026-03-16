@@ -37,7 +37,7 @@
 									left: `calc(${currentProgress}% - 50px)`,
 									transform: `translateX(calc(300% - (${currentProgress}% * 4)))`,
 								}"
-								class="procentage"
+								class="percentage"
 							>
 								{{ currentProgress }}%
 							</div>
@@ -144,7 +144,7 @@ h1 {
 	padding: 5px 15px;
 }
 
-.procentage {
+.percentage {
 	position: absolute;
 	text-align: center;
 	color: white;
