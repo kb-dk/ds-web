@@ -311,7 +311,6 @@ a {
 	font-weight: 700;
 	color: #002e70;
 	text-decoration: none;
-	font-family: noway, sans-serif;
 	text-transform: uppercase;
 }
 
@@ -332,7 +331,6 @@ a {
 	font-weight: 700;
 	color: #002e70;
 	text-decoration: none;
-	font-family: noway, sans-serif;
 	text-transform: uppercase;
 	font-size: 20px;
 	cursor: pointer;
@@ -378,7 +376,6 @@ a {
 .search-col span {
 	font-size: 12px;
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
 	position: relative;
 	color: black;
 }
@@ -396,7 +393,6 @@ a {
 	align-items: flex-end;
 	justify-content: center;
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
 }
 
 .account_circle i {
@@ -446,7 +442,6 @@ a {
 .rdl-secondary-nav,
 .rdl-primary-nav {
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
 	font-weight: 700;
 	line-height: 1.5rem;
 	padding-top: 13px;
@@ -485,7 +480,6 @@ a {
 	flex-direction: column;
 	position: relative;
 	background-color: #caf0fe;
-	font-family: noway, sans-serif;
 }
 
 .theme-blue .header-bg-wrapper.rdl-theme-bg {

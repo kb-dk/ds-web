@@ -531,40 +531,6 @@ export default defineComponent({
 	position: relative;
 }
 
-/* This probably shouldn't be here. We need a place for global styles at some point i guess */
-@font-face {
-	font-family: 'noway';
-	font-style: normal;
-	font-weight: 400;
-	src: url('./assets/fonts/noway-regular-webfont.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'noway';
-	font-style: normal;
-	font-weight: 700;
-	src: url('./assets/fonts/noway-medium-webfont.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'LibreBaskerville';
-	src: url('./assets/fonts/LibreBaskerville-Bold.ttf') format('truetype');
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: 'LibreBaskerville';
-	src: url('./assets/fonts/LibreBaskerville-Italic.ttf') format('truetype');
-	font-style: italic;
-}
-
-@font-face {
-	font-family: 'LibreBaskerville';
-	src: url('./assets/fonts/LibreBaskerville-Regular.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-
 body {
 	margin: 0;
 	padding: 0;
@@ -585,7 +551,6 @@ body {
 }
 
 #app {
-	font-family: noway, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;

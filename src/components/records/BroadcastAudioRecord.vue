@@ -427,7 +427,6 @@ h4 {
 	box-sizing: border-box;
 	margin-bottom: 15px;
 	padding: 5px 14px 9px 14px;
-	font-family: 'noway';
 	flex-direction: row;
 	justify-content: center;
 	border: 1px solid #0a2e70;

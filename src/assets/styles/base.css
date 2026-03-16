@@ -7,6 +7,7 @@
     font-size: var(--fs-xxl);
     line-height: var(--lh-small);
     font-weight: var(--fw-regular);
+    font-family: 'LibreBaskerville';
 }
 h1{
     font-size: var(--fs-xl);

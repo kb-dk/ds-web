@@ -216,7 +216,6 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-	font-family: 'LibreBaskerville';
 	color: #002e70;
 }
 
@@ -338,7 +337,6 @@ h2 {
 }
 
 .header h2 {
-	font-family: 'LibreBaskerville';
 	text-transform: none;
 	margin: 0;
 }

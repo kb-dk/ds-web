@@ -202,7 +202,6 @@ h2 {
 	color: #002e70;
 	height: auto;
 	float: left;
-	font-family: noway, sans-serif;
 }
 
 .headline span {

@@ -235,7 +235,6 @@ h1 .subtitle {
 .hero-info p,
 .hero-info .link-container {
 	padding: 5px 15px;
-	font-family: 'noway';
 	color: #0a2e70;
 }
 .hero-info .link-container {
@@ -291,7 +290,6 @@ h1 {
 	letter-spacing: 1.15px;
 	color: #0b0d0a;
 	text-transform: uppercase;
-	font-family: 'LibreBaskerville';
 	position: relative;
 	top: -1px;
 }

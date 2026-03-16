@@ -246,7 +246,6 @@ export default defineComponent({
 }
 
 .foldable-container {
-	font-family: noway, sans-serif;
 	max-width: 100vw;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -254,7 +253,6 @@ export default defineComponent({
 }
 
 h2 {
-	font-family: noway, sans-serif;
 	text-transform: lowercase;
 }
 
@@ -482,9 +480,6 @@ h2::first-letter {
 		width: 100%;
 	}
 
-	h2 {
-		font-family: 'LibreBaskerville';
-	}
 	.content.hide {
 		height: auto !important;
 		align-items: center;

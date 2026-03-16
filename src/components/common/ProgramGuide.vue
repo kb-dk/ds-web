@@ -370,9 +370,6 @@ export default defineComponent({
 	background-color: transparent;
 }
 
-.daily-program button {
-	font-family: noway, sans-serif;
-}
 .daily-program:hover .hors-dot {
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
