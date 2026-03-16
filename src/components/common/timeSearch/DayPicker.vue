@@ -1,7 +1,6 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
-			<span class="date-span">{{ t('datepicker.date') }}:</span>
 			<TimePicker
 				v-model="selectedDate"
 				:start-date="startYear"
@@ -56,7 +55,7 @@ export default defineComponent({
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0));
+		const selectedDate = ref<Date | undefined>(undefined);
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
@@ -110,7 +109,7 @@ export default defineComponent({
 			}
 			inputTimer = setTimeout(() => {
 				updateDate(inputTimer, validDate, selectedDate, updateSeeMoreLink);
-			}, 750); // 750 milliseconds (0.75 second) delay
+			}, 1000); // 1000 milliseconds (1 second) delay
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -124,7 +123,12 @@ export default defineComponent({
 		});
 
 		const moveToSearchPage = () => {
-			if (selectedDate.value !== null && startDate.value !== null && endDate.value !== null) {
+			if (
+				selectedDate.value !== null &&
+				startDate.value !== null &&
+				endDate.value !== null &&
+				selectedDate.value !== undefined
+			) {
 				startDate.value.setFullYear(selectedDate.value.getFullYear());
 				startDate.value.setMonth(selectedDate.value.getMonth());
 				startDate.value.setDate(selectedDate.value.getDate());
@@ -220,13 +224,6 @@ export default defineComponent({
 	width: calc(100vw - 14px);
 	flex-direction: column;
 	justify-content: center;
-}
-
-.date-span {
-	padding-bottom: 10px;
-	width: 302px;
-	position: relative;
-	display: block;
 }
 
 .picker-container {

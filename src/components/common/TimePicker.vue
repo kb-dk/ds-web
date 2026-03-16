@@ -5,10 +5,10 @@
 		@keydown.esc="close"
 	>
 		<label
+			class="datepicker-explanation"
 			:for="inputId"
-			class="visually-hidden"
 		>
-			{{ t('calendar.select') }}
+			{{ t('calendar.select') }}:
 		</label>
 
 		<div class="input-wrap">
@@ -26,7 +26,7 @@
 			/>
 			<Transition name="fade">
 				<div
-					v-if="invalid"
+					v-if="invalid && displayValue.length > 0"
 					class="error-container"
 				>
 					{{ t('datepicker.error', { start: formatErrorDate(startYear), end: formatErrorDate(endYear) }) }}
@@ -93,7 +93,7 @@
 				<div class="dp-calender-prev-next">
 					<button
 						type="button"
-						aria-label="Previous month"
+						:aria-label="t('calendar.prevMonth')"
 						class="material-icons change-month left"
 						@click="prevMonth"
 					>
@@ -102,7 +102,7 @@
 					<h3 :id="calendarHeadingId">{{ monthTitle }}</h3>
 					<button
 						type="button"
-						aria-label="Next month"
+						:aria-label="t('calendar.nextMonth')"
 						class="material-icons change-month right"
 						@click="nextMonth"
 					>
@@ -274,7 +274,7 @@ export default defineComponent({
 				invalid.value = isInvalid;
 
 				emit('update:modelValue', parsed);
-			}, 700);
+			}, 1000);
 		});
 
 		function onInputEnter() {
@@ -494,6 +494,12 @@ export default defineComponent({
 
 .material-icons {
 	color: rgb(10, 46, 112);
+}
+
+.datepicker-explanation {
+	text-align: start;
+	width: 100%;
+	margin-bottom: 5px;
 }
 
 .datepicker {

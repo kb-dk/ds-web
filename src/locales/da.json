@@ -548,6 +548,8 @@
       "open":"Åben kalender",
       "close": "Luk kalender",
       "explanation": "Skriv en dato i formatet DD-MM-ÅÅÅÅ eller vælg fra kalenderen.",
-      "select": "Vælg dato"
+      "select": "Vælg dato",
+      "nextMonth": "Næste måned",
+      "prevMonth":"Forrige måned"
    }
 }

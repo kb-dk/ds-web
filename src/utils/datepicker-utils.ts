@@ -4,13 +4,18 @@ import { Ref } from 'vue';
 const updateDate = (
 	timer: ReturnType<typeof setTimeout> | null,
 	isDateValid: Ref<boolean>,
-	inputVar: Ref<Date>,
+	inputVar: Ref<Date | undefined>,
 	updateLink: () => void,
 ) => {
 	if (timer) {
 		clearTimeout(timer);
 	}
+	if (inputVar.value === undefined || inputVar.value === null) {
+		return;
+	}
 	isDateValid.value = false;
+
+	console.log(inputVar.value);
 
 	const constructedDate =
 		inputVar.value.getDate() + '/' + Number(inputVar.value.getMonth() + 1) + '/' + inputVar.value.getFullYear();
@@ -49,7 +54,7 @@ const updateSelectedDate = (
 	e: Event,
 	timer: ReturnType<typeof setTimeout> | null,
 	isDateValid: Ref<boolean>,
-	inputVar: Ref<Date | null>,
+	inputVar: Ref<Date | undefined>,
 	updateLink: () => void,
 ) => {
 	if (timer) {
