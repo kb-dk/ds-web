@@ -15,8 +15,6 @@ const updateDate = (
 	}
 	isDateValid.value = false;
 
-	console.log(inputVar.value);
-
 	const constructedDate =
 		inputVar.value.getDate() + '/' + Number(inputVar.value.getMonth() + 1) + '/' + inputVar.value.getFullYear();
 	const dateInput = constructedDate.replace(/[.-]/g, '/');
