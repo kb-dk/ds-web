@@ -18,6 +18,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column1`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -35,6 +36,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column2`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -51,6 +53,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column3`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -82,6 +85,7 @@
 									v-if="link.link"
 									:href="link.link"
 									:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
+									class="menu-footer"
 								>
 									{{ link.title }}
 								</a>
@@ -269,9 +273,6 @@ h2 {
 a {
 	color: white;
 	text-decoration: none;
-	font-size: var(--fs-base);
-	font-weight: var(--fw-regular);
-	line-height: var(--lh-medium);
 }
 
 .global-footer ul {

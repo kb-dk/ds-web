@@ -89,3 +89,8 @@ p{
     line-height: var(--lh-large);
     font-weight: var(--fw-bold);
 }
+.menu-footer{
+    font-size: var(--fs-base);
+	line-height: var(--lh-medium);
+    font-weight: var(--fw-regular);
+}
