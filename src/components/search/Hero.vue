@@ -26,7 +26,7 @@
 				>
 					<div class="info">
 						<div class="progress-headline">
-							<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
+							<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
 							<p>
 								{{ t('hero.explanation') }}
 							</p>
@@ -36,7 +36,7 @@
 								:style="`left:${currentProgress}%`"
 								class="percentage label-big"
 							>
-								{{ currentProgress }}%
+								{{ Math.round(currentProgress) }}%
 							</div>
 							<div
 								v-for="i in 20"
