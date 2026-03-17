@@ -158,16 +158,9 @@ export default defineComponent({
 					const startTime = startTimeDate.toISOString();
 					//Some of the special characters does not need to be encoded.
 					//This gives the same result as adding creator and a single day with facets.
-					return await APIService.getSearchResults(
-						'*:*',
-						encodeURIComponent(`&fq=startTime:[${startTime} TO ${endTime}]&fq=(creator_affiliation_facet:"${creator}")`)
-							.replace(/%26/g, '&')
-							.replace(/%3D/g, '='),
-						'100',
-						'',
-						'&sort=startTime asc',
-						currentSearchUUID,
-					);
+					let facet = `&fq=${encodeURIComponent(`startTime:[${startTime} TO ${endTime}]`)}&`;
+					facet += `fq=${encodeURIComponent(`(creator_affiliation_facet:"${creator}"`)})`;
+					return await APIService.getSearchResults('*:*', facet, '100', '', '&sort=startTime asc', currentSearchUUID);
 				} catch (err) {
 					handleShowRecordError(err as AxiosError, 'programGuideCall');
 				}
@@ -265,7 +258,26 @@ export default defineComponent({
 			async () => {
 				getMoreRecordsThisDayAndCreator().then((records) => {
 					if (records) {
-						recordsForTheDay.value = records.data.response.docs;
+						const responseRecords = records.data.response.docs;
+						const uniqueRecords: GenericSearchResultType[] = [];
+						for (let i = 0; i < responseRecords.length; i++) {
+							if (
+								!uniqueRecords.some((uRec) => {
+									if (uRec.dr_production_id && responseRecords[i].dr_production_id) {
+										return uRec.dr_production_id === responseRecords[i].dr_production_id;
+									} else {
+										const uRecTime = new Date(uRec.endTime).getTime();
+										const respTime = new Date(responseRecords[i].startTime).getTime();
+										const differenceTime = respTime - uRecTime;
+										return differenceTime < Number(uRec.duration_ms) * 0.33;
+									}
+								})
+							) {
+								uniqueRecords.push(responseRecords[i]);
+							}
+						}
+
+						recordsForTheDay.value = uniqueRecords;
 					}
 				});
 			},
