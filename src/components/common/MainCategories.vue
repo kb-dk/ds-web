@@ -159,7 +159,6 @@ export default defineComponent({
 }
 
 .header h2 {
-	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	font-size: 32px;
 	margin: 0;

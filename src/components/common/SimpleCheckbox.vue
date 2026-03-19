@@ -4,7 +4,7 @@
 			:title="title"
 			class="label"
 		>
-			<span class="title label-small">{{ title }}</span>
+			<span class="title label-small-bold">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
@@ -244,7 +244,6 @@ export default defineComponent({
 	text-transform: uppercase;
 	color: #002e70;
 	display: inline-block;
-	font-weight: var(--fw-bold);
 }
 
 .loading .checkbox:after {

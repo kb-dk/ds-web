@@ -827,7 +827,6 @@ fieldset {
 	top: 90px;
 	z-index: 10;
 	cursor: pointer;
-	font-family: noway, sans-serif;
 	transition: all 0.1s linear 0s;
 }
 .data-size:hover {
@@ -972,7 +971,6 @@ fieldset {
 	position: relative;
 	padding: 0px;
 	margin: 0px;
-	font-family: noway, sans-serif;
 	transition: all 0.1s linear 0s;
 }
 

@@ -324,7 +324,6 @@ export default defineComponent({
 	background-color: transparent;
 	border: 0px solid transparent;
 	display: flex;
-	font-family: noway, sans-serif;
 	padding: 0;
 	margin: 0;
 	cursor: pointer;

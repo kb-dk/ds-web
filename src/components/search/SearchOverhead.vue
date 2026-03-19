@@ -569,7 +569,6 @@ export default defineComponent({
 	z-index: 0;
 	font-size: 20px;
 	padding: 6px 12px 9px 12px;
-	font-family: noway, sans-serif;
 	transition: all 0.25s linear 0s;
 	align-items: baseline;
 }
@@ -703,7 +702,6 @@ export default defineComponent({
 }
 
 .reset {
-	font-family: noway, sans-serif;
 	cursor: pointer;
 	padding: 10px 8px 10px 7px;
 	width: fit-content;

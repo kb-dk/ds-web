@@ -99,7 +99,6 @@ export default defineComponent({
 	margin-left: 25px;
 	margin-right: 10px;
 	border-radius: 4px;
-	font-family: noway, sans-serif;
 }
 
 .info-btn.icon-only {
