@@ -137,7 +137,6 @@ temporary styling until patterns from design system are implemented
 }
 
 .get-link {
-	font-family: noway, sans-serif;
 	background-color: transparent;
 	border: 0px;
 	cursor: pointer;
@@ -267,7 +266,6 @@ temporary styling until patterns from design system are implemented
 	box-sizing: border-box;
 	margin-bottom: 15px;
 	padding: 5px 25px;
-	font-family: 'noway';
 	font-weight: 100;
 	flex-direction: row;
 	justify-content: center;

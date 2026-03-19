@@ -17,21 +17,21 @@
 					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
 					<div class="extra-suggest">
 						<a
-							class="btn-light btn"
+							class="btn-light btn btn-medium"
 							href="/find-materiale/dr-arkivet/"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
 						>
 							{{ t('error.wrongUrl.frontPage') }}
 						</a>
 						<a
-							class="btn-light btn"
+							class="btn-light btn btn-medium"
 							:href="t('footer.column1.links.1.link')"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-about', 0)"
 						>
 							{{ t('footer.column1.links.1.title') }}
 						</a>
 						<a
-							class="btn-light btn"
+							class="btn-light btn btn-medium"
 							href="https://www.kb.dk"
 							:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
 						>
@@ -118,7 +118,6 @@ export default defineComponent({
 }
 .btn {
 	display: inline-block;
-	font-weight: 400;
 	color: #171717;
 	text-align: center;
 	text-decoration: none;
@@ -134,8 +133,6 @@ export default defineComponent({
 	border-bottom-color: transparent;
 	border-left-color: transparent;
 	padding: 13px 2.875rem;
-	font-size: 1rem;
-	line-height: 1.25rem;
 	border-radius: 0.25rem;
 	transition:
 		color 0.15s ease-in-out,

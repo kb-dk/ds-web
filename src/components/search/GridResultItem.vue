@@ -57,12 +57,12 @@
 						>
 							segment
 						</span>
-						<span class="episode-text label-small">
+						<span class="episode-text label-small-bold">
 							{{ `${$t('search.episode')} ${resultdata.episode}` }}
 						</span>
 						<span
 							v-if="resultdata.number_of_episodes"
-							class="episode-text label-small"
+							class="episode-text label-small-bold"
 						>
 							{{ `:${resultdata.number_of_episodes}` }}
 						</span>
@@ -425,7 +425,6 @@ export default defineComponent({
 }
 .episode-text {
 	color: #002e70;
-	font-weight: bold;
 }
 .title.loading {
 	background-color: #002e70;
@@ -502,8 +501,8 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 1.5; /* fallback for firefox */
 	font-size: 16px;
-	max-height: calc(25px * 3); /* fallback for firefox */
-	min-height: calc(25px * 3); /* fallback for firefox */
+	max-height: calc(27px * 3); /* fallback for firefox */
+	min-height: calc(27px * 3); /* fallback for firefox */
 }
 .summary p {
 	margin: 0;
@@ -552,6 +551,10 @@ export default defineComponent({
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
+	}
+	.summary {
+		max-height: calc(35px * 3); /* fallback for firefox */
+		min-height: calc(35px * 3); /* fallback for firefox */
 	}
 }
 </style>

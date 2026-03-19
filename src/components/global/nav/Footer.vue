@@ -9,7 +9,7 @@
 		>
 			<div class="row">
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column1.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column1.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column1.links"
@@ -18,6 +18,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column1`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -25,7 +26,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column2.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column2.title }}</h2>
 
 					<ul>
 						<li
@@ -35,6 +36,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column2`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -42,7 +44,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium">{{ currentLocaleMessages.column3.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column3.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column3.links"
@@ -51,6 +53,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column3`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -82,6 +85,7 @@
 									v-if="link.link"
 									:href="link.link"
 									:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
+									class="menu-footer"
 								>
 									{{ link.title }}
 								</a>
@@ -217,9 +221,7 @@ export default defineComponent({
 .column a:hover {
 	text-decoration: underline;
 }
-.label-medium {
-	font-weight: var(--fw-bold);
-}
+
 .rdl-logo-inverted {
 	background-image: url('@/assets/images/logo-white.svg');
 	height: 48px;
@@ -271,9 +273,6 @@ h2 {
 a {
 	color: white;
 	text-decoration: none;
-	font-size: var(--fs-base);
-	font-weight: var(--fw-regular);
-	line-height: var(--lh-medium);
 }
 
 .global-footer ul {

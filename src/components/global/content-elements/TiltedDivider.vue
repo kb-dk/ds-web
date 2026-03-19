@@ -65,7 +65,6 @@ h2 {
 	margin: 0px;
 	padding: 0;
 	text-align: center;
-	font-family: Libre Baskerville;
 	letter-spacing: 1.15px;
 	color: #002e70;
 	top: 2px;

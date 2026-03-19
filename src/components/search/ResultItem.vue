@@ -18,7 +18,7 @@
 							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
 							:title="resultdata.title"
 						>
-							<p class="label-medium">
+							<p class="label-medium-bold">
 								{{ resultdata.title[0] }}
 								<span>
 									<div
@@ -70,7 +70,7 @@
 								>
 									segment
 								</span>
-								<p class="label-small">
+								<p class="label-small-bold">
 									<span class="episode-text">
 										{{ `${t('search.episode')} ${resultdata.episode}` }}
 									</span>
@@ -389,17 +389,18 @@ export default defineComponent({
 	overflow: hidden;
 	max-width: 100%;
 }
-
-.title > .label-medium {
+.title {
+	text-decoration: none;
+}
+.title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
-	font-weight: var(--fw-bold);
 	color: #002e70;
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	width: 75ch;
-	text-decoration: none;
+
 	height: 26px;
 	position: relative;
 	display: block;
@@ -413,13 +414,12 @@ export default defineComponent({
 .subtitle-metadata {
 	display: flex;
 }
-.subtitle-metadata > .label-small {
+.subtitle-metadata > .label-small,
+.subtitle-metadata > .label-small-bold {
 	margin: 0;
 }
 .episode-text {
 	color: #002e70;
-	font-weight: bold;
-	font-size: 14px;
 }
 .episode-split-icon {
 	padding-right: 3px;
@@ -592,7 +592,7 @@ export default defineComponent({
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	max-height: calc(20px * 3); /* fallback for firefox */
+	max-height: calc(25px * 3); /* fallback for firefox */
 	position: relative;
 	margin-top: 10px;
 }
@@ -653,7 +653,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 130px;
+		height: 132px;
 	}
 	.result-image-wrapper {
 		height: initial;

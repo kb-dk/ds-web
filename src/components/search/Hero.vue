@@ -26,7 +26,7 @@
 				>
 					<div class="info">
 						<div class="progress-headline">
-							<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
+							<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
 							<p>
 								{{ t('hero.explanation') }}
 							</p>
@@ -34,9 +34,9 @@
 						<div class="process-bar">
 							<div
 								:style="`left:${currentProgress}%`"
-								class="procentage label-big"
+								class="percentage label-big"
 							>
-								{{ currentProgress }}%
+								{{ Math.round(currentProgress) }}%
 							</div>
 							<div
 								v-for="i in 20"
@@ -70,7 +70,7 @@ export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
-		const currentProgress = ref(0);
+		const currentProgress = ref();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
 		});
@@ -141,10 +141,9 @@ h1 {
 	padding: 5px 15px;
 }
 
-.procentage {
+.percentage {
 	position: absolute;
 	text-align: center;
-	transform: translate(-50%, 0%);
 	color: white;
 	transition: all 0.1s linear 0s;
 }
@@ -235,7 +234,6 @@ h1 .subtitle {
 .hero-info p,
 .hero-info .link-container {
 	padding: 5px 15px;
-	font-family: 'noway';
 	color: #0a2e70;
 }
 .hero-info .link-container {
@@ -291,7 +289,6 @@ h1 {
 	letter-spacing: 1.15px;
 	color: #0b0d0a;
 	text-transform: uppercase;
-	font-family: 'LibreBaskerville';
 	position: relative;
 	top: -1px;
 }

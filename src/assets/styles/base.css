@@ -7,6 +7,7 @@
     font-size: var(--fs-xxl);
     line-height: var(--lh-small);
     font-weight: var(--fw-regular);
+    font-family: 'LibreBaskerville';
 }
 h1{
     font-size: var(--fs-xl);
@@ -33,6 +34,11 @@ p{
     line-height: var(--lh-large);
     font-weight: var(--fw-regular);
 }
+.label-small-bold{
+    font-size: var(--fs-meta);
+    line-height: var(--lh-large);
+    font-weight: var(--fw-bold);
+}
 .label-regular{
     font-size: var(--fs-base);
     line-height: var(--lh-large);
@@ -42,6 +48,11 @@ p{
     font-size: var(--fs-lead);
     line-height: var(--lh-large-tight);
     font-weight: var(--fw-regular);
+}
+.label-medium-bold{
+    font-size: var(--fs-lead);
+    line-height: var(--lh-large-tight);
+    font-weight: var(--fw-bold);
 }
 .label-big{
     font-size: var(--fs-md);
@@ -66,5 +77,20 @@ p{
 .input{
     font-size: var(--fs-base);
     line-height: var(--lh-large);
+    font-weight: var(--fw-regular);
+}
+.menu-main{
+    font-size: var(--fs-lead);
+    line-height: var(--lh-large-tight);
+    font-weight: var(--fw-bold);
+}
+.menu-secondary{
+    font-size: var(--fs-meta);
+    line-height: var(--lh-large);
+    font-weight: var(--fw-bold);
+}
+.menu-footer{
+    font-size: var(--fs-base);
+	line-height: var(--lh-medium);
     font-weight: var(--fw-regular);
 }

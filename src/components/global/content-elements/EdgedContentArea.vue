@@ -3,6 +3,7 @@
 		<h3
 			v-if="title"
 			:class="reverse ? 'reverse' : ''"
+			class="heading-display"
 		>
 			{{ title }}
 		</h3>
@@ -181,14 +182,11 @@ h3 {
 	margin: 0px;
 	padding: 0;
 	text-align: center;
-	font: normal normal normal 49px/68px Libre Baskerville;
 	letter-spacing: 1.15px;
 	color: #002e70;
-	font-size: 32px;
 	top: calc(2.5vw + 2px);
 	position: relative;
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0);
-	line-height: 1.2;
 }
 
 h3.reverse {
@@ -214,8 +212,6 @@ h3:first-letter {
 }
 /* MEDIA QUERY 450 */
 @media (min-width: 450px) {
-	h3 {
-	}
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
@@ -228,15 +224,9 @@ h3:first-letter {
 	.container {
 		max-width: 990px;
 	}
-	h3 {
-		font-size: 36px;
-	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
-	h3 {
-		font-size: 40px;
-	}
 	.container {
 		display: flex;
 		flex-direction: column;
