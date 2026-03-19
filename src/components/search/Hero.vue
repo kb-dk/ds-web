@@ -30,6 +30,15 @@
 							<p>
 								{{ t('hero.explanation') }}
 							</p>
+							<p>
+								<a
+									class="link"
+									:href="t('hero.link')"
+								>
+									<span class="material-icons">link</span>
+									<span class="link-text">{{ t('hero.linkText') }}</span>
+								</a>
+							</p>
 						</div>
 						<div class="process-bar">
 							<div
@@ -43,14 +52,6 @@
 								:key="i"
 								:class="progress(i)"
 							></div>
-						</div>
-						<div class="link-container">
-							<a
-								class="link btn-big"
-								:href="t('hero.link')"
-							>
-								{{ t('hero.linkText') }}
-							</a>
 						</div>
 					</div>
 				</div>
@@ -260,23 +261,27 @@ h1 {
 	display: block;
 }
 
-.link-container .link {
-	background-color: #0a2e70;
-	width: 100%;
-	color: white;
-	display: block;
-	text-align: center;
+.link {
+	color: #0a2e70;
+	text-align: left;
 	text-decoration: none;
-	padding: 4px 10px 6px 10px;
 	border-radius: 4px;
-	height: 55px;
 	display: flex;
 	align-items: center;
-	box-sizing: border-box;
-	justify-content: center;
-	border: 1px solid white;
-	margin-bottom: 15px;
-	transition: all 0.1s linear 0s;
+	width: fit-content;
+}
+.link > .material-icons {
+	margin-right: 2px;
+}
+.link-text {
+	transition: 200ms;
+	border-bottom: 1px solid transparent;
+}
+.link:hover {
+	transition: all 5s ease 0s;
+	.link-text {
+		border-color: #0a2e70;
+	}
 }
 .subtitle {
 	text-align: center;
