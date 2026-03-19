@@ -311,6 +311,7 @@ export default defineComponent({
 	height: 40px;
 	display: flex;
 	box-sizing: border-box;
+	transition: all 0.3s ease-in-out 0s;
 }
 .watch-program > p {
 	margin: 0;
