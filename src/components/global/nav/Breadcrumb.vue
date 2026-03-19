@@ -129,12 +129,16 @@
 						<p>
 							{{ t('search.frontpageGuide.third') }}
 						</p>
-						<a
-							target="_blank"
-							:href="t('search.frontpageGuide.link')"
-						>
-							{{ t('search.frontpageGuide.linktext') }}
-						</a>
+						<p>
+							<a
+								class="link"
+								target="_blank"
+								:href="t('search.frontpageGuide.link')"
+							>
+								<span class="material-icons">link</span>
+								<span class="link-text">{{ t('search.frontpageGuide.linktext') }}</span>
+							</a>
+						</p>
 					</div>
 				</InfoComponent>
 			</div>
@@ -448,17 +452,34 @@ export default defineComponent({
 	margin-left: auto;
 }
 
-.search-help a {
-	color: #002e70;
-	text-decoration: underline;
-}
-
 .search-help span {
 	color: #002e70;
 }
 
 .cursive-text {
 	font-style: italic;
+}
+.link {
+	color: #0a2e70;
+	text-align: left;
+	text-decoration: none;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+}
+.link > .material-icons {
+	margin-right: 2px;
+}
+.link-text {
+	transition: 200ms;
+	border-bottom: 1px solid transparent;
+}
+.link:hover {
+	transition: all 5s ease 0s;
+	.link-text {
+		border-color: #0a2e70;
+	}
 }
 
 /* MEDIA QUERY 510 */
