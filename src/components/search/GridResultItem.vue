@@ -28,14 +28,14 @@
 						</span>
 						<div
 							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
-							class="date-elipsis-container"
+							class="date-elipsis-container label-small"
 						>
 							{{ resultdata.creator_affiliation + ', ' }} {{ getStartTime(resultdata) }}
 						</div>
 					</div>
 					<div class="duration">
 						<span class="material-icons">schedule</span>
-						<span class="record-duration">{{ $t('record.duration') }}:&nbsp;</span>
+						<span class="record-duration label-small">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
 							:end-date="resultdata.endTime"
@@ -57,12 +57,12 @@
 						>
 							segment
 						</span>
-						<span class="episode-text">
+						<span class="episode-text label-small-bold">
 							{{ `${$t('search.episode')} ${resultdata.episode}` }}
 						</span>
 						<span
 							v-if="resultdata.number_of_episodes"
-							class="episode-text"
+							class="episode-text label-small-bold"
 						>
 							{{ `:${resultdata.number_of_episodes}` }}
 						</span>
@@ -71,10 +71,12 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<div class="title">
+					<div class="title label-medium">
 						{{ resultdata.title[0] }}
 					</div>
-					<div class="summary">{{ resultdata.description }}</div>
+					<div class="summary">
+						<p class="label-small">{{ resultdata.description }}</p>
+					</div>
 				</router-link>
 			</div>
 			<div
@@ -403,8 +405,7 @@ export default defineComponent({
 }
 
 .title {
-	font-size: 20px;
-	font-weight: bold;
+	font-weight: var(--fw-bold);
 	color: #002e70;
 	margin-bottom: 10px;
 	max-width: 100%;
@@ -424,7 +425,6 @@ export default defineComponent({
 }
 .episode-text {
 	color: #002e70;
-	font-weight: bold;
 }
 .title.loading {
 	background-color: #002e70;
@@ -501,10 +501,12 @@ export default defineComponent({
 	-webkit-box-orient: vertical;
 	line-height: 1.5; /* fallback for firefox */
 	font-size: 16px;
-	max-height: calc(25px * 3); /* fallback for firefox */
-	min-height: calc(25px * 3); /* fallback for firefox */
+	max-height: calc(27px * 3); /* fallback for firefox */
+	min-height: calc(27px * 3); /* fallback for firefox */
 }
-
+.summary p {
+	margin: 0;
+}
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
@@ -549,6 +551,10 @@ export default defineComponent({
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
+	}
+	.summary {
+		max-height: calc(35px * 3); /* fallback for firefox */
+		min-height: calc(35px * 3); /* fallback for firefox */
 	}
 }
 </style>

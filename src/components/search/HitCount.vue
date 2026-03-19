@@ -90,18 +90,4 @@ export default defineComponent({
 	background-color: rgba(170, 170, 170, 1);
 	height: 30px;
 }
-
-.hit-count h1 {
-	font-weight: normal;
-	font-size: 24px;
-}
-
-@media (min-width: 640px) {
-	.hit-count {
-		font-size: 36px;
-	}
-	.hit-count h1 {
-		font-size: 36px;
-	}
-}
 </style>

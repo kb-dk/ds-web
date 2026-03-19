@@ -1,7 +1,7 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
-			<span class="date-span">{{ t('datepicker.date') }}:</span>
+			<span class="date-span label-medium">{{ t('datepicker.date') }}:</span>
 			<VueDatePicker
 				ref="singleDatePicker"
 				v-model="selectedDate"
@@ -38,6 +38,7 @@
 		<div class="time-container">
 			<router-link
 				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
+				class="btn-big"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
 				@click="moveToSearchPage()"
@@ -306,7 +307,6 @@ export default defineComponent({
 	text-decoration: none;
 	padding: 2px 5px;
 	flex-direction: row-reverse;
-	font-size: 16px;
 	box-sizing: border-box;
 	width: fit-content;
 	padding: 10px 15px;

@@ -8,7 +8,7 @@
 		@mouseenter="pauseAnimation"
 		@mouseleave="resumeAnimation"
 	>
-		<h3 class="notification-title">
+		<h3 class="notification-title heading-sub">
 			<span class="title-span">
 				<span
 					v-if="notification.severity === Severity.SUCCESS"
@@ -139,9 +139,6 @@ export default defineComponent({
 	white-space: break-spaces;
 }
 
-.title-span {
-	font: normal normal normal 26px/28px Noway;
-}
 .title-span span {
 	font-size: 30px;
 	vertical-align: text-bottom;

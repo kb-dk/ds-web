@@ -25,12 +25,12 @@
 							fq: [encodeURIComponent(`genre_facet:${quotation(entity.name)}`)],
 						},
 					}"
-					class="category-item"
+					class="category-item btn-medium"
 					:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
 					@click="scrollToTop()"
 				>
 					{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
-					<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
+					<span class="number label-regular">{{ entity.number.toLocaleString('de-DE') }}</span>
 					<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
 				</router-link>
 			</div>
@@ -159,7 +159,6 @@ export default defineComponent({
 }
 
 .header h2 {
-	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	font-size: 32px;
 	margin: 0;
@@ -222,8 +221,6 @@ export default defineComponent({
 	display: flex;
 	/*justify-content: center;
 	align-items: center;*/
-	font-size: 26px;
-	line-height: 1;
 	transition: all 0.1s linear 0s;
 }
 
@@ -257,7 +254,6 @@ export default defineComponent({
 	position: absolute;
 	bottom: -16px;
 	right: 8px;
-	font-size: 16px !important;
 	padding: 2px 5px 3px 5px;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid #002e70;

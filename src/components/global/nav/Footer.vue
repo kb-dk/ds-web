@@ -9,7 +9,7 @@
 		>
 			<div class="row">
 				<div class="column">
-					<h2>{{ currentLocaleMessages.column1.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column1.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column1.links"
@@ -18,6 +18,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column1`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -25,7 +26,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2>{{ currentLocaleMessages.column2.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column2.title }}</h2>
 
 					<ul>
 						<li
@@ -35,6 +36,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column2`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -42,7 +44,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2>{{ currentLocaleMessages.column3.title }}</h2>
+					<h2 class="label-medium-bold">{{ currentLocaleMessages.column3.title }}</h2>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column3.links"
@@ -51,6 +53,7 @@
 							<a
 								:href="link.link"
 								:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column3`, Number(index))"
+								class="menu-footer"
 							>
 								{{ link.title }}
 							</a>
@@ -82,6 +85,7 @@
 									v-if="link.link"
 									:href="link.link"
 									:data-testid="addTestDataEnrichment('link', 'footer', `${link.title}-column4`, Number(index))"
+									class="menu-footer"
 								>
 									{{ link.title }}
 								</a>
@@ -245,10 +249,7 @@ export default defineComponent({
 }
 
 h2 {
-	font-weight: 700;
-	line-height: 1.5rem;
 	margin-bottom: 12px;
-	font-size: 20px;
 	margin-top: 0;
 	padding-left: 5px;
 }

@@ -156,7 +156,6 @@ h2 {
 }
 
 .category-tags .tag {
-	font-family: noway, sans-serif;
 	padding: 0px 0px;
 	margin: 2px 5px;
 	color: black;

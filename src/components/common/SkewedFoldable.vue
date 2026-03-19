@@ -35,8 +35,10 @@
 					:style="`color:${text}`"
 					class="headline"
 				>
-					<h2>{{ title }}</h2>
-					<span>{{ subtitle }}</span>
+					<h2 class="heading-sub">{{ title }}</h2>
+					<p>
+						<span>{{ subtitle }}</span>
+					</p>
 				</div>
 			</button>
 			<div :class="fullwidth ? 'responsive-title fullw' : 'responsive-title'">
@@ -44,8 +46,10 @@
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h2>{{ title }}</h2>
-					<span>{{ subtitle }}</span>
+					<h2 class="heading-sub">{{ title }}</h2>
+					<p>
+						<span>{{ subtitle }}</span>
+					</p>
 				</div>
 			</div>
 			<div
@@ -242,7 +246,6 @@ export default defineComponent({
 }
 
 .foldable-container {
-	font-family: noway, sans-serif;
 	max-width: 100vw;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -250,8 +253,6 @@ export default defineComponent({
 }
 
 h2 {
-	font-family: noway, sans-serif;
-	font-weight: 100;
 	text-transform: lowercase;
 }
 
@@ -271,14 +272,15 @@ h2::first-letter {
 	width: 100%;
 }
 .headline span {
-	font-size: 16px;
 	text-align: left;
 	display: block;
-	line-height: 1.4;
 	margin-top: 4px;
 	max-width: 720px;
 	display: flex;
 	flex-wrap: wrap;
+}
+.headline p {
+	margin: 0;
 }
 
 .content .headline h2 {
@@ -478,12 +480,6 @@ h2::first-letter {
 		width: 100%;
 	}
 
-	h2 {
-		font-family: 'LibreBaskerville';
-		font-weight: 100;
-
-		font-size: 32px;
-	}
 	.content.hide {
 		height: auto !important;
 		align-items: center;

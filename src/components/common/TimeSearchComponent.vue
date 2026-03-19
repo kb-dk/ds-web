@@ -5,8 +5,10 @@
 				class="header"
 				:style="`color: ${text}`"
 			>
-				<h2>{{ title }}</h2>
-				<span>{{ subtitle }}</span>
+				<h2 class="heading-sub">{{ title }}</h2>
+				<p>
+					<span>{{ subtitle }}</span>
+				</p>
 			</div>
 			<TimeSearchFilters
 				:timeline="true"
@@ -15,9 +17,9 @@
 			></TimeSearchFilters>
 			<div class="result-container">
 				<div class="result-header">
-					<span class="selection-header">{{ t('timeSearch.selection') }}:</span>
+					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
 					<router-link
-						class="link"
+						class="link btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 						@click="scrollToTop()"
@@ -46,7 +48,7 @@
 			</div>
 			<div class="further-recap">
 				<div class="further-link">
-					<div class="recap">
+					<div class="recap label-small">
 						<span>{{ `${getYears(timeSliderValues)} ${t('timeSearch.year', getYears(timeSliderValues))}` }}</span>
 						/
 						<span>{{ getSublineForMonths(months, t) }}</span>
@@ -56,7 +58,7 @@
 						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
 					</div>
 					<router-link
-						class="link"
+						class="link btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
 						@click="scrollToTop()"
@@ -214,10 +216,7 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-	font-family: 'LibreBaskerville';
-	font-weight: 100;
 	color: #002e70;
-	font-size: 32px;
 }
 
 .result-container {
@@ -237,7 +236,6 @@ h2 {
 
 .selection-header {
 	color: #002e70;
-	font-size: 26px;
 	padding-top: 4px;
 }
 
@@ -248,7 +246,6 @@ h2 {
 	text-decoration: none;
 	padding: 8px 10px 12px 14px;
 	flex-direction: row-reverse;
-	font-size: 26px;
 	position: relative;
 	left: -10px;
 	height: 25px;
@@ -288,8 +285,6 @@ h2 {
 	width: fit-content;
 	padding-left: 3px;
 	padding-right: 3px;
-	font-weight: 700;
-	font-size: 16px;
 }
 
 .further-link {
@@ -342,22 +337,19 @@ h2 {
 }
 
 .header h2 {
-	font-family: 'LibreBaskerville';
-	font-weight: 100;
 	text-transform: none;
-	font-size: 32px;
 	margin: 0;
 }
 
 .header span {
 	margin: 0;
-	font-size: 16px;
 	display: block;
-	line-height: 1.4;
 	margin-top: 4px;
 	max-width: 720px;
 }
-
+.header p {
+	margin: 0;
+}
 @media (max-width: 480px) {
 	.time-result-item:nth-child(n + 3) {
 		display: none;

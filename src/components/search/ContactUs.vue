@@ -6,7 +6,7 @@
 			:href="t('footer.column4.links.1.link')"
 			:data-testid="addTestDataEnrichment('button', 'ContactUs', 'link-to-ask-about-library', 0)"
 		>
-			<p>{{ t('footer.column4.links.1.title') }}</p>
+			<p class="btn-medium">{{ t('footer.column4.links.1.title') }}</p>
 			<span class="material-icons">chat_bubble</span>
 		</a>
 	</div>
@@ -42,35 +42,25 @@ export default defineComponent({
 	left: 1%;
 }
 .btn {
-	display: inline-block;
-	font-weight: 400;
-	color: #171717;
+	background-color: #0a2e70;
+	width: fit-content;
+	color: white;
 	text-align: center;
 	text-decoration: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	background-color: transparent;
-	outline: none;
-	padding: 1px 2rem;
-	font-size: 1rem;
-	line-height: 1.25rem;
-	border-radius: 5px;
-	transition:
-		color 0.15s ease-in-out,
-		background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out,
-		box-shadow 0.15s ease-in-out;
-	margin-right: 15px;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	box-sizing: border-box;
 	margin-bottom: 15px;
+	padding: 5px 14px 9px 14px;
+	flex-direction: row;
+	justify-content: center;
 	white-space: nowrap;
+	border: 1px solid #0a2e70;
 }
-
-.btn > * {
-	display: inline-block;
+.btn > .btn-medium {
+	margin: 0;
 }
-
 .btn-blue {
 	color: white;
 	background-color: #002e70;
@@ -81,12 +71,11 @@ export default defineComponent({
 	background-color: #c4f1ed;
 	color: #002e70;
 	border-color: #002e70;
-	outline: 1px solid #002e70;
 }
 
 .material-icons {
 	position: relative;
-	top: 7px;
+	top: 5px;
 	margin-left: 15px;
 }
 
