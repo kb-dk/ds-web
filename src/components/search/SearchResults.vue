@@ -16,6 +16,7 @@
 					:index="index"
 					background="white"
 				></GridResultItem>
+
 				<ResultItem
 					v-else
 					:resultdata="searchResults[index]"
@@ -24,6 +25,7 @@
 					:placeholder="getPlaceholderImage()"
 					:index="index"
 				></ResultItem>
+				{{ console.log('WTF') }}
 				<div class="vert-dot">•</div>
 				<div class="hors-dot">•</div>
 			</div>
@@ -94,7 +96,11 @@ export default defineComponent({
 			watch(
 				() => searchResultStore.resultGrid,
 				(isGrid: boolean) => {
-					hitsToShow.value = isGrid ? 40 : 10;
+					if (isGrid) {
+						hitsToShow.value = hitsToShow.value > 40 ? 40 : hitsToShow.value;
+					} else {
+						hitsToShow.value = hitsToShow.value > 10 ? 10 : hitsToShow.value;
+					}
 				},
 			);
 		});
