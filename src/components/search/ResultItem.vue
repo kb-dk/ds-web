@@ -437,7 +437,6 @@ export default defineComponent({
 .duration {
 	padding-right: 5px;
 	text-overflow: ellipsis;
-	font-size: 14px;
 }
 .when {
 	padding-right: 20px;

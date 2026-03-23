@@ -75,7 +75,7 @@
 						{{ resultdata.title[0] }}
 					</div>
 					<div class="summary">
-						<p class="label-small">{{ resultdata.description }}</p>
+						<p>{{ resultdata.description }}</p>
 					</div>
 				</router-link>
 			</div>

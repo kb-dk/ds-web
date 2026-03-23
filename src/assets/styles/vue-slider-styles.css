@@ -95,6 +95,7 @@
 	left: -25px !important;
 	background-color:white;
 	display:none;
+	font-size: var(--fs-meta) !important;
 }
 
 .vue-slider-dot-tooltip-inner {
