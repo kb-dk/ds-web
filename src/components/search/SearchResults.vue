@@ -16,7 +16,6 @@
 					:index="index"
 					background="white"
 				></GridResultItem>
-
 				<ResultItem
 					v-else
 					:resultdata="searchResults[index]"
@@ -25,7 +24,6 @@
 					:placeholder="getPlaceholderImage()"
 					:index="index"
 				></ResultItem>
-				{{ console.log('WTF') }}
 				<div class="vert-dot">•</div>
 				<div class="hors-dot">•</div>
 			</div>
