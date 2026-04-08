@@ -95,6 +95,7 @@ export default defineComponent({
 	justify-content: center;
 	text-decoration: none;
 	box-sizing: border-box;
+	height: fit-content;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
@@ -105,7 +106,7 @@ export default defineComponent({
 .btn-cta {
 	background-color: var(--bg-cta);
 	color: var(--color-main);
-	padding: var(--padding-2) var(--padding-large);
+	padding: var(--padding-01) var(--padding-large);
 	gap: var(--padding-medium);
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
@@ -127,7 +128,7 @@ export default defineComponent({
 .btn-cta-small {
 	background-color: var(--bg-cta);
 	color: var(--color-main);
-	padding: var(--padding-medium) var(--padding-1);
+	padding: var(--padding-02) var(--padding-1);
 	gap: var(--padding-medium);
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);

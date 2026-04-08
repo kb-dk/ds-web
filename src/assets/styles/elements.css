@@ -22,24 +22,24 @@
     --padding-01: var(--scale-200);
     --padding-medium: var(--scale-300);
     --padding-1: var(--scale-400);
-    --padding-2: var(--scale-500);
+    --padding-2: var(--scale-450);
     --padding-large: var(--scale-650);
 
     /*size scales*/
     --scale-0: 0px;
     --scale-25: 1px;
     --scale-50: 2px;
+    --scale-100: 4px;
     --scale-200: 8px;
+    --scale-250: 10px;
     --scale-300: 12px;
+    --scale-350: 14px;
     --scale-400: 16px;
+    --scale-450: 18px;
     --scale-500: 20px;
     --scale-550: 22px;
-    --scale-100: 4px;
     --scale-600: 24px;
     --scale-650: 26px;
-    --scale-250: 10px;
-    --scale-350: 14px;
-    --scale-450: 18px;
     --scale-700: 28px;
     --scale-800: 32px;
     --scale-850: 34px;

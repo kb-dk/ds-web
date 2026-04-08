@@ -21,7 +21,7 @@
 					<KBButton
 						class="btn-big"
 						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 						button-type="btn-cta"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
@@ -71,20 +71,6 @@
 						)} `"
 						@click="scrollToTop()"
 					></KBButton>
-					<!-- <router-link
-						class="link btn-big"
-						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
-						@click="scrollToTop()"
-					>
-						<div class="further-results">
-							<div class="hits">
-								<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
-								{{ $t('timeSearch.result', timeSearchStore.numFound) }}
-							</div>
-						</div>
-						<div class="link-arrow"></div>
-					</router-link> -->
 				</div>
 			</div>
 		</template>
