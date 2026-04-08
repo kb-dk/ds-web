@@ -54,7 +54,9 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
 import '@/assets/styles/font-styles.css';
+import '@/assets/styles/elements.css';
 import '@/assets/styles/base.css';
+
 export default defineComponent({
 	name: 'App',
 	components: {

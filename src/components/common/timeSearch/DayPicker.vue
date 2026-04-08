@@ -36,16 +36,17 @@
 			</Transition>
 		</div>
 		<div class="time-container">
-			<router-link
+			<KBButton
 				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
 				class="btn-big"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
+				:is-router-link="true"
+				:button-text="$t('search.showContent')"
+				right-icon-name="arrow_forward_ios"
+				button-type="btn-cta-small"
 				@click="moveToSearchPage()"
-			>
-				<span>{{ $t('search.showContent') }}</span>
-				<div class="check-mark"></div>
-			</router-link>
+			></KBButton>
 		</div>
 	</div>
 </template>
@@ -69,6 +70,7 @@ import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
 import { updateSelectedDate } from '@/utils/datepicker-utils';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import KBButton from '@/components/common/KBButton.vue';
 
 interface MonthYearEvent {
 	instance: number;
@@ -80,6 +82,7 @@ export default defineComponent({
 	name: 'DayPicker',
 	components: {
 		VueDatePicker,
+		KBButton,
 	},
 	setup() {
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;

@@ -4,9 +4,12 @@
     --bg-cta:#49da87;
     --bg-light:#caf0fe;
     --bg-remove:#f7ae3b;
+    --bg-main-hover:#c4f1ed;
+    --bg-disabled:#d5d5d5;
 
     /*colors*/
     --color-main:#002e70;
+    --color-default:#ffff;
 
     /*rounded*/
     --rounded-small: var(--scale-50);

@@ -1,17 +1,84 @@
 <template>
 	<button
+		v-if="!isRouterLink"
 		v-bind="attrs"
 		class="btn"
+		:class="buttonType"
 	>
-		<slot></slot>
+		<span
+			v-if="leftIconName"
+			class="material-icons"
+		>
+			{{ leftIconName }}
+		</span>
+		{{ buttonText }}
+		<span
+			v-if="rightIconName"
+			class="material-icons"
+		>
+			{{ rightIconName }}
+		</span>
 	</button>
+	<router-link
+		v-if="isRouterLink && attrs.to"
+		v-bind="attrs"
+		class="btn"
+		:class="buttonType"
+		:to="attrs.to"
+	>
+		<span
+			v-if="leftIconName"
+			class="material-icons"
+		>
+			{{ leftIconName }}
+		</span>
+		<span class="btn-text">{{ buttonText }}</span>
+		<span
+			v-if="rightIconName"
+			class="material-icons"
+		>
+			{{ rightIconName }}
+		</span>
+	</router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent, useAttrs } from 'vue';
+import { defineComponent, PropType, useAttrs } from 'vue';
+
+type ButtonType = 'btn-cta' | 'btn-cta-small' | 'btn-main' | 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
+	props: {
+		buttonType: {
+			type: String as PropType<ButtonType>,
+			required: true,
+		},
+		isRouterLink: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		leftIconName: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		rightIconName: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		buttonText: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+	},
 	setup() {
 		const attrs = useAttrs();
 		return { attrs };
@@ -21,35 +88,63 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-	background-color: var(--neutral-btn);
-	border: none;
-	color: var(--primary-button-text);
-	padding: 0.5rem 1rem;
-	border-radius: 6px;
 	cursor: pointer;
-	font-size: 18px;
-	transition: background-color 0.2s ease;
+	transition: all 0.2s ease;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 40px;
-	margin: 5px 5px;
+	text-decoration: none;
+	box-sizing: border-box;
 }
-
-.btn:hover {
-	background-color: var(--neutral-btn-hover);
-	color: var(--primary);
-	box-shadow:
-		inset 0 0 0 2px rgba(255, 255, 255, 0.1),
-		0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
 .btn:disabled {
-	background-color: rgb(175, 175, 175);
+	background-color: var(--bg-disabled);
 	cursor: default;
 }
-.btn:disabled:hover {
-	color: var(--primary-button-text);
-	box-shadow: none;
+
+/* Call to action buttons */
+.btn-cta {
+	background-color: var(--bg-cta);
+	color: var(--color-main);
+	padding: var(--padding-2) var(--padding-large);
+	gap: var(--padding-medium);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-cta .btn-text {
+	border-bottom: 1px solid transparent;
+	margin-bottom: -1px;
+	transition: 200ms;
+}
+.btn-cta:hover {
+	transition: all 5s ease 0s;
+	.btn-text {
+		border-color: var(--color-main);
+	}
+}
+.btn-cta .material-icons {
+	font-size: calc(var(--fs-md) + 8px);
+}
+.btn-cta-small {
+	background-color: var(--bg-cta);
+	color: var(--color-main);
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-medium);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
+}
+.btn-cta-small .btn-text {
+	border-bottom: 1px solid transparent;
+	margin-bottom: -1px;
+	transition: 200ms;
+}
+.btn-cta-small:hover {
+	transition: all 5s ease 0s;
+	.btn-text {
+		border-color: var(--color-main);
+	}
+}
+.btn-cta-small .material-icons {
+	font-size: calc(var(--fs-md) + 8px);
 }
 </style>
