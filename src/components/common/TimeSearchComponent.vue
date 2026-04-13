@@ -22,7 +22,7 @@
 						class="btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-						button-type="btn-cta"
+						button-type="btn-cta-medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
 						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
@@ -62,7 +62,7 @@
 						class="btn-big"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
-						button-type="btn-cta"
+						button-type="btn-cta-medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
 						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(

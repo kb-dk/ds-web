@@ -38,13 +38,13 @@
 		<div class="time-container">
 			<KBButton
 				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
-				class="btn-big"
+				class="btn-reg"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
 				:is-router-link="true"
 				:button-text="$t('search.showContent')"
 				right-icon-name="arrow_forward_ios"
-				button-type="btn-cta-small"
+				button-type="btn-cta-default"
 				@click="moveToSearchPage()"
 			></KBButton>
 		</div>

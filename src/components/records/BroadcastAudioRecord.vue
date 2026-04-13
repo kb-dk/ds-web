@@ -23,7 +23,8 @@
 						class="btn-medium"
 						:is-router-link="true"
 						:button-text="$t('record.back')"
-						button-type="btn-main"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 					></KBButton>
@@ -32,7 +33,8 @@
 						class="btn-medium"
 						:is-router-link="true"
 						:button-text="$t('record.toFrontpage')"
-						button-type="btn-main"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios"
 						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 					></KBButton>
@@ -99,9 +101,9 @@
 				<div class="share-button">
 					<KBButton
 						:button-text="$t('record.copy')"
-						button-type="btn-main"
+						button-type="btn-main-medium"
 						class="btn-medium"
-						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+						:data-testid="addTestDataEnrichment('button', 'broadcast-audio', 'copy-link', 0)"
 						left-icon-name="share"
 						@click="getCurrentUrl()"
 					></KBButton>

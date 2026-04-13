@@ -111,7 +111,6 @@ export default defineComponent({
 	},
 	setup() {
 		const attrs = useAttrs();
-		console.log(attrs);
 		return { attrs };
 	},
 });

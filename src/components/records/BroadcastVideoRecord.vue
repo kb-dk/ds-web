@@ -23,7 +23,8 @@
 						class="btn-medium"
 						:is-router-link="true"
 						:button-text="$t('record.back')"
-						button-type="btn-main"
+						left-icon-name="arrow_back_ios"
+						button-type="btn-main-medium"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 					></KBButton>
@@ -31,8 +32,9 @@
 						v-else
 						class="btn-medium"
 						:is-router-link="true"
+						left-icon-name="arrow_back_ios"
 						:button-text="$t('record.toFrontpage')"
-						button-type="btn-main"
+						button-type="btn-main-medium"
 						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 					></KBButton>
@@ -97,14 +99,14 @@
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
-					<div
-						class="link-container get-link"
+					<KBButton
+						:button-text="$t('record.copy')"
+						button-type="btn-main-medium"
+						class="btn-medium"
 						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+						left-icon-name="share"
 						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link btn-medium">{{ $t('record.copy') }}</a>
-					</div>
+					></KBButton>
 				</div>
 			</div>
 		</div>
