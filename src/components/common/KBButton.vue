@@ -4,6 +4,7 @@
 		v-bind="attrs"
 		class="btn"
 		:class="buttonType"
+		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
@@ -19,12 +20,35 @@
 			{{ rightIconName }}
 		</span>
 	</button>
+	<a
+		v-if="isRouterLink && attrs.href"
+		v-bind="attrs"
+		class="btn"
+		:class="buttonType"
+		:href="attrs.href.toString()"
+		:style="customStyle"
+	>
+		<span
+			v-if="leftIconName"
+			class="material-icons"
+		>
+			{{ leftIconName }}
+		</span>
+		<span class="btn-text">{{ buttonText }}</span>
+		<span
+			v-if="rightIconName"
+			class="material-icons"
+		>
+			{{ rightIconName }}
+		</span>
+	</a>
 	<router-link
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
 		:class="buttonType"
 		:to="attrs.to"
+		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
@@ -78,9 +102,16 @@ export default defineComponent({
 				return '';
 			},
 		},
+		customStyle: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 	},
 	setup() {
 		const attrs = useAttrs();
+		console.log(attrs);
 		return { attrs };
 	},
 });
@@ -96,10 +127,26 @@ export default defineComponent({
 	text-decoration: none;
 	box-sizing: border-box;
 	height: fit-content;
+	width: fit-content;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
 	cursor: default;
+}
+
+/* Primary buttons */
+.btn-main {
+	padding: var(--padding-0) var(--padding-4);
+	gap: var(--padding-00);
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-main:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
 }
 
 /* Call to action buttons */
@@ -119,7 +166,7 @@ export default defineComponent({
 .btn-cta:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
-		border-color: var(--color-main);
+		border-color: var(--color-border-active);
 	}
 }
 .btn-cta .material-icons {
@@ -142,7 +189,7 @@ export default defineComponent({
 .btn-cta-small:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
-		border-color: var(--color-main);
+		border-color: var(--color-border-active);
 	}
 }
 .btn-cta-small .material-icons {

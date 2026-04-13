@@ -18,23 +18,24 @@
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
-					<div class="triangle"></div>
-					<router-link
+					<KBButton
 						v-if="backLink !== '/'"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.back')"
+						button-type="btn-main"
 						:to="backLink"
-						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
-					>
-						{{ $t('record.back') }}
-					</router-link>
-					<router-link
+					></KBButton>
+					<KBButton
 						v-else
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.toFrontpage')"
+						button-type="btn-main"
 						:to="{ name: 'Home' }"
-						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
-					>
-						{{ $t('record.toFrontpage') }}
-					</router-link>
+					></KBButton>
 				</div>
 			</div>
 			<div class="right-side">
@@ -152,6 +153,7 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -162,6 +164,7 @@ export default defineComponent({
 		Duration,
 		GridResultItem,
 		ProgramGuide,
+		KBButton,
 	},
 
 	props: {
@@ -440,29 +443,6 @@ h4 {
 	position: relative;
 }
 
-.back-link {
-	display: flex;
-	flex-direction: row;
-	bottom: 0;
-	padding: 7px 0px;
-}
-.back-link:hover .triangle {
-	border-right: 10px solid #c4f1ed;
-}
-.triangle {
-	display: none;
-	width: 0;
-	height: 0;
-	border-bottom: 20px solid transparent;
-	border-right: 10px solid #0a2e70;
-	border-top: 20px solid transparent;
-	margin-right: -2px;
-}
-.return {
-	border-radius: 4px;
-	width: fit-content;
-	height: auto;
-}
 .program-guide {
 	margin-bottom: 20px;
 }
