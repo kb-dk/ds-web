@@ -69,7 +69,7 @@
 <script lang="ts">
 import { defineComponent, PropType, useAttrs } from 'vue';
 
-type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main' | 'btn-label';
+type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main-default' | 'btn-main-medium' | 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -134,16 +134,16 @@ export default defineComponent({
 }
 
 /* Primary buttons */
-.btn-main {
-	padding: var(--padding-0) var(--padding-4);
-	gap: var(--padding-00);
+.btn-main-medium {
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
 	background-color: var(--bg-main);
 	color: var(--color-default);
 	border: 1px solid var(--color-border-active);
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
-.btn-main:hover {
+.btn-main-medium:hover {
 	background-color: var(--bg-main-hover);
 	color: var(--color-main);
 }
