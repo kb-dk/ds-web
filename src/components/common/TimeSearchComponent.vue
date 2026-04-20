@@ -19,10 +19,10 @@
 				<div class="result-header">
 					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
 					<KBButton
-						class="btn-big"
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-						button-type="btn-cta"
+						button-type="btn-cta-medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
 						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
@@ -59,10 +59,10 @@
 						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
 					</div>
 					<KBButton
-						class="btn-big"
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
-						button-type="btn-cta"
+						button-type="btn-cta-medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
 						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
