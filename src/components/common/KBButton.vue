@@ -69,7 +69,7 @@
 <script lang="ts">
 import { defineComponent, PropType, useAttrs } from 'vue';
 
-type ButtonType = 'btn-cta' | 'btn-cta-small' | 'btn-main' | 'btn-label';
+type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main' | 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -149,49 +149,49 @@ export default defineComponent({
 }
 
 /* Call to action buttons */
-.btn-cta {
+.btn-cta-medium {
 	background-color: var(--bg-cta);
 	color: var(--color-main);
-	padding: var(--padding-01) var(--padding-large);
-	gap: var(--padding-medium);
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
-.btn-cta .btn-text {
+.btn-cta-medium .btn-text {
 	border-bottom: 1px solid transparent;
 	margin-bottom: -1px;
 	transition: 200ms;
 }
-.btn-cta:hover {
+.btn-cta-medium:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
 		border-color: var(--color-border-active);
 	}
 }
-.btn-cta .material-icons {
+.btn-cta-medium .material-icons {
 	font-size: calc(var(--fs-md) + 8px);
 }
-.btn-cta-small {
+.btn-cta-default {
 	background-color: var(--bg-cta);
 	color: var(--color-main);
-	padding: var(--padding-02) var(--padding-1);
-	gap: var(--padding-medium);
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 	box-sizing: border-box;
 }
-.btn-cta-small .btn-text {
+.btn-cta-default .btn-text {
 	border-bottom: 1px solid transparent;
 	margin-bottom: -1px;
 	transition: 200ms;
 }
-.btn-cta-small:hover {
+.btn-cta-default:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
 		border-color: var(--color-border-active);
 	}
 }
-.btn-cta-small .material-icons {
-	font-size: calc(var(--fs-md) + 8px);
+.btn-cta-default .material-icons {
+	font-size: calc(+ 8px);
 }
 </style>

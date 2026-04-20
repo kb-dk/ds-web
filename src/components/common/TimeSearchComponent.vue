@@ -19,7 +19,7 @@
 				<div class="result-header">
 					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
 					<KBButton
-						class="btn-big"
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 						button-type="btn-cta-medium"
@@ -59,7 +59,7 @@
 						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
 					</div>
 					<KBButton
-						class="btn-big"
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
 						button-type="btn-cta-medium"
