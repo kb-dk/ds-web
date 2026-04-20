@@ -69,7 +69,13 @@
 <script lang="ts">
 import { defineComponent, PropType, useAttrs } from 'vue';
 
-type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main-default' | 'btn-main-medium' | 'btn-label';
+type ButtonType =
+	| 'btn-cta-medium'
+	| 'btn-cta-default'
+	| 'btn-main-default'
+	| 'btn-main-medium'
+	| 'btn-dropdown-default'
+	| 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -193,5 +199,16 @@ export default defineComponent({
 }
 .btn-cta-default .material-icons {
 	font-size: calc(+ 8px);
+}
+
+/* Dropdown buttons */
+.btn-dropdown-default {
+	background-color: var(--bg-default);
+	color: var(--color-main);
+	padding: var(--padding-00) var(--padding-medium);
+	gap: var(--padding-02);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
 }
 </style>
