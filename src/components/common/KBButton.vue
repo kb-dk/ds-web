@@ -208,7 +208,11 @@ export default defineComponent({
 	padding: var(--padding-00) var(--padding-medium);
 	gap: var(--padding-02);
 	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 	box-sizing: border-box;
+	border: 1px solid transparent;
+}
+.btn-dropdown-default:hover {
+	background-color: var(--bg-main-hover);
+	border-color: var(--color-border-active);
 }
 </style>
