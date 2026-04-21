@@ -149,6 +149,14 @@ export class APIServiceClient {
 		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0`);
 	}
 
+	async getRadioFacets(): Promise<APISearchResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0&fq=origin:"ds.radio"`);
+	}
+
+	async getTVFacets(): Promise<APISearchResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0&fq=origin:"ds.tv"`);
+	}
+
 	async getSearchResults(
 		query: string,
 		filters: string,

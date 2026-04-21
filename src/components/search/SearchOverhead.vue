@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="hit-count">
-				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
+				<div :class="['filter-options', { disabled: searchResultStore.loading }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
 						<button
 							ref="toggleFacetsButton"
@@ -78,24 +78,9 @@
 						</button>
 					</div>
 				</div>
-				<Facets />
-				<button
-					v-if="searchResultStore.showFacets"
-					ref="toggleFacetsButton"
-					role="switch"
-					aria-checked="true"
-					class="filter-button filter-button-bottom"
-					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
-					@click="toggleFacets()"
-				>
-					<span class="material-icons">{{ 'close' }}</span>
-					<span class="filter-button-text">
-						{{ $t('search.hideFilters') }}
-					</span>
-				</button>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
-					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
+					class="result-options"
 				>
 					<div class="hits">
 						<HitCount
@@ -177,7 +162,6 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import Facets from '@/components/search/Facets.vue';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
@@ -200,7 +184,6 @@ export default defineComponent({
 	components: {
 		HitCount,
 		Sort,
-		Facets,
 		CurrentFilters,
 	},
 
@@ -481,10 +464,6 @@ export default defineComponent({
 	padding-bottom: 8px;
 }
 
-.result-options.less-top-padding {
-	padding-top: 5px;
-}
-
 .sort-options {
 	position: relative;
 	display: flex;
@@ -493,11 +472,6 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	padding-bottom: 8px;
 	padding-top: 40px;
-}
-
-.filter-options.open {
-	transition: margin-bottom 0.1s ease-in-out 0s;
-	margin-bottom: calc(-2vw + -10px);
 }
 
 .filter-options {
@@ -739,10 +713,6 @@ export default defineComponent({
 	align-content: center;
 	flex-wrap: nowrap;
 	flex-direction: row;
-}
-
-.filter-button-bottom {
-	top: calc(-2vw + -10px);
 }
 
 @media (min-width: 640px) {

@@ -69,6 +69,8 @@ import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
 import { updateSelectedDate } from '@/utils/datepicker-utils';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import '@vuepic/vue-datepicker/dist/main.css';
+import '@/components/common/timeSearch/custom-datepicker.css';
 
 interface MonthYearEvent {
 	instance: number;
