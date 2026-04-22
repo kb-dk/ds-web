@@ -315,6 +315,7 @@
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
+     "annotation": "Bemærkning",
      "copy": "Del link",
      "copyTitleSuccess":"Linket er nu kopieret",
      "copyMessageSuccess":"",
