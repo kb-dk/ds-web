@@ -221,7 +221,7 @@ export class APIServiceClient {
 	}
 
 	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?kalturaId=${id}&width=200&height=105`);
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&height=105`);
 	}
 
 	async authenticate(): Promise<APIAuthResponseType> {
@@ -233,6 +233,6 @@ export class APIServiceClient {
 	}
 
 	async getExtraThumbnails(kalturaId: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?kalturaId=${kalturaId}&width=200&numberOfThumbnails=20`);
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${kalturaId}&width=200&numberOfThumbnails=20`);
 	}
 }
