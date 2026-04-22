@@ -232,7 +232,7 @@ export class APIServiceClient {
 		return await this.httpClient.get('bff/v1/messages/');
 	}
 
-	async getExtraThumbnails(kalturaId: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${kalturaId}&width=200&numberOfThumbnails=20`);
+	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&numberOfThumbnails=20`);
 	}
 }
