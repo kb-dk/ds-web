@@ -5,6 +5,7 @@
 			:left-icon-name="icon"
 			:button-text="title"
 			button-type="btn-dropdown-default"
+			:button-is-active="showContent"
 			@click="toggleModal($event)"
 		></KBButton>
 	</div>
@@ -72,10 +73,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.info-btn {
-	margin-top: 10px;
-}
-
 .info-btn.icon-only {
 	border: 1px solid transparent;
 }
@@ -114,10 +111,9 @@ export default defineComponent({
 
 .modal {
 	position: absolute;
-	margin-top: 2px;
 	border: 1px solid #0a2e70;
-	background-color: white;
-	color: #0a2e70;
+	background-color: var(--bg-main);
+	color: var(--color-default);
 	width: calc(100% - 1px);
 	padding: 18px 54px 20px 18px;
 	box-sizing: border-box;
@@ -149,7 +145,7 @@ export default defineComponent({
 
 .modal button span {
 	font-size: 40px;
-	color: #0a2e70;
+	color: var(--color-default);
 }
 
 .icon {
