@@ -25,6 +25,8 @@
 		id="main-content"
 		class="content"
 	>
+		<Facets></Facets>
+		<Underlay></Underlay>
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
@@ -47,12 +49,14 @@ import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
 import Header from '@/components/search/Header.vue';
+import Facets from '@/components/search/Facets.vue';
 import { useAuthStore } from '@/store/authStore';
 import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
+import Underlay from './components/search/Underlay.vue';
 import '@/assets/styles/font-styles.css';
 import '@/assets/styles/base.css';
 export default defineComponent({
@@ -62,6 +66,8 @@ export default defineComponent({
 		Spinner,
 		Footer,
 		Header,
+		Facets,
+		Underlay,
 	},
 	setup() {
 		const td = ref(0.4);
@@ -124,6 +130,16 @@ export default defineComponent({
 					if (newVal) {
 						// ask for facets
 						const facetAPICall = APIService.getFullResultWithFacets();
+						APIService.getTVFacets().then((response) => {
+							searchResultStore.TVFacets = response.data.facet_counts.facet_fields.creator_affiliation_facet.filter(
+								(entry) => typeof entry === 'string',
+							);
+						});
+						APIService.getRadioFacets().then((response) => {
+							searchResultStore.RadioFacets = response.data.facet_counts.facet_fields.creator_affiliation_facet.filter(
+								(entry) => typeof entry === 'string',
+							);
+						});
 						let facetAPiCallFurfilled = false;
 						// timeout promise for long responsetimes. (7 seconds pt.)
 						const maximumWaitTime = new Promise<void>((resolve) => {

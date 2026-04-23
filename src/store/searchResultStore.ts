@@ -43,6 +43,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const filters = ref([] as Array<string>);
 	const channelFilters = ref([] as Array<string>);
 	const categoryFilters = ref([] as Array<string>);
+	const TVFacets = ref([] as Array<string>);
+	const RadioFacets = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
@@ -467,5 +469,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		maxPages,
 		queryLimitReached,
 		filterQueryLength,
+		TVFacets,
+		RadioFacets,
 	};
 });

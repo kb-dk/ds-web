@@ -65,181 +65,6 @@
 			</Transition>
 		</div>
 	</div>
-	<div
-		v-show="picker"
-		class="picker-container"
-	>
-		<CustomExpander
-			ref="yearSearch"
-			:headline="t('timeSearch.yearHeadline')"
-			icon="event"
-			:subline="getSublineForYears(startDate, endDate, t)"
-		>
-			<div class="picker-background"><DatePicker @date-search="emitNewSearch"></DatePicker></div>
-		</CustomExpander>
-	</div>
-	<div class="time-selection">
-		<div class="month-selector-expanding">
-			<fieldset>
-				<CustomExpander
-					:headline="t('timeSearch.monthHeadline')"
-					icon="event"
-					:subline="getSublineForMonths(months, t)"
-					:item-array="months"
-					:update-entity="updateCheckbox"
-				>
-					<ItemSlider
-						bg-scroll-white="true"
-						bg="#ffffff00"
-						item-class="month"
-					>
-						<div class="select-container month">
-							<div class="checkbox all">
-								<CustomTimelineCheckbox
-									:index="0"
-									name="timeSearch.all"
-									:val="allMonthsChecked"
-									:tilted="false"
-									:disabled="searchResultStore.queryLimitReached"
-									:update="updateAllCheckbox"
-									:parent-array="months"
-								></CustomTimelineCheckbox>
-							</div>
-							<div class="month-selector">
-								<div
-									:style="'background-image:url(' + figuresImage + ')'"
-									class="figures"
-								></div>
-								<div class="gradient"></div>
-								<div class="all-months-items">
-									<div
-										v-for="(item, index) in months"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="months[index].name"
-											:val="months[index].selected"
-											:tilted="true"
-											:update="updateCheckbox"
-											:disabled="searchResultStore.queryLimitReached"
-											:parent-array="months"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</div>
-					</ItemSlider>
-				</CustomExpander>
-			</fieldset>
-		</div>
-		<div class="overall-selector">
-			<div class="select-container days">
-				<fieldset>
-					<CustomExpander
-						:headline="t('timeSearch.dayHeadline')"
-						icon="date_range"
-						:subline="getSublineForDays(days, t)"
-						:item-array="days"
-						:update-entity="updateCheckbox"
-					>
-						<ItemSlider
-							bg-scroll-white="true"
-							bg="#ffffff00"
-							item-class="month"
-						>
-							<div class="expand-container-days">
-								<div class="checkbox all">
-									<CustomTimelineCheckbox
-										:index="1"
-										name="timeSearch.all"
-										:val="allDaysChecked"
-										:disabled="searchResultStore.queryLimitReached"
-										:tilted="false"
-										:parent-array="days"
-										:update="updateAllCheckbox"
-									></CustomTimelineCheckbox>
-								</div>
-								<div class="all-days-items">
-									<div class="day-gradient"></div>
-									<div
-										v-for="(item, index) in days"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="days[index].name"
-											:val="days[index].selected"
-											:disabled="searchResultStore.queryLimitReached"
-											:tilted="true"
-											:update="updateCheckbox"
-											:parent-array="days"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</ItemSlider>
-					</CustomExpander>
-				</fieldset>
-			</div>
-			<div class="select-container select-time">
-				<fieldset>
-					<CustomExpander
-						:headline="t('timeSearch.timeslotHeadline')"
-						icon="schedule"
-						:subline="getSublineForTimeslots(timeslots, t)"
-						:item-array="timeslots"
-						:update-entity="updateCheckbox"
-						:filter-name-cutoff="13"
-					>
-						<ItemSlider
-							bg-scroll-white="true"
-							bg="#ffffff00"
-							item-class="month"
-						>
-							<div class="expand-container-time">
-								<div class="checkbox all">
-									<CustomTimelineCheckbox
-										:index="2"
-										name="timeSearch.all"
-										:val="allTimeslotsChecked"
-										:tilted="false"
-										:disabled="searchResultStore.queryLimitReached"
-										:parent-array="timeslots"
-										:update="updateAllCheckbox"
-									></CustomTimelineCheckbox>
-								</div>
-								<div class="all-timeslot-items">
-									<div
-										:style="'background-image:url(' + timelapseImage + ')'"
-										class="timelapse"
-									></div>
-									<div class="time-gradient"></div>
-									<div
-										v-for="(item, index) in timeslots"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="timeslots[index].name"
-											:val="timeslots[index].selected"
-											:tilted="true"
-											:disabled="searchResultStore.queryLimitReached"
-											:update="updateCheckbox"
-											:parent-array="timeslots"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</ItemSlider>
-					</CustomExpander>
-				</fieldset>
-			</div>
-		</div>
-	</div>
 </template>
 
 <script lang="ts">
@@ -247,8 +72,6 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
-import ItemSlider from '@/components/search/ItemSlider.vue';
-import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
 import {
 	days,
 	endDate,
@@ -271,8 +94,6 @@ import {
 import { dataItem, markerData, pointItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import CustomExpander from '@/components/common/CustomExpander.vue';
-import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
@@ -289,11 +110,7 @@ export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
 		CustomTimelineSelect,
-		ItemSlider,
-		CustomTimelineCheckbox,
 		VueSlider,
-		CustomExpander,
-		DatePicker,
 	},
 
 	props: {
@@ -331,7 +148,6 @@ export default defineComponent({
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
-		const yearSearch = ref<typeof CustomExpander>();
 		const dataButton = ref<HTMLDivElement>();
 		const expToggled = ref(false);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
@@ -535,7 +351,6 @@ export default defineComponent({
 			getSublineForMonths,
 			getSublineForDays,
 			getSublineForTimeslots,
-			yearSearch,
 			getSublineForYears,
 			dataButton,
 			toggleExplanation,

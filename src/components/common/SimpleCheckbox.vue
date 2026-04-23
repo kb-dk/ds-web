@@ -4,6 +4,17 @@
 			:title="title"
 			class="label"
 		>
+			<input
+				role="checkbox"
+				type="checkbox"
+				class="checkbox"
+				autocomplete="off"
+				:name="title"
+				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
+				:checked="checked"
+				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
+				@change="updateSelection(!checked, title, fqkey)"
+			/>
 			<span class="title label-small-bold">{{ title }}</span>
 			<Transition
 				mode="out-in"
@@ -29,18 +40,6 @@
 					></span>
 				</span>
 			</Transition>
-			<input
-				role="checkbox"
-				type="checkbox"
-				class="checkbox"
-				autocomplete="off"
-				:name="title"
-				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
-				:checked="checked"
-				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
-				@change="updateSelection(!checked, title, fqkey)"
-			/>
-			<div class="underline"></div>
 		</label>
 	</div>
 </template>
@@ -202,6 +201,9 @@ export default defineComponent({
 
 .label {
 	position: relative;
+	display: flex;
+	cursor: pointer;
+	height: 24px;
 }
 
 .underline {
@@ -340,10 +342,5 @@ input:focus {
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
-}
-
-.label {
-	cursor: pointer;
-	display: block;
 }
 </style>
