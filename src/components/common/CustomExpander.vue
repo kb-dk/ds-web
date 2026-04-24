@@ -14,7 +14,11 @@
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
-			:class="fade ? 'expander fade' : 'expander'"
+			class="expander"
+			:class="{
+				fade: fade,
+				'expander-margin': facetType === 'creator_affiliation_facet' || facetType === 'genre_facet',
+			}"
 		>
 			<slot></slot>
 		</div>
@@ -296,7 +300,9 @@ export default defineComponent({
 	display: none;
 	position: relative;
 }
-
+.expander-margin {
+	margin-top: 15px;
+}
 .expand-container .expander.fade:before {
 	pointer-events: none;
 	content: '';

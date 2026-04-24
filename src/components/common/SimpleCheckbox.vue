@@ -344,6 +344,5 @@ input:focus {
 
 .label {
 	cursor: pointer;
-	display: block;
 }
 </style>

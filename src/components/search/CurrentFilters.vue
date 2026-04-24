@@ -12,107 +12,86 @@
 				>
 					{{ $t('search.selected') }}:
 				</span>
-				<button
+				<KBButton
 					v-if="searchResultStore.channelFilters.length !== 0"
 					key="2"
+					class="label-small"
+					:button-text="`${searchResultStore.channelFilters.length} ${t(
+						'facets.channels',
+						searchResultStore.channelFilters.length,
+					)}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="removeFilterAndSearch('creator_affiliation_facet')"
-				>
-					<span class="label-small">
-						{{
-							`${searchResultStore.channelFilters.length} ${t(
-								'facets.channels',
-								searchResultStore.channelFilters.length,
-							)}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="searchResultStore.categoryFilters.length !== 0"
 					key="3"
+					class="label-small"
+					:button-text="`${searchResultStore.categoryFilters.length} ${t(
+						'facets.genres',
+						searchResultStore.categoryFilters.length,
+					)}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="removeFilterAndSearch('genre')"
-				>
-					<span class="label-small">
-						{{
-							`${searchResultStore.categoryFilters.length} ${t(
-								'facets.genres',
-								searchResultStore.categoryFilters.length,
-							)}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="months.filter((entity) => entity.selected === true).length > 0"
+					class="label-small"
+					:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
+						'timeSearch.month',
+						months.filter((entity) => entity.selected === true).length,
+					)}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-				>
-					<span class="label-small">
-						{{
-							`${months.filter((entity) => entity.selected === true).length} ${t(
-								'timeSearch.month',
-								months.filter((entity) => entity.selected === true).length,
-							)}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="days.filter((entity) => entity.selected === true).length > 0"
+					class="label-small"
+					:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
+						'timeSearch.weekday',
+						days.filter((entity) => entity.selected === true).length,
+					)}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-				>
-					<span class="label-small">
-						{{
-							`${days.filter((entity) => entity.selected === true).length} ${t(
-								'timeSearch.weekday',
-								days.filter((entity) => entity.selected === true).length,
-							)}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="timeslots.filter((entity) => entity.selected === true).length > 0"
+					class="label-small"
+					:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
+						'timeSearch.timePeriods',
+						timeslots.filter((entity) => entity.selected === true).length,
+					)}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-				>
-					<span class="label-small">
-						{{
-							`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-								'timeSearch.timePeriods',
-								timeslots.filter((entity) => entity.selected === true).length,
-							)}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="
 						(startDate !== null &&
 							(startDate as unknown as string) !== '' &&
 							startDate.getTime() !== startYear.getTime()) ||
 						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
 					"
+					class="label-small"
+					:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="resetYearsAndSearch('startTime')"
-				>
-					<span class="label-small">
-						{{ presentDateSpan() }}
-						{{ approxTimeDifference() }}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
-				<button
+				></KBButton>
+				<KBButton
 					v-if="searchResultStore.preliminaryFilter !== ''"
 					key="5"
+					class="label-small"
+					:button-text="`${preliminaryFilterText}`"
+					button-type="btn-tag-primary"
+					right-icon-name="close"
 					@click="removePreliminaryFilterAndSearch()"
-				>
-					<span class="label-small">
-						{{
-							`${
-								decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
-							}`
-						}}
-					</span>
-					<span class="material-icons">close</span>
-				</button>
+				></KBButton>
+
 				<span
 					v-if="filtersActive"
 					key="6"
@@ -120,15 +99,15 @@
 				>
 					|
 				</span>
-				<button
+				<KBButton
 					v-if="filtersActive"
 					key="7"
-					class="resetFilters"
+					class="label-small"
+					:button-text="`${t('facets.reset')}`"
+					button-type="btn-tag-reset"
+					right-icon-name="close"
 					@click="resetAllFilters"
-				>
-					<span class="label-small">{{ `${t('facets.reset')}` }}</span>
-					<span class="material-icons">close</span>
-				</button>
+				></KBButton>
 			</TransitionGroup>
 		</div>
 	</Transition>
@@ -151,10 +130,11 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'CurrentFilters',
-
+	components: { KBButton },
 	setup() {
 		const searchResultStore = useSearchResultStore();
 		const timeSearchStore = useTimeSearchStore();
@@ -311,7 +291,9 @@ export default defineComponent({
 				return '';
 			}
 		};
-
+		const preliminaryFilterText = computed(() => {
+			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
+		});
 		return {
 			searchResultStore,
 			timeSearchStore,
@@ -332,6 +314,7 @@ export default defineComponent({
 			t,
 			presentDateSpan,
 			calculatedYearSpan,
+			preliminaryFilterText,
 		};
 	},
 });
@@ -343,50 +326,5 @@ export default defineComponent({
 	align-items: center;
 	gap: 5px;
 	flex-wrap: wrap;
-}
-
-button {
-	height: 20px;
-	background-color: #caf0fe;
-	border-radius: 4px;
-	border: 0px;
-	text-align: center;
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	color: #002e70;
-	transition: all 0.25s linear 0s;
-}
-
-button:hover {
-	background-color: #002e70;
-	color: white;
-}
-
-.seperator {
-	color: #002e70;
-}
-
-.appliedFilters {
-	color: #002e70;
-}
-
-.resetFilters {
-	background-color: #f7ae3b;
-	text-transform: capitalize;
-	box-sizing: border-box;
-	border: 1px solid #f7ae3b;
-}
-
-.resetFilters:hover {
-	background-color: #f7ae3b;
-	color: #002e70;
-	border: 1px solid #002e70;
-	box-sizing: border-box;
-}
-
-.material-icons {
-	padding-left: 5px;
-	font-size: 14px;
 }
 </style>

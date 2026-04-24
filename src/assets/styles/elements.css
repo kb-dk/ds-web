@@ -8,6 +8,7 @@
     --bg-disabled:#d5d5d5;
     --bg-default: #ffff;
     --bg-transparent: transparent;
+    --bg-golden:#e0b500;
 
     /*colors*/
     --color-main:#002e70;
@@ -16,6 +17,8 @@
 
     /*borders*/
     --color-border-active: #002e70;
+    --color-border-light:#96e2fd;
+    --color-border-golden:#e0b500;
 
     /*rounded*/
     --rounded-small: var(--scale-50);

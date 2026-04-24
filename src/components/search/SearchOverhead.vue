@@ -15,19 +15,6 @@
 							button-type="btn-main-medium"
 							@click="toggleFacets()"
 						></KBButton>
-						<button
-							v-if="
-								searchResultStore.filters.length > 0 ||
-								searchResultStore.channelFilters.length > 0 ||
-								searchResultStore.categoryFilters.length > 0
-							"
-							class="reset label-small"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
-							@click="resetFilters()"
-						>
-							<span>×</span>
-							{{ $t('search.resetFilters') }}
-						</button>
 					</div>
 					<div :class="`type-toggles ${searchResultStore.showFacets ? 'type-toggles-filter-active' : ''}`">
 						<button
@@ -181,18 +168,8 @@ import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
-import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { Severity } from '@/types/NotificationType';
 import KBButton from '@/components/common/KBButton.vue';
-import {
-	days,
-	timeslots,
-	months,
-	startDate,
-	startYear,
-	endDate,
-	endYear,
-} from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -251,36 +228,6 @@ export default defineComponent({
 			},
 			{ immediate: true },
 		);
-
-		const resetFilters = () => {
-			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
-			resetAllSelectorValues(days.value);
-			resetAllSelectorValues(timeslots.value);
-			resetAllSelectorValues(months.value);
-			searchResultStore.queryLimitReached = false;
-			if (startDate.value !== null && endDate.value !== null) {
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			} else {
-				startDate.value = new Date();
-				endDate.value = new Date();
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			}
-
-			if (routeQueries.q === '*:*') {
-				delete routeQueries.q;
-			}
-			delete routeQueries.start;
-			delete routeQueries.fq;
-			delete routeQueries.sort;
-
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
 
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';
@@ -388,7 +335,6 @@ export default defineComponent({
 			radioToggled,
 			toggleRadio,
 			toggleTV,
-			resetFilters,
 			addTestDataEnrichment,
 			calcRowCount,
 		};
@@ -415,6 +361,7 @@ export default defineComponent({
 }
 
 .filter-container {
+	margin-top: 5px;
 	z-index: 1;
 	position: relative;
 }
@@ -663,36 +610,6 @@ export default defineComponent({
 	left: 1px;
 	position: relative;
 	border-radius: 15px;
-}
-
-.reset {
-	cursor: pointer;
-	padding: 10px 8px 10px 7px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	border: 1px solid #f7ae3b;
-	background: #ffffff;
-	color: #002e70;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-	background-color: #f7ae3b;
-	height: 26px;
-	z-index: 1;
-	box-shadow:
-		inset 1px 1px 2px #00000000,
-		1px 1px 2px #00000029;
-	margin-left: 35px;
-	transition: all 0.25s linear 0s;
-}
-.reset:hover {
-	border: 1px solid #002e70;
-}
-
-.reset span {
-	font-size: 30px;
-	padding-bottom: 5px;
-	padding-right: 4px;
 }
 
 .filter-buttons {
