@@ -2,30 +2,34 @@
 	<div class="sort">
 		<span class="material-icons sort-icon">sort</span>
 		<p class="sort-by">{{ t('search.sortBy') }}:</p>
-		<button
-			ref="relevanceRef"
+		<KBButtonSort
+			class="btn-reg"
+			left-icon-name="search"
+			:active="activeIndex === 0"
+			:button-text="t('search.relevance')"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-relevance`, 0)"
-			@click="newSort($refs.relevanceRef, `score`)"
-		>
-			<p class="btn-reg">{{ t('search.relevance') }}</p>
-			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
-		</button>
-		<button
-			ref="titleRef"
+			@click="newSort(0, `score`)"
+		></KBButtonSort>
+		<KBButtonSort
+			class="btn-reg"
+			:active="activeIndex === 1"
+			:has-arrow-icons="true"
+			:button-text="t('search.title')"
+			:is-asc-sort="sortAsc"
+			:is-desc-sort="!sortAsc"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-title`, 0)"
-			@click="newSort($refs.titleRef, `title_sort_da`)"
-		>
-			<p class="btn-reg">{{ t('search.title') }}</p>
-			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
-		</button>
-		<button
-			ref="timeRef"
+			@click="newSort(1, `title_sort_da`)"
+		></KBButtonSort>
+		<KBButtonSort
+			class="btn-reg"
+			:active="activeIndex === 2"
+			:has-arrow-icons="true"
+			:button-text="t('search.date')"
+			:is-asc-sort="sortAsc"
+			:is-desc-sort="!sortAsc"
 			:data-testid="addTestDataEnrichment('button', 'sort', `sort-time`, 0)"
-			@click="newSort($refs.timeRef, `startTime`)"
-		>
-			<p class="btn-reg">{{ t('search.date') }}</p>
-			<span class="material-icons">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</span>
-		</button>
+			@click="newSort(2, `startTime`)"
+		></KBButtonSort>
 	</div>
 </template>
 
@@ -35,9 +39,13 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButtonSort from '@/components/common/KBButtonSort.vue';
 
 export default defineComponent({
 	name: 'Sort',
+	components: {
+		KBButtonSort,
+	},
 	setup() {
 		const showSortingOptions = ref(false);
 		const route = useRoute();
@@ -45,11 +53,7 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 		const sortAsc = ref(false);
-		const titleRef = ref<HTMLElement | null>();
-		const relevanceRef = ref<HTMLElement | null>();
-		const timeRef = ref<HTMLElement | null>();
-		const activeSort = ref<HTMLElement | null>();
-
+		const activeIndex = ref(-1);
 		const revealSortingOptions = () => {
 			showSortingOptions.value = !showSortingOptions.value;
 		};
@@ -64,24 +68,24 @@ export default defineComponent({
 
 		const setCurrentActive = (active: string | undefined) => {
 			if (active) {
-				decodeURIComponent(active) === `title_sort_da ${getAscOrDesc(sortAsc.value)}`
-					? titleRef.value?.classList.add('active')
-					: titleRef.value?.classList.remove('active');
-				decodeURIComponent(active) === `score ${getAscOrDesc(sortAsc.value)}`
-					? relevanceRef.value?.classList.add('active')
-					: relevanceRef.value?.classList.remove('active');
-				decodeURIComponent(active) === `startTime ${getAscOrDesc(sortAsc.value)}`
-					? timeRef.value?.classList.add('active')
-					: timeRef.value?.classList.remove('active');
-			} else {
-				relevanceRef.value?.classList.add('active');
+				if (decodeURIComponent(active) === `title_sort_da ${getAscOrDesc(sortAsc.value)}`) {
+					activeIndex.value = 1;
+				} else if (decodeURIComponent(active) === `startTime ${getAscOrDesc(sortAsc.value)}`) {
+					activeIndex.value = 2;
+				} else {
+					activeIndex.value = 0;
+				}
 			}
 		};
 
-		const newSort = (clickedElement: HTMLButtonElement, sortValue: string) => {
-			if (clickedElement.classList.contains('active')) {
+		const newSort = (clickedElement: number, sortValue: string) => {
+			if (clickedElement === 0 && activeIndex.value === 0) {
+				return;
+			}
+			if (activeIndex.value === clickedElement) {
 				sortAsc.value = !sortAsc.value;
 			} else {
+				activeIndex.value = clickedElement;
 				sortAsc.value = false;
 			}
 			sortValue = `${sortValue} ${getAscOrDesc(sortAsc.value)}`;
@@ -115,12 +119,11 @@ export default defineComponent({
 			sortAsc,
 			searchResultStore,
 			t,
-			titleRef,
-			relevanceRef,
-			timeRef,
+
 			addTestDataEnrichment,
 			getAscOrDesc,
-			activeSort,
+
+			activeIndex,
 		};
 	},
 });
@@ -134,29 +137,6 @@ export default defineComponent({
 	padding-top: 20px;
 	justify-content: space-between;
 	flex-wrap: wrap;
-}
-.sort button {
-	display: flex;
-	flex-direction: row;
-	margin-left: 0px;
-	margin-right: 0px;
-}
-.sort button p {
-	position: relative;
-	height: 22px;
-}
-
-.sort .active p {
-	border-bottom: 2px solid #002e70;
-	box-sizing: border-box;
-}
-
-.sort > button > .material-icons {
-	color: rgba(71, 71, 71, 0);
-}
-
-.sort .active .material-icons {
-	color: #002e70;
 }
 
 .material-icons {
@@ -174,19 +154,6 @@ export default defineComponent({
 	height: 20px;
 }
 
-.sort-options button {
-	font-size: 16px;
-	cursor: pointer;
-	border: 0px;
-	background-color: white;
-	height: 20px;
-	text-align: center;
-	position: relative;
-	top: 1px;
-	padding: 0px;
-	border-bottom: 2px solid transparent;
-	padding-right: 5px;
-}
 .sort-icon {
 	color: #002e70;
 }
