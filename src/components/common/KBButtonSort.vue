@@ -2,7 +2,7 @@
 	<button
 		v-bind="attrs"
 		class="btn"
-		:class="{ active: active }"
+		:class="{ active: active, 'relevance-btn': !hasArrowIcons }"
 	>
 		<span
 			v-if="leftIconName"
@@ -106,6 +106,9 @@ export default defineComponent({
 }
 .btn.active {
 	border-bottom: 1px solid var(--Colors-Borders-active, #002e70);
+}
+.relevance-btn.active {
+	cursor: default;
 }
 .sort-arrows {
 	display: flex;
