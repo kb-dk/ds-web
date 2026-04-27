@@ -4,8 +4,8 @@
 			<SkewedFoldable
 				:title="$t('timeSearch.searchCategories')"
 				:left="false"
-				bg="#002e70"
-				text="white"
+				bg="#caf0fe"
+				text="#0a2e70"
 				icon="category"
 				:fullwidth="true"
 				:shadow-bottom="true"
@@ -16,7 +16,7 @@
 			>
 				<MainCategories
 					:title="$t('timeSearch.searchCategories')"
-					text="white"
+					text="#0a2e70"
 					:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 				></MainCategories>
 			</SkewedFoldable>
