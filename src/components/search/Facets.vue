@@ -3,12 +3,16 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<button
-			class="close"
-			@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
-		>
-			X
-		</button>
+		<div class="filter-header">
+			<div class="material-icons filters">tune</div>
+			<button
+				class="closeBtn material-icons"
+				@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+			>
+				close
+			</button>
+		</div>
+		<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
 		<div class="facet-container">
 			<div class="category-container">
 				<filterExpander
@@ -53,7 +57,7 @@
 				:headline="$t('facets.choose') + ' ' + $t('facets.tvChannels', 2)"
 				icon="toc"
 				:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-				:fade="true"
+				:fade="false"
 				:item-array="channelsArray"
 				:update-entity="updateFacet"
 				:filter-name-cutoff="5"
@@ -91,7 +95,7 @@
 				:headline="$t('facets.choose') + ' ' + $t('facets.radioChannels', 2)"
 				icon="toc"
 				:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-				:fade="true"
+				:fade="false"
 				:item-array="channelsArray"
 				:update-entity="updateFacet"
 				:filter-name-cutoff="5"
@@ -559,6 +563,32 @@ export default defineComponent({
 	height: 0%;
 }
 
+.filter-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 16px;
+}
+
+.filter-headline {
+	color: #002e70;
+}
+
+.filter-header button {
+	border: 0px;
+	background-color: transparent;
+}
+
+.filter-header .material-icons {
+	width: 40px;
+	height: 40px;
+	color: #002e70;
+	font-size: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .time-facets {
 	display: none;
 	overflow: hidden;
@@ -671,12 +701,13 @@ h2 {
 	top: 0px;
 	height: 100vh;
 	max-width: 100%;
-	width: 400px;
+	width: 500px;
 	z-index: 7;
-	background-color: white;
 	box-shadow:
 		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
 		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+	background-color: rgb(255 255 255 / 15%);
+	backdrop-filter: blur(15px) brightness(165%);
 }
 
 .search-facets-flex {
@@ -719,6 +750,12 @@ h2 {
 
 .dark-bar.open .dot {
 	left: 29px;
+}
+
+.closeBtn {
+	z-index: 2;
+	position: relative;
+	cursor: pointer;
 }
 
 .dark-bar .dot .close:before {

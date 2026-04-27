@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, PropType } from 'vue';
+import { defineComponent, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
@@ -105,10 +105,11 @@ export default defineComponent({
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
 					height: '0px',
-					duration: 0.5,
+					duration: 0.35,
 					overwrite: true,
 					paddingBottom: '0px',
-					opacity: props.fade ? 1 : 0,
+					backgroundColor: 'transparent',
+					opacity: 0,
 					onComplete: () => {
 						gsap.set(expandContainer.value, {
 							display: props.fade ? 'block' : 'none',
@@ -120,12 +121,13 @@ export default defineComponent({
 				gsap.set(expandContainer.value, {
 					display: 'block',
 					overwrite: true,
+					backgroundColor: '#CAF0FE1A',
 					onComplete: () => {
 						console.log(headlineRef.value);
 						headlineRef.value.focus();
 						gsap.to(expandContainer.value, {
 							height: 'auto',
-							duration: 0.5,
+							duration: 0.35,
 							overwrite: true,
 							paddingBottom: '10px',
 							opacity: 1,
@@ -149,13 +151,28 @@ export default defineComponent({
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	transition: all 0.15s linear 0s;
-	background-color: beige;
-	border: 2px solid white;
+	border-top: 1px solid #caf0fe;
+	border-bottom: 1px solid #caf0fe;
+	color: #0a2e70;
 	box-sizing: border-box;
+	height: auto;
+	background-color: transparent;
 }
 
 .headline {
 	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.5s linear 0s;
+}
+
+.headline:hover {
+	transition: all 0.5s linear 0s;
+	background-color: #caf0fe1a;
 }
 
 .expander {
@@ -195,6 +212,14 @@ export default defineComponent({
 	transform-origin: bottom;
 	top: -17px;
 	left: 16px;
+}
+
+.expand-container.open {
+	background-color: white;
+}
+
+.expand-container.open .expander {
+	background-color: white;
 }
 
 .toggle-button.open:before {
@@ -245,6 +270,7 @@ export default defineComponent({
 	opacity: 0;
 	display: none;
 	position: relative;
+	background-color: transparent;
 }
 
 .toggle-button {
