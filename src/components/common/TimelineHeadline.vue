@@ -34,13 +34,12 @@
 				right-icon-name="close"
 				@click="handleTimeFacetRemoval(item.index, $event)"
 			></KBButton>
-
-			<button
+			<KBButton
 				v-if="selectedItems.overflow > 0"
-				class="selected-entity overflow-enitity"
-			>
-				{{ selectedItems.overflow }}+
-			</button>
+				button-type="btn-tag-sub"
+				:button-text="`${selectedItems.overflow}+`"
+				class="label-small selected-entity"
+			></KBButton>
 		</div>
 	</button>
 </template>
@@ -251,36 +250,6 @@ h2 {
 	overflow: hidden;
 }
 
-.selected-entity {
-	display: flex;
-	width: 68px;
-	align-items: center;
-	justify-content: space-between;
-	border: 0px;
-	border-radius: 15px;
-	background-color: #002e70;
-	color: white;
-	cursor: pointer;
-	position: relative;
-	z-index: 5;
-	white-space: pre;
-}
-
-.selected-entity .entity-name {
-	text-transform: capitalize;
-}
-
-.selected-entity .close {
-	font-size: 20px;
-	float: right;
-}
-.overflow-enitity {
-	padding: 4px;
-	justify-content: center;
-	background-color: #c4f1ed;
-	border: 1px solid #002e70;
-	color: #002e70;
-}
 @media (min-width: 990px) {
 	.headline-container {
 		height: 50px;

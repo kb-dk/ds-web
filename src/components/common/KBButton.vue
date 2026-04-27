@@ -289,4 +289,13 @@ export default defineComponent({
 .btn-tag-reset .material-icons {
 	font-size: calc(var(--fs-meta) + 2px);
 }
+
+.btn-tag-sub {
+	padding: var(--padding-02) var(--padding-4);
+	gap: var(--padding-small);
+	color: var(--color-main);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-active);
+	background: var(--bg-main-hover);
+}
 </style>
