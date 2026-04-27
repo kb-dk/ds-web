@@ -319,6 +319,7 @@
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
+     "annotation": "Annotation",
      "copy":"Share link",
      "copyTitleSuccess":"The link has now been copied.",
      "copyMessageSuccess":"",

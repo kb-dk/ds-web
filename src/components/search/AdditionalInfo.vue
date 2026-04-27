@@ -1,7 +1,7 @@
 <template>
 	<div class="extra-features">
 		<button
-			:disabled="kalturaId?.length > 0 && type === 'tv' ? false : true"
+			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			class="btn-reg"
 			:title="$t('search.thumbnailButton')"
@@ -85,7 +85,7 @@ export default defineComponent({
 	props: {
 		id: { type: String, required: true },
 		type: { type: String, required: true },
-		kalturaId: { type: String, required: true },
+		fileId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
 		nr: { type: Number, required: true },
@@ -105,7 +105,7 @@ export default defineComponent({
 
 		const showThumbnails = () => {
 			extraContentShown.value = !extraContentShown.value;
-			if (props.kalturaId && extraContentShown.value) {
+			if (props.fileId && extraContentShown.value) {
 				if (thumbnailImageData.value.length === 0) {
 					requestExtraThumbnails();
 				}
@@ -131,7 +131,7 @@ export default defineComponent({
 		};
 
 		const requestExtraThumbnails = () => {
-			APIService.getExtraThumbnails(props.kalturaId)
+			APIService.getExtraThumbnails(props.fileId)
 				.then((thumbServiceResponse) => {
 					const img = new Image();
 					img.src = thumbServiceResponse.data.sprite;
