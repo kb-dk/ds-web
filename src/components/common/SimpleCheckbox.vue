@@ -229,8 +229,11 @@ export default defineComponent({
 	height: 24px;
 	overflow: hidden;
 	position: relative;
+	display: inherit;
 }
-
+.loading .text {
+	margin: 0 0 0 5px;
+}
 .checkbox-container.disabled .loading.tag-number .text {
 	background-color: rgb(177, 177, 177) !important;
 	opacity: 0.5;
