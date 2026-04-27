@@ -506,16 +506,11 @@ h2::first-letter {
 		padding: 0;
 		max-width: 1150px;
 		align-items: center;
-		flex-direction: row-reverse;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 
-	.content .mobile-title .icon {
-		width: 50%;
-	}
-
 	.content .mobile-title .icon .material-icons {
-		position: absolute;
 		font-size: 85px;
 		top: 0px;
 	}

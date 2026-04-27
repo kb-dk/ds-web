@@ -42,7 +42,10 @@
 						</div>
 						<div class="process-bar">
 							<div
-								:style="`left:${currentProgress}%`"
+								:style="{
+									left: `calc(${currentProgress}% - 50px)`,
+									transform: `translateX(calc(300% - (${currentProgress}% * 4)))`,
+								}"
 								class="percentage label-big"
 							>
 								{{ Math.round(currentProgress) }}%

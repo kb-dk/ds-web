@@ -169,7 +169,7 @@ export default defineComponent({
 	}
 }
 .btn-cta-medium .material-icons {
-	font-size: calc(var(--fs-md) + 8px);
+	font-size: calc(var(--fs-lead) + 8px);
 }
 .btn-cta-default {
 	background-color: var(--bg-cta);
@@ -192,6 +192,6 @@ export default defineComponent({
 	}
 }
 .btn-cta-default .material-icons {
-	font-size: calc(+ 8px);
+	font-size: calc(var(--fs-base) + 8px);
 }
 </style>
