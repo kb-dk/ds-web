@@ -4,19 +4,17 @@
 			<div class="hit-count">
 				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
-						<button
+						<KBButton
 							ref="toggleFacetsButton"
 							role="switch"
 							aria-checked="true"
-							class="filter-button"
+							class="btn-medium"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
+							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"
+							:left-icon-name="!searchResultStore.showFacets ? 'tune' : 'close'"
+							button-type="btn-main-medium"
 							@click="toggleFacets()"
-						>
-							<span class="material-icons">{{ !searchResultStore.showFacets ? 'tune' : 'close' }}</span>
-							<span class="filter-button-text btn-medium">
-								{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
-							</span>
-						</button>
+						></KBButton>
 						<button
 							v-if="
 								searchResultStore.filters.length > 0 ||
@@ -79,20 +77,20 @@
 					</div>
 				</div>
 				<Facets />
-				<button
+
+				<KBButton
 					v-if="searchResultStore.showFacets"
 					ref="toggleFacetsButton"
 					role="switch"
 					aria-checked="true"
-					class="filter-button filter-button-bottom"
+					class="btn-medium"
+					:custom-style="{ position: 'relative', top: 'calc(-2vw + -10px)' }"
 					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
+					:button-text="$t('search.hideFilters')"
+					left-icon-name="close"
+					button-type="btn-main-medium"
 					@click="toggleFacets()"
-				>
-					<span class="material-icons">{{ 'close' }}</span>
-					<span class="filter-button-text">
-						{{ $t('search.hideFilters') }}
-					</span>
-				</button>
+				></KBButton>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
 					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
@@ -185,6 +183,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { Severity } from '@/types/NotificationType';
+import KBButton from '@/components/common/KBButton.vue';
 import {
 	days,
 	timeslots,
@@ -202,6 +201,7 @@ export default defineComponent({
 		Sort,
 		Facets,
 		CurrentFilters,
+		KBButton,
 	},
 
 	setup() {
@@ -554,46 +554,10 @@ export default defineComponent({
 .page-count > .label-small {
 	margin: 0;
 }
-.filter-button {
-	display: flex;
-	position: relative;
-	border: 1px solid #002e70;
-	line-height: 24px;
-	cursor: pointer;
-	margin: 10px 0px;
-	margin-right: auto;
-	margin-left: 0;
-	background-color: #002e70;
-	color: white;
-	border-radius: 4px;
-	z-index: 0;
-	font-size: 20px;
-	padding: 6px 12px 9px 12px;
-	transition: all 0.25s linear 0s;
-	align-items: baseline;
-}
-.filter-button:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-}
-.filter-button[aria-checked='true'] {
-}
-.filter-button:hover .material-icons {
-}
-
-.filter-button .material-icons {
-	font-size: 24px;
-	position: relative;
-	top: 5px;
-}
 
 .material-icons {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.filter-button-text {
-	padding-left: 5px;
 }
 
 .source-facet-button {
@@ -741,16 +705,9 @@ export default defineComponent({
 	flex-direction: row;
 }
 
-.filter-button-bottom {
-	top: calc(-2vw + -10px);
-}
-
 @media (min-width: 640px) {
 	.filter-options {
 		flex-direction: row;
-	}
-	.filter-button.open {
-		margin-bottom: calc(-2vw + -5px);
 	}
 	.type-toggles {
 		width: auto;
@@ -768,33 +725,21 @@ export default defineComponent({
 		flex-direction: row;
 		align-items: center;
 	}
-	.filter-button-bottom {
-		top: calc(-2vw + -5px);
-	}
 }
 
 @media (min-width: 2000px) {
-	.filter-button-bottom {
-		top: calc(-2vw + -10px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-2vw + -10px);
 	}
 }
 
 @media (min-width: 3000px) {
-	.filter-button-bottom {
-		top: calc(-2vw + -15px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-2vw + -15px);
 	}
 }
 
 @media (min-width: 4000px) {
-	.filter-button-bottom {
-		top: calc(-1vw + 10px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-1vw + 10px);
 	}

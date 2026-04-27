@@ -4,6 +4,7 @@
 		v-bind="attrs"
 		class="btn"
 		:class="buttonType"
+		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
@@ -19,12 +20,35 @@
 			{{ rightIconName }}
 		</span>
 	</button>
+	<a
+		v-if="isRouterLink && attrs.href"
+		v-bind="attrs"
+		class="btn"
+		:class="buttonType"
+		:href="attrs.href.toString()"
+		:style="customStyle"
+	>
+		<span
+			v-if="leftIconName"
+			class="material-icons"
+		>
+			{{ leftIconName }}
+		</span>
+		<span class="btn-text">{{ buttonText }}</span>
+		<span
+			v-if="rightIconName"
+			class="material-icons"
+		>
+			{{ rightIconName }}
+		</span>
+	</a>
 	<router-link
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
 		:class="buttonType"
 		:to="attrs.to"
+		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
@@ -45,7 +69,7 @@
 <script lang="ts">
 import { defineComponent, PropType, useAttrs } from 'vue';
 
-type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main' | 'btn-label';
+type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main-default' | 'btn-main-medium' | 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -78,6 +102,12 @@ export default defineComponent({
 				return '';
 			},
 		},
+		customStyle: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 	},
 	setup() {
 		const attrs = useAttrs();
@@ -96,10 +126,26 @@ export default defineComponent({
 	text-decoration: none;
 	box-sizing: border-box;
 	height: fit-content;
+	width: fit-content;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
 	cursor: default;
+}
+
+/* Primary buttons */
+.btn-main-medium {
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-main-medium:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
 }
 
 /* Call to action buttons */
@@ -119,7 +165,7 @@ export default defineComponent({
 .btn-cta-medium:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
-		border-color: var(--color-main);
+		border-color: var(--color-border-active);
 	}
 }
 .btn-cta-medium .material-icons {
@@ -142,7 +188,7 @@ export default defineComponent({
 .btn-cta-default:hover {
 	transition: all 5s ease 0s;
 	.btn-text {
-		border-color: var(--color-main);
+		border-color: var(--color-border-active);
 	}
 }
 .btn-cta-default .material-icons {

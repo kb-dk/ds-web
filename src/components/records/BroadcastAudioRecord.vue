@@ -18,23 +18,26 @@
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
-					<div class="triangle"></div>
-					<router-link
+					<KBButton
 						v-if="backLink !== '/'"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.back')"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios"
 						:to="backLink"
-						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
-					>
-						{{ $t('record.back') }}
-					</router-link>
-					<router-link
+					></KBButton>
+					<KBButton
 						v-else
-						to="/"
-						class="link-container return btn-medium"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.toFrontpage')"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios"
+						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
-					>
-						{{ $t('record.toFrontpage') }}
-					</router-link>
+					></KBButton>
 				</div>
 			</div>
 			<div class="right-side">
@@ -96,14 +99,14 @@
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
-					<div
-						class="link-container get-link"
-						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+					<KBButton
+						:button-text="$t('record.copy')"
+						button-type="btn-main-medium"
+						class="btn-medium"
+						:data-testid="addTestDataEnrichment('button', 'broadcast-audio', 'copy-link', 0)"
+						left-icon-name="share"
 						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link btn-medium">{{ $t('record.copy') }}</a>
-					</div>
+					></KBButton>
 				</div>
 			</div>
 		</div>
@@ -152,6 +155,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -162,6 +166,7 @@ export default defineComponent({
 		AudioPlayer,
 		Duration,
 		ProgramGuide,
+		KBButton,
 	},
 
 	props: {

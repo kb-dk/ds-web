@@ -1,22 +1,25 @@
 <template>
 	<div :class="`${relativePosition ? 'contact-relative' : 'contact'}`">
 		<h2>{{ t('search.contactUs') }}</h2>
-		<a
-			class="btn-blue btn"
+		<KBButton
+			class="btn-medium"
+			:button-text="t('footer.column4.links.1.title')"
+			button-type="btn-main-medium"
+			:is-router-link="true"
 			:href="t('footer.column4.links.1.link')"
+			left-icon-name="chat_bubble"
 			:data-testid="addTestDataEnrichment('button', 'ContactUs', 'link-to-ask-about-library', 0)"
-		>
-			<p class="btn-medium">{{ t('footer.column4.links.1.title') }}</p>
-			<span class="material-icons">chat_bubble</span>
-		</a>
+		></KBButton>
 	</div>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'ContactUs',
+	components: { KBButton },
 	props: {
 		relativePosition: {
 			type: Boolean as PropType<boolean>,
