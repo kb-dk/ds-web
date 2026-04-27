@@ -1,7 +1,10 @@
 <template>
 	<div class="sort">
-		<span class="material-icons sort-icon">sort</span>
-		<p class="sort-by">{{ t('search.sortBy') }}:</p>
+		<div class="sort-label">
+			<span class="material-icons sort-icon">sort</span>
+			<p class="sort-by">{{ t('search.sortBy') }}:</p>
+		</div>
+
 		<KBButtonSort
 			class="btn-reg"
 			left-icon-name="search"
@@ -138,7 +141,12 @@ export default defineComponent({
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
-
+.sort-label {
+	display: flex;
+	flex-direction: row;
+	padding: var(--padding-00, 10px) var(--padding-medium);
+	gap: var(--padding-02);
+}
 .material-icons {
 	position: relative;
 }
