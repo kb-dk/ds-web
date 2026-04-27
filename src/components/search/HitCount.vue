@@ -81,7 +81,7 @@ export default defineComponent({
 .loading-placeholder {
 	display: flex;
 	gap: 10px;
-	height: 47px;
+	height: 91px;
 	align-items: center;
 }
 

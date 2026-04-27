@@ -452,10 +452,12 @@ export default defineComponent({
 	flex-direction: row;
 	justify-content: space-between;
 	gap: 30px;
-	padding-bottom: 20px;
+	padding-top: 20px;
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
-
+.loading.container {
+	height: 150px;
+}
 .shimmer {
 	animation: loading 3s ease-in-out 0s infinite;
 	background: rgb(255, 255, 255);
