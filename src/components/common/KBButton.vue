@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, useAttrs } from 'vue';
+import { defineComponent, PropType, ref, useAttrs, watch } from 'vue';
 
 type ButtonType =
 	| 'btn-cta-medium'
@@ -75,7 +75,9 @@ type ButtonType =
 	| 'btn-main-default'
 	| 'btn-main-medium'
 	| 'btn-dropdown-default'
-	| 'btn-label';
+	| 'btn-tag-primary'
+	| 'btn-tag-sub'
+	| 'btn-tag-reset';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -121,9 +123,17 @@ export default defineComponent({
 			},
 		},
 	},
-	setup() {
+	setup(props) {
 		const attrs = useAttrs();
-		return { attrs };
+		const text = ref(props.buttonText);
+		watch(
+			() => props.buttonText,
+			(newVal: string) => {
+				text.value = newVal;
+			},
+		);
+
+		return { attrs, text };
 	},
 });
 </script>
@@ -249,5 +259,43 @@ export default defineComponent({
 	.btn-dropdown-default .btn-text {
 		display: inline-block;
 	}
+}
+
+/* Tag buttons */
+.btn-tag-primary {
+	padding: var(--padding-02) var(--padding-01);
+	gap: var(--padding-small);
+	color: var(--color-default);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-active);
+	background: var(--bg-main);
+}
+.btn-tag-primary .material-icons {
+	font-size: calc(var(--fs-meta) + 2px);
+}
+.btn-tag-primary:hover {
+	border: 1px solid var(--color-border-golden);
+	background: var(--bg-golden);
+	color: var(--color-main);
+}
+.btn-tag-reset {
+	padding: var(--padding-02) var(--padding-01);
+	gap: var(--padding-small);
+	color: var(--color-main);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-golden);
+	background: var(--bg-golden);
+}
+.btn-tag-reset .material-icons {
+	font-size: calc(var(--fs-meta) + 2px);
+}
+
+.btn-tag-sub {
+	padding: var(--padding-02) var(--padding-4);
+	gap: var(--padding-small);
+	color: var(--color-main);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-active);
+	background: var(--bg-main-hover);
 }
 </style>
