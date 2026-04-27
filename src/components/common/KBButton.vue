@@ -215,7 +215,7 @@ export default defineComponent({
 	gap: var(--padding-02);
 	box-sizing: border-box;
 	border: 1px solid transparent;
-	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
+	border-radius: var(--rounded-medium);
 }
 .btn-dropdown-default:disabled {
 	background-color: var(--bg-transparent);
@@ -229,6 +229,7 @@ export default defineComponent({
 .btn-dropdown-default.active {
 	background-color: var(--bg-main);
 	color: var(--color-default);
+	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
 }
 .btn-dropdown-default .right {
 	transition: all 0.3s ease-in-out 0s;
