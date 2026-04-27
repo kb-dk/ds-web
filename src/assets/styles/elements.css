@@ -6,10 +6,13 @@
     --bg-remove:#f7ae3b;
     --bg-main-hover:#c4f1ed;
     --bg-disabled:#d5d5d5;
+    --bg-default: #ffff;
+    --bg-transparent: transparent;
 
     /*colors*/
     --color-main:#002e70;
     --color-default:#ffff;
+    --color-disabled:#969696;
 
     /*borders*/
     --color-border-active: #002e70;

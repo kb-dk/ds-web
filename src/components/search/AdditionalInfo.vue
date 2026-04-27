@@ -1,19 +1,18 @@
 <template>
 	<div class="extra-features">
-		<button
+		<KBButton
 			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
 			class="btn-reg"
 			:title="$t('search.thumbnailButton')"
 			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
+			:button-is-active="extraContentShown"
+			:button-text="$t('search.thumbnail')"
+			left-icon-name="photo_library"
+			right-icon-name="expand_more"
+			button-type="btn-dropdown-default"
 			@click="showThumbnails()"
-		>
-			<span class="material-icons thumbnails-icon">photo_library</span>
-			{{ $t('search.thumbnail') }}
-			<span :class="extraContentShown ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
-				expand_more
-			</span>
-		</button>
+		></KBButton>
 	</div>
 	<div
 		ref="extraContentRef"
@@ -75,12 +74,14 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
 	components: {
 		ImageComponent,
 		ItemSlider,
+		KBButton,
 	},
 	props: {
 		id: { type: String, required: true },

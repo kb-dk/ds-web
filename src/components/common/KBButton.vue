@@ -3,19 +3,19 @@
 		v-if="!isRouterLink"
 		v-bind="attrs"
 		class="btn"
-		:class="buttonType"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
 		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
-			class="material-icons"
+			class="material-icons left"
 		>
 			{{ leftIconName }}
 		</span>
-		{{ buttonText }}
+		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName"
-			class="material-icons"
+			class="material-icons right"
 		>
 			{{ rightIconName }}
 		</span>
@@ -24,20 +24,20 @@
 		v-if="isRouterLink && attrs.href"
 		v-bind="attrs"
 		class="btn"
-		:class="buttonType"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
 		:href="attrs.href.toString()"
 		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
-			class="material-icons"
+			class="material-icons left"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName"
-			class="material-icons"
+			class="material-icons right"
 		>
 			{{ rightIconName }}
 		</span>
@@ -46,20 +46,20 @@
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
-		:class="buttonType"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
 		:to="attrs.to"
 		:style="customStyle"
 	>
 		<span
 			v-if="leftIconName"
-			class="material-icons"
+			class="material-icons left"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName"
-			class="material-icons"
+			class="material-icons right"
 		>
 			{{ rightIconName }}
 		</span>
@@ -69,7 +69,13 @@
 <script lang="ts">
 import { defineComponent, PropType, useAttrs } from 'vue';
 
-type ButtonType = 'btn-cta-medium' | 'btn-cta-default' | 'btn-main-default' | 'btn-main-medium' | 'btn-label';
+type ButtonType =
+	| 'btn-cta-medium'
+	| 'btn-cta-default'
+	| 'btn-main-default'
+	| 'btn-main-medium'
+	| 'btn-dropdown-default'
+	| 'btn-label';
 
 export default defineComponent({
 	name: 'KBButton',
@@ -106,6 +112,12 @@ export default defineComponent({
 			type: Object,
 			default() {
 				return {};
+			},
+		},
+		buttonIsActive: {
+			type: Boolean,
+			default() {
+				return false;
 			},
 		},
 	},
@@ -193,5 +205,49 @@ export default defineComponent({
 }
 .btn-cta-default .material-icons {
 	font-size: calc(var(--fs-base) + 8px);
+}
+
+/* Dropdown buttons */
+.btn-dropdown-default {
+	background-color: var(--bg-transparent);
+	color: var(--color-main);
+	padding: var(--padding-00) var(--padding-medium);
+	gap: var(--padding-02);
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	border-radius: var(--rounded-medium);
+}
+.btn-dropdown-default:disabled {
+	background-color: var(--bg-transparent);
+	color: var(--color-disabled);
+}
+.btn-dropdown-default:disabled:hover {
+	background-color: var(--bg-transparent);
+	color: var(--color-disabled);
+	border-color: var(--bg-transparent);
+}
+.btn-dropdown-default.active {
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
+}
+.btn-dropdown-default .right {
+	transition: all 0.3s ease-in-out 0s;
+}
+.btn-dropdown-default.active .right {
+	transform: rotateX(180deg);
+}
+.btn-dropdown-default:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
+	border-color: var(--color-border-active);
+}
+.btn-dropdown-default .btn-text {
+	display: none;
+}
+@media (min-width: 640px) {
+	.btn-dropdown-default .btn-text {
+		display: inline-block;
+	}
 }
 </style>
