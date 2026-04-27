@@ -413,7 +413,7 @@ h2::first-letter {
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
 	transform-origin: bottom;
-	top: -1px;
+	top: 1px;
 }
 
 .toggle-button.open:before {
@@ -433,7 +433,7 @@ h2::first-letter {
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: 0px;
+	top: -1px;
 }
 
 .toggle-button.closed:after {
@@ -506,16 +506,11 @@ h2::first-letter {
 		padding: 0;
 		max-width: 1150px;
 		align-items: center;
-		flex-direction: row-reverse;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 
-	.content .mobile-title .icon {
-		width: 50%;
-	}
-
 	.content .mobile-title .icon .material-icons {
-		position: absolute;
 		font-size: 85px;
 		top: 0px;
 	}
@@ -549,20 +544,6 @@ h2::first-letter {
 		align-content: center;
 		position: relative;
 		top: -15px;
-	}
-
-	.toggle-button:after {
-		content: '';
-		display: block;
-		width: 0;
-		height: 0;
-		border-left: 15px solid transparent;
-		border-right: 15px solid transparent;
-		border-top: 10px solid #0a2e70;
-		position: relative;
-		transform: scaleY(0);
-		transform-origin: top;
-		transition: all 0.15s ease-in-out 0s;
 	}
 
 	.toggle-button:before {

@@ -94,7 +94,11 @@ export default defineComponent({
 			watch(
 				() => searchResultStore.resultGrid,
 				(isGrid: boolean) => {
-					hitsToShow.value = isGrid ? 40 : 10;
+					if (isGrid) {
+						hitsToShow.value = hitsToShow.value > 40 ? 40 : hitsToShow.value;
+					} else {
+						hitsToShow.value = hitsToShow.value > 10 ? 10 : hitsToShow.value;
+					}
 				},
 			);
 		});
