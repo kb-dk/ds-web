@@ -90,12 +90,13 @@
 				:lines="true"
 				:title="$t('search.mainCategories')"
 				class="main-categories-header"
+				background-color="#caf0fe"
 			>
 				<template #content>
 					<div class="showcase-container">
 						<MainCategories
 							:title="$t('timeSearch.searchCategories')"
-							text="white"
+							text="#002e70"
 							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 							:show-header="true"
 						></MainCategories>
