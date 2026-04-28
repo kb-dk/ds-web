@@ -27,6 +27,12 @@ h3{
 }
 
 /*Base text*/
+
+p.fixed-size {
+   font-size: var(--fs-base-fixed);
+    line-height: var(--lh-base-fixed);
+}
+
 p{
     font-size: var(--fs-base);
     line-height: var(--lh-large);
