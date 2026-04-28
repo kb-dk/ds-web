@@ -83,9 +83,9 @@
 								</p>
 							</div>
 						</div>
-						<div class="summary">
-							<p>{{ resultdata.description }}</p>
-						</div>
+						<p class="summary fixed-size">
+							{{ resultdata.description }}
+						</p>
 					</div>
 					<router-link
 						:to="{ path: 'post/' + resultdata.id }"
@@ -579,18 +579,16 @@ export default defineComponent({
 	height: 14px;
 }
 
-.summary p {
+.summary {
 	transition: all 0.5s ease-in-out 0s;
 	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
 	text-overflow: ellipsis;
+	max-height: calc(1.4em * 3);
+	min-height: calc(1.4em * 3);
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	max-height: calc(25px * 3); /* fallback for firefox */
+	-webkit-line-clamp: 3;
+	overflow: hidden;
 	position: relative;
 	margin-top: 10px;
 }
@@ -651,7 +649,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 132px;
+		height: 150px;
 	}
 	.result-image-wrapper {
 		height: initial;
