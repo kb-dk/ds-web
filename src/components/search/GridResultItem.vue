@@ -74,9 +74,9 @@
 					<div class="title label-medium">
 						{{ resultdata.title[0] }}
 					</div>
-					<div class="summary">
-						<p>{{ resultdata.description }}</p>
-					</div>
+					<p class="summary fixed-size">
+						{{ resultdata.description }}
+					</p>
 				</router-link>
 			</div>
 			<div
@@ -491,18 +491,13 @@ export default defineComponent({
 .summary {
 	transition: all 0.5s ease-in-out 0s;
 	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
 	text-overflow: ellipsis;
+	max-height: calc(1.4em * 3);
+	min-height: calc(1.4em * 3);
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	line-height: 1.5; /* fallback for firefox */
-	font-size: 16px;
-	max-height: calc(27px * 3); /* fallback for firefox */
-	min-height: calc(27px * 3); /* fallback for firefox */
+	-webkit-line-clamp: 3;
+	overflow: hidden;
 }
 .summary p {
 	margin: 0;
@@ -551,10 +546,6 @@ export default defineComponent({
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
-	}
-	.summary {
-		max-height: calc(35px * 3); /* fallback for firefox */
-		min-height: calc(35px * 3); /* fallback for firefox */
 	}
 }
 </style>
