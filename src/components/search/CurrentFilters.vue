@@ -12,85 +12,100 @@
 				>
 					{{ $t('search.selected') }}:
 				</span>
-				<KBButton
+				<div
 					v-if="searchResultStore.channelFilters.length !== 0"
 					key="2"
-					class="label-small"
-					:button-text="`${searchResultStore.channelFilters.length} ${t(
-						'facets.channels',
-						searchResultStore.channelFilters.length,
-					)}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="removeFilterAndSearch('creator_affiliation_facet')"
-				></KBButton>
-				<KBButton
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${searchResultStore.channelFilters.length} ${t(
+							'facets.channels',
+							searchResultStore.channelFilters.length,
+						)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="removeFilterAndSearch('creator_affiliation_facet')"
+					></KBButton>
+				</div>
+				<div
 					v-if="searchResultStore.categoryFilters.length !== 0"
 					key="3"
-					class="label-small"
-					:button-text="`${searchResultStore.categoryFilters.length} ${t(
-						'facets.genres',
-						searchResultStore.categoryFilters.length,
-					)}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="removeFilterAndSearch('genre')"
-				></KBButton>
-				<KBButton
-					v-if="months.filter((entity) => entity.selected === true).length > 0"
-					class="label-small"
-					:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
-						'timeSearch.month',
-						months.filter((entity) => entity.selected === true).length,
-					)}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-				></KBButton>
-				<KBButton
-					v-if="days.filter((entity) => entity.selected === true).length > 0"
-					class="label-small"
-					:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
-						'timeSearch.weekday',
-						days.filter((entity) => entity.selected === true).length,
-					)}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-				></KBButton>
-				<KBButton
-					v-if="timeslots.filter((entity) => entity.selected === true).length > 0"
-					class="label-small"
-					:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-						'timeSearch.timePeriods',
-						timeslots.filter((entity) => entity.selected === true).length,
-					)}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-				></KBButton>
-				<KBButton
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${searchResultStore.categoryFilters.length} ${t(
+							'facets.genres',
+							searchResultStore.categoryFilters.length,
+						)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="removeFilterAndSearch('genre')"
+					></KBButton>
+				</div>
+				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
+					<KBButton
+						class="label-small"
+						:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
+							'timeSearch.month',
+							months.filter((entity) => entity.selected === true).length,
+						)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
+					></KBButton>
+				</div>
+				<div v-if="days.filter((entity) => entity.selected === true).length > 0">
+					<KBButton
+						class="label-small"
+						:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
+							'timeSearch.weekday',
+							days.filter((entity) => entity.selected === true).length,
+						)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
+					></KBButton>
+				</div>
+				<div v-if="timeslots.filter((entity) => entity.selected === true).length > 0">
+					<KBButton
+						class="label-small"
+						:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
+							'timeSearch.timePeriods',
+							timeslots.filter((entity) => entity.selected === true).length,
+						)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
+					></KBButton>
+				</div>
+				<div
 					v-if="
 						(startDate !== null &&
 							(startDate as unknown as string) !== '' &&
 							startDate.getTime() !== startYear.getTime()) ||
 						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
 					"
-					class="label-small"
-					:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="resetYearsAndSearch('startTime')"
-				></KBButton>
-				<KBButton
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="resetYearsAndSearch('startTime')"
+					></KBButton>
+				</div>
+				<div
 					v-if="searchResultStore.preliminaryFilter !== ''"
 					key="5"
-					class="label-small"
-					:button-text="`${preliminaryFilterText}`"
-					button-type="btn-tag-primary"
-					right-icon-name="close"
-					@click="removePreliminaryFilterAndSearch()"
-				></KBButton>
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${preliminaryFilterText}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="removePreliminaryFilterAndSearch()"
+					></KBButton>
+				</div>
 
 				<span
 					v-if="filtersActive"
@@ -99,15 +114,18 @@
 				>
 					|
 				</span>
-				<KBButton
+				<div
 					v-if="filtersActive"
 					key="7"
-					class="label-small"
-					:button-text="`${t('facets.reset')}`"
-					button-type="btn-tag-reset"
-					right-icon-name="close"
-					@click="resetAllFilters"
-				></KBButton>
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${t('facets.reset')}`"
+						button-type="btn-tag-reset"
+						right-icon-name="close"
+						@click="resetAllFilters"
+					></KBButton>
+				</div>
 			</TransitionGroup>
 		</div>
 	</Transition>
