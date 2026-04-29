@@ -7,7 +7,6 @@
 			<KBButton
 				button-type="btn-dropdown-default"
 				class="btn-reg"
-				:button-text="$t('timeSearch.data')"
 				:button-is-active="expToggled"
 				left-icon-name="info"
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
