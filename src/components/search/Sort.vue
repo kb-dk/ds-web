@@ -142,10 +142,15 @@ export default defineComponent({
 	flex-wrap: wrap;
 }
 .sort-label {
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
 	padding: var(--padding-00, 10px) var(--padding-medium);
 	gap: var(--padding-02);
+	flex-wrap: wrap;
+	align-content: center;
+	align-items: center;
+	border-bottom: 1px solid transparent;
+	box-sizing: border-box;
 }
 .material-icons {
 	position: relative;
@@ -159,7 +164,6 @@ export default defineComponent({
 	margin: 0;
 	padding: 0;
 	color: #002e70;
-	height: 20px;
 }
 
 .sort-icon {
