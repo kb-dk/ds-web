@@ -311,7 +311,6 @@ export default defineComponent({
 
 		const toggleFacets = () => {
 			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
-			toggleFacetsButton.value?.setAttribute('aria-checked', searchResultStore.showFacets.toString());
 		};
 
 		const setGridAndLoadResults = (grid: boolean) => {
