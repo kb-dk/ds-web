@@ -106,8 +106,17 @@ export default defineComponent({
 	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
 	background-repeat: no-repeat;
 	background-position-x: 85px;
-	background-position-y: 16px;
+	background-position-y: 13px;
+	width: 118px;
 }
+
+@media (min-width: 640px) {
+	.remove-body-scroll {
+		max-height: initial;
+		overflow: initial;
+	}
+}
+
 .select-container:hover select {
 	border: 1px solid #002e70;
 	cursor: pointer;
