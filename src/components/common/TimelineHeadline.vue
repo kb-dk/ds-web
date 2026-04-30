@@ -31,6 +31,9 @@
 					)
 				"
 				button-type="btn-tag-primary"
+				:title="`${t('facets.remove')} ${
+					useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name
+				}`"
 				right-icon-name="close"
 				@click="handleTimeFacetRemoval(item.index, $event)"
 			></KBButton>
