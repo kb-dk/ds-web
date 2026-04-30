@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Streamlined button design.
 - Updated sort design.
 - Updated cookie-banner.
+- Updated graph algorithm for better visual representation of the archive.
 
 ## Added
 - New feature on the fullpage - the program-guide for the day.
