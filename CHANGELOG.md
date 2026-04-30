@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New annotations from preservica on various programs.
 - Streamlined button design.
 - Updated sort design.
+- Updated cookie-banner.
 
 ## Added
 - New feature on the fullpage - the program-guide for the day.
