@@ -110,13 +110,6 @@ export default defineComponent({
 	width: 118px;
 }
 
-@media (min-width: 640px) {
-	.remove-body-scroll {
-		max-height: initial;
-		overflow: initial;
-	}
-}
-
 .select-container:hover select {
 	border: 1px solid #002e70;
 	cursor: pointer;
