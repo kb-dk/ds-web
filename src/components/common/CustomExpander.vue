@@ -365,7 +365,7 @@ export default defineComponent({
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
 	transform-origin: bottom;
-	top: 1px;
+	top: 2px;
 }
 
 .toggle-button.open:before {
@@ -384,7 +384,7 @@ export default defineComponent({
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: -1px;
+	top: -2px;
 }
 
 .toggle-button.closed:after {
