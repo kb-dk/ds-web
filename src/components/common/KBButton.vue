@@ -172,6 +172,19 @@ export default defineComponent({
 	background-color: var(--bg-main-hover);
 	color: var(--color-main);
 }
+.btn-main-inverted {
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
+	background-color: var(--bg-default);
+	color: var(--color-main);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-main-inverted:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
+}
 
 /* Call to action buttons */
 .btn-cta-medium {
