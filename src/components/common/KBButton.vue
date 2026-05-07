@@ -70,10 +70,13 @@
 import { defineComponent, PropType, ref, useAttrs, watch } from 'vue';
 
 type ButtonType =
-	| 'btn-cta-medium'
 	| 'btn-cta-default'
+	| 'btn-cta-medium'
+	| 'btn-cta-small'
 	| 'btn-main-default'
 	| 'btn-main-medium'
+	| 'btn-main-small'
+	| 'btn-main-inverted'
 	| 'btn-dropdown-default'
 	| 'btn-tag-primary'
 	| 'btn-tag-sub'
@@ -216,7 +219,32 @@ export default defineComponent({
 .btn-cta-default .material-icons {
 	font-size: calc(var(--fs-base) + 8px);
 }
+.btn-cta-small {
+	background-color: var(--bg-cta);
+	color: var(--color-main);
+	padding: var(--padding-01) var(--padding-0);
+	gap: var(--padding-03);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-success);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
+}
+.btn-cta-small .btn-text {
+	border-bottom: 1px solid transparent;
+	margin-bottom: -1px;
+	transition: 200ms;
+}
+.btn-cta-small:disabled {
+	color: var(--color-default);
+	border-color: var(--color-boder-disabled);
+}
 
+.btn-cta-small:hover:not([disabled]) {
+	transition: all 5s ease 0s;
+	.btn-text {
+		border-color: var(--color-border-active);
+	}
+}
 /* Dropdown buttons */
 .btn-dropdown-default {
 	background-color: var(--bg-transparent);
