@@ -40,15 +40,20 @@
 					<span class="line level-2">/</span>
 				</div>
 			</Transition>
-			<router-link
-				:to="{ path: '/' }"
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
-				class="level-3"
-				:title="t('breadcrumb.drArchive')"
-				@click="searchResultStore.resetSearch()"
-			>
-				<span class="btn-reg highlighted">{{ t('breadcrumb.drArchive') }}</span>
-			</router-link>
+
+			<div class="level-3">
+				<KBButton
+					button-type="btn-main-small"
+					class="btn-reg"
+					:to="{ path: '/' }"
+					:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
+					:is-router-link="true"
+					:title="t('breadcrumb.drArchive')"
+					:button-text="t('breadcrumb.drArchive')"
+					@click="searchResultStore.resetSearch()"
+				></KBButton>
+			</div>
+
 			<span
 				v-if="$route.name === 'Search'"
 				class="line"
@@ -152,11 +157,13 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import InfoComponent from '@/components/common/InfoComponent.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
 	components: {
 		InfoComponent,
+		KBButton,
 	},
 	setup() {
 		const { t, locale } = useI18n();
@@ -349,7 +356,9 @@ export default defineComponent({
 .home .level-3 {
 	display: initial;
 }
-
+.level-3 {
+	margin-right: 4px;
+}
 .record .level-5,
 .record .level-6 {
 	display: initial;

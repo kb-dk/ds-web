@@ -172,6 +172,18 @@ export default defineComponent({
 	background-color: var(--bg-main-hover);
 	color: var(--color-main);
 }
+.btn-main-small {
+	padding: var(--padding-01) var(--padding-0);
+	gap: var(--padding-02);
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+}
+.btn-main-small:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
+}
 .btn-main-inverted {
 	padding: var(--padding-medium) var(--padding-1);
 	gap: var(--padding-01);

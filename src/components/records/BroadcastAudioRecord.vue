@@ -24,7 +24,7 @@
 						:is-router-link="true"
 						:button-text="$t('record.back')"
 						button-type="btn-main-medium"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 					></KBButton>
@@ -34,7 +34,7 @@
 						:is-router-link="true"
 						:button-text="$t('record.toFrontpage')"
 						button-type="btn-main-medium"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 					></KBButton>
