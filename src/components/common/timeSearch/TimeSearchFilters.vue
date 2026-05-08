@@ -3,14 +3,17 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<button
-			ref="dataButton"
-			class="data-size btn-reg"
-			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
-			@click="toggleExplanation()"
-		>
-			{{ $t('timeSearch.data') }}
-		</button>
+		<div class="data-size">
+			<KBButton
+				button-type="btn-dropdown-default"
+				class="btn-reg"
+				:button-is-active="expToggled"
+				left-icon-name="info"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
+				@click="toggleExplanation()"
+			></KBButton>
+		</div>
+
 		<div class="to-from-container">
 			<CustomTimelineSelect
 				:current-selected="timeSliderValues[0]"
@@ -105,12 +108,13 @@ import {
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
-
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
 		CustomTimelineSelect,
 		VueSlider,
+		KBButton,
 	},
 
 	props: {
@@ -506,7 +510,7 @@ fieldset {
 .explanation-for-data {
 	position: absolute;
 	width: 100%;
-	top: 0px;
+	top: 45px;
 	left: 0px;
 	background-color: #002e70;
 	z-index: 10;
@@ -631,22 +635,9 @@ fieldset {
 
 .data-size {
 	display: none;
-	background: #c4f1ed 0% 0% no-repeat padding-box;
-	border: 1px solid #ffffff;
-	border-radius: 4px;
 	position: absolute;
-	text-align: center;
-	letter-spacing: 0px;
-	color: #002e70;
-	padding: 4px 6px;
-	top: 90px;
+	top: 80px;
 	z-index: 10;
-	cursor: pointer;
-	transition: all 0.1s linear 0s;
-}
-.data-size:hover {
-	background: #0a2e70 0% 0% no-repeat padding-box;
-	color: white;
 }
 
 .picker-container {

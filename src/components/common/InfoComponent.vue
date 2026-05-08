@@ -1,23 +1,14 @@
 <template>
-	<button
-		:class="title !== '' ? 'info-btn' : 'info-btn icon-only'"
-		class="btn-reg"
-		:style="{
-			'--text-color': color,
-			'--bg-color': bgColor,
-		}"
-		@click="toggleModal($event)"
-	>
-		<span
-			:style="{ '--text-color': bgColor, '--bg-color': color }"
-			:class="title ? 'material-icons icon big-icon' : 'material-icons icon small-icon'"
-		>
-			{{ icon }}
-		</span>
-		<span class="title">
-			{{ title }}
-		</span>
-	</button>
+	<div class="info-btn">
+		<KBButton
+			class="btn-reg"
+			:left-icon-name="icon"
+			:button-text="title"
+			button-type="btn-dropdown-default"
+			:button-is-active="showContent"
+			@click="toggleModal($event)"
+		></KBButton>
+	</div>
 	<Transition name="fade">
 		<div
 			v-if="showContent"
@@ -33,9 +24,11 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import KBButton from './KBButton.vue';
 
 export default defineComponent({
 	name: 'InfoComponent',
+	components: { KBButton },
 	props: {
 		title: {
 			type: String as PropType<string>,
@@ -80,27 +73,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.info-btn {
-	display: flex;
-	height: 26px;
-	border: 1px solid white;
-	background-color: transparent;
-	position: relative;
-	align-items: center;
-	padding: 0;
-	margin: 0;
-	cursor: pointer;
-	box-sizing: border-box;
-	transition:
-		background-color 0.1s ease-in-out,
-		color 0.1s ease-in-out;
-	color: var(--text-color);
-	background-color: var(--bg-color);
-	margin-left: 25px;
-	margin-right: 10px;
-	border-radius: 4px;
-}
-
 .info-btn.icon-only {
 	border: 1px solid transparent;
 }
@@ -139,10 +111,9 @@ export default defineComponent({
 
 .modal {
 	position: absolute;
-	margin-top: 2px;
 	border: 1px solid #0a2e70;
-	background-color: white;
-	color: #0a2e70;
+	background-color: var(--bg-main);
+	color: var(--color-default);
 	width: calc(100% - 1px);
 	padding: 18px 54px 20px 18px;
 	box-sizing: border-box;
@@ -174,7 +145,7 @@ export default defineComponent({
 
 .modal button span {
 	font-size: 40px;
-	color: #0a2e70;
+	color: var(--color-default);
 }
 
 .icon {

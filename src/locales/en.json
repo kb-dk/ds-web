@@ -108,7 +108,8 @@
       "slowResponse": {
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
-      }
+      },
+      "remove":"Remove"
 
    },
    "breadcrumb": {
@@ -231,7 +232,7 @@
      "sortBy":"Sort by",
      "selected": "Selected",
      "title": "Title",
-     "relevance":"Relevance",
+     "relevance":"Best match",
      "date":"Date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
@@ -321,6 +322,7 @@
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
+     "annotation": "Annotation",
      "copy":"Share link",
      "copyTitleSuccess":"The link has now been copied.",
      "copyMessageSuccess":"",

@@ -14,7 +14,11 @@
 		></TimelineHeadline>
 		<div
 			ref="expandContainer"
-			:class="fade ? 'expander fade' : 'expander'"
+			class="expander"
+			:class="{
+				fade: fade,
+				'expander-margin': facetType === 'creator_affiliation_facet' || facetType === 'genre_facet',
+			}"
 		>
 			<slot></slot>
 		</div>
@@ -296,7 +300,9 @@ export default defineComponent({
 	display: none;
 	position: relative;
 }
-
+.expander-margin {
+	margin-top: 15px;
+}
 .expand-container .expander.fade:before {
 	pointer-events: none;
 	content: '';
@@ -359,6 +365,7 @@ export default defineComponent({
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
 	transform-origin: bottom;
+	top: 2px;
 }
 
 .toggle-button.open:before {
@@ -377,6 +384,7 @@ export default defineComponent({
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
+	top: -2px;
 }
 
 .toggle-button.closed:after {

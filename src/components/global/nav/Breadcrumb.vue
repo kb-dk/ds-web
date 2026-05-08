@@ -303,7 +303,7 @@ export default defineComponent({
 }
 
 .breadcrumb {
-	height: 40px;
+	height: 47px;
 	position: relative;
 	background-color: #caf0fe;
 	z-index: 1;
@@ -386,7 +386,9 @@ export default defineComponent({
 .breadcrumb a:hover span {
 	color: #002e70;
 }
-
+.breadcrumb .link:hover span {
+	color: var(--color-default);
+}
 .breadcrumb a:hover .line {
 	color: black;
 }
@@ -453,14 +455,14 @@ export default defineComponent({
 }
 
 .search-help span {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .cursive-text {
 	font-style: italic;
 }
 .link {
-	color: #0a2e70;
+	color: var(--color-default);
 	text-align: left;
 	text-decoration: none;
 	border-radius: 4px;
@@ -477,8 +479,9 @@ export default defineComponent({
 }
 .link:hover {
 	transition: all 5s ease 0s;
+	color: var(--color-default);
 	.link-text {
-		border-color: #0a2e70;
+		border-color: var(--color-default);
 	}
 }
 

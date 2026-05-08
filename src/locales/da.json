@@ -108,7 +108,8 @@
      "slowResponse": {
        "title": "Lang respons tid",
        "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
-     }
+     },
+     "remove":"Fjern"
    },
    "breadcrumb": {
       "frontpage":"Forside",
@@ -229,7 +230,7 @@
      "sortBy": "Sorter efter",
     "selected": "Valgt",
      "title": "Titel",
-     "relevance":"Relevans",
+     "relevance":"Bedste match",
      "date":"Dato",
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
@@ -317,6 +318,7 @@
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
+     "annotation": "Bemærkning",
      "copy": "Del link",
      "copyTitleSuccess":"Linket er nu kopieret",
      "copyMessageSuccess":"",

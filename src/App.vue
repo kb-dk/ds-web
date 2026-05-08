@@ -58,7 +58,9 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
 import Underlay from './components/search/Underlay.vue';
 import '@/assets/styles/font-styles.css';
+import '@/assets/styles/elements.css';
 import '@/assets/styles/base.css';
+
 export default defineComponent({
 	name: 'App',
 	components: {

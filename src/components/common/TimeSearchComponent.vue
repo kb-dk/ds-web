@@ -18,18 +18,19 @@
 			<div class="result-container">
 				<div class="result-header">
 					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
-					<router-link
-						class="link btn-big"
+					<KBButton
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+						button-type="btn-cta-medium"
+						:is-router-link="true"
+						right-icon-name="arrow_forward_ios"
+						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
+							'timeSearch.result',
+							timeSearchStore.numFound,
+						)} `"
 						@click="scrollToTop()"
-					>
-						<div class="hits">
-							<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
-							{{ $t('timeSearch.result', timeSearchStore.numFound) }}
-						</div>
-						<div class="link-arrow"></div>
-					</router-link>
+					></KBButton>
 				</div>
 				<div class="time-results">
 					<div
@@ -57,20 +58,19 @@
 						/
 						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
 					</div>
-					<router-link
-						class="link btn-big"
+					<KBButton
+						class="btn-medium"
 						:to="timeSearchLink"
 						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
+						button-type="btn-cta-medium"
+						:is-router-link="true"
+						right-icon-name="arrow_forward_ios"
+						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
+							'timeSearch.result',
+							timeSearchStore.numFound,
+						)} `"
 						@click="scrollToTop()"
-					>
-						<div class="further-results">
-							<div class="hits">
-								<span class="bold">{{ new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound) }}</span>
-								{{ $t('timeSearch.result', timeSearchStore.numFound) }}
-							</div>
-						</div>
-						<div class="link-arrow"></div>
-					</router-link>
+					></KBButton>
 				</div>
 			</div>
 		</template>
@@ -104,6 +104,7 @@ import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'TimeSearchComponent',
@@ -111,6 +112,7 @@ export default defineComponent({
 		GridResultItem,
 		EdgedContentArea,
 		TimeSearchFilters,
+		KBButton,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -239,35 +241,6 @@ h2 {
 	padding-top: 4px;
 }
 
-.link {
-	color: #002e70;
-	background-color: #49da87;
-	display: flex;
-	text-decoration: none;
-	padding: 8px 10px 12px 14px;
-	flex-direction: row-reverse;
-	position: relative;
-	left: -10px;
-	height: 25px;
-	border-radius: 4px;
-	align-items: center;
-	box-shadow: 0 0px 2px rgb(0 0 0 / 0.3);
-}
-
-.link .link-arrow {
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 23px solid transparent;
-	border-top: 23px solid transparent;
-	border-left: 20px solid #49da87;
-	margin-left: 5px;
-	position: absolute;
-	margin-right: -28px;
-	margin-top: 5px;
-	transition: all 0.15s ease-in-out 0s;
-}
-
 .further-recap {
 	width: 100%;
 	display: flex;
@@ -291,17 +264,6 @@ h2 {
 	display: flex;
 	align-items: flex-end;
 	flex-direction: column;
-}
-
-.link:hover .material-icons {
-	transform: translateX(10px);
-}
-
-.link .material-icons {
-	transition: all 0.15s ease-in-out 0s;
-	display: flex;
-	align-items: center;
-	font-size: 60px;
 }
 
 .further-results {
@@ -384,14 +346,6 @@ h2 {
 	}
 	.header {
 		display: block;
-	}
-	.link:hover {
-		text-decoration: underline;
-		left: 2px;
-	}
-	.link:hover .link-arrow {
-		border-left: 21px solid #49da87;
-		margin-right: -30px;
 	}
 }
 </style>

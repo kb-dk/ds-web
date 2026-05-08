@@ -83,9 +83,9 @@
 								</p>
 							</div>
 						</div>
-						<div class="summary">
-							<p>{{ resultdata.description }}</p>
-						</div>
+						<p class="summary fixed-size">
+							{{ resultdata.description }}
+						</p>
 					</div>
 					<router-link
 						:to="{ path: 'post/' + resultdata.id }"
@@ -100,7 +100,7 @@
 				<AdditionalInfo
 					:id="resultdata.id"
 					:type="resultdata.origin.split('.')[1]"
-					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
+					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:duration="Number(resultdata.duration_ms)"
 					:nr="index"
 				></AdditionalInfo>
@@ -252,8 +252,8 @@ export default defineComponent({
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
-			if (props.resultdata?.kaltura_id) {
-				APIService.getThumbnail(props.resultdata.kaltura_id)
+			if (props.resultdata?.file_id) {
+				APIService.getThumbnail(props.resultdata.file_id)
 					.then((thumbServiceResponse) => {
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
@@ -452,10 +452,12 @@ export default defineComponent({
 	flex-direction: row;
 	justify-content: space-between;
 	gap: 30px;
-	padding-bottom: 20px;
+	padding-top: 20px;
 	border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
-
+.loading.container {
+	height: 150px;
+}
 .shimmer {
 	animation: loading 3s ease-in-out 0s infinite;
 	background: rgb(255, 255, 255);
@@ -579,18 +581,16 @@ export default defineComponent({
 	height: 14px;
 }
 
-.summary p {
+.summary {
 	transition: all 0.5s ease-in-out 0s;
 	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
 	text-overflow: ellipsis;
+	max-height: calc(1.4em * 3);
+	min-height: calc(1.4em * 3);
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	max-height: calc(25px * 3); /* fallback for firefox */
+	-webkit-line-clamp: 3;
+	overflow: hidden;
 	position: relative;
 	margin-top: 10px;
 }
@@ -651,7 +651,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 132px;
+		height: 150px;
 	}
 	.result-image-wrapper {
 		height: initial;

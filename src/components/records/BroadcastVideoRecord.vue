@@ -18,23 +18,26 @@
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
-					<div class="triangle"></div>
-					<router-link
+					<KBButton
 						v-if="backLink !== '/'"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.back')"
+						left-icon-name="arrow_back_ios"
+						button-type="btn-main-medium"
 						:to="backLink"
-						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
-					>
-						{{ $t('record.back') }}
-					</router-link>
-					<router-link
+					></KBButton>
+					<KBButton
 						v-else
+						class="btn-medium"
+						:is-router-link="true"
+						left-icon-name="arrow_back_ios"
+						:button-text="$t('record.toFrontpage')"
+						button-type="btn-main-medium"
 						:to="{ name: 'Home' }"
-						class="link-container return btn-medium"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
-					>
-						{{ $t('record.toFrontpage') }}
-					</router-link>
+					></KBButton>
 				</div>
 			</div>
 			<div class="right-side">
@@ -93,17 +96,21 @@
 							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
 					</div>
+					<h4 v-if="recordData.annotation">{{ $t('record.annotation') }}</h4>
+					<div v-if="recordData.annotation">
+						<p class="annotation-text">{{ recordData.annotation }}</p>
+					</div>
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
-					<div
-						class="link-container get-link"
+					<KBButton
+						:button-text="$t('record.copy')"
+						button-type="btn-main-medium"
+						class="btn-medium"
 						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+						left-icon-name="share"
 						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link btn-medium">{{ $t('record.copy') }}</a>
-					</div>
+					></KBButton>
 				</div>
 			</div>
 		</div>
@@ -152,6 +159,7 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -162,6 +170,7 @@ export default defineComponent({
 		Duration,
 		GridResultItem,
 		ProgramGuide,
+		KBButton,
 	},
 
 	props: {
@@ -412,7 +421,10 @@ h4 {
 	color: #002e70;
 	text-decoration: none;
 }
-
+.annotation-text {
+	margin: 0;
+	text-transform: none;
+}
 .link-container {
 	background-color: #0a2e70;
 	width: fit-content;
@@ -440,29 +452,6 @@ h4 {
 	position: relative;
 }
 
-.back-link {
-	display: flex;
-	flex-direction: row;
-	bottom: 0;
-	padding: 7px 0px;
-}
-.back-link:hover .triangle {
-	border-right: 10px solid #c4f1ed;
-}
-.triangle {
-	display: none;
-	width: 0;
-	height: 0;
-	border-bottom: 20px solid transparent;
-	border-right: 10px solid #0a2e70;
-	border-top: 20px solid transparent;
-	margin-right: -2px;
-}
-.return {
-	border-radius: 4px;
-	width: fit-content;
-	height: auto;
-}
 .program-guide {
 	margin-bottom: 20px;
 }
