@@ -123,7 +123,6 @@ export default defineComponent({
 					overwrite: true,
 					backgroundColor: '#CAF0FE1A',
 					onComplete: () => {
-						console.log(headlineRef.value);
 						headlineRef.value.focus();
 						gsap.to(expandContainer.value, {
 							height: 'auto',
@@ -151,12 +150,13 @@ export default defineComponent({
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	transition: all 0.15s linear 0s;
-	border-top: 1px solid #caf0fe;
-	border-bottom: 1px solid #caf0fe;
+	border-top: 1px solid #0a2e70;
+	border-bottom: 1px solid #0a2e70;
 	color: #0a2e70;
 	box-sizing: border-box;
 	height: auto;
 	background-color: transparent;
+	margin-bottom: 25px;
 }
 
 .headline {
@@ -168,11 +168,11 @@ export default defineComponent({
 	align-items: center;
 	cursor: pointer;
 	transition: all 0.5s linear 0s;
+	background-color: rgba(202, 240, 254, 0.1);
 }
 
 .headline:hover {
 	transition: all 0.5s linear 0s;
-	background-color: #caf0fe1a;
 }
 
 .expander {

@@ -3,18 +3,54 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<div class="filter-header">
-			<div class="material-icons filters">tune</div>
-			<button
-				class="closeBtn material-icons"
-				@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
-			>
-				close
-			</button>
-		</div>
-		<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
 		<div class="facet-container">
+			<div class="filter-header">
+				<div class="material-icons filters">tune</div>
+				<button
+					class="closeBtn material-icons"
+					@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+				>
+					close
+				</button>
+			</div>
+			<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
 			<div class="category-container">
+				<CustomRadioGroup
+					v-model="selectedSearchMethod"
+					name="SelectedSearchMethod"
+					:options="[
+						{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
+						{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
+						{
+							value: 'description',
+							title: 'Søg kun på beskrivelse',
+							description: 'Der søges kun i beskrivelses-feltet.',
+						},
+					]"
+				/>
+				<CustomRadioGroup
+					v-model="selectedSearchMaterials"
+					name="SelectedSearchMaterials"
+					:options="[
+						{
+							value: 'all',
+							title: 'Søg på både TV og RADIO',
+							description: 'Der søges både i radio-poster og TV-poster.',
+						},
+						{
+							value: 'tv',
+							title: 'Søg kun på TV',
+							icon: 'play_circle_filled',
+							description: 'Der søges kun i TV-poster.',
+						},
+						{
+							value: 'radio',
+							title: 'Søg kun på RADIO',
+							icon: 'volume_up',
+							description: 'Der søges kun i RADIO-poster.',
+						},
+					]"
+				/>
 				<filterExpander
 					:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
 					icon="category"
@@ -39,6 +75,7 @@
 									:key="`genreCheckbox-${index}`"
 									:fqkey="'genre_facet'"
 									:title="singleFacet.title"
+									:svg="singleFacet.title"
 									:amount="categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
 									:time-search-active="timeSearchStore.timeFacetsOpen"
 									:number="index"
@@ -52,83 +89,85 @@
 						</TransitionGroup>
 					</fieldset>
 				</filterExpander>
+				<filterExpander
+					:headline="$t('facets.choose') + ' ' + $t('facets.tvChannels', 2)"
+					icon="toc"
+					:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
+					:fade="false"
+					:item-array="channelsArray"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:use-headline-translation="false"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getTVFacets(channelsArray)"
+								:key="`${index}-tv-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-tv-Checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="channelsArray"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</filterExpander>
+				<filterExpander
+					:headline="$t('facets.choose') + ' ' + $t('facets.radioChannels', 2)"
+					icon="toc"
+					:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
+					:fade="false"
+					:item-array="channelsArray"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:use-headline-translation="false"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getRadioFacets(channelsArray)"
+								:key="`${index}-radio-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-radio-Checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="channelsArray"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</filterExpander>
 			</div>
-			<filterExpander
-				:headline="$t('facets.choose') + ' ' + $t('facets.tvChannels', 2)"
-				icon="toc"
-				:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-				:fade="false"
-				:item-array="channelsArray"
-				:update-entity="updateFacet"
-				:filter-name-cutoff="5"
-				:use-headline-translation="false"
-				:facet-type="'creator_affiliation_facet'"
-			>
-				<fieldset
-					v-if="searchResultStore.firstBackendFetchExecuted"
-					class="facet-options"
-				>
-					<TransitionGroup name="result">
-						<div
-							v-for="(singleFacet, index) in getTVFacets(channelsArray)"
-							:key="`${index}-tv-facet`"
-						>
-							<SimpleCheckbox
-								:key="`channel-tv-Checkbox-${index}`"
-								:fqkey="'creator_affiliation_facet'"
-								:title="singleFacet.name"
-								:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
-								:number="index"
-								:parent-array="channelsArray"
-								:update="updateCheckbox"
-								:checked="
-									channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
-								"
-								:loading="searchResultStore.loadingChannels"
-								:disabled="searchResultStore.queryLimitReached"
-							/>
-						</div>
-					</TransitionGroup>
-				</fieldset>
-			</filterExpander>
-			<filterExpander
-				:headline="$t('facets.choose') + ' ' + $t('facets.radioChannels', 2)"
-				icon="toc"
-				:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-				:fade="false"
-				:item-array="channelsArray"
-				:update-entity="updateFacet"
-				:filter-name-cutoff="5"
-				:use-headline-translation="false"
-				:facet-type="'creator_affiliation_facet'"
-			>
-				<fieldset
-					v-if="searchResultStore.firstBackendFetchExecuted"
-					class="facet-options"
-				>
-					<TransitionGroup name="result">
-						<div
-							v-for="(singleFacet, index) in getRadioFacets(channelsArray)"
-							:key="`${index}-radio-facet`"
-						>
-							<SimpleCheckbox
-								:key="`channel-radio-Checkbox-${index}`"
-								:fqkey="'creator_affiliation_facet'"
-								:title="singleFacet.name"
-								:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
-								:number="index"
-								:parent-array="channelsArray"
-								:update="updateCheckbox"
-								:checked="
-									channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
-								"
-								:loading="searchResultStore.loadingChannels"
-								:disabled="searchResultStore.queryLimitReached"
-							/>
-						</div>
-					</TransitionGroup>
-				</fieldset>
-			</filterExpander>
 		</div>
 	</div>
 </template>
@@ -167,12 +206,14 @@ import {
 import FilterExpander from '@/components/common/FilterExpander.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
+import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
 		SimpleCheckbox,
 		FilterExpander,
+		CustomRadioGroup,
 	},
 
 	setup() {
@@ -188,6 +229,15 @@ export default defineComponent({
 		const { t } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
+
+		const delimitationOptions = {
+			all: '',
+			tv: 'origin:"ds.tv"',
+			radio: 'origin:"ds.radio"',
+		};
+
+		const selectedSearchMethod = ref('all');
+		const selectedSearchMaterials = ref('all');
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
@@ -219,9 +269,12 @@ export default defineComponent({
 			);
 		}
 
+		const updateSearchMethod = () => {
+			console.log('hello!');
+		};
+
 		const getTVFacets = (channelArray: SelectorData[]) => {
 			const returnArray = [];
-			console.log(channelArray);
 			for (const obj of channelArray) {
 				if (searchResultStore.TVFacets.includes(obj.name)) {
 					returnArray.push(obj);
@@ -232,7 +285,6 @@ export default defineComponent({
 
 		const getRadioFacets = (channelArray: SelectorData[]) => {
 			const returnArray = [];
-			console.log(channelArray);
 			for (const obj of channelArray) {
 				if (searchResultStore.RadioFacets.includes(obj.name)) {
 					returnArray.push(obj);
@@ -285,6 +337,30 @@ export default defineComponent({
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
+		);
+
+		watch(
+			() => route.query.fq,
+			(newFq) => {
+				/*
+				we have to do this, because vue acts weird here.
+				when we have normal route changes, it seems like we get an array here,
+				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
+				Weird and breaking behavior, that we have to account for here.
+				*/
+				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
+				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
+				if (originFilter) {
+					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
+						selectedSearchMaterials.value = 'radio';
+					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
+						selectedSearchMaterials.value = 'tv';
+					}
+				} else {
+					selectedSearchMaterials.value = 'all';
+				}
+			},
+			{ immediate: true },
 		);
 
 		watch(
@@ -348,6 +424,19 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			() => selectedSearchMethod.value,
+			() => {
+				console.log('yay', selectedSearchMethod.value);
+			},
+		);
+
+		watch(
+			() => selectedSearchMaterials.value,
+			() => {
+				setDelimitationFilterAndExecute(selectedSearchMaterials.value);
+			},
+		);
 		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
@@ -477,6 +566,44 @@ export default defineComponent({
 			}
 		};
 
+		const setDelimitationFilterAndExecute = (choice: string) => {
+			let val = '';
+			if (choice === 'tv') {
+				val = delimitationOptions.tv;
+			} else if (choice === 'radio') {
+				val = delimitationOptions.radio;
+			} else {
+				val = delimitationOptions.all;
+				searchResultStore.preliminaryFilter = '';
+			}
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			if (existingFq) {
+				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
+				if (creatorAffiliationFilter) {
+					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
+					if (index !== -1) {
+						existingFq.splice(index, 1);
+					}
+				}
+				if (val !== '') {
+					existingFq.push(encodeURIComponent(val));
+				}
+				routeQueries.fq = existingFq;
+			} else {
+				if (val !== '') {
+					routeQueries.fq = [];
+					routeQueries.fq.push(encodeURIComponent(val));
+				}
+			}
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
+
 		const removeAllTimeFilters = () => {
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(months.value);
@@ -540,6 +667,9 @@ export default defineComponent({
 			translatedGenreArray,
 			getTVFacets,
 			getRadioFacets,
+			selectedSearchMethod,
+			selectedSearchMaterials,
+			updateSearchMethod,
 		};
 	},
 });
@@ -722,97 +852,14 @@ h2 {
 	flex-direction: column;
 }
 
-.dark-bar {
-	min-width: 50px;
-	width: 50px;
-	background-color: #d5d5d5;
-	height: 24px;
-	border-radius: 20px;
-	margin-left: 20px;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open {
-	background-color: #002e70;
-}
-
-.dark-bar .dot {
-	width: 18px;
-	height: 18px;
-	display: block;
-	background-color: white;
-	border-radius: 15px;
-	top: 3px;
-	left: 3px;
-	position: relative;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open .dot {
-	left: 29px;
-}
-
 .closeBtn {
 	z-index: 2;
 	position: relative;
 	cursor: pointer;
 }
 
-.dark-bar .dot .close:before {
-	content: '';
-	display: block;
-	width: 7px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 10px;
-	left: 2px;
-	position: relative;
-}
-.dark-bar .dot .close:after {
-	content: '';
-	display: block;
-	width: 12px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	position: relative;
-	left: 5px;
-}
-
-.dark-bar .dot .check:before {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 8px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
-}
-.dark-bar .dot .check:after {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
-}
-
 .genre-facets {
 	display: flex;
-	gap: 30px 10px;
 	flex-wrap: wrap;
 	justify-content: center;
 	min-height: 200px;

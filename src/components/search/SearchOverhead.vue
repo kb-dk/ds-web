@@ -31,52 +31,6 @@
 							{{ $t('search.resetFilters') }}
 						</button>
 					</div>
-					<div :class="`type-toggles ${searchResultStore.showFacets ? 'type-toggles-filter-active' : ''}`">
-						<button
-							:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-tv', 0)"
-							@click="toggleTV($event)"
-						>
-							<span class="material-icons second">play_circle_filled</span>
-							<p class="btn-medium">TV</p>
-							<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
-								<span class="dot">
-									<TransitionGroup>
-										<div
-											v-if="tvToggled"
-											class="close"
-										></div>
-										<div
-											v-else
-											class="check"
-										></div>
-									</TransitionGroup>
-								</span>
-							</span>
-						</button>
-						<button
-							:class="radioToggled ? 'source-facet-button open' : 'source-facet-button'"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-radio', 0)"
-							@click="toggleRadio($event)"
-						>
-							<span class="material-icons second">volume_up</span>
-							<p class="btn-medium">RADIO</p>
-							<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
-								<span class="dot">
-									<TransitionGroup>
-										<div
-											v-if="radioToggled"
-											class="close"
-										></div>
-										<div
-											v-else
-											class="check"
-										></div>
-									</TransitionGroup>
-								</span>
-							</span>
-						</button>
-					</div>
 				</div>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
@@ -196,12 +150,6 @@ export default defineComponent({
 		const tvToggled = ref(true);
 		const radioToggled = ref(true);
 
-		const delimitationOptions = {
-			all: '',
-			tv: 'origin:"ds.tv"',
-			radio: 'origin:"ds.radio"',
-		};
-
 		const calcRowCount = computed(() => {
 			const rowCount = searchResultStore.pageNumber * Number(searchResultStore.rowCount);
 			return rowCount < searchResultStore.numFound ? rowCount : searchResultStore.numFound;
@@ -209,31 +157,6 @@ export default defineComponent({
 		onMounted(() => {
 			searchResultStore.toggleShowFacets(false);
 		});
-
-		watch(
-			() => route.query.fq,
-			(newFq) => {
-				/* 
-				we have to do this, because vue acts weird here.
-				when we have normal route changes, it seems like we get an array here,
-				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
-				Weird and breaking behavior, that we have to account for here.
-				*/
-				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
-				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
-				if (originFilter) {
-					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
-						tvToggled.value = false;
-					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
-						radioToggled.value = false;
-					}
-				} else {
-					tvToggled.value = true;
-					radioToggled.value = true;
-				}
-			},
-			{ immediate: true },
-		);
 
 		const resetFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
@@ -265,86 +188,6 @@ export default defineComponent({
 			});
 		};
 
-		const setDelimitationFilterAndExecute = () => {
-			let val = '';
-			if ((tvToggled.value && radioToggled.value) || (!tvToggled.value && !radioToggled.value)) {
-				val = delimitationOptions.all;
-				searchResultStore.preliminaryFilter = '';
-			}
-			if (tvToggled.value && !radioToggled.value) {
-				val = delimitationOptions.tv;
-			}
-			if (!tvToggled.value && radioToggled.value) {
-				val = delimitationOptions.radio;
-			}
-			searchResultStore.resetAutocomplete();
-			const routeQueries = cloneRouteQuery(route);
-			routeQueries.start = 0;
-			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
-			if (existingFq) {
-				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
-				if (creatorAffiliationFilter) {
-					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
-					if (index !== -1) {
-						existingFq.splice(index, 1);
-					}
-				}
-				if (val !== '') {
-					existingFq.push(encodeURIComponent(val));
-				}
-				routeQueries.fq = existingFq;
-			} else {
-				if (val !== '') {
-					routeQueries.fq = [];
-					routeQueries.fq.push(encodeURIComponent(val));
-				}
-			}
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
-
-		const toggleTV = (event: Event) => {
-			tvToggled.value = !tvToggled.value;
-			if (event.target) {
-				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', tvToggled.value.toString());
-			}
-			if (!tvToggled.value && !radioToggled.value) {
-				radioToggled.value = !radioToggled.value;
-				notifyUserForAtLeastOneSource();
-			}
-			setDelimitationFilterAndExecute();
-		};
-
-		const toggleRadio = (event: Event) => {
-			radioToggled.value = !radioToggled.value;
-			if (event.target) {
-				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', radioToggled.value.toString());
-			}
-			if (!tvToggled.value && !radioToggled.value) {
-				tvToggled.value = !tvToggled.value;
-				notifyUserForAtLeastOneSource();
-			}
-			setDelimitationFilterAndExecute();
-		};
-
-		/* Needs to be translated! */
-		const notifyUserForAtLeastOneSource = () => {
-			const customEvent = new CustomEvent('notify-user', {
-				detail: {
-					title: t('error.choseMaterialTitle'),
-					message: t('error.ChoseMaterialDesc'),
-					key: false,
-					severity: Severity.INFO,
-					userClose: false,
-				},
-			});
-			window.dispatchEvent(customEvent);
-		};
-
 		const toggleFacets = () => {
 			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
 			toggleFacetsButton.value?.setAttribute('aria-checked', searchResultStore.showFacets.toString());
@@ -369,8 +212,6 @@ export default defineComponent({
 			toggleFacetsButton,
 			tvToggled,
 			radioToggled,
-			toggleRadio,
-			toggleTV,
 			resetFilters,
 			addTestDataEnrichment,
 			calcRowCount,
@@ -570,30 +411,6 @@ export default defineComponent({
 	padding-left: 5px;
 }
 
-.source-facet-button {
-	cursor: pointer;
-	padding: 3px 2px;
-	font-size: 18px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	box-shadow: 1px 1px 2px #00000000;
-	border: 1px solid #d9d8d8;
-	background: rgb(250, 250, 250);
-	color: #757575;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-	z-index: 1;
-}
-.source-facet-button:hover {
-	border: 1px solid #002e70;
-	color: #002e70;
-}
-
-.source-facet-button.open {
-	color: #002e70;
-}
-
 .dark-bar {
 	width: 50px;
 	background-color: #d5d5d5;
@@ -725,10 +542,6 @@ export default defineComponent({
 	.type-toggles {
 		width: auto;
 		padding-bottom: 0px;
-	}
-
-	.source-facet-button {
-		width: auto;
 	}
 	.sort-options {
 		flex-direction: row;

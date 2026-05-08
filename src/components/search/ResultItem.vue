@@ -255,7 +255,6 @@ export default defineComponent({
 			if (props.resultdata?.kaltura_id) {
 				APIService.getThumbnail(props.resultdata.kaltura_id)
 					.then((thumbServiceResponse) => {
-						console.log(thumbServiceResponse);
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
