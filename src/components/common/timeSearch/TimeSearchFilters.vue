@@ -352,7 +352,7 @@ export default defineComponent({
 				endDate.value = holder;
 				const holder2 = new Date(initStartDate.value.getTime());
 				startDate.value = holder2;
-				getTimeResults(true);
+				getTimeResults(true, `random_${Date.now()} asc`);
 			}
 			if (props.timeline) {
 				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
