@@ -3,7 +3,7 @@
 		v-if="!isRouterLink"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:style="customStyle"
 	>
 		<span
@@ -24,7 +24,7 @@
 		v-if="isRouterLink && attrs.href"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:href="attrs.href.toString()"
 		:style="customStyle"
 	>
@@ -46,7 +46,7 @@
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:to="attrs.to"
 		:style="customStyle"
 	>
@@ -157,6 +157,9 @@ export default defineComponent({
 	background-color: var(--bg-disabled);
 	cursor: default;
 }
+.btn-with-text .material-icons {
+	line-height: 0;
+}
 
 /* Primary buttons */
 .btn-main-medium {
@@ -261,7 +264,7 @@ export default defineComponent({
 }
 .btn-cta-small:disabled {
 	color: var(--color-default);
-	border-color: var(--color-boder-disabled);
+	border-color: var(--color-border-disabled);
 }
 
 .btn-cta-small:hover:not([disabled]) {
