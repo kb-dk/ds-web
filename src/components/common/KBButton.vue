@@ -152,6 +152,8 @@ export default defineComponent({
 	box-sizing: border-box;
 	height: fit-content;
 	width: fit-content;
+	min-height: 34px;
+	line-height: 1;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
@@ -319,7 +321,7 @@ export default defineComponent({
 
 /* Tag buttons */
 .btn-tag-primary {
-	padding: var(--padding-02) var(--padding-01);
+	padding: var(--padding-01) var(--padding-medium);
 	gap: var(--padding-small);
 	color: var(--color-default);
 	border-radius: var(--rounded-medium);
