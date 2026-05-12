@@ -121,7 +121,7 @@ export default defineComponent({
 	display: flex;
 	height: 10px;
 	align-items: center;
-	color: var(--bg-disabled);
+	color: var(--color-disabled-sort);
 }
 .sort-arrows .arrow-active {
 	color: var(--color-main);

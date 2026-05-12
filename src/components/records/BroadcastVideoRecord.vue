@@ -23,7 +23,7 @@
 						class="btn-medium"
 						:is-router-link="true"
 						:button-text="$t('record.back')"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						button-type="btn-main-medium"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
@@ -32,7 +32,7 @@
 						v-else
 						class="btn-medium"
 						:is-router-link="true"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						:button-text="$t('record.toFrontpage')"
 						button-type="btn-main-medium"
 						:to="{ name: 'Home' }"

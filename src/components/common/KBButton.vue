@@ -3,7 +3,7 @@
 		v-if="!isRouterLink"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:style="customStyle"
 	>
 		<span
@@ -24,7 +24,7 @@
 		v-if="isRouterLink && attrs.href"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:href="attrs.href.toString()"
 		:style="customStyle"
 	>
@@ -46,7 +46,7 @@
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''}`"
+		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
 		:to="attrs.to"
 		:style="customStyle"
 	>
@@ -70,10 +70,13 @@
 import { defineComponent, PropType, ref, useAttrs, watch } from 'vue';
 
 type ButtonType =
-	| 'btn-cta-medium'
 	| 'btn-cta-default'
+	| 'btn-cta-medium'
+	| 'btn-cta-small'
 	| 'btn-main-default'
 	| 'btn-main-medium'
+	| 'btn-main-small'
+	| 'btn-main-inverted'
 	| 'btn-dropdown-default'
 	| 'btn-tag-primary'
 	| 'btn-tag-sub'
@@ -149,10 +152,15 @@ export default defineComponent({
 	box-sizing: border-box;
 	height: fit-content;
 	width: fit-content;
+	min-height: 34px;
+	line-height: 1;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
 	cursor: default;
+}
+.btn-with-text .material-icons {
+	line-height: 0;
 }
 
 /* Primary buttons */
@@ -166,6 +174,31 @@ export default defineComponent({
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-main-medium:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
+}
+.btn-main-small {
+	padding: var(--padding-01) var(--padding-0);
+	gap: var(--padding-02);
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+}
+.btn-main-small:hover {
+	background-color: var(--bg-main-hover);
+	color: var(--color-main);
+}
+.btn-main-inverted {
+	padding: var(--padding-medium) var(--padding-1);
+	gap: var(--padding-01);
+	background-color: var(--bg-default);
+	color: var(--color-main);
+	border: 1px solid var(--color-border-active);
+	border-radius: var(--rounded-medium);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-main-inverted:hover {
 	background-color: var(--bg-main-hover);
 	color: var(--color-main);
 }
@@ -216,7 +249,32 @@ export default defineComponent({
 .btn-cta-default .material-icons {
 	font-size: calc(var(--fs-base) + 8px);
 }
+.btn-cta-small {
+	background-color: var(--bg-cta);
+	color: var(--color-main);
+	padding: var(--padding-01) var(--padding-0);
+	gap: var(--padding-03);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-success);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
+}
+.btn-cta-small .btn-text {
+	border-bottom: 1px solid transparent;
+	margin-bottom: -1px;
+	transition: 200ms;
+}
+.btn-cta-small:disabled {
+	color: var(--color-default);
+	border-color: var(--color-border-disabled);
+}
 
+.btn-cta-small:hover:not([disabled]) {
+	transition: all 5s ease 0s;
+	.btn-text {
+		border-color: var(--color-border-active);
+	}
+}
 /* Dropdown buttons */
 .btn-dropdown-default {
 	background-color: var(--bg-transparent);
@@ -263,7 +321,7 @@ export default defineComponent({
 
 /* Tag buttons */
 .btn-tag-primary {
-	padding: var(--padding-02) var(--padding-01);
+	padding: var(--padding-01) var(--padding-medium);
 	gap: var(--padding-small);
 	color: var(--color-default);
 	border-radius: var(--rounded-medium);

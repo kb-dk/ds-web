@@ -1,5 +1,6 @@
 :root {
     /* Line heights */
+    --lh-btn: 1;
     --lh-small-tight: 1.15;
     --lh-small: 1.2;
     --lh-medium-tight: 1.25;

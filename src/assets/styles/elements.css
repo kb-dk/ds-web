@@ -5,7 +5,7 @@
     --bg-light:#caf0fe;
     --bg-remove:#f7ae3b;
     --bg-main-hover:#c4f1ed;
-    --bg-disabled:#d5d5d5;
+    --bg-disabled:#757575;
     --bg-default: #ffff;
     --bg-transparent: transparent;
     --bg-golden:#e0b500;
@@ -14,20 +14,24 @@
     --color-main:#002e70;
     --color-default:#ffff;
     --color-disabled:#969696;
+    --color-disabled-sort:#d5d5d5;
 
     /*borders*/
     --color-border-active: #002e70;
     --color-border-light:#96e2fd;
     --color-border-golden:#e0b500;
+    --color-border-success:#49DA87;
+    --color-border-disabled:#757575;
 
     /*rounded*/
     --rounded-small: var(--scale-50);
-    --rounded-medium: var(--scale-100);
+    --rounded-medium: var(--scale-150);
     --rounded-large: var(--scale-800);
     
     /*padding*/
     --padding-small: var(--scale-50);
-    --padding-02: var(--scale-100);
+    --padding-03: var(--scale-100);
+    --padding-02: var(--scale-150);
     --padding-01: var(--scale-200);
     --padding-00: var(--scale-250);
     --padding-medium: var(--scale-300);
@@ -42,6 +46,7 @@
     --scale-25: 1px;
     --scale-50: 2px;
     --scale-100: 4px;
+    --scale-150: 6px;
     --scale-200: 8px;
     --scale-250: 10px;
     --scale-300: 12px;
