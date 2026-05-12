@@ -42,7 +42,6 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		const updateSelected = (value: string) => {
-			console.log('ffs');
 			emit('update:modelValue', value);
 		};
 

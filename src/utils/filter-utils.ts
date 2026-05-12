@@ -2,6 +2,8 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { santizeAndSimplify } from './test-enrichments';
+import { useRoute, useRouter } from 'vue-router';
+
 const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
 };
@@ -179,6 +181,19 @@ const normalizeFq = (fq: string | string[] | undefined): string[] => {
 	return Array.isArray(fq) ? fq : [fq];
 };
 
+const removeFilterAndSearch = (facet: string) => {
+	const route = useRoute();
+	const router = useRouter();
+	const routeQueries = cloneRouteQuery(route);
+	let fq = normalizeFq(routeQueries.fq);
+	fq = fq.filter((query) => !query.includes(facet));
+	routeQueries.fq = fq;
+	router.push({
+		name: 'Search',
+		query: routeQueries,
+	});
+};
+
 // A simple method to arrange the facets in an orderly fasion, so they're easier to loop through.
 // Might not be relevant when we know more about the backend structure.
 const simplifyFacets = (facet: Array<string>): FacetPair[] => {
@@ -234,4 +249,5 @@ export {
 	normalizeFq,
 	removeTimeFacetsFromRoute,
 	extendFacetPairToSelectorData,
+	removeFilterAndSearch,
 };

@@ -6,8 +6,9 @@
 			role="button"
 			@click="toggleExpander($event)"
 		>
-			<span class="material-icons">{{ icon }}</span>
+			<span class="material-icons icon">{{ icon }}</span>
 			{{ headline }}
+			<KBButton>{{ subline }}</KBButton>
 		</h3>
 		<div
 			ref="expandContainer"
@@ -130,6 +131,21 @@ export default defineComponent({
 							overwrite: true,
 							paddingBottom: '10px',
 							opacity: 1,
+							onComplete: () => {
+								const el = expandContainer.value;
+								if (el) {
+									const scroller = el.closest('.facet-container');
+									if (scroller) {
+										const rect = el.getBoundingClientRect();
+										const parentRect = scroller.getBoundingClientRect();
+
+										scroller.scrollTo({
+											top: rect.top - parentRect.top + scroller.scrollTop - 16,
+											behavior: 'smooth',
+										});
+									}
+								}
+							},
 						});
 					},
 				});
@@ -155,7 +171,7 @@ export default defineComponent({
 	color: #0a2e70;
 	box-sizing: border-box;
 	height: auto;
-	background-color: transparent;
+	background-color: rgba(255, 255, 255, 0.5);
 	margin-bottom: 25px;
 }
 
@@ -169,10 +185,17 @@ export default defineComponent({
 	cursor: pointer;
 	transition: all 0.5s linear 0s;
 	background-color: rgba(202, 240, 254, 0.1);
+	text-transform: capitalize;
 }
 
 .headline:hover {
 	transition: all 0.5s linear 0s;
+}
+
+.icon {
+	font-size: 40px;
+	padding-right: 10px;
+	padding-left: 10px;
 }
 
 .expander {
@@ -212,6 +235,11 @@ export default defineComponent({
 	transform-origin: bottom;
 	top: -17px;
 	left: 16px;
+}
+
+.expand-container:hover,
+.expand-container.open {
+	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.24) inset;
 }
 
 .expand-container.open {

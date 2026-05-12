@@ -17,7 +17,6 @@
 						></KBButton>
 					</div>
 				</div>
-				<Facets />
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
 					class="result-options"

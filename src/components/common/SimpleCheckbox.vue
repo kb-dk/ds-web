@@ -25,7 +25,7 @@
 			></span>
 			<span
 				v-if="channel"
-				:style="`background-image:url(${getThumbnailPicture(channel)})`"
+				:style="`background-image:url(${getFilterThumbnail(channel)})`"
 				:class="['display-image channel', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
 			></span>
 			<span class="title label-small">{{ title }}</span>
@@ -62,7 +62,7 @@ import { defineComponent, PropType } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import { getThumbnailPicture } from '@/utils/record-utils';
+import { getFilterThumbnail } from '@/utils/record-utils';
 export default defineComponent({
 	name: 'SimpleCheckbox',
 	props: {
@@ -123,6 +123,12 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		filterArray: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
@@ -132,7 +138,7 @@ export default defineComponent({
 		};
 
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
-			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.channelFilters);
+			props.update(props.parentArray, props.number, checked, title, key, props.filterArray);
 		};
 		const getClassStyle = () => {
 			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
@@ -143,7 +149,7 @@ export default defineComponent({
 			updateSelection,
 			getClassStyle,
 			santizeAndSimplify,
-			getThumbnailPicture,
+			getFilterThumbnail,
 		};
 	},
 });
@@ -201,7 +207,7 @@ export default defineComponent({
 }
 
 .display-image.channel {
-	background-size: cover;
+	background-size: contain;
 }
 
 .name {
