@@ -295,7 +295,6 @@ h2 {
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
-	display: none;
 }
 
 .header h2 {

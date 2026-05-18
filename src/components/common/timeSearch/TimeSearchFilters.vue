@@ -690,7 +690,6 @@ fieldset {
 
 .slider-whiteoff-container {
 	position: relative;
-	display: none;
 }
 .explanation-for-data {
 	position: absolute;
