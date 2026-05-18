@@ -96,6 +96,10 @@
 							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
 					</div>
+					<h4 v-if="recordData.annotation">{{ $t('record.annotation') }}</h4>
+					<div v-if="recordData.annotation">
+						<p class="annotation-text">{{ recordData.annotation }}</p>
+					</div>
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
@@ -417,6 +421,11 @@ h4 {
 .genre-link {
 	color: #002e70;
 	text-decoration: none;
+	text-transform: none;
+}
+
+.annotation-text {
+	margin: 0;
 	text-transform: none;
 }
 
