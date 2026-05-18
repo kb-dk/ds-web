@@ -335,6 +335,7 @@ h4 {
 	flex-direction: column;
 	margin: 0px 20px;
 	position: relative;
+	margin-bottom: 20px;
 }
 
 .extra-record-data {
