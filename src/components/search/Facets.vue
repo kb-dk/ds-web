@@ -3,156 +3,185 @@
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<div class="search-facets-flex">
-			<EdgedContentArea
-				:lines="true"
-				:line-padding="false"
-				background-color="#FAFAFA"
-			>
-				<template #content>
-					<div class="time-facets-toggle">
-						<div class="container">
-							<button
-								ref="timeFacetButton"
-								role="switch"
-								aria-checked="false"
-								:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
-								@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
-							>
-								<span class="material-icons first">today</span>
-								<span class="toggle-time-text btn-medium">{{ t('timeSearch.filterOpenButton') }}</span>
-								<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
-									<span class="dot">
-										<TransitionGroup>
-											<div
-												v-if="timeSearchStore.timeFacetsOpen"
-												class="close"
-											></div>
-											<div
-												v-else
-												class="check"
-											></div>
-										</TransitionGroup>
-									</span>
-								</span>
-							</button>
-						</div>
-					</div>
-					<div
-						ref="timeFacets"
-						class="time-facets"
+		<div class="facet-container">
+			<div class="filter-header">
+				<div class="material-icons filters">tune</div>
+				<button
+					class="closeBtn material-icons"
+					@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+				>
+					close
+				</button>
+			</div>
+			<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
+			<div class="category-container">
+				<CustomRadioGroup
+					v-model="selectedSearchMethod"
+					name="SelectedSearchMethod"
+					:options="[
+						{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
+						{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
+						{
+							value: 'desc',
+							title: 'Søg kun på beskrivelse',
+							description: 'Der søges kun i beskrivelses-feltet.',
+						},
+					]"
+				/>
+				<CustomRadioGroup
+					v-model="selectedSearchMaterials"
+					name="SelectedSearchMaterials"
+					:options="[
+						{
+							value: 'all',
+							title: 'Søg på både TV og RADIO',
+							description: 'Der søges både i radio-poster og TV-poster.',
+						},
+						{
+							value: 'tv',
+							title: 'Søg kun på TV',
+							icon: 'play_circle_filled',
+							description: 'Der søges kun i TV-poster.',
+						},
+						{
+							value: 'radio',
+							title: 'Søg kun på RADIO',
+							icon: 'volume_up',
+							description: 'Der søges kun i RADIO-poster.',
+						},
+					]"
+				/>
+				<FilterExpander
+					:headline="$t('facets.genres', 2)"
+					icon="category"
+					:subline="`${getSublineForFacets(genreArray, 'facets.genres')}`"
+					:item-array="genreArray"
+					:use-headline-translation="true"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:facet-type="'genre_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="genre-facets"
 					>
-						<div class="container">
-							<TimeSearchFilters
-								:timeline="false"
-								:picker="true"
-								:init="false"
-								:disabled="searchResultStore.queryLimitReached"
-								@new-search="newSearch(true)"
-								@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
-							></TimeSearchFilters>
-						</div>
-					</div>
-					<div class="facet-container">
-						<div class="flex-container">
-							<div class="category-container">
-								<CustomExpander
-									:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
-									icon="category"
-									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
-									:item-array="genreArray"
-									:use-headline-translation="true"
-									:update-entity="updateFacet"
-									:filter-name-cutoff="5"
-									:facet-type="'genre_facet'"
-								>
-									<fieldset
-										v-if="searchResultStore.firstBackendFetchExecuted"
-										class="genre-facets"
-									>
-										<TransitionGroup name="result">
-											<div
-												v-for="(singleFacet, index) in simplifyFacets(
-													searchResultStore.initFacets.facet_fields.genre_facet,
-												)"
-												:key="index + 'genre_facet'"
-												class="genre"
-											>
-												<GenreCheckbox
-													:fqkey="'genre_facet'"
-													:title="singleFacet.title"
-													:amount="
-														categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
-													"
-													:time-search-active="timeSearchStore.timeFacetsOpen"
-													:number="index"
-													:checked="
-														channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)
-													"
-													:loading="searchResultStore.loadingGenres"
-													:update="updateCheckbox"
-													:parent-array="genreArray"
-													:disabled="searchResultStore.queryLimitReached"
-												/>
-											</div>
-										</TransitionGroup>
-									</fieldset>
-								</CustomExpander>
-							</div>
-							<CustomExpander
-								:headline="$t('facets.choose') + ' ' + $t('facets.channels', 2)"
-								icon="toc"
-								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-								:fade="true"
-								:item-array="channelsArray"
-								:update-entity="updateFacet"
-								:filter-name-cutoff="5"
-								:use-headline-translation="false"
-								:facet-type="'creator_affiliation_facet'"
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet)"
+								:key="index + 'genre_facet'"
+								class="genre"
 							>
-								<fieldset
-									v-if="searchResultStore.firstBackendFetchExecuted"
-									class="facet-options"
-								>
-									<TransitionGroup name="result">
-										<div
-											v-for="(singleFacet, index) in channelsArray"
-											:key="`${index}-facet`"
-											:class="{
-												'checkbox end': index >= (channelsArray.length / 4) * 3,
-												'checkbox semi-end':
-													index >= channelsArray.length / 2 && index < (channelsArray.length / 4) * 3,
-												checkbox: index < channelsArray.length / 2,
-											}"
-										>
-											<SimpleCheckbox
-												:key="`channelCheckbox-${index}`"
-												:fqkey="'creator_affiliation_facet'"
-												:title="singleFacet.name"
-												:amount="
-													channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'
-												"
-												:number="index"
-												:parent-array="channelsArray"
-												:update="updateCheckbox"
-												:checked="
-													channelFilterExists(
-														'creator_affiliation_facet',
-														singleFacet.name,
-														searchResultStore.channelFilters,
-													)
-												"
-												:loading="searchResultStore.loadingChannels"
-												:disabled="searchResultStore.queryLimitReached"
-											/>
-										</div>
-									</TransitionGroup>
-								</fieldset>
-							</CustomExpander>
-						</div>
-					</div>
-				</template>
-			</EdgedContentArea>
+								<SimpleCheckbox
+									:key="`genreCheckbox-${index}`"
+									:fqkey="'genre_facet'"
+									:title="singleFacet.title"
+									:svg="singleFacet.title"
+									:amount="categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
+									:time-search-active="timeSearchStore.timeFacetsOpen"
+									:number="index"
+									:checked="channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)"
+									:loading="searchResultStore.loadingGenres"
+									:update="updateCheckbox"
+									:parent-array="genreArray"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.categoryFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+				<FilterExpander
+					:headline="$t('facets.tvChannels', 2)"
+					icon="play_circle_filled"
+					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:fade="false"
+					:item-array="channelsArray"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:use-headline-translation="false"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getTVFacets(channelsArray)"
+								:key="`${index}-tv-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-tv-checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="channelsArray"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.channelFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+				<FilterExpander
+					:headline="$t('facets.radioChannels', 2)"
+					icon="volume_up"
+					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:fade="false"
+					:item-array="channelsArray"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:use-headline-translation="false"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getRadioFacets(channelsArray)"
+								:key="`${index}-radio-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-radio-checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="channelsArray"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.channelFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+			</div>
+			<KBButton
+				button-type="btn-main-default"
+				class="btn-medium btn-main-medium"
+				:button-text="`Se dine ${searchResultStore.numFound} resultater`"
+				right-icon-name="arrow_forward_ios"
+				:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
+				:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
+				@click="searchResultStore.showFacets = false"
+			>
+				Se alle resultater
+			</KBButton>
 		</div>
 	</div>
 </template>
@@ -163,7 +192,6 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter } from 'vue-router';
-import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import {
 	addChannelOrCategoryFilter,
@@ -173,7 +201,6 @@ import {
 	extendFacetPairToSelectorData,
 	normalizeFq,
 	removeChannelOrCategoryFilter,
-	removeTimeFacetsFromRoute,
 	simplifyFacets,
 } from '@/utils/filter-utils';
 import { SelectorData } from '@/types/TimeSearchTypes';
@@ -189,20 +216,20 @@ import {
 	startYear,
 	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import CustomExpander from '@/components/common/CustomExpander.vue';
-import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
+import FilterExpander from '@/components/common/FilterExpander.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
+import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
 		SimpleCheckbox,
-		TimeSearchFilters,
-		EdgedContentArea,
-		CustomExpander,
-		GenreCheckbox,
+		FilterExpander,
+		CustomRadioGroup,
+		KBButton,
 	},
 
 	setup() {
@@ -219,9 +246,24 @@ export default defineComponent({
 		const router = useRouter();
 		const route = useRoute();
 
+		const delimitationOptions = {
+			all: '',
+			tv: 'origin:"ds.tv"',
+			radio: 'origin:"ds.radio"',
+		};
+
+		const selectedSearchMethod = ref('all');
+		const selectedSearchMaterials = ref('all');
+
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
+
+		onMounted(() => {
+			setCategoryArrayFromStore(searchResultStore.categoryFilters);
+			setChannelArrayFromStore(searchResultStore.channelFilters);
+		});
+
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
@@ -249,6 +291,26 @@ export default defineComponent({
 			);
 		}
 
+		const getTVFacets = (channelArray: SelectorData[]) => {
+			const returnArray = [];
+			for (const obj of channelArray) {
+				if (searchResultStore.TVFacets.includes(obj.name)) {
+					returnArray.push(obj);
+				}
+			}
+			return returnArray;
+		};
+
+		const getRadioFacets = (channelArray: SelectorData[]) => {
+			const returnArray = [];
+			for (const obj of channelArray) {
+				if (searchResultStore.RadioFacets.includes(obj.name)) {
+					returnArray.push(obj);
+				}
+			}
+			return returnArray;
+		};
+
 		const updateCheckbox = (
 			array: SelectorData[],
 			index: number,
@@ -267,12 +329,12 @@ export default defineComponent({
 			}
 		};
 
-		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string, allTranslationKey: string) => {
+		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string) => {
 			if (
 				dataArray.filter((item) => item.selected).length === 0 ||
 				dataArray.filter((item) => item.selected).length === dataArray.length
 			) {
-				return `${t(allTranslationKey)}`;
+				return ``;
 			} else {
 				return `${dataArray.filter((item) => item.selected).length} ${t(
 					translationKey,
@@ -293,6 +355,30 @@ export default defineComponent({
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
+		);
+
+		watch(
+			() => route.query.fq,
+			(newFq) => {
+				/*
+				we have to do this, because vue acts weird here.
+				when we have normal route changes, it seems like we get an array here,
+				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
+				Weird and breaking behavior, that we have to account for here.
+				*/
+				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
+				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
+				if (originFilter) {
+					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
+						selectedSearchMaterials.value = 'radio';
+					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
+						selectedSearchMaterials.value = 'tv';
+					}
+				} else {
+					selectedSearchMaterials.value = 'all';
+				}
+			},
+			{ immediate: true },
 		);
 
 		watch(
@@ -356,20 +442,17 @@ export default defineComponent({
 			},
 		);
 
-		onMounted(() => {
-			setCategoryArrayFromStore(searchResultStore.categoryFilters);
-			setChannelArrayFromStore(searchResultStore.channelFilters);
-			if (timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'false') {
-				toggleTimeFacets();
-			} else if (!timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'true') {
-				toggleTimeFacets();
-			}
-		});
+		watch(
+			() => selectedSearchMethod.value,
+			() => {
+				setSearchMethodAndExecute(selectedSearchMethod.value);
+			},
+		);
 
 		watch(
-			() => timeSearchStore.timeFacetsOpen,
+			() => selectedSearchMaterials.value,
 			() => {
-				toggleTimeFacets();
+				setDelimitationFilterAndExecute(selectedSearchMaterials.value);
 			},
 		);
 
@@ -385,104 +468,65 @@ export default defineComponent({
 			router.push({ query: routeQueries });
 		};
 
-		const newSearch = (yearSearch: boolean) => {
+		const setSearchMethodAndExecute = (choice: string) => {
+			console.log(searchResultStore.currentQuery);
+			let newQuery = '';
+			if (choice === 'title') {
+				newQuery = `title:"${searchResultStore.currentQuery}"`;
+			} else if (choice === 'desc') {
+				newQuery = `description:"${searchResultStore.currentQuery}"`;
+			} else {
+				newQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+			}
+			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
-			routeQueries.q = searchResultStore.currentQuery;
-			if (routeQueries.q === '') {
-				routeQueries.q = '*:*';
-			}
 			routeQueries.start = 0;
-			routeQueries.sort = yearSearch ? 'startTime asc' : '';
-			const dayString = days.value
-				.filter((day: SelectorData) => day.selected)
-				.map((day: SelectorData) => day.value)
-				.join(' OR ');
-
-			const monthString = months.value
-				.filter((month: SelectorData) => month.selected)
-				.map((month: SelectorData) => month.value)
-				.join(' OR ');
-
-			const timeslotString = timeslots.value
-				.filter((timeslot: SelectorData) => timeslot.selected)
-				.map((timeslot: SelectorData) => timeslot.value)
-				.join(' OR ');
-
-			if (!routeQueries.fq) {
-				routeQueries.fq = [];
-			}
-
-			const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
-
-			if (
-				yearSearch &&
-				startDate.value !== null &&
-				endDate.value !== null &&
-				(startDate.value.getTime() !== startYear.value.getTime() || endDate.value.getTime() !== endYear.value.getTime())
-			) {
-				startDate.value.setHours(0, 0, 0); // Start of the day
-				endDate.value.setHours(23, 59, 59); // End of the day
-				existingFq.push(
-					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
-				);
-			}
-			dayString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
-			monthString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
-			timeslotString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
-
+			routeQueries.q = newQuery;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
 			routeQueries.fq = existingFq;
-
+			console.log(routeQueries);
 			router.push({
 				name: 'Search',
 				query: routeQueries,
 			});
-
-			if (searchResultStore.filterQueryLength > 900) {
-				searchResultStore.queryLimitReached = true;
-			} else {
-				searchResultStore.queryLimitReached = false;
-			}
 		};
 
-		const toggleTimeFacets = () => {
-			if (!timeSearchStore.timeFacetsOpen) {
-				timeFacetButton.value?.setAttribute('aria-checked', 'false');
-				gsap.to(timeFacets.value, {
-					height: '0px',
-					paddingTop: '0px',
-					marginBottom: '0px',
-					duration: 0.5,
-					overwrite: true,
-					onComplete: () => {
-						gsap.set(timeFacets.value, {
-							display: 'none',
-						});
-					},
-				});
-				const routeQueries = cloneRouteQuery(route);
-				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
-				removeAllTimeFilters();
-				routeQueries.fq = existingFq;
-				router.push({
-					name: 'Search',
-					query: routeQueries,
-				});
+		const setDelimitationFilterAndExecute = (choice: string) => {
+			let val = '';
+			if (choice === 'tv') {
+				val = delimitationOptions.tv;
+			} else if (choice === 'radio') {
+				val = delimitationOptions.radio;
 			} else {
-				timeFacetButton.value?.setAttribute('aria-checked', 'true');
-				gsap.set(timeFacets.value, {
-					display: 'flex',
-					flexDirection: 'column',
-					onComplete: () => {
-						gsap.to(timeFacets.value, {
-							height: 'auto',
-							paddingTop: '30px',
-							marginBottom: '20px',
-							duration: 0.5,
-							overwrite: true,
-						});
-					},
-				});
+				val = delimitationOptions.all;
+				searchResultStore.preliminaryFilter = '';
 			}
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			if (existingFq) {
+				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
+				if (creatorAffiliationFilter) {
+					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
+					if (index !== -1) {
+						existingFq.splice(index, 1);
+					}
+				}
+				if (val !== '') {
+					existingFq.push(encodeURIComponent(val));
+				}
+				routeQueries.fq = existingFq;
+			} else {
+				if (val !== '') {
+					routeQueries.fq = [];
+					routeQueries.fq.push(encodeURIComponent(val));
+				}
+			}
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
 		const removeAllTimeFilters = () => {
@@ -498,11 +542,10 @@ export default defineComponent({
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
 				gsap.to(facetsContainer.value, {
-					height: '0px',
 					duration: 0.5,
 					overwrite: true,
 					opacity: 0,
-					marginBottom: '0px',
+					marginLeft: '-15px',
 					onComplete: () => {
 						gsap.set(facetsContainer.value, {
 							display: 'none',
@@ -514,10 +557,9 @@ export default defineComponent({
 					display: 'block',
 					onComplete: () => {
 						gsap.to(facetsContainer.value, {
-							height: 'auto',
-							marginBottom: '0px',
 							duration: 0.5,
 							opacity: 1,
+							marginLeft: '0px',
 							overwrite: true,
 						});
 					},
@@ -537,7 +579,6 @@ export default defineComponent({
 			toggleFacets,
 			facetsContainer,
 			timeFacets,
-			newSearch,
 			timeFacetButton,
 			timeSearchStore,
 			t,
@@ -548,6 +589,11 @@ export default defineComponent({
 			getSublineForFacets,
 			santizeAndSimplify,
 			translatedGenreArray,
+			getTVFacets,
+			getRadioFacets,
+			selectedSearchMethod,
+			selectedSearchMaterials,
+			addTestDataEnrichment,
 		};
 	},
 });
@@ -571,15 +617,45 @@ export default defineComponent({
 	height: 0%;
 }
 
+.filter-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 16px;
+}
+
+.filter-headline {
+	color: #002e70;
+}
+
+.filter-header button {
+	border: 0px;
+	background-color: transparent;
+}
+
+.filter-header .material-icons {
+	width: 40px;
+	height: 40px;
+	color: #002e70;
+	font-size: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .time-facets {
 	display: none;
-	height: 0px;
 	overflow: hidden;
 	position: relative;
-	width: 100vw;
 	background-color: #d9f5fe;
+	min-height: 100vh;
+	display: fixed;
+	top: 0px;
+	margin-left: -15px;
 }
-.expand-container {
+
+.btn.right {
+	float: right;
 }
 
 fieldset {
@@ -603,16 +679,6 @@ fieldset {
 	position: relative;
 	left: -1px;
 	font-size: 40px;
-}
-
-.category-container {
-	margin-bottom: 45px;
-}
-
-.search-facets-flex {
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .time-facet-button {
@@ -645,13 +711,14 @@ fieldset {
 
 .facet-container {
 	display: flex;
-	height: auto;
+	height: 0px;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-x: hidden;
 	gap: 20px;
 	box-sizing: border-box;
 	padding-bottom: 15px;
 	width: 100%;
+	min-height: calc(100vh - 20px);
 }
 
 .facet-options {
@@ -686,101 +753,41 @@ h2 {
 
 .search-facets {
 	box-sizing: border-box;
-	overflow-x: visible;
-	overflow-y: clip;
-	position: relative;
-	height: 0px;
+	position: fixed;
 	display: none;
 	opacity: 0;
+	top: 0px;
+	height: 100vh;
+	max-width: 100%;
+	width: 500px;
+	z-index: 7;
+	box-shadow:
+		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+	background-color: rgb(255 255 255 / 15%);
+	backdrop-filter: blur(15px) brightness(165%);
+}
+
+.search-facets-flex {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
+	flex-direction: column;
 }
 
-.dark-bar {
-	min-width: 50px;
-	width: 50px;
-	background-color: #d5d5d5;
-	height: 24px;
-	border-radius: 20px;
-	margin-left: 20px;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open {
-	background-color: #002e70;
-}
-
-.dark-bar .dot {
-	width: 18px;
-	height: 18px;
-	display: block;
-	background-color: white;
-	border-radius: 15px;
-	top: 3px;
-	left: 3px;
+.closeBtn {
+	z-index: 2;
 	position: relative;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open .dot {
-	left: 29px;
-}
-
-.dark-bar .dot .close:before {
-	content: '';
-	display: block;
-	width: 7px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 10px;
-	left: 2px;
-	position: relative;
-}
-.dark-bar .dot .close:after {
-	content: '';
-	display: block;
-	width: 12px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	position: relative;
-	left: 5px;
-}
-
-.dark-bar .dot .check:before {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 8px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
-}
-.dark-bar .dot .check:after {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
+	cursor: pointer;
 }
 
 .genre-facets {
 	display: flex;
-	gap: 30px 10px;
 	flex-wrap: wrap;
 	justify-content: center;
 	min-height: 200px;
@@ -798,10 +805,6 @@ h2 {
 
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
-	.genre {
-		width: calc(50% - 10px);
-		margin: 0px;
-	}
 	.container {
 		max-width: 640px;
 	}
@@ -810,10 +813,6 @@ h2 {
 @media (min-width: 640px) {
 	.time-facet-button {
 		width: fit-content;
-	}
-
-	.facet-options {
-		column-count: 2;
 	}
 
 	.facet-options .checkbox {
@@ -827,12 +826,6 @@ h2 {
 	.facet-options .checkbox.semi-end {
 		border-right: 0px solid rgba(230, 230, 230, 1);
 	}
-
-	.genre {
-		width: calc(50% - 15px);
-		flex: 0 0 calc(50% - 15px);
-		margin: 0px 0px;
-	}
 	.container {
 		max-width: 990px;
 	}
@@ -842,23 +835,8 @@ h2 {
 }
 
 @media (min-width: 990px) {
-	.facet-options {
-		column-count: 4;
-	}
-
 	.facet-options .checkbox.semi-end {
 		border-right: 1px solid rgba(230, 230, 230, 1);
-	}
-
-	.genre-facets {
-		padding: 0px 5px;
-		gap: 45px 40px;
-		justify-content: flex-start;
-	}
-	.genre {
-		width: calc(25% - 30px);
-		flex: 0 0 calc(25% - 30px);
-		margin: 0px 0px;
 	}
 	.container {
 		max-width: 1150px;
@@ -878,6 +856,16 @@ h2 {
 		margin: auto;
 		padding-right: 0;
 		padding-left: 0;
+	}
+	.search-facets {
+		left: 0px;
+	}
+}
+
+@media (min-width: 2130px) {
+	.search-facets {
+		left: initial;
+		margin-right: calc(1280px + 420px);
 	}
 }
 </style>

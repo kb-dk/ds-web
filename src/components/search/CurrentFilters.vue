@@ -149,6 +149,7 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
+import { removeFilterAndSearch } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'CurrentFilters',
@@ -206,17 +207,6 @@ export default defineComponent({
 			const routeQueries = cloneRouteQuery(route);
 			let fq = normalizeFq(routeQueries.fq);
 			fq = fq.filter((query) => !query.includes('origin'));
-			routeQueries.fq = fq;
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
-
-		const removeFilterAndSearch = (facet: string) => {
-			const routeQueries = cloneRouteQuery(route);
-			let fq = normalizeFq(routeQueries.fq);
-			fq = fq.filter((query) => !query.includes(facet));
 			routeQueries.fq = fq;
 			router.push({
 				name: 'Search',

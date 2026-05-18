@@ -100,6 +100,8 @@
      "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
       "allChannels":"Alle kanaler",
       "channels":"kanal | kanaler",
+      "tvChannels":"TV kanal | TV kanaler",
+      "radioChannels": "Radio kanal | Radio kanaler",
       "chosen":"Valgt",
       "reset":"nulstil",
      "choose": "Vælg",

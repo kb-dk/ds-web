@@ -4,7 +4,31 @@
 			:title="title"
 			class="label"
 		>
-			<span class="title label-small-bold">{{ title }}</span>
+			<input
+				role="checkbox"
+				type="checkbox"
+				class="checkbox"
+				autocomplete="off"
+				:name="title"
+				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
+				:checked="checked"
+				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
+				@change="updateSelection(!checked, title, fqkey)"
+			/>
+			<span
+				v-if="svg"
+				:class="[
+					'display-image svg',
+					santizeAndSimplify(svg),
+					{ disabled: (amount === '0' && !checked) || (disabled && !checked) },
+				]"
+			></span>
+			<span
+				v-if="channel"
+				:style="`background-image:url(${getFilterThumbnail(channel)})`"
+				:class="['display-image channel', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
+			></span>
+			<span class="title label-small">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
@@ -29,18 +53,6 @@
 					></span>
 				</span>
 			</Transition>
-			<input
-				role="checkbox"
-				type="checkbox"
-				class="checkbox"
-				autocomplete="off"
-				:name="title"
-				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
-				:checked="checked"
-				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
-				@change="updateSelection(!checked, title, fqkey)"
-			/>
-			<div class="underline"></div>
 		</label>
 	</div>
 </template>
@@ -48,9 +60,9 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
-
+import { getFilterThumbnail } from '@/utils/record-utils';
 export default defineComponent({
 	name: 'SimpleCheckbox',
 	props: {
@@ -62,6 +74,20 @@ export default defineComponent({
 			},
 		},
 		title: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		svg: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		channel: {
 			type: String,
 			required: false,
 			default() {
@@ -97,6 +123,12 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		filterArray: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 	},
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
@@ -106,12 +138,19 @@ export default defineComponent({
 		};
 
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
-			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.channelFilters);
+			props.update(props.parentArray, props.number, checked, title, key, props.filterArray);
 		};
 		const getClassStyle = () => {
 			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
 		};
-		return { displayAmount, addTestDataEnrichment, updateSelection, getClassStyle };
+		return {
+			displayAmount,
+			addTestDataEnrichment,
+			updateSelection,
+			getClassStyle,
+			santizeAndSimplify,
+			getFilterThumbnail,
+		};
 	},
 });
 </script>
@@ -151,6 +190,26 @@ export default defineComponent({
 	opacity: 0.5;
 }
 
+.display-image {
+	width: 30px;
+	height: 30px;
+	padding: 0px 5px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.display-image.disabled {
+	filter: grayscale(100%) brightness(4);
+}
+
+.display-image.svg {
+	background-image: url('@/assets/icons/blue/diverse-blue.svg');
+}
+
+.display-image.channel {
+	background-size: contain;
+}
+
 .name {
 	height: 100%;
 	display: flex;
@@ -188,8 +247,17 @@ export default defineComponent({
 
 .checkbox-container {
 	max-height: 24px;
-	padding: 0px 5px;
+	margin: 2px 5px;
+	padding: 2px 5px;
 	text-align: left;
+	border: 1px solid transparent;
+	transition: all 0.2s linear 0s;
+}
+
+.checkbox-container:hover {
+	background-color: #c4f0fd;
+	border: 1px solid #86e2fb;
+	border-radius: 4px;
 }
 
 .checkbox-container.disabled .label {
@@ -202,6 +270,10 @@ export default defineComponent({
 
 .label {
 	position: relative;
+	display: flex;
+	cursor: pointer;
+	height: 24px;
+	align-items: center;
 }
 
 .underline {
@@ -223,6 +295,8 @@ export default defineComponent({
 	display: inline-block;
 	padding-left: 5px;
 	height: 100%;
+	margin-left: auto;
+	order: 2;
 }
 
 .loading.tag-number {
@@ -259,10 +333,10 @@ export default defineComponent({
 	background-color: rgba(170, 170, 170, 1) !important;
 }
 
-.loading .checkbox:hover:before {
+/* .loading .checkbox:hover:before {
 	cursor: default !important;
 	border-color: white !important;
-}
+} */
 
 .checkbox:disabled {
 	cursor: default;
@@ -272,28 +346,28 @@ export default defineComponent({
 	cursor: default;
 }
 
-.checkbox:disabled:hover:after {
+/* .checkbox:disabled:hover:after {
 	background-color: transparent;
 	cursor: default;
-}
+} */
 
-.checkbox:disabled:hover:after {
+/* .checkbox:disabled:hover:after {
 	cursor: default;
 	background-color: #002e70;
-}
+} */
 
-.checkbox:hover:after {
+/* .checkbox:hover:after {
 	background-color: #caf0fe;
-}
+} */
 
-.checkbox:checked:hover:before {
+/* .checkbox:checked:hover:before {
 	border-color: #002e70;
 	cursor: pointer;
-}
-.checkbox:checked:hover:after {
+} */
+/* .checkbox:checked:hover:after {
 	border-color: rgba(170, 170, 170, 1);
 	background-color: white;
-}
+} */
 
 input:focus {
 	box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
@@ -308,7 +382,7 @@ input:focus {
 }
 
 .checkbox-container.disabled .checkbox:after {
-	border: 1px solid rgb(145, 145, 145);
+	border: 2px solid rgb(145, 145, 145);
 }
 
 .checkbox-container.disabled .checkbox:hover:after {
@@ -321,9 +395,10 @@ input:focus {
 	transition: all 0.15s linear 0s;
 	content: '';
 	display: block;
-	width: 15px;
-	height: 15px;
-	border: 1px solid #002e70;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #002e70;
+	border-radius: 4px;
 }
 
 .checkbox:checked:after {
@@ -333,18 +408,51 @@ input:focus {
 .checkbox:checked:before {
 	content: '';
 	display: block;
-	width: 7px;
-	height: 12px;
+	width: 9px;
+	height: 16px;
 	border-bottom: 2px solid white;
 	border-right: 2px solid white;
 	position: absolute;
 	top: 1px;
-	left: 5px;
+	left: 7px;
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
 }
 
+.svg.diverse {
+	background-image: url('@/assets/icons/blue/diverse-blue.svg');
+}
+.svg.dokumentar {
+	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
+}
+.svg.film-og-serier {
+	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
+}
+.svg.kultur-og-oplysning {
+	background-image: url('@/assets/icons/blue/kultur-blue.svg');
+}
+.svg.livsstil {
+	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
+}
+.svg.musik {
+	background-image: url('@/assets/icons/blue/musik-blue.svg');
+}
+.svg.nyheder-politik-og-samfund {
+	background-image: url('@/assets/icons/blue/nyheder-blue.svg');
+}
+.svg.sport {
+	background-image: url('@/assets/icons/blue/sport-blue.svg');
+}
+.svg.humor-quiz-og-underholdning {
+	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
+}
+.svg.natur-og-videnskab {
+	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
+}
+.svg.brn-og-unge {
+	background-image: url('@/assets/icons/blue/born-blue.svg');
+}
 .label {
 	cursor: pointer;
 }

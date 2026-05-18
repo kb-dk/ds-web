@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="hit-count">
-				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
+				<div :class="['filter-options', { disabled: searchResultStore.loading }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
 						<KBButton
 							ref="toggleFacetsButton"
@@ -16,71 +16,10 @@
 							@click="toggleFacets()"
 						></KBButton>
 					</div>
-					<div :class="`type-toggles ${searchResultStore.showFacets ? 'type-toggles-filter-active' : ''}`">
-						<button
-							:class="tvToggled ? 'source-facet-button open' : 'source-facet-button'"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-tv', 0)"
-							@click="toggleTV($event)"
-						>
-							<span class="material-icons second">play_circle_filled</span>
-							<p class="btn-medium">TV</p>
-							<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
-								<span class="dot">
-									<TransitionGroup>
-										<div
-											v-if="tvToggled"
-											class="close"
-										></div>
-										<div
-											v-else
-											class="check"
-										></div>
-									</TransitionGroup>
-								</span>
-							</span>
-						</button>
-						<button
-							:class="radioToggled ? 'source-facet-button open' : 'source-facet-button'"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-radio', 0)"
-							@click="toggleRadio($event)"
-						>
-							<span class="material-icons second">volume_up</span>
-							<p class="btn-medium">RADIO</p>
-							<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
-								<span class="dot">
-									<TransitionGroup>
-										<div
-											v-if="radioToggled"
-											class="close"
-										></div>
-										<div
-											v-else
-											class="check"
-										></div>
-									</TransitionGroup>
-								</span>
-							</span>
-						</button>
-					</div>
 				</div>
-				<Facets />
-
-				<KBButton
-					v-if="searchResultStore.showFacets"
-					ref="toggleFacetsButton"
-					role="switch"
-					aria-checked="true"
-					class="btn-medium"
-					:custom-style="{ position: 'relative', top: 'calc(-2vw + -10px)' }"
-					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
-					:button-text="$t('search.hideFilters')"
-					left-icon-name="close"
-					button-type="btn-main-medium"
-					@click="toggleFacets()"
-				></KBButton>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
-					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
+					class="result-options"
 				>
 					<div class="hits">
 						<HitCount
@@ -158,17 +97,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import Facets from '@/components/search/Facets.vue';
-import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
-import { Severity } from '@/types/NotificationType';
 import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
@@ -176,7 +112,6 @@ export default defineComponent({
 	components: {
 		HitCount,
 		Sort,
-		Facets,
 		CurrentFilters,
 		KBButton,
 	},
@@ -190,12 +125,6 @@ export default defineComponent({
 		const tvToggled = ref(true);
 		const radioToggled = ref(true);
 
-		const delimitationOptions = {
-			all: '',
-			tv: 'origin:"ds.tv"',
-			radio: 'origin:"ds.radio"',
-		};
-
 		const calcRowCount = computed(() => {
 			const rowCount = searchResultStore.pageNumber * Number(searchResultStore.rowCount);
 			return rowCount < searchResultStore.numFound ? rowCount : searchResultStore.numFound;
@@ -203,111 +132,6 @@ export default defineComponent({
 		onMounted(() => {
 			searchResultStore.toggleShowFacets(false);
 		});
-
-		watch(
-			() => route.query.fq,
-			(newFq) => {
-				/* 
-				we have to do this, because vue acts weird here.
-				when we have normal route changes, it seems like we get an array here,
-				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
-				Weird and breaking behavior, that we have to account for here.
-				*/
-				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
-				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
-				if (originFilter) {
-					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
-						tvToggled.value = false;
-					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
-						radioToggled.value = false;
-					}
-				} else {
-					tvToggled.value = true;
-					radioToggled.value = true;
-				}
-			},
-			{ immediate: true },
-		);
-
-		const setDelimitationFilterAndExecute = () => {
-			let val = '';
-			if ((tvToggled.value && radioToggled.value) || (!tvToggled.value && !radioToggled.value)) {
-				val = delimitationOptions.all;
-				searchResultStore.preliminaryFilter = '';
-			}
-			if (tvToggled.value && !radioToggled.value) {
-				val = delimitationOptions.tv;
-			}
-			if (!tvToggled.value && radioToggled.value) {
-				val = delimitationOptions.radio;
-			}
-			searchResultStore.resetAutocomplete();
-			const routeQueries = cloneRouteQuery(route);
-			routeQueries.start = 0;
-			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
-			if (existingFq) {
-				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
-				if (creatorAffiliationFilter) {
-					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
-					if (index !== -1) {
-						existingFq.splice(index, 1);
-					}
-				}
-				if (val !== '') {
-					existingFq.push(encodeURIComponent(val));
-				}
-				routeQueries.fq = existingFq;
-			} else {
-				if (val !== '') {
-					routeQueries.fq = [];
-					routeQueries.fq.push(encodeURIComponent(val));
-				}
-			}
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
-
-		const toggleTV = (event: Event) => {
-			tvToggled.value = !tvToggled.value;
-			if (event.target) {
-				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', tvToggled.value.toString());
-			}
-			if (!tvToggled.value && !radioToggled.value) {
-				radioToggled.value = !radioToggled.value;
-				notifyUserForAtLeastOneSource();
-			}
-			setDelimitationFilterAndExecute();
-		};
-
-		const toggleRadio = (event: Event) => {
-			radioToggled.value = !radioToggled.value;
-			if (event.target) {
-				const btn = event.target as HTMLButtonElement;
-				btn.setAttribute('aria-checked', radioToggled.value.toString());
-			}
-			if (!tvToggled.value && !radioToggled.value) {
-				tvToggled.value = !tvToggled.value;
-				notifyUserForAtLeastOneSource();
-			}
-			setDelimitationFilterAndExecute();
-		};
-
-		/* Needs to be translated! */
-		const notifyUserForAtLeastOneSource = () => {
-			const customEvent = new CustomEvent('notify-user', {
-				detail: {
-					title: t('error.choseMaterialTitle'),
-					message: t('error.ChoseMaterialDesc'),
-					key: false,
-					severity: Severity.INFO,
-					userClose: false,
-				},
-			});
-			window.dispatchEvent(customEvent);
-		};
 
 		const toggleFacets = () => {
 			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
@@ -332,8 +156,6 @@ export default defineComponent({
 			toggleFacetsButton,
 			tvToggled,
 			radioToggled,
-			toggleRadio,
-			toggleTV,
 			addTestDataEnrichment,
 			calcRowCount,
 		};
@@ -427,10 +249,6 @@ export default defineComponent({
 	padding-bottom: 8px;
 }
 
-.result-options.less-top-padding {
-	padding-top: 5px;
-}
-
 .sort-options {
 	position: relative;
 	display: flex;
@@ -439,11 +257,6 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	padding-bottom: 8px;
 	padding-top: 40px;
-}
-
-.filter-options.open {
-	transition: margin-bottom 0.1s ease-in-out 0s;
-	margin-bottom: calc(-2vw + -10px);
 }
 
 .filter-options {
@@ -504,6 +317,10 @@ export default defineComponent({
 .material-icons {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.filter-button-text {
+	padding-left: 5px;
 }
 
 .source-facet-button {
@@ -628,10 +445,6 @@ export default defineComponent({
 	.type-toggles {
 		width: auto;
 		padding-bottom: 0px;
-	}
-
-	.source-facet-button {
-		width: auto;
 	}
 	.sort-options {
 		flex-direction: row;
