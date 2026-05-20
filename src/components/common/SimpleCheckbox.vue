@@ -1,5 +1,13 @@
 <template>
-	<div :class="getClassStyle()">
+	<div
+		:class="[
+			'checkbox-container',
+			{
+				disabled: amount === '0' || (disabled && !checked),
+				checked: checked === true,
+			},
+		]"
+	>
 		<label
 			:title="title"
 			class="label"
@@ -61,7 +69,6 @@
 import { defineComponent, PropType } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
-import { useSearchResultStore } from '@/store/searchResultStore';
 import { getFilterThumbnail } from '@/utils/record-utils';
 export default defineComponent({
 	name: 'SimpleCheckbox',
@@ -138,14 +145,10 @@ export default defineComponent({
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
 			props.update(props.parentArray, props.number, checked, title, key, props.filterArray);
 		};
-		const getClassStyle = () => {
-			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
-		};
 		return {
 			displayAmount,
 			addTestDataEnrichment,
 			updateSelection,
-			getClassStyle,
 			santizeAndSimplify,
 			getFilterThumbnail,
 		};
@@ -252,7 +255,8 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 }
 
-.checkbox-container:hover {
+.checkbox-container:hover,
+.checkbox-container.checked {
 	background-color: #c4f0fd;
 	border: 1px solid #86e2fb;
 	border-radius: 4px;

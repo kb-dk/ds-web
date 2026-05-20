@@ -888,7 +888,6 @@ h2 {
 
 @media (min-width: 2130px) {
 	.search-facets {
-		left: initial;
 		margin-right: calc(1280px + 420px);
 	}
 }
