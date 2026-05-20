@@ -54,7 +54,7 @@
 				<FilterExpander
 					:headline="$t('facets.genres', 2)"
 					icon="category"
-					:subline="`${getSublineForFacets(genreArray, 'facets.genres')}`"
+					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
 					:item-array="genreArray"
 					:use-headline-translation="true"
 					:update-entity="updateFacet"
@@ -93,9 +93,9 @@
 				<FilterExpander
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle_filled"
-					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:subline="`${getSublineForFacets(getTVFacets(channelsArray), 'facets.selectedTVChannels')}`"
 					:fade="false"
-					:item-array="channelsArray"
+					:item-array="getTVFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:use-headline-translation="false"
@@ -117,7 +117,7 @@
 									:channel="singleFacet.name"
 									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
 									:number="index"
-									:parent-array="channelsArray"
+									:parent-array="getTVFacets(channelsArray)"
 									:update="updateCheckbox"
 									:checked="
 										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
@@ -133,9 +133,9 @@
 				<FilterExpander
 					:headline="$t('facets.radioChannels', 2)"
 					icon="volume_up"
-					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:subline="`${getSublineForFacets(getRadioFacets(channelsArray), 'facets.selectedRadioChannels')}`"
 					:fade="false"
-					:item-array="channelsArray"
+					:item-array="getRadioFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:use-headline-translation="false"
@@ -157,7 +157,7 @@
 									:channel="singleFacet.name"
 									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
 									:number="index"
-									:parent-array="channelsArray"
+									:parent-array="getRadioFacets(channelsArray)"
 									:update="updateCheckbox"
 									:checked="
 										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
@@ -336,10 +336,15 @@ export default defineComponent({
 			) {
 				return ``;
 			} else {
-				return `${dataArray.filter((item) => item.selected).length} ${t(
-					translationKey,
-					dataArray.filter((item) => item.selected).length,
-				)}`;
+				const selected = dataArray.filter((item) => item.selected).length;
+				const total = dataArray.length;
+
+				console.log(translationKey);
+
+				return t(translationKey, {
+					selected,
+					total,
+				});
 			}
 		};
 
@@ -718,7 +723,26 @@ fieldset {
 	box-sizing: border-box;
 	padding-bottom: 15px;
 	width: 100%;
-	min-height: calc(100vh - 20px);
+	min-height: calc(100vh);
+}
+
+.facet-container::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.facet-container::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.facet-container::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+}
+
+/* harmless, but usually no-op in modern browsers */
+.facet-container::-webkit-scrollbar-button {
+	display: none;
 }
 
 .facet-options {

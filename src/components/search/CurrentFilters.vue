@@ -24,7 +24,7 @@
 						)}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
-						@click="removeFilterAndSearch('creator_affiliation_facet')"
+						@click="removeFilterAndSearch('creator_affiliation_facet', router, route)"
 					></KBButton>
 				</div>
 				<div
@@ -39,7 +39,7 @@
 						)}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
-						@click="removeFilterAndSearch('genre')"
+						@click="removeFilterAndSearch('genre_facet', router, route)"
 					></KBButton>
 				</div>
 				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
@@ -191,14 +191,14 @@ export default defineComponent({
 
 		const resetTimeValueAndSearch = (resetArray: SelectorData[], facet: string) => {
 			resetAllSelectorValues(resetArray);
-			removeFilterAndSearch(facet);
+			removeFilterAndSearch(facet, router, route);
 		};
 
 		const resetYearsAndSearch = (facet: string) => {
 			if (startDate.value !== null && endDate.value !== null) {
 				startDate.value.setTime(startYear.value.getTime());
 				endDate.value.setTime(endYear.value.getTime());
-				removeFilterAndSearch(facet);
+				removeFilterAndSearch(facet, router, route);
 			}
 		};
 
@@ -323,6 +323,8 @@ export default defineComponent({
 			presentDateSpan,
 			calculatedYearSpan,
 			preliminaryFilterText,
+			router,
+			route,
 		};
 	},
 });

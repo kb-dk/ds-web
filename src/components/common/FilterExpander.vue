@@ -8,7 +8,16 @@
 		>
 			<span class="material-icons icon">{{ icon }}</span>
 			{{ headline }}
-			<KBButton>{{ subline }}</KBButton>
+			<KBButton
+				v-if="subline.length > 0"
+				button-type="btn-tag-primary"
+				class=""
+				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
+				:data-testid="addTestDataEnrichment('button', 'time-search-component', `top-more-link`, 0)"
+				right-icon-name="close"
+				:button-text="`${subline}`"
+				@click="removeFilters($event, facetType, itemArray)"
+			></KBButton>
 		</h3>
 		<div
 			ref="expandContainer"
@@ -35,10 +44,15 @@ import { defineComponent, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
+import { removeFilterAndSearch } from '@/utils/filter-utils';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
 	name: 'FilterExpander',
-	components: {},
+	components: {
+		KBButton,
+	},
 	props: {
 		headline: {
 			type: String as PropType<string>,
@@ -97,8 +111,16 @@ export default defineComponent({
 		const expanderOpen = ref(false);
 		const expandContainer = ref<HTMLElement | null>(null);
 		const headlineRef = ref();
+		const route = useRoute();
+		const router = useRouter();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
 			props.updateEntity(parent, index, val, props.facetType);
+		};
+
+		const removeFilters = (e: Event, facetType: string, itemArray: Array<SelectorData>) => {
+			e.stopPropagation();
+
+			removeFilterAndSearch(facetType, router, route, itemArray);
 		};
 
 		const toggleExpander = (e: Event) => {
@@ -153,7 +175,16 @@ export default defineComponent({
 			expanderOpen.value = !expanderOpen.value;
 		};
 
-		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate, addTestDataEnrichment, headlineRef };
+		return {
+			expanderOpen,
+			toggleExpander,
+			expandContainer,
+			passAlongUpdate,
+			addTestDataEnrichment,
+			headlineRef,
+			removeFilterAndSearch,
+			removeFilters,
+		};
 	},
 });
 </script>

@@ -97,8 +97,11 @@
    "facets" : {
       "allGenres": "all categories",
       "genres": "category | categories",
+      "selectedGenres": "{selected} of {total} categories selected",
       "genresSubtitle": "Select a category and explore the programmes.",
       "allChannels":"all channels",
+      "selectedTVChannels":"{selected} of {total} channels selected",
+      "selectedRadioChannels":"{selected} of {total} kanalchannelser selected",
       "channels":"channel | channels",
       "tvChannels":"TV channel | TV channels",
       "radioChannels": "Radio channel | Radio channels",

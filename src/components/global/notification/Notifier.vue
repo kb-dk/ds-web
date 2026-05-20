@@ -129,7 +129,8 @@ ul {
 	padding: 0px;
 }
 
-.user-notifications ul:empty {
+.user-notifications ul:empty,
+.passive-notifications ul:empty {
 	display: none;
 }
 

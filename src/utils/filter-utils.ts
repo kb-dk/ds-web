@@ -1,8 +1,7 @@
-import { RouteLocationNormalizedLoaded } from 'vue-router';
+import { Router, RouteLocationNormalizedLoaded } from 'vue-router';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { santizeAndSimplify } from './test-enrichments';
-import { useRoute, useRouter } from 'vue-router';
 
 const createTagFilter = (key: string) => {
 	return `${'categories:"' + key + '"'}`;
@@ -181,12 +180,61 @@ const normalizeFq = (fq: string | string[] | undefined): string[] => {
 	return Array.isArray(fq) ? fq : [fq];
 };
 
-const removeFilterAndSearch = (facet: string) => {
-	const route = useRoute();
-	const router = useRouter();
+export function removeSingleFacetEntry(fqString: string, key: string, valueToRemove: string): string | null {
+	// Match key:"value" (value may be URL encoded in your current strings)
+	const regex = new RegExp(`${key}%3A%22(.*?)%22`, 'g');
+
+	const matches = [...fqString.matchAll(regex)];
+
+	if (matches.length === 0) return fqString;
+
+	const remainingValues = matches.map((m) => decodeURIComponent(m[1])).filter((v) => v !== valueToRemove);
+
+	if (remainingValues.length === 0) {
+		return null; // entire fq clause should be removed
+	}
+
+	if (remainingValues.length === 1) {
+		return `${key}%3A%22${encodeURIComponent(remainingValues[0])}%22`;
+	}
+
+	const rebuilt = remainingValues.map((v) => `${key}%3A%22${encodeURIComponent(v)}%22`).join(' OR ');
+
+	return `(${rebuilt})`;
+}
+
+const removeFilterAndSearch = (
+	facet: string,
+	router: Router,
+	route: RouteLocationNormalizedLoaded,
+	selected?: Array<SelectorData>,
+) => {
 	const routeQueries = cloneRouteQuery(route);
 	let fq = normalizeFq(routeQueries.fq);
-	fq = fq.filter((query) => !query.includes(facet));
+	if (facet !== 'genre_facet') {
+		if (!selected) {
+			fq = fq.filter((query) => !query.includes(facet));
+		} else {
+			const removable = selected?.filter((entity: SelectorData) => entity.selected) ?? [];
+			fq = fq
+				.map((query) => {
+					if (!query.includes(facet)) return query;
+					console.log('YEP');
+					let updated: string | null = query;
+
+					removable.forEach((item) => {
+						if (updated) {
+							updated = removeSingleFacetEntry(updated, facet, item.name);
+						}
+					});
+					return updated;
+				})
+				.filter((q): q is string => Boolean(q));
+		}
+	} else {
+		fq = fq.filter((query) => !query.includes(facet));
+	}
+
 	routeQueries.fq = fq;
 	router.push({
 		name: 'Search',

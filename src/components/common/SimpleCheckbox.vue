@@ -131,8 +131,6 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const searchResultStore = useSearchResultStore();
-
 		const displayAmount = (value: string | undefined) => {
 			return value ? `(${value})` : '';
 		};
