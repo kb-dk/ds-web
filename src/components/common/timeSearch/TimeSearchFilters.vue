@@ -505,6 +505,7 @@ fieldset {
 
 .slider-whiteoff-container {
 	position: relative;
+	margin-bottom: 20px;
 }
 .explanation-for-data {
 	position: absolute;
@@ -624,6 +625,7 @@ fieldset {
 	margin-bottom: 0px;
 	position: relative;
 	width: 100%;
+	margin-bottom: 60px;
 }
 
 @media (min-width: 450px) {
@@ -878,7 +880,6 @@ fieldset {
 
 .data-container {
 	width: calc(100%);
-	height: 60px;
 	overflow: hidden;
 	user-select: none;
 	pointer-events: none;
@@ -887,6 +888,9 @@ fieldset {
 	margin-top: 2px;
 	border-bottom: 1px solid #002e70;
 	box-sizing: border-box;
+	top: 0px;
+	height: 0px;
+	visibility: hidden;
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
@@ -906,24 +910,27 @@ fieldset {
 	.slider-whiteoff-container {
 		display: block;
 	}
-	.data-size {
-		display: block;
-	}
-
 	.display-data-button {
 		display: block;
 	}
 	.slider-container {
-		height: 96px;
 		padding-bottom: 40px;
-		margin-bottom: 80px;
-		margin-top: 15px;
 	}
 }
 
 @media (min-width: 990px) {
 	.to-from-container {
 		justify-content: flex-start;
+	}
+	.data-size {
+		display: block;
+	}
+	.data-container {
+		height: 300px;
+		visibility: visible;
+	}
+	.slider-container {
+		height: 300px;
 	}
 }
 </style>

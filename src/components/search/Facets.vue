@@ -90,6 +90,7 @@
 						</TransitionGroup>
 					</fieldset>
 				</FilterExpander>
+
 				<FilterExpander
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle_filled"
@@ -170,7 +171,37 @@
 						</TransitionGroup>
 					</fieldset>
 				</FilterExpander>
+				<FilterExpander
+					headline="Dato, periode og tidspunkter"
+					icon="calendar_month"
+					:item-array="yearArray"
+					subline=""
+					facet-type="startTime"
+					:filter-name-cutoff="5"
+					:use-headline-translation="false"
+					:update-entity="updateTimeSearch"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options time-search"
+					>
+						<TransitionGroup name="result">
+							<VueSlider
+								v-if="data.length > 0"
+								ref="vueSliderRef"
+								v-model="timeSliderValues"
+								:clickable="true"
+								:drag-on-click="true"
+								:data="data"
+								data-label="key"
+								tooltip="always"
+								@drag-end="updateTimeSearch"
+							></VueSlider>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
 			</div>
+
 			<KBButton
 				button-type="btn-main-default"
 				class="btn-medium btn-main-medium"
@@ -187,6 +218,7 @@
 </template>
 
 <script lang="ts">
+import '@/assets/styles/vue-slider-styles.css';
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
@@ -203,7 +235,7 @@ import {
 	removeChannelOrCategoryFilter,
 	simplifyFacets,
 } from '@/utils/filter-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
+import { markerData, SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
@@ -215,6 +247,7 @@ import {
 	startDate,
 	startYear,
 	timeslots,
+	timeSliderValues,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import FilterExpander from '@/components/common/FilterExpander.vue';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
@@ -222,6 +255,7 @@ import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
+import VueSlider from 'vue-3-slider-component';
 
 export default defineComponent({
 	name: 'Facets',
@@ -230,6 +264,7 @@ export default defineComponent({
 		FilterExpander,
 		CustomRadioGroup,
 		KBButton,
+		VueSlider,
 	},
 
 	setup() {
@@ -245,7 +280,9 @@ export default defineComponent({
 		const { t } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
-
+		const selectYears = ref([] as string[]);
+		const data = ref([] as markerData[]);
+		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
 		const delimitationOptions = {
 			all: '',
 			tv: 'origin:"ds.tv"',
@@ -258,8 +295,13 @@ export default defineComponent({
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
+		const yearArray = ref([] as SelectorData[]);
 
 		onMounted(() => {
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.value.push(i.toString());
+				data.value.push({ key: i, value: i });
+			}
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
 		});
@@ -355,6 +397,21 @@ export default defineComponent({
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
+		);
+		watch(
+			() => vueSliderRef.value,
+			(newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					if (newVal) {
+						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
+						dots.forEach((dot, index) => {
+							dot.tabIndex = -1;
+							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
+						});
+					}
+				}
+			},
 		);
 
 		watch(
@@ -466,6 +523,10 @@ export default defineComponent({
 			);
 			routeQueries.start = 0;
 			router.push({ query: routeQueries });
+		};
+
+		const updateTimeSearch = (array: SelectorData[], index: number, val: boolean, key: string) => {
+			console.log(array, index, val, key);
 		};
 
 		const setSearchMethodAndExecute = (choice: string) => {
@@ -584,8 +645,10 @@ export default defineComponent({
 			t,
 			channelsArray,
 			genreArray,
+			yearArray,
 			updateFacet,
 			updateCheckbox,
+			updateTimeSearch,
 			getSublineForFacets,
 			santizeAndSimplify,
 			translatedGenreArray,
@@ -594,6 +657,9 @@ export default defineComponent({
 			selectedSearchMethod,
 			selectedSearchMaterials,
 			addTestDataEnrichment,
+			vueSliderRef,
+			timeSliderValues,
+			data,
 		};
 	},
 });
@@ -726,7 +792,12 @@ fieldset {
 	width: 100%;
 	margin-top: 10px;
 }
-
+.time-search {
+	height: 200px;
+	margin-top: 25%;
+	margin-left: 20px;
+	width: 92%;
+}
 .flex-container {
 	width: 100%;
 	padding-bottom: 30px;
