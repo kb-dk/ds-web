@@ -18,7 +18,9 @@
 					<div class="extra-suggest">
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="white"
+								button-size="medium"
 								class="btn-medium"
 								href="/find-materiale/dr-arkivet/"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
@@ -29,7 +31,9 @@
 
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="white"
+								button-size="medium"
 								class="btn-medium"
 								:href="t('footer.column1.links.1.link')"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-about', 0)"
@@ -40,7 +44,9 @@
 
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="white"
+								button-size="medium"
 								class="btn-medium"
 								href="https://www.kb.dk"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"

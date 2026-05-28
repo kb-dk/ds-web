@@ -22,6 +22,7 @@
     --color-border-golden:#e0b500;
     --color-border-success:#49DA87;
     --color-border-disabled:#757575;
+    --color-border-transparent: transparent;
 
     /*rounded*/
     --rounded-small: var(--scale-50);
