@@ -83,7 +83,7 @@ type ButtonType =
 	| 'btn-dropdown-default'
 	| 'btn-tag';
 type ButtonSize = 'medium' | 'default' | 'small';
-type ButtonColor = 'light' | 'main' | 'cta' | 'transparent' | 'golden' | 'white';
+type ButtonColor = 'light' | 'main' | 'cta' | 'transparent' | 'reset' | 'inverted';
 export default defineComponent({
 	name: 'KBButton',
 	props: {
@@ -202,7 +202,7 @@ export default defineComponent({
 	color: var(--color-main);
 	border: 1px solid var(--color-border-success);
 }
-.golden {
+.reset {
 	background: var(--bg-golden);
 	color: var(--color-main);
 	border: 1px solid var(--color-border-golden);
@@ -212,7 +212,7 @@ export default defineComponent({
 	color: var(--color-main);
 	border: 1px solid var(--color-border-transparent);
 }
-.white {
+.inverted {
 	background-color: var(--bg-default);
 	color: var(--color-main);
 	border: 1px solid var(--color-border-active);

@@ -19,7 +19,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="white"
+								button-color="inverted"
 								button-size="medium"
 								class="btn-medium"
 								href="/find-materiale/dr-arkivet/"
@@ -32,7 +32,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="white"
+								button-color="inverted"
 								button-size="medium"
 								class="btn-medium"
 								:href="t('footer.column1.links.1.link')"
@@ -45,7 +45,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="white"
+								button-color="inverted"
 								button-size="medium"
 								class="btn-medium"
 								href="https://www.kb.dk"

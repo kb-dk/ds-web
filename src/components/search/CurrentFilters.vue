@@ -136,7 +136,7 @@
 						class="label-small"
 						:button-text="`${t('facets.reset')}`"
 						button-type="btn-tag"
-						button-color="golden"
+						button-color="reset"
 						button-size="small"
 						right-icon-name="close"
 						@click="resetAllFilters"
