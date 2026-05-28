@@ -1,13 +1,22 @@
 .vue-slider-rail {
-	background-color: var(--bg-main-hover) !important;
+	background-color: var(--bg-transparent) !important;
 	border-radius: 0px !important;
-	height: 5px !important;
-	z-index: 4;
+	height: 100% !important;
+
+	
+}
+.vue-slider-rail::before {
+	display: block;
+	height: 5px;
+	content: '';
+	/* z-index: 6 !important; */
 	border: 1px solid var(--color-border-active);
+	background-color: var(--bg-main-hover) !important;
 	box-shadow: inset 1px 1px 1px ;
+	top:calc(100%) !important;
+	position: relative;
 	box-shadow: var(--color-border-active) 0px 0px 1px,var(--color-border-active) 0px 0px 1px inset;
 }
-
 .vue-slider {
 	height: 100px !important;
 	padding: 0px !important;
@@ -16,18 +25,34 @@
 }
 .vue-slider-process {
 	border-radius: 0px !important;
-	background-color: var(--bg-main) !important;
-	z-index: 5 !important;
-	border: 1px solid var(--color-border-active);
-	/* mix-blend-mode: hue !important;
-	filter: hue-rotate(245deg) !important; */
+	background-color: #caf0fe !important;
+	opacity: .5;
+	z-index: 3 !important;
+	mix-blend-mode: hue !important;
+	filter: hue-rotate(245deg) !important;
+	border-radius: 0 !important;
+}
+.vue-slider-process::before {
+	display: block;
+	height: 5px;
+	position: absolute;
+	background-color: black !important;
+	/* background-color: var(--bg-main) !important; */
+	content: '';
+	top: calc(100%);
+	z-index: 17 !important;
+	width: 100%;
+	opacity: 1 !important;
+	mix-blend-mode: normal !important; 
+	isolation:isolate !important;
+	/* border: 2px solid red; */
 }
 
 .vue-slider-mark-step {
-	background-color: var(--bg-main) !important;
+	background-color: var(--bg-transparent) !important;
 	border-radius: 0px !important;
-	height: 10px !important;
-	top: -8px !important;
+	height: 100% !important;
+	top: -10px !important;
 }
 
 .vue-slider-dot {
@@ -112,18 +137,17 @@
 .vue-slider-mark {
 	width: 2px !important;
 	height: 15% !important;
-	background-color: #002e70 !important;
+	background-color: transparent !important;
 	margin-bottom: 10px !important;
 
 }
-
 .vue-slider-mark-label {
 	display:none;
 	/* font-size: var(--fs-meta) !important; */
-		background: var(--bg-disabled) 0% 0% no-repeat padding-box !important;
+	background: var(--bg-disabled) 0% 0% no-repeat padding-box !important;
 	color: white !important;
 	border-radius: 5px;
-	top: -62px !important;
+	top: calc(-62px + 100%) !important;
 	font-size: var(--fs-lead) !important;
     line-height: var(--lh-large-tight);
     font-weight: var(--fw-regular);
@@ -156,6 +180,10 @@
 .vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-label {
 		display: block;
 }
+.vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-step:after{
+		height: 10px !important;
+		top: calc(95%) !important;
+	}
 .vue-slider-marks .vue-slider-mark-active .vue-slider-mark-label-active {
 	opacity: 50%;
 	background-color: var(--bg-main)!important;
@@ -170,9 +198,9 @@
 	display: block;
 	width: 2px;
 	background-color: var(--bg-main);
-	height: 20px;
+	height: 5px;
 	position: absolute;
-	top: calc(-50%);
+	top: calc(99%);
 }
 
 .vue-slider-dot-tooltip-inner {
@@ -196,16 +224,32 @@
 	.vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-label {
 		display: none;
 	}
+	.vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-step:after{
+		height: 5px !important;
+		top: calc(99%) !important;
+	}
 	.vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
 		display: block;
+	}
+	.vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
+		height: 10px !important;
+		top: calc(95%) !important;
 	}
 }
 @media (min-width: 850px) {
 	.vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
 		display: none;
 	}
+	.vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
+		height: 5px !important;
+		top: calc(99%) !important;
+	}
 	.vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
 		display: block;
+	}
+	.vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after{
+		height: 10px !important;
+		top: calc(95%) !important;
 	}
 
 }
