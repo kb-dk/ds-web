@@ -243,7 +243,7 @@ export default defineComponent({
 	margin-bottom: -1px;
 	transition: 200ms;
 }
-.btn-cta:hover {
+.btn-cta:not(:disabled):hover {
 	transition: all 5s ease 0s;
 	.btn-text {
 		border-color: var(--color-border-active);
@@ -254,6 +254,10 @@ export default defineComponent({
 }
 .btn-cta.default .material-icons {
 	font-size: calc(var(--fs-base) + 8px);
+}
+.btn-cta:disabled {
+	border-color: var(--color-border-disabled);
+	color: var(--bg-default);
 }
 /* Dropdown buttons */
 .btn-dropdown-default {
