@@ -544,7 +544,7 @@ export default defineComponent({
 			});
 		};
 
-		const removeAllTimeFilters = () => {
+		/* 		const removeAllTimeFilters = () => {
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(timeslots.value);
@@ -552,7 +552,7 @@ export default defineComponent({
 			const endHolder = new Date(endYear.value.getTime());
 			startDate.value = startHolder;
 			endDate.value = endHolder;
-		};
+		}; */
 
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
