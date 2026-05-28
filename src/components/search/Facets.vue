@@ -184,7 +184,7 @@ import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import {
+/* import {
 	days,
 	endDate,
 	endYear,
@@ -192,9 +192,10 @@ import {
 	startDate,
 	startYear,
 	timeslots,
-} from '@/components/common/timeSearch/TimeSearchInitValues';
+} from '@/components/common/timeSearch/TimeSearchInitValues'; */
 import FilterExpander from '@/components/common/FilterExpander.vue';
-import { resetAllSelectorValues } from '@/utils/time-search-utils';
+/* import { resetAllSelectorValues } from '@/utils/time-search-utils';
+ */
 import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
