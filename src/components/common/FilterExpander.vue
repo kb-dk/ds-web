@@ -217,6 +217,7 @@ export default defineComponent({
 	transition: all 0.5s linear 0s;
 	background-color: rgba(202, 240, 254, 0.1);
 	text-transform: capitalize;
+	font-weight: 100;
 }
 
 .headline:hover {
@@ -252,22 +253,6 @@ export default defineComponent({
 	opacity: 1;
 }
 
-.toggle-button:before {
-	content: '';
-	display: block;
-	width: 0;
-	height: 0;
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-bottom: 10px solid #0a2e70;
-	position: relative;
-	transition: all 0.15s ease-in-out 0s;
-	transform: scaleY(0);
-	transform-origin: bottom;
-	top: -17px;
-	left: 16px;
-}
-
 .expand-container:hover,
 .expand-container.open {
 	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.24) inset;
@@ -285,21 +270,36 @@ export default defineComponent({
 	transform: scaleY(1);
 }
 
+.toggle-button:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 6px solid #0a2e70;
+	position: absolute;
+	transition: all 0.15s ease-in-out 0s;
+	transform: scaleY(0);
+	transform-origin: bottom;
+	top: -17px;
+	left: 0px;
+}
+
 .toggle-button:after {
 	position: absolute;
 	content: '';
 	display: block;
 	width: 0;
 	height: 0;
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-top: 10px solid #0a2e70;
-	position: relative;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 6px solid #0a2e70;
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: 17px;
-	left: -18px;
+	top: 11px;
+	left: 0px;
 }
 
 .toggle-button.closed:after {
@@ -338,8 +338,8 @@ export default defineComponent({
 	cursor: pointer;
 	background-color: transparent;
 	padding: 10px 5px;
-	width: 24px;
-	height: 24px;
+	width: 20px;
+	height: 23px;
 	background-color: #0a2e70;
 	color: white;
 	font-size: 24px;

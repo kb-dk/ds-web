@@ -326,7 +326,7 @@ export default defineComponent({
 }
 
 .loading .checkbox:after {
-	border: 1px solid rgba(170, 170, 170, 1) !important;
+	border: 2px solid rgba(170, 170, 170, 1) !important;
 	background-color: rgb(255, 255, 255) !important;
 	cursor: default;
 }
@@ -384,7 +384,7 @@ input:focus {
 }
 
 .checkbox-container.disabled .checkbox:after {
-	border: 2px solid rgb(145, 145, 145);
+	border: 3px solid rgb(145, 145, 145);
 }
 
 .checkbox-container.disabled .checkbox:hover:after {
@@ -399,7 +399,7 @@ input:focus {
 	display: block;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #002e70;
+	border: 3px solid #002e70;
 	border-radius: 4px;
 }
 

@@ -436,6 +436,7 @@ export default defineComponent({
 	align-content: center;
 	flex-wrap: nowrap;
 	flex-direction: row;
+	padding: 3px 0px;
 }
 
 @media (min-width: 640px) {

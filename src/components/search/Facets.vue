@@ -13,43 +13,20 @@
 					close
 				</button>
 			</div>
-			<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
+			<h1 class="filter-headline">
+				{{ t('facets.headline') }}
+				<span class="bold">{{ searchResultStore.currentQuery }}</span>
+			</h1>
 			<div class="category-container">
 				<CustomRadioGroup
-					v-model="selectedSearchMethod"
+					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
-					:options="[
-						{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
-						{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
-						{
-							value: 'desc',
-							title: 'Søg kun på beskrivelse',
-							description: 'Der søges kun i beskrivelses-feltet.',
-						},
-					]"
+					:options="selectedSearchMethodOptions"
 				/>
 				<CustomRadioGroup
-					v-model="selectedSearchMaterials"
+					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
-					:options="[
-						{
-							value: 'all',
-							title: 'Søg på både TV og RADIO',
-							description: 'Der søges både i radio-poster og TV-poster.',
-						},
-						{
-							value: 'tv',
-							title: 'Søg kun på TV',
-							icon: 'play_circle_filled',
-							description: 'Der søges kun i TV-poster.',
-						},
-						{
-							value: 'radio',
-							title: 'Søg kun på RADIO',
-							icon: 'volume_up',
-							description: 'Der søges kun i RADIO-poster.',
-						},
-					]"
+					:options="selectedSearchMaterialOptions"
 				/>
 				<FilterExpander
 					:headline="$t('facets.genres', 2)"
@@ -222,6 +199,7 @@ import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
+import { createFocusTrap } from '@/utils/focus-trap';
 
 export default defineComponent({
 	name: 'Facets',
@@ -245,19 +223,47 @@ export default defineComponent({
 		const { t } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
-
 		const delimitationOptions = {
 			all: '',
 			tv: 'origin:"ds.tv"',
 			radio: 'origin:"ds.radio"',
 		};
 
-		const selectedSearchMethod = ref('all');
-		const selectedSearchMaterials = ref('all');
+		let focusTrap: ReturnType<typeof createFocusTrap> | null = null;
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
+
+		const selectedSearchMethodOptions = [
+			{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
+			{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
+			{
+				value: 'desc',
+				title: 'Søg kun på beskrivelse',
+				description: 'Der søges kun i beskrivelses-feltet.',
+			},
+		];
+
+		const selectedSearchMaterialOptions = [
+			{
+				value: '',
+				title: 'Søg på både TV og RADIO',
+				description: 'Der søges både i radio-poster og TV-poster.',
+			},
+			{
+				value: 'origin:"ds.tv"',
+				title: 'Søg kun på TV',
+				icon: 'play_circle_filled',
+				description: 'Der søges kun i TV-poster.',
+			},
+			{
+				value: 'origin:"ds.radio"',
+				title: 'Søg kun på RADIO',
+				icon: 'volume_up',
+				description: 'Der søges kun i RADIO-poster.',
+			},
+		];
 
 		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
@@ -374,13 +380,14 @@ export default defineComponent({
 				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
 				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
 				if (originFilter) {
+					console.log(decodeURIComponent(originFilter));
 					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
-						selectedSearchMaterials.value = 'radio';
+						searchResultStore.preliminaryFilter = 'origin:ds.radio';
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
-						selectedSearchMaterials.value = 'tv';
+						searchResultStore.preliminaryFilter = 'origin:ds.tv';
 					}
 				} else {
-					selectedSearchMaterials.value = 'all';
+					searchResultStore.preliminaryFilter = '';
 				}
 			},
 			{ immediate: true },
@@ -448,16 +455,16 @@ export default defineComponent({
 		);
 
 		watch(
-			() => selectedSearchMethod.value,
+			() => searchResultStore.preliminarySearchMethod,
 			() => {
-				setSearchMethodAndExecute(selectedSearchMethod.value);
+				setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod);
 			},
 		);
 
 		watch(
-			() => selectedSearchMaterials.value,
+			() => searchResultStore.preliminaryFilter,
 			() => {
-				setDelimitationFilterAndExecute(selectedSearchMaterials.value);
+				setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter);
 			},
 		);
 
@@ -474,14 +481,23 @@ export default defineComponent({
 		};
 
 		const setSearchMethodAndExecute = (choice: string) => {
-			console.log(searchResultStore.currentQuery);
+			let orgQuery = searchResultStore.currentQuery;
+			if (
+				searchResultStore.currentQuery.includes('title:') ||
+				searchResultStore.currentQuery.includes('description:')
+			) {
+				orgQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+			}
 			let newQuery = '';
 			if (choice === 'title') {
-				newQuery = `title:"${searchResultStore.currentQuery}"`;
+				newQuery = `title:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'title';
 			} else if (choice === 'desc') {
-				newQuery = `description:"${searchResultStore.currentQuery}"`;
+				newQuery = `description:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'desc';
 			} else {
-				newQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+				newQuery = orgQuery;
+				searchResultStore.preliminarySearchMethod = 'all';
 			}
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -498,13 +514,12 @@ export default defineComponent({
 
 		const setDelimitationFilterAndExecute = (choice: string) => {
 			let val = '';
-			if (choice === 'tv') {
+			if (choice === 'origin:"ds.tv"') {
 				val = delimitationOptions.tv;
-			} else if (choice === 'radio') {
+			} else if (choice === 'origin:"ds.radio"') {
 				val = delimitationOptions.radio;
 			} else {
 				val = delimitationOptions.all;
-				searchResultStore.preliminaryFilter = '';
 			}
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -552,15 +567,22 @@ export default defineComponent({
 					opacity: 0,
 					marginLeft: '-15px',
 					onComplete: () => {
+						focusTrap?.deactivate();
 						gsap.set(facetsContainer.value, {
 							display: 'none',
 						});
 					},
 				});
 			} else {
+				if (facetsContainer.value) {
+					focusTrap = createFocusTrap(facetsContainer.value, () => {
+						searchResultStore.showFacets = false;
+					});
+				}
 				gsap.set(facetsContainer.value, {
 					display: 'block',
 					onComplete: () => {
+						focusTrap?.activate();
 						gsap.to(facetsContainer.value, {
 							duration: 0.5,
 							opacity: 1,
@@ -596,9 +618,9 @@ export default defineComponent({
 			translatedGenreArray,
 			getTVFacets,
 			getRadioFacets,
-			selectedSearchMethod,
-			selectedSearchMaterials,
 			addTestDataEnrichment,
+			selectedSearchMethodOptions,
+			selectedSearchMaterialOptions,
 		};
 	},
 });
@@ -631,6 +653,10 @@ export default defineComponent({
 
 .filter-headline {
 	color: #002e70;
+}
+
+.filter-headline .bold {
+	font-weight: 700;
 }
 
 .filter-header button {

@@ -11,7 +11,7 @@
 			:title="obj.title"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
-			@select="updateSelected"
+			@select="emit('update:modelValue', $event)"
 		/>
 	</fieldset>
 </template>
@@ -41,11 +41,7 @@ export default defineComponent({
 	emits: ['update:modelValue'],
 
 	setup(props, { emit }) {
-		const updateSelected = (value: string) => {
-			emit('update:modelValue', value);
-		};
-
-		return { updateSelected };
+		return { emit };
 	},
 });
 </script>

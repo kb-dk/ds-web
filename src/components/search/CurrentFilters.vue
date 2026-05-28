@@ -42,42 +42,6 @@
 						@click="removeFilterAndSearch('genre_facet', router, route)"
 					></KBButton>
 				</div>
-				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.month',
-							months.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-					></KBButton>
-				</div>
-				<div v-if="days.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.weekday',
-							days.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-					></KBButton>
-				</div>
-				<div v-if="timeslots.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.timePeriods',
-							timeslots.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-					></KBButton>
-				</div>
 				<div
 					v-if="
 						(startDate !== null &&
@@ -100,23 +64,34 @@
 				>
 					<KBButton
 						class="label-small"
-						:button-text="`${preliminaryFilterText}`"
+						:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
 						@click="removePreliminaryFilterAndSearch()"
 					></KBButton>
 				</div>
-
+				<div
+					v-if="searchResultStore.preliminarySearchMethod !== 'all'"
+					key="6"
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="searchResultStore.preliminarySearchMethod = 'all'"
+					></KBButton>
+				</div>
 				<span
 					v-if="filtersActive"
-					key="6"
+					key="7"
 					class="seperator"
 				>
 					|
 				</span>
 				<div
 					v-if="filtersActive"
-					key="7"
+					key="8"
 				>
 					<KBButton
 						class="label-small"
@@ -169,16 +144,15 @@ export default defineComponent({
 				(endDate.value as unknown as string) !== ''
 			) {
 				if (
-					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						searchResultStore.categoryFilters.length !== 0 ||
-						searchResultStore.channelFilters.length !== 0 ||
-						startDate.value.getTime() !== startYear.value.getTime() ||
-						endDate.value.getTime() !== endYear.value.getTime() ||
-						searchResultStore.preliminaryFilter !== '') &&
-					route.query.fq !== undefined &&
-					route.query.fq?.length !== 0
+					days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					searchResultStore.categoryFilters.length !== 0 ||
+					searchResultStore.channelFilters.length !== 0 ||
+					startDate.value.getTime() !== startYear.value.getTime() ||
+					endDate.value.getTime() !== endYear.value.getTime() ||
+					searchResultStore.preliminarySearchMethod !== 'all' ||
+					searchResultStore.preliminaryFilter !== ''
 				) {
 					return true;
 				} else {
@@ -300,8 +274,11 @@ export default defineComponent({
 			}
 		};
 		const preliminaryFilterText = computed(() => {
-			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
+			return searchResultStore.preliminaryFilter !== ''
+				? decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
+				: '';
 		});
+
 		return {
 			searchResultStore,
 			timeSearchStore,

@@ -219,6 +219,7 @@ export default defineComponent({
 							}
 						}
 					}
+					searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
 					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
 					searchResultStore.getSearchResults(route.query.q as string);
@@ -235,7 +236,9 @@ export default defineComponent({
 		watch(
 			() => router.currentRoute.value,
 			(newp: RouteLocationNormalizedLoaded, prevp: RouteLocationNormalizedLoaded) => {
+				console.log('MWHAHAH');
 				if (checkParamUpdate(newp, prevp) && route.query.q !== undefined) {
+					console.log('YEA BABY');
 					if (checkIfSortIsChanged(newp.query.sort as string, prevp.query.sort as string)) {
 						searchResultStore.resetStart();
 					} else {

@@ -13,7 +13,7 @@ import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
-	name: 'Facets',
+	name: 'Underlay',
 	components: {},
 
 	setup() {

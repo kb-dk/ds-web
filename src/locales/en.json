@@ -95,6 +95,7 @@
       "fromTheArchive":"The month of {month} on DR through time"
    },
    "facets" : {
+      "headline":"Choose filters, to limit your search for:",
       "allGenres": "all categories",
       "genres": "category | categories",
       "selectedGenres": "{selected} of {total} categories selected",
@@ -112,8 +113,10 @@
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
       },
-      "remove":"Remove"
-
+      "remove":"Remove",
+      "searchingIn":"Only searching in",
+      "desc":"description",
+      "title":"title"
    },
    "breadcrumb": {
       "frontpage":"Frontpage",
