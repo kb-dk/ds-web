@@ -8,15 +8,17 @@
 			/>
 		</div>
 		<div class="time-container">
-			<router-link
+			<KBButton
 				:class="validDate ? 'single-day-link' : 'single-day-link disabled'"
+				class="btn-reg"
 				:data-testid="addTestDataEnrichment('link', 'day-picker', `see-more-link`, 0)"
 				:to="specificDayLink"
+				:is-router-link="true"
+				:button-text="$t('search.showContent')"
+				right-icon-name="arrow_forward_ios"
+				button-type="btn-cta-default"
 				@click="moveToSearchPage()"
-			>
-				<span>{{ $t('search.showContent') }}</span>
-				<div class="check-mark"></div>
-			</router-link>
+			></KBButton>
 		</div>
 	</div>
 </template>
@@ -39,6 +41,8 @@ import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
 import { updateDate } from '@/utils/datepicker-utils';
 import TimePicker from '../TimePicker.vue';
+import { useTimeSearchStore } from '@/store/timeSearchStore';
+import KBButton from '@/components/common/KBButton.vue';
 
 interface MonthYearEvent {
 	instance: number;
@@ -50,10 +54,11 @@ export default defineComponent({
 	name: 'DayPicker',
 	components: {
 		TimePicker,
+		KBButton,
 	},
 	setup() {
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
-
+		const timeSearchStore = useTimeSearchStore();
 		const singleDatePicker = ref<DatePickerInstance>();
 		const selectedDate = ref<Date | undefined>(undefined);
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
@@ -137,7 +142,7 @@ export default defineComponent({
 				endDate.value.setMonth(selectedDate.value.getMonth());
 				endDate.value.setDate(selectedDate.value.getDate());
 			}
-
+			timeSearchStore.setTimeFacetsOpen(true);
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
@@ -240,7 +245,6 @@ export default defineComponent({
 	text-decoration: none;
 	padding: 2px 5px;
 	flex-direction: row-reverse;
-	font-size: 16px;
 	box-sizing: border-box;
 	width: fit-content;
 	padding: 10px 15px;

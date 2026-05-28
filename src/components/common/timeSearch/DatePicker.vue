@@ -104,7 +104,8 @@ export default defineComponent({
 	components: {
 		VueDatePicker,
 	},
-	setup() {
+	emits: ['dateSearch'],
+	setup(props, { emit }) {
 		let startInputTimer: ReturnType<typeof setTimeout> | null = null;
 
 		let endInputTimer: ReturnType<typeof setTimeout> | null = null;
@@ -196,7 +197,7 @@ export default defineComponent({
 			}
 			endInputTimer = setTimeout(() => {
 				updateSelectedDate(e, endInputTimer, validEndDate, endDate, validateEndInput);
-			}, 750); // 750 milliseconds (0.75 second) delay
+			}, 1100); // 750 milliseconds (0.75 second) delay
 		};
 
 		/* This way might seem weird to update the endDate,
@@ -210,12 +211,6 @@ export default defineComponent({
 			holder.setFullYear(year);
 			holder.setHours(23, 59, 59, 999); // End of the day
 			endDate.value = holder;
-
-			if (endDate.value.getTime() !== endYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
-			}
 		};
 
 		const startHandleMonthYear = ({ month, year }: MonthYearEvent) => {
@@ -225,15 +220,12 @@ export default defineComponent({
 			holder.setFullYear(year);
 			holder.setHours(0, 0, 0, 0); // Start of the day
 			startDate.value = holder;
-			if (startDate.value.getTime() !== startYear.value.getTime()) {
-				timeSearchStore.setNewSearchReqMet(true);
-			} else {
-				timeSearchStore.setNewSearchReqMet(false);
-			}
 		};
 
-		const enableApplyButtonIfSearchisValid = () => {
-			timeSearchStore.setFilterSearchReady(validEndDate.value && validStartDate.value);
+		const filterSearchIfValidDate = () => {
+			if (validEndDate.value && validStartDate.value) {
+				emit('dateSearch');
+			}
 		};
 
 		const validateStartInput = () => {
@@ -253,7 +245,7 @@ export default defineComponent({
 			(newValue, oldValue) => {
 				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
 					validateStartInput();
-					enableApplyButtonIfSearchisValid();
+					filterSearchIfValidDate();
 				}
 			},
 		);
@@ -263,7 +255,7 @@ export default defineComponent({
 			(newValue, oldValue) => {
 				if (!newValue || !oldValue || newValue.getTime() !== oldValue.getTime()) {
 					validateEndInput();
-					enableApplyButtonIfSearchisValid();
+					filterSearchIfValidDate();
 				}
 			},
 		);

@@ -20,7 +20,7 @@
 								@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
 							>
 								<span class="material-icons first">today</span>
-								<span class="toggle-time-text">{{ t('timeSearch.filterOpenButton') }}</span>
+								<span class="toggle-time-text btn-medium">{{ t('timeSearch.filterOpenButton') }}</span>
 								<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
 									<span class="dot">
 										<TransitionGroup>

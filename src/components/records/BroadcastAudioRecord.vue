@@ -14,37 +14,40 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
+					<h1>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h1>
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
-					<div class="triangle"></div>
-					<router-link
+					<KBButton
 						v-if="backLink !== '/'"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.back')"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios_new"
 						:to="backLink"
-						class="link-container return"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
-					>
-						{{ $t('record.back') }}
-					</router-link>
-					<router-link
+					></KBButton>
+					<KBButton
 						v-else
-						to="/"
-						class="link-container return"
+						class="btn-medium"
+						:is-router-link="true"
+						:button-text="$t('record.toFrontpage')"
+						button-type="btn-main-medium"
+						left-icon-name="arrow_back_ios_new"
+						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
-					>
-						{{ $t('record.toFrontpage') }}
-					</router-link>
+					></KBButton>
 				</div>
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
 					<h3>{{ $t('record.aired') }}</h3>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">schedule</span>
 						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
 						{{ getBroadcastTime(recordData.endTime) }}
@@ -56,13 +59,13 @@
 							></duration>
 						</span>
 					</div>
-					<div class="info">
+					<div class="info label-medium">
 						<span class="material-icons blue">tv</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<div
 						v-if="recordData.encodesCreativeWork?.episodeNumber"
-						class="info"
+						class="info label-medium"
 					>
 						<span class="material-icons">segment</span>
 						<span class="episode-text">
@@ -93,28 +96,32 @@
 							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
 					</div>
+					<h4 v-if="recordData.annotation">{{ $t('record.annotation') }}</h4>
+					<div v-if="recordData.annotation">
+						<p class="annotation-text">{{ recordData.annotation }}</p>
+					</div>
 				</div>
 				<div class="divider darkblue"></div>
 				<div class="share-button">
-					<div
-						class="link-container get-link"
-						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
+					<KBButton
+						:button-text="$t('record.copy')"
+						button-type="btn-main-medium"
+						class="btn-medium"
+						:data-testid="addTestDataEnrichment('button', 'broadcast-audio', 'copy-link', 0)"
+						left-icon-name="share"
 						@click="getCurrentUrl()"
-					>
-						<span class="material-icons">share</span>
-						<a class="link">{{ $t('record.copy') }}</a>
-					</div>
+					></KBButton>
 				</div>
 			</div>
 		</div>
-		<!-- <ProgramGuide
+		<ProgramGuide
 			:creator="recordData.publication.publishedOn.broadcastDisplayName"
 			:start-date="getBroadcastDate(recordData.startTime, locale)"
 			:records-for-the-day="recordsForTheDay"
 			:current-record-index="currentRecord"
 			class="program-guide"
-		></ProgramGuide> -->
-		<h3 class="related-content-title">{{ $t('search.relatedContent') }}</h3>
+		></ProgramGuide>
+		<h2 class="related-content-title">{{ $t('search.relatedContent') }}</h2>
 		<div class="extra-record-data">
 			<div
 				v-for="(record, index) in moreLikeThisRecords"
@@ -151,7 +158,8 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 import { useSearchResultStore } from '@/store/searchResultStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
-//import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import ProgramGuide from '@/components/common/ProgramGuide.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -161,7 +169,8 @@ export default defineComponent({
 		GridResultItem,
 		AudioPlayer,
 		Duration,
-		//ProgramGuide,
+		ProgramGuide,
+		KBButton,
 	},
 
 	props: {
@@ -268,9 +277,6 @@ h4 {
 	align-items: center;
 	gap: 7px;
 	flex-wrap: wrap;
-	font-weight: 700;
-	line-height: 1.5;
-	font-size: 18px;
 }
 
 .info .material-icons {
@@ -329,6 +335,7 @@ h4 {
 	flex-direction: column;
 	margin: 0px 20px;
 	position: relative;
+	margin-bottom: 20px;
 }
 
 .extra-record-data {
@@ -418,27 +425,29 @@ h4 {
 	text-transform: none;
 }
 
+.annotation-text {
+	margin: 0;
+	text-transform: none;
+}
+
 .link-container {
 	background-color: #0a2e70;
 	width: fit-content;
 	color: white;
 	text-align: center;
 	text-decoration: none;
-	font-size: 18px;
 	border-radius: 4px;
 	height: 40px;
 	display: flex;
 	box-sizing: border-box;
 	margin-bottom: 15px;
 	padding: 5px 14px 9px 14px;
-	font-family: 'noway';
-	font-weight: 100;
 	flex-direction: row;
 	justify-content: center;
+	border: 1px solid #0a2e70;
 }
 .link {
 	position: relative;
-	top: 2px;
 }
 .link-container a {
 	white-space: nowrap;

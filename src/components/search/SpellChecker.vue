@@ -45,9 +45,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.spell-check-query {
-	font-family: noway, sans-serif;
-}
 .spell-check-query a {
 	color: #002e70;
 }
@@ -59,7 +56,6 @@ export default defineComponent({
 .spell-check-box {
 	margin-top: 20px;
 	font-size: 26px;
-	font-family: noway, sans-serif;
 }
 .spell-check-suggestion {
 	display: inline-flex;

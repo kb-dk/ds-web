@@ -1,18 +1,18 @@
 <template>
 	<div class="extra-features">
-		<button
+		<KBButton
 			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
 			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
+			class="btn-reg"
 			:title="$t('search.thumbnailButton')"
 			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
+			:button-is-active="extraContentShown"
+			:button-text="$t('search.thumbnail')"
+			left-icon-name="photo_library"
+			right-icon-name="expand_more"
+			button-type="btn-dropdown-default"
 			@click="showThumbnails()"
-		>
-			<span class="material-icons thumbnails-icon">photo_library</span>
-			{{ $t('search.thumbnail') }}
-			<span :class="extraContentShown ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
-				expand_more
-			</span>
-		</button>
+		></KBButton>
 	</div>
 	<div
 		ref="extraContentRef"
@@ -24,17 +24,15 @@
 			item-class="extra-thumbnail"
 		>
 			<template #default="slotProps">
-				<router-link
+				<div
 					v-for="(item, index) in thumbnailImages"
 					:key="index"
 					draggable="false"
-					:to="{ name: 'Record', params: { id: id }, query: { autoplay: true } }"
 					role="link"
 					class="extra-thumbnail"
 					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"
 					v-bind="slotProps"
 					:replace="router.currentRoute.value.name === 'Record' ? true : false"
-					:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, index)"
 				>
 					<div
 						ref="thumbnailRefs"
@@ -43,13 +41,23 @@
 						<ImageComponent :image-data="thumbnailImageData[index]"></ImageComponent>
 					</div>
 					<div class="img-stamp">
-						{{ convertSecondstoShow(timeStamps[index]) }}
-						<span class="material-icons link-arrow">chevron_right</span>
+						<p class="label-small">{{ convertSecondstoShow(timeStamps[index]) }}</p>
 					</div>
-				</router-link>
+				</div>
 			</template>
 		</ItemSlider>
-		<div class="full-duration">{{ convertSecondstoShow(duration) }}</div>
+
+		<router-link
+			class="watch-program"
+			:to="{ name: 'Record', params: { id: id } }"
+			:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, 0)"
+		>
+			<p class="btn-reg">{{ $t('search.watchProgram') }}</p>
+			<span class="material-icons link-arrow">chevron_right</span>
+		</router-link>
+		<div class="full-duration">
+			<p class="label-medium">| {{ convertSecondstoShow(duration) }}</p>
+		</div>
 	</div>
 </template>
 
@@ -66,12 +74,14 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
 	components: {
 		ImageComponent,
 		ItemSlider,
+		KBButton,
 	},
 	props: {
 		id: { type: String, required: true },
@@ -205,19 +215,6 @@ export default defineComponent({
 	transform: rotateX(180deg);
 }
 
-.link-arrow {
-	font-size: 20px;
-	top: -3px;
-	position: absolute;
-	opacity: 0;
-	transition: all 0.1s linear 0s;
-}
-
-.extra-thumbnail:hover .link-arrow {
-	opacity: 1;
-	transform: translateX(5px);
-}
-
 .thumbnail-button {
 	cursor: pointer;
 	border: 1px solid rgba(230, 230, 230, 1);
@@ -295,11 +292,36 @@ export default defineComponent({
 	padding-left: 6px;
 	color: white;
 	background-color: #002e70;
-	border-left: 1px solid white;
-	line-height: 18px;
+
 	opacity: 0.9;
 }
-
+.full-duration p {
+	margin: 0;
+}
+.watch-program {
+	position: absolute;
+	right: 15px;
+	z-index: 1;
+	align-items: center;
+	color: white;
+	background-color: #002e70;
+	top: calc(50% - 35px);
+	padding: 5px 14px 5px 14px;
+	text-decoration: none;
+	border-radius: 4px;
+	height: 40px;
+	display: flex;
+	box-sizing: border-box;
+	transition: all 0.3s ease-in-out 0s;
+}
+.watch-program > p {
+	margin: 0;
+}
+.watch-program:hover {
+	background-color: #c4f1ed;
+	color: #002e70;
+	border-color: #002e70;
+}
 .extra-thumbnail {
 	flex: 0 0 200px;
 	position: relative;
@@ -336,8 +358,13 @@ export default defineComponent({
 	text-align: center;
 	font-size: 12px;
 	color: white;
-	height: 15px;
+	height: 0.9rem;
 	position: relative;
+	display: flex;
+	justify-content: center;
+}
+.img-stamp > .label-small {
+	margin: 0;
 }
 @media (min-width: 800px) {
 	.thumbnail-button {
@@ -349,6 +376,9 @@ export default defineComponent({
 	}
 	.extra-content {
 		width: calc(100% - 20px);
+	}
+	.watch-program {
+		right: 75px;
 	}
 }
 

@@ -25,12 +25,12 @@
 							fq: [encodeURIComponent(`genre_facet:${quotation(entity.name)}`)],
 						},
 					}"
-					class="category-item"
+					class="category-item btn-medium"
 					:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${entity.name}`, i)"
 					@click="scrollToTop()"
 				>
 					{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
-					<span class="number">{{ entity.number.toLocaleString('de-DE') }}</span>
+					<span class="number label-regular">{{ entity.number.toLocaleString('de-DE') }}</span>
 					<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
 				</router-link>
 			</div>
@@ -159,7 +159,6 @@ export default defineComponent({
 }
 
 .header h2 {
-	font-family: 'LibreBaskerville';
 	font-weight: 100;
 	font-size: 32px;
 	margin: 0;
@@ -205,11 +204,11 @@ export default defineComponent({
 }
 
 .category-item {
-	background: #ffffff 0% 0% no-repeat padding-box;
+	background: #002e70 0% 0% no-repeat padding-box;
 	box-shadow: 2px 2px 4px #75757500;
 	border: 2px solid #ffffff;
 	border-radius: 4px;
-	color: #002e70;
+	color: white;
 	width: 100%;
 	padding: 8px 8px 0px 10px;
 	box-sizing: border-box;
@@ -222,32 +221,30 @@ export default defineComponent({
 	display: flex;
 	/*justify-content: center;
 	align-items: center;*/
-	font-size: 26px;
-	line-height: 1;
 	transition: all 0.1s linear 0s;
 }
 
 .category-item:hover {
 	background-color: #c4f1ed;
-	border: 2px solid #ffffff;
+	border: 2px solid #002e70;
+	color: #002e70;
 }
 
 .category-image {
 	transition: all 0.25s linear 0s;
-	color: #c4f1ed;
+	color: #002e70;
 	position: absolute;
 	width: 24px;
 	height: 24px;
 	z-index: 20;
 	top: -25px;
 	left: -1px;
-	background-image: url('@/assets/icons/default/diverse.svg');
+	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 	filter: hue-rotate(5deg);
 }
 
 .category-item:hover .category-image {
 	transform: rotateZ(25deg);
-	background-image: url('@/assets/icons/cyan/diverse-cyan.svg');
 }
 .category-item:hover .category-image.livsstil {
 	top: -30px;
@@ -257,79 +254,45 @@ export default defineComponent({
 	position: absolute;
 	bottom: -16px;
 	right: 8px;
-	font-size: 16px !important;
 	padding: 2px 5px 3px 5px;
+	color: #002e70;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid #002e70;
 	border-radius: 4px;
 }
 
 .diverse {
-	background-image: url('@/assets/icons/default/diverse.svg');
+	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 }
 .dokumentar {
-	background-image: url('@/assets/icons/default/dokumentar.svg');
+	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
 }
 .film-og-serier {
-	background-image: url('@/assets/icons/default/fiktion.svg');
+	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
 }
 .kultur-og-oplysning {
-	background-image: url('@/assets/icons/default/kultur.svg');
+	background-image: url('@/assets/icons/blue/kultur-blue.svg');
 }
 .livsstil {
-	background-image: url('@/assets/icons/default/livsstil.svg');
+	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
 }
 .musik {
-	background-image: url('@/assets/icons/default/musik.svg');
+	background-image: url('@/assets/icons/blue/musik-blue.svg');
 }
 .nyheder-politik-og-samfund {
-	background-image: url('@/assets/icons/default/nyheder.svg');
+	background-image: url('@/assets/icons/blue/nyheder-blue.svg');
 }
 .sport {
-	background-image: url('@/assets/icons/default/sport.svg');
+	background-image: url('@/assets/icons/blue/sport-blue.svg');
 }
 .humor-quiz-og-underholdning {
-	background-image: url('@/assets/icons/default/underholdning.svg');
+	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
 }
 .natur-og-videnskab {
-	background-image: url('@/assets/icons/default/videnskab.svg');
+	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
 }
 .brn-og-unge {
-	background-image: url('@/assets/icons/default/born.svg');
-}
-
-.category-item:hover .diverse {
-	background-image: url('@/assets/icons/cyan/diverse-cyan.svg');
-}
-.category-item:hover .dokumentar {
-	background-image: url('@/assets/icons/cyan/dokumentar-cyan.svg');
-}
-.category-item:hover .film-og-serier {
-	background-image: url('@/assets/icons/cyan/fiktion-cyan.svg');
-}
-.category-item:hover .kultur-og-oplysning {
-	background-image: url('@/assets/icons/cyan/kultur-cyan.svg');
-}
-.category-item:hover .livsstil {
-	background-image: url('@/assets/icons/cyan/livsstil-cyan.svg');
-}
-.category-item:hover .musik {
-	background-image: url('@/assets/icons/cyan/musik-cyan.svg');
-}
-.category-item:hover .nyheder-politik-og-samfund {
-	background-image: url('@/assets/icons/cyan/nyheder-cyan.svg');
-}
-.category-item:hover .sport {
-	background-image: url('@/assets/icons/cyan/sport-cyan.svg');
-}
-.category-item:hover .humor-quiz-og-underholdning {
-	background-image: url('@/assets/icons/cyan/underholdning-cyan.svg');
-}
-.category-item:hover .natur-og-videnskab {
-	background-image: url('@/assets/icons/cyan/videnskab-cyan.svg');
-}
-.category-item:hover .brn-og-unge {
-	background-image: url('@/assets/icons/cyan/born-cyan.svg');
+	background-image: url('@/assets/icons/blue/born-blue.svg');
 }
 
 .container {

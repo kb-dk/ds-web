@@ -4,7 +4,7 @@
 			:title="t(`categories.${santizeAndSimplify(title)}`)"
 			class="label"
 		>
-			<span class="title">{{ t(`categories.${santizeAndSimplify(title)}`) }}</span>
+			<span class="title btn-medium">{{ t(`categories.${santizeAndSimplify(title)}`) }}</span>
 			<div
 				v-if="checked"
 				class="small-checkbox"
@@ -15,7 +15,7 @@
 			>
 				<span
 					v-if="!loading"
-					class="number"
+					class="number label-regular"
 				>
 					{{ displayAmount(amount) }}
 				</span>
@@ -220,8 +220,6 @@ input:focus {
 	display: flex;
 	/*justify-content: center;
 	align-items: center;*/
-	font-size: 26px;
-	line-height: 1;
 	transition: all 0.1s linear 0s;
 	padding: 8px 8px 0px 10px;
 }
@@ -230,7 +228,6 @@ input:focus {
 	position: absolute;
 	bottom: -16px;
 	right: 8px;
-	font-size: 12px !important;
 	padding: 5px;
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid white;

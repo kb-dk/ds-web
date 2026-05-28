@@ -4,32 +4,17 @@
 			<div class="hit-count">
 				<div :class="['filter-options', { disabled: searchResultStore.loading, open: searchResultStore.showFacets }]">
 					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
-						<button
+						<KBButton
 							ref="toggleFacetsButton"
 							role="switch"
 							aria-checked="true"
-							class="filter-button"
+							class="btn-medium"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
+							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"
+							:left-icon-name="!searchResultStore.showFacets ? 'tune' : 'close'"
+							button-type="btn-main-medium"
 							@click="toggleFacets()"
-						>
-							<span class="material-icons">{{ !searchResultStore.showFacets ? 'tune' : 'close' }}</span>
-							<span class="filter-button-text">
-								{{ searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters') }}
-							</span>
-						</button>
-						<button
-							v-if="
-								searchResultStore.filters.length > 0 ||
-								searchResultStore.channelFilters.length > 0 ||
-								searchResultStore.categoryFilters.length > 0
-							"
-							class="reset"
-							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'reset-filters', 0)"
-							@click="resetFilters()"
-						>
-							<span>×</span>
-							{{ $t('search.resetFilters') }}
-						</button>
+						></KBButton>
 					</div>
 					<div :class="`type-toggles ${searchResultStore.showFacets ? 'type-toggles-filter-active' : ''}`">
 						<button
@@ -38,7 +23,7 @@
 							@click="toggleTV($event)"
 						>
 							<span class="material-icons second">play_circle_filled</span>
-							TV
+							<p class="btn-medium">TV</p>
 							<span :class="tvToggled ? 'dark-bar open' : 'dark-bar closed'">
 								<span class="dot">
 									<TransitionGroup>
@@ -60,7 +45,7 @@
 							@click="toggleRadio($event)"
 						>
 							<span class="material-icons second">volume_up</span>
-							RADIO
+							<p class="btn-medium">RADIO</p>
 							<span :class="radioToggled ? 'dark-bar open' : 'dark-bar closed'">
 								<span class="dot">
 									<TransitionGroup>
@@ -79,20 +64,20 @@
 					</div>
 				</div>
 				<Facets />
-				<button
+
+				<KBButton
 					v-if="searchResultStore.showFacets"
 					ref="toggleFacetsButton"
 					role="switch"
 					aria-checked="true"
-					class="filter-button filter-button-bottom"
+					class="btn-medium"
+					:custom-style="{ position: 'relative', top: 'calc(-2vw + -10px)' }"
 					:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 1)"
+					:button-text="$t('search.hideFilters')"
+					left-icon-name="close"
+					button-type="btn-main-medium"
 					@click="toggleFacets()"
-				>
-					<span class="material-icons">{{ 'close' }}</span>
-					<span class="filter-button-text">
-						{{ $t('search.hideFilters') }}
-					</span>
-				</button>
+				></KBButton>
 				<div
 					v-if="searchResultStore.numFound !== 0 || (searchResultStore.numFound !== 0 && searchResultStore.loading)"
 					:class="searchResultStore.showFacets ? 'result-options less-top-padding' : 'result-options'"
@@ -118,10 +103,12 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ t('search.page') }}
-									{{ searchResultStore.pageNumber }}
-									{{ t('search.of') }}
-									{{ searchResultStore.maxPages }}
+									<p class="label-small">
+										{{ t('search.page') }}
+										{{ searchResultStore.pageNumber }}
+										{{ t('search.of') }}
+										{{ searchResultStore.maxPages }}
+									</p>
 								</div>
 							</Transition>
 							<Transition name="fade">
@@ -129,8 +116,9 @@
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
 									class="page-count"
 								>
-									{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} -
-									{{ calcRowCount }}
+									<p class="label-small">
+										{{ t('search.showing') }} {{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }}
+									</p>
 								</div>
 							</Transition>
 						</div>
@@ -180,17 +168,8 @@ import Sort from './Sort.vue';
 import HitCount from './HitCount.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import CurrentFilters from '@/components/search/CurrentFilters.vue';
-import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { Severity } from '@/types/NotificationType';
-import {
-	days,
-	timeslots,
-	months,
-	startDate,
-	startYear,
-	endDate,
-	endYear,
-} from '../common/timeSearch/TimeSearchInitValues';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'SearchOverhead',
@@ -199,6 +178,7 @@ export default defineComponent({
 		Sort,
 		Facets,
 		CurrentFilters,
+		KBButton,
 	},
 
 	setup() {
@@ -248,36 +228,6 @@ export default defineComponent({
 			},
 			{ immediate: true },
 		);
-
-		const resetFilters = () => {
-			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
-			resetAllSelectorValues(days.value);
-			resetAllSelectorValues(timeslots.value);
-			resetAllSelectorValues(months.value);
-			searchResultStore.queryLimitReached = false;
-			if (startDate.value !== null && endDate.value !== null) {
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			} else {
-				startDate.value = new Date();
-				endDate.value = new Date();
-				startDate.value.setTime(startYear.value.getTime());
-				endDate.value.setTime(endYear.value.getTime());
-			}
-
-			if (routeQueries.q === '*:*') {
-				delete routeQueries.q;
-			}
-			delete routeQueries.start;
-			delete routeQueries.fq;
-			delete routeQueries.sort;
-
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
 
 		const setDelimitationFilterAndExecute = () => {
 			let val = '';
@@ -361,7 +311,6 @@ export default defineComponent({
 
 		const toggleFacets = () => {
 			searchResultStore.toggleShowFacets(!searchResultStore.showFacets);
-			toggleFacetsButton.value?.setAttribute('aria-checked', searchResultStore.showFacets.toString());
 		};
 
 		const setGridAndLoadResults = (grid: boolean) => {
@@ -385,7 +334,6 @@ export default defineComponent({
 			radioToggled,
 			toggleRadio,
 			toggleTV,
-			resetFilters,
 			addTestDataEnrichment,
 			calcRowCount,
 		};
@@ -412,6 +360,7 @@ export default defineComponent({
 }
 
 .filter-container {
+	margin-top: 5px;
 	z-index: 1;
 	position: relative;
 }
@@ -546,51 +495,15 @@ export default defineComponent({
 }
 
 .page-count {
-	font-size: 16px;
 	display: inline-block;
 }
-
-.filter-button {
-	display: flex;
-	position: relative;
-	border: 1px solid #002e70;
-	line-height: 24px;
-	cursor: pointer;
-	margin: 10px 0px;
-	margin-right: auto;
-	margin-left: 0;
-	background-color: #002e70;
-	color: white;
-	border-radius: 4px;
-	z-index: 0;
-	font-size: 20px;
-	padding: 6px 12px 9px 12px;
-	font-family: noway, sans-serif;
-	transition: all 0.25s linear 0s;
-	align-items: baseline;
-}
-.filter-button:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-}
-.filter-button[aria-checked='true'] {
-}
-.filter-button:hover .material-icons {
-}
-
-.filter-button .material-icons {
-	font-size: 24px;
-	position: relative;
-	top: 5px;
+.page-count > .label-small {
+	margin: 0;
 }
 
 .material-icons {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.filter-button-text {
-	padding-left: 5px;
 }
 
 .source-facet-button {
@@ -698,38 +611,6 @@ export default defineComponent({
 	border-radius: 15px;
 }
 
-.reset {
-	font-family: noway, sans-serif;
-	cursor: pointer;
-	padding: 10px 8px 10px 7px;
-	font-size: 16px;
-	width: fit-content;
-	display: flex;
-	align-items: center;
-	border: 1px solid #f7ae3b;
-	background: #ffffff;
-	color: #002e70;
-	border-radius: 4px;
-	transition: all 0s linear 0s;
-	background-color: #f7ae3b;
-	height: 26px;
-	z-index: 1;
-	box-shadow:
-		inset 1px 1px 2px #00000000,
-		1px 1px 2px #00000029;
-	margin-left: 35px;
-	transition: all 0.25s linear 0s;
-}
-.reset:hover {
-	border: 1px solid #002e70;
-}
-
-.reset span {
-	font-size: 30px;
-	padding-bottom: 5px;
-	padding-right: 4px;
-}
-
 .filter-buttons {
 	position: relative;
 	margin-right: auto;
@@ -740,16 +621,9 @@ export default defineComponent({
 	flex-direction: row;
 }
 
-.filter-button-bottom {
-	top: calc(-2vw + -10px);
-}
-
 @media (min-width: 640px) {
 	.filter-options {
 		flex-direction: row;
-	}
-	.filter-button.open {
-		margin-bottom: calc(-2vw + -5px);
 	}
 	.type-toggles {
 		width: auto;
@@ -767,33 +641,21 @@ export default defineComponent({
 		flex-direction: row;
 		align-items: center;
 	}
-	.filter-button-bottom {
-		top: calc(-2vw + -5px);
-	}
 }
 
 @media (min-width: 2000px) {
-	.filter-button-bottom {
-		top: calc(-2vw + -10px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-2vw + -10px);
 	}
 }
 
 @media (min-width: 3000px) {
-	.filter-button-bottom {
-		top: calc(-2vw + -15px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-2vw + -15px);
 	}
 }
 
 @media (min-width: 4000px) {
-	.filter-button-bottom {
-		top: calc(-1vw + 10px);
-	}
 	.filter-options.open {
 		margin-bottom: calc(-1vw + 10px);
 	}

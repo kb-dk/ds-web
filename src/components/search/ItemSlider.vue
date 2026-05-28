@@ -6,7 +6,7 @@
 			@click="moveSlider(-550)"
 		>
 			<div class="item-slider-direction-arrow-inner">
-				<span class="material-icons">arrow_back_ios</span>
+				<span class="material-icons">arrow_back_ios_new</span>
 			</div>
 		</div>
 		<div
@@ -252,9 +252,6 @@ export default defineComponent({
 	align-items: center;
 	display: flex;
 	text-align: center;
-}
-.item-slider-direction-arrow.left > .item-slider-direction-arrow-inner > .material-icons {
-	margin-left: 7px;
 }
 @media (min-width: 990px) {
 	.item-slider-direction-arrow {

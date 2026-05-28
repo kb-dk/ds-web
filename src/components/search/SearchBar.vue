@@ -779,7 +779,6 @@ input:focus {
 	height: 72px;
 	border: none;
 	background: white;
-	font-family: 'noway', sans-serif;
 	cursor: pointer;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -888,7 +887,6 @@ input:focus {
 
 .portal-dropdown-menu-inner button,
 .portal-dropdown-menu-inner a {
-	font-family: 'noway', sans-serif;
 	font-size: 16px;
 	transition: all 0.3s linear 0s;
 }

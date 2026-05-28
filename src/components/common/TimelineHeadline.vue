@@ -12,46 +12,37 @@
 		</div>
 		<div class="headline">
 			<legend>
-				<h2>{{ headline }}</h2>
+				<h2 class="label-medium">{{ headline }}</h2>
 			</legend>
-			<span>{{ subline }}</span>
+			<span class="label-regular">{{ subline }}</span>
 		</div>
 		<div class="selected-items">
-			<button
+			<KBButton
 				v-for="(item, index) in selectedItems.selectedItems"
 				:key="`${index}-${item.name}`"
-				:title="useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name"
-				class="selected-entity"
+				class="selected-entity label-small"
 				:data-testid="addTestDataEnrichment('button', 'timeline-headline', `${headline}-small-status-toggle`, 0)"
+				:button-text="
+					formatStringForTime(
+						(useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name).substring(
+							0,
+							filterCuttof,
+						),
+					)
+				"
+				button-type="btn-tag-primary"
+				:title="`${t('facets.remove')} ${
+					useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name
+				}`"
+				right-icon-name="close"
 				@click="handleTimeFacetRemoval(item.index, $event)"
-			>
-				<span
-					v-if="useTranslation"
-					class="entity-name"
-				>
-					{{
-						formatStringForTime(
-							(useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name).substring(
-								0,
-								filterCuttof,
-							),
-						)
-					}}
-				</span>
-				<span
-					v-else
-					class="entity-name"
-				>
-					{{ formatStringForTime(item.name.substring(0, filterCuttof)) }}
-				</span>
-				<span class="close">×</span>
-			</button>
-			<button
+			></KBButton>
+			<KBButton
 				v-if="selectedItems.overflow > 0"
-				class="selected-entity overflow-enitity"
-			>
-				{{ selectedItems.overflow }}+
-			</button>
+				button-type="btn-tag-sub"
+				:button-text="`${selectedItems.overflow}+`"
+				class="label-small selected-entity"
+			></KBButton>
 		</div>
 	</button>
 </template>
@@ -61,9 +52,10 @@ import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from
 import { useI18n } from 'vue-i18n';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
-
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'TimelineHeadline',
+	components: { KBButton },
 	props: {
 		open: {
 			type: Boolean as PropType<boolean>,
@@ -199,20 +191,15 @@ h2 {
 	padding: 0;
 	margin: 0;
 	height: 20px;
-	font-size: 20px;
-	font-weight: 100;
 	color: #002e70;
 	height: auto;
 	float: left;
-	font-family: noway, sans-serif;
 }
 
 .headline span {
 	padding: 0;
 	margin: 0;
-	height: 20px;
-	font-size: 14px;
-	font-weight: 700;
+	height: 1.5rem;
 	color: #002e70;
 	background-color: #d9f5fe;
 	border: 1px solid white;
@@ -234,7 +221,7 @@ h2 {
 	flex-wrap: wrap;
 	flex-direction: row;
 	align-content: flex-start;
-	height: 55px;
+	height: 60px;
 	width: 100%;
 	transition: all 0.15s linear 0s;
 	align-items: flex-start;
@@ -262,53 +249,23 @@ h2 {
 	max-width: 40%;
 	gap: 10px;
 	justify-content: flex-end;
-	max-height: 60px;
+	max-height: 80px;
 	overflow: hidden;
 }
 
-.selected-entity {
-	display: flex;
-	width: 68px;
-	align-items: center;
-	justify-content: space-between;
-	border: 0px;
-	border-radius: 15px;
-	background-color: #002e70;
-	color: white;
-	cursor: pointer;
-	position: relative;
-	z-index: 5;
-	white-space: pre;
-}
-
-.selected-entity .entity-name {
-	text-transform: capitalize;
-}
-
-.selected-entity .close {
-	font-size: 20px;
-	float: right;
-}
-.overflow-enitity {
-	padding: 4px;
-	justify-content: center;
-	background-color: #c4f1ed;
-	border: 1px solid #002e70;
-	color: #002e70;
-}
 @media (min-width: 990px) {
 	.headline-container {
-		height: 50px;
+		height: 55px;
 		padding-top: 5px;
 	}
 	.headline-container.open:hover {
 		cursor: pointer;
-		height: 50px !important;
+		height: 55px !important;
 	}
 
 	.headline-container:hover {
 		cursor: pointer;
-		height: 55px;
+		height: 60px;
 		padding-top: 8px;
 	}
 	.headline-container:hover h2 {
@@ -316,7 +273,7 @@ h2 {
 	}
 	.selected-items {
 		gap: 5px;
-		max-height: 55px;
+		max-height: 75px;
 	}
 }
 </style>

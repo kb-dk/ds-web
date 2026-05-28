@@ -22,7 +22,7 @@
 								id="mobileMainSearchButton"
 								data-testid="button-topmenu-searchfield-toggle-0"
 								type="button"
-								class="icon-button search-button d-lg-none"
+								class="icon-button search-button d-lg-none menu-secondary"
 								data-toggle="collapse"
 								aria-expanded="true"
 								aria-label="Luk søgefelt"
@@ -53,7 +53,7 @@
 								<button
 									id="mobileNavButton"
 									data-testid="button-topmenu-menu-toggle-0"
-									class="btn rdl-burger collapsed"
+									class="btn rdl-burger collapsed menu-secondary"
 									data-toggle="collapse"
 									data-target="#mobileNavigation"
 									:aria-expanded="menuOpen"
@@ -105,6 +105,7 @@
 										:aria-expanded="true"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										:class="`nav-item level-1  ${item.id ? 'cursive' : ''}`"
+										class="menu-main"
 										role="menuitem"
 										@click="toggleSearchBar"
 									>
@@ -123,7 +124,7 @@
 										v-else
 										:href="item.link"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
-										class="nav-item level-1"
+										class="nav-item level-1 menu-main"
 										role="menuitem"
 									>
 										{{ item.title }}
@@ -151,7 +152,7 @@
 								>
 									<button
 										v-if="item.id"
-										class="nav-item level-1"
+										class="nav-item level-1 menu-secondary"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
 										role="menuitem"
 										@click="switchLocale"
@@ -171,7 +172,7 @@
 										v-else
 										:href="item.link"
 										:data-testid="addTestDataEnrichment('link', 'topmenu', item.title, 0)"
-										class="nav-item level-1"
+										class="nav-item level-1 menu-secondary"
 										role="menuitem"
 									>
 										<span v-text="item.title"></span>
@@ -311,7 +312,6 @@ a {
 	font-weight: 700;
 	color: #002e70;
 	text-decoration: none;
-	font-family: noway, sans-serif;
 	text-transform: uppercase;
 }
 
@@ -329,15 +329,11 @@ a {
 
 .rdl-secondary-nav button,
 .rdl-primary-nav button {
-	font-weight: 700;
 	color: #002e70;
 	text-decoration: none;
-	font-family: noway, sans-serif;
 	text-transform: uppercase;
-	font-size: 20px;
 	cursor: pointer;
 }
-
 .container {
 	display: flex;
 	justify-content: space-between;
@@ -379,7 +375,6 @@ a {
 .search-col span {
 	font-size: 12px;
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
 	position: relative;
 	color: black;
 }
@@ -397,7 +392,6 @@ a {
 	align-items: flex-end;
 	justify-content: center;
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
 }
 
 .account_circle i {
@@ -447,10 +441,6 @@ a {
 .rdl-secondary-nav,
 .rdl-primary-nav {
 	text-transform: uppercase;
-	font-family: 'noway', sans-serif;
-	font-weight: 700;
-	font-size: 1.25rem;
-	line-height: 1.5rem;
 	padding-top: 13px;
 	padding-bottom: 13px;
 	padding-left: 24px;
@@ -487,7 +477,6 @@ a {
 	flex-direction: column;
 	position: relative;
 	background-color: #caf0fe;
-	font-family: noway, sans-serif;
 }
 
 .theme-blue .header-bg-wrapper.rdl-theme-bg {
@@ -503,7 +492,6 @@ a {
 }
 
 .nav-item.level-1 {
-	line-height: 24px;
 	letter-spacing: -0.2px;
 	/* 		margin-left: 4px;
  */
@@ -743,7 +731,6 @@ li button i {
 		display: none;
 	}
 	.rdl-secondary-nav {
-		font-size: 0.75rem;
 		padding-left: 0px;
 		padding-top: 0px;
 		padding-bottom: 0px;
@@ -757,7 +744,6 @@ li button i {
 	}
 
 	.rdl-primary-nav {
-		font-size: 1rem;
 		padding-left: 0px;
 		padding-top: 0px;
 		padding-bottom: 0px;
@@ -789,20 +775,17 @@ li button i {
 		padding: 0px 0px;
 		margin-top: 13px;
 		margin-bottom: 13px;
-		line-height: 1.25rem;
 	}
 
 	.rdl-secondary-nav .nav-item.level-1 {
 		margin-right: 4px;
 		margin-left: 4px;
 		padding-bottom: 0;
-		font-size: 0.75rem;
 	}
 
 	.rdl-primary-nav .nav-item.level-1 {
 		margin-right: 8px;
 		margin-left: 8px;
-		font-size: 1rem;
 	}
 
 	.collapse .rdl-main-navigation {
@@ -834,13 +817,9 @@ li button i {
 	.global-header .search i {
 		font-size: 1.25rem;
 	}
-	.rdl-secondary-nav .nav-item.level-1 {
-		line-height: 1.5rem;
-		font-size: 0.875rem;
-	}
+
 	.rdl-primary-nav .nav-item.level-1 {
 		padding-bottom: 2px;
-		font-size: 1.25rem;
 	}
 
 	.rdl-secondary-nav {

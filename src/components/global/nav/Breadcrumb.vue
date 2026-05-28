@@ -25,7 +25,7 @@
 						class="level-1"
 						:title="t('breadcrumb.frontpage')"
 					>
-						<span class="breadcrumb-title">{{ t('breadcrumb.frontpage') }}</span>
+						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.frontpage') }}</span>
 					</a>
 					<span class="line">/</span>
 
@@ -35,20 +35,25 @@
 						class="level-2"
 						:title="t('breadcrumb.findMaterials')"
 					>
-						<span class="breadcrumb-title">{{ t('breadcrumb.findMaterials') }}</span>
+						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.findMaterials') }}</span>
 					</a>
 					<span class="line level-2">/</span>
 				</div>
 			</Transition>
-			<router-link
-				:to="{ path: '/' }"
-				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
-				class="level-3"
-				:title="t('breadcrumb.drArchive')"
-				@click="searchResultStore.resetSearch()"
-			>
-				<span class="breadcrumb-title highlighted">{{ t('breadcrumb.drArchive') }}</span>
-			</router-link>
+
+			<div class="level-3">
+				<KBButton
+					button-type="btn-main-small"
+					class="btn-reg"
+					:to="{ path: '/' }"
+					:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
+					:is-router-link="true"
+					:title="t('breadcrumb.drArchive')"
+					:button-text="t('breadcrumb.drArchive')"
+					@click="searchResultStore.resetSearch()"
+				></KBButton>
+			</div>
+
 			<span
 				v-if="$route.name === 'Search'"
 				class="line"
@@ -57,9 +62,9 @@
 			</span>
 			<span
 				v-if="$route.name === 'Search'"
-				class="level-4"
+				class="level-4 btn-reg"
 			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</span>
 			<span
 				v-if="$route.name === 'Record' && lastPath"
@@ -69,27 +74,27 @@
 			</span>
 			<router-link
 				v-if="$route.name === 'Record' && lastPath"
-				class="level-5"
+				class="level-5 btn-reg"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
 				:title="t('breadcrumb.search')"
 			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>
 			<router-link
 				v-if="$route.name === 'Record' && !lastPath"
-				class="level-5"
+				class="level-5 btn-reg"
 				:to="{ name: 'Search' }"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-empty', 4)"
 				:title="t('breadcrumb.search')"
 			>
 				<span class="line">/</span>
-				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}</span>
+				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>
 			<span v-if="$route.name === 'Record'">/</span>
 			<span
 				v-if="$route.name === 'Record'"
-				class="level-6"
+				class="level-6 btn-reg"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
@@ -129,12 +134,16 @@
 						<p>
 							{{ t('search.frontpageGuide.third') }}
 						</p>
-						<a
-							target="_blank"
-							:href="t('search.frontpageGuide.link')"
-						>
-							{{ t('search.frontpageGuide.linktext') }}
-						</a>
+						<p>
+							<a
+								class="link"
+								target="_blank"
+								:href="t('search.frontpageGuide.link')"
+							>
+								<span class="material-icons">link</span>
+								<span class="link-text">{{ t('search.frontpageGuide.linktext') }}</span>
+							</a>
+						</p>
 					</div>
 				</InfoComponent>
 			</div>
@@ -148,11 +157,13 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import InfoComponent from '@/components/common/InfoComponent.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
 	components: {
 		InfoComponent,
+		KBButton,
 	},
 	setup() {
 		const { t, locale } = useI18n();
@@ -163,7 +174,15 @@ export default defineComponent({
 		const prelinksShown = ref(false);
 		const dotsShown = ref(true);
 		const timeout: Ref<number | null> = ref(null);
-
+		const searchWord = computed(() => {
+			if (searchResultStore.lastSearchQuery) {
+				if (searchResultStore.lastSearchQuery !== '*:*') {
+					return `: ${searchResultStore.lastSearchQuery}`;
+				}
+				return '';
+			}
+			return '';
+		});
 		const currentPage = computed(() => {
 			let page = route.name as string;
 			if (page) {
@@ -184,7 +203,7 @@ export default defineComponent({
 			timeout.value = setTimeout(() => {
 				togglePreLinks(false);
 				toggleDots(true);
-			}, 1000);
+			}, 5000);
 		};
 
 		const showDotContent = () => {
@@ -239,6 +258,7 @@ export default defineComponent({
 			hideDotContentOnDelay,
 			showDotContent,
 			resetTimeout,
+			searchWord,
 		};
 	},
 });
@@ -290,7 +310,7 @@ export default defineComponent({
 }
 
 .breadcrumb {
-	height: 40px;
+	height: 47px;
 	position: relative;
 	background-color: #caf0fe;
 	z-index: 1;
@@ -315,7 +335,6 @@ export default defineComponent({
 	background-color: transparent;
 	border: 0px solid transparent;
 	display: flex;
-	font-family: noway, sans-serif;
 	padding: 0;
 	margin: 0;
 	cursor: pointer;
@@ -337,7 +356,9 @@ export default defineComponent({
 .home .level-3 {
 	display: initial;
 }
-
+.level-3 {
+	margin-right: 4px;
+}
 .record .level-5,
 .record .level-6 {
 	display: initial;
@@ -351,7 +372,13 @@ export default defineComponent({
 .search .level-4 {
 	display: initial;
 }
-
+.level-4,
+.level-5 {
+	white-space: nowrap;
+	max-width: 10rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .home-icon {
 	display: none;
 	font-size: 18px;
@@ -368,7 +395,9 @@ export default defineComponent({
 .breadcrumb a:hover span {
 	color: #002e70;
 }
-
+.breadcrumb .link:hover span {
+	color: var(--color-default);
+}
 .breadcrumb a:hover .line {
 	color: black;
 }
@@ -381,7 +410,7 @@ export default defineComponent({
 	color: black;
 }
 
-.breadcrumb-title.highlighted {
+.btn-reg.highlighted {
 	color: white;
 	background-color: #002e70;
 	border-radius: 4px;
@@ -392,7 +421,7 @@ export default defineComponent({
 	white-space: pre;
 }
 
-.breadcrumb-title.highlighted:hover {
+.btn-reg.highlighted:hover {
 	background-color: #c4f1ed;
 	color: pink;
 }
@@ -408,7 +437,6 @@ export default defineComponent({
 	text-decoration: none;
 	margin: 0px 2px;
 	color: black;
-	font-size: 12px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -435,17 +463,35 @@ export default defineComponent({
 	margin-left: auto;
 }
 
-.search-help a {
-	color: #002e70;
-	text-decoration: underline;
-}
-
 .search-help span {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .cursive-text {
 	font-style: italic;
+}
+.link {
+	color: var(--color-default);
+	text-align: left;
+	text-decoration: none;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+}
+.link > .material-icons {
+	margin-right: 2px;
+}
+.link-text {
+	transition: 200ms;
+	border-bottom: 1px solid transparent;
+}
+.link:hover {
+	transition: all 5s ease 0s;
+	color: var(--color-default);
+	.link-text {
+		border-color: var(--color-default);
+	}
 }
 
 /* MEDIA QUERY 510 */
@@ -455,16 +501,12 @@ export default defineComponent({
 		padding-right: 12px;
 		padding-left: 12px;
 	}
-	.breadcrumb-title {
-		font-size: 14px;
-	}
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.breadcrumb-title {
 		padding: 0px 3px;
 		margin: 0px 5px;
-		font-size: 16px;
 	}
 	.container {
 		max-width: 990px;
@@ -484,7 +526,10 @@ export default defineComponent({
 	.mobile-hidden {
 		display: initial;
 	}
-
+	.level-4,
+	.level-5 {
+		max-width: 15rem;
+	}
 	.level-1,
 	.level-2,
 	.level-3,

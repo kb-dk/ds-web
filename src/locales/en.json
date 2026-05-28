@@ -106,7 +106,8 @@
       "slowResponse": {
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
-      }
+      },
+      "remove":"Remove"
 
    },
    "breadcrumb": {
@@ -193,6 +194,7 @@
       "showing":"Showing",
       "outOf":"out of",
      "recordThumbnail":"Thumbnail from {title}",
+      "watchProgram": "Watch program",
      "searchbtn":"Search",
      "hitcount": " result fund with | results found with",
      "filterSearch": " results found with your filters",
@@ -228,7 +230,7 @@
      "sortBy":"Sort by",
      "selected": "Selected",
      "title": "Title",
-     "relevance":"Relevance",
+     "relevance":"Best match",
      "date":"Date",
      "channels":"Channels",
      "relatedSubjects":"Related subjects",
@@ -263,7 +265,7 @@
 
       },
       "placeholders": {
-         "drArchive":"Search for example by title, year or category",
+         "drArchive":"Search for example by title or year",
          "booksAndMaterials":"Search title, author, journal, database etc. ",
          "kbdk":"Search on website",
          "webshop":"Search in our webshop",
@@ -318,6 +320,7 @@
      "timestamp": "at ",
      "title":"Title",
      "genre":"Genre",
+     "annotation": "Annotation",
      "copy":"Share link",
      "copyTitleSuccess":"The link has now been copied.",
      "copyMessageSuccess":"",
@@ -539,8 +542,8 @@
       "musik":"Music",
       "natur-og-videnskab":"Nature and science",
       "nyheder-politik-og-samfund":"News, politics, and society",
-      "radio-rodekasse":"Radio jumble box",
-      "tv-rodekasse":"TV jumble box"
+      "radio-rodekasse":"Mixed radio",
+      "tv-rodekasse":"Mixed TV"
    },
    "find":{
       "headline":"What do you want to search for?",

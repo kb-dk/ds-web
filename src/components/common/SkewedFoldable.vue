@@ -35,8 +35,10 @@
 					:style="`color:${text}`"
 					class="headline"
 				>
-					<h2>{{ title }}</h2>
-					<span>{{ subtitle }}</span>
+					<h2 class="heading-sub">{{ title }}</h2>
+					<p>
+						<span>{{ subtitle }}</span>
+					</p>
 				</div>
 			</button>
 			<div :class="fullwidth ? 'responsive-title fullw' : 'responsive-title'">
@@ -44,8 +46,10 @@
 					<span class="material-icons">{{ icon }}</span>
 				</div>
 				<div class="headline">
-					<h2>{{ title }}</h2>
-					<span>{{ subtitle }}</span>
+					<h2 class="heading-sub">{{ title }}</h2>
+					<p>
+						<span>{{ subtitle }}</span>
+					</p>
 				</div>
 			</div>
 			<div
@@ -242,7 +246,6 @@ export default defineComponent({
 }
 
 .foldable-container {
-	font-family: noway, sans-serif;
 	max-width: 100vw;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -250,8 +253,6 @@ export default defineComponent({
 }
 
 h2 {
-	font-family: noway, sans-serif;
-	font-weight: 100;
 	text-transform: lowercase;
 }
 
@@ -271,14 +272,15 @@ h2::first-letter {
 	width: 100%;
 }
 .headline span {
-	font-size: 16px;
 	text-align: left;
 	display: block;
-	line-height: 1.4;
 	margin-top: 4px;
 	max-width: 720px;
 	display: flex;
 	flex-wrap: wrap;
+}
+.headline p {
+	margin: 0;
 }
 
 .content .headline h2 {
@@ -411,7 +413,7 @@ h2::first-letter {
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
 	transform-origin: bottom;
-	top: -1px;
+	top: 1px;
 }
 
 .toggle-button.open:before {
@@ -431,7 +433,7 @@ h2::first-letter {
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: 0px;
+	top: -1px;
 }
 
 .toggle-button.closed:after {
@@ -478,12 +480,6 @@ h2::first-letter {
 		width: 100%;
 	}
 
-	h2 {
-		font-family: 'LibreBaskerville';
-		font-weight: 100;
-
-		font-size: 32px;
-	}
 	.content.hide {
 		height: auto !important;
 		align-items: center;
@@ -510,16 +506,11 @@ h2::first-letter {
 		padding: 0;
 		max-width: 1150px;
 		align-items: center;
-		flex-direction: row-reverse;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 
-	.content .mobile-title .icon {
-		width: 50%;
-	}
-
 	.content .mobile-title .icon .material-icons {
-		position: absolute;
 		font-size: 85px;
 		top: 0px;
 	}
@@ -553,20 +544,6 @@ h2::first-letter {
 		align-content: center;
 		position: relative;
 		top: -15px;
-	}
-
-	.toggle-button:after {
-		content: '';
-		display: block;
-		width: 0;
-		height: 0;
-		border-left: 15px solid transparent;
-		border-right: 15px solid transparent;
-		border-top: 10px solid #0a2e70;
-		position: relative;
-		transform: scaleY(0);
-		transform-origin: top;
-		transition: all 0.15s ease-in-out 0s;
 	}
 
 	.toggle-button:before {

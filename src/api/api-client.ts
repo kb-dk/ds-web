@@ -171,6 +171,7 @@ export class APIServiceClient {
 		days: string,
 		timeslots: string,
 		uuid: string,
+		sort: string,
 	): Promise<APISearchResponseType> {
 		let timeConstraint = '';
 		if (start && end) {
@@ -179,7 +180,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				'*:*',
-			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=startTime asc`,
+			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=${sort}`,
 		);
 	}
 

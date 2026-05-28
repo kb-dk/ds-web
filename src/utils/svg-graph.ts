@@ -18,6 +18,7 @@ function createSVGCurvedLine(points: pointItem[]) {
 	const yValues = points.map((point) => point.y);
 	const minY = Math.min(...yValues);
 	const maxY = Math.max(...yValues);
+	const logBase = 1000;
 	const rangeY = maxY - minY;
 
 	let normalizedPoints;
@@ -31,10 +32,9 @@ function createSVGCurvedLine(points: pointItem[]) {
 	} else {
 		normalizedPoints = points.map((point) => ({
 			x: point.x,
-			y: 100 - ((point.y - minY) / rangeY) * 100, // Invert y to flip the axis
+			y: calculateDefaultDataCurve(logBase, point.y, minY, maxY, rangeY), // Invert y to flip the axis
 		}));
 	}
-
 	// Convert points to a smooth path data string using percentages
 	let d = `M ${normalizedPoints[0].x} ${normalizedPoints[0].y}`;
 	for (let i = 1; i < normalizedPoints.length - 1; i++) {
@@ -53,4 +53,28 @@ function createSVGCurvedLine(points: pointItem[]) {
 	return svg;
 }
 
+function calculateSmallDataCurve(logBase: number, y: number, minY: number, maxY: number): number {
+	const rangeY = getBaseLog(logBase, maxY + 1) - getBaseLog(logBase, minY + 1);
+	return Math.min(95 - ((getBaseLog(logBase, y + 1) - getBaseLog(logBase, minY + 1)) / rangeY) * 95, 94);
+}
+function calculateMediumDataCurve(logBase: number, y: number, minY: number, maxY: number) {
+	logBase = logBase * 10;
+	const rangeY = getBaseLog(logBase, maxY + 1) - getBaseLog(logBase, minY + 1);
+	return 95 - ((getBaseLog(logBase, y + 1) - getBaseLog(logBase, minY + 1)) / rangeY) * 95;
+}
+function calculateDefaultDataCurve(logBase: number, y: number, minY: number, maxY: number, rangeY: number) {
+	if (y === 0) {
+		return 100;
+	}
+	let normalized = 100 - ((y - minY) / rangeY) * 100;
+	if (normalized > 99) {
+		normalized = calculateSmallDataCurve(logBase, y, minY, maxY);
+	} else if (normalized > 94) {
+		normalized = calculateMediumDataCurve(logBase, y, minY, maxY);
+	}
+	return normalized;
+}
+function getBaseLog(x: number, y: number): number {
+	return Math.log(Math.log(y + x) + 1);
+}
 export { createSVGCurvedLine };

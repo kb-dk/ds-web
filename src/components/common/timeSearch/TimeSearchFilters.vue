@@ -3,14 +3,17 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<button
-			ref="dataButton"
-			class="data-size"
-			:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
-			@click="toggleExplanation()"
-		>
-			{{ $t('timeSearch.data') }}
-		</button>
+		<div class="data-size">
+			<KBButton
+				button-type="btn-dropdown-default"
+				class="btn-reg"
+				:button-is-active="expToggled"
+				left-icon-name="info"
+				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
+				@click="toggleExplanation()"
+			></KBButton>
+		</div>
+
 		<div class="to-from-container">
 			<CustomTimelineSelect
 				:current-selected="timeSliderValues[0]"
@@ -75,7 +78,7 @@
 			icon="event"
 			:subline="getSublineForYears(startDate, endDate, t)"
 		>
-			<div class="picker-background"><DatePicker></DatePicker></div>
+			<div class="picker-background"><DatePicker @date-search="emitNewSearch"></DatePicker></div>
 		</CustomExpander>
 	</div>
 	<div class="time-selection">
@@ -239,20 +242,6 @@
 				</fieldset>
 			</div>
 		</div>
-		<div
-			v-if="picker"
-			class="apply-time-facets-container"
-		>
-			<button
-				class="apply-time-facets"
-				:disabled="(!timeSearchStore.newSearchReqMet && !timeSearchStore.filterSearchReady) || disabled"
-				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'apply-facets-button', 0)"
-				@click="emitNewSearch()"
-			>
-				{{ t('timeSearch.filterApplyButton') }}
-				<span class="material-icons">search</span>
-			</button>
-		</div>
 	</div>
 </template>
 
@@ -298,7 +287,7 @@ import {
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
-
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
@@ -308,6 +297,7 @@ export default defineComponent({
 		VueSlider,
 		CustomExpander,
 		DatePicker,
+		KBButton,
 	},
 
 	props: {
@@ -362,7 +352,7 @@ export default defineComponent({
 				endDate.value = holder;
 				const holder2 = new Date(initStartDate.value.getTime());
 				startDate.value = holder2;
-				getTimeResults(true);
+				getTimeResults(true, `random_${Date.now()} asc`);
 			}
 			if (props.timeline) {
 				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
@@ -458,13 +448,6 @@ export default defineComponent({
 			if (timeSearchStore.timeFacetsOpen && route.name === 'Search') {
 				emit('newSearch', true);
 				clearEstimatedQueryLength();
-				const resultContainer = document.getElementsByClassName('hits')[0];
-				resultContainer?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-				});
-				timeSearchStore.setNewSearchReqMet(false);
-				timeSearchStore.setFilterSearchReady(false);
 			} else {
 				if (props.timeline && startDate.value !== null && endDate.value !== null) {
 					startDate.value.setFullYear(timeSliderValues.value[0]);
@@ -501,21 +484,16 @@ export default defineComponent({
 
 		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
 			array[index].selected = val;
-			timeSearchStore.setNewSearchReqMet(true);
 			if (val) {
 				addToEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			} else {
 				removeFromEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			timeSearchStore.setNewSearchReqMet(true);
-
 			if (val) {
 				array.forEach((item) => {
 					item.selected = true;
@@ -528,9 +506,7 @@ export default defineComponent({
 				});
 			}
 			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			if (!props.picker) {
-				emitNewSearch();
-			}
+			emitNewSearch();
 		};
 
 		const figuresImage = computed(() => {
@@ -719,7 +695,7 @@ fieldset {
 .explanation-for-data {
 	position: absolute;
 	width: 100%;
-	top: 0px;
+	top: 45px;
 	left: 0px;
 	background-color: #002e70;
 	z-index: 10;
@@ -844,24 +820,9 @@ fieldset {
 
 .data-size {
 	display: none;
-	background: #c4f1ed 0% 0% no-repeat padding-box;
-	border: 1px solid #ffffff;
-	border-radius: 4px;
 	position: absolute;
-	text-align: center;
-	letter-spacing: 0px;
-	color: #002e70;
-	padding: 4px 6px;
-	top: 90px;
+	top: 80px;
 	z-index: 10;
-	cursor: pointer;
-	font-family: noway, sans-serif;
-	font-size: 14px;
-	transition: all 0.1s linear 0s;
-}
-.data-size:hover {
-	background: #0a2e70 0% 0% no-repeat padding-box;
-	color: white;
 }
 
 .picker-container {
@@ -1001,7 +962,6 @@ fieldset {
 	position: relative;
 	padding: 0px;
 	margin: 0px;
-	font-family: noway, sans-serif;
 	transition: all 0.1s linear 0s;
 }
 

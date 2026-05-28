@@ -106,7 +106,8 @@
      "slowResponse": {
        "title": "Lang respons tid",
        "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
-     }
+     },
+     "remove":"Fjern"
    },
    "breadcrumb": {
       "frontpage":"Forside",
@@ -191,6 +192,7 @@
      "showing":"Viser",
      "outOf":"ud af",
      "recordThumbnail":"Miniaturebillede af {title}",
+     "watchProgram": "Se udsendelse",
      "searchbtn":"Søg",
      "hitcount": " resultat fundet med | resultater fundet med",
      "filterSearch": " resultater fundet med dine filtre",
@@ -226,7 +228,7 @@
      "sortBy": "Sorter efter",
     "selected": "Valgt",
      "title": "Titel",
-     "relevance":"Relevans",
+     "relevance":"Bedste match",
      "date":"Dato",
      "channels":"Kanaler",
      "relatedSubjects":"Relaterede emner",
@@ -260,7 +262,7 @@
          "allMaterialsLink":"https://www.kb.dk/find-materiale"
       },
       "placeholders": {
-         "drArchive":"Søg for eksempel på titel, år eller kategori",
+         "drArchive":"Søg for eksempel på titel eller år",
          "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
          "kbdk":"Søg i hjemmesiden",
          "webshop":"Søg i webshoppen"
@@ -314,6 +316,7 @@
      "timestamp":"kl. ",
      "title":"Titel",
      "genre":"Genre",
+     "annotation": "Bemærkning",
      "copy": "Del link",
      "copyTitleSuccess":"Linket er nu kopieret",
      "copyMessageSuccess":"",
@@ -534,8 +537,8 @@
       "musik":"Musik",
       "natur-og-videnskab":"Natur og videnskab",
       "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
-      "radio-rodekasse":"Radio-rodekasse",
-      "tv-rodekasse":"TV-rodekasse"
+      "radio-rodekasse":"Blandet radio",
+      "tv-rodekasse":"Blandet TV"
    },
    "find":{
       "headline":"Hvad vil du søge efter?",

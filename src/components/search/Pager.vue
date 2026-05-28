@@ -51,7 +51,7 @@
 					chevron_left
 				</i>
 			</span>
-			<span
+			<p
 				v-for="(pageNumber, index) in computedPages"
 				:key="index"
 			>
@@ -71,7 +71,7 @@
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
 				</router-link>
-			</span>
+			</p>
 			<router-link
 				v-if="currentPageRef !== searchResultStore.maxPages"
 				:to="navLink(currentPageRef + 1)"
@@ -100,23 +100,34 @@
 			</span>
 		</div>
 		<span class="pager-input">
-			<div class="input-label">{{ $t('search.page') }}</div>
+			<p class="input-label label-medium">{{ $t('search.page') }}</p>
 			<input
 				ref="inputRef"
 				v-model="selectPage"
 				:class="`page-select-input ${inputIncorrect ? 'page-select-input-error' : ''}`"
+				class="input"
 				:aria-label="$t('search.goToThePage')"
 				autocomplete="off"
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>
-			<button
+			<!-- <button
 				:class="`go-to-button ${inputIncorrect || selectPage === '' ? 'go-to-button-error' : ''}`"
+				class="btn-reg"
 				:disabled="inputIncorrect || selectPage === ''"
 				@click="submitPage()"
 			>
 				{{ $t('search.goToThePage') }}
-			</button>
+			</button> -->
+			<div class="go-to-button-container">
+				<KBButton
+					button-type="btn-cta-small"
+					class="btn-reg"
+					:button-text="$t('search.goToThePage')"
+					:disabled="inputIncorrect || selectPage === ''"
+					@click="submitPage()"
+				></KBButton>
+			</div>
 		</span>
 	</div>
 </template>
@@ -128,9 +139,11 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { useI18n } from 'vue-i18n';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Pager',
+	components: { KBButton },
 	props: {
 		totalHits: { type: Number, required: true },
 		numPagesToShow: { type: Number, default: 8 },
@@ -383,12 +396,14 @@ button,
 .disabled-chevron {
 	border: 0px transparent;
 	background-color: transparent;
-	font-size: 14px;
+
 	cursor: pointer;
 	margin: 0px 2px;
 	padding: 2px 2px;
 }
-
+.disabled-chevron {
+	font-size: 14px;
+}
 .pager-buttons a {
 	text-decoration: underline;
 	color: #002e70;
@@ -418,7 +433,6 @@ button span,
 
 .input-label {
 	color: #002e70;
-	font-size: 16px;
 	height: 31px;
 	width: fit-content;
 	display: inline;
@@ -428,6 +442,9 @@ button span,
 .pager-input {
 	padding-top: 20px;
 	align-self: center;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
 }
 .pager-buttons {
 	align-self: center;
@@ -443,7 +460,6 @@ button span,
 	border-radius: 2px;
 	height: 25px;
 	width: 80px;
-	font-size: 16px;
 	padding: 2px 5px;
 	outline: 1px solid #002e70;
 }
@@ -459,30 +475,9 @@ button span,
 .page-select-input-error:focus-visible {
 	outline: 1px solid #f7ae3b;
 }
-
-.go-to-button {
-	transition: all 0.3s linear 0s;
-	color: #002e70;
-	background-color: #49da87;
-	font-size: 16px;
-	height: 31px;
-	border-radius: 4px;
-	align-items: center;
+.go-to-button-container {
 	margin-left: 10px;
 }
-
-.go-to-button:hover {
-	outline: 2px solid #002e70;
-}
-
-.go-to-button-error {
-	background-color: #6e6e6e;
-	color: white;
-}
-.go-to-button-error:hover {
-	outline: 0px solid #002e70;
-}
-
 .container[data-v-a895c851] {
 	text-align: left;
 }

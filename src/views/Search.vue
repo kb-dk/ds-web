@@ -31,7 +31,7 @@
 							<Transition name="fade">
 								<div
 									v-show="!searchResultStore.loading && searchResultStore.numFound > 0"
-									class="page-count"
+									class="page-count label-small"
 								>
 									{{ Number(searchResultStore.start) + 1 }} - {{ calcRowCount }} {{ $t('search.outOf') }}
 									{{
@@ -58,17 +58,28 @@
 					<p>{{ t('find.subtitle') }}</p>
 					<h2>{{ t('find.maybeYouWantTo') }}</h2>
 					<div class="extra-options">
-						<router-link :to="searchResultStore.previousRoute">
-							<span class="material-icons tune">tune</span>
-							{{ t('find.restoreFilters') }}
-						</router-link>
-						<router-link :to="{ name: 'Home' }">{{ t('find.GoToFrontpage') }}</router-link>
+						<KBButton
+							button-type="btn-main-medium"
+							:button-text="t('find.restoreFilters')"
+							left-icon-name="tune"
+							class="btn-medium"
+							:is-router-link="true"
+							:to="searchResultStore.previousRoute"
+						></KBButton>
+						<KBButton
+							button-type="btn-main-medium"
+							:button-text="t('find.GoToFrontpage')"
+							class="btn-medium"
+							:is-router-link="true"
+							:to="{ name: 'Home' }"
+						></KBButton>
 					</div>
 					<EdgedContentArea
 						:lines="true"
 						:title="$t('search.mainCategories')"
 						class="main-categories-header"
 						:reverse="true"
+						background-color="#caf0fe"
 					>
 						<template #content>
 							<div class="showcase-container">
@@ -120,6 +131,7 @@ import { normalizeFq } from '@/utils/filter-utils';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -130,6 +142,7 @@ export default defineComponent({
 		EdgedContentArea,
 		MainCategories,
 		ContactUs,
+		KBButton,
 	},
 
 	setup() {
@@ -459,7 +472,6 @@ h3 {
 	border-color: #f2f4f8;
 	text-decoration: none;
 	padding: 1px 2rem;
-	line-height: 1.25rem;
 	border-radius: 5px;
 	height: 45px;
 	display: flex;
@@ -476,10 +488,6 @@ h3 {
 	color: #002e70;
 	border-color: #002e70;
 	outline: 1px solid #002e70;
-}
-
-.find h1 {
-	font-weight: normal;
 }
 
 .find h2 {

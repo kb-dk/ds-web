@@ -12,10 +12,10 @@
 		<div class="noise"></div>
 		<div class="container">
 			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
-				<span class="subtitle">
+				<span class="subtitle heading-sub">
 					<span class="text">{{ t('hero.subtitle') }}</span>
 				</span>
-				<span class="headline">
+				<span class="headline heading-display">
 					<span class="text">{{ t('hero.title') }}</span>
 				</span>
 			</h1>
@@ -26,31 +26,35 @@
 				>
 					<div class="info">
 						<div class="progress-headline">
-							<h2>{{ t('hero.progress', { index: currentProgress }) }}</h2>
+							<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
 							<p>
 								{{ t('hero.explanation') }}
+							</p>
+							<p>
+								<a
+									class="link"
+									:href="t('hero.link')"
+								>
+									<span class="material-icons">link</span>
+									<span class="link-text">{{ t('hero.linkText') }}</span>
+								</a>
 							</p>
 						</div>
 						<div class="process-bar">
 							<div
-								:style="`left:${currentProgress}%`"
-								class="procentage"
+								:style="{
+									left: `calc(${currentProgress}% - 50px)`,
+									transform: `translateX(calc(300% - (${currentProgress}% * 4)))`,
+								}"
+								class="percentage label-big"
 							>
-								{{ currentProgress }}%
+								{{ Math.round(currentProgress) }}%
 							</div>
 							<div
 								v-for="i in 20"
 								:key="i"
 								:class="progress(i)"
 							></div>
-						</div>
-						<div class="link-container">
-							<a
-								class="link"
-								:href="t('hero.link')"
-							>
-								{{ t('hero.linkText') }}
-							</a>
 						</div>
 					</div>
 				</div>
@@ -70,7 +74,7 @@ export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
-		const currentProgress = ref(0);
+		const currentProgress = ref();
 		const backgroundImage = computed(() => {
 			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
 		});
@@ -141,12 +145,10 @@ h1 {
 	padding: 5px 15px;
 }
 
-.procentage {
+.percentage {
 	position: absolute;
 	text-align: center;
-	transform: translate(-50%, 0%);
 	color: white;
-	font-size: 26px;
 	transition: all 0.1s linear 0s;
 }
 
@@ -184,7 +186,6 @@ h1 {
 h1 .headline,
 h1 .subtitle {
 	display: block;
-	font-weight: 100;
 	background-color: white;
 	width: fit-content;
 	padding: 0px 10px;
@@ -192,12 +193,7 @@ h1 .subtitle {
 }
 
 h1 .subtitle {
-	font-size: 24px;
 	margin-top: 10%;
-}
-
-h1 .headline {
-	font-size: 40px;
 }
 
 .container {
@@ -242,13 +238,12 @@ h1 .headline {
 .hero-info p,
 .hero-info .link-container {
 	padding: 5px 15px;
-	font-family: 'noway';
-	font-weight: 100;
 	color: #0a2e70;
 }
-
+.hero-info .link-container {
+	font-weight: 100;
+}
 .hero-info h2 {
-	font-size: 20px;
 	padding: 12px 25px 6px 25px;
 }
 
@@ -257,7 +252,6 @@ h1 {
 }
 
 .hero-info p {
-	font-size: 14px;
 	padding: 0px 25px 17px 25px;
 }
 
@@ -270,30 +264,32 @@ h1 {
 	display: block;
 }
 
-.link-container .link {
-	background-color: #0a2e70;
-	width: 100%;
-	color: white;
-	display: block;
-	text-align: center;
+.link {
+	color: #0a2e70;
+	text-align: left;
 	text-decoration: none;
-	font-size: 24px;
-	padding: 4px 10px 6px 10px;
 	border-radius: 4px;
-	height: 55px;
 	display: flex;
 	align-items: center;
-	box-sizing: border-box;
-	justify-content: center;
-	border: 1px solid white;
-	margin-bottom: 15px;
-	transition: all 0.1s linear 0s;
+	width: fit-content;
+}
+.link > .material-icons {
+	margin-right: 2px;
+}
+.link-text {
+	transition: 200ms;
+	border-bottom: 1px solid transparent;
+}
+.link:hover {
+	transition: all 5s ease 0s;
+	.link-text {
+		border-color: #0a2e70;
+	}
 }
 .subtitle {
 	text-align: center;
 	letter-spacing: 0px;
 	color: #0b0d0a;
-	font-size: 16px;
 }
 
 .headline {
@@ -301,8 +297,6 @@ h1 {
 	letter-spacing: 1.15px;
 	color: #0b0d0a;
 	text-transform: uppercase;
-	font-family: 'LibreBaskerville';
-	font-size: 28px;
 	position: relative;
 	top: -1px;
 }
@@ -415,9 +409,6 @@ h1 {
 	.container {
 		max-width: 990px;
 	}
-	.link-container .link {
-		font-size: 26px;
-	}
 }
 
 /* MEDIA QUERY 800 */
@@ -442,11 +433,9 @@ h1 {
 		margin: 20px 0px 0px 0px;
 	}
 	.hero-info h2 {
-		font-size: 26px;
 		padding: 14px 20px 0px 20px;
 	}
 	.hero-info p {
-		font-size: 16px;
 		padding: 6px 20px 20px 20px;
 	}
 
@@ -472,19 +461,11 @@ h1 {
 	.hero-container {
 		height: 500px;
 	}
-
-	.headline {
-		font-size: 49px;
-	}
-	.subtitle {
-		font-size: 24px;
-	}
 }
 
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.hero-info h2 {
-		font-size: 26px;
 		padding: 14px 25px 0px 25px;
 	}
 	.hero-info p {

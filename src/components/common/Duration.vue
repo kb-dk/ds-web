@@ -1,6 +1,8 @@
 <template>
 	<span class="duration-container">
-		<span class="set-duration">{{ parenthesis ? '(' : '' }} {{ formattedDuration }} {{ parenthesis ? ')' : '' }}</span>
+		<span class="set-duration label-small">
+			{{ parenthesis ? '(' : '' }} {{ formattedDuration }} {{ parenthesis ? ')' : '' }}
+		</span>
 	</span>
 </template>
 

@@ -13,6 +13,7 @@
 	<label
 		:title="$t(name)"
 		:class="getClassStyle(false)"
+		class="label-medium"
 		:for="name + '-checkbox-' + index"
 	>
 		<span class="checkbox-title">{{ $t(name) }}</span>
@@ -131,7 +132,6 @@ export default defineComponent({
 	color: #002e70;
 	user-select: none;
 	transition: all 0.3s ease-in-out 0s;
-	font-size: 20px;
 	text-transform: capitalize;
 	border-radius: 15px;
 	padding: 3px 10px;
