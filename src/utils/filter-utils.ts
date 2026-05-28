@@ -219,9 +219,7 @@ const removeFilterAndSearch = (
 			fq = fq
 				.map((query) => {
 					if (!query.includes(facet)) return query;
-					console.log('YEP');
 					let updated: string | null = query;
-
 					removable.forEach((item) => {
 						if (updated) {
 							updated = removeSingleFacetEntry(updated, facet, item.name);

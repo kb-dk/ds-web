@@ -117,7 +117,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
 					if (filter?.split('%3A')[0].includes('origin')) {
-						console.log(preliminaryFilter.value, decodeURIComponent(filter));
 						preliminaryFilter.value = decodeURIComponent(filter);
 					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');

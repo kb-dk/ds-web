@@ -344,9 +344,6 @@ export default defineComponent({
 			} else {
 				const selected = dataArray.filter((item) => item.selected).length;
 				const total = dataArray.length;
-
-				console.log(translationKey);
-
 				return t(translationKey, {
 					selected,
 					total,
@@ -380,7 +377,6 @@ export default defineComponent({
 				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
 				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
 				if (originFilter) {
-					console.log(decodeURIComponent(originFilter));
 					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
 						searchResultStore.preliminaryFilter = 'origin:ds.radio';
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
@@ -505,7 +501,6 @@ export default defineComponent({
 			routeQueries.q = newQuery;
 			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
 			routeQueries.fq = existingFq;
-			console.log(routeQueries);
 			router.push({
 				name: 'Search',
 				query: routeQueries,
