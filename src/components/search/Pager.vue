@@ -111,14 +111,23 @@
 				@keydown="checkIfNumber($event)"
 				@keyup.enter="submitPage()"
 			/>
-			<button
+			<!-- <button
 				:class="`go-to-button ${inputIncorrect || selectPage === '' ? 'go-to-button-error' : ''}`"
 				class="btn-reg"
 				:disabled="inputIncorrect || selectPage === ''"
 				@click="submitPage()"
 			>
 				{{ $t('search.goToThePage') }}
-			</button>
+			</button> -->
+			<div class="go-to-button-container">
+				<KBButton
+					button-type="btn-cta-small"
+					class="btn-reg"
+					:button-text="$t('search.goToThePage')"
+					:disabled="inputIncorrect || selectPage === ''"
+					@click="submitPage()"
+				></KBButton>
+			</div>
 		</span>
 	</div>
 </template>
@@ -130,9 +139,11 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { useI18n } from 'vue-i18n';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Pager',
+	components: { KBButton },
 	props: {
 		totalHits: { type: Number, required: true },
 		numPagesToShow: { type: Number, default: 8 },
@@ -431,6 +442,9 @@ button span,
 .pager-input {
 	padding-top: 20px;
 	align-self: center;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
 }
 .pager-buttons {
 	align-self: center;
@@ -461,29 +475,9 @@ button span,
 .page-select-input-error:focus-visible {
 	outline: 1px solid #f7ae3b;
 }
-
-.go-to-button {
-	transition: all 0.3s linear 0s;
-	color: #002e70;
-	background-color: #49da87;
-	height: 31px;
-	border-radius: 4px;
-	align-items: center;
+.go-to-button-container {
 	margin-left: 10px;
 }
-
-.go-to-button:hover {
-	outline: 2px solid #002e70;
-}
-
-.go-to-button-error {
-	background-color: #6e6e6e;
-	color: white;
-}
-.go-to-button-error:hover {
-	outline: 0px solid #002e70;
-}
-
 .container[data-v-a895c851] {
 	text-align: left;
 }

@@ -221,7 +221,7 @@ h2 {
 	flex-wrap: wrap;
 	flex-direction: row;
 	align-content: flex-start;
-	height: 55px;
+	height: 60px;
 	width: 100%;
 	transition: all 0.15s linear 0s;
 	align-items: flex-start;
@@ -249,23 +249,23 @@ h2 {
 	max-width: 40%;
 	gap: 10px;
 	justify-content: flex-end;
-	max-height: 75px;
+	max-height: 80px;
 	overflow: hidden;
 }
 
 @media (min-width: 990px) {
 	.headline-container {
-		height: 50px;
+		height: 55px;
 		padding-top: 5px;
 	}
 	.headline-container.open:hover {
 		cursor: pointer;
-		height: 50px !important;
+		height: 55px !important;
 	}
 
 	.headline-container:hover {
 		cursor: pointer;
-		height: 55px;
+		height: 60px;
 		padding-top: 8px;
 	}
 	.headline-container:hover h2 {
@@ -273,7 +273,7 @@ h2 {
 	}
 	.selected-items {
 		gap: 5px;
-		max-height: 70px;
+		max-height: 75px;
 	}
 }
 </style>

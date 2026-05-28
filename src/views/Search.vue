@@ -58,19 +58,21 @@
 					<p>{{ t('find.subtitle') }}</p>
 					<h2>{{ t('find.maybeYouWantTo') }}</h2>
 					<div class="extra-options">
-						<router-link
+						<KBButton
+							button-type="btn-main-medium"
+							:button-text="t('find.restoreFilters')"
+							left-icon-name="tune"
+							class="btn-medium"
+							:is-router-link="true"
 							:to="searchResultStore.previousRoute"
+						></KBButton>
+						<KBButton
+							button-type="btn-main-medium"
+							:button-text="t('find.GoToFrontpage')"
 							class="btn-medium"
-						>
-							<span class="material-icons tune">tune</span>
-							{{ t('find.restoreFilters') }}
-						</router-link>
-						<router-link
+							:is-router-link="true"
 							:to="{ name: 'Home' }"
-							class="btn-medium"
-						>
-							{{ t('find.GoToFrontpage') }}
-						</router-link>
+						></KBButton>
 					</div>
 					<EdgedContentArea
 						:lines="true"
@@ -129,6 +131,7 @@ import { normalizeFq } from '@/utils/filter-utils';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import MainCategories from '@/components/common/MainCategories.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
+import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'Search',
 	components: {
@@ -139,6 +142,7 @@ export default defineComponent({
 		EdgedContentArea,
 		MainCategories,
 		ContactUs,
+		KBButton,
 	},
 
 	setup() {

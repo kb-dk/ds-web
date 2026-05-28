@@ -24,7 +24,7 @@
 						:is-router-link="true"
 						:button-text="$t('record.back')"
 						button-type="btn-main-medium"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'back-link', 0)"
 					></KBButton>
@@ -34,7 +34,7 @@
 						:is-router-link="true"
 						:button-text="$t('record.toFrontpage')"
 						button-type="btn-main-medium"
-						left-icon-name="arrow_back_ios"
+						left-icon-name="arrow_back_ios_new"
 						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-audio', 'frontpage-link', 0)"
 					></KBButton>
@@ -95,6 +95,10 @@
 						>
 							{{ t(`categories.${santizeAndSimplify(recordData.genre)}`) }}
 						</router-link>
+					</div>
+					<h4 v-if="recordData.annotation">{{ $t('record.annotation') }}</h4>
+					<div v-if="recordData.annotation">
+						<p class="annotation-text">{{ recordData.annotation }}</p>
 					</div>
 				</div>
 				<div class="divider darkblue"></div>
@@ -331,6 +335,7 @@ h4 {
 	flex-direction: column;
 	margin: 0px 20px;
 	position: relative;
+	margin-bottom: 20px;
 }
 
 .extra-record-data {
@@ -417,6 +422,11 @@ h4 {
 .genre-link {
 	color: #002e70;
 	text-decoration: none;
+	text-transform: none;
+}
+
+.annotation-text {
+	margin: 0;
 	text-transform: none;
 }
 
