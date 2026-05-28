@@ -20,14 +20,12 @@
 .vue-slider {
 	height: 100px !important;
 	padding: 0px !important;
-	/* border: 1px solid var(--color-border-disabled); */
 	align-content: center;
 }
 .vue-slider-process {
 	border-radius: 0px !important;
 	background-color: #caf0fe !important;
-	opacity: .5;
-	z-index: 3 !important;
+	z-index: 4 !important;
 	mix-blend-mode: hue !important;
 	filter: hue-rotate(245deg) !important;
 	border-radius: 0 !important;
@@ -36,16 +34,11 @@
 	display: block;
 	height: 5px;
 	position: absolute;
-	background-color: black !important;
-	/* background-color: var(--bg-main) !important; */
+	background-color: var(--bg-main) !important;
 	content: '';
 	top: calc(100%);
 	z-index: 17 !important;
 	width: 100%;
-	opacity: 1 !important;
-	mix-blend-mode: normal !important; 
-	isolation:isolate !important;
-	/* border: 2px solid red; */
 }
 
 .vue-slider-mark-step {
