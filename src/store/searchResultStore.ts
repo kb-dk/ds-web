@@ -227,6 +227,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		channelFilters.value = [];
 		categoryFilters.value = [];
 		preliminaryFilter.value = '';
+		preliminarySearchMethod.value = 'all';
 	};
 
 	const resetAutocomplete = () => {
