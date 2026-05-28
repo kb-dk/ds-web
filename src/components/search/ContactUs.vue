@@ -5,6 +5,8 @@
 			class="btn-medium"
 			:button-text="t('footer.column4.links.1.title')"
 			button-type="btn-main-medium"
+			button-color="main"
+			button-size="medium"
 			:is-router-link="true"
 			:href="t('footer.column4.links.1.link')"
 			left-icon-name="chat_bubble"

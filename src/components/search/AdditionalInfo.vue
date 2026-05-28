@@ -11,6 +11,8 @@
 			left-icon-name="photo_library"
 			right-icon-name="expand_more"
 			button-type="btn-dropdown-default"
+			button-color="transparent"
+			button-size="default"
 			@click="showThumbnails()"
 		></KBButton>
 	</div>

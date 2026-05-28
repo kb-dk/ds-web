@@ -121,7 +121,9 @@
 			</button> -->
 			<div class="go-to-button-container">
 				<KBButton
-					button-type="btn-cta-small"
+					button-type="btn-cta"
+					button-color="cta"
+					button-size="small"
 					class="btn-reg"
 					:button-text="$t('search.goToThePage')"
 					:disabled="inputIncorrect || selectPage === ''"

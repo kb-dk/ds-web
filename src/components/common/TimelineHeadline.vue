@@ -30,7 +30,9 @@
 						),
 					)
 				"
-				button-type="btn-tag-primary"
+				button-type="btn-tag"
+				button-size="small"
+				button-color="main"
 				:title="`${t('facets.remove')} ${
 					useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name
 				}`"
@@ -39,7 +41,9 @@
 			></KBButton>
 			<KBButton
 				v-if="selectedItems.overflow > 0"
-				button-type="btn-tag-sub"
+				button-type="btn-tag"
+				button-color="light"
+				button-size="small"
 				:button-text="`${selectedItems.overflow}+`"
 				class="label-small selected-entity"
 			></KBButton>
@@ -110,7 +114,7 @@ export default defineComponent({
 
 	setup(props) {
 		const { t } = useI18n();
-		const maxSelectedItems = ref(11);
+		const maxSelectedItems = ref(9);
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
@@ -150,9 +154,9 @@ export default defineComponent({
 			if (windowWidth < 500 && windowWidth > 390) {
 				maxSelectedItems.value = 3;
 			} else {
-				maxSelectedItems.value = Math.floor(windowWidth / 100 - 2);
-				if (maxSelectedItems.value > 11) {
-					maxSelectedItems.value = 11;
+				maxSelectedItems.value = Math.floor(windowWidth / 100 - 3);
+				if (maxSelectedItems.value > 9) {
+					maxSelectedItems.value = 9;
 				}
 			}
 		};

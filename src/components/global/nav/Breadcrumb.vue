@@ -44,6 +44,8 @@
 			<div class="level-3">
 				<KBButton
 					button-type="btn-main-small"
+					button-color="main"
+					button-size="small"
 					class="btn-reg"
 					:to="{ path: '/' }"
 					:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
@@ -378,6 +380,14 @@ export default defineComponent({
 	max-width: 10rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.level-1,
+.level-2,
+.level-4,
+.level-5,
+.level-6 {
+	height: 20px;
+	align-content: center;
 }
 .home-icon {
 	display: none;

@@ -25,6 +25,8 @@
 						:button-text="$t('record.back')"
 						left-icon-name="arrow_back_ios_new"
 						button-type="btn-main-medium"
+						button-color="main"
+						button-size="medium"
 						:to="backLink"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'back-link', 0)"
 					></KBButton>
@@ -35,6 +37,8 @@
 						left-icon-name="arrow_back_ios_new"
 						:button-text="$t('record.toFrontpage')"
 						button-type="btn-main-medium"
+						button-color="main"
+						button-size="medium"
 						:to="{ name: 'Home' }"
 						:data-testid="addTestDataEnrichment('link', 'broadcast-video', 'frontpage-link', 0)"
 					></KBButton>
@@ -106,6 +110,8 @@
 					<KBButton
 						:button-text="$t('record.copy')"
 						button-type="btn-main-medium"
+						button-color="main"
+						button-size="medium"
 						class="btn-medium"
 						:data-testid="addTestDataEnrichment('button', 'broadcast-video', 'copy-link', 0)"
 						left-icon-name="share"
