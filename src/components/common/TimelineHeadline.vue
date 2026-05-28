@@ -154,7 +154,7 @@ export default defineComponent({
 			if (windowWidth < 500 && windowWidth > 390) {
 				maxSelectedItems.value = 3;
 			} else {
-				maxSelectedItems.value = Math.floor(windowWidth / 100 - 2);
+				maxSelectedItems.value = Math.floor(windowWidth / 100 - 3);
 				if (maxSelectedItems.value > 9) {
 					maxSelectedItems.value = 9;
 				}
