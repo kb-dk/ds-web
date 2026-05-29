@@ -15,8 +15,9 @@
 				<div
 					v-if="searchResultStore.channelFilters.length !== 0"
 					key="2"
+					class="filter-group"
 				>
-					<KBButton
+					<!-- <KBButton
 						class="label-small"
 						:button-text="`${searchResultStore.channelFilters.length} ${t(
 							'facets.channels',
@@ -25,13 +26,23 @@
 						button-type="btn-tag-primary"
 						right-icon-name="close"
 						@click="removeFilterAndSearch('creator_affiliation_facet')"
+					></KBButton> -->
+					<KBButton
+						v-for="(channel, index) in searchResultStore.channelFilters"
+						:key="index"
+						class="label-small"
+						:button-text="`${extractFilterText(channel)}`"
+						button-type="btn-tag-sub"
+						right-icon-name="close"
+						@click="removeSingleFilterAndSearch(channel)"
 					></KBButton>
 				</div>
 				<div
 					v-if="searchResultStore.categoryFilters.length !== 0"
 					key="3"
+					class="filter-group"
 				>
-					<KBButton
+					<!-- <KBButton
 						class="label-small"
 						:button-text="`${searchResultStore.categoryFilters.length} ${t(
 							'facets.genres',
@@ -40,6 +51,15 @@
 						button-type="btn-tag-primary"
 						right-icon-name="close"
 						@click="removeFilterAndSearch('genre')"
+					></KBButton> -->
+					<KBButton
+						v-for="(category, index) in searchResultStore.categoryFilters"
+						:key="index"
+						class="label-small"
+						:button-text="`${extractFilterText(category)}`"
+						button-type="btn-tag-sub"
+						right-icon-name="close"
+						@click="removeSingleFilterAndSearch(category)"
 					></KBButton>
 				</div>
 				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
@@ -149,7 +169,8 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
-
+import { santizeAndSimplify } from '@/utils/test-enrichments';
+import { removeChannelOrCategoryFilter } from '@/utils/filter-utils';
 export default defineComponent({
 	name: 'CurrentFilters',
 	components: { KBButton },
@@ -218,6 +239,15 @@ export default defineComponent({
 			let fq = normalizeFq(routeQueries.fq);
 			fq = fq.filter((query) => !query.includes(facet));
 			routeQueries.fq = fq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
+
+		const removeSingleFilterAndSearch = (facet: string) => {
+			const routeQueries = removeChannelOrCategoryFilter(route, decodeURIComponent(facet), true, facet);
+			routeQueries.start = 0;
 			router.push({
 				name: 'Search',
 				query: routeQueries,
@@ -312,6 +342,11 @@ export default defineComponent({
 		const preliminaryFilterText = computed(() => {
 			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
 		});
+
+		const extractFilterText = (filter: string) => {
+			const splitText = decodeURIComponent(filter).split('"')[1];
+			return splitText.substring(0, splitText.length);
+		};
 		return {
 			searchResultStore,
 			timeSearchStore,
@@ -333,6 +368,9 @@ export default defineComponent({
 			presentDateSpan,
 			calculatedYearSpan,
 			preliminaryFilterText,
+			santizeAndSimplify,
+			extractFilterText,
+			removeSingleFilterAndSearch,
 		};
 	},
 });
@@ -344,5 +382,12 @@ export default defineComponent({
 	align-items: center;
 	gap: 5px;
 	flex-wrap: wrap;
+}
+.filter-group {
+	display: flex;
+	flex-direction: row;
+}
+.filter-group > :not(:first-child) {
+	margin-left: 5px;
 }
 </style>
