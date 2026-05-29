@@ -109,6 +109,7 @@
       "chosen":"Valgt",
       "reset":"nulstil",
       "choose": "Vælg",
+      "seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
       "slowResponse": {
          "title": "Lang respons tid",
          "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"

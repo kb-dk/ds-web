@@ -151,14 +151,15 @@
 			<KBButton
 				button-type="btn-main-default"
 				class="btn-medium btn-main-medium"
-				:button-text="`Se dine ${searchResultStore.numFound} resultater`"
+				:button-text="`${t('facets.seeResults', {
+					count: Number(searchResultStore.numFound),
+					resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
+				})}`"
 				right-icon-name="arrow_forward_ios"
 				:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
 				:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
 				@click="searchResultStore.showFacets = false"
-			>
-				Se alle resultater
-			</KBButton>
+			></KBButton>
 		</div>
 	</div>
 </template>
