@@ -1,39 +1,11 @@
 <template>
 	<div class="day-picker container">
 		<div class="picker-container">
-			<span class="date-span label-medium">{{ t('datepicker.date') }}:</span>
-			<VueDatePicker
-				ref="singleDatePicker"
+			<TimePicker
 				v-model="selectedDate"
-				:inline="{ input: true }"
-				:enable-time-picker="false"
-				:locale="locale"
-				auto-apply
-				no-today
-				:text-input="textInputOptions"
-				:format="format"
-				six-weeks="fair"
-				:month-change-on-scroll="false"
-				:min-date="startYear"
-				:max-date="endYear"
-				prevent-min-max-navigation
-				:year-range="[startYear.getFullYear(), endYear.getFullYear()]"
-				:state="validDate"
-				allow-null="true"
-				@update:model-value="updateSeeMoreLink()"
-				@update-month-year="HandleMonthYear"
-				@keydown="setupInputTimer"
-				@keydown.enter="executeUpdate($event)"
-				@blur="validDate = true"
-			></VueDatePicker>
-			<Transition name="fade">
-				<div
-					v-if="!validDate"
-					class="error-container"
-				>
-					{{ t('datepicker.error', { start: formatDate(startYear), end: formatDate(endYear) }) }}
-				</div>
-			</Transition>
+				:start-date="startYear"
+				:end-date="endYear"
+			/>
 		</div>
 		<div class="time-container">
 			<KBButton
@@ -54,7 +26,6 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import type { DatePickerInstance } from '@vuepic/vue-datepicker';
-import VueDatePicker from '@vuepic/vue-datepicker';
 import {
 	days,
 	endDate,
@@ -68,7 +39,8 @@ import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
-import { updateSelectedDate } from '@/utils/datepicker-utils';
+import { updateDate } from '@/utils/datepicker-utils';
+import TimePicker from '../TimePicker.vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import KBButton from '@/components/common/KBButton.vue';
 
@@ -81,14 +53,14 @@ interface MonthYearEvent {
 export default defineComponent({
 	name: 'DayPicker',
 	components: {
-		VueDatePicker,
+		TimePicker,
 		KBButton,
 	},
 	setup() {
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 		const timeSearchStore = useTimeSearchStore();
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref<Date | null>(new Date(2015, 0, 1, 0, 0, 0));
+		const selectedDate = ref<Date | undefined>(new Date(2015, 0, 1, 0, 0, 0));
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 
@@ -131,26 +103,18 @@ export default defineComponent({
 				if (inputTimer !== null) {
 					clearTimeout(inputTimer);
 				}
-				updateSeeMoreLink();
+				updateDate(inputTimer, validDate, selectedDate, updateSeeMoreLink);
 			},
+			{ deep: true },
 		);
 
-		const setupInputTimer = (e: Event) => {
+		const setupInputTimer = () => {
 			if (inputTimer !== null) {
 				clearTimeout(inputTimer);
 			}
 			inputTimer = setTimeout(() => {
-				updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink);
-			}, 750); // 750 milliseconds (0.75 second) delay
-		};
-
-		const formatDate = (date: Date) => {
-			if (!(date instanceof Date)) return '';
-			return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-		};
-
-		const textInputOptions = {
-			format: 'd-M-yyyy',
+				updateDate(inputTimer, validDate, selectedDate, updateSeeMoreLink);
+			}, 1000); // 1000 milliseconds (1 second) delay
 		};
 
 		const specificDayLink = ref<RouteLocationRaw>({
@@ -164,7 +128,12 @@ export default defineComponent({
 		});
 
 		const moveToSearchPage = () => {
-			if (selectedDate.value !== null && startDate.value !== null && endDate.value !== null) {
+			if (
+				selectedDate.value !== null &&
+				startDate.value !== null &&
+				endDate.value !== null &&
+				selectedDate.value !== undefined
+			) {
 				startDate.value.setFullYear(selectedDate.value.getFullYear());
 				startDate.value.setMonth(selectedDate.value.getMonth());
 				startDate.value.setDate(selectedDate.value.getDate());
@@ -180,8 +149,8 @@ export default defineComponent({
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		};
 
-		const executeUpdate = (e: Event) => {
-			updateSelectedDate(e, inputTimer, validDate, selectedDate, updateSeeMoreLink); // Pass .value here as well
+		const executeUpdate = () => {
+			updateDate(inputTimer, validDate, selectedDate, updateSeeMoreLink); // Pass .value here as well
 		};
 
 		const updateSeeMoreLink = () => {
@@ -244,13 +213,11 @@ export default defineComponent({
 			moveToSearchPage,
 			HandleMonthYear,
 			locale,
-			textInputOptions,
-			updateSelectedDate,
+			updateDate,
 			setupInputTimer,
 			inputTimer,
 			validDate,
 			executeUpdate,
-			formatDate,
 			t,
 		};
 	},
@@ -262,38 +229,6 @@ export default defineComponent({
 	width: calc(100vw - 14px);
 	flex-direction: column;
 	justify-content: center;
-}
-
-.date-span {
-	width: 320px;
-	position: relative;
-	display: block;
-}
-
-.error-container {
-	width: 50%;
-	position: absolute;
-	height: fit-content;
-	left: 0px;
-	top: 55px;
-	color: white;
-	padding: 5px;
-	background-color: rgb(184, 0, 0);
-	box-sizing: border-box;
-}
-
-.error-container:before {
-	content: '';
-	display: block;
-	width: 0;
-	height: 0;
-	border-left: 7px solid transparent;
-	border-right: 7px solid transparent;
-	border-bottom: 7px solid rgb(184, 0, 0);
-	top: -7px;
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%, 0%);
 }
 
 .picker-container {
@@ -381,8 +316,8 @@ export default defineComponent({
 	justify-content: space-around;
 	flex-direction: column;
 	align-items: center;
-	padding-top: 20px;
-	width: 320px;
+	padding-top: 0px;
+	width: 300px;
 	align-items: flex-end;
 	padding-left: 8px;
 	padding-right: 8px;
