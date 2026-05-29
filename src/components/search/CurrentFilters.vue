@@ -190,7 +190,6 @@ export default defineComponent({
 
 		const resetAllFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
@@ -207,6 +206,13 @@ export default defineComponent({
 
 			if (routeQueries.q === '*:*') {
 				delete routeQueries.q;
+			} else {
+				if (
+					searchResultStore.currentQuery.includes('title:') ||
+					searchResultStore.currentQuery.includes('description:')
+				) {
+					routeQueries.q = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+				}
 			}
 
 			delete routeQueries.start;

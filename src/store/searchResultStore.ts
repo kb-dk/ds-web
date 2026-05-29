@@ -228,6 +228,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		categoryFilters.value = [];
 		preliminaryFilter.value = '';
 		preliminarySearchMethod.value = 'all';
+		if (currentQuery.value.includes('title:') || currentQuery.value.includes('description:')) {
+			currentQuery.value = currentQuery.value.split(':')[1].replaceAll('"', '');
+		}
 	};
 
 	const resetAutocomplete = () => {

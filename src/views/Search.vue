@@ -251,6 +251,7 @@ export default defineComponent({
 						searchResultStore.queryLimitReached = false;
 					}
 					if (!queryLimitReached.value) {
+						searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 						searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 						searchResultStore.setSortFromURL(route.query.sort as string);
 						searchResultStore.setCurrentQueryFromURL(route.query.q as string);
