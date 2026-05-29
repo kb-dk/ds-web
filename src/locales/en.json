@@ -95,11 +95,17 @@
       "fromTheArchive":"The month of {month} on DR through time"
    },
    "facets" : {
+      "headline":"Choose filters, to limit your search for:",
       "allGenres": "all categories",
       "genres": "category | categories",
+      "selectedGenres": "{selected} of {total} categories selected",
       "genresSubtitle": "Select a category and explore the programmes.",
       "allChannels":"all channels",
+      "selectedTVChannels":"{selected} of {total} channels selected",
+      "selectedRadioChannels":"{selected} of {total} kanalchannelser selected",
       "channels":"channel | channels",
+      "tvChannels":"TV channel | TV channels",
+      "radioChannels": "Radio channel | Radio channels",
       "chosen":"chosen",
       "reset":"reset",
       "choose": "Select",
@@ -107,8 +113,10 @@
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
       },
-      "remove":"Remove"
-
+      "remove":"Remove",
+      "searchingIn":"Only searching in",
+      "desc":"description",
+      "title":"title"
    },
    "breadcrumb": {
       "frontpage":"Frontpage",

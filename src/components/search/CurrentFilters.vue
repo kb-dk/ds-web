@@ -24,7 +24,7 @@
 						)}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
-						@click="removeFilterAndSearch('creator_affiliation_facet')"
+						@click="removeFilterAndSearch('creator_affiliation_facet', router, route)"
 					></KBButton>
 				</div>
 				<div
@@ -39,43 +39,7 @@
 						)}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
-						@click="removeFilterAndSearch('genre')"
-					></KBButton>
-				</div>
-				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.month',
-							months.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-					></KBButton>
-				</div>
-				<div v-if="days.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.weekday',
-							days.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-					></KBButton>
-				</div>
-				<div v-if="timeslots.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.timePeriods',
-							timeslots.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
+						@click="removeFilterAndSearch('genre_facet', router, route)"
 					></KBButton>
 				</div>
 				<div
@@ -100,23 +64,34 @@
 				>
 					<KBButton
 						class="label-small"
-						:button-text="`${preliminaryFilterText}`"
+						:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
 						button-type="btn-tag-primary"
 						right-icon-name="close"
 						@click="removePreliminaryFilterAndSearch()"
 					></KBButton>
 				</div>
-
+				<div
+					v-if="searchResultStore.preliminarySearchMethod !== 'all'"
+					key="6"
+				>
+					<KBButton
+						class="label-small"
+						:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
+						button-type="btn-tag-primary"
+						right-icon-name="close"
+						@click="searchResultStore.preliminarySearchMethod = 'all'"
+					></KBButton>
+				</div>
 				<span
 					v-if="filtersActive"
-					key="6"
+					key="7"
 					class="seperator"
 				>
 					|
 				</span>
 				<div
 					v-if="filtersActive"
-					key="7"
+					key="8"
 				>
 					<KBButton
 						class="label-small"
@@ -149,6 +124,7 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
+import { removeFilterAndSearch } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'CurrentFilters',
@@ -168,16 +144,15 @@ export default defineComponent({
 				(endDate.value as unknown as string) !== ''
 			) {
 				if (
-					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						searchResultStore.categoryFilters.length !== 0 ||
-						searchResultStore.channelFilters.length !== 0 ||
-						startDate.value.getTime() !== startYear.value.getTime() ||
-						endDate.value.getTime() !== endYear.value.getTime() ||
-						searchResultStore.preliminaryFilter !== '') &&
-					route.query.fq !== undefined &&
-					route.query.fq?.length !== 0
+					days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					searchResultStore.categoryFilters.length !== 0 ||
+					searchResultStore.channelFilters.length !== 0 ||
+					startDate.value.getTime() !== startYear.value.getTime() ||
+					endDate.value.getTime() !== endYear.value.getTime() ||
+					searchResultStore.preliminarySearchMethod !== 'all' ||
+					searchResultStore.preliminaryFilter !== ''
 				) {
 					return true;
 				} else {
@@ -190,14 +165,14 @@ export default defineComponent({
 
 		const resetTimeValueAndSearch = (resetArray: SelectorData[], facet: string) => {
 			resetAllSelectorValues(resetArray);
-			removeFilterAndSearch(facet);
+			removeFilterAndSearch(facet, router, route);
 		};
 
 		const resetYearsAndSearch = (facet: string) => {
 			if (startDate.value !== null && endDate.value !== null) {
 				startDate.value.setTime(startYear.value.getTime());
 				endDate.value.setTime(endYear.value.getTime());
-				removeFilterAndSearch(facet);
+				removeFilterAndSearch(facet, router, route);
 			}
 		};
 
@@ -213,20 +188,8 @@ export default defineComponent({
 			});
 		};
 
-		const removeFilterAndSearch = (facet: string) => {
-			const routeQueries = cloneRouteQuery(route);
-			let fq = normalizeFq(routeQueries.fq);
-			fq = fq.filter((query) => !query.includes(facet));
-			routeQueries.fq = fq;
-			router.push({
-				name: 'Search',
-				query: routeQueries,
-			});
-		};
-
 		const resetAllFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
@@ -243,6 +206,13 @@ export default defineComponent({
 
 			if (routeQueries.q === '*:*') {
 				delete routeQueries.q;
+			} else {
+				if (
+					searchResultStore.currentQuery.includes('title:') ||
+					searchResultStore.currentQuery.includes('description:')
+				) {
+					routeQueries.q = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+				}
 			}
 
 			delete routeQueries.start;
@@ -310,8 +280,11 @@ export default defineComponent({
 			}
 		};
 		const preliminaryFilterText = computed(() => {
-			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
+			return searchResultStore.preliminaryFilter !== ''
+				? decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
+				: '';
 		});
+
 		return {
 			searchResultStore,
 			timeSearchStore,
@@ -333,6 +306,8 @@ export default defineComponent({
 			presentDateSpan,
 			calculatedYearSpan,
 			preliminaryFilterText,
+			router,
+			route,
 		};
 	},
 });
