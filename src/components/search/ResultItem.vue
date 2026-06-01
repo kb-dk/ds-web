@@ -96,14 +96,42 @@
 						<ImageComponent :image-data="imageData"></ImageComponent>
 					</router-link>
 				</div>
-
+				<div class="button-container">
+					<KBButton
+						:disabled="resultdata.file_id && resultdata.origin.split('.')[1] === 'tv' ? false : true"
+						class="btn-reg"
+						:title="$t('search.thumbnailButton')"
+						:data-testid="addTestDataEnrichment('button', 'result-item', `show-thumbnails`, index)"
+						:button-is-active="isThumbnailsOpen"
+						:button-text="$t('search.thumbnail')"
+						left-icon-name="photo_library"
+						right-icon-name="expand_more"
+						button-type="btn-dropdown-default"
+						@click="toggleAdditionalInfo(true)"
+					></KBButton>
+					<KBButton
+						v-if="true"
+						button-type="btn-dropdown-default"
+						button-text="genudsendelser"
+						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
+						:button-is-active="isRerunsOpen"
+						right-icon-name="expand_more"
+						left-icon-name="content_copy"
+						class="btn-reg"
+						@click="toggleAdditionalInfo(false)"
+					></KBButton>
+				</div>
 				<AdditionalInfo
 					:id="resultdata.id"
-					:type="resultdata.origin.split('.')[1]"
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:duration="Number(resultdata.duration_ms)"
-					:nr="index"
+					:open="isThumbnailsOpen"
 				></AdditionalInfo>
+				<AdditionalInfoReruns
+					:id="resultdata.id"
+					:file-id="resultdata.file_id ? resultdata.file_id : ''"
+					:open="isRerunsOpen"
+				></AdditionalInfoReruns>
 			</div>
 			<div
 				v-else
@@ -183,12 +211,16 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
 import { getThumbnailPicture } from '@/utils/record-utils';
+import KBButton from '@/components/common/KBButton.vue';
+import AdditionalInfoReruns from '@/components/search/AdditionalInfoReruns.vue';
 
 export default defineComponent({
 	name: 'ResultItem',
 	components: {
 		ImageComponent,
 		AdditionalInfo,
+		AdditionalInfoReruns,
+		KBButton,
 	},
 	props: {
 		resultdata: {
@@ -234,7 +266,8 @@ export default defineComponent({
 			} as ImageComponentType),
 		);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
-
+		const isThumbnailsOpen = ref(false);
+		const isRerunsOpen = ref(false);
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
@@ -281,6 +314,16 @@ export default defineComponent({
 			}
 		};
 
+		const toggleAdditionalInfo = (isThumbnails: boolean) => {
+			if (isThumbnails) {
+				isThumbnailsOpen.value = !isThumbnailsOpen.value;
+				isRerunsOpen.value = false;
+			} else {
+				isRerunsOpen.value = !isRerunsOpen.value;
+				isThumbnailsOpen.value = false;
+			}
+		};
+
 		//We need to watch the search result to trigger re-render of thumbmails
 		watch(
 			() => props.resultdata,
@@ -312,6 +355,9 @@ export default defineComponent({
 			t,
 			addTestDataEnrichment,
 			errorManager,
+			isThumbnailsOpen,
+			isRerunsOpen,
+			toggleAdditionalInfo,
 		};
 	},
 });
@@ -616,7 +662,11 @@ export default defineComponent({
 	background-size: 200% 100%;
 	background-position: 160% center;
 }
-
+.button-container {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+}
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;

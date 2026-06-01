@@ -1,19 +1,4 @@
 <template>
-	<div class="extra-features">
-		<KBButton
-			:disabled="fileId?.length > 0 && type === 'tv' ? false : true"
-			:class="extraContentShown ? 'thumbnail-button active' : 'thumbnail-button'"
-			class="btn-reg"
-			:title="$t('search.thumbnailButton')"
-			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
-			:button-is-active="extraContentShown"
-			:button-text="$t('search.thumbnail')"
-			left-icon-name="photo_library"
-			right-icon-name="expand_more"
-			button-type="btn-dropdown-default"
-			@click="showThumbnails()"
-		></KBButton>
-	</div>
 	<div
 		ref="extraContentRef"
 		class="extra-content"
@@ -74,22 +59,18 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
-import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'AdditionalInfo',
 	components: {
 		ImageComponent,
 		ItemSlider,
-		KBButton,
 	},
 	props: {
 		id: { type: String, required: true },
-		type: { type: String, required: true },
 		fileId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
-		nr: { type: Number, required: true },
 	},
 	setup(props) {
 		const { t } = useI18n();
@@ -179,7 +160,12 @@ export default defineComponent({
 				showThumbnails();
 			}
 		});
-
+		watch(
+			() => props.open,
+			() => {
+				showThumbnails();
+			},
+		);
 		return {
 			thumbnailImages,
 			extraContentShown,
@@ -198,23 +184,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.extra-features {
-	margin-top: 10px;
-}
-
-.extra-features .material-icons {
-	font-size: 20px;
-}
-
-.expand-icon {
-	transition: all 0.3s ease-in-out 0s;
-	padding-right: 5px;
-}
-
-.expand-icon.turned {
-	transform: rotateX(180deg);
-}
-
 .thumbnail-button {
 	cursor: pointer;
 	border: 1px solid rgba(230, 230, 230, 1);
