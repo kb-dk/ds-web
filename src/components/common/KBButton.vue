@@ -313,4 +313,32 @@ export default defineComponent({
 	background: var(--bg-golden);
 	color: var(--color-main);
 }
+.btn-tag-reset {
+	padding: var(--padding-02) var(--padding-01);
+	gap: var(--padding-small);
+	color: var(--color-main);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-golden);
+	background: var(--bg-golden);
+}
+.btn-tag-reset .material-icons {
+	font-size: calc(var(--fs-meta) + 2px);
+}
+
+.btn-tag-sub {
+	padding: var(--padding-01) var(--padding-medium);
+	gap: var(--padding-small);
+	color: var(--color-main);
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-light);
+	background: var(--bg-light);
+}
+.btn-tag-sub .material-icons {
+	font-size: calc(var(--fs-meta) + 2px);
+}
+.btn-tag-sub:hover {
+	border: 1px solid var(--color-border-golden);
+	background: var(--bg-golden);
+	color: var(--color-main);
+}
 </style>
