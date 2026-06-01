@@ -9,7 +9,7 @@
 				v-if="!searchResultStore.loading && resultdata"
 				class="outer-container"
 			>
-				<div class="container">
+				<div class="container top-container">
 					<div class="information">
 						<router-link
 							:to="{ path: 'post/' + resultdata.id }"
@@ -112,7 +112,8 @@
 					<KBButton
 						v-if="true"
 						button-type="btn-dropdown-default"
-						button-text="genudsendelser"
+						:button-text="$t('search.rerun')"
+						:title="$t('search.rerunButton')"
 						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
 						:button-is-active="isRerunsOpen"
 						right-icon-name="expand_more"
@@ -370,7 +371,7 @@ export default defineComponent({
 	padding: 0;
 }
 
-.result-item-wrapper:hover .arrow {
+.top-container:hover .arrow {
 	opacity: 1;
 }
 
@@ -663,7 +664,7 @@ export default defineComponent({
 	background-position: 160% center;
 }
 .button-container {
-	margin-top: 10px;
+	margin-top: 20px;
 	display: flex;
 	flex-direction: row;
 }
@@ -754,6 +755,9 @@ export default defineComponent({
 		transition:
 			opacity 0.3s ease-in-out,
 			visibility 0s linear 0s; /* Make visible immediately */
+	}
+	.button-container {
+		margin-top: 10px;
 	}
 }
 

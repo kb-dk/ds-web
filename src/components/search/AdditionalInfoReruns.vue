@@ -1,95 +1,95 @@
 <template>
-	<div
-		ref="extraContentRef"
-		class="extra-content"
-	>
+	<div class="extra-content-container">
 		<div
-			v-for="(item, index) in rerunsData"
-			:key="index"
-			role="link"
-			class="rerun"
-			:replace="router.currentRoute.value.name === 'Record' ? true : false"
+			ref="extraContentRef"
+			class="extra-content"
 		>
-			<router-link
-				:to="{ path: 'post/' + item.id }"
-				class="title"
+			<div
+				v-for="(item, index) in rerunsData"
+				:key="index"
 				role="link"
-				:data-testid="addTestDataEnrichment('link', 'addition-info-reruns', `top-link`, index)"
-				:title="item.title"
+				class="rerun"
+				:replace="router.currentRoute.value.name === 'Record' ? true : false"
 			>
-				<p class="label-regular-bold">
-					{{ item.title[0] }}
-					<span>
+				<router-link
+					:to="{ path: 'post/' + item.id }"
+					class="title"
+					role="link"
+					:data-testid="addTestDataEnrichment('link', 'addition-info-reruns', `top-link`, index)"
+					:title="item.title"
+				>
+					<p class="label-regular-bold">
+						{{ item.title[0] }}
+						<span>
+							<div
+								role="img"
+								class="material-icons arrow"
+								:aria-label="t('app.a11y.goToPost')"
+							>
+								keyboard_arrow_right
+							</div>
+						</span>
+					</p>
+				</router-link>
+
+				<div class="subtitle">
+					<div class="subtitle-metadata">
+						<span
+							role="img"
+							:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
+							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+						>
+							{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+						</span>
+						<p class="label-small">
+							<span class="where">{{ item.creator_affiliation + ',' }}</span>
+							<span class="when">{{ getStartTime(item) }}</span>
+						</p>
+					</div>
+					<div class="subtitle-metadata">
 						<div
 							role="img"
-							class="material-icons arrow"
-							:aria-label="t('app.a11y.goToPost')"
+							class="material-icons icons schedule timeSVG"
+							:aria-label="t('app.a11y.broadcastDuration')"
+							aria-hidden="true"
 						>
-							keyboard_arrow_right
+							schedule
 						</div>
-					</span>
-				</p>
-			</router-link>
-
-			<div class="subtitle">
-				<div class="subtitle-metadata">
-					<span
-						role="img"
-						:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
-						:aria-label="t('app.a11y.broadcastTimeAndPlace')"
-					>
-						{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
-					</span>
-					<p class="label-small">
-						<span class="where">{{ item.creator_affiliation + ',' }}</span>
-						<span class="when">{{ getStartTime(item) }}</span>
-					</p>
-				</div>
-				<div class="subtitle-metadata">
-					<div
-						role="img"
-						class="material-icons icons schedule timeSVG"
-						:aria-label="t('app.a11y.broadcastDuration')"
-						aria-hidden="true"
-					>
-						schedule
+						<p class="label-small">
+							<span class="duration">{{ getDuration(item) }}</span>
+						</p>
 					</div>
-					<p class="label-small">
-						<span class="duration">{{ getDuration(item) }}</span>
-					</p>
-				</div>
-				<div
-					v-if="item.episode"
-					class="episode subtitle-metadata"
-				>
-					<span
-						role="img"
-						class="material-icons episode-split-icon"
+					<div
+						v-if="item.episode"
+						class="episode subtitle-metadata"
 					>
-						segment
-					</span>
-					<p class="label-small-bold">
-						<span class="episode-text">
-							{{ `${t('search.episode')} ${item.episode}` }}
-						</span>
 						<span
-							v-if="item.number_of_episodes"
-							class="episode-text"
+							role="img"
+							class="material-icons episode-split-icon"
 						>
-							{{ `:${item.number_of_episodes}` }}
+							segment
 						</span>
-					</p>
+						<p class="label-small-bold">
+							<span class="episode-text">
+								{{ `${t('search.episode')} ${item.episode}` }}
+							</span>
+							<span
+								v-if="item.number_of_episodes"
+								class="episode-text"
+							>
+								{{ `:${item.number_of_episodes}` }}
+							</span>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- <router-link
-			class="watch-program"
-			:to="{ name: 'Record', params: { id: id } }"
-			:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, 0)"
+		<div
+			class="vert-dot"
+			:class="{ visible: open }"
 		>
-			<p class="btn-reg">{{ $t('search.watchProgram') }}</p>
-			<span class="material-icons link-arrow">chevron_right</span>
-		</router-link> -->
+			•
+		</div>
 	</div>
 </template>
 
@@ -117,7 +117,6 @@ export default defineComponent({
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const extraContentShown = ref(false);
 		const rerunsData = ref([] as GenericSearchResultType[]);
-
 		const router = useRouter();
 
 		const extraContentRef = ref<HTMLElement | null>(null);
@@ -129,7 +128,7 @@ export default defineComponent({
 			extraContentShown.value = !extraContentShown.value;
 			if (props.fileId && extraContentShown.value) {
 				if (rerunsData.value.length === 0) {
-					requestExtraThumbnails();
+					requestExtraReruns();
 				}
 			}
 			if (extraContentShown.value === true) {
@@ -152,10 +151,21 @@ export default defineComponent({
 			});
 		};
 
-		const requestExtraThumbnails = () => {
-			APIService.getMoreLikeThisRecords(props.id).then((moreLikeThis) => {
-				rerunsData.value = moreLikeThis.data.response.docs;
-			});
+		const requestExtraReruns = () => {
+			APIService.getMoreLikeThisRecords(props.id)
+				.then((moreLikeThis) => {
+					rerunsData.value = moreLikeThis.data.response.docs;
+				})
+				.catch(() => {
+					errorManager.submitCustomError(
+						'reruns-error',
+						t('error.infoError.title'),
+						t('error.infoError.thumbnails'),
+						Severity.INFO,
+						false,
+						Priority.LOW,
+					);
+				});
 		};
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
@@ -217,9 +227,45 @@ export default defineComponent({
 	position: relative;
 	transition: opacity 0.1s linear 0s;
 	font-size: 16px;
+	opacity: 0;
+}
+.rerun:hover .arrow {
+	opacity: 1;
+}
+.extra-content-container {
+	position: relative;
+}
+.extra-content-container:hover .vert-dot {
+	background-color: transparent;
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0s;
+}
+.vert-dot.visible {
+	display: block;
+	transition:
+		transform 0.3s ease-in-out 0s,
+		background-color 0.1s ease-in-out 0.2s;
+}
+.vert-dot {
+	position: absolute;
+	height: 16px;
+	text-align: center;
+	color: #002e70;
+	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
+	top: 50%;
+	width: 10px;
+	line-height: 0.75;
+	margin-top: -5px;
+	left: 0px;
+	display: none;
+	background: transparent;
+	z-index: 1;
 }
 .title {
 	text-decoration: none;
+	margin-top: 0;
 }
 .title > .label-regular-bold {
 	transition: all 0.5s ease-in-out 0s;
@@ -228,10 +274,10 @@ export default defineComponent({
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-
+	margin-top: 5px;
 	position: relative;
 	display: block;
-	margin-bottom: 7px;
+	margin-bottom: 3px;
 	color: #002e70;
 }
 .extra-content {
@@ -239,17 +285,15 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: white;
+	background-color: #f3f3f3;
 	position: relative;
-	/* border: 1px solid var(--color-border-active); */
-	/* border-radius: var(--rounded-medium); */
+	border-left: 1px solid rgba(230, 230, 230, 1);
+
+	padding-left: 10px;
 }
 
 .rerun {
 	padding: 5px;
-}
-.rerun:not(:last-child) {
-	/* border-bottom: 1px solid var(--color-border-active); */
 }
 .subtitle {
 	display: flex;

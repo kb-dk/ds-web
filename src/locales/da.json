@@ -246,6 +246,8 @@
     "thumbnail": "Oversigt",
      "thumbnailButton":"Se billede-oversigt",
      "thumbnailLink": "Billede {index} ved {timestamp}",
+     "rerun":"Genudsendelser",
+     "rerunButton":"Se genudsendelser",
      "of":"af",
      "startTime":"starttid",
     "dataQuantity":{

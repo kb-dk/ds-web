@@ -248,6 +248,8 @@
      "thumbnail": "Thumbnails",
      "thumbnailButton":"See more thumbnails",
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
+     "rerun": "Reruns",
+     "rerunButton":"See reruns",
      "of":"of",
      "startTime":"Start time",
      "dataQuantity":{
