@@ -34,7 +34,9 @@
 						:key="index"
 						class="label-small"
 						:button-text="`${extractFilterText(channel)}`"
-						button-type="btn-tag-sub"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="removeSingleFilterAndSearch(channel)"
 					></KBButton>
@@ -61,7 +63,9 @@
 						:key="index"
 						class="label-small"
 						:button-text="`${extractFilterText(category)}`"
-						button-type="btn-tag-sub"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="removeSingleFilterAndSearch(category)"
 					></KBButton>
