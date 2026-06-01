@@ -162,7 +162,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue';
+import { defineComponent, ref, computed, watch, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { CalendarDay } from '@/types/CalendarTypes';
 import { startYear, endYear } from './timeSearch/TimeSearchInitValues';
@@ -174,6 +174,7 @@ export default defineComponent({
 		modelValue: { type: Date, default: null },
 		startDate: { type: Date, default: null },
 		endDate: { type: Date, default: null },
+		name: { type: String, required: true },
 	},
 
 	emits: ['update:modelValue', 'check'],
@@ -197,10 +198,13 @@ export default defineComponent({
 
 		const focusDate = ref(props.modelValue ? new Date(props.modelValue) : new Date(today));
 
-		const inputId = `dp-${Math.random().toString(36).slice(2, 9)}`;
-		const calendarId = `dp-cal-${Math.random().toString(36).slice(2, 9)}`;
-		const calendarHeadingId = `dp-h-${Math.random().toString(36).slice(2, 9)}`;
-		const hintId = `dp-hint-${Math.random().toString(36).slice(2, 9)}`;
+		const uid = useId();
+		const idBase = `dp-${props.name}-${uid}`;
+
+		const inputId = idBase;
+		const calendarId = `${idBase}-cal`;
+		const calendarHeadingId = `${idBase}-heading`;
+		const hintId = `${idBase}-hint`;
 
 		const monthNames = computed(() => {
 			const formatter = new Intl.DateTimeFormat(locale.value, { month: 'long' });
@@ -225,17 +229,21 @@ export default defineComponent({
 			const start = minDate.value ? minDate.value.getFullYear() : today.getFullYear() - 100;
 			const end = maxDate.value ? maxDate.value.getFullYear() : today.getFullYear() + 20;
 			const arr = [];
-			for (let y = start; y <= end; y++) arr.push(y);
+			for (let y = start; y <= end; y++) {
+				arr.push(y);
+			}
 			return arr;
 		});
 
-		watch(currentView, (v) => {
-			selectedMonth.value = v.getMonth();
-			selectedYear.value = v.getFullYear();
+		watch(currentView, (date) => {
+			selectedMonth.value = date.getMonth();
+			selectedYear.value = date.getFullYear();
 		});
 
 		function formatDate(date: Date | null) {
-			if (!date) return '';
+			if (!date) {
+				return '';
+			}
 			const dd = String(date.getDate()).padStart(2, '0');
 			const mm = String(date.getMonth() + 1).padStart(2, '0');
 			const yyyy = date.getFullYear();
@@ -244,31 +252,41 @@ export default defineComponent({
 
 		function parseInputToDate(str: string) {
 			const m = str.match(/^(\d{2})-(\d{2})-(\d{4})$/);
-			if (!m) return null;
+			if (!m) {
+				return null;
+			}
 			const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
 			return isNaN(d.getTime()) ? null : d;
 		}
 
 		function isSameDate(a: Date, b: Date) {
-			if (!(a instanceof Date) || !(b instanceof Date)) return false;
+			if (!(a instanceof Date) || !(b instanceof Date)) {
+				return false;
+			}
 			return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 		}
 
 		const displayValue = ref(formatDate(props.modelValue));
 
 		watch(displayValue, (val) => {
-			if (inputTimer.value) clearTimeout(inputTimer.value);
+			if (inputTimer.value) {
+				clearTimeout(inputTimer.value);
+			}
 
 			inputTimer.value = window.setTimeout(() => {
 				const normalized = val.replace(/[^0-9]/g, (m, i) => (i === 2 || i === 5 ? '-' : ''));
-				if (normalized !== val) displayValue.value = normalized;
+				if (normalized !== val) {
+					displayValue.value = normalized;
+				}
 
 				const parsed = parseInputToDate(normalized);
 				let isInvalid = !parsed;
 
 				if (parsed) {
 					const year = parsed.getFullYear();
-					if (year < startYear.value.getFullYear() || year > endYear.value.getFullYear()) isInvalid = true;
+					if (year < startYear.value.getFullYear() || year > endYear.value.getFullYear()) {
+						isInvalid = true;
+					}
 				}
 
 				invalid.value = isInvalid;
@@ -306,10 +324,12 @@ export default defineComponent({
 		}
 
 		function onYearChange() {
-			if (minDate.value && selectedYear.value < minDate.value.getFullYear())
+			if (minDate.value && selectedYear.value < minDate.value.getFullYear()) {
 				selectedYear.value = minDate.value.getFullYear();
-			if (maxDate.value && selectedYear.value > maxDate.value.getFullYear())
+			}
+			if (maxDate.value && selectedYear.value > maxDate.value.getFullYear()) {
 				selectedYear.value = maxDate.value.getFullYear();
+			}
 			currentView.value = new Date(selectedYear.value, selectedMonth.value, 1);
 			focusDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
 		}
@@ -349,7 +369,9 @@ export default defineComponent({
 			}
 
 			const weeks = [];
-			for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
+			for (let i = 0; i < days.length; i += 7) {
+				weeks.push(days.slice(i, i + 7));
+			}
 			return weeks;
 		}
 
@@ -385,7 +407,9 @@ export default defineComponent({
 			const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 			const selectKeys = ['Enter', ' '];
 
-			if (![...arrowKeys, ...selectKeys].includes(key)) return;
+			if (![...arrowKeys, ...selectKeys].includes(key)) {
+				return;
+			}
 			if (day.disabled) {
 				e.preventDefault();
 				return;
@@ -398,13 +422,25 @@ export default defineComponent({
 			}
 
 			let newDate = new Date(day.date);
-			if (key === 'ArrowLeft') newDate.setDate(newDate.getDate() - 1);
-			if (key === 'ArrowRight') newDate.setDate(newDate.getDate() + 1);
-			if (key === 'ArrowUp') newDate.setDate(newDate.getDate() - 7);
-			if (key === 'ArrowDown') newDate.setDate(newDate.getDate() + 7);
+			if (key === 'ArrowLeft') {
+				newDate.setDate(newDate.getDate() - 1);
+			}
+			if (key === 'ArrowRight') {
+				newDate.setDate(newDate.getDate() + 1);
+			}
+			if (key === 'ArrowUp') {
+				newDate.setDate(newDate.getDate() - 7);
+			}
+			if (key === 'ArrowDown') {
+				newDate.setDate(newDate.getDate() + 7);
+			}
 
-			if (minDate.value && newDate < minDate.value) newDate = new Date(minDate.value);
-			if (maxDate.value && newDate > maxDate.value) newDate = new Date(maxDate.value);
+			if (minDate.value && newDate < minDate.value) {
+				newDate = new Date(minDate.value);
+			}
+			if (maxDate.value && newDate > maxDate.value) {
+				newDate = new Date(maxDate.value);
+			}
 
 			if (
 				newDate.getMonth() !== currentView.value.getMonth() ||
@@ -421,7 +457,9 @@ export default defineComponent({
 		}
 
 		function formatErrorDate(date: Date) {
-			if (!(date instanceof Date)) return '';
+			if (!(date instanceof Date)) {
+				return '';
+			}
 			return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 		}
 
@@ -493,7 +531,7 @@ export default defineComponent({
 }
 
 .material-icons {
-	color: rgb(10, 46, 112);
+	color: var(--color-main);
 }
 
 .datepicker-explanation {
@@ -518,7 +556,7 @@ export default defineComponent({
 
 .dp-selectors select {
 	padding: 4px 6px;
-	border: 1px solid #ccc;
+	border: 1px solid var(--bg-default-gray);
 	border-radius: 4px;
 	background: white;
 	text-align: center;
@@ -534,7 +572,7 @@ export default defineComponent({
 }
 
 .dp-day:hover {
-	background-color: #caf0fe;
+	background-color: var(--bg-light);
 }
 
 .dp-day-disabled {
@@ -552,18 +590,18 @@ export default defineComponent({
 	font-size: 20px;
 	color: #0a2e70;
 	border-radius: 4px;
-	border: 1px solid #0a2e70;
+	border: 1px solid var(--color-main);
 }
 
 .dp-toggle {
 	background: transparent;
-	border: 1px solid #ccc;
+	border: 1px solid var(--bg-default-gray);
 	padding: 8px;
 	border-radius: 4px;
 	height: 40px;
 	width: 40px;
 	cursor: pointer;
-	border: 1px solid #0a2e70;
+	border: 1px solid var(--color-main);
 	transition: all 0.15s linear 0s;
 }
 
@@ -576,7 +614,7 @@ export default defineComponent({
 }
 
 .dp-toggle:hover {
-	background-color: #0a2e70;
+	background-color: var(--color-main);
 }
 
 .dp-selectors select {
@@ -658,11 +696,11 @@ export default defineComponent({
 	transition: all 0.15s linear 0s;
 }
 .dp-day:focus {
-	outline: 2px solid #0a2e70;
+	outline: 2px solid var(--color-main);
 }
 .dp-day[aria-selected='true'],
 .dp-day-selected {
-	background-color: #0a2e70;
+	background-color: var(--color-main);
 	color: white;
 	font-weight: bold;
 }
@@ -675,7 +713,7 @@ export default defineComponent({
 	top: -45px;
 	color: white;
 	padding: 5px;
-	background-color: rgb(184, 0, 0);
+	background-color: var(--color-alert-red);
 	box-sizing: border-box;
 	z-index: 200;
 	bottom: -5px;
@@ -688,7 +726,7 @@ export default defineComponent({
 	height: 0;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
-	border-top: 7px solid rgb(184, 0, 0);
+	border-top: 7px solid var(--color-alert-red);
 	bottom: -7px;
 	position: absolute;
 	left: 50%;

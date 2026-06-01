@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
-import GridResultItem from '../search/GridResultItem.vue';
+import GridResultItem from '@/components/search/GridResultItem.vue';
 
 export default defineComponent({
 	name: 'GridDisplay',

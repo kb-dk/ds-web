@@ -50,7 +50,7 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import MainCategories from '@/components/common/MainCategories.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import ContactUs from '../search/ContactUs.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'GenericRecord',

@@ -5,6 +5,7 @@
 				v-model="selectedDate"
 				:start-date="startYear"
 				:end-date="endYear"
+				name="frontpageDatePicker"
 			/>
 		</div>
 		<div class="time-container">
@@ -40,7 +41,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
 import { useI18n } from 'vue-i18n';
 import { updateDate } from '@/utils/datepicker-utils';
-import TimePicker from '../TimePicker.vue';
+import TimePicker from '@/components/common/TimePicker.vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import KBButton from '@/components/common/KBButton.vue';
 
@@ -128,12 +129,7 @@ export default defineComponent({
 		});
 
 		const moveToSearchPage = () => {
-			if (
-				selectedDate.value !== null &&
-				startDate.value !== null &&
-				endDate.value !== null &&
-				selectedDate.value !== undefined
-			) {
+			if (selectedDate.value !== undefined) {
 				startDate.value.setFullYear(selectedDate.value.getFullYear());
 				startDate.value.setMonth(selectedDate.value.getMonth());
 				startDate.value.setDate(selectedDate.value.getDate());
