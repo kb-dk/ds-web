@@ -22,7 +22,9 @@
 							'facets.channels',
 							searchResultStore.channelFilters.length,
 						)}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="removeFilterAndSearch('creator_affiliation_facet')"
 					></KBButton>
@@ -37,7 +39,9 @@
 							'facets.genres',
 							searchResultStore.categoryFilters.length,
 						)}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="removeFilterAndSearch('genre')"
 					></KBButton>
@@ -49,7 +53,9 @@
 							'timeSearch.month',
 							months.filter((entity) => entity.selected === true).length,
 						)}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
 					></KBButton>
@@ -61,7 +67,9 @@
 							'timeSearch.weekday',
 							days.filter((entity) => entity.selected === true).length,
 						)}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
 					></KBButton>
@@ -73,7 +81,9 @@
 							'timeSearch.timePeriods',
 							timeslots.filter((entity) => entity.selected === true).length,
 						)}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
 					></KBButton>
@@ -89,7 +99,9 @@
 					<KBButton
 						class="label-small"
 						:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetYearsAndSearch('startTime')"
 					></KBButton>
@@ -101,7 +113,9 @@
 					<KBButton
 						class="label-small"
 						:button-text="`${preliminaryFilterText}`"
-						button-type="btn-tag-primary"
+						button-type="btn-tag"
+						button-color="main"
+						button-size="small"
 						right-icon-name="close"
 						@click="removePreliminaryFilterAndSearch()"
 					></KBButton>
@@ -121,7 +135,9 @@
 					<KBButton
 						class="label-small"
 						:button-text="`${t('facets.reset')}`"
-						button-type="btn-tag-reset"
+						button-type="btn-tag"
+						button-color="reset"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetAllFilters"
 					></KBButton>

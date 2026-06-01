@@ -60,6 +60,8 @@
 					<div class="extra-options">
 						<KBButton
 							button-type="btn-main-medium"
+							button-color="main"
+							button-size="medium"
 							:button-text="t('find.restoreFilters')"
 							left-icon-name="tune"
 							class="btn-medium"
@@ -68,6 +70,8 @@
 						></KBButton>
 						<KBButton
 							button-type="btn-main-medium"
+							button-color="main"
+							button-size="medium"
 							:button-text="t('find.GoToFrontpage')"
 							class="btn-medium"
 							:is-router-link="true"
