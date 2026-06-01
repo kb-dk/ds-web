@@ -13,6 +13,8 @@
 							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"
 							:left-icon-name="!searchResultStore.showFacets ? 'tune' : 'close'"
 							button-type="btn-main-medium"
+							button-color="main"
+							button-size="medium"
 							@click="toggleFacets()"
 						></KBButton>
 					</div>
@@ -76,6 +78,8 @@
 					:button-text="$t('search.hideFilters')"
 					left-icon-name="close"
 					button-type="btn-main-medium"
+					button-color="main"
+					button-size="medium"
 					@click="toggleFacets()"
 				></KBButton>
 				<div
