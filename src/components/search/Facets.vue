@@ -150,6 +150,8 @@
 			</div>
 			<KBButton
 				button-type="btn-main-default"
+				button-color="main"
+				button-size="medium"
 				class="btn-medium btn-main-medium"
 				:button-text="`${t('facets.seeResults', {
 					count: Number(searchResultStore.numFound),

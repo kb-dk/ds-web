@@ -44,7 +44,9 @@
 				:is-router-link="true"
 				:button-text="$t('search.showContent')"
 				right-icon-name="arrow_forward_ios"
-				button-type="btn-cta-default"
+				button-type="btn-cta"
+				button-color="cta"
+				button-size="default"
 				@click="moveToSearchPage()"
 			></KBButton>
 		</div>

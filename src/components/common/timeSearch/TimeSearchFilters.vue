@@ -6,6 +6,8 @@
 		<div class="data-size">
 			<KBButton
 				button-type="btn-dropdown-default"
+				button-color="transparent"
+				button-size="default"
 				class="btn-reg"
 				:button-is-active="expToggled"
 				left-icon-name="info"
