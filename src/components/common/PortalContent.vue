@@ -84,7 +84,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
-import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
+import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
 import MainCategories from '@/components/common/MainCategories.vue';

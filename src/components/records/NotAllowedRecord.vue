@@ -43,7 +43,7 @@ import { copyTextToClipboard } from '@/utils/copy-script';
 import { getBroadcastDate, getBroadcastTime, getTimeFromISOFormat } from '@/utils/time-utils';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import ContactUs from '../search/ContactUs.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
 
 export default defineComponent({
 	name: 'NotAllowedRecord',
