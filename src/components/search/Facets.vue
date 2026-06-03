@@ -837,6 +837,7 @@ h2 {
 }
 
 .search-facets {
+	left: 0px;
 	box-sizing: border-box;
 	position: fixed;
 	display: none;
@@ -942,14 +943,12 @@ h2 {
 		padding-right: 0;
 		padding-left: 0;
 	}
-	.search-facets {
-		left: 0px;
-	}
 }
 
 @media (min-width: 2130px) {
 	.search-facets {
-		margin-right: calc(1280px + 420px);
+		margin-right: 1605px;
+		left: initial !important;
 	}
 }
 </style>
