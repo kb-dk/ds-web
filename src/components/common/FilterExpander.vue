@@ -10,8 +10,9 @@
 			{{ headline }}
 			<KBButton
 				v-if="subline.length > 0"
-				button-type="btn-tag-primary"
-				class=""
+				button-type="btn-tag"
+				button-color="main"
+				button-size="small"
 				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
 				:data-testid="addTestDataEnrichment('button', 'time-search-component', `top-more-link`, 0)"
 				right-icon-name="close"
