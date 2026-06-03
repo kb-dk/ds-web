@@ -25,7 +25,7 @@
 		id="main-content"
 		class="content"
 	>
-		<Facets></Facets>
+		<Facets v-if="route.name === 'Search'"></Facets>
 		<Underlay></Underlay>
 		<router-view v-slot="{ Component }">
 			<transition

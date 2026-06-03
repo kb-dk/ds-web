@@ -147,6 +147,15 @@
 						</TransitionGroup>
 					</fieldset>
 				</FilterExpander>
+				<FilterExpander
+					:headline="'Dato / Periode'"
+					icon="event"
+					:subline="``"
+					:use-headline-translation="true"
+					:update-entity="updateTimeSearch"
+				>
+					<div>GIMME A CALENDAR, DAMNIT!</div>
+				</FilterExpander>
 			</div>
 			<KBButton
 				button-type="btn-main-default"
@@ -323,6 +332,10 @@ export default defineComponent({
 				}
 			}
 			return returnArray;
+		};
+
+		const updateTimeSearch = () => {
+			console.log('new search, yea!');
 		};
 
 		const updateCheckbox = (
@@ -624,6 +637,7 @@ export default defineComponent({
 			addTestDataEnrichment,
 			selectedSearchMethodOptions,
 			selectedSearchMaterialOptions,
+			updateTimeSearch,
 		};
 	},
 });
