@@ -47,6 +47,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const RadioFacets = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
 	const preliminarySearchMethod = ref('');
+	const preliminaryPeriodSearch = ref('');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
@@ -489,5 +490,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		TVFacets,
 		RadioFacets,
 		preliminarySearchMethod,
+		preliminaryPeriodSearch,
 	};
 });

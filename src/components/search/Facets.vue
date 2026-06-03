@@ -154,7 +154,11 @@
 					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 				>
-					<div>GIMME A CALENDAR, DAMNIT!</div>
+					<CustomRadioGroup
+						v-model="searchResultStore.preliminaryPeriodSearch"
+						name="preliminaryPeriodSearch"
+						:options="preliminaryPeriodSearchOptions"
+					/>
 				</FilterExpander>
 			</div>
 			<KBButton
@@ -282,6 +286,19 @@ export default defineComponent({
 			},
 		]);
 
+		const preliminaryPeriodSearchOptions = computed(() => [
+			{
+				value: 'date',
+				title: t('facets.timePeriod.date.title'),
+				description: t('facets.timePeriod.date.desc'),
+			},
+			{
+				value: 'period',
+				title: t('facets.timePeriod.period.title'),
+				description: t('facets.timePeriod.date.desc'),
+			},
+		]);
+
 		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
@@ -399,9 +416,9 @@ export default defineComponent({
 				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
 				if (originFilter) {
 					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
-						searchResultStore.preliminaryFilter = 'origin:ds.radio';
+						searchResultStore.preliminaryFilter = 'origin:"ds.radio"';
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
-						searchResultStore.preliminaryFilter = 'origin:ds.tv';
+						searchResultStore.preliminaryFilter = 'origin:"ds.tv"';
 					}
 				} else {
 					searchResultStore.preliminaryFilter = '';
@@ -638,6 +655,7 @@ export default defineComponent({
 			selectedSearchMethodOptions,
 			selectedSearchMaterialOptions,
 			updateTimeSearch,
+			preliminaryPeriodSearchOptions,
 		};
 	},
 });

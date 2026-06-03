@@ -145,6 +145,16 @@
             "title": "Search RADIO only",
             "desc": "Searches only in RADIO records."
          }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Date",
+            "desc":"Searches for a single day."
+         },
+         "period": {
+            "title":"Period",
+            "desc":"Searches for a period of years."
+         }
       }
    },
    "breadcrumb": {

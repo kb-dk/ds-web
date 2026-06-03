@@ -65,7 +65,7 @@ export default defineComponent({
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 		const timeSearchStore = useTimeSearchStore();
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref<Date | undefined>(new Date(2015, 0, 1, 0, 0, 0));
+		const selectedDate = ref<Date | undefined>();
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 

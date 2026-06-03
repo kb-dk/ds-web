@@ -145,6 +145,16 @@
             "title":"Søg kun på RADIO",
             "desc":"Der søges kun i RADIO-poster."
          }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Dato",
+            "desc":"Der søges på en dag."
+         },
+         "period": {
+            "title":"Periode",
+            "desc":"Der søges på en år-række."
+         }
       }
    },
    "breadcrumb": {
