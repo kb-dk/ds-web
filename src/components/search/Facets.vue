@@ -167,7 +167,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -239,35 +239,39 @@ export default defineComponent({
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
 
-		const selectedSearchMethodOptions = [
-			{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
-			{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
+		const selectedSearchMethodOptions = computed(() => [
+			{ value: 'all', title: t('facets.searchMethod.all.title'), description: t('facets.searchMethod.all.desc') },
+			{
+				value: 'title',
+				title: t('facets.searchMethod.title.title'),
+				description: t('facets.searchMethod.title.desc'),
+			},
 			{
 				value: 'desc',
-				title: 'Søg kun på beskrivelse',
-				description: 'Der søges kun i beskrivelses-feltet.',
+				title: t('facets.searchMethod.desc.title'),
+				description: t('facets.searchMethod.desc.desc'),
 			},
-		];
+		]);
 
-		const selectedSearchMaterialOptions = [
+		const selectedSearchMaterialOptions = computed(() => [
 			{
 				value: '',
-				title: 'Søg på både TV og RADIO',
-				description: 'Der søges både i radio-poster og TV-poster.',
+				title: t('facets.searchMaterial.both.title'),
+				description: t('facets.searchMaterial.both.desc'),
 			},
 			{
 				value: 'origin:"ds.tv"',
-				title: 'Søg kun på TV',
+				title: t('facets.searchMaterial.tv.title'),
 				icon: 'play_circle_filled',
-				description: 'Der søges kun i TV-poster.',
+				description: t('facets.searchMaterial.tv.desc'),
 			},
 			{
 				value: 'origin:"ds.radio"',
-				title: 'Søg kun på RADIO',
+				title: t('facets.searchMaterial.radio.title'),
 				icon: 'volume_up',
-				description: 'Der søges kun i RADIO-poster.',
+				description: t('facets.searchMaterial.radio.title'),
 			},
-		];
+		]);
 
 		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);

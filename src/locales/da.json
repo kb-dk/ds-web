@@ -117,7 +117,35 @@
      "remove":"Fjern",
      "searchingIn":"Søger kun i",
      "desc":"beskrivelse",
-     "title":"titel"
+     "title":"titel",
+     "searchMethod": {
+         "all": {
+            "title":"Søg i alt",
+            "desc":"Der søges i alle metadata-felter."
+         },
+         "title": {
+            "title":"Søg kun på titler",
+            "desc":"Der søges kun i titel-feltet."
+         },
+         "desc": {
+            "title":"Søg kun på beskrivelser",
+            "desc":"Der søges kun i beskrivelses-feltet."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title":"Søg på både TV og RADIO",
+            "desc":"Der søges både i radio-poster og TV-poster."
+         },
+         "tv": {
+            "title":"Søg kun på TV",
+            "desc":"Der søges kun i TV-poster."
+         },
+         "radio": {
+            "title":"Søg kun på RADIO",
+            "desc":"Der søges kun i RADIO-poster."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Forside",

@@ -117,7 +117,35 @@
       "remove":"Remove",
       "searchingIn":"Only searching in",
       "desc":"description",
-      "title":"title"
+      "title":"title",
+      "searchMethod": {
+         "all": {
+            "title": "Search everything",
+            "desc": "Searches across all metadata fields."
+         },
+         "title": {
+            "title": "Search titles only",
+            "desc": "Searches only in the title field."
+         },
+         "desc": {
+            "title": "Search descriptions only",
+            "desc": "Searches only in the description field."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title": "Search both TV and RADIO",
+            "desc": "Searches both radio and TV records."
+         },
+         "tv": {
+            "title": "Search TV only",
+            "desc": "Searches only in TV records."
+         },
+         "radio": {
+            "title": "Search RADIO only",
+            "desc": "Searches only in RADIO records."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Frontpage",
