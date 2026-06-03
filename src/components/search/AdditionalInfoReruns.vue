@@ -288,7 +288,7 @@ export default defineComponent({
 	background-color: #f3f3f3;
 	position: relative;
 	border-left: 1px solid rgba(230, 230, 230, 1);
-
+	padding-bottom: 5px;
 	padding-left: 10px;
 }
 
