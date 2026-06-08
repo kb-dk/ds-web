@@ -5,8 +5,9 @@
 	>
 		<ItemSlider
 			:padding="true"
-			bg="#002e70"
+			bg="#F4FCFF"
 			item-class="extra-thumbnail"
+			bg-scroll-blue="true"
 		>
 			<template #default="slotProps">
 				<div
@@ -233,7 +234,7 @@ export default defineComponent({
 	overflow: hidden;
 	display: none;
 	padding-bottom: 10px;
-	background-color: rgb(0, 46, 112);
+	background-color: var(--bg-additional-info);
 	position: relative;
 }
 
@@ -247,7 +248,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
-	box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 20px 5px inset;
+	box-shadow: inset 0 0 5px rgba(230, 230, 230, 1);
 }
 
 .full-duration {

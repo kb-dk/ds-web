@@ -19,7 +19,8 @@
 					:title="item.title"
 				>
 					<p class="label-regular-bold">
-						{{ item.title[0] }}
+						<span class="when">{{ getStartTime(item) }}</span>
+
 						<span>
 							<div
 								role="img"
@@ -30,58 +31,57 @@
 							</div>
 						</span>
 					</p>
-				</router-link>
-
-				<div class="subtitle">
-					<div class="subtitle-metadata">
-						<span
-							role="img"
-							:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
-							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
-						>
-							{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
-						</span>
-						<p class="label-small">
-							<span class="where">{{ item.creator_affiliation + ',' }}</span>
-							<span class="when">{{ getStartTime(item) }}</span>
-						</p>
-					</div>
-					<div class="subtitle-metadata">
-						<div
-							role="img"
-							class="material-icons icons schedule timeSVG"
-							:aria-label="t('app.a11y.broadcastDuration')"
-							aria-hidden="true"
-						>
-							schedule
-						</div>
-						<p class="label-small">
-							<span class="duration">{{ getDuration(item) }}</span>
-						</p>
-					</div>
-					<div
-						v-if="item.episode"
-						class="episode subtitle-metadata"
-					>
-						<span
-							role="img"
-							class="material-icons episode-split-icon"
-						>
-							segment
-						</span>
-						<p class="label-small-bold">
-							<span class="episode-text">
-								{{ `${t('search.episode')} ${item.episode}` }}
-							</span>
+					<div class="subtitle">
+						<div class="subtitle-metadata">
 							<span
-								v-if="item.number_of_episodes"
-								class="episode-text"
+								role="img"
+								:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
+								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							>
-								{{ `:${item.number_of_episodes}` }}
+								{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
 							</span>
-						</p>
+							<p class="label-small">
+								<span class="where">{{ item.creator_affiliation + ',' }}</span>
+								<span class="broadcast-title">{{ item.title[0] }}</span>
+							</p>
+						</div>
+						<div class="subtitle-metadata">
+							<div
+								role="img"
+								class="material-icons icons schedule timeSVG"
+								:aria-label="t('app.a11y.broadcastDuration')"
+								aria-hidden="true"
+							>
+								schedule
+							</div>
+							<p class="label-small">
+								<span class="duration">{{ getDuration(item) }}</span>
+							</p>
+						</div>
+						<div
+							v-if="item.episode"
+							class="episode subtitle-metadata"
+						>
+							<span
+								role="img"
+								class="material-icons episode-split-icon"
+							>
+								segment
+							</span>
+							<p class="label-small-bold">
+								<span class="episode-text">
+									{{ `${t('search.episode')} ${item.episode}` }}
+								</span>
+								<span
+									v-if="item.number_of_episodes"
+									class="episode-text"
+								>
+									{{ `:${item.number_of_episodes}` }}
+								</span>
+							</p>
+						</div>
 					</div>
-				</div>
+				</router-link>
 			</div>
 		</div>
 		<div
@@ -229,6 +229,10 @@ export default defineComponent({
 	font-size: 16px;
 	opacity: 0;
 }
+.rerun:hover .subtitle-metadata {
+	transition: border-color 0.5s linear;
+	border-bottom: 1px solid var(--color-border-active);
+}
 .rerun:hover .arrow {
 	opacity: 1;
 }
@@ -285,39 +289,42 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: #f3f3f3;
+	background-color: var(--bg-additional-info);
 	position: relative;
 	border-left: 1px solid rgba(230, 230, 230, 1);
-	padding-bottom: 5px;
+	padding-bottom: 15px;
 	padding-left: 10px;
+	padding-top: 5px;
+	box-shadow: inset 0 0 5px rgba(230, 230, 230, 1);
 }
 
 .rerun {
 	padding: 5px;
+	box-sizing: border-box;
+	border-bottom: 1px solid transparent;
 }
 .subtitle {
+	color: var(--color-body-text);
 	display: flex;
 	flex-direction: column;
 }
 .subtitle-metadata {
+	border-bottom: 1px solid transparent;
 	display: flex;
 }
 .subtitle-metadata > .label-small,
 .subtitle-metadata > .label-small-bold {
 	margin: 0;
 }
-.where,
-.when,
-.duration {
-	padding-right: 5px;
+.duration,
+.broadcast-title {
+	padding-right: 10px;
 	text-overflow: ellipsis;
 }
-.when {
-	padding-right: 20px;
-}
-
-.duration {
-	padding-right: 20px;
+.when,
+.where {
+	padding-right: 5px;
+	text-overflow: ellipsis;
 }
 .episode-text {
 	color: #002e70;

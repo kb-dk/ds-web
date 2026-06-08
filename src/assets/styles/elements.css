@@ -9,12 +9,14 @@
     --bg-default: #ffff;
     --bg-transparent: transparent;
     --bg-golden:#e0b500;
+    --bg-additional-info: #F4FCFF;
 
     /*colors*/
     --color-main:#002e70;
     --color-default:#ffff;
     --color-disabled:#969696;
     --color-disabled-sort:#d5d5d5;
+    --color-body-text:#000;
 
     /*borders*/
     --color-border-active: #002e70;

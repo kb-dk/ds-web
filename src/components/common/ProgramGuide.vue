@@ -356,7 +356,7 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: #002e70;
+	color: var(--bg-main);
 	transition:
 		all 0.3s ease-in-out 0s,
 		margin-bottom 0s linear 0s;
@@ -370,12 +370,12 @@ export default defineComponent({
 	background-color: #f0fbff;
 }
 .guide-button.active {
-	background-color: #00255a;
+	background-color: var(--bg-main);
 	color: white;
 }
 .guide-button:hover {
 	background-color: #c4f1ed;
-	color: #0a2e70;
+	color: var(--color-main);
 }
 .daily-program {
 	--bg-color: #ffffff;
@@ -509,11 +509,11 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: #f3f3f3;
+	background-color: var(--bg-additional-info);
 	position: relative;
 	box-sizing: border-box;
 	padding: 20px 0px 12px 0px;
-	box-shadow: 0 0 14px 0 rgba(153, 153, 153, 0.34) inset;
+	box-shadow: inset 0 0 5px rgba(230, 230, 230, 1);
 }
 
 .extra-program {
