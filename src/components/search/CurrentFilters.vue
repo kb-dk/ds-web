@@ -13,145 +13,71 @@
 					{{ $t('search.selected') }}:
 				</span>
 				<div
-					v-if="searchResultStore.channelFilters.length !== 0"
 					key="2"
 					class="filter-group"
 				>
-					<!-- <KBButton
-						class="label-small"
-						:button-text="`${searchResultStore.channelFilters.length} ${t(
-							'facets.channels',
-							searchResultStore.channelFilters.length,
-						)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="removeFilterAndSearch('creator_affiliation_facet')"
-					></KBButton> -->
-					<KBButton
-						v-for="(channel, index) in searchResultStore.channelFilters"
-						:key="index"
-						class="label-small"
-						:button-text="`${extractFilterText(channel)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="removeSingleFilterAndSearch(channel)"
-					></KBButton>
-				</div>
-				<div
-					v-if="searchResultStore.categoryFilters.length !== 0"
-					key="3"
-					class="filter-group"
-				>
-					<!-- <KBButton
-						class="label-small"
-						:button-text="`${searchResultStore.categoryFilters.length} ${t(
-							'facets.genres',
-							searchResultStore.categoryFilters.length,
-						)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="removeFilterAndSearch('genre')"
-					></KBButton> -->
-					<KBButton
-						v-for="(category, index) in searchResultStore.categoryFilters"
-						:key="index"
-						class="label-small"
-						:button-text="`${extractFilterText(category)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="removeSingleFilterAndSearch(category)"
-					></KBButton>
-				</div>
-				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.month',
-							months.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-					></KBButton>
-				</div>
-				<div v-if="days.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.weekday',
-							days.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-					></KBButton>
-				</div>
-				<div v-if="timeslots.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.timePeriods',
-							timeslots.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-					></KBButton>
-				</div>
-				<div
-					v-if="
-						(startDate !== null &&
-							(startDate as unknown as string) !== '' &&
-							startDate.getTime() !== startYear.getTime()) ||
-						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
-					"
-				>
-					<KBButton
-						class="label-small"
-						:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="resetYearsAndSearch('startTime')"
-					></KBButton>
-				</div>
-				<div
-					v-if="searchResultStore.preliminaryFilter !== ''"
-					key="5"
-				>
-					<KBButton
-						class="label-small"
-						:button-text="`${preliminaryFilterText}`"
-						button-type="btn-tag"
-						button-color="main"
-						button-size="small"
-						right-icon-name="close"
-						@click="removePreliminaryFilterAndSearch()"
-					></KBButton>
-				</div>
+					<div v-if="searchResultStore.channelFilters.length !== 0">
+						<KBButton
+							v-for="(channel, index) in searchResultStore.channelFilters"
+							:key="index"
+							class="label-small"
+							:button-text="`${extractFilterText(channel)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removeSingleFilterAndSearch(channel)"
+						></KBButton>
+						|
+					</div>
 
-				<span
-					v-if="filtersActive"
-					key="6"
-					class="seperator"
-				>
-					|
-				</span>
+					<div v-if="searchResultStore.categoryFilters.length !== 0">
+						<KBButton
+							v-for="(category, index) in searchResultStore.categoryFilters"
+							:key="index"
+							class="label-small"
+							:button-text="`${extractFilterText(category)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removeSingleFilterAndSearch(category)"
+						></KBButton>
+						|
+					</div>
+					<div
+						v-if="
+							(startDate !== null &&
+								(startDate as unknown as string) !== '' &&
+								startDate.getTime() !== startYear.getTime()) ||
+							(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
+						"
+					>
+						<KBButton
+							class="label-small"
+							:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="resetYearsAndSearch('startTime')"
+						></KBButton>
+						|
+					</div>
+
+					<div v-if="searchResultStore.preliminaryFilter !== ''">
+						<KBButton
+							class="label-small"
+							:button-text="`${preliminaryFilterText}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removePreliminaryFilterAndSearch()"
+						></KBButton>
+						|
+					</div>
+				</div>
 				<div
 					v-if="filtersActive"
 					key="7"
@@ -228,11 +154,6 @@ export default defineComponent({
 				return false;
 			}
 		});
-
-		const resetTimeValueAndSearch = (resetArray: SelectorData[], facet: string) => {
-			resetAllSelectorValues(resetArray);
-			removeFilterAndSearch(facet);
-		};
 
 		const resetYearsAndSearch = (facet: string) => {
 			if (startDate.value !== null && endDate.value !== null) {
@@ -344,21 +265,6 @@ export default defineComponent({
 			}
 		};
 
-		const calculatedYearSpan = () => {
-			if (
-				startDate.value !== null &&
-				endDate.value !== null &&
-				(startDate.value as unknown as string) !== '' &&
-				(endDate.value as unknown as string) !== ''
-			) {
-				return `(${endDate.value.getFullYear() - startDate.value.getFullYear() + 1}~ ${t(
-					'timeSearch.year',
-					endDate.value.getFullYear() - startDate.value.getFullYear() + 1,
-				)})`;
-			} else {
-				return '';
-			}
-		};
 		const preliminaryFilterText = computed(() => {
 			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
 		});
@@ -374,7 +280,6 @@ export default defineComponent({
 			days,
 			months,
 			timeslots,
-			resetTimeValueAndSearch,
 			resetAllFilters,
 			removeFilterAndSearch,
 			resetYearsAndSearch,
@@ -386,7 +291,6 @@ export default defineComponent({
 			approxTimeDifference,
 			t,
 			presentDateSpan,
-			calculatedYearSpan,
 			preliminaryFilterText,
 			santizeAndSimplify,
 			extractFilterText,
@@ -404,8 +308,10 @@ export default defineComponent({
 	flex-wrap: wrap;
 }
 .filter-group {
-	display: flex;
-	flex-direction: row;
+	display: contents;
+}
+.filter-group > div {
+	display: contents;
 }
 .filter-group > :not(:first-child) {
 	margin-left: 5px;
