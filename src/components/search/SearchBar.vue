@@ -486,7 +486,7 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 #focusSearchInput:focus-visible {
-	box-shadow: 0 0 0 0px #002f7091 !important;
+	box-shadow: 0 0 0 3px #002f7091 !important;
 	border-radius: 4px !important;
 	transition: box-shadow 0.2s ease-in-out;
 }
@@ -839,6 +839,10 @@ input:focus {
 	white-space: nowrap;
 	background-color: transparent;
 	border: 0;
+	margin: 3px 3px;
+	max-width: 100%;
+	box-sizing: border-box;
+	width: calc(100% - 6px);
 }
 
 .portal-dropdown-menu {

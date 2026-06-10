@@ -128,6 +128,12 @@ export default defineComponent({
 ul {
 	padding: 0px;
 }
+
+.user-notifications ul:empty,
+.passive-notifications ul:empty {
+	display: none;
+}
+
 .user-notifications {
 	position: fixed;
 	z-index: 50;

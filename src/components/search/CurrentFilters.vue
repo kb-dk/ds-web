@@ -64,11 +64,21 @@
 						></KBButton>
 						|
 					</div>
-
+					<div v-if="searchResultStore.preliminarySearchMethod !== 'all'">
+						<KBButton
+							class="label-small"
+							:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="searchResultStore.preliminarySearchMethod = 'all'"
+						></KBButton>
+					</div>
 					<div v-if="searchResultStore.preliminaryFilter !== ''">
 						<KBButton
 							class="label-small"
-							:button-text="`${preliminaryFilterText}`"
+							:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
 							button-type="btn-tag"
 							button-color="main"
 							button-size="small"
@@ -80,7 +90,7 @@
 				</div>
 				<div
 					v-if="filtersActive"
-					key="7"
+					key="8"
 				>
 					<KBButton
 						class="label-small"
@@ -115,7 +125,6 @@ import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
-import { santizeAndSimplify } from '@/utils/test-enrichments';
 import { removeChannelOrCategoryFilter } from '@/utils/filter-utils';
 export default defineComponent({
 	name: 'CurrentFilters',
@@ -135,16 +144,15 @@ export default defineComponent({
 				(endDate.value as unknown as string) !== ''
 			) {
 				if (
-					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						searchResultStore.categoryFilters.length !== 0 ||
-						searchResultStore.channelFilters.length !== 0 ||
-						startDate.value.getTime() !== startYear.value.getTime() ||
-						endDate.value.getTime() !== endYear.value.getTime() ||
-						searchResultStore.preliminaryFilter !== '') &&
-					route.query.fq !== undefined &&
-					route.query.fq?.length !== 0
+					days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
+					searchResultStore.categoryFilters.length !== 0 ||
+					searchResultStore.channelFilters.length !== 0 ||
+					startDate.value.getTime() !== startYear.value.getTime() ||
+					endDate.value.getTime() !== endYear.value.getTime() ||
+					searchResultStore.preliminarySearchMethod !== 'all' ||
+					searchResultStore.preliminaryFilter !== ''
 				) {
 					return true;
 				} else {
@@ -197,7 +205,6 @@ export default defineComponent({
 
 		const resetAllFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
@@ -214,6 +221,13 @@ export default defineComponent({
 
 			if (routeQueries.q === '*:*') {
 				delete routeQueries.q;
+			} else {
+				if (
+					searchResultStore.currentQuery.includes('title:') ||
+					searchResultStore.currentQuery.includes('description:')
+				) {
+					routeQueries.q = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+				}
 			}
 
 			delete routeQueries.start;
@@ -266,7 +280,9 @@ export default defineComponent({
 		};
 
 		const preliminaryFilterText = computed(() => {
-			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
+			return searchResultStore.preliminaryFilter !== ''
+				? decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
+				: '';
 		});
 
 		const extractFilterText = (filter: string) => {
@@ -292,7 +308,8 @@ export default defineComponent({
 			t,
 			presentDateSpan,
 			preliminaryFilterText,
-			santizeAndSimplify,
+			router,
+			route,
 			extractFilterText,
 			removeSingleFilterAndSearch,
 		};

@@ -21,6 +21,8 @@
 				v-for="(item, index) in selectedItems.selectedItems"
 				:key="`${index}-${item.name}`"
 				class="selected-entity label-small"
+				button-color="main"
+				button-size="small"
 				:data-testid="addTestDataEnrichment('button', 'timeline-headline', `${headline}-small-status-toggle`, 0)"
 				:button-text="
 					formatStringForTime(
@@ -31,8 +33,6 @@
 					)
 				"
 				button-type="btn-tag"
-				button-size="small"
-				button-color="main"
 				:title="`${t('facets.remove')} ${
 					useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name
 				}`"

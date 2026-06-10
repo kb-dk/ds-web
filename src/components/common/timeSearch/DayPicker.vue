@@ -45,6 +45,8 @@ import { useI18n } from 'vue-i18n';
 import { updateDate } from '@/utils/datepicker-utils';
 import TimePicker from '@/components/common/TimePicker.vue';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
+import '@vuepic/vue-datepicker/dist/main.css';
+import '@/components/common/timeSearch/custom-datepicker.css';
 import KBButton from '@/components/common/KBButton.vue';
 
 interface MonthYearEvent {
@@ -63,7 +65,7 @@ export default defineComponent({
 		let inputTimer: ReturnType<typeof setTimeout> | null = null;
 		const timeSearchStore = useTimeSearchStore();
 		const singleDatePicker = ref<DatePickerInstance>();
-		const selectedDate = ref<Date | undefined>(new Date(2015, 0, 1, 0, 0, 0));
+		const selectedDate = ref<Date | undefined>();
 		const singleDayStartDate = ref<Date>(new Date(2015, 0, 1, 0, 0, 0)); // January 1, 2015, 00:00:00
 		const singleDayEndDate = ref<Date>(new Date(2015, 0, 1, 23, 59, 59)); // January 1, 2015, 23:59:59
 

@@ -95,19 +95,67 @@
       "fromTheArchive":"{month} måned på DR gennem tiden"
    },
    "facets" : {
+      "headline":"Udvælg filtre, til at indsnævre din søgning på:",
       "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
-     "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
+      "selectedGenres": "{selected} af {total} kategorier valgt",
+      "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
       "allChannels":"Alle kanaler",
+      "selectedTVChannels":"{selected} af {total} kanaler valgt",
+      "selectedRadioChannels":"{selected} af {total} kanaler valgt",
       "channels":"kanal | kanaler",
+      "tvChannels":"TV kanal | TV kanaler",
+      "radioChannels": "Radio kanal | Radio kanaler",
       "chosen":"Valgt",
       "reset":"nulstil",
-     "choose": "Vælg",
-     "slowResponse": {
-       "title": "Lang respons tid",
-       "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
-     },
-     "remove":"Fjern"
+      "choose": "Vælg",
+      "seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
+      "slowResponse": {
+         "title": "Lang respons tid",
+         "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
+      },
+     "remove":"Fjern",
+     "searchingIn":"Søger kun i",
+     "desc":"beskrivelse",
+     "title":"titel",
+     "searchMethod": {
+         "all": {
+            "title":"Søg i alt",
+            "desc":"Der søges i alle metadata-felter."
+         },
+         "title": {
+            "title":"Søg kun på titler",
+            "desc":"Der søges kun i titel-feltet."
+         },
+         "desc": {
+            "title":"Søg kun på beskrivelser",
+            "desc":"Der søges kun i beskrivelses-feltet."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title":"Søg på både TV og RADIO",
+            "desc":"Der søges både i RADIO-poster og TV-poster."
+         },
+         "tv": {
+            "title":"Søg kun på TV",
+            "desc":"Der søges kun i TV-poster."
+         },
+         "radio": {
+            "title":"Søg kun på RADIO",
+            "desc":"Der søges kun i RADIO-poster."
+         }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Dato",
+            "desc":"Der søges på en dag."
+         },
+         "period": {
+            "title":"Periode",
+            "desc":"Der søges på en år-række."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Forside",

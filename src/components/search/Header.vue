@@ -1,10 +1,5 @@
 <template>
 	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
-		<!-- <kb-menu
-			:routing="true"
-			:locale="locale"
-			:page="$route.name"
-		></kb-menu> -->
 		<HeaderMenu
 			:search-bar-open="searchBarOpen"
 			@toggle-search-bar="toggleSearchBar"
