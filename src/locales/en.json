@@ -135,7 +135,7 @@
       "searchMaterial": {
          "both": {
             "title": "Search both TV and RADIO",
-            "desc": "Searches both radio and TV records."
+            "desc": "Searches both RADIO and TV records."
          },
          "tv": {
             "title": "Search TV only",

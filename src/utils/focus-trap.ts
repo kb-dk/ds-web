@@ -5,7 +5,9 @@ export const createFocusTrap = (container: HTMLElement, onEscape?: () => void) =
 	const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (!container) return;
+		if (!container) {
+			return;
+		}
 
 		// we close the the entire trap on escape.
 		if (e.key === 'Escape') {
@@ -13,13 +15,17 @@ export const createFocusTrap = (container: HTMLElement, onEscape?: () => void) =
 			return;
 		}
 		//otherwise, we only care about tap when we change focus.
-		if (e.key !== 'Tab') return;
+		if (e.key !== 'Tab') {
+			return;
+		}
 
 		const focusables = [...container.querySelectorAll<HTMLElement>(focusableSelector)].filter(
 			(el) => el.offsetParent !== null,
 		);
 
-		if (!focusables.length) return;
+		if (!focusables.length) {
+			return;
+		}
 
 		const first = focusables[0];
 		const last = focusables[focusables.length - 1];

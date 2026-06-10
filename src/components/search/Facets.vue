@@ -148,7 +148,7 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
-					:headline="'Dato / Periode'"
+					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
 					icon="event"
 					:subline="``"
 					:use-headline-translation="true"
@@ -691,7 +691,7 @@ export default defineComponent({
 }
 
 .filter-headline .bold {
-	font-weight: 700;
+	font-weight: var(--fw-bold);
 }
 
 .filter-header button {

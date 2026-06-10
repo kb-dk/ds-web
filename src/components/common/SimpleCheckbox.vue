@@ -348,29 +348,6 @@ export default defineComponent({
 	cursor: default;
 }
 
-/* .checkbox:disabled:hover:after {
-	background-color: transparent;
-	cursor: default;
-} */
-
-/* .checkbox:disabled:hover:after {
-	cursor: default;
-	background-color: #002e70;
-} */
-
-/* .checkbox:hover:after {
-	background-color: #caf0fe;
-} */
-
-/* .checkbox:checked:hover:before {
-	border-color: #002e70;
-	cursor: pointer;
-} */
-/* .checkbox:checked:hover:after {
-	border-color: rgba(170, 170, 170, 1);
-	background-color: white;
-} */
-
 input:focus {
 	box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
 }

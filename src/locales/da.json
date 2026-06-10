@@ -135,7 +135,7 @@
       "searchMaterial": {
          "both": {
             "title":"Søg på både TV og RADIO",
-            "desc":"Der søges både i radio-poster og TV-poster."
+            "desc":"Der søges både i RADIO-poster og TV-poster."
          },
          "tv": {
             "title":"Søg kun på TV",

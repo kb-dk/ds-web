@@ -186,7 +186,9 @@ export function removeSingleFacetEntry(fqString: string, key: string, valueToRem
 
 	const matches = [...fqString.matchAll(regex)];
 
-	if (matches.length === 0) return fqString;
+	if (matches.length === 0) {
+		return fqString;
+	}
 
 	const remainingValues = matches.map((m) => decodeURIComponent(m[1])).filter((v) => v !== valueToRemove);
 
@@ -218,7 +220,9 @@ const removeFilterAndSearch = (
 			const removable = selected?.filter((entity: SelectorData) => entity.selected) ?? [];
 			fq = fq
 				.map((query) => {
-					if (!query.includes(facet)) return query;
+					if (!query.includes(facet)) {
+						return query;
+					}
 					let updated: string | null = query;
 					removable.forEach((item) => {
 						if (updated) {
