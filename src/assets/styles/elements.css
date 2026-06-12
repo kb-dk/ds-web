@@ -10,12 +10,15 @@
     --bg-transparent: transparent;
     --bg-golden:#e0b500;
     --bg-default-gray: #ccc;
+    --bg-secondary-light: #caf0fe;
+    --bg-secondary-light-20: #F0FBFF;
 
     /*colors*/
     --color-main:#002e70;
     --color-default:#ffff;
     --color-disabled:#969696;
     --color-disabled-sort:#d5d5d5;
+    --color-disabled-font: #757575;
     --color-alert-red: rgb(184, 0, 0);
 
     /*borders*/
@@ -25,6 +28,8 @@
     --color-border-success:#49DA87;
     --color-border-disabled:#757575;
     --color-border-transparent: transparent;
+    --color-border-light-focused: #96E2FD;
+    --color-borders-light: #96E2FD;
 
     /*rounded*/
     --rounded-small: var(--scale-50);

@@ -71,14 +71,14 @@ export default defineComponent({
 }
 
 .radio-option.checked {
-	background-color: #c4f0fd;
-	border: 1px solid #86e2fb;
+	background-color: var(--bg-secondary-light);
+	border: 1px solid var(--color-borders-light);
 	border-radius: 4px;
 }
 
 .radio-option:hover {
-	background-color: #c4f0fd;
-	border: 1px solid #86e2fb;
+	background-color: var(--bg-secondary-light-20);
+	border: 1px solid var(--color-border-light-focused);
 	border-radius: 4px;
 }
 

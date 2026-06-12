@@ -217,6 +217,7 @@ export default defineComponent({
 			data.value = [];
 			selectYears.value = [];
 			const resultsInYears = searchResultStore.initFacets.facet_fields.temporal_start_year;
+			console.log(searchResultStore.initFacets.facet_fields.temporal_start_year[0], ' YESULT IN ENRILAG');
 			const sortedResults = [] as dataItem[];
 			resultsInYears.forEach((item, index) => {
 				if (index % 2 === 0) {

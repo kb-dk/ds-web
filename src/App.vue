@@ -60,6 +60,7 @@ import Underlay from './components/search/Underlay.vue';
 import '@/assets/styles/font-styles.css';
 import '@/assets/styles/elements.css';
 import '@/assets/styles/base.css';
+import { startYear, endYear } from './components/common/timeSearch/TimeSearchInitValues.js';
 
 export default defineComponent({
 	name: 'App',
@@ -164,9 +165,17 @@ export default defineComponent({
 						Promise.race([facetAPICall, maximumWaitTime])
 							.then((response) => {
 								if (response) {
+									console.log('WATT?');
 									//if api comes back first, we get the results and set our boolean to true.
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									const years = searchResultStore.initFacets.facet_fields.temporal_start_year;
+
+									startYear.value = new Date(startYear.value);
+									startYear.value.setFullYear(Number(years[0]));
+
+									endYear.value = new Date(endYear.value);
+									endYear.value.setFullYear(Number(years[years.length - 2]));
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}
@@ -179,6 +188,13 @@ export default defineComponent({
 								if (!facetAPiCallFurfilled) {
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									const years = searchResultStore.initFacets.facet_fields.temporal_start_year;
+
+									startYear.value = new Date(startYear.value);
+									startYear.value.setFullYear(Number(years[0]));
+
+									endYear.value = new Date(endYear.value);
+									endYear.value.setFullYear(Number(years[years.length - 2]));
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}

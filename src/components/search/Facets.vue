@@ -4,19 +4,21 @@
 		class="search-facets"
 	>
 		<div class="facet-container">
-			<div class="filter-header">
-				<div class="material-icons filters">tune</div>
-				<button
-					class="closeBtn material-icons"
-					@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
-				>
-					close
-				</button>
+			<div class="headline-section">
+				<div class="filter-header">
+					<div class="material-icons filters">tune</div>
+					<button
+						class="closeBtn material-icons"
+						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
+					>
+						close
+					</button>
+				</div>
+				<h1 class="filter-headline">
+					{{ t('facets.headline') }}
+					<span class="bold">{{ searchResultStore.currentQuery }}</span>
+				</h1>
 			</div>
-			<h1 class="filter-headline">
-				{{ t('facets.headline') }}
-				<span class="bold">{{ searchResultStore.currentQuery }}</span>
-			</h1>
 			<div class="category-container">
 				<CustomRadioGroup
 					v-model="searchResultStore.preliminarySearchMethod"
@@ -29,6 +31,7 @@
 					:options="selectedSearchMaterialOptions"
 				/>
 				<FilterExpander
+					type="checkbox"
 					:headline="$t('facets.genres', 2)"
 					icon="category"
 					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
@@ -68,6 +71,7 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
+					type="checkbox"
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle_filled"
 					:subline="`${getSublineForFacets(getTVFacets(channelsArray), 'facets.selectedTVChannels')}`"
@@ -108,6 +112,7 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
+					type="checkbox"
 					:headline="$t('facets.radioChannels', 2)"
 					icon="volume_up"
 					:subline="`${getSublineForFacets(getRadioFacets(channelsArray), 'facets.selectedRadioChannels')}`"
@@ -148,9 +153,10 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
+					type="time"
 					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
 					icon="event"
-					:subline="``"
+					:subline="`${t('facets.contentFrom')} ${firstYearOfContent}`"
 					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 				>
@@ -217,6 +223,7 @@ import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import { createFocusTrap } from '@/utils/focus-trap';
+import { startYear } from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'Facets',
@@ -340,6 +347,10 @@ export default defineComponent({
 			}
 			return returnArray;
 		};
+
+		const firstYearOfContent = computed(() => {
+			return startYear.value.getFullYear();
+		});
 
 		const getRadioFacets = (channelArray: SelectorData[]) => {
 			const returnArray = [];
@@ -656,6 +667,7 @@ export default defineComponent({
 			selectedSearchMaterialOptions,
 			updateTimeSearch,
 			preliminaryPeriodSearchOptions,
+			firstYearOfContent,
 		};
 	},
 });
@@ -683,7 +695,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin: 20px 16px;
+	margin: 20px 12px 20px 0px;
 }
 
 .filter-headline {
@@ -745,6 +757,10 @@ fieldset {
 	position: relative;
 	left: -1px;
 	font-size: 40px;
+}
+
+.headline-section {
+	padding-left: 12px;
 }
 
 .time-facet-button {
