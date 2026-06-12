@@ -793,8 +793,8 @@ fieldset {
 	margin-top: 10px;
 }
 .time-search {
-	height: 200px;
-	margin-top: 25%;
+	height: 120px;
+	margin-bottom: 70px;
 	margin-left: 20px;
 	width: 92%;
 }
