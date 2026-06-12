@@ -9,9 +9,10 @@
 			:icon="obj.icon"
 			:value="obj.value"
 			:title="obj.title"
+			:disabled="searchResultStore.currentQuery === ''"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
-			@select="updateSelected"
+			@select="emit('update:modelValue', $event)"
 		/>
 	</fieldset>
 </template>
@@ -25,6 +26,7 @@ export interface RadioButtonOption {
 }
 import { defineComponent } from 'vue';
 import CustomRadioButton from '@/components/common/CustomRadioButton.vue';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	components: { CustomRadioButton },
@@ -41,11 +43,8 @@ export default defineComponent({
 	emits: ['update:modelValue'],
 
 	setup(props, { emit }) {
-		const updateSelected = (value: string) => {
-			emit('update:modelValue', value);
-		};
-
-		return { updateSelected };
+		const searchResultStore = useSearchResultStore();
+		return { emit, searchResultStore };
 	},
 });
 </script>

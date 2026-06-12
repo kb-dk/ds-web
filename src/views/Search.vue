@@ -60,6 +60,8 @@
 					<div class="extra-options">
 						<KBButton
 							button-type="btn-main-medium"
+							button-color="main"
+							button-size="medium"
 							:button-text="t('find.restoreFilters')"
 							left-icon-name="tune"
 							class="btn-medium"
@@ -68,6 +70,8 @@
 						></KBButton>
 						<KBButton
 							button-type="btn-main-medium"
+							button-color="main"
+							button-size="medium"
 							:button-text="t('find.GoToFrontpage')"
 							class="btn-medium"
 							:is-router-link="true"
@@ -223,6 +227,7 @@ export default defineComponent({
 							}
 						}
 					}
+					searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
 					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
 					searchResultStore.getSearchResults(route.query.q as string);
@@ -250,6 +255,7 @@ export default defineComponent({
 						searchResultStore.queryLimitReached = false;
 					}
 					if (!queryLimitReached.value) {
+						searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 						searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 						searchResultStore.setSortFromURL(route.query.sort as string);
 						searchResultStore.setCurrentQueryFromURL(route.query.q as string);

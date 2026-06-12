@@ -8,7 +8,17 @@
 		>
 			<span class="material-icons icon">{{ icon }}</span>
 			{{ headline }}
-			<KBButton>{{ subline }}</KBButton>
+			<KBButton
+				v-if="subline.length > 0"
+				button-type="btn-tag"
+				button-color="main"
+				button-size="small"
+				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
+				:data-testid="addTestDataEnrichment('button', 'time-search-component', `top-more-link`, 0)"
+				right-icon-name="close"
+				:button-text="`${subline}`"
+				@click="removeFilters($event, facetType, itemArray)"
+			></KBButton>
 		</h3>
 		<div
 			ref="expandContainer"
@@ -35,10 +45,15 @@ import { defineComponent, ref, PropType } from 'vue';
 import gsap from 'gsap';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
+import { removeFilterAndSearch } from '@/utils/filter-utils';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
 	name: 'FilterExpander',
-	components: {},
+	components: {
+		KBButton,
+	},
 	props: {
 		headline: {
 			type: String as PropType<string>,
@@ -97,8 +112,16 @@ export default defineComponent({
 		const expanderOpen = ref(false);
 		const expandContainer = ref<HTMLElement | null>(null);
 		const headlineRef = ref();
+		const route = useRoute();
+		const router = useRouter();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
 			props.updateEntity(parent, index, val, props.facetType);
+		};
+
+		const removeFilters = (e: Event, facetType: string, itemArray: Array<SelectorData>) => {
+			e.stopPropagation();
+
+			removeFilterAndSearch(facetType, router, route, itemArray);
 		};
 
 		const toggleExpander = (e: Event) => {
@@ -153,7 +176,16 @@ export default defineComponent({
 			expanderOpen.value = !expanderOpen.value;
 		};
 
-		return { expanderOpen, toggleExpander, expandContainer, passAlongUpdate, addTestDataEnrichment, headlineRef };
+		return {
+			expanderOpen,
+			toggleExpander,
+			expandContainer,
+			passAlongUpdate,
+			addTestDataEnrichment,
+			headlineRef,
+			removeFilterAndSearch,
+			removeFilters,
+		};
 	},
 });
 </script>
@@ -186,6 +218,7 @@ export default defineComponent({
 	transition: all 0.5s linear 0s;
 	background-color: rgba(202, 240, 254, 0.1);
 	text-transform: capitalize;
+	font-weight: 100;
 }
 
 .headline:hover {
@@ -221,22 +254,6 @@ export default defineComponent({
 	opacity: 1;
 }
 
-.toggle-button:before {
-	content: '';
-	display: block;
-	width: 0;
-	height: 0;
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-bottom: 10px solid #0a2e70;
-	position: relative;
-	transition: all 0.15s ease-in-out 0s;
-	transform: scaleY(0);
-	transform-origin: bottom;
-	top: -17px;
-	left: 16px;
-}
-
 .expand-container:hover,
 .expand-container.open {
 	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.24) inset;
@@ -254,21 +271,36 @@ export default defineComponent({
 	transform: scaleY(1);
 }
 
+.toggle-button:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 6px solid #0a2e70;
+	position: absolute;
+	transition: all 0.15s ease-in-out 0s;
+	transform: scaleY(0);
+	transform-origin: bottom;
+	top: -17px;
+	left: 0px;
+}
+
 .toggle-button:after {
 	position: absolute;
 	content: '';
 	display: block;
 	width: 0;
 	height: 0;
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-top: 10px solid #0a2e70;
-	position: relative;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 6px solid #0a2e70;
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
-	top: 17px;
-	left: -18px;
+	top: 11px;
+	left: 0px;
 }
 
 .toggle-button.closed:after {
@@ -307,8 +339,8 @@ export default defineComponent({
 	cursor: pointer;
 	background-color: transparent;
 	padding: 10px 5px;
-	width: 24px;
-	height: 24px;
+	width: 20px;
+	height: 23px;
 	background-color: #0a2e70;
 	color: white;
 	font-size: 24px;

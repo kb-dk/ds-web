@@ -95,22 +95,67 @@
       "fromTheArchive":"The month of {month} on DR through time"
    },
    "facets" : {
+      "headline":"Choose filters, to limit your search for:",
       "allGenres": "all categories",
       "genres": "category | categories",
+      "selectedGenres": "{selected} of {total} categories selected",
       "genresSubtitle": "Select a category and explore the programmes.",
       "allChannels":"all channels",
+      "selectedTVChannels":"{selected} of {total} channels selected",
+      "selectedRadioChannels":"{selected} of {total} kanalchannelser selected",
       "channels":"channel | channels",
       "tvChannels":"TV channel | TV channels",
       "radioChannels": "Radio channel | Radio channels",
       "chosen":"chosen",
       "reset":"reset",
       "choose": "Select",
+      "seeResults": "See your {resultCount} result | See your {resultCount} results",
       "slowResponse": {
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
       },
-      "remove":"Remove"
-
+      "remove":"Remove",
+      "searchingIn":"Only searching in",
+      "desc":"description",
+      "title":"title",
+      "searchMethod": {
+         "all": {
+            "title": "Search everything",
+            "desc": "Searches across all metadata fields."
+         },
+         "title": {
+            "title": "Search titles only",
+            "desc": "Searches only in the title field."
+         },
+         "desc": {
+            "title": "Search descriptions only",
+            "desc": "Searches only in the description field."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title": "Search both TV and RADIO",
+            "desc": "Searches both RADIO and TV records."
+         },
+         "tv": {
+            "title": "Search TV only",
+            "desc": "Searches only in TV records."
+         },
+         "radio": {
+            "title": "Search RADIO only",
+            "desc": "Searches only in RADIO records."
+         }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Date",
+            "desc":"Searches for a single day."
+         },
+         "period": {
+            "title":"Period",
+            "desc":"Searches for a period of years."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Frontpage",
@@ -553,5 +598,13 @@
       "maybeYouWantTo":"Or maybe you would rather:",
       "restoreFilters":"Restore filters from previous search",
       "GoToFrontpage":"Go to the front page of DR-arkivet"
+   },
+   "calendar": {
+      "open":"Open calendar",
+      "close": "Close calendar",
+      "explanation": "Type a date in format DD-MM-YYYY or pick from the calendar.",
+      "select": "Select date",
+      "nextMonth": "Next month",
+      "prevMonth":"Previous month"
    }
 }

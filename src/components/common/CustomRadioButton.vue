@@ -6,6 +6,7 @@
 			:name="name"
 			:value="value"
 			:checked="checked"
+			:disabled="disabled"
 			@change="onChange"
 		/>
 		<div class="outer-dot">
@@ -39,6 +40,7 @@ export default defineComponent({
 		description: { type: String, default: '' },
 		index: { type: Number, default: 0 },
 		checked: { type: Boolean, default: false },
+		disabled: { type: Boolean, default: false },
 		name: { type: String, required: true },
 		icon: { type: String, required: false, default: undefined },
 	},
@@ -97,6 +99,24 @@ export default defineComponent({
 .radio-option input[type='radio'] {
 	position: absolute;
 	opacity: 0;
+}
+
+.radio-option:has(input:disabled) {
+	pointer-events: none;
+	opacity: 1;
+	color: grey;
+}
+
+.radio-option:has(input:disabled) .outer-dot {
+	border: 2px solid grey;
+}
+
+.radio-option:has(input:disabled) .dot {
+	background-color: grey;
+}
+
+.radio-option:has(input:disabled) .radio-icon {
+	color: grey;
 }
 
 .outer-dot {

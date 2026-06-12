@@ -1,5 +1,13 @@
 <template>
-	<div :class="getClassStyle()">
+	<div
+		:class="[
+			'checkbox-container',
+			{
+				disabled: amount === '0' || (disabled && !checked),
+				checked: checked === true,
+			},
+		]"
+	>
 		<label
 			:title="title"
 			class="label"
@@ -61,7 +69,6 @@
 import { defineComponent, PropType } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
-import { useSearchResultStore } from '@/store/searchResultStore';
 import { getFilterThumbnail } from '@/utils/record-utils';
 export default defineComponent({
 	name: 'SimpleCheckbox',
@@ -131,8 +138,6 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const searchResultStore = useSearchResultStore();
-
 		const displayAmount = (value: string | undefined) => {
 			return value ? `(${value})` : '';
 		};
@@ -140,14 +145,10 @@ export default defineComponent({
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
 			props.update(props.parentArray, props.number, checked, title, key, props.filterArray);
 		};
-		const getClassStyle = () => {
-			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
-		};
 		return {
 			displayAmount,
 			addTestDataEnrichment,
 			updateSelection,
-			getClassStyle,
 			santizeAndSimplify,
 			getFilterThumbnail,
 		};
@@ -254,7 +255,8 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 }
 
-.checkbox-container:hover {
+.checkbox-container:hover,
+.checkbox-container.checked {
 	background-color: #c4f0fd;
 	border: 1px solid #86e2fb;
 	border-radius: 4px;
@@ -324,7 +326,7 @@ export default defineComponent({
 }
 
 .loading .checkbox:after {
-	border: 1px solid rgba(170, 170, 170, 1) !important;
+	border: 2px solid rgba(170, 170, 170, 1) !important;
 	background-color: rgb(255, 255, 255) !important;
 	cursor: default;
 }
@@ -346,29 +348,6 @@ export default defineComponent({
 	cursor: default;
 }
 
-/* .checkbox:disabled:hover:after {
-	background-color: transparent;
-	cursor: default;
-} */
-
-/* .checkbox:disabled:hover:after {
-	cursor: default;
-	background-color: #002e70;
-} */
-
-/* .checkbox:hover:after {
-	background-color: #caf0fe;
-} */
-
-/* .checkbox:checked:hover:before {
-	border-color: #002e70;
-	cursor: pointer;
-} */
-/* .checkbox:checked:hover:after {
-	border-color: rgba(170, 170, 170, 1);
-	background-color: white;
-} */
-
 input:focus {
 	box-shadow: 0 0 0 2px rgba(39, 94, 254, 0.5);
 }
@@ -382,7 +361,7 @@ input:focus {
 }
 
 .checkbox-container.disabled .checkbox:after {
-	border: 2px solid rgb(145, 145, 145);
+	border: 3px solid rgb(145, 145, 145);
 }
 
 .checkbox-container.disabled .checkbox:hover:after {
@@ -397,7 +376,7 @@ input:focus {
 	display: block;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #002e70;
+	border: 3px solid #002e70;
 	border-radius: 4px;
 }
 

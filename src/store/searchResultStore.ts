@@ -46,6 +46,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const TVFacets = ref([] as Array<string>);
 	const RadioFacets = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
+	const preliminarySearchMethod = ref('');
+	const preliminaryPeriodSearch = ref('');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
@@ -116,7 +118,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
 					if (filter?.split('%3A')[0].includes('origin')) {
-						preliminaryFilter.value = filter;
+						preliminaryFilter.value = decodeURIComponent(filter);
 					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						channelFilters.value = cleanedString.split(' OR ');
@@ -130,6 +132,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			} else {
 				const str = URLFilters;
 				if (str.split('%3A')[0].includes('origin')) {
+					preliminaryFilter.value = decodeURIComponent(str);
 					filters.value.push(`fq=${str}`);
 				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
 					const cleanedString = str.replace(/[()]/g, '');
@@ -141,6 +144,16 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 					str !== '' ? filters.value.push(`fq=${str}`) : null;
 				}
 			}
+		}
+	};
+
+	const setPreliminarySearchMethodFromURL = (query: string) => {
+		if (query.includes('title:')) {
+			preliminarySearchMethod.value = 'title';
+		} else if (query.includes('description:')) {
+			preliminarySearchMethod.value = 'desc';
+		} else {
+			preliminarySearchMethod.value = 'all';
 		}
 	};
 
@@ -215,6 +228,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		channelFilters.value = [];
 		categoryFilters.value = [];
 		preliminaryFilter.value = '';
+		preliminarySearchMethod.value = 'all';
+		if (currentQuery.value.includes('title:') || currentQuery.value.includes('description:')) {
+			currentQuery.value = currentQuery.value.split(':')[1].replaceAll('"', '');
+		}
 	};
 
 	const resetAutocomplete = () => {
@@ -449,6 +466,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setFiltersFromURL,
 		setStartFromURL,
 		setCurrentQueryFromURL,
+		setPreliminarySearchMethodFromURL,
 		resetStart,
 		setSortFromURL,
 		resetSort,
@@ -471,5 +489,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		filterQueryLength,
 		TVFacets,
 		RadioFacets,
+		preliminarySearchMethod,
+		preliminaryPeriodSearch,
 	};
 });

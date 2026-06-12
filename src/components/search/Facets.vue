@@ -13,48 +13,25 @@
 					close
 				</button>
 			</div>
-			<h1 class="filter-headline">Udvælg filtre, til at indsnævre din søgnig på: "kongelig"</h1>
+			<h1 class="filter-headline">
+				{{ t('facets.headline') }}
+				<span class="bold">{{ searchResultStore.currentQuery }}</span>
+			</h1>
 			<div class="category-container">
 				<CustomRadioGroup
-					v-model="selectedSearchMethod"
+					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
-					:options="[
-						{ value: 'all', title: 'Søg i alt', description: 'Der søges i alle metadata-felter.' },
-						{ value: 'title', title: 'Søg kun på titler', description: 'Der søges kun i titel-feltet.' },
-						{
-							value: 'desc',
-							title: 'Søg kun på beskrivelse',
-							description: 'Der søges kun i beskrivelses-feltet.',
-						},
-					]"
+					:options="selectedSearchMethodOptions"
 				/>
 				<CustomRadioGroup
-					v-model="selectedSearchMaterials"
+					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
-					:options="[
-						{
-							value: 'all',
-							title: 'Søg på både TV og RADIO',
-							description: 'Der søges både i radio-poster og TV-poster.',
-						},
-						{
-							value: 'tv',
-							title: 'Søg kun på TV',
-							icon: 'play_circle_filled',
-							description: 'Der søges kun i TV-poster.',
-						},
-						{
-							value: 'radio',
-							title: 'Søg kun på RADIO',
-							icon: 'volume_up',
-							description: 'Der søges kun i RADIO-poster.',
-						},
-					]"
+					:options="selectedSearchMaterialOptions"
 				/>
 				<FilterExpander
 					:headline="$t('facets.genres', 2)"
 					icon="category"
-					:subline="`${getSublineForFacets(genreArray, 'facets.genres')}`"
+					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
 					:item-array="genreArray"
 					:use-headline-translation="true"
 					:update-entity="updateFacet"
@@ -94,9 +71,9 @@
 				<FilterExpander
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle_filled"
-					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:subline="`${getSublineForFacets(getTVFacets(channelsArray), 'facets.selectedTVChannels')}`"
 					:fade="false"
-					:item-array="channelsArray"
+					:item-array="getTVFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:use-headline-translation="false"
@@ -118,7 +95,7 @@
 									:channel="singleFacet.name"
 									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
 									:number="index"
-									:parent-array="channelsArray"
+									:parent-array="getTVFacets(channelsArray)"
 									:update="updateCheckbox"
 									:checked="
 										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
@@ -134,9 +111,9 @@
 				<FilterExpander
 					:headline="$t('facets.radioChannels', 2)"
 					icon="volume_up"
-					:subline="`${getSublineForFacets(channelsArray, 'facets.channels')}`"
+					:subline="`${getSublineForFacets(getRadioFacets(channelsArray), 'facets.selectedRadioChannels')}`"
 					:fade="false"
-					:item-array="channelsArray"
+					:item-array="getRadioFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:use-headline-translation="false"
@@ -158,7 +135,7 @@
 									:channel="singleFacet.name"
 									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
 									:number="index"
-									:parent-array="channelsArray"
+									:parent-array="getRadioFacets(channelsArray)"
 									:update="updateCheckbox"
 									:checked="
 										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
@@ -172,15 +149,18 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
-					headline="Dato, periode og tidspunkter"
-					icon="calendar_month"
+					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
+					icon="event"
+					:subline="``"
 					:item-array="yearArray"
-					subline=""
-					facet-type="startTime"
-					:filter-name-cutoff="5"
-					:use-headline-translation="false"
+					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 				>
+					<CustomRadioGroup
+						v-model="searchResultStore.preliminaryPeriodSearch"
+						name="preliminaryPeriodSearch"
+						:options="preliminaryPeriodSearchOptions"
+					/>
 					<fieldset
 						v-if="searchResultStore.firstBackendFetchExecuted"
 						class="facet-options time-search"
@@ -204,22 +184,25 @@
 
 			<KBButton
 				button-type="btn-main-default"
+				button-color="main"
+				button-size="medium"
 				class="btn-medium btn-main-medium"
-				:button-text="`Se dine ${searchResultStore.numFound} resultater`"
+				:button-text="`${t('facets.seeResults', {
+					count: Number(searchResultStore.numFound),
+					resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
+				})}`"
 				right-icon-name="arrow_forward_ios"
 				:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
 				:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
 				@click="searchResultStore.showFacets = false"
-			>
-				Se alle resultater
-			</KBButton>
+			></KBButton>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import '@/assets/styles/vue-slider-styles.css';
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -239,7 +222,7 @@ import { markerData, SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
-import {
+/* import {
 	days,
 	endDate,
 	endYear,
@@ -250,12 +233,16 @@ import {
 	timeSliderValues,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import FilterExpander from '@/components/common/FilterExpander.vue';
-import { resetAllSelectorValues } from '@/utils/time-search-utils';
+/* import { resetAllSelectorValues } from '@/utils/time-search-utils';
+ */
+import { endYear, startYear, timeSliderValues } from '@/components/common/timeSearch/TimeSearchInitValues';
+import FilterExpander from '@/components/common/FilterExpander.vue';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import VueSlider from 'vue-3-slider-component';
+import { createFocusTrap } from '@/utils/focus-trap';
 
 export default defineComponent({
 	name: 'Facets',
@@ -289,13 +276,59 @@ export default defineComponent({
 			radio: 'origin:"ds.radio"',
 		};
 
-		const selectedSearchMethod = ref('all');
-		const selectedSearchMaterials = ref('all');
+		let focusTrap: ReturnType<typeof createFocusTrap> | null = null;
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
 		const yearArray = ref([] as SelectorData[]);
+
+		const selectedSearchMethodOptions = computed(() => [
+			{ value: 'all', title: t('facets.searchMethod.all.title'), description: t('facets.searchMethod.all.desc') },
+			{
+				value: 'title',
+				title: t('facets.searchMethod.title.title'),
+				description: t('facets.searchMethod.title.desc'),
+			},
+			{
+				value: 'desc',
+				title: t('facets.searchMethod.desc.title'),
+				description: t('facets.searchMethod.desc.desc'),
+			},
+		]);
+
+		const selectedSearchMaterialOptions = computed(() => [
+			{
+				value: '',
+				title: t('facets.searchMaterial.both.title'),
+				description: t('facets.searchMaterial.both.desc'),
+			},
+			{
+				value: 'origin:"ds.tv"',
+				title: t('facets.searchMaterial.tv.title'),
+				icon: 'play_circle_filled',
+				description: t('facets.searchMaterial.tv.desc'),
+			},
+			{
+				value: 'origin:"ds.radio"',
+				title: t('facets.searchMaterial.radio.title'),
+				icon: 'volume_up',
+				description: t('facets.searchMaterial.radio.title'),
+			},
+		]);
+
+		const preliminaryPeriodSearchOptions = computed(() => [
+			{
+				value: 'date',
+				title: t('facets.timePeriod.date.title'),
+				description: t('facets.timePeriod.date.desc'),
+			},
+			{
+				value: 'period',
+				title: t('facets.timePeriod.period.title'),
+				description: t('facets.timePeriod.date.desc'),
+			},
+		]);
 
 		onMounted(() => {
 			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
@@ -352,7 +385,6 @@ export default defineComponent({
 			}
 			return returnArray;
 		};
-
 		const updateCheckbox = (
 			array: SelectorData[],
 			index: number,
@@ -378,10 +410,12 @@ export default defineComponent({
 			) {
 				return ``;
 			} else {
-				return `${dataArray.filter((item) => item.selected).length} ${t(
-					translationKey,
-					dataArray.filter((item) => item.selected).length,
-				)}`;
+				const selected = dataArray.filter((item) => item.selected).length;
+				const total = dataArray.length;
+				return t(translationKey, {
+					selected,
+					total,
+				});
 			}
 		};
 
@@ -427,12 +461,12 @@ export default defineComponent({
 				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
 				if (originFilter) {
 					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
-						selectedSearchMaterials.value = 'radio';
+						searchResultStore.preliminaryFilter = 'origin:"ds.radio"';
 					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
-						selectedSearchMaterials.value = 'tv';
+						searchResultStore.preliminaryFilter = 'origin:"ds.tv"';
 					}
 				} else {
-					selectedSearchMaterials.value = 'all';
+					searchResultStore.preliminaryFilter = '';
 				}
 			},
 			{ immediate: true },
@@ -500,16 +534,16 @@ export default defineComponent({
 		);
 
 		watch(
-			() => selectedSearchMethod.value,
+			() => searchResultStore.preliminarySearchMethod,
 			() => {
-				setSearchMethodAndExecute(selectedSearchMethod.value);
+				setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod);
 			},
 		);
 
 		watch(
-			() => selectedSearchMaterials.value,
+			() => searchResultStore.preliminaryFilter,
 			() => {
-				setDelimitationFilterAndExecute(selectedSearchMaterials.value);
+				setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter);
 			},
 		);
 
@@ -530,14 +564,23 @@ export default defineComponent({
 		};
 
 		const setSearchMethodAndExecute = (choice: string) => {
-			console.log(searchResultStore.currentQuery);
+			let orgQuery = searchResultStore.currentQuery;
+			if (
+				searchResultStore.currentQuery.includes('title:') ||
+				searchResultStore.currentQuery.includes('description:')
+			) {
+				orgQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+			}
 			let newQuery = '';
 			if (choice === 'title') {
-				newQuery = `title:"${searchResultStore.currentQuery}"`;
+				newQuery = `title:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'title';
 			} else if (choice === 'desc') {
-				newQuery = `description:"${searchResultStore.currentQuery}"`;
+				newQuery = `description:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'desc';
 			} else {
-				newQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+				newQuery = orgQuery;
+				searchResultStore.preliminarySearchMethod = 'all';
 			}
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -545,7 +588,6 @@ export default defineComponent({
 			routeQueries.q = newQuery;
 			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
 			routeQueries.fq = existingFq;
-			console.log(routeQueries);
 			router.push({
 				name: 'Search',
 				query: routeQueries,
@@ -554,13 +596,12 @@ export default defineComponent({
 
 		const setDelimitationFilterAndExecute = (choice: string) => {
 			let val = '';
-			if (choice === 'tv') {
+			if (choice === 'origin:"ds.tv"') {
 				val = delimitationOptions.tv;
-			} else if (choice === 'radio') {
+			} else if (choice === 'origin:"ds.radio"') {
 				val = delimitationOptions.radio;
 			} else {
 				val = delimitationOptions.all;
-				searchResultStore.preliminaryFilter = '';
 			}
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -590,7 +631,7 @@ export default defineComponent({
 			});
 		};
 
-		const removeAllTimeFilters = () => {
+		/* 		const removeAllTimeFilters = () => {
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(months.value);
 			resetAllSelectorValues(timeslots.value);
@@ -598,7 +639,7 @@ export default defineComponent({
 			const endHolder = new Date(endYear.value.getTime());
 			startDate.value = startHolder;
 			endDate.value = endHolder;
-		};
+		}; */
 
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
@@ -608,15 +649,22 @@ export default defineComponent({
 					opacity: 0,
 					marginLeft: '-15px',
 					onComplete: () => {
+						focusTrap?.deactivate();
 						gsap.set(facetsContainer.value, {
 							display: 'none',
 						});
 					},
 				});
 			} else {
+				if (facetsContainer.value) {
+					focusTrap = createFocusTrap(facetsContainer.value, () => {
+						searchResultStore.showFacets = false;
+					});
+				}
 				gsap.set(facetsContainer.value, {
 					display: 'block',
 					onComplete: () => {
+						focusTrap?.activate();
 						gsap.to(facetsContainer.value, {
 							duration: 0.5,
 							opacity: 1,
@@ -654,12 +702,13 @@ export default defineComponent({
 			translatedGenreArray,
 			getTVFacets,
 			getRadioFacets,
-			selectedSearchMethod,
-			selectedSearchMaterials,
 			addTestDataEnrichment,
 			vueSliderRef,
 			timeSliderValues,
 			data,
+			selectedSearchMethodOptions,
+			selectedSearchMaterialOptions,
+			preliminaryPeriodSearchOptions,
 		};
 	},
 });
@@ -692,6 +741,10 @@ export default defineComponent({
 
 .filter-headline {
 	color: #002e70;
+}
+
+.filter-headline .bold {
+	font-weight: var(--fw-bold);
 }
 
 .filter-header button {
@@ -784,7 +837,26 @@ fieldset {
 	box-sizing: border-box;
 	padding-bottom: 15px;
 	width: 100%;
-	min-height: calc(100vh - 20px);
+	min-height: calc(100vh);
+}
+
+.facet-container::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.facet-container::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.facet-container::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+}
+
+/* harmless, but usually no-op in modern browsers */
+.facet-container::-webkit-scrollbar-button {
+	display: none;
 }
 
 .facet-options {
@@ -823,6 +895,7 @@ h2 {
 }
 
 .search-facets {
+	left: 0px;
 	box-sizing: border-box;
 	position: fixed;
 	display: none;
@@ -928,15 +1001,12 @@ h2 {
 		padding-right: 0;
 		padding-left: 0;
 	}
-	.search-facets {
-		left: 0px;
-	}
 }
 
 @media (min-width: 2130px) {
 	.search-facets {
-		left: initial;
-		margin-right: calc(1280px + 420px);
+		margin-right: 1605px;
+		left: initial !important;
 	}
 }
 </style>
