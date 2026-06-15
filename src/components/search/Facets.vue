@@ -165,6 +165,8 @@
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
 					/>
+					<div v-if="searchResultStore.preliminaryPeriodSearch === 'date'">DATESTUFF!</div>
+					<div v-if="searchResultStore.preliminaryPeriodSearch === 'period'">PERIODSTUFF!</div>
 				</FilterExpander>
 			</div>
 			<KBButton
