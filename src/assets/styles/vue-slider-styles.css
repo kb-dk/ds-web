@@ -5,17 +5,21 @@
 
 	
 }
+
 .vue-slider-rail::before {
 	display: block;
 	height: 5px;
 	content: '';
-	/* z-index: 6 !important; */
-	border: 1px solid var(--color-border-active);
-	background-color: var(--bg-main-hover) !important;
-	box-shadow: inset 1px 1px 1px ;
+	z-index: 6 !important;
+	border: 1px solid var(--color-border-disabled);
+	background-color: var(--bg-disabled) !important;
+	border-radius: 4px;
 	top:calc(100%) !important;
 	position: relative;
-	box-shadow: var(--color-border-active) 0px 0px 1px,var(--color-border-active) 0px 0px 1px inset;
+}
+.slider-whiteoff-container .vue-slider-rail::before {
+	border: 1px solid var(--color-border-disabled);
+	background-color: var(--bg-disabled) !important;
 }
 .vue-slider {
 	height: 100px !important;
@@ -27,11 +31,14 @@
 }
 .vue-slider-process {
 	border-radius: 0px !important;
-	background-color: #caf0fe !important;
-	z-index: 4 !important;
-	mix-blend-mode: hue !important;
-	filter: hue-rotate(245deg) !important;
+	background-color: transparent !important;
+	z-index: 6 !important;
 	border-radius: 0 !important;
+}
+.slider-whiteoff-container .vue-slider-process {
+	mix-blend-mode: overlay !important;
+	filter:  drop-shadow(0px 1px 6px black);
+	background-color: black !important;
 }
 .vue-slider-process::before {
 	display: block;
@@ -39,11 +46,14 @@
 	position: absolute;
 	background-color: var(--bg-main) !important;
 	content: '';
+	border:1px solid var(--color-border-active);
 	top: calc(100%);
 	z-index: 17 !important;
 	width: 100%;
 }
-
+.slider-whiteoff-container .vue-slider-process::before {
+	
+}
 .vue-slider-mark-step {
 	background-color: var(--bg-transparent) !important;
 	border-radius: 0px !important;
@@ -58,7 +68,7 @@
 	display: flex;
 	box-sizing: border-box;
 	border-radius: 50%;
-	z-index: 6 !important;
+	z-index: 32 !important;
 	border: 4px solid var(--color-border-active);
 	justify-content: center;
 	align-items: center;
@@ -135,21 +145,25 @@
 	height: 15% !important;
 	background-color: transparent !important;
 	margin-bottom: 10px !important;
-
+	
 }
+
 .vue-slider-mark-label {
 	display:none;
 	/* font-size: var(--fs-meta) !important; */
 	background: var(--bg-disabled) 0% 0% no-repeat padding-box !important;
 	color: white !important;
 	border-radius: 5px;
-	top: calc(-62px + 100%) !important;
+	top: calc(-100% - 1em) !important;
 	font-size: var(--fs-lead) !important;
     line-height: var(--lh-large-tight);
     font-weight: var(--fw-regular);
 	padding: 2px 5px;
 	min-width: 20px;
 	text-align: center;
+}
+.slider-whiteoff-container .vue-slider-mark-label {
+		top: calc(100% - 3.8em) !important;
 }
 .vue-slider-dot-tooltip-inner {
 	background-color: #fff6c4 !important;
@@ -161,7 +175,12 @@
 	border-top-color: #fff6c4 !important;
 	color: black !important;
 }
-
+.vue-slider-marks .vue-slider-mark-active {
+	z-index: 21;
+}
+.vue-slider-marks {
+	z-index: 20;
+}
 .vue-slider-marks .vue-slider-mark:first-of-type .vue-slider-mark-label {
 	left: 15px !important;
 }
@@ -177,20 +196,20 @@
 		display: block;
 }
 .slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-step:after{
-		height: 10px !important;
-		top: calc(95%) !important;
+		top:calc(100% - 5px) !important;
 }
 .time-search-filter-container .vue-slider-marks .vue-slider-mark:nth-child(15n) .vue-slider-mark-label{
 	display:block
 }
 .time-search-filter-container .vue-slider-marks .vue-slider-mark:nth-child(15n) .vue-slider-mark-step:after{
-	height: 10px !important;
-	top: calc(95%) !important;
+	top:calc(100% - 5px) !important;
 
 }
 .vue-slider-marks .vue-slider-mark-active .vue-slider-mark-label-active {
-	opacity: 50%;
-	background-color: var(--bg-main)!important;
+	opacity: 100%;
+	background-color: var(--bg-default)!important;
+	border: 1px solid var(--color-border-active);
+	color: var(--color-main) !important;
 }
 .vue-slider-marks .vue-slider-mark:nth-child(1n) {
 	height: 50% !important;
@@ -201,18 +220,21 @@
 	content: '';
 	display: block;
 	width: 2px;
-	background-color: var(--bg-main);
-	height: 5px;
+	background-color: var(--bg-disabled);
+	height:10px;
 	position: absolute;
-	top: calc(99%);
+	top: calc(98%) !important;
 }
-
+.vue-slider-marks .vue-slider-mark-active:nth-child(1n) .vue-slider-mark-step:after{
+	background-color: var(--bg-main);
+}
 .vue-slider-dot-tooltip-inner {
 	background: #002e70 0% 0% no-repeat padding-box !important;
 	font-size: var(--fs-lead) !important;
 	color: white !important;
 }
 .vue-slider-dot-tooltip-top {
+
 	top: -2px !important;
 }
 
@@ -230,31 +252,31 @@
 		display: none;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-step:after{
-		height: 5px !important;
-		top: calc(99%) !important;
+		top:calc(98%) !important;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
 		display: block;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
-		height: 10px !important;
-		top: calc(95%) !important;
+		top:calc(100% - 5px) !important;
 	}
+		
 }
 @media (min-width: 850px) {
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
 		display: none;
 	 }
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
-		height: 5px !important;
-		top: calc(99%) !important;
+		top:calc(98%) !important;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
 		display: block;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after{
-		height: 10px !important;
-		top: calc(95%) !important;
+		top:calc(100% - 5px) !important;
+	}
+	.slider-whiteoff-container .vue-slider-mark-label {
+		top: calc(100% - 3.8em) !important;
 	}
 
 }
@@ -263,4 +285,16 @@
 		height: 200px !important;
 		align-content: end;
 	}
+	.slider-whiteoff-container .vue-slider-mark-label {
+		top: calc(100% - 3.5em) !important;
+	}
+	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
+		top:calc(98%) !important;
+	}
+	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after{
+		top:calc(100% - 5px) !important;
+	}
+	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark-active:nth-child(1n) .vue-slider-mark-step:after{
+	background-color: var(--bg-transparent);
+}
 }

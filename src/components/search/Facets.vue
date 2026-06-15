@@ -883,8 +883,8 @@ fieldset {
 .time-search-filter-container {
 	height: 120px;
 	margin-bottom: 70px;
-	margin-left: 25px;
-	width: calc(100% - 55px);
+	margin-left: 40px;
+	width: calc(100% - 82px);
 }
 .flex-container {
 	width: 100%;

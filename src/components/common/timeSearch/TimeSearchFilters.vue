@@ -889,7 +889,7 @@ fieldset {
 	position: absolute;
 	z-index: 4;
 	margin-top: 2px;
-	border-bottom: 1px solid #002e70;
+	border-radius: 4px;
 	box-sizing: border-box;
 	top: 0px;
 	height: 0px;
