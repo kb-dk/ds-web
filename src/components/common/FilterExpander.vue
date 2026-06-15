@@ -9,7 +9,7 @@
 			<span class="material-icons icon">{{ icon }}</span>
 			{{ headline }}
 			<span
-				v-if="!timeSearchOngoing"
+				v-if="!timeSearchOngoing && type === 'time'"
 				class="entry-number label"
 			>
 				{{ subline }}
