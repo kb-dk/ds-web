@@ -8,13 +8,25 @@
 		>
 			<span class="material-icons icon">{{ icon }}</span>
 			{{ headline }}
+			<span
+				v-if="!timeSearchOngoing"
+				class="entry-number label"
+			>
+				{{ subline }}
+			</span>
+			<span
+				v-if="type !== 'time' && subline.length === 0 && itemArray.length > 0"
+				class="entry-number label"
+			>
+				({{ itemArray.length }} {{ headline }})
+			</span>
 			<KBButton
-				v-if="subline.length > 0"
+				v-if="(type !== 'time' && subline.length > 0) || (timeSearchOngoing && type === 'time')"
 				button-type="btn-tag"
 				button-color="main"
 				button-size="small"
 				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
-				:data-testid="addTestDataEnrichment('button', 'time-search-component', `top-more-link`, 0)"
+				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-remove-filter`, 0)"
 				right-icon-name="close"
 				:button-text="`${subline}`"
 				@click="removeFilters($event, facetType, itemArray)"
@@ -29,7 +41,7 @@
 		<div class="expander-toggle">
 			<button
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
-				:data-testid="addTestDataEnrichment('button', 'custom-expander', `${headline}-status-toggle`, 0)"
+				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-status-toggle`, 0)"
 				:title="expanderOpen ? 'Close' : 'Open'"
 				:aria-expanded="expanderOpen"
 				@click="toggleExpander($event)"
@@ -41,13 +53,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType } from 'vue';
+import { defineComponent, ref, PropType, computed } from 'vue';
 import gsap from 'gsap';
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import { removeFilterAndSearch } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { startDate, endDate, startYear, endYear } from './timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'FilterExpander',
@@ -55,6 +69,10 @@ export default defineComponent({
 		KBButton,
 	},
 	props: {
+		type: {
+			type: String as PropType<string>,
+			required: true,
+		},
 		headline: {
 			type: String as PropType<string>,
 			required: true,
@@ -114,6 +132,7 @@ export default defineComponent({
 		const headlineRef = ref();
 		const route = useRoute();
 		const router = useRouter();
+		const { t } = useI18n();
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
 			props.updateEntity(parent, index, val, props.facetType);
 		};
@@ -123,6 +142,17 @@ export default defineComponent({
 
 			removeFilterAndSearch(facetType, router, route, itemArray);
 		};
+
+		const timeSearchOngoing = computed(() => {
+			return (
+				(startDate !== null &&
+					(startDate as unknown as string) !== '' &&
+					startDate.value.getTime() !== startYear.value.getTime()) ||
+				(endDate !== null &&
+					(endDate as unknown as string) !== '' &&
+					endDate.value.getTime() !== endYear.value.getTime())
+			);
+		});
 
 		const toggleExpander = (e: Event) => {
 			e.stopPropagation();
@@ -185,6 +215,12 @@ export default defineComponent({
 			headlineRef,
 			removeFilterAndSearch,
 			removeFilters,
+			t,
+			startDate,
+			endDate,
+			startYear,
+			endYear,
+			timeSearchOngoing,
 		};
 	},
 });
@@ -219,6 +255,13 @@ export default defineComponent({
 	background-color: rgba(202, 240, 254, 0.1);
 	text-transform: capitalize;
 	font-weight: 100;
+}
+
+.entry-number {
+	margin-right: 12px;
+	margin-left: auto;
+	font-size: var(--fs-meta);
+	text-transform: none;
 }
 
 .headline:hover {

@@ -36,14 +36,14 @@
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
 				:class="['display-image channel', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
 			></span>
-			<span class="title label-small">{{ title }}</span>
+			<span class="title label">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
 			>
 				<span
 					v-if="!loading"
-					class="tag-number label-small"
+					class="tag-number label"
 				>
 					{{ displayAmount(amount) }}
 				</span>
@@ -226,7 +226,7 @@ export default defineComponent({
 	margin: 5px 0px;
 	margin-left: 5px;
 	border-radius: 5px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--color-disabled-font);
 	height: 12px;
 	display: inline-block;
 }
@@ -255,10 +255,15 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 }
 
-.checkbox-container:hover,
+.checkbox-container:hover {
+	background-color: var(--bg-secondary-light-20);
+	border: 1px solid var(--color-border-light-focused);
+	border-radius: 4px;
+}
+
 .checkbox-container.checked {
-	background-color: #c4f0fd;
-	border: 1px solid #86e2fb;
+	background-color: var(--bg-secondary-light);
+	border: 1px solid var(--color-borders-light);
 	border-radius: 4px;
 }
 
@@ -288,7 +293,7 @@ export default defineComponent({
 
 .checkbox-container.disabled .title,
 .checkbox-container.disabled .tag-number {
-	color: rgb(177, 177, 177) !important;
+	color: var(--color-disabled-font);
 	font-weight: normal;
 }
 
@@ -311,8 +316,8 @@ export default defineComponent({
 	margin: 0 0 0 5px;
 }
 .checkbox-container.disabled .loading.tag-number .text {
-	background-color: rgb(177, 177, 177) !important;
-	opacity: 0.5;
+	background-color: var(--color-disabled-font);
+	opacity: 1;
 }
 
 .title {
@@ -320,25 +325,19 @@ export default defineComponent({
 	max-width: calc(100% - 95px);
 	white-space: nowrap;
 	overflow: clip;
-	text-transform: uppercase;
 	color: #002e70;
 	display: inline-block;
 }
 
 .loading .checkbox:after {
-	border: 2px solid rgba(170, 170, 170, 1) !important;
+	border: 2px solid var(--color-disabled-font);
 	background-color: rgb(255, 255, 255) !important;
 	cursor: default;
 }
 
 .loading .checkbox:checked:after {
-	background-color: rgba(170, 170, 170, 1) !important;
+	background-color: var(--color-disabled-font);
 }
-
-/* .loading .checkbox:hover:before {
-	cursor: default !important;
-	border-color: white !important;
-} */
 
 .checkbox:disabled {
 	cursor: default;
@@ -392,8 +391,8 @@ input:focus {
 	border-bottom: 2px solid white;
 	border-right: 2px solid white;
 	position: absolute;
-	top: 1px;
-	left: 7px;
+	top: 3px;
+	left: 8px;
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);

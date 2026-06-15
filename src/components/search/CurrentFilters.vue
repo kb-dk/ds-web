@@ -120,7 +120,6 @@ import {
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -144,9 +143,6 @@ export default defineComponent({
 				(endDate.value as unknown as string) !== ''
 			) {
 				if (
-					days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-					months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-					timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
 					searchResultStore.categoryFilters.length !== 0 ||
 					searchResultStore.channelFilters.length !== 0 ||
 					startDate.value.getTime() !== startYear.value.getTime() ||
