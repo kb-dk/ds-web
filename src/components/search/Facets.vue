@@ -162,8 +162,8 @@
 						:options="preliminaryPeriodSearchOptions"
 					/>
 					<fieldset
-						v-if="searchResultStore.firstBackendFetchExecuted"
-						class="facet-options time-search"
+						v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+						class="facet-options time-search-filter-container"
 					>
 						<TransitionGroup name="result">
 							<VueSlider
@@ -864,11 +864,11 @@ fieldset {
 	width: 100%;
 	margin-top: 10px;
 }
-.time-search {
+.time-search-filter-container {
 	height: 120px;
 	margin-bottom: 70px;
-	margin-left: 20px;
-	width: 92%;
+	margin-left: 25px;
+	width: calc(100% - 55px);
 }
 .flex-container {
 	width: 100%;

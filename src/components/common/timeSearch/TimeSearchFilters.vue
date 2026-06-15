@@ -928,11 +928,11 @@ fieldset {
 		display: block;
 	}
 	.data-container {
-		height: 300px;
+		height: 200px;
 		visibility: visible;
 	}
 	.slider-container {
-		height: 300px;
+		height: 200px;
 	}
 }
 </style>
