@@ -519,9 +519,9 @@ fieldset {
 	z-index: 10;
 	border: 1px solid #002e70;
 	color: #002e70;
-	padding: 35px 0px 35px 30px;
+	padding: 46px 0px 64px 30px;
 	box-sizing: border-box;
-	display: flex;
+	display: none;
 	color: white;
 }
 .explanation-for-data:hover button {
@@ -934,6 +934,9 @@ fieldset {
 	}
 	.slider-container {
 		height: 200px;
+	}
+	.explanation-for-data {
+		display: flex;
 	}
 }
 </style>

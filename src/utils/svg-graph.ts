@@ -9,8 +9,8 @@ function createSVGCurvedLine(points: pointItem[]) {
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
 	path.setAttribute('fill', '#002f70'); // No fill to avoid closing the path
-	path.setAttribute('stroke', '#002f70');
-	path.setAttribute('stroke-width', '0');
+	path.setAttribute('stroke', 'white');
+	path.setAttribute('stroke-width', '0.5');
 	path.setAttribute('fill-opacity', '0.5');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
 

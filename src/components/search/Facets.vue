@@ -167,11 +167,29 @@
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
 					/>
-					<fieldset
-						v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
-						class="facet-options time-search-filter-container"
-					>
-						<TransitionGroup name="result">
+
+					<TransitionGroup name="result">
+						<div
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="to-from-container"
+						>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[0]"
+								:list-items="selectYears"
+								:label="$t('timeSearch.from')"
+								@update-selected="updateStartYear"
+							/>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[1]"
+								:list-items="selectYears"
+								:label="$t('timeSearch.to')"
+								@update-selected="updateEndYear"
+							/>
+						</div>
+						<fieldset
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="facet-options time-search-filter-container"
+						>
 							<VueSlider
 								v-if="data.length > 0"
 								ref="vueSliderRef"
@@ -183,8 +201,9 @@
 								tooltip="always"
 								@drag-end="updateTimeSearch"
 							></VueSlider>
-						</TransitionGroup>
-					</fieldset>
+						</fieldset>
+					</TransitionGroup>
+
 					<div v-if="searchResultStore.preliminaryPeriodSearch === 'date'">DATESTUFF!</div>
 				</FilterExpander>
 			</div>
@@ -242,7 +261,13 @@ import gsap from 'gsap';
 import FilterExpander from '@/components/common/FilterExpander.vue';
 /* import { resetAllSelectorValues } from '@/utils/time-search-utils';
  */
-import { endYear, startYear, timeSliderValues } from '@/components/common/timeSearch/TimeSearchInitValues';
+import {
+	endYear,
+	startYear,
+	timeSliderValues,
+	startDate,
+	endDate,
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import FilterExpander from '@/components/common/FilterExpander.vue';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
@@ -250,6 +275,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import VueSlider from 'vue-3-slider-component';
 import { createFocusTrap } from '@/utils/focus-trap';
+import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 
 export default defineComponent({
 	name: 'Facets',
@@ -259,6 +285,7 @@ export default defineComponent({
 		CustomRadioGroup,
 		KBButton,
 		VueSlider,
+		CustomTimelineSelect,
 	},
 
 	setup() {
@@ -570,10 +597,30 @@ export default defineComponent({
 			router.push({ query: routeQueries });
 		};
 
-		const updateTimeSearch = (array: SelectorData[], index: number, val: boolean, key: string) => {
-			console.log(array, index, val, key);
+		const updateTimeSearch = () => {
+			startDate.value.setFullYear(timeSliderValues.value[0]);
+			endDate.value.setFullYear(timeSliderValues.value[1]);
+			setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
 		};
-
+		const setTimeSearchMethodAndExecute = (startDate: string, endDate: string) => {
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
+				}
+			}
+			existingFq.push(encodeURIComponent(`startTime:[${startDate} TO ${endDate}]`));
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
 		const setSearchMethodAndExecute = (choice: string) => {
 			let orgQuery = searchResultStore.currentQuery;
 			if (
@@ -686,7 +733,25 @@ export default defineComponent({
 				});
 			}
 		};
+		const updateStartYear = (val: number) => {
+			timeSliderValues.value[0] = Number(val);
+			startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			if (Number(val) > timeSliderValues.value[1]) {
+				timeSliderValues.value[1] = Number(val);
+				endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 
+		const updateEndYear = (val: number) => {
+			endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			timeSliderValues.value[1] = Number(val);
+			if (Number(val) < timeSliderValues.value[0]) {
+				timeSliderValues.value[0] = Number(val);
+				startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 		return {
 			currentFacets,
 			lastUpdate,
@@ -721,6 +786,9 @@ export default defineComponent({
 			selectedSearchMaterialOptions,
 			preliminaryPeriodSearchOptions,
 			firstYearOfContent,
+			selectYears,
+			updateStartYear,
+			updateEndYear,
 		};
 	},
 });
@@ -961,6 +1029,18 @@ h2 {
 	flex: 0 0 calc(100%);
 	margin: 0px 0px;
 	box-sizing: border-box;
+}
+.to-from-container {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 30px;
+	font-size: 26px;
+	text-transform: capitalize;
 }
 
 /* MEDIA QUERY 480 */
