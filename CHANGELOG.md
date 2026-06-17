@@ -4,6 +4,12 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.11] - 2026-06-17
+
+## Changed
+- Some more styling on the buttons missing from the last iteration.
+- The thumbnail function has been rewritten to now use kalturaId instead of fileId (this is a breaking change).
+
 ## [1.1.10] - 2026-05-20
 
 ## Changed
