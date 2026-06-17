@@ -60,7 +60,7 @@ import Underlay from './components/search/Underlay.vue';
 import '@/assets/styles/font-styles.css';
 import '@/assets/styles/elements.css';
 import '@/assets/styles/base.css';
-import { startYear, endYear } from './components/common/timeSearch/TimeSearchInitValues.js';
+import { startYear, endYear, startDate, endDate } from './components/common/timeSearch/TimeSearchInitValues.js';
 
 export default defineComponent({
 	name: 'App',
@@ -165,7 +165,10 @@ export default defineComponent({
 						Promise.race([facetAPICall, maximumWaitTime])
 							.then((response) => {
 								if (response) {
-									console.log('WATT?');
+									const isTimeFiltersSet =
+										startDate.value.getTime() !== startYear.value.getTime() ||
+										endDate.value.getTime() !== endYear.value.getTime();
+
 									//if api comes back first, we get the results and set our boolean to true.
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
@@ -176,6 +179,14 @@ export default defineComponent({
 
 									endYear.value = new Date(endYear.value);
 									endYear.value.setFullYear(Number(years[years.length - 2]));
+
+									if (!isTimeFiltersSet) {
+										const startHolder = new Date(startYear.value.getTime());
+										const endHolder = new Date(endYear.value.getTime());
+										startDate.value = startHolder;
+										endDate.value = endHolder;
+									}
+
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}
@@ -186,6 +197,9 @@ export default defineComponent({
 								// if the timeout was first, we still want the api promise returned here
 								// unless it the results were already back - then we ignore this.
 								if (!facetAPiCallFurfilled) {
+									const isTimeFiltersSet =
+										startDate.value.getTime() !== startYear.value.getTime() ||
+										endDate.value.getTime() !== endYear.value.getTime();
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
 									const years = searchResultStore.initFacets.facet_fields.temporal_start_year;
@@ -195,6 +209,14 @@ export default defineComponent({
 
 									endYear.value = new Date(endYear.value);
 									endYear.value.setFullYear(Number(years[years.length - 2]));
+
+									if (!isTimeFiltersSet) {
+										const startHolder = new Date(startYear.value.getTime());
+										const endHolder = new Date(endYear.value.getTime());
+										startDate.value = startHolder;
+										endDate.value = endHolder;
+									}
+
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}
