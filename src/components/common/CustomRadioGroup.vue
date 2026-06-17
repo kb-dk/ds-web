@@ -9,7 +9,7 @@
 			:icon="obj.icon"
 			:value="obj.value"
 			:title="obj.title"
-			:disabled="searchResultStore.currentQuery === ''"
+			:disabled="searchResultStore.numFound === 0"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
 			@select="emit('update:modelValue', $event)"

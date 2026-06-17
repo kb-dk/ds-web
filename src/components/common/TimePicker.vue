@@ -50,114 +50,115 @@
 		>
 			{{ t('calendar.explanation') }}
 		</p>
-
-		<div
-			v-if="opened"
-			:id="calendarId"
-			ref="calendar"
-			class="dp-calendar"
-			role="dialog"
-			aria-modal="false"
-			:aria-labelledby="calendarHeadingId"
-		>
-			<div class="dp-calendar-header">
-				<div class="dp-calendar-selectors">
-					<div class="dp-selectors">
-						<select
-							v-model="selectedMonth"
-							@change="onMonthChange"
-						>
-							<option
-								v-for="(m, i) in monthNames"
-								:key="i"
-								:value="i"
-							>
-								{{ m }}
-							</option>
-						</select>
-
-						<select
-							v-model="selectedYear"
-							@change="onYearChange"
-						>
-							<option
-								v-for="y in yearRange"
-								:key="y"
-								:value="y"
-							>
-								{{ y }}
-							</option>
-						</select>
-					</div>
-				</div>
-				<div class="dp-calender-prev-next">
-					<button
-						type="button"
-						:aria-label="t('calendar.prevMonth')"
-						class="material-icons change-month left"
-						@click="prevMonth"
-					>
-						keyboard_arrow_left
-					</button>
-					<h3 :id="calendarHeadingId">{{ monthTitle }}</h3>
-					<button
-						type="button"
-						:aria-label="t('calendar.nextMonth')"
-						class="material-icons change-month right"
-						@click="nextMonth"
-					>
-						keyboard_arrow_right
-					</button>
-				</div>
-			</div>
+		<Transition name="closeAndFade">
 			<div
-				ref="grid"
-				role="grid"
-				class="dp-grid"
+				v-if="opened"
+				:id="calendarId"
+				ref="calendar"
+				class="dp-calendar"
+				role="dialog"
+				aria-modal="false"
+				:aria-labelledby="calendarHeadingId"
 			>
-				<div
-					role="row"
-					class="dp-weeknames"
-				>
-					<div
-						v-for="day in weekNames"
-						:key="day"
-						role="columnheader"
-						class="dp-weekname"
-					>
-						{{ day }}
+				<div class="dp-calendar-header">
+					<div class="dp-calendar-selectors">
+						<div class="dp-selectors">
+							<select
+								v-model="selectedMonth"
+								@change="onMonthChange"
+							>
+								<option
+									v-for="(m, i) in monthNames"
+									:key="i"
+									:value="i"
+								>
+									{{ m }}
+								</option>
+							</select>
+
+							<select
+								v-model="selectedYear"
+								@change="onYearChange"
+							>
+								<option
+									v-for="y in yearRange"
+									:key="y"
+									:value="y"
+								>
+									{{ y }}
+								</option>
+							</select>
+						</div>
 					</div>
-				</div>
-				<div role="rowgroup">
-					<div
-						v-for="(week, index) in weeks"
-						:key="index"
-						role="row"
-						class="dp-week"
-					>
+					<div class="dp-calender-prev-next">
 						<button
-							v-for="day in week"
-							:key="day.key"
-							class="dp-day"
-							:disabled="day.disabled"
-							:class="{
-								'dp-day-selected': isSameDate(day.date, modelValue),
-								'dp-day-outside': !day.inMonth,
-							}"
-							role="gridcell"
-							:aria-selected="isSameDate(day.date, modelValue) ? 'true' : 'false'"
-							:tabindex="isSameDate(day.date, focusDate) ? 0 : -1"
-							:aria-label="day.ariaLabel"
-							:data-key="day.key"
-							@click="selectDay(day.date)"
-							@keydown="onDayKeydown($event, day)"
+							type="button"
+							:aria-label="t('calendar.prevMonth')"
+							class="material-icons change-month left"
+							@click="prevMonth"
 						>
-							<span class="dp-day-label">{{ day.label }}</span>
+							keyboard_arrow_left
+						</button>
+						<h3 :id="calendarHeadingId">{{ monthTitle }}</h3>
+						<button
+							type="button"
+							:aria-label="t('calendar.nextMonth')"
+							class="material-icons change-month right"
+							@click="nextMonth"
+						>
+							keyboard_arrow_right
 						</button>
 					</div>
 				</div>
+				<div
+					ref="grid"
+					role="grid"
+					class="dp-grid"
+				>
+					<div
+						role="row"
+						class="dp-weeknames"
+					>
+						<div
+							v-for="day in weekNames"
+							:key="day"
+							role="columnheader"
+							class="dp-weekname"
+						>
+							{{ day }}
+						</div>
+					</div>
+					<div role="rowgroup">
+						<div
+							v-for="(week, index) in weeks"
+							:key="index"
+							role="row"
+							class="dp-week"
+						>
+							<button
+								v-for="day in week"
+								:key="day.key"
+								class="dp-day"
+								:disabled="day.disabled"
+								:class="{
+									'dp-day-selected': isSameDate(day.date, modelValue),
+									'dp-day-outside': !day.inMonth,
+								}"
+								role="gridcell"
+								:aria-selected="isSameDate(day.date, modelValue) ? 'true' : 'false'"
+								:tabindex="isSameDate(day.date, focusDate) ? 0 : -1"
+								:aria-label="day.ariaLabel"
+								:data-key="day.key"
+								@click="selectDay(day.date)"
+								@keydown="onDayKeydown($event, day)"
+							>
+								<span class="dp-day-label">{{ day.label }}</span>
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+		</Transition>
 	</div>
 </template>
 
@@ -292,7 +293,7 @@ export default defineComponent({
 				invalid.value = isInvalid;
 
 				emit('update:modelValue', parsed);
-			}, 1000);
+			}, 100);
 		});
 
 		function onInputEnter() {
@@ -306,7 +307,7 @@ export default defineComponent({
 		}
 
 		function selectDay(date: Date) {
-			emit('update:modelValue', new Date(date));
+			/* emit('update:modelValue', new Date(date)); */
 			currentView.value = new Date(date.getFullYear(), date.getMonth(), 1);
 			focusDate.value = new Date(date);
 			displayValue.value = formatDate(date);
@@ -518,6 +519,27 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.closeAndFade-enter-active,
+.closeAndFade-leave-active {
+	transition:
+		opacity 0.6s ease,
+		max-height 0.6s ease,
+		margin-bottom 0.6s ease;
+	overflow: hidden;
+}
+
+.closeAndFade-enter-from,
+.closeAndFade-leave-to {
+	opacity: 0;
+	max-height: 0;
+}
+
+.closeAndFade-enter-to,
+.closeAndFade-leave-from {
+	opacity: 1;
+	max-height: 400px;
+}
+
 .visually-hidden {
 	position: absolute !important;
 	height: 1px;
@@ -569,6 +591,7 @@ export default defineComponent({
 	display: flex;
 	gap: 8px;
 	align-items: center;
+	position: relative;
 }
 
 .dp-day:hover {
@@ -710,7 +733,7 @@ export default defineComponent({
 	position: absolute;
 	height: fit-content;
 	left: 65px;
-	top: -45px;
+	top: -78px;
 	color: white;
 	padding: 5px;
 	background-color: var(--color-alert-red);

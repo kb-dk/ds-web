@@ -165,7 +165,17 @@
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
 					/>
-					<div v-if="searchResultStore.preliminaryPeriodSearch === 'date'">DATESTUFF!</div>
+					<div
+						v-if="searchResultStore.preliminaryPeriodSearch === 'date'"
+						class="date-picker-container"
+					>
+						<TimePicker
+							v-model="selectedDate"
+							name="filterTimePicker"
+							:start-date="startYear"
+							:end-date="endYear"
+						/>
+					</div>
 					<div v-if="searchResultStore.preliminaryPeriodSearch === 'period'">PERIODSTUFF!</div>
 				</FilterExpander>
 			</div>
@@ -207,25 +217,15 @@ import {
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
+import TimePicker from '@/components/common/TimePicker.vue';
 import gsap from 'gsap';
-/* import {
-	days,
-	endDate,
-	endYear,
-	months,
-	startDate,
-	startYear,
-	timeslots,
-} from '@/components/common/timeSearch/TimeSearchInitValues'; */
+import { endYear, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
 import FilterExpander from '@/components/common/FilterExpander.vue';
-/* import { resetAllSelectorValues } from '@/utils/time-search-utils';
- */
 import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import { createFocusTrap } from '@/utils/focus-trap';
-import { startYear } from '../common/timeSearch/TimeSearchInitValues';
 
 export default defineComponent({
 	name: 'Facets',
@@ -234,6 +234,7 @@ export default defineComponent({
 		FilterExpander,
 		CustomRadioGroup,
 		KBButton,
+		TimePicker,
 	},
 
 	setup() {
@@ -246,6 +247,7 @@ export default defineComponent({
 		const timeFacets = ref<HTMLElement | null>(null);
 		const timeFacetButton = ref<HTMLButtonElement | null>(null);
 		const lastUpdate = ref(0);
+		const selectedDate = ref<Date | undefined>();
 		const { t } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
@@ -595,16 +597,6 @@ export default defineComponent({
 			});
 		};
 
-		/* 		const removeAllTimeFilters = () => {
-			resetAllSelectorValues(days.value);
-			resetAllSelectorValues(months.value);
-			resetAllSelectorValues(timeslots.value);
-			const startHolder = new Date(startYear.value.getTime());
-			const endHolder = new Date(endYear.value.getTime());
-			startDate.value = startHolder;
-			endDate.value = endHolder;
-		}; */
-
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
 				gsap.to(facetsContainer.value, {
@@ -670,6 +662,9 @@ export default defineComponent({
 			updateTimeSearch,
 			preliminaryPeriodSearchOptions,
 			firstYearOfContent,
+			startYear,
+			endYear,
+			selectedDate,
 		};
 	},
 });
@@ -685,6 +680,10 @@ export default defineComponent({
 
 .container {
 	width: 100%;
+}
+
+.date-picker-container {
+	margin-bottom: 25px;
 }
 
 .facet-enter-from,

@@ -61,7 +61,8 @@ import KBButton from '@/components/common/KBButton.vue';
 import { removeFilterAndSearch } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { startDate, endDate, startYear, endYear } from './timeSearch/TimeSearchInitValues';
+import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { removeTimeFacetsFromRoute, cloneRouteQuery } from '@/utils/filter-utils';
 
 export default defineComponent({
 	name: 'FilterExpander',
@@ -139,8 +140,20 @@ export default defineComponent({
 
 		const removeFilters = (e: Event, facetType: string, itemArray: Array<SelectorData>) => {
 			e.stopPropagation();
+			if (props.type !== 'time') {
+				removeFilterAndSearch(facetType, router, route, itemArray);
+			} else {
+				removeTimeFlitersAndExecute();
+			}
+		};
 
-			removeFilterAndSearch(facetType, router, route, itemArray);
+		const removeTimeFlitersAndExecute = () => {
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.fq = removeTimeFacetsFromRoute(routeQueries.fq);
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
 		const timeSearchOngoing = computed(() => {
