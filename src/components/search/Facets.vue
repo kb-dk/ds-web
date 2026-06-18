@@ -70,6 +70,7 @@
 						</TransitionGroup>
 					</fieldset>
 				</FilterExpander>
+
 				<FilterExpander
 					type="checkbox"
 					:headline="$t('facets.tvChannels', 2)"
@@ -159,12 +160,48 @@
 					:subline="`${t('facets.contentFrom')} ${firstYearOfContent}`"
 					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
+					:item-array="yearArray"
 				>
 					<CustomRadioGroup
 						v-model="searchResultStore.preliminaryPeriodSearch"
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
 					/>
+					<TransitionGroup name="result">
+						<div
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="to-from-container"
+						>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[0]"
+								:list-items="selectYears"
+								:label="$t('timeSearch.from')"
+								@update-selected="updateStartYear"
+							/>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[1]"
+								:list-items="selectYears"
+								:label="$t('timeSearch.to')"
+								@update-selected="updateEndYear"
+							/>
+						</div>
+						<fieldset
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="facet-options time-search-filter-container"
+						>
+							<VueSlider
+								v-if="data.length > 0"
+								ref="vueSliderRef"
+								v-model="timeSliderValues"
+								:clickable="true"
+								:drag-on-click="true"
+								:data="data"
+								data-label="key"
+								tooltip="always"
+								@drag-end="updateTimeSearch"
+							></VueSlider>
+						</fieldset>
+					</TransitionGroup>
 					<div
 						v-if="searchResultStore.preliminaryPeriodSearch === 'date'"
 						class="date-picker-container"
@@ -176,9 +213,9 @@
 							:end-date="endYear"
 						/>
 					</div>
-					<div v-if="searchResultStore.preliminaryPeriodSearch === 'period'">PERIODSTUFF!</div>
 				</FilterExpander>
 			</div>
+
 			<KBButton
 				button-type="btn-main-default"
 				button-color="main"
@@ -198,6 +235,7 @@
 </template>
 
 <script lang="ts">
+import '@/assets/styles/vue-slider-styles.css';
 import { defineComponent, onMounted, ref, watch, computed } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
@@ -214,18 +252,26 @@ import {
 	removeChannelOrCategoryFilter,
 	simplifyFacets,
 } from '@/utils/filter-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
+import { markerData, SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
 import TimePicker from '@/components/common/TimePicker.vue';
 import gsap from 'gsap';
-import { endYear, startYear } from '@/components/common/timeSearch/TimeSearchInitValues';
+import {
+	endYear,
+	startYear,
+	timeSliderValues,
+	startDate,
+	endDate,
+} from '@/components/common/timeSearch/TimeSearchInitValues';
 import FilterExpander from '@/components/common/FilterExpander.vue';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
 import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
+import VueSlider from 'vue-3-slider-component';
 import { createFocusTrap } from '@/utils/focus-trap';
+import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
 
 export default defineComponent({
 	name: 'Facets',
@@ -234,6 +280,8 @@ export default defineComponent({
 		FilterExpander,
 		CustomRadioGroup,
 		KBButton,
+		VueSlider,
+		CustomTimelineSelect,
 		TimePicker,
 	},
 
@@ -251,6 +299,9 @@ export default defineComponent({
 		const { t } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
+		const selectYears = ref([] as string[]);
+		const data = ref([] as markerData[]);
+		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
 		const delimitationOptions = {
 			all: '',
 			tv: 'origin:"ds.tv"',
@@ -262,6 +313,7 @@ export default defineComponent({
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
+		const yearArray = ref([] as SelectorData[]);
 
 		const selectedSearchMethodOptions = computed(() => [
 			{ value: 'all', title: t('facets.searchMethod.all.title'), description: t('facets.searchMethod.all.desc') },
@@ -311,6 +363,10 @@ export default defineComponent({
 		]);
 
 		onMounted(() => {
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.value.push(i.toString());
+				data.value.push({ key: i, value: i });
+			}
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
 		});
@@ -365,11 +421,6 @@ export default defineComponent({
 			}
 			return returnArray;
 		};
-
-		const updateTimeSearch = () => {
-			console.log('new search, yea!');
-		};
-
 		const updateCheckbox = (
 			array: SelectorData[],
 			index: number,
@@ -416,6 +467,21 @@ export default defineComponent({
 				lastUpdate.value = new Date().getTime();
 			},
 			{ deep: true },
+		);
+		watch(
+			() => vueSliderRef.value,
+			(newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					if (newVal) {
+						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
+						dots.forEach((dot, index) => {
+							dot.tabIndex = -1;
+							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
+						});
+					}
+				}
+			},
 		);
 
 		watch(
@@ -529,6 +595,30 @@ export default defineComponent({
 			router.push({ query: routeQueries });
 		};
 
+		const updateTimeSearch = () => {
+			startDate.value.setFullYear(timeSliderValues.value[0]);
+			endDate.value.setFullYear(timeSliderValues.value[1]);
+			setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
+		};
+		const setTimeSearchMethodAndExecute = (startDate: string, endDate: string) => {
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
+				}
+			}
+			existingFq.push(encodeURIComponent(`startTime:[${startDate} TO ${endDate}]`));
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
 		const setSearchMethodAndExecute = (choice: string) => {
 			let orgQuery = searchResultStore.currentQuery;
 			if (
@@ -631,7 +721,25 @@ export default defineComponent({
 				});
 			}
 		};
+		const updateStartYear = (val: number) => {
+			timeSliderValues.value[0] = Number(val);
+			startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			if (Number(val) > timeSliderValues.value[1]) {
+				timeSliderValues.value[1] = Number(val);
+				endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 
+		const updateEndYear = (val: number) => {
+			endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			timeSliderValues.value[1] = Number(val);
+			if (Number(val) < timeSliderValues.value[0]) {
+				timeSliderValues.value[0] = Number(val);
+				startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 		return {
 			currentFacets,
 			lastUpdate,
@@ -649,19 +757,26 @@ export default defineComponent({
 			t,
 			channelsArray,
 			genreArray,
+			yearArray,
 			updateFacet,
 			updateCheckbox,
+			updateTimeSearch,
 			getSublineForFacets,
 			santizeAndSimplify,
 			translatedGenreArray,
 			getTVFacets,
 			getRadioFacets,
 			addTestDataEnrichment,
+			vueSliderRef,
+			timeSliderValues,
+			data,
 			selectedSearchMethodOptions,
 			selectedSearchMaterialOptions,
-			updateTimeSearch,
 			preliminaryPeriodSearchOptions,
 			firstYearOfContent,
+			selectYears,
+			updateStartYear,
+			updateEndYear,
 			startYear,
 			endYear,
 			selectedDate,
@@ -828,7 +943,12 @@ fieldset {
 	width: 100%;
 	margin-top: 10px;
 }
-
+.time-search-filter-container {
+	height: 120px;
+	margin-bottom: 70px;
+	margin-left: 40px;
+	width: calc(100% - 82px);
+}
 .flex-container {
 	width: 100%;
 	padding-bottom: 30px;
@@ -904,6 +1024,18 @@ h2 {
 	flex: 0 0 calc(100%);
 	margin: 0px 0px;
 	box-sizing: border-box;
+}
+.to-from-container {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 30px;
+	font-size: 26px;
+	text-transform: capitalize;
 }
 
 /* MEDIA QUERY 480 */
