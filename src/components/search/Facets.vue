@@ -515,6 +515,24 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			() => selectedDate.value,
+			(date: Date | undefined) => {
+				if (!date) {
+					return;
+				}
+
+				const start = new Date(date);
+				start.setHours(0, 0, 0, 0);
+
+				const end = new Date(date);
+				end.setHours(23, 59, 59, 999);
+
+				startDate.value = start;
+				endDate.value = end;
+				setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
+			},
+		);
 		const setCategoryArrayFromStore = (items: string[]) => {
 			genreArray.value.forEach((item) => {
 				item.selected = false;
