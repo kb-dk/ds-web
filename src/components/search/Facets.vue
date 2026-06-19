@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-if="Object.keys(searchResultStore.initFacets || {}).length > 0"
 		ref="facetsContainer"
 		class="search-facets"
 	>
@@ -157,7 +158,7 @@
 					type="time"
 					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
 					icon="event"
-					:subline="`${t('facets.contentFrom')} ${firstYearOfContent}`"
+					:subline="createTimeFacetSubline"
 					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 					:item-array="yearArray"
@@ -296,7 +297,7 @@ export default defineComponent({
 		const timeFacetButton = ref<HTMLButtonElement | null>(null);
 		const lastUpdate = ref(0);
 		const selectedDate = ref<Date | undefined>();
-		const { t } = useI18n();
+		const { t, locale } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
 		const selectYears = ref([] as string[]);
@@ -369,6 +370,28 @@ export default defineComponent({
 			}
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
+
+			const routeQueries = cloneRouteQuery(route);
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const [, startDate, endDate] = decodeURIComponent(startTimeFilter).match(/\[(.+?) TO (.+?)\]/) ?? [];
+				console.log(decodeURIComponent(startTimeFilter));
+				const startDateObj = new Date(startDate);
+				const endDateObj = new Date(endDate);
+				if (
+					startDateObj.getFullYear() === endDateObj.getFullYear() &&
+					startDateObj.getMonth() === endDateObj.getMonth() &&
+					startDateObj.getDate() === endDateObj.getDate()
+				) {
+					searchResultStore.preliminaryPeriodSearch = 'date';
+					selectedDate.value = new Date(startDateObj);
+				} else {
+					searchResultStore.preliminaryPeriodSearch = 'period';
+					timeSliderValues.value[0] = startDateObj.getFullYear();
+					timeSliderValues.value[1] = endDateObj.getFullYear();
+				}
+			}
 		});
 
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
@@ -588,6 +611,27 @@ export default defineComponent({
 		);
 
 		watch(
+			() => searchResultStore.preliminaryPeriodSearch,
+			() => {
+				const routeQueries = cloneRouteQuery(route);
+				routeQueries.start = 0;
+				const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+				const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+				if (startTimeFilter) {
+					const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+					if (index !== -1) {
+						existingFq.splice(index, 1);
+					}
+				}
+				routeQueries.fq = existingFq;
+				router.push({
+					name: 'Search',
+					query: routeQueries,
+				});
+			},
+		);
+
+		watch(
 			() => searchResultStore.preliminarySearchMethod,
 			() => {
 				setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod);
@@ -612,6 +656,27 @@ export default defineComponent({
 			routeQueries.start = 0;
 			router.push({ query: routeQueries });
 		};
+
+		const createTimeFacetSubline = computed(() => {
+			if (
+				startDate.value.getTime() === startYear.value.getTime() &&
+				endDate.value.getTime() === endYear.value.getTime()
+			) {
+				return `${t('facets.contentFrom')} ${firstYearOfContent.value}`;
+			} else {
+				if (searchResultStore.preliminaryPeriodSearch === 'period') {
+					return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
+						'facets.year',
+					)}: ${endDate.value.getFullYear()}`;
+				} else {
+					return new Intl.DateTimeFormat(locale.value, {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+					}).format(selectedDate.value);
+				}
+			}
+		});
 
 		const updateTimeSearch = () => {
 			startDate.value.setFullYear(timeSliderValues.value[0]);
@@ -798,6 +863,7 @@ export default defineComponent({
 			startYear,
 			endYear,
 			selectedDate,
+			createTimeFacetSubline,
 		};
 	},
 });

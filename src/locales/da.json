@@ -111,6 +111,9 @@
       "reset":"nulstil",
       "choose": "Vælg",
       "seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
+      "to":"Til",
+      "from":"Fra",
+      "year":"år",
       "slowResponse": {
          "title": "Lang respons tid",
          "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
@@ -587,7 +590,8 @@
       "natur-og-videnskab":"Natur og videnskab",
       "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
       "radio-rodekasse":"Blandet radio",
-      "tv-rodekasse":"Blandet TV"
+      "tv-rodekasse":"Blandet TV",
+      "sport": "Sport"
    },
    "find":{
       "headline":"Hvad vil du søge efter?",
