@@ -376,7 +376,6 @@ export default defineComponent({
 			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
 			if (startTimeFilter) {
 				const [, startDate, endDate] = decodeURIComponent(startTimeFilter).match(/\[(.+?) TO (.+?)\]/) ?? [];
-				console.log(decodeURIComponent(startTimeFilter));
 				const startDateObj = new Date(startDate);
 				const endDateObj = new Date(endDate);
 				if (
