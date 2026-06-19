@@ -31,7 +31,7 @@
 							'timeSearch.result',
 							timeSearchStore.numFound,
 						)} `"
-						@click="scrollToTop()"
+						@click="timeSearchBehavior()"
 					></KBButton>
 				</div>
 				<div class="time-results">
@@ -73,7 +73,7 @@
 							'timeSearch.result',
 							timeSearchStore.numFound,
 						)} `"
-						@click="scrollToTop()"
+						@click="timeSearchBehavior()"
 					></KBButton>
 				</div>
 			</div>
@@ -137,7 +137,8 @@ export default defineComponent({
 			},
 		});
 
-		const scrollToTop = () => {
+		const timeSearchBehavior = () => {
+			timeSearchStore.timeFacetsOpen = true;
 			window.scrollTo({
 				top: 0,
 				behavior: 'smooth',
@@ -214,7 +215,7 @@ export default defineComponent({
 			getSublineForMonths,
 			getSublineForTimeslots,
 			addTestDataEnrichment,
-			scrollToTop,
+			timeSearchBehavior,
 		};
 	},
 });
