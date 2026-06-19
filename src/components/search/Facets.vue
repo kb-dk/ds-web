@@ -453,8 +453,8 @@ export default defineComponent({
 		) => {
 			if (title && key) {
 				const routeQueries = channelFilterExists(key, title, filterArray)
-					? removeChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key)
-					: addChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key);
+					? removeChannelOrCategoryFilter(route, createFilter(title, key), true, key)
+					: addChannelOrCategoryFilter(route, createFilter(title, key), true, key);
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 				array[index].selected = val;
