@@ -602,7 +602,17 @@ export default defineComponent({
 		watch(
 			() => searchResultStore.showFacets,
 			() => {
-				toggleFacets();
+				if (facetsContainer.value !== null) {
+					toggleFacets();
+				} else {
+					watch(
+						() => facetsContainer,
+						() => {
+							toggleFacets();
+						},
+						{ deep: true },
+					);
+				}
 			},
 		);
 
