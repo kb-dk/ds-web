@@ -40,7 +40,7 @@ export default defineComponent({
 	name: 'CustomTimelineSelect',
 	props: {
 		listItems: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<string[] | number[]>,
 			default() {
 				return [];
 			},

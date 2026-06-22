@@ -175,13 +175,13 @@
 						>
 							<CustomTimelineSelect
 								:current-selected="timeSliderValues[0]"
-								:list-items="selectYears"
+								:list-items="getYearRanges"
 								:label="$t('timeSearch.from')"
 								@update-selected="updateStartYear"
 							/>
 							<CustomTimelineSelect
 								:current-selected="timeSliderValues[1]"
-								:list-items="selectYears"
+								:list-items="getYearRanges"
 								:label="$t('timeSearch.to')"
 								@update-selected="updateEndYear"
 							/>
@@ -237,7 +237,7 @@
 
 <script lang="ts">
 import '@/assets/styles/vue-slider-styles.css';
-import { defineComponent, onMounted, ref, watch, computed } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed, ComputedRef } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -300,7 +300,6 @@ export default defineComponent({
 		const { t, locale } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
-		const selectYears = ref([] as string[]);
 		const data = ref([] as markerData[]);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
 		const delimitationOptions = {
@@ -362,12 +361,14 @@ export default defineComponent({
 				description: t('facets.timePeriod.date.desc'),
 			},
 		]);
-
-		onMounted(() => {
+		const getYearRanges = computed(() => {
+			const selectYears = [];
 			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-				selectYears.value.push(i.toString());
-				data.value.push({ key: i, value: i });
+				selectYears.push(i);
 			}
+			return selectYears;
+		});
+		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
 
@@ -651,6 +652,16 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			() => getYearRanges,
+			(newRange: ComputedRef<number[]>) => {
+				data.value = [];
+				for (let i = newRange.value[0]; i < newRange.value[newRange.value.length - 1]; i++) {
+					data.value.push({ key: i, value: i });
+				}
+			},
+			{ deep: true, immediate: true },
+		);
 		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
 			array[index].selected = val;
 			const routeQueries = removeChannelOrCategoryFilter(
@@ -863,7 +874,7 @@ export default defineComponent({
 			selectedSearchMaterialOptions,
 			preliminaryPeriodSearchOptions,
 			firstYearOfContent,
-			selectYears,
+			getYearRanges,
 			updateStartYear,
 			updateEndYear,
 			startYear,
