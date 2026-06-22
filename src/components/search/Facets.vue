@@ -462,10 +462,7 @@ export default defineComponent({
 		};
 
 		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string) => {
-			if (
-				dataArray.filter((item) => item.selected).length === 0 ||
-				dataArray.filter((item) => item.selected).length === dataArray.length
-			) {
+			if (dataArray.filter((item) => item.selected).length === 0) {
 				return ``;
 			} else {
 				const selected = dataArray.filter((item) => item.selected).length;
