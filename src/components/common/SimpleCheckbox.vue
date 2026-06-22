@@ -10,7 +10,7 @@
 	>
 		<label
 			:title="title"
-			class="label"
+			class="label label-regular"
 		>
 			<input
 				role="checkbox"
@@ -36,14 +36,14 @@
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
 				:class="['display-image channel', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
 			></span>
-			<span class="title label">{{ title }}</span>
+			<span class="title label-regular label">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
 			>
 				<span
 					v-if="!loading"
-					class="tag-number label"
+					class="tag-number label-regular label"
 				>
 					{{ displayAmount(amount) }}
 				</span>

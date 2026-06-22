@@ -10,13 +10,13 @@
 			{{ headline }}
 			<span
 				v-if="!timeSearchOngoing && type === 'time'"
-				class="entry-number label"
+				class="entry-number label-regular label"
 			>
 				{{ subline }}
 			</span>
 			<span
 				v-if="type !== 'time' && subline.length === 0 && itemArray.length > 0"
-				class="entry-number label"
+				class="entry-number label-regular label"
 			>
 				({{ itemArray.length }} {{ headline }})
 			</span>
@@ -273,7 +273,6 @@ export default defineComponent({
 .entry-number {
 	margin-right: 12px;
 	margin-left: auto;
-	font-size: var(--fs-meta);
 	text-transform: none;
 }
 
