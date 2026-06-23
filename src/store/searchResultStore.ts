@@ -305,9 +305,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		if (currentQuery.value === '*:*') {
-			currentQuery.value = '';
-		}
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 
@@ -396,6 +393,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
 			}
+		}
+		if (currentQuery.value === '*:*') {
+			currentQuery.value = '';
 		}
 	};
 
