@@ -4,22 +4,20 @@
 			:search-bar-open="searchBarOpen"
 			@toggle-search-bar="toggleSearchBar"
 		></HeaderMenu>
-		<SearchBar :search-bar-open="searchBarOpen"></SearchBar>
-		<Breadcrumb />
+		<!-- <SearchBar :search-bar-open="searchBarOpen"></SearchBar> -->
+		<!-- <Breadcrumb /> -->
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import HeaderMenu from '@/components/global/nav/HeaderMenu.vue';
-import SearchBar from './SearchBar.vue';
-import Breadcrumb from '../global/nav/Breadcrumb.vue';
+// import SearchBar from '@components/search/SearchBar.vue';
+// import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
 export default defineComponent({
 	name: 'Header',
 	components: {
 		HeaderMenu,
-		SearchBar,
-		Breadcrumb,
 	},
 	props: {
 		locale: { type: String, required: true },
