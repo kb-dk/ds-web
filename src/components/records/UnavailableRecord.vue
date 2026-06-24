@@ -31,7 +31,7 @@
 		<EdgedContentArea
 			:lines="true"
 			:line-padding="false"
-			background-color="#002e70"
+			background-color="#001C43"
 			:title="t('search.mainCategories')"
 		>
 			<template #content>
@@ -66,11 +66,15 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.unavailable-record {
+	background-color: var(--bg-default);
+}
 .not-found-details {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	padding-bottom: 25px;
+	color: var(--color-main);
 }
 
 .btn {

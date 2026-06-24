@@ -83,7 +83,7 @@
 						:title="$t('search.mainCategories')"
 						class="main-categories-header"
 						:reverse="true"
-						background-color="#caf0fe"
+						background-color="#001C43"
 					>
 						<template #content>
 							<div class="showcase-container">
@@ -394,6 +394,9 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.page-count {
+	color: var(--color-main);
+}
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.25s;
@@ -490,14 +493,14 @@ h3 {
 }
 
 .extra-options a:hover {
-	background-color: #c4f1ed;
+	background-color: var(--bg-default);
 	color: #002e70;
 	border-color: #002e70;
 	outline: 1px solid #002e70;
 }
 
 .find h2 {
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .container {
@@ -506,6 +509,7 @@ h3 {
 	margin-left: auto;
 	padding-right: 12px;
 	padding-left: 12px;
+	color: var(--color-main);
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {

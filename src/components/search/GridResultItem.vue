@@ -300,12 +300,12 @@ export default defineComponent({
 	--bg-color: #ffffff;
 	width: 100%;
 	max-width: 100%;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-active);
 	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
-	color: #323232;
-	background-color: var(--bg-color);
+	color: var(--color-main);
+	background-color: var(--bg-default);
 }
 
 .grid-result-item:hover:after {
@@ -315,7 +315,7 @@ export default defineComponent({
 .link-title {
 	font-size: 14px;
 	text-decoration: none;
-	color: black;
+	color: var(--color-main);
 	display: grid;
 }
 
@@ -325,7 +325,7 @@ export default defineComponent({
 	position: absolute;
 	height: 10px;
 	text-align: center;
-	color: #002e70;
+	color: var(--color-main);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
@@ -340,7 +340,7 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	text-align: center;
 	align-content: center;
-	color: white;
+	color: var(--color-main);
 }
 
 .loading-color {
@@ -406,10 +406,9 @@ export default defineComponent({
 
 .title {
 	font-weight: var(--fw-bold);
-	color: #002e70;
+	color: var(--color-main);
 	margin-bottom: 10px;
 	max-width: 100%;
-	color: #002e70;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -424,10 +423,10 @@ export default defineComponent({
 	height: 20px;
 }
 .episode-text {
-	color: #002e70;
+	color: var(--color-main);
 }
 .title.loading {
-	background-color: #002e70;
+	background-color: var(--color-main);
 	border-radius: 10px;
 	margin-top: 15px;
 }

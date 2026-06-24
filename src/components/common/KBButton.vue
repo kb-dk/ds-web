@@ -202,7 +202,7 @@ export default defineComponent({
 }
 .cta {
 	background-color: var(--bg-cta);
-	color: var(--color-main);
+	color: var(--color-default);
 	border: 1px solid var(--color-border-success);
 }
 .reset {

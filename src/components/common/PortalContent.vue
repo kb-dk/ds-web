@@ -1,59 +1,21 @@
 <template>
 	<div class="portal-container container">
-		<div class="categories">
-			<SkewedFoldable
-				:title="$t('timeSearch.searchCategories')"
-				:left="false"
-				bg="#caf0fe"
-				text="#0a2e70"
-				icon="category"
-				:fullwidth="true"
-				:shadow-bottom="true"
-				:shadow-top="true"
-				:always-expand="true"
-				:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-				:hover-effect="true"
-			>
-				<MainCategories
-					:title="$t('timeSearch.searchCategories')"
-					text="#0a2e70"
-					:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-				></MainCategories>
-			</SkewedFoldable>
-		</div>
-		<div class="date-picker">
-			<SkewedFoldable
-				:title="$t('timeSearch.searchDate')"
-				:left="true"
-				bg="#caf0fe"
-				icon="event"
-				:subtitle="$t('timeSearch.dateSubtitle')"
-				:fullwidth="true"
-				text="#0a2e70"
-				:always-expand="true"
-				:dashed-bottom="true"
-				:shadow-bottom="true"
-				:hover-effect="true"
-			>
-				<DayPicker />
-			</SkewedFoldable>
-		</div>
 		<div class="time-search">
 			<SkewedFoldable
 				:title="$t('timeSearch.timeMachine')"
 				:left="false"
-				bg="#fafafa"
-				text="#0a2e70"
+				bg="#001C43"
+				text="#ea9fbc"
 				icon="schedule"
 				:subtitle="$t('timeSearch.timeMachineSubtitle')"
 				:fullwidth="true"
-				:dashed-bottom="true"
+				:dashed-bottom="false"
 				:shadow-bottom="false"
 			>
 				<TimeSearchComponent
 					:title="$t('timeSearch.timeMachine')"
 					:subtitle="$t('timeSearch.timeMachineSubtitle')"
-					text="#0a2e70"
+					text="#ea9fbc"
 				></TimeSearchComponent>
 			</SkewedFoldable>
 		</div>
@@ -86,8 +48,6 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
@@ -104,8 +64,6 @@ export default defineComponent({
 		GridDisplay,
 		TimeSearchComponent,
 		TiltedDivider,
-		DayPicker,
-		MainCategories,
 		SkewedFoldable,
 	},
 
@@ -241,6 +199,7 @@ export default defineComponent({
 
 <style scoped>
 .time-search {
+	background-color: var(--bg-default);
 	margin-bottom: -70px;
 }
 
@@ -259,6 +218,7 @@ export default defineComponent({
 }
 
 .container {
+	background-color: var(--bg-default);
 	width: 100%;
 }
 

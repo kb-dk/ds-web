@@ -1,5 +1,5 @@
 <template>
-	<EdgedContentArea background-color="#FAFAFA">
+	<EdgedContentArea background-color="#001C43">
 		<template #content>
 			<div
 				class="header"
@@ -44,7 +44,7 @@
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
 							:index="index"
-							background="#ffffff"
+							background="#001C43"
 						></GridResultItem>
 					</div>
 				</div>
@@ -242,7 +242,7 @@ h2 {
 }
 
 .selection-header {
-	color: #002e70;
+	color: var(--color-main);
 	padding-top: 4px;
 }
 
@@ -257,8 +257,8 @@ h2 {
 }
 
 .recap span {
-	background-color: #d9f5fe;
-	color: #002e70;
+	background-color: var(--bg-default);
+	color: var(--color-main);
 	border-radius: 4px;
 	width: fit-content;
 	padding-left: 3px;

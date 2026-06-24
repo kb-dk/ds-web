@@ -54,7 +54,6 @@
 				ref="dataContainer"
 				class="data-container"
 			></div>
-			<div class="dotted-separator"></div>
 			<Transition name="fade">
 				<VueSlider
 					v-if="data.length > 0"

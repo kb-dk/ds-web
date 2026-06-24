@@ -151,7 +151,7 @@ export default defineComponent({
 	position: absolute;
 	height: 10px;
 	text-align: center;
-	color: #002e70;
+	color: var(--color-main);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
@@ -159,7 +159,6 @@ export default defineComponent({
 	margin-top: -5px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: white;
 	z-index: 1;
 }
 
@@ -167,7 +166,7 @@ export default defineComponent({
 	position: absolute;
 	height: 16px;
 	text-align: center;
-	color: #002e70;
+	color: var(--color-main);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	top: 50%;
 	width: 10px;
@@ -175,7 +174,6 @@ export default defineComponent({
 	margin-top: -5px;
 	left: 0px;
 	display: none;
-	background: white;
 	z-index: 1;
 }
 
@@ -183,6 +181,7 @@ export default defineComponent({
 	position: relative;
 	max-width: 100%;
 	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+	background-color: var(--bg-default);
 }
 
 .search-results.grid {

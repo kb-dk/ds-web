@@ -314,7 +314,7 @@ export default defineComponent({
 .breadcrumb {
 	height: 47px;
 	position: relative;
-	background-color: #caf0fe;
+	background-color: var(--bg-default);
 	z-index: 1;
 	display: flex;
 	flex-direction: row;
@@ -421,7 +421,7 @@ export default defineComponent({
 }
 
 .btn-reg.highlighted {
-	color: white;
+	color: var(--color-main);
 	background-color: #002e70;
 	border-radius: 4px;
 	margin: 0px 8px;
@@ -438,7 +438,7 @@ export default defineComponent({
 
 .bg-container {
 	z-index: 5;
-	background-color: #caf0fe;
+	background-color: var(--bg-default);
 	position: relative;
 }
 
@@ -446,7 +446,7 @@ export default defineComponent({
 	padding: 0px 4px;
 	text-decoration: none;
 	margin: 0px 2px;
-	color: black;
+	color: var(--color-main);
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -466,7 +466,7 @@ export default defineComponent({
 }
 
 .container span {
-	color: black;
+	color: var(--color-main);
 }
 
 .search-tip {

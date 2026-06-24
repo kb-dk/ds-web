@@ -331,7 +331,7 @@ export default defineComponent({
 .outer-container {
 	z-index: 1;
 	position: relative;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-active);
 }
 
 .arrow {
@@ -387,13 +387,14 @@ export default defineComponent({
 	width: 100%;
 	overflow: hidden;
 	max-width: 100%;
+	color: var(--color-main);
 }
 .title {
 	text-decoration: none;
 }
 .title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
-	color: #002e70;
+	color: var(--color-main);
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
@@ -404,7 +405,6 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
-	color: #002e70;
 }
 .subtitle {
 	display: flex;
@@ -418,7 +418,7 @@ export default defineComponent({
 	margin: 0;
 }
 .episode-text {
-	color: #002e70;
+	color: var(--color-main);
 }
 .episode-split-icon {
 	padding-right: 3px;
@@ -519,7 +519,7 @@ export default defineComponent({
 	display: inline-block;
 	width: 50px;
 	height: 14px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-main);
 	border-radius: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -533,7 +533,7 @@ export default defineComponent({
 .placeholder-w .line {
 	display: inline-block;
 	border-radius: 10px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-main);
 	width: 30px;
 	height: 14px;
 	width: 25%;
@@ -671,11 +671,12 @@ export default defineComponent({
 
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
-		border-left: 1px solid rgba(230, 230, 230, 1);
+		border-left: 1px solid var(--color-border-active);
+		background-color: var(--bg-default);
 	}
 
 	.backfade {
-		background: white;
+		background: var(--bg-light);
 		transition: all 0.3s ease-in-out 0s;
 		content: '';
 		z-index: 0;
@@ -697,7 +698,6 @@ export default defineComponent({
 			opacity 0.3s ease-in-out,
 			visibility 0s linear 0.3s; /* Delay visibility hiding */
 	}
-
 	.result-item-wrapper.data:hover .backfade {
 		opacity: 0.6;
 		visibility: visible; /* Show immediately */

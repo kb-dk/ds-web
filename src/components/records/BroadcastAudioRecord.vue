@@ -333,10 +333,11 @@ h4 {
 }
 
 .material-icons.blue {
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .boardcast-record-data {
+	color: var(--color-main);
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
@@ -368,10 +369,10 @@ h4 {
 }
 
 .right-side-metadata-box {
-	color: #002e70;
+	color: var(--color-main);
 	width: 100%;
 	padding: 20px 10px 30px 10px;
-	background-color: #f0fbff;
+	background-color: var(--bg-light);
 	box-sizing: border-box;
 	text-transform: capitalize;
 }
@@ -410,7 +411,7 @@ h4 {
 }
 
 .divider.darkblue {
-	background-color: #002e70;
+	background-color: var(--bg-main);
 }
 
 .related-content {
@@ -419,6 +420,7 @@ h4 {
 }
 .related-content-title {
 	padding: 0px 20px;
+	color: var(--color-main);
 }
 .related-record {
 	flex: 0 0 90%;
@@ -426,7 +428,7 @@ h4 {
 }
 
 .genre-link {
-	color: #002e70;
+	color: var(--color-main);
 	text-decoration: none;
 	text-transform: none;
 }
@@ -437,9 +439,9 @@ h4 {
 }
 
 .link-container {
-	background-color: #0a2e70;
+	background-color: var(--bg-light);
 	width: fit-content;
-	color: white;
+	color: var(--color-main);
 	text-align: center;
 	text-decoration: none;
 	border-radius: 4px;

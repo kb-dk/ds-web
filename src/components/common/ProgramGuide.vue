@@ -351,12 +351,12 @@ export default defineComponent({
 <style scoped>
 .guide-button {
 	cursor: pointer;
-	border: 1px solid rgba(230, 230, 230, 1);
+	border: 1px solid var(--color-border-active);
 	border-radius: 0px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: #002e70;
+	color: var(--color-default);
 	transition:
 		all 0.3s ease-in-out 0s,
 		margin-bottom 0s linear 0s;
@@ -366,8 +366,7 @@ export default defineComponent({
 	width: fit-content;
 	font-size: 18px;
 	border-radius: var(--Rounded-md, 4px) var(--Rounded-md, 4px) 0 0;
-	border: 1px solid #002e70;
-	background-color: #f0fbff;
+	background-color: var(--bg-main);
 }
 .guide-button.active {
 	background-color: #00255a;

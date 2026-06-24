@@ -133,6 +133,7 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	padding: 0px 0px;
 	flex-direction: column;
+	background-color: var(--bg-default);
 }
 
 .edge-content.lines {
@@ -183,7 +184,7 @@ h3 {
 	padding: 0;
 	text-align: center;
 	letter-spacing: 1.15px;
-	color: #002e70;
+	color: var(--color-main);
 	top: calc(2.5vw + 2px);
 	position: relative;
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0);
@@ -196,6 +197,7 @@ h3:first-letter {
 	text-transform: uppercase;
 }
 .container {
+	background-color: var(--bg-default);
 	text-align: left;
 	padding-right: 12px;
 	padding-left: 12px;

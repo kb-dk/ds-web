@@ -298,10 +298,11 @@ export default defineComponent({
 }
 
 .rdl-logo {
-	background-image: url('@/assets/images/logo-digital.svg');
+	background-image: url('@/assets/images/KB_logo_inverted.svg');
 	background-position: 0;
 	background-repeat: no-repeat;
 	background-size: contain;
+	background-color: var(--bg-default);
 	display: inline-block;
 	height: 32px;
 	width: 138px;
@@ -310,7 +311,7 @@ export default defineComponent({
 }
 a {
 	font-weight: 700;
-	color: #002e70;
+	color: var(--color-main);
 	text-decoration: none;
 	text-transform: uppercase;
 }
@@ -329,7 +330,7 @@ a {
 
 .rdl-secondary-nav button,
 .rdl-primary-nav button {
-	color: #002e70;
+	color: var(--color-main);
 	text-decoration: none;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -361,7 +362,7 @@ a {
 .search-col button {
 	background-color: transparent;
 	border: 0px;
-	color: #002e70 !important;
+	color: var(--color-main) !important;
 	margin-right: 15px;
 	cursor: pointer;
 }
@@ -376,7 +377,7 @@ a {
 	font-size: 12px;
 	text-transform: uppercase;
 	position: relative;
-	color: black;
+	color: var(--color-main);
 }
 
 .rdl-burger {
@@ -386,7 +387,7 @@ a {
 	cursor: pointer;
 	padding: 0;
 	font-size: 0.75rem;
-	color: #002e70;
+	color: var(--color-main);
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
@@ -410,7 +411,7 @@ a {
 }
 
 .menu-icon {
-	color: black;
+	color: var(--color-main);
 }
 
 .global-header.open .menu-icon {
@@ -476,11 +477,11 @@ a {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	background-color: #caf0fe;
+	background-color: var(--bg-default);
 }
 
 .theme-blue .header-bg-wrapper.rdl-theme-bg {
-	background-color: #caf0fe;
+	background-color: var(--bg-default);
 }
 
 .justify-content-between {
@@ -625,7 +626,6 @@ li button i {
 }
 
 .rdl-logo {
-	background-image: url('@/assets/images/logo-digital.svg');
 	background-position: 0;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -795,7 +795,6 @@ li button i {
 	}
 
 	.rdl-logo {
-		background-image: url('@/assets/images/logo.svg');
 		height: 69px;
 		width: 174px;
 	}

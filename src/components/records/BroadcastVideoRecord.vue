@@ -257,6 +257,10 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.broadcast-record {
+	background-color: var(--bg-default);
+	color: var(--color-main);
+}
 h3 {
 	margin-top: 0;
 }
@@ -301,7 +305,7 @@ h4 {
 	background-color: black;
 	display: flex;
 	height: 300px;
-	color: white;
+	color: var(--color-main);
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -325,7 +329,7 @@ h4 {
 }
 
 .material-icons.blue {
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .boardcast-record-data {
@@ -335,7 +339,6 @@ h4 {
 	position: relative;
 	margin-bottom: 20px;
 }
-
 .extra-record-data {
 	display: flex;
 	flex-direction: column;
@@ -362,10 +365,10 @@ h4 {
 }
 
 .right-side-metadata-box {
-	color: #002e70;
+	color: var(--color-main);
 	width: 100%;
 	padding: 20px 10px 30px 10px;
-	background-color: #f0fbff;
+	background-color: var(--bg-light);
 	box-sizing: border-box;
 	text-transform: capitalize;
 }
@@ -403,7 +406,7 @@ h4 {
 }
 
 .divider.darkblue {
-	background-color: #002e70;
+	background-color: var(--bg-main);
 }
 
 .offset {
@@ -416,6 +419,7 @@ h4 {
 	max-width: 100%;
 }
 .related-content-title {
+	color: var(--color-main);
 	padding: 0px 20px;
 }
 .related-record {
@@ -425,7 +429,7 @@ h4 {
 
 .genre-link {
 	text-transform: none;
-	color: #002e70;
+	color: var(--color-main);
 	text-decoration: none;
 }
 .annotation-text {
@@ -433,9 +437,9 @@ h4 {
 	text-transform: none;
 }
 .link-container {
-	background-color: #0a2e70;
+	background-color: var(--bg-default);
 	width: fit-content;
-	color: white;
+	color: var(--color-main);
 	text-align: center;
 	text-decoration: none;
 	border-radius: 4px;
@@ -447,7 +451,7 @@ h4 {
 	flex-direction: row;
 	justify-content: center;
 	white-space: nowrap;
-	border: 1px solid #0a2e70;
+	border: 1px solid var(--color-border-active);
 	transition: all 0.25s linear 0s;
 }
 .link-container:hover {
