@@ -205,14 +205,12 @@ export default defineComponent({
 
 .portal-container {
 	position: relative;
-	margin-top: -110px !important;
 	align-items: center;
 }
 .categories,
 .date-picker,
 .time-search {
 	position: relative;
-	margin-top: -6.1vw;
 	width: calc(100% + 24px);
 	margin-left: -12px;
 }
@@ -246,19 +244,6 @@ export default defineComponent({
 	.date-picker {
 		display: grid;
 		justify-content: center;
-	}
-}
-
-@media (min-width: 2000px) {
-	.date-picker,
-	.time-search {
-		margin-top: -3vw;
-	}
-}
-@media (min-width: 4000px) {
-	.date-picker,
-	.time-search {
-		margin-top: -1.5vw;
 	}
 }
 </style>
