@@ -223,7 +223,7 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .result-container {
