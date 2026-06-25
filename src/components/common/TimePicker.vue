@@ -559,7 +559,7 @@ export default defineComponent({
 .datepicker-explanation {
 	text-align: start;
 	width: 100%;
-	margin-bottom: 5px;
+	visibility: hidden;
 }
 
 .datepicker {
