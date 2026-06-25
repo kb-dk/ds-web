@@ -90,7 +90,7 @@ h1 {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	max-width: 1280px;
+	max-width: 1680px;
 	width: 100vw;
 }
 
@@ -100,7 +100,7 @@ h1 {
 	object-fit: cover;
 	position: absolute;
 	background-color: var(--bg-default);
-	max-width: 1280px;
+	max-width: 1680px;
 	bottom: 0;
 }
 /* MEDIA QUERY 480 */
@@ -169,14 +169,11 @@ h1 {
 		width: 100%;
 		margin-left: initial;
 	}
+}
+@media (min-width: 1680px) {
 	.hue-overlay {
 		background-image: linear-gradient(to right, var(--bg-default), transparent 100px),
 			linear-gradient(to left, var(--bg-default), transparent 100px);
 	}
-}
-@media (min-width: 2000px) {
-	/* .bg-image {
-		box-shadow: 0px 0px 15px #0a2e70;
-	} */
 }
 </style>
