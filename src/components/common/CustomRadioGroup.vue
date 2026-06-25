@@ -12,7 +12,12 @@
 			:disabled="disableOnNoHits ? searchResultStore.numFound === 0 : false"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
-			@select="emit('update:modelValue', $event)"
+			@select="
+				(value) => {
+					emit('update:modelValue', value);
+					emit('change', value);
+				}
+			"
 		/>
 	</fieldset>
 </template>
@@ -41,7 +46,10 @@ export default defineComponent({
 		},
 	},
 
-	emits: ['update:modelValue'],
+	emits: {
+		'update:modelValue': (value: string) => true,
+		change: (value: string) => true,
+	},
 
 	setup(props, { emit }) {
 		const searchResultStore = useSearchResultStore();

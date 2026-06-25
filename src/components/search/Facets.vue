@@ -25,11 +25,13 @@
 					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
 					:options="selectedSearchMethodOptions"
+					@change="setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod)"
 				/>
 				<CustomRadioGroup
 					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
 					:options="selectedSearchMaterialOptions"
+					@change="setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter)"
 				/>
 				<FilterExpander
 					type="checkbox"
@@ -639,20 +641,6 @@ export default defineComponent({
 		);
 
 		watch(
-			() => searchResultStore.preliminarySearchMethod,
-			() => {
-				setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod);
-			},
-		);
-
-		watch(
-			() => searchResultStore.preliminaryFilter,
-			() => {
-				setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter);
-			},
-		);
-
-		watch(
 			() => getYearRanges,
 			(newRange: ComputedRef<number[]>) => {
 				data.value = [];
@@ -700,6 +688,7 @@ export default defineComponent({
 			endDate.value.setFullYear(timeSliderValues.value[1]);
 			setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
 		};
+
 		const setTimeSearchMethodAndExecute = (startDate: string, endDate: string) => {
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -881,6 +870,8 @@ export default defineComponent({
 			endYear,
 			selectedDate,
 			createTimeFacetSubline,
+			setSearchMethodAndExecute,
+			setDelimitationFilterAndExecute,
 		};
 	},
 });
