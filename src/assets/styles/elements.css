@@ -2,7 +2,7 @@
     /*background-colors*/
     --bg-main:#ea9fbc;
     --bg-cta:#ea9fbc;
-    --bg-light:#013277;
+    --bg-light:#ea9fbc1a;
     --bg-remove:#f7ae3b;
     --bg-main-hover:#c4f1ed;
     --bg-disabled:#757575;
@@ -13,7 +13,7 @@
     --bg-secondary-light: #caf0fe;
     --bg-secondary-light-20: #F0FBFF;
     --bg-header: #002e70;
-    --bg-footer: #002e70;
+    --bg-footer: #013277;
 
     /*colors*/
     --color-main:#ea9fbc;
@@ -35,7 +35,7 @@
 
     /*rounded*/
     --rounded-small: var(--scale-50);
-    --rounded-medium: var(--scale-150);
+    --rounded-medium: var(--scale-100);
     --rounded-large: var(--scale-800);
     
     /*padding*/

@@ -459,7 +459,7 @@ export default defineComponent({
 }
 
 .search-to-home-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -498,7 +498,7 @@ export default defineComponent({
 }
 
 .home-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -532,7 +532,7 @@ export default defineComponent({
 }
 
 .record-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -586,7 +586,7 @@ export default defineComponent({
 }
 
 .search-to-record-leave-to {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }

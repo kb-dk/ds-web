@@ -1,0 +1,121 @@
+<template>
+	<div
+		class="spot"
+		:class="[spotSize, color]"
+	>
+		<div
+			v-if="iconName"
+			class="icon"
+		>
+			<span class="material-icons">
+				{{ iconName }}
+			</span>
+		</div>
+		<div class="inner"><slot></slot></div>
+	</div>
+</template>
+
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+// import { useI18n } from 'vue-i18n';
+type SpotSizeType = 'small' | 'medium' | 'large' | 'max';
+type ColorType = 'main' | 'light';
+export default defineComponent({
+	name: 'SimpleSpot',
+	props: {
+		spotSize: {
+			type: String as PropType<SpotSizeType>,
+			required: true,
+		},
+		color: {
+			type: String as PropType<ColorType>,
+			default() {
+				return 'main';
+			},
+		},
+		iconName: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+	},
+	setup() {
+		// const { t } = useI18n();
+		// return t;
+	},
+});
+</script>
+
+<style scoped>
+.spot {
+	display: flex;
+	height: 100%;
+	min-height: 190px;
+	border-radius: var(--rounded-medium);
+	border: 1px solid var(--color-border-success);
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	position: relative;
+	overflow: hidden;
+	flex-wrap: wrap;
+	align-content: baseline;
+}
+.spot .icon {
+	width: 40px;
+	align-items: center;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	height: 40px;
+	background-color: var(--bg-main);
+	color: var(--color-default);
+	border-radius: 0 0 var(--rounded-medium) 0;
+	top: 0;
+	left: 0;
+}
+.icon .material-icons {
+	font-size: var(--fs-lead);
+}
+.spot .inner {
+	width: 100%;
+	height: inherit;
+	padding: 20px;
+	display: flex;
+	justify-content: start;
+	align-items: flex-start;
+	text-align: start;
+	/* word-break: break-all; */
+}
+.spot.main {
+	background-color: var(--bg-main);
+	color: var(--color-default);
+}
+
+.spot.light {
+	background-color: var(--bg-light);
+	color: var(--color-main);
+}
+.spot.small {
+	width: 100%;
+	max-width: 49%;
+}
+.spot.medium {
+	width: 100%;
+	max-width: 100%;
+}
+.spot.large {
+	width: 100%;
+}
+.spot.max {
+	width: 100%;
+}
+@media (min-width: 1280px) {
+	.spot.small {
+		max-width: 20%;
+	}
+	.spot.medium {
+		max-width: 45%;
+	}
+}
+</style>

@@ -50,7 +50,7 @@ temporary styling until patterns from design system are implemented
 	padding-right: 12px;
 	padding-left: 12px;
 	background-color: var(--bg-default);
-	margin-top: -85px;
+	/* margin-top: -85px; */
 }
 
 .home-container {

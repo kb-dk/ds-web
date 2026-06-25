@@ -9,15 +9,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -33,15 +35,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -57,15 +61,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -133,6 +139,18 @@ export default defineComponent({
 			type: Boolean,
 			default() {
 				return false;
+			},
+		},
+		customIconLeft: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		customIconRight: {
+			type: String,
+			default() {
+				return '';
 			},
 		},
 	},
