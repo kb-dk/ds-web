@@ -203,6 +203,10 @@ export default defineComponent({
 	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 }
 
+.display-image.svg.disabled {
+	background-image: url('@/assets/icons/gray/diverse-gray.svg');
+}
+
 .display-image.channel {
 	background-size: contain;
 }
