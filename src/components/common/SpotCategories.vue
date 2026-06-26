@@ -16,7 +16,6 @@
 				button-color="cta"
 				button-size="small"
 				class="btn-small"
-				:custom-style="{ marginTop: '-5px' }"
 				:button-text="`${t(`categories.${santizeAndSimplify(category.name)}`)}`"
 				:custom-icon-left="`category-image ${santizeAndSimplify(category.name)}`"
 				:is-router-link="true"
@@ -36,13 +35,15 @@
 			v-else
 			class="loading-container"
 		>
-			<h3>
-				<span
-					:style="`width:${Math.random() * 5 + 1}%`"
-					class="loading"
-				></span>
-				kategorier:
-			</h3>
+			<div class="loading-header">
+				<div
+					:style="`animation-delay:${Math.random() * 2}s`"
+					class="shimmer"
+				></div>
+				<span class="loading"></span>
+				<h3>kategorier:</h3>
+			</div>
+
 			<div
 				v-for="i in 12"
 				:key="i"
@@ -141,20 +142,35 @@ export default defineComponent({
 h3 {
 	margin: 0;
 	display: contents;
+	text-align: center;
 }
 .spot-categories {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
 	flex-wrap: wrap;
+	align-items: baseline;
 }
 .spot-categories > * {
 	margin-right: 3px;
 	margin-left: 7px;
 	margin-bottom: 15px;
 }
-h3 .loading {
-	margin-top: -3px;
+.loading-header {
+	display: flex;
+	width: fit-content;
+	align-items: baseline;
+}
+.loading-header .shimmer {
+	height: calc(var(--fs-sm) - 5px);
+	width: 35px;
+	margin: 0;
+	border-radius: 15px;
+}
+.loading-header .loading {
+	width: 35px;
+	height: calc(var(--fs-sm) - 5px);
+	margin-right: 5px;
 }
 .loading-container {
 	display: flex;
@@ -164,11 +180,12 @@ h3 .loading {
 	flex-wrap: wrap;
 	box-sizing: border-box;
 	padding: 0px 12px;
+	align-items: baseline;
 }
 
 .loading {
 	display: flex;
-	height: 26px;
+	height: 14px;
 	background-color: rgba(170, 170, 170, 1);
 	border-radius: 15px;
 }
@@ -182,14 +199,13 @@ h3 .loading {
 	padding: 8px 8px 0px 10px;
 	box-sizing: border-box;
 	margin: 0px 10px;
-	height: 50px;
+	height: 34px;
 	border: 2px solid #002e7026;
 	border-radius: 4px;
 	position: relative;
 	text-decoration: none;
 	display: flex;
 	transition: all 0.1s linear 0s;
-	margin-top: -10px;
 }
 
 .shimmer {
