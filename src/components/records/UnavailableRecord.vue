@@ -31,7 +31,7 @@
 		<EdgedContentArea
 			:lines="true"
 			:line-padding="false"
-			background-color="#001C43"
+			background-color="var(--bg-default)"
 			:title="t('search.mainCategories')"
 		>
 			<template #content>

@@ -79,7 +79,7 @@ export default defineComponent({
 	props: {
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
-		text: { type: String, default: 'black' },
+		text: { type: String, default: 'var(--bg-default)' },
 		showHeader: { type: Boolean, default: false },
 	},
 	setup() {

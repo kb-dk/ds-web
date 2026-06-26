@@ -83,7 +83,7 @@
 						:title="$t('search.mainCategories')"
 						class="main-categories-header"
 						:reverse="true"
-						background-color="#001C43"
+						background-color="var(--bg-default)"
 					>
 						<template #content>
 							<div class="showcase-container">

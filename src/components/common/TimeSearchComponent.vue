@@ -1,5 +1,5 @@
 <template>
-	<EdgedContentArea background-color="#001C43">
+	<EdgedContentArea background-color="var(--bg-default)">
 		<template #content>
 			<div
 				class="header"
@@ -44,7 +44,7 @@
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
 							:index="index"
-							background="#001C43"
+							background="var(--bg-default)"
 						></GridResultItem>
 					</div>
 				</div>

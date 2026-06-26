@@ -14,7 +14,7 @@
 					:resultdata="searchResults[index]"
 					:loading="searchResultStore.loading"
 					:index="index"
-					background="white"
+					background="var(--bg-default)"
 				></GridResultItem>
 				<ResultItem
 					v-else
