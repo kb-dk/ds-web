@@ -664,12 +664,13 @@ export default defineComponent({
 			() => getYearRanges,
 			(newRange: ComputedRef<number[]>) => {
 				data.value = [];
-				for (let i = newRange.value[0]; i < newRange.value[newRange.value.length - 1]; i++) {
-					data.value.push({ key: i, value: i });
+				for (let i = 0; i < newRange.value.length; i++) {
+					data.value.push({ key: newRange.value[i], value: newRange.value[i] });
 				}
 			},
 			{ deep: true, immediate: true },
 		);
+
 		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
 			array[index].selected = val;
 			const routeQueries = removeChannelOrCategoryFilter(
