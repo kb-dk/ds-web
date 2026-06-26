@@ -52,10 +52,10 @@ export default defineComponent({
 	display: flex;
 	height: 100%;
 	min-height: 190px;
-	border-radius: var(--rounded-medium);
+	border-radius: 0px;
 	border: 1px solid var(--color-border-success);
 	box-sizing: border-box;
-	margin-bottom: 20px;
+
 	position: relative;
 	overflow: hidden;
 	flex-wrap: wrap;
@@ -98,7 +98,6 @@ export default defineComponent({
 }
 .spot.small {
 	width: 100%;
-	max-width: 49%;
 }
 .spot.medium {
 	width: 100%;
@@ -110,6 +109,17 @@ export default defineComponent({
 .spot.max {
 	width: 100%;
 }
+
+@media (min-width: 640px) {
+	.spot.small {
+		max-width: 49%;
+	}
+	.spot {
+		margin-bottom: 10px;
+		border-radius: var(--rounded-medium);
+	}
+}
+
 @media (min-width: 990px) {
 	.spot.small {
 		max-width: 23%;

@@ -11,8 +11,11 @@
 				spot-size="small"
 				icon-name="link"
 				color="light"
+				class="spot-link"
+				@click="activateLink"
 			>
 				<a
+					ref="spotLink"
 					:href="t('hero.link')"
 					class="label-big link"
 				>
@@ -25,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SimpleSpot from '@/components/common/SimpleSpot.vue';
 import AdvancedSpot from '@/components/common/AdvancedSpot.vue';
@@ -35,7 +38,13 @@ export default defineComponent({
 	components: { SimpleSpot, AdvancedSpot, SpotCategories },
 	setup() {
 		const { t } = useI18n();
-		return { t };
+		const spotLink = ref<HTMLAnchorElement | null>(null);
+		const activateLink = () => {
+			if (spotLink.value) {
+				spotLink.value.click();
+			}
+		};
+		return { t, spotLink, activateLink };
 	},
 });
 </script>
@@ -62,8 +71,12 @@ export default defineComponent({
 	text-decoration: inherit;
 	border-bottom: 1px solid transparent;
 }
-.link:hover {
-	transition: border-color linear 0.3s ease-in-out;
-	border-bottom-color: var(--color-border-success);
+
+.spot-link:hover {
+	.link {
+		transition: border-color linear 0.3s ease-in-out;
+		border-bottom-color: var(--color-border-success);
+	}
+	cursor: pointer;
 }
 </style>
