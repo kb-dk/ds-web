@@ -389,7 +389,7 @@ export default defineComponent({
 }
 
 .active span {
-	color: white;
+	color: var(--color-main);
 	background-color: #002e70;
 	text-decoration: none;
 }
@@ -408,11 +408,11 @@ button,
 }
 .pager-buttons a {
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .pager-buttons a:visited {
-	color: #002e70;
+	color: var(--color-main);
 }
 
 :disabled {
@@ -423,7 +423,7 @@ button span,
 .dots {
 	padding: 2px 5px;
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-main);
 	border-radius: 3px;
 	transition: all 0.2s linear 0s;
 	line-height: 25px;
@@ -434,7 +434,7 @@ button span,
 }
 
 .input-label {
-	color: #002e70;
+	color: var(--color-main);
 	height: 31px;
 	width: fit-content;
 	display: inline;

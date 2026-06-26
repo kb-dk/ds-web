@@ -542,7 +542,7 @@ input[type='search']::-webkit-search-results-decoration {
 	align-items: center;
 	background-size: cover;
 	background-position: center;
-	background-color: #caf0fe;
+	background-color: var(--bg-default);
 }
 
 .btn-icon {

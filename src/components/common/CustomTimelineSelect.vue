@@ -99,7 +99,7 @@ export default defineComponent({
 	border: 1px solid #dadada;
 	border-radius: 4px;
 	padding: 4px 50px 5px 8px;
-	color: #002e70;
+	color: var(--color-default);
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	background-color: white;
@@ -117,7 +117,7 @@ export default defineComponent({
 
 label {
 	padding-right: 10px;
-	color: black;
+	color: var(--color-main);
 	display: flex;
 	gap: 5px;
 	align-items: center;

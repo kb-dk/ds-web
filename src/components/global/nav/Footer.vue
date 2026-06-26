@@ -233,7 +233,7 @@ export default defineComponent({
 
 .rdl-some-link {
 	align-items: center;
-	background-color: #fff;
+	background-color: var(--bg-main);
 	border-radius: 50%;
 	display: inline-flex;
 	height: 24px;
@@ -243,9 +243,9 @@ export default defineComponent({
 }
 
 .rdl-some-link i {
-	color: #002e70;
+	color: var(--color-default);
 	font-size: 0.875rem;
-	background-color: #fff;
+	background-color: var(--bg-main);
 }
 
 h2 {
@@ -257,8 +257,8 @@ h2 {
 .global-footer {
 	width: 100%;
 	overflow: hidden;
-	background-color: #002e70;
-	color: white;
+	background-color: var(--bg-default);
+	color: var(--color-main);
 	padding: 36px 0 0px;
 	position: relative;
 	bottom: 0px;
@@ -271,7 +271,7 @@ h2 {
 }
 
 a {
-	color: white;
+	color: var(--color-main);
 	text-decoration: none;
 }
 

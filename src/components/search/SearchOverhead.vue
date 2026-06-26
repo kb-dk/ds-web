@@ -180,7 +180,7 @@ export default defineComponent({
 	width: 30px;
 	height: 30px;
 	border-bottom: 1px solid transparent;
-	color: grey;
+	color: var(--color-main);
 }
 
 .filter-container {
@@ -199,12 +199,13 @@ export default defineComponent({
 .hit-count {
 	z-index: 0;
 	position: relative;
+	color: var(--color-main);
 }
 
 .display-option.active {
 	border-bottom: 2px solid #002e70;
 	box-sizing: border-box;
-	color: #002e70;
+	color: var(--color-main);
 }
 
 .display-option.list,

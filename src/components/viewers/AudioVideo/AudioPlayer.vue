@@ -211,7 +211,7 @@ export default defineComponent({
 	overflow-y: hidden;
 	padding-top: 31px;
 	padding-bottom: 31px;
-	background-color: white;
+	background-color: var(--bg-default);
 	position: relative;
 }
 

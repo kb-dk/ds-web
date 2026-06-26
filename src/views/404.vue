@@ -19,7 +19,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="inverted"
+								button-color="main"
 								button-size="medium"
 								class="btn-medium"
 								href="/find-materiale/dr-arkivet/"
@@ -32,7 +32,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="inverted"
+								button-color="main"
 								button-size="medium"
 								class="btn-medium"
 								:href="t('footer.column1.links.1.link')"
@@ -45,7 +45,7 @@
 						<div>
 							<KBButton
 								button-type="btn-main-medium"
-								button-color="inverted"
+								button-color="main"
 								button-size="medium"
 								class="btn-medium"
 								href="https://www.kb.dk"
@@ -107,11 +107,11 @@ export default defineComponent({
 }
 .not-found-container {
 	box-sizing: border-box;
-	background-color: #002e70;
+	background-color: var(--bg-default);
 	position: relative;
 	top: calc(-6vw);
 	z-index: 1;
-	color: white;
+	color: var(--color-main);
 	width: 100%;
 	justify-content: space-around;
 }

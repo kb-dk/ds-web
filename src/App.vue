@@ -372,6 +372,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+#main-content {
+	background-color: var(--bg-default);
+}
 #cookiescript_reportdate a,
 #cookiescript_cookiescriptlink,
 #cookiescript_reportlink {

@@ -15,7 +15,7 @@
 				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"
 				:dotted-edges="false"
-				background-color="#c4f1ed"
+				background-color="#001C43"
 				align-items="start"
 				:line-padding="false"
 			>
@@ -90,13 +90,13 @@
 				:lines="true"
 				:title="$t('search.mainCategories')"
 				class="main-categories-header"
-				background-color="#caf0fe"
+				background-color="#001C43"
 			>
 				<template #content>
 					<div class="showcase-container">
 						<MainCategories
 							:title="$t('timeSearch.searchCategories')"
-							text="#002e70"
+							text="#ea9fbc"
 							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 							:show-header="true"
 						></MainCategories>
@@ -176,7 +176,7 @@ export default defineComponent({
 	align-items: center;
 	padding: 50px 0px;
 	flex-direction: row;
-	color: white;
+	color: var(--color-main);
 	flex-wrap: wrap;
 	align-content: center;
 	box-sizing: border-box;
@@ -185,7 +185,7 @@ export default defineComponent({
 .material-icons {
 	display: block;
 	background: -webkit-linear-gradient(#eee, rgb(255, 220, 164));
-	background: -webkit-linear-gradient(#002e70);
+	background: -webkit-linear-gradient(var(--bg-default));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-size: 50px;
@@ -207,6 +207,7 @@ export default defineComponent({
 	word-wrap: break-word;
 	hyphens: auto;
 	max-width: 800px;
+	color: var(--color-main);
 }
 h2 {
 	margin: 0;
@@ -214,6 +215,7 @@ h2 {
 .no-hits-heading-subtitle {
 	margin-top: 10px;
 	max-width: 750px;
+	color: var(--color-main);
 }
 .no-hits-heading-subtitle a {
 	font-size: var(--fs-base);
@@ -223,7 +225,7 @@ h2 {
 .search-icon {
 	text-align: center;
 	font-size: 150px;
-	color: #002e70;
+	color: var(--color-main);
 }
 ul p {
 	margin: 0;

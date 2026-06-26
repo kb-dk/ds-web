@@ -312,9 +312,11 @@ export default defineComponent({
 	box-sizing: border-box;
 	min-height: 100vh;
 	width: 100%;
+	background-color: var(--bg-default);
 }
 
 .record-container {
+	background-color: var(--bg-default);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -323,11 +325,12 @@ export default defineComponent({
 
 .record-data {
 	padding-top: 25px 25px 25px 25px;
+	background-color: var(--bg-default);
 }
 
 .top-offset {
 	position: relative;
-	background: white;
+	background-color: var(--bg-default);
 	top: -20px;
 	z-index: 3;
 }
