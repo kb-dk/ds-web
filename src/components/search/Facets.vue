@@ -25,11 +25,17 @@
 					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
 					:options="selectedSearchMethodOptions"
+					:disable="
+						searchResultStore.currentQuery === '' ||
+						searchResultStore.currentQuery === '*:*' ||
+						searchResultStore.currentQuery === '*'
+					"
 				/>
 				<CustomRadioGroup
 					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
 					:options="selectedSearchMaterialOptions"
+					:disable="searchResultStore.numFound === 0"
 				/>
 				<FilterExpander
 					type="checkbox"
@@ -157,7 +163,7 @@
 				<FilterExpander
 					type="time"
 					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
-					icon="event"
+					icon="calendar_today"
 					:subline="createTimeFacetSubline"
 					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
@@ -354,11 +360,13 @@ export default defineComponent({
 				value: 'date',
 				title: t('facets.timePeriod.date.title'),
 				description: t('facets.timePeriod.date.desc'),
+				icon: 'event',
 			},
 			{
 				value: 'period',
 				title: t('facets.timePeriod.period.title'),
-				description: t('facets.timePeriod.date.desc'),
+				description: t('facets.timePeriod.period.desc'),
+				icon: 'date_range',
 			},
 		]);
 		const getYearRanges = computed(() => {

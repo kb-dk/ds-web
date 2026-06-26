@@ -40,7 +40,7 @@
 				:aria-label="opened ? t('calendar.close') : t('calendar.open')"
 				@click="toggle"
 			>
-				<span class="material-icons">event</span>
+				<span class="material-icons">calendar_month</span>
 			</button>
 		</div>
 
@@ -65,6 +65,7 @@
 						<div class="dp-selectors">
 							<select
 								v-model="selectedMonth"
+								class="btn-big"
 								@change="onMonthChange"
 							>
 								<option
@@ -78,6 +79,7 @@
 
 							<select
 								v-model="selectedYear"
+								class="btn-big"
 								@change="onYearChange"
 							>
 								<option
@@ -152,7 +154,7 @@
 								@click="selectDay(day.date)"
 								@keydown="onDayKeydown($event, day)"
 							>
-								<span class="dp-day-label">{{ day.label }}</span>
+								<span class="dp-day-label label-regular">{{ day.label }}</span>
 							</button>
 						</div>
 					</div>
@@ -577,14 +579,22 @@ export default defineComponent({
 }
 
 .dp-selectors select {
-	padding: 4px 6px;
-	border: 1px solid var(--bg-default-gray);
+	border: 0px;
+	background-color: white;
+	border: 1px solid #dadada;
 	border-radius: 4px;
-	background: white;
-	text-align: center;
-	font-family: noway, sans-serif;
-	text-transform: capitalize;
-	font-size: 16px;
+	padding: 4px 50px 5px 8px;
+	color: #002e70;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-color: white;
+	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
+	background-repeat: no-repeat;
+	background-position-x: 85px;
+	background-position-y: 13px;
+	width: 118px;
+	box-sizing: border-box;
+	height: 48px;
 }
 
 .input-wrap {
@@ -607,13 +617,15 @@ export default defineComponent({
 
 .dp-input {
 	padding: 8px 10px;
-	width: calc(266px - 40px);
+	width: calc(266px - 22px);
 	height: 22px;
 	font-family: noway, sans-serif;
 	font-size: 20px;
 	color: #0a2e70;
 	border-radius: 4px;
 	border: 1px solid var(--color-main);
+	height: 48px;
+	box-sizing: border-box;
 }
 
 .dp-toggle {
@@ -621,8 +633,8 @@ export default defineComponent({
 	border: 1px solid var(--bg-default-gray);
 	padding: 8px;
 	border-radius: 4px;
-	height: 40px;
-	width: 40px;
+	height: 48px;
+	width: 48px;
 	cursor: pointer;
 	border: 1px solid var(--color-main);
 	transition: all 0.15s linear 0s;

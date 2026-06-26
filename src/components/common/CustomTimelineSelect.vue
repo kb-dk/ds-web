@@ -108,6 +108,8 @@ export default defineComponent({
 	background-position-x: 85px;
 	background-position-y: 13px;
 	width: 118px;
+	box-sizing: border-box;
+	height: 48px;
 }
 
 .select-container:hover select {

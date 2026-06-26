@@ -8,7 +8,7 @@
 				<span
 					v-if="filtersActive"
 					key="1"
-					class="label-small"
+					class="label-regular"
 				>
 					{{ $t('search.selected') }}:
 				</span>
@@ -20,7 +20,7 @@
 						<KBButton
 							v-for="(channel, index) in searchResultStore.channelFilters"
 							:key="index"
-							class="label-small"
+							class="label-regular"
 							:button-text="`${extractFilterText(channel)}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -35,7 +35,7 @@
 						<KBButton
 							v-for="(category, index) in searchResultStore.categoryFilters"
 							:key="index"
-							class="label-small"
+							class="label-regular"
 							:button-text="`${extractFilterText(category)}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -54,7 +54,7 @@
 						"
 					>
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -66,7 +66,7 @@
 					</div>
 					<div v-if="searchResultStore.preliminarySearchMethod !== 'all'">
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -77,7 +77,7 @@
 					</div>
 					<div v-if="searchResultStore.preliminaryFilter !== ''">
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -93,7 +93,7 @@
 					key="8"
 				>
 					<KBButton
-						class="label-small"
+						class="label-regular"
 						:button-text="`${t('facets.reset')}`"
 						button-type="btn-tag"
 						button-color="reset"
