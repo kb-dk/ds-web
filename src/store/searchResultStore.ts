@@ -332,11 +332,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			presetChannelFilters += `&fq=(${categoryFilters.value.join(' OR ')})`;
 		}
 		searchFilters += categoryFilterString;
-		if (preliminaryFilter.value) {
-			searchFilters += `&fq=${preliminaryFilter.value}`;
-			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
-			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
-		}
 
 		currentChannelFacetString.value = presetChannelFilters;
 		currentGenreFacetString.value = presetGenreFilters;
