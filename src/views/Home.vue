@@ -1,7 +1,7 @@
 <template>
 	<div class="home-container">
 		<div>
-			<!-- <Hero /> -->
+			<Hero />
 			<PortalContent />
 		</div>
 	</div>
@@ -18,6 +18,7 @@ export default defineComponent({
 	name: 'Home',
 	components: {
 		PortalContent,
+		Hero,
 	},
 
 	setup() {
