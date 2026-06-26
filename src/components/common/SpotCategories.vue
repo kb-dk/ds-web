@@ -31,6 +31,36 @@
 				@click="scrollToTop()"
 			></KBButton>
 		</div>
+		<div
+			v-else
+			class="loading-container"
+		>
+			<h3>
+				<span
+					:style="`width:${Math.random() * 5 + 1}%`"
+					class="loading"
+				></span>
+				kategorier:
+			</h3>
+			<div
+				v-for="i in 12"
+				:key="i"
+				class="category-item"
+			>
+				<div
+					:style="`animation-delay:${Math.random() * 2}s`"
+					class="shimmer"
+				></div>
+				<span
+					:style="`width:${Math.random() * 30 + 50}%`"
+					class="loading"
+				></span>
+				<NoFacetContent
+					v-if="categoriesLoaded && categories.length === 0"
+					position="absolute"
+				></NoFacetContent>
+			</div>
+		</div>
 	</simple-spot>
 </template>
 
@@ -109,6 +139,7 @@ export default defineComponent({
 <style scoped>
 h3 {
 	margin: 0;
+	display: contents;
 }
 .spot-categories {
 	display: flex;
@@ -119,5 +150,78 @@ h3 {
 .spot-categories > * {
 	margin-right: 10px;
 	margin-bottom: 10px;
+}
+h3 .loading {
+	margin-top: -3px;
+}
+.loading-container {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	gap: 20px 15px;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	padding: 0px 12px;
+}
+
+.loading {
+	display: flex;
+	height: 26px;
+	background-color: rgba(170, 170, 170, 1);
+	border-radius: 15px;
+}
+.category-item {
+	background: var(--bg-main) 0% 0% no-repeat padding-box;
+	box-shadow: 2px 2px 4px #75757500;
+	border: 2px solid #ffffff;
+	border-radius: 4px;
+	color: white;
+	width: 150px;
+	padding: 8px 8px 0px 10px;
+	box-sizing: border-box;
+	margin: 0px 10px;
+	height: 50px;
+	border: 2px solid #002e7026;
+	border-radius: 4px;
+	position: relative;
+	text-decoration: none;
+	display: flex;
+	transition: all 0.1s linear 0s;
+	margin-top: -10px;
+}
+
+.shimmer {
+	animation: loading 3s ease-in-out 0s infinite;
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		117deg,
+		rgba(255, 255, 255, 0) 44%,
+		rgba(255, 255, 255, 0.7455357142857143) 64%,
+		rgba(255, 255, 255, 0) 77%
+	);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	mix-blend-mode: soft-light;
+	overflow: hidden;
+	background-size: 200% 100%;
+	background-position: 200% center;
+	margin-top: -10px;
+	margin-left: -10px;
+}
+
+@keyframes loading {
+	0% {
+		background-position: 200% center;
+	}
+	20% {
+		background-position: 200% center;
+	}
+	80% {
+		background-position: 0% center;
+	}
+	100% {
+		background-position: 0% center;
+	}
 }
 </style>
