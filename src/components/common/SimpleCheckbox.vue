@@ -34,7 +34,7 @@
 			<span
 				v-if="channel"
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
-				:class="['display-image channel', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
+				:class="['display-image channel no-icon', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
 			></span>
 			<span class="title label-regular label">{{ title }}</span>
 			<Transition
@@ -199,8 +199,8 @@ export default defineComponent({
 	background-position: center center;
 }
 
-.display-image.disabled {
-	filter: grayscale(100%) brightness(4);
+.display-image.disabled.no-icon {
+	opacity: 0.3;
 }
 
 .display-image.svg {
@@ -247,12 +247,13 @@ export default defineComponent({
 }
 
 .checkbox-container {
-	max-height: 24px;
-	margin: 2px 5px;
+	height: 36px;
+	margin: 0px 5px;
 	padding: 2px 5px;
 	text-align: left;
 	border: 1px solid transparent;
 	transition: all 0.2s linear 0s;
+	box-sizing: border-box;
 }
 
 .checkbox-container:hover {
@@ -279,8 +280,8 @@ export default defineComponent({
 	position: relative;
 	display: flex;
 	cursor: pointer;
-	height: 24px;
 	align-items: center;
+	height: 100%;
 }
 
 .underline {
@@ -299,7 +300,6 @@ export default defineComponent({
 
 .tag-number {
 	color: #383838;
-	display: inline-block;
 	padding-left: 5px;
 	height: 100%;
 	margin-left: auto;
@@ -326,7 +326,6 @@ export default defineComponent({
 	white-space: nowrap;
 	overflow: clip;
 	color: #002e70;
-	display: inline-block;
 }
 
 .loading .checkbox:after {
@@ -377,6 +376,7 @@ input:focus {
 	height: 20px;
 	border: 3px solid #002e70;
 	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 .checkbox:checked:after {
@@ -391,8 +391,8 @@ input:focus {
 	border-bottom: 2px solid white;
 	border-right: 2px solid white;
 	position: absolute;
-	top: 3px;
-	left: 8px;
+	top: -1px;
+	left: 6px;
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
