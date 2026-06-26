@@ -207,6 +207,10 @@ export default defineComponent({
 	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 }
 
+.display-image.svg.disabled {
+	background-image: url('@/assets/icons/gray/diverse-gray.svg');
+}
+
 .display-image.channel {
 	background-size: contain;
 }
@@ -430,6 +434,40 @@ input:focus {
 }
 .svg.brn-og-unge {
 	background-image: url('@/assets/icons/blue/born-blue.svg');
+}
+
+.svg.diverse.disabled {
+	background-image: url('@/assets/icons/gray/diverse-gray.svg');
+}
+.svg.dokumentar.disabled {
+	background-image: url('@/assets/icons/gray/dokumentar-gray.svg');
+}
+.svg.film-og-serier.disabled {
+	background-image: url('@/assets/icons/gray/fiktion-gray.svg');
+}
+.svg.kultur-og-oplysning.disabled {
+	background-image: url('@/assets/icons/gray/kultur-gray.svg');
+}
+.svg.livsstil.disabled {
+	background-image: url('@/assets/icons/gray/livsstil-gray.svg');
+}
+.svg.musik.disabled {
+	background-image: url('@/assets/icons/gray/musik-gray.svg');
+}
+.svg.nyheder-politik-og-samfund.disabled {
+	background-image: url('@/assets/icons/gray/nyheder-gray.svg');
+}
+.svg.sport.disabled {
+	background-image: url('@/assets/icons/gray/sport-gray.svg');
+}
+.svg.humor-quiz-og-underholdning.disabled {
+	background-image: url('@/assets/icons/gray/underholdning-gray.svg');
+}
+.svg.natur-og-videnskab.disabled {
+	background-image: url('@/assets/icons/gray/videnskab-gray.svg');
+}
+.svg.brn-og-unge.disabled {
+	background-image: url('@/assets/icons/gray/born-gray.svg');
 }
 .label {
 	cursor: pointer;

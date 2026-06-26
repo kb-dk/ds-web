@@ -9,7 +9,7 @@
 			:icon="obj.icon"
 			:value="obj.value"
 			:title="obj.title"
-			:disabled="disableOnNoHits ? searchResultStore.numFound === 0 : false"
+			:disabled="disable"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
 			@select="emit('update:modelValue', $event)"
@@ -34,7 +34,7 @@ export default defineComponent({
 	props: {
 		modelValue: { type: String, required: true },
 		name: { type: String, required: true },
-		disableOnNoHits: { type: Boolean, required: false, default: false },
+		disable: { type: Boolean, required: false, default: false },
 		options: {
 			type: Array<RadioButtonOption>,
 			required: true,

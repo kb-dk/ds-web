@@ -25,11 +25,17 @@
 					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
 					:options="selectedSearchMethodOptions"
+					:disable="
+						searchResultStore.currentQuery === '' ||
+						searchResultStore.currentQuery === '*:*' ||
+						searchResultStore.currentQuery === '*'
+					"
 				/>
 				<CustomRadioGroup
 					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
 					:options="selectedSearchMaterialOptions"
+					:disable="searchResultStore.numFound === 0"
 				/>
 				<FilterExpander
 					type="checkbox"
