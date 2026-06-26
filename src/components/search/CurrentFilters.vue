@@ -170,7 +170,6 @@ export default defineComponent({
 		const removePreliminarySearchFilterAndSearch = () => {
 			searchResultStore.preliminarySearchMethod = 'all';
 			const routeQueries = cloneRouteQuery(route);
-			console.log('hello', routeQueries);
 			if (routeQueries.q.includes('title:')) {
 				routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
 			} else if (routeQueries.q.includes('description:')) {
