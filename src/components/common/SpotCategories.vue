@@ -16,6 +16,7 @@
 				button-color="cta"
 				button-size="small"
 				class="btn-small"
+				:custom-style="{ marginTop: '-5px' }"
 				:button-text="`${t(`categories.${santizeAndSimplify(category.name)}`)}`"
 				:custom-icon-left="`category-image ${santizeAndSimplify(category.name)}`"
 				:is-router-link="true"
@@ -148,8 +149,9 @@ h3 {
 	flex-wrap: wrap;
 }
 .spot-categories > * {
-	margin-right: 10px;
-	margin-bottom: 10px;
+	margin-right: 3px;
+	margin-left: 7px;
+	margin-bottom: 15px;
 }
 h3 .loading {
 	margin-top: -3px;

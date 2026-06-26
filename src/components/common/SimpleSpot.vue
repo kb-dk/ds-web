@@ -110,12 +110,12 @@ export default defineComponent({
 .spot.max {
 	width: 100%;
 }
-@media (min-width: 1280px) {
+@media (min-width: 990px) {
 	.spot.small {
-		max-width: 20%;
+		max-width: 23%;
 	}
 	.spot.medium {
-		max-width: 45%;
+		max-width: 48%;
 	}
 }
 </style>
