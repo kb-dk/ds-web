@@ -72,7 +72,7 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
-							@click="searchResultStore.preliminarySearchMethod = 'all'"
+							@click="removePreliminarySearchFilterAndSearch()"
 						></KBButton>
 					</div>
 					<div v-if="searchResultStore.preliminaryFilter !== ''">
@@ -167,6 +167,21 @@ export default defineComponent({
 			}
 		};
 
+		const removePreliminarySearchFilterAndSearch = () => {
+			searchResultStore.preliminarySearchMethod = 'all';
+			const routeQueries = cloneRouteQuery(route);
+			console.log('hello', routeQueries);
+			if (routeQueries.q.includes('title:')) {
+				routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+			} else if (routeQueries.q.includes('description:')) {
+				routeQueries.q = routeQueries.q.replace(/description:"([^"]*)"/g, (_match: string, content: string) => content);
+			}
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
+
 		const removePreliminaryFilterAndSearch = () => {
 			searchResultStore.preliminaryFilter = '';
 			const routeQueries = cloneRouteQuery(route);
@@ -222,7 +237,11 @@ export default defineComponent({
 					searchResultStore.currentQuery.includes('title:') ||
 					searchResultStore.currentQuery.includes('description:')
 				) {
-					routeQueries.q = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+					routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+					routeQueries.q = routeQueries.q.replace(
+						/description:"([^"]*)"/g,
+						(_match: string, content: string) => content,
+					);
 				}
 			}
 
@@ -296,6 +315,7 @@ export default defineComponent({
 			removeFilterAndSearch,
 			resetYearsAndSearch,
 			removePreliminaryFilterAndSearch,
+			removePreliminarySearchFilterAndSearch,
 			startDate,
 			endDate,
 			startYear,

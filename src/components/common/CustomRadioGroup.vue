@@ -46,10 +46,7 @@ export default defineComponent({
 		},
 	},
 
-	emits: {
-		'update:modelValue': (value: string) => true,
-		change: (value: string) => true,
-	},
+	emits: ['update:modelValue', 'change'],
 
 	setup(props, { emit }) {
 		const searchResultStore = useSearchResultStore();
