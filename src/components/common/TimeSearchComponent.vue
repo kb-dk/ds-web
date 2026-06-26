@@ -326,6 +326,9 @@ h2 {
 	.time-result-item:nth-child(n + 5) {
 		display: none;
 	}
+	.result-container {
+		padding-top: 45px;
+	}
 }
 
 @media (min-width: 480px) {
