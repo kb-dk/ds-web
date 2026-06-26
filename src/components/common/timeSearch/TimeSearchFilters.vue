@@ -693,7 +693,6 @@ fieldset {
 	gap: 2px;
 	height: 130px;
 	position: relative;
-	margin-top: -94px;
 	z-index: 2;
 	margin-bottom: 40px;
 }
