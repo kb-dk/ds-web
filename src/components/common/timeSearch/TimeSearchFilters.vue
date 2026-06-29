@@ -436,7 +436,7 @@ export default defineComponent({
 		left 0.25s,
 		opacity 0.25s,
 		width 0.25s;
-	opacity: 0.8;
+	opacity: 0.85;
 	background-color: #fafafa;
 }
 
@@ -978,6 +978,13 @@ fieldset {
 	.slider-container {
 		padding-bottom: 40px;
 	}
+	.data-container {
+		height: 200px;
+		visibility: visible;
+	}
+	.slider-container {
+		height: 200px;
+	}
 }
 
 @media (min-width: 990px) {
@@ -987,13 +994,7 @@ fieldset {
 	.data-size {
 		display: block;
 	}
-	.data-container {
-		height: 200px;
-		visibility: visible;
-	}
-	.slider-container {
-		height: 200px;
-	}
+
 	.explanation-for-data {
 		display: flex;
 	}
