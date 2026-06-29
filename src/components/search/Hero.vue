@@ -6,6 +6,7 @@
 					<span class="text">{{ t('hero.title') }}</span>
 				</span>
 			</h1>
+			<SearchBar></SearchBar>
 		</div>
 		<img
 			:src="backgroundImage"
@@ -24,10 +25,11 @@ import { useAuthStore } from '@/store/authStore';
 import hero1 from '@/assets/images/hero_image_1.jpg';
 import hero2 from '@/assets/images/hero_image_2.jpg';
 import hero3 from '@/assets/images/hero_image_3.jpg';
+import SearchBar from './SearchBar.vue';
 
 export default defineComponent({
 	name: 'Hero',
-
+	components: { SearchBar },
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
@@ -65,7 +67,7 @@ export default defineComponent({
 	display: flex;
 	margin-bottom: 6vw;
 	z-index: 3;
-	overflow: hidden;
+	overflow: visible;
 	transition: background-color 0.5s linear 0s;
 }
 
@@ -73,7 +75,7 @@ h1 .headline {
 	display: block;
 	background-color: transparent;
 	width: fit-content;
-	padding: 0px 10px;
+	padding: 0px 0px;
 	pointer-events: all;
 	position: relative;
 	z-index: 1;
@@ -83,7 +85,8 @@ h1 .headline {
 	color: var(--color-main);
 }
 h1 {
-	margin-top: 0;
+	margin: 0;
+	height: calc(var(--fs-xl) + 50px);
 }
 .hue-overlay {
 	content: '';
@@ -103,6 +106,11 @@ h1 {
 	max-width: 1680px;
 	bottom: 0;
 }
+.container {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+}
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -119,9 +127,7 @@ h1 {
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
 	.container {
-		flex-direction: row;
 		margin-left: 12px;
-		justify-content: space-between;
 		height: 100%;
 	}
 	h1 {
@@ -149,9 +155,7 @@ h1 {
 	}
 	.container {
 		display: flex;
-		flex-direction: row;
 		max-width: 1150px;
-		justify-content: space-between;
 		width: 100%;
 	}
 }

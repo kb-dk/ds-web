@@ -1,9 +1,9 @@
 <template>
 	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
-		<!-- <HeaderMenu
+		<HeaderMenu
 			:search-bar-open="searchBarOpen"
 			@toggle-search-bar="toggleSearchBar"
-		></HeaderMenu> -->
+		></HeaderMenu>
 		<!-- <SearchBar :search-bar-open="searchBarOpen"></SearchBar> -->
 		<!-- <Breadcrumb /> -->
 	</div>
@@ -11,12 +11,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-// import HeaderMenu from '@/components/global/nav/HeaderMenu.vue';
+import HeaderMenu from '@/components/global/nav/HeaderMenu.vue';
 // import SearchBar from '@components/search/SearchBar.vue';
 // import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
 export default defineComponent({
 	name: 'Header',
-	components: {},
+	components: { HeaderMenu },
 	props: {
 		locale: { type: String, required: true },
 	},

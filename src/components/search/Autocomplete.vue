@@ -181,7 +181,7 @@ export default defineComponent({
 	margin-top: -1px;
 	margin-left: 0px;
 	width: calc(80% - 2px);
-	border: 1px solid #757575;
+	/* border: 1px solid #757575; */
 	border-top: 0px solid #757575;
 }
 
@@ -273,7 +273,7 @@ export default defineComponent({
 	content: '';
 	display: block;
 	padding: 0px 10px;
-	border-top: 1px solid rgb(229, 228, 226);
+	/* border-top: 1px solid rgb(229, 228, 226); */
 	height: 1px;
 	position: relative;
 	transition: all 0.2s linear 0s;
@@ -284,7 +284,7 @@ export default defineComponent({
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.autocomplete {
-		border: 1px solid #757575;
+		/* border: 1px solid #757575; */
 		border-top: 0px;
 		width: calc(80% - 2px);
 	}
@@ -295,8 +295,8 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.autocomplete {
-		border: 1px solid #f5f5f5;
-		border-top: 0px solid #f5f5f5;
+		/* border: 1px solid #f5f5f5; */
+		/* border-top: 0px solid #f5f5f5; */
 		margin-top: -1px;
 		margin-left: -1px;
 		width: calc(50%);
