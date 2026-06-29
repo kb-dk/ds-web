@@ -53,8 +53,16 @@
 			<div
 				ref="dataContainer"
 				class="data-container"
-			></div>
-			<div class="dotted-separator"></div>
+			>
+				<div
+					ref="highlightStart"
+					class="data-highlight start-block"
+				></div>
+				<div
+					ref="highlightEnd"
+					class="data-highlight end-block"
+				></div>
+			</div>
 			<Transition name="fade">
 				<VueSlider
 					v-if="data.length > 0"
@@ -150,6 +158,9 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const dataContainer = ref<HTMLDivElement>();
+		const highlightStart = ref<HTMLDivElement>();
+		const highlightEnd = ref<HTMLDivElement>();
+
 		const closeDataExplanation = ref<HTMLButtonElement>();
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
@@ -188,6 +199,7 @@ export default defineComponent({
 						(newVal: boolean) => {
 							if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
 								constructSVG();
+								updateVisualPresentation();
 							} else {
 								/* TODO: Error here! */
 							}
@@ -196,6 +208,14 @@ export default defineComponent({
 				}
 			}
 		});
+
+		watch(
+			timeSliderValues,
+			() => {
+				updateVisualPresentation();
+			},
+			{ deep: true },
+		);
 
 		watch(
 			() => vueSliderRef.value,
@@ -273,6 +293,22 @@ export default defineComponent({
 				}
 				emit('newSearch', false);
 				clearEstimatedQueryLength();
+			}
+		};
+
+		const updateVisualPresentation = () => {
+			if (props.timeline) {
+				const startIndex = computed(() => data.value.findIndex((d) => d.key === timeSliderValues.value[0]));
+				const endIndex = computed(() => data.value.findIndex((d) => d.key === timeSliderValues.value[1]));
+				const total = computed(() => data.value.length - 1);
+				const leftPercent = computed(() => (startIndex.value / total.value) * 100);
+				const rightPercent = computed(() => (endIndex.value / total.value) * 100);
+				if (!highlightStart.value || !highlightEnd.value) {
+					return;
+				}
+				highlightStart.value.style.width = `${leftPercent.value}%`;
+				highlightEnd.value.style.left = `${rightPercent.value}%`;
+				highlightEnd.value.style.width = `${100 - rightPercent.value + 1}%`;
 			}
 		};
 
@@ -364,6 +400,8 @@ export default defineComponent({
 			closeTimeFacets,
 			addTestDataEnrichment,
 			vueSliderRef,
+			highlightStart,
+			highlightEnd,
 			closeDataExplanation,
 			searchResultStore,
 			allDaysChecked,
@@ -386,6 +424,28 @@ export default defineComponent({
 	margin-bottom: 30px;
 	font-size: 26px;
 	text-transform: capitalize;
+}
+
+.data-highlight {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	height: 100%;
+	pointer-events: none;
+	transition:
+		left 0.25s,
+		opacity 0.25s,
+		width 0.25s;
+	opacity: 0.8;
+	background-color: #fafafa;
+}
+
+.start-block {
+	left: 0;
+}
+
+.end-block {
+	right: 0; /* initial */
 }
 
 .expand-container-days {
