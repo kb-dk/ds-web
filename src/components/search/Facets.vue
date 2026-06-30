@@ -45,7 +45,6 @@
 					icon="category"
 					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
 					:item-array="genreArray"
-					:use-headline-translation="true"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:facet-type="'genre_facet'"
@@ -89,7 +88,6 @@
 					:item-array="getTVFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
-					:use-headline-translation="false"
 					:facet-type="'creator_affiliation_facet'"
 				>
 					<fieldset
@@ -130,7 +128,6 @@
 					:item-array="getRadioFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
-					:use-headline-translation="false"
 					:facet-type="'creator_affiliation_facet'"
 				>
 					<fieldset
@@ -167,7 +164,6 @@
 					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
 					icon="calendar_today"
 					:subline="createTimeFacetSubline"
-					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 					:item-array="yearArray"
 				>
@@ -224,28 +220,29 @@
 					</div>
 				</FilterExpander>
 			</div>
-
-			<KBButton
-				button-type="btn-main-default"
-				button-color="main"
-				button-size="medium"
-				class="btn-medium btn-main-medium"
-				:button-text="`${t('facets.seeResults', {
-					count: Number(searchResultStore.numFound),
-					resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
-				})}`"
-				right-icon-name="arrow_forward_ios"
-				:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
-				:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
-				@click="searchResultStore.showFacets = false"
-			></KBButton>
+			<div class="show-results-container">
+				<KBButton
+					button-type="btn-main-default"
+					button-color="main"
+					button-size="medium"
+					class="btn-medium btn-main-medium"
+					:button-text="`${t('facets.seeResults', {
+						count: Number(searchResultStore.numFound),
+						resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
+					})}`"
+					right-icon-name="arrow_forward_ios"
+					:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
+					:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
+					@click="searchResultStore.showFacets = false"
+				></KBButton>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import '@/assets/styles/vue-slider-styles.css';
-import { defineComponent, onMounted, ref, watch, computed, ComputedRef } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed, ComputedRef, onUnmounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -310,6 +307,8 @@ export default defineComponent({
 		const route = useRoute();
 		const data = ref([] as markerData[]);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
+		const windowWidth = ref(window.innerWidth);
+
 		const delimitationOptions = {
 			all: '',
 			tv: 'origin:"ds.tv"',
@@ -382,6 +381,8 @@ export default defineComponent({
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
 
+			window.addEventListener('resize', updateWindowWidth);
+
 			const routeQueries = cloneRouteQuery(route);
 			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
 			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
@@ -403,6 +404,14 @@ export default defineComponent({
 				}
 			}
 		});
+
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateWindowWidth);
+		});
+
+		function updateWindowWidth() {
+			windowWidth.value = window.innerWidth;
+		}
 
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
@@ -478,10 +487,14 @@ export default defineComponent({
 			} else {
 				const selected = dataArray.filter((item) => item.selected).length;
 				const total = dataArray.length;
-				return t(translationKey, {
-					selected,
-					total,
-				});
+				if (windowWidth.value <= 640) {
+					return `${selected}/${total}`;
+				} else {
+					return t(translationKey, {
+						selected,
+						total,
+					});
+				}
 			}
 		};
 
@@ -679,9 +692,13 @@ export default defineComponent({
 				return `${t('facets.contentFrom')} ${firstYearOfContent.value}`;
 			} else {
 				if (searchResultStore.preliminaryPeriodSearch === 'period') {
-					return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
-						'facets.year',
-					)}: ${endDate.value.getFullYear()}`;
+					if (windowWidth.value <= 640) {
+						return `${startDate.value.getFullYear()} → ${endDate.value.getFullYear()}`;
+					} else {
+						return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
+							'facets.year',
+						)}: ${endDate.value.getFullYear()}`;
+					}
 				} else {
 					return new Intl.DateTimeFormat(locale.value, {
 						day: 'numeric',
@@ -980,6 +997,13 @@ fieldset {
 	padding-left: 12px;
 }
 
+.show-results-container {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 10px;
+}
+
 .time-facet-button {
 	cursor: pointer;
 	padding: 3px 8px;
@@ -1118,6 +1142,7 @@ h2 {
 	box-sizing: border-box;
 	margin-top: 25px;
 	margin-bottom: 30px;
+	gap: 8px;
 }
 
 .genre {

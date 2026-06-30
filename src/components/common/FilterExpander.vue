@@ -113,17 +113,17 @@ export default defineComponent({
 				return '';
 			},
 		},
+		mobileSubline: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
 		updateEntity: {
 			type: Function,
 			default() {
 				return null;
-			},
-		},
-		useHeadlineTranslation: {
-			type: Boolean,
-			required: false,
-			default() {
-				return true;
 			},
 		},
 	},
