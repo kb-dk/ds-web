@@ -17,82 +17,85 @@
 						role="group"
 						:class="debounceMechanic ? 'rdl-advanced-search locked' : 'rdl-advanced-search'"
 					>
-						<div class="rdl-advanced-search-input">
-							<label
-								for="focusSearchInput"
-								class="sr-only"
-							>
-								{{ t('search.searchInput') }}
-							</label>
-							<input
-								id="focusSearchInput"
-								v-model="searchResultStore.currentQuery"
-								spellcheck="false"
-								autocomplete="off"
-								type="search"
-								:disabled="debounceMechanic ? true : false"
-								class="form-control label-big"
-								:class="{ 'form-control-search': route.name === 'Search' }"
-								:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
-								name="simpleSearch"
-								:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
-								@keydown="updateKeystrokeForAutocomplete"
-							/>
-						</div>
-						<div class="button-container">
-							<div
-								v-if="searchResultStore.loading"
-								class="spinner-container"
-							>
-								<div
-									:aria-busy="searchResultStore.loading ? true : false"
-									:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
-								></div>
+						<div class="search-bar-container">
+							<div class="rdl-advanced-search-input">
+								<label
+									for="focusSearchInput"
+									class="sr-only"
+								>
+									{{ t('search.searchInput') }}
+								</label>
+								<input
+									id="focusSearchInput"
+									v-model="searchResultStore.currentQuery"
+									spellcheck="false"
+									autocomplete="off"
+									type="search"
+									:disabled="debounceMechanic ? true : false"
+									class="form-control label-big"
+									:class="{ 'form-control-search': route.name === 'Search' }"
+									:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
+									name="simpleSearch"
+									:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
+									@keydown="updateKeystrokeForAutocomplete"
+								/>
 							</div>
-							<button
-								v-if="
-									searchResultStore.searchResult.length !== 0 ||
-									searchResultStore.searchFired === true ||
-									(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
-								"
-								id="resetButton"
-								type="button"
-								aria-label="reset"
-								class="btn btn-primary btn-icon"
-								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
-								@click="reset()"
-							>
-								<i
-									class="material-icons"
-									aria-hidden="true"
+							<div class="button-container">
+								<div
+									v-if="searchResultStore.loading"
+									class="spinner-container"
 								>
-									close
-								</i>
-							</button>
-							<button
-								id="searchButton"
-								ref="searchButton"
-								:disabled="debounceMechanic ? true : false"
-								type="submit"
-								aria-label="search"
-								class="btn btn-primary btn-icon"
-								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
-								@submit="search()"
-							>
-								<i
-									class="material-icons"
-									aria-hidden="true"
+									<div
+										:aria-busy="searchResultStore.loading ? true : false"
+										:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
+									></div>
+								</div>
+								<button
+									v-if="
+										searchResultStore.searchResult.length !== 0 ||
+										searchResultStore.searchFired === true ||
+										(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
+									"
+									id="resetButton"
+									type="button"
+									aria-label="reset"
+									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
+									@click="reset()"
 								>
-									search
-								</i>
-							</button>
+									<i
+										class="material-icons"
+										aria-hidden="true"
+									>
+										close
+									</i>
+								</button>
+								<button
+									id="searchButton"
+									ref="searchButton"
+									:disabled="debounceMechanic ? true : false"
+									type="submit"
+									aria-label="search"
+									class="btn btn-primary btn-icon"
+									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
+									@submit="search()"
+								>
+									<i
+										class="material-icons"
+										aria-hidden="true"
+									>
+										search
+									</i>
+								</button>
+							</div>
 						</div>
+
+						<Transition name="fade">
+							<div class="autocomplete-container">
+								<Autocomplete :keystroke="keyStrokeEvent" />
+							</div>
+						</Transition>
 					</div>
-					<Transition name="fade">
-						<div class="autocomplete-container">
-							<Autocomplete :keystroke="keyStrokeEvent" />
-						</div>
-					</Transition>
 				</form>
 			</div>
 		</div>
@@ -244,15 +247,16 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .autocomplete-container {
-	position: relative;
-	z-index: 10;
+	z-index: 15;
 }
 
 #searchButton,
 #resetButton {
 	padding: 0 10px 0 0;
 }
-
+.search-form {
+	width: 100%;
+}
 .locked {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;
@@ -307,6 +311,7 @@ input:focus {
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .spinner-container {
@@ -359,14 +364,21 @@ input:focus {
 
 .rdl-advanced-search {
 	display: flex;
-	flex-direction: row;
-	color: #171717;
+	flex-direction: column;
+	color: var(--color-main);
 	flex-wrap: nowrap;
 	border-radius: 2px;
 	height: 71px;
+	overflow: visible;
 }
 .rdl-advanced-search-input {
 	color: var(--color-main);
+}
+.search-bar-container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	box-sizing: border-box;
 }
 .form-control {
 	width: calc(100vw - 150px);

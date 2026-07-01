@@ -173,16 +173,14 @@ export default defineComponent({
 
 <style scoped>
 .autocomplete {
-	position: absolute;
 	z-index: 5;
-	background-color: white;
-	width: 50%;
+	background-color: var(--bg-light);
+	width: 100%;
 	padding: 0px 0px;
-	margin-top: -1px;
-	margin-left: 0px;
-	width: calc(80% - 2px);
-	/* border: 1px solid #757575; */
-	/* border-top: 0px solid #757575; */
+	height: 100%;
+	border-left: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-bottom: 1px solid var(--color-border-success);
 }
 
 .autocomplete.active {
@@ -209,10 +207,11 @@ export default defineComponent({
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: inline-block;
+	color: var(--color-main);
 }
 
 .autocomplete button .number {
-	color: #757575;
+	color: var(--color-main);
 	margin-left: 5px;
 	font-size: 12px;
 }
@@ -223,8 +222,8 @@ export default defineComponent({
 }
 
 .autocomplete li:has(> button:focus) {
-	background: #fff6c4;
-	color: #002e70;
+	background: var(--bg-secondary-light);
+	color: var(--color-main);
 }
 
 .autocomplete button:focus {
@@ -236,7 +235,6 @@ export default defineComponent({
 	list-style-type: none;
 	padding: 0px 0px;
 	margin: 0;
-	background-color: white;
 }
 
 .autocomplete ul li {
@@ -244,17 +242,17 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
-	background-color: white;
+	background-color: var(--bg-light);
 }
 
 .autocomplete ul li:hover,
 .autocomplete .hl {
-	background: #fff6c4;
+	background: var(--bg-secondary-light);
 }
 
 .autocomplete ul li:hover button,
 .autocomplete .hl button {
-	color: #002e70;
+	color: var(--color-main);
 	cursor: pointer;
 }
 
@@ -286,7 +284,7 @@ export default defineComponent({
 	.autocomplete {
 		/* border: 1px solid #757575; */
 		border-top: 0px;
-		width: calc(80% - 2px);
+		/* width: calc(80% - 2px); */
 	}
 }
 /* MEDIA QUERY 640 */
@@ -299,7 +297,7 @@ export default defineComponent({
 		/* border-top: 0px solid #f5f5f5; */
 		margin-top: -1px;
 		margin-left: -1px;
-		width: calc(50%);
+		width: 50%;
 	}
 }
 /* MEDIA QUERY 990 */
@@ -310,5 +308,8 @@ export default defineComponent({
 }
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
+	.autocomplete {
+		width: 490px;
+	}
 }
 </style>
