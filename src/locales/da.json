@@ -96,6 +96,7 @@
    },
    "facets" : {
       "headline":"Udvælg filtre, til at indsnævre din søgning på:",
+      "starHeadline": "Udvælg filtre, til at indsnævre din søgning.",
       "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
       "selectedGenres": "{selected} af {total} kategorier valgt",

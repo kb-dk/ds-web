@@ -96,6 +96,7 @@
    },
    "facets" : {
       "headline":"Choose filters, to limit your search for:",
+      "starHeadline": "Choose filters to refine your search.",
       "allGenres": "all categories",
       "genres": "category | categories",
       "selectedGenres": "{selected} of {total} categories selected",

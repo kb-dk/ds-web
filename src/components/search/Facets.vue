@@ -16,8 +16,11 @@
 					</button>
 				</div>
 				<h1 class="filter-headline">
-					{{ t('facets.headline') }}
-					<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
+						{{ t('facets.headline') }}
+						<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					</span>
+					<span v-else>{{ t('facets.starHeadline') }}</span>
 				</h1>
 			</div>
 			<div class="category-container">
