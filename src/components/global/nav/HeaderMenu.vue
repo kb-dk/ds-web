@@ -159,6 +159,7 @@ export default defineComponent({
 	background-color: var(--bg-header);
 	display: flex;
 	justify-content: center;
+	width: 100%;
 }
 .global-header {
 	justify-content: space-between;

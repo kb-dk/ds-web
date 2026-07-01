@@ -1,10 +1,12 @@
 <template>
-	<div class="search-box">
+	<div
+		v-if="route.name !== 'Record'"
+		class="search-box"
+	>
 		<div class="search-container">
 			<div class="container main-12">
 				<form
 					ref="searchFormRef"
-					:class="route.query.q === undefined && route.name === 'Search' ? 'searchform find' : 'searchform'"
 					action=" "
 					method=" "
 					role="search"
@@ -29,6 +31,7 @@
 								type="search"
 								:disabled="debounceMechanic ? true : false"
 								class="form-control label-big"
+								:class="{ 'form-control-search': route.name === 'Search' }"
 								:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
 								name="simpleSearch"
 								:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
@@ -41,7 +44,7 @@
 						>
 							<div
 								:aria-busy="searchResultStore.loading ? true : false"
-								:class="searchResultStore.loading ? 'spinner show' : 'spinner hide'"
+								:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
 							></div>
 						</div>
 						<button
@@ -87,7 +90,6 @@
 							<Autocomplete :keystroke="keyStrokeEvent" />
 						</div>
 					</Transition>
-					<div class="bar"></div>
 				</form>
 			</div>
 		</div>
@@ -251,13 +253,12 @@ input[type='search']::-webkit-search-results-decoration {
 
 #searchButton,
 #focusSearchInput {
-	transition: color 0.1s linear 0s;
+	/* transition: color 0.1s linear 0s; */
 }
 
 #focusSearchInput:focus-visible {
 	box-shadow: 0 0 0 3px transparent !important;
 	border-radius: 4px !important;
-	transition: box-shadow 0.2s ease-in-out;
 }
 
 .locked {
@@ -269,10 +270,6 @@ input[type='search']::-webkit-search-results-decoration {
 .locked #focusSearchInput {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;
-}
-
-.searchform.find .rdl-advanced-search {
-	border: 0px solid #002e70;
 }
 
 :host {
@@ -291,12 +288,8 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	z-index: 6;
 	left: 0;
-	width: fit-content;
-}
-.bar {
-	width: 100%;
-	height: 10px;
-	background-color: var(--bg-main);
+	width: 100vw;
+	border-radius: var(--rounded-medium);
 }
 .btn-icon i {
 	margin-left: auto;
@@ -333,14 +326,19 @@ input:focus {
 }
 
 .spinner-container {
-	width: 30px;
+	/* width: 30px; */
 	position: absolute;
-	right: 60px;
+	/* right: 60px; */
+	display: flex;
+	right: initial;
+	margin-top: initial;
+	position: initial;
+	width: 48px;
 }
 
 .spinner {
 	width: 100%;
-	--spinner-color: #171717;
+	--spinner-color: #ffffff;
 	--spinner-mask: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='50' height='50' viewBox='0 0 50 50' xml:space='preserve'%3E%3Ccircle stroke-width='1.86' fill='none' stroke='currentColor' cx='25' cy='25' r='14'/%3E%3C/svg%3E");
 	--spinner-size: 3rem;
 	display: block;
@@ -378,40 +376,36 @@ input:focus {
 .rdl-advanced-search {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
 	justify-content: space-between;
 	color: #171717;
-	border: 0px solid #f5f5f5;
+	border: 1px solid var(--color-border-success);
 	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.24);
-	border-radius: 0px;
 	background-color: var(--bg-default);
+	flex-wrap: nowrap;
+	border-radius: 2px;
+	height: 71px;
 }
 .rdl-advanced-search-input {
 	width: 100%;
 	color: var(--color-main);
 }
 .form-control {
-	width: 300px;
+	width: 100%;
 	padding: 6px 12px;
 	border-radius: 2px;
-	height: 3rem;
-	padding: 0.375rem 0.75rem;
 	color: var(--color-main);
 	background-color: transparent;
-	animation: expandSearch 0.5;
-	animation-play-state: paused;
+	padding: 20px 12px;
+	height: 71px;
+	border: none;
+	/* display: block; */
+	background-clip: padding-box;
+	transition: all 0.7s linear;
 }
 .form-control:focus {
-	animation-play-state: running;
-}
-
-@keyframes expandSearch {
-	0% {
-		width: 300px;
-	}
-	100% {
-		width: 600px;
-	}
+	width: 100%;
+	/* max-width: 1280px; */
+	/* transition: width 0.5s linear; */
 }
 
 .form-control::placeholder {
@@ -420,7 +414,7 @@ input:focus {
 
 .btn-primary {
 	display: block;
-	width: 100%;
+	width: 50px;
 	margin-bottom: 0;
 	border-radius: 2px;
 	cursor: pointer;
@@ -433,6 +427,9 @@ input:focus {
 	right: 25px;
 	top: 5px;
 	color: #002e70;
+	position: unset;
+	width: unset;
+	right: unset;
 }
 
 .btn-icon {
@@ -456,10 +453,6 @@ input:focus {
 	border: 0;
 }
 
-.d-none {
-	display: none;
-}
-
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
 	box-shadow: 0 0 0 0.2rem rgba(0, 46, 112, 0.5);
@@ -469,55 +462,10 @@ input:focus {
 	border-top: 1px solid #d6d6d6;
 }
 
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
-	/* .container {
-		max-width: 640px;
-	} */
-}
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-	/* .container {
-		max-width: 990px;
-	} */
-
-	#searchButton {
-		width: calc(50% - 10px);
-		box-sizing: border-box;
-		height: 48px;
-	}
-}
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
-	.spinner-container {
-		display: flex;
-		right: initial;
-		margin-top: initial;
-		position: initial;
-		width: 48px;
-	}
-
-	#searchButton {
-		width: auto;
-		height: auto;
-	}
-
 	.btn-icon i {
 		margin-left: initial;
-	}
-
-	#resetButton {
-		position: unset;
-		width: unset;
-		right: unset;
-	}
-
-	.d-search-none {
-		display: none;
-	}
-
-	.d-none {
-		display: block;
 	}
 
 	.btn-primary {
@@ -534,51 +482,17 @@ input:focus {
 		border: none;
 		display: flex;
 	}
-
-	.rdl-advanced-search {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		color: #171717;
-		flex-wrap: nowrap;
-		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-		border-radius: 2px;
-		height: 71px;
-	}
-	.rdl-advanced-search-input {
-		width: 100%;
+	.search-box {
+		width: fit-content;
 	}
 	.form-control {
-		padding: 20px 12px;
-		height: 71px;
-		border: none;
-		display: block;
-		background-clip: padding-box;
-		border-radius: 2px;
-		transition:
-			border-color 0.15s ease-in-out,
-			box-shadow 0.15s ease-in-out;
+		width: 440px;
+	}
+	.form-control.form-control-search {
+		width: 60vw;
+	}
+	.form-control:focus {
+		width: 60vw;
 	}
 }
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-	/* .container {
-		display: flex;
-		max-width: 1150px;
-	} */
-
-	.spinner-container {
-		display: flex;
-		right: initial;
-		margin-top: initial;
-		position: initial;
-	}
-}
-/* MEDIA QUERY 1150 */
-/* @media (min-width: 1150px) {
-	.container {
-		max-width: 1280px;
-	}
-} */
 </style>

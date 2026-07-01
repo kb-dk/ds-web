@@ -1,13 +1,5 @@
 <template>
 	<div class="hero-container">
-		<div class="container">
-			<h1 :aria-label="`${t('hero.title')}`">
-				<span class="headline heading-display">
-					<span class="text">{{ t('hero.title') }}</span>
-				</span>
-			</h1>
-			<SearchBar></SearchBar>
-		</div>
 		<img
 			:src="backgroundImage"
 			title="search background"
@@ -25,11 +17,9 @@ import { useAuthStore } from '@/store/authStore';
 import hero1 from '@/assets/images/hero_image_1.jpg';
 import hero2 from '@/assets/images/hero_image_2.jpg';
 import hero3 from '@/assets/images/hero_image_3.jpg';
-import SearchBar from './SearchBar.vue';
 
 export default defineComponent({
 	name: 'Hero',
-	components: { SearchBar },
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
@@ -71,23 +61,6 @@ export default defineComponent({
 	transition: background-color 0.5s linear 0s;
 }
 
-h1 .headline {
-	display: block;
-	background-color: transparent;
-	width: fit-content;
-	padding: 0px 0px;
-	pointer-events: all;
-	position: relative;
-	z-index: 1;
-	pointer-events: none;
-	text-transform: uppercase;
-	letter-spacing: 1.15px;
-	color: var(--color-main);
-}
-h1 {
-	margin: 0;
-	height: calc(var(--fs-xl) + 50px);
-}
 .hue-overlay {
 	content: '';
 	position: absolute;
@@ -106,11 +79,7 @@ h1 {
 	max-width: 1680px;
 	bottom: 0;
 }
-.container {
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-}
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
