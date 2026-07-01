@@ -273,8 +273,9 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	z-index: 6;
 	left: 0;
-	width: 100vw;
+	width: 100%;
 	border-radius: var(--rounded-medium);
+	display: flex;
 }
 .btn-icon i {
 	margin-left: auto;

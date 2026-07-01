@@ -23,7 +23,7 @@
 	</header>
 	<main
 		id="main-content"
-		class="content"
+		:class="`content ${route.name as string}`"
 	>
 		<Facets v-if="route.name === 'Search'"></Facets>
 		<Underlay></Underlay>
@@ -372,7 +372,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#main-content {
+#main-content .Home {
 	background-color: var(--bg-default);
 }
 #cookiescript_reportdate a,
@@ -608,7 +608,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
-	background-color: var(--bg-default);
 }
 
 .content {
