@@ -10,7 +10,7 @@
 					:loading="!loaded"
 					:resultdata="spots[i]"
 					:index="i"
-					background="#ffffff"
+					background="var(--bg-default)"
 					:class="{ 'current-record': current === i }"
 				></GridResultItem>
 			</div>

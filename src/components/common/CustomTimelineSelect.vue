@@ -40,7 +40,7 @@ export default defineComponent({
 	name: 'CustomTimelineSelect',
 	props: {
 		listItems: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<string[] | number[]>,
 			default() {
 				return [];
 			},
@@ -108,6 +108,8 @@ export default defineComponent({
 	background-position-x: 85px;
 	background-position-y: 13px;
 	width: 118px;
+	box-sizing: border-box;
+	height: 48px;
 }
 
 .select-container:hover select {

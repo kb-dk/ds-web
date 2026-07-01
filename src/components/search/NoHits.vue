@@ -15,7 +15,7 @@
 				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"
 				:dotted-edges="false"
-				background-color="#001C43"
+				background-color="var(--bg-default)"
 				align-items="start"
 				:line-padding="false"
 			>
@@ -90,13 +90,13 @@
 				:lines="true"
 				:title="$t('search.mainCategories')"
 				class="main-categories-header"
-				background-color="#001C43"
+				background-color="var(--bg-default)"
 			>
 				<template #content>
 					<div class="showcase-container">
 						<MainCategories
 							:title="$t('timeSearch.searchCategories')"
-							text="#ea9fbc"
+							text="var(--color-main)"
 							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
 							:show-header="true"
 						></MainCategories>

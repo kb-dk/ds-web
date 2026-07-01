@@ -8,7 +8,7 @@
 				<span
 					v-if="filtersActive"
 					key="1"
-					class="label-small"
+					class="label-regular"
 				>
 					{{ $t('search.selected') }}:
 				</span>
@@ -20,7 +20,7 @@
 						<KBButton
 							v-for="(channel, index) in searchResultStore.channelFilters"
 							:key="index"
-							class="label-small"
+							class="label-regular"
 							:button-text="`${extractFilterText(channel)}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -35,7 +35,7 @@
 						<KBButton
 							v-for="(category, index) in searchResultStore.categoryFilters"
 							:key="index"
-							class="label-small"
+							class="label-regular"
 							:button-text="`${extractFilterText(category)}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -54,7 +54,7 @@
 						"
 					>
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -66,18 +66,18 @@
 					</div>
 					<div v-if="searchResultStore.preliminarySearchMethod !== 'all'">
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
 							button-type="btn-tag"
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
-							@click="searchResultStore.preliminarySearchMethod = 'all'"
+							@click="removePreliminarySearchFilterAndSearch()"
 						></KBButton>
 					</div>
 					<div v-if="searchResultStore.preliminaryFilter !== ''">
 						<KBButton
-							class="label-small"
+							class="label-regular"
 							:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
 							button-type="btn-tag"
 							button-color="main"
@@ -93,7 +93,7 @@
 					key="8"
 				>
 					<KBButton
-						class="label-small"
+						class="label-regular"
 						:button-text="`${t('facets.reset')}`"
 						button-type="btn-tag"
 						button-color="reset"
@@ -167,6 +167,20 @@ export default defineComponent({
 			}
 		};
 
+		const removePreliminarySearchFilterAndSearch = () => {
+			searchResultStore.preliminarySearchMethod = 'all';
+			const routeQueries = cloneRouteQuery(route);
+			if (routeQueries.q.includes('title:')) {
+				routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+			} else if (routeQueries.q.includes('description:')) {
+				routeQueries.q = routeQueries.q.replace(/description:"([^"]*)"/g, (_match: string, content: string) => content);
+			}
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
+
 		const removePreliminaryFilterAndSearch = () => {
 			searchResultStore.preliminaryFilter = '';
 			const routeQueries = cloneRouteQuery(route);
@@ -222,7 +236,11 @@ export default defineComponent({
 					searchResultStore.currentQuery.includes('title:') ||
 					searchResultStore.currentQuery.includes('description:')
 				) {
-					routeQueries.q = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+					routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+					routeQueries.q = routeQueries.q.replace(
+						/description:"([^"]*)"/g,
+						(_match: string, content: string) => content,
+					);
 				}
 			}
 
@@ -296,6 +314,7 @@ export default defineComponent({
 			removeFilterAndSearch,
 			resetYearsAndSearch,
 			removePreliminaryFilterAndSearch,
+			removePreliminarySearchFilterAndSearch,
 			startDate,
 			endDate,
 			startYear,
