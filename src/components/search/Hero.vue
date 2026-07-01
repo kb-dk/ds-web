@@ -21,9 +21,9 @@
 import { defineComponent, computed, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
-import hero1 from '@/assets/images/hero_image_1.jpg';
-import hero2 from '@/assets/images/hero_image_2.jpg';
-import hero3 from '@/assets/images/hero_image_3.jpg';
+import hero1 from '@/assets/images/hero_image_1_PLACEHOLDER.jpg';
+// import hero2 from '@/assets/images/hero_image_2.jpg';
+// import hero3 from '@/assets/images/hero_image_3.jpg';
 
 export default defineComponent({
 	name: 'Hero',
@@ -33,20 +33,21 @@ export default defineComponent({
 		const { t } = useI18n();
 		const currentProgress = ref();
 		const backgroundImage = computed(() => {
-			if (randomImageNumber.value === 1) {
-				return hero1;
-			}
-			if (randomImageNumber.value === 2) {
-				return hero2;
-			}
-			return hero3;
+			return hero1;
+			// if (randomImageNumber.value === 1) {
+			// 	return hero1;
+			// }
+			// if (randomImageNumber.value === 2) {
+			// 	return hero2;
+			// }
+			// return hero3;
 		});
-		const randomImageNumber = ref<number>(1);
+		// const randomImageNumber = ref<number>(1);
 		onMounted(() => {
 			if (authStore.currentArchiveProgress !== 0) {
 				currentProgress.value = authStore.currentArchiveProgress;
 			}
-			randomImageNumber.value = Math.floor(Math.random() * 3) + 1;
+			// randomImageNumber.value = Math.floor(Math.random() * 3) + 1;
 		});
 
 		return {
