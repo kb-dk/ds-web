@@ -17,6 +17,11 @@
 	top:calc(100%) !important;
 	position: relative;
 }
+
+.testClass {
+	mix-blend-mode: lighten;	
+}
+
 .slider-whiteoff-container .vue-slider-rail::before {
 	border: 1px solid var(--color-border-disabled);
 	background-color: var(--bg-disabled) !important;
@@ -35,11 +40,7 @@
 	z-index: 6 !important;
 	border-radius: 0 !important;
 }
-.slider-whiteoff-container .vue-slider-process {
-	mix-blend-mode: overlay !important;
-	filter:  drop-shadow(0px 1px 6px black);
-	background-color: black !important;
-}
+
 .vue-slider-process::before {
 	display: block;
 	height: 5px;
@@ -145,7 +146,6 @@
 	height: 15% !important;
 	background-color: transparent !important;
 	margin-bottom: 10px !important;
-	
 }
 
 .vue-slider-mark-label {
@@ -233,7 +233,6 @@
 	color: white !important;
 }
 .vue-slider-dot-tooltip-top {
-
 	top: -2px !important;
 }
 
@@ -245,38 +244,40 @@
 .vue-slider-dot-tooltip-inner-top::after {
 	border: none !important;
 }
+.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(20n) .vue-slider-mark-label {
+		display: none !important;
+	}
 
 @media (min-width: 640px) {
 	.vue-slider-marks .vue-slider-mark:nth-child(1n) .vue-slider-mark-step:after{
 		top: calc(98%) !important;
 	}
-	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-label {
-		display: none;
-	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(10n) .vue-slider-mark-step:after{
 		top:calc(98%) !important;
 		height: 5px;
-	}
-	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
-		display: block;
 	}
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
 		top:calc(100% - 3px) !important;
 		height: 7px;
 	}
-		
+	.slider-whiteoff-container .vue-slider {
+		height: 200px !important;
+		align-content: end;
+	}
+	.slider-whiteoff-container .vue-slider-mark-step {
+	display:none !important;
+	}
+	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(20n) .vue-slider-mark-label {
+		display: block !important;
+	}
 }
 @media (min-width: 850px) {
-	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-label {
-		display: none;
-	 }
+
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(7n) .vue-slider-mark-step:after{
 		top:calc(98%) !important;
 		height: 5px;
 	}
-	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-label {
-		display: block;
-	}
+
 	.slider-whiteoff-container .vue-slider-marks .vue-slider-mark:nth-child(5n) .vue-slider-mark-step:after{
 		top:calc(100% - 3px) !important;
 		height: 7px;
@@ -284,13 +285,9 @@
 	.slider-whiteoff-container .vue-slider-mark-label {
 		top: calc(100% - 3.8em) !important;
 	}
-
 }
 @media(min-width:990px){
-	.slider-whiteoff-container .vue-slider {
-		height: 200px !important;
-		align-content: end;
-	}
+
 	.slider-whiteoff-container .vue-slider-mark-label {
 		top: calc(100% - 3.5em) !important;
 	}

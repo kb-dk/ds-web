@@ -1,5 +1,5 @@
 <template>
-	<EdgedContentArea background-color="#001C43">
+	<EdgedContentArea background-color="var(--bg-default)">
 		<template #content>
 			<div
 				class="header"
@@ -44,7 +44,7 @@
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
 							:index="index"
-							background="#001C43"
+							background="var(--bg-default)"
 						></GridResultItem>
 					</div>
 				</div>
@@ -228,7 +228,7 @@ h2 {
 
 .result-container {
 	width: 100%;
-	padding-top: 25px;
+	padding-top: 45px;
 }
 
 .result-header {
@@ -325,6 +325,9 @@ h2 {
 @media (max-width: 990px) {
 	.time-result-item:nth-child(n + 5) {
 		display: none;
+	}
+	.result-container {
+		padding-top: 85px;
 	}
 }
 
