@@ -228,7 +228,7 @@ h2 {
 
 .result-container {
 	width: 100%;
-	padding-top: 25px;
+	padding-top: 45px;
 }
 
 .result-header {
@@ -327,7 +327,7 @@ h2 {
 		display: none;
 	}
 	.result-container {
-		padding-top: 45px;
+		padding-top: 85px;
 	}
 }
 
