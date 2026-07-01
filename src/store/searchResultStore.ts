@@ -305,9 +305,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		if (currentQuery.value === '*:*') {
-			currentQuery.value = '';
-		}
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 
@@ -335,11 +332,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			presetChannelFilters += `&fq=(${categoryFilters.value.join(' OR ')})`;
 		}
 		searchFilters += categoryFilterString;
-		if (preliminaryFilter.value) {
-			searchFilters += `&fq=${preliminaryFilter.value}`;
-			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
-			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
-		}
 
 		currentChannelFacetString.value = presetChannelFilters;
 		currentGenreFacetString.value = presetGenreFilters;
@@ -396,6 +388,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
 			}
+		}
+		if (currentQuery.value === '*:*') {
+			currentQuery.value = '';
 		}
 	};
 

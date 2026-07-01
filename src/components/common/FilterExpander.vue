@@ -24,7 +24,8 @@
 				v-if="(type !== 'time' && subline.length > 0) || (timeSearchOngoing && type === 'time')"
 				button-type="btn-tag"
 				button-color="main"
-				button-size="small"
+				:class="'label-regular'"
+				button-size="default"
 				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
 				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-remove-filter`, 0)"
 				right-icon-name="close"
@@ -112,17 +113,17 @@ export default defineComponent({
 				return '';
 			},
 		},
+		mobileSubline: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
 		updateEntity: {
 			type: Function,
 			default() {
 				return null;
-			},
-		},
-		useHeadlineTranslation: {
-			type: Boolean,
-			required: false,
-			default() {
-				return true;
 			},
 		},
 	},
