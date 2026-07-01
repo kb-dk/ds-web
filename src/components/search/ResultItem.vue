@@ -672,7 +672,6 @@ export default defineComponent({
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
 		border-left: 1px solid var(--color-border-active);
-		background-color: var(--bg-default);
 	}
 
 	.backfade {
