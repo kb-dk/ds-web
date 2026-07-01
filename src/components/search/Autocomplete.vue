@@ -177,7 +177,8 @@ export default defineComponent({
 	background-color: var(--bg-light);
 	width: 100%;
 	padding: 0px 0px;
-	height: 100%;
+	height: calc(100% + 1px);
+	box-sizing: border-box;
 	border-left: 1px solid var(--color-border-success);
 	border-right: 1px solid var(--color-border-success);
 	border-bottom: 1px solid var(--color-border-success);
@@ -185,7 +186,7 @@ export default defineComponent({
 
 .autocomplete.active {
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-	border-radius: 0px 0px 2px 2px;
+	border-radius: 0px 0px var(--rounded-small) var(--rounded-small);
 }
 
 .autocomplete button {
@@ -296,7 +297,6 @@ export default defineComponent({
 		/* border: 1px solid #f5f5f5; */
 		/* border-top: 0px solid #f5f5f5; */
 		margin-top: -1px;
-		margin-left: -1px;
 		width: 50%;
 	}
 }
