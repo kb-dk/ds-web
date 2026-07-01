@@ -181,7 +181,6 @@ export default defineComponent({
 	position: relative;
 	max-width: 100%;
 	transition: all 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
-	background-color: var(--bg-default);
 }
 
 .search-results.grid {

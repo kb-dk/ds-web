@@ -17,6 +17,14 @@
 		<!-- <SearchBar :search-bar-open="searchBarOpen"></SearchBar> -->
 		<!-- <Breadcrumb /> -->
 	</div>
+	<div
+		v-if="$route.name !== 'Home'"
+		class="line first"
+	></div>
+	<div
+		v-if="$route.name !== 'Home'"
+		class="line second"
+	></div>
 </template>
 
 <script lang="ts">
@@ -47,15 +55,25 @@ export default defineComponent({
 	justify-content: center;
 	display: flex;
 	position: relative;
+	flex-direction: column;
+	align-items: center;
+}
+
+.header-container.home {
+	background-color: var(--bg-default);
+}
+
+.header-container.search {
+	background-color: var(--color-default);
 }
 .container {
-	position: absolute;
+	position: relative;
 	display: flex;
-	flex-direction: column;
 	z-index: 4;
 	width: 100%;
 	max-width: 1280px;
 	top: 100%;
+	flex-direction: column;
 	/* align-items: baseline; */
 }
 .container > a {
@@ -77,5 +95,18 @@ h1 .headline {
 h1 {
 	margin: 0;
 	margin-bottom: 25px;
+}
+
+.line {
+	width: 100%;
+	height: 20px;
+}
+
+.line.first {
+	background: rgba(234, 159, 188, 0.7);
+}
+
+.line.second {
+	background: rgba(234, 159, 188, 0.2);
 }
 </style>
