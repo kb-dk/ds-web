@@ -280,6 +280,8 @@ input[type='search']::-webkit-search-results-decoration {
 	width: 100%;
 	border-radius: var(--rounded-small);
 	display: flex;
+	position: absolute;
+	top: 100%;
 }
 .btn-icon i {
 	margin-left: auto;
