@@ -10,6 +10,7 @@
 					action=" "
 					method=" "
 					role="search"
+					class="search-form"
 					@submit.prevent="search()"
 				>
 					<div
@@ -38,52 +39,54 @@
 								@keydown="updateKeystrokeForAutocomplete"
 							/>
 						</div>
-						<div
-							v-if="searchResultStore.loading"
-							class="spinner-container"
-						>
+						<div class="button-container">
 							<div
-								:aria-busy="searchResultStore.loading ? true : false"
-								:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
-							></div>
+								v-if="searchResultStore.loading"
+								class="spinner-container"
+							>
+								<div
+									:aria-busy="searchResultStore.loading ? true : false"
+									:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
+								></div>
+							</div>
+							<button
+								v-if="
+									searchResultStore.searchResult.length !== 0 ||
+									searchResultStore.searchFired === true ||
+									(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
+								"
+								id="resetButton"
+								type="button"
+								aria-label="reset"
+								class="btn btn-primary btn-icon"
+								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
+								@click="reset()"
+							>
+								<i
+									class="material-icons"
+									aria-hidden="true"
+								>
+									close
+								</i>
+							</button>
+							<button
+								id="searchButton"
+								ref="searchButton"
+								:disabled="debounceMechanic ? true : false"
+								type="submit"
+								aria-label="search"
+								class="btn btn-primary btn-icon"
+								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
+								@submit="search()"
+							>
+								<i
+									class="material-icons"
+									aria-hidden="true"
+								>
+									search
+								</i>
+							</button>
 						</div>
-						<button
-							v-if="
-								searchResultStore.searchResult.length !== 0 ||
-								searchResultStore.searchFired === true ||
-								(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
-							"
-							id="resetButton"
-							type="button"
-							aria-label="reset"
-							class="btn btn-primary btn-icon"
-							:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
-							@click="reset()"
-						>
-							<i
-								class="material-icons"
-								aria-hidden="true"
-							>
-								close
-							</i>
-						</button>
-						<button
-							id="searchButton"
-							ref="searchButton"
-							:disabled="debounceMechanic ? true : false"
-							type="submit"
-							aria-label="search"
-							class="btn btn-primary btn-icon"
-							:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
-							@submit="search()"
-						>
-							<i
-								class="material-icons"
-								aria-hidden="true"
-							>
-								search
-							</i>
-						</button>
 					</div>
 					<Transition name="fade">
 						<div class="autocomplete-container">
@@ -247,18 +250,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 #searchButton,
 #resetButton {
-	background-color: transparent;
 	padding: 0 10px 0 0;
-}
-
-#searchButton,
-#focusSearchInput {
-	/* transition: color 0.1s linear 0s; */
-}
-
-#focusSearchInput:focus-visible {
-	box-shadow: 0 0 0 3px transparent !important;
-	border-radius: 4px !important;
 }
 
 .locked {
@@ -276,13 +268,6 @@ input[type='search']::-webkit-search-results-decoration {
 	max-width: 100vw;
 	height: 100%;
 	display: block;
-}
-
-.searchform {
-	transition: all 0.25s linear 0s;
-	overflow: visible;
-	border: 0px solid transparent;
-	/* background-color: var(--bg-default); */
 }
 
 .search-box {
@@ -323,7 +308,6 @@ input:focus {
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
-	/* background-color: var(--bg-default); */
 }
 
 .spinner-container {
@@ -377,49 +361,60 @@ input:focus {
 .rdl-advanced-search {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	color: #171717;
-	border: 1px solid var(--color-border-success);
-	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.24);
-	background-color: var(--bg-default);
 	flex-wrap: nowrap;
 	border-radius: 2px;
 	height: 71px;
 }
 .rdl-advanced-search-input {
-	width: 100%;
 	color: var(--color-main);
 }
 .form-control {
-	width: 100%;
+	width: calc(100vw - 150px);
 	padding: 6px 12px;
-	border-radius: 2px;
+	border-radius: 2px 0px 0px 2px;
 	color: var(--color-main);
-	background-color: transparent;
+	background-color: var(--bg-default);
 	padding: 20px 12px;
 	height: 71px;
 	border: none;
 	/* display: block; */
 	background-clip: padding-box;
 	transition: all 0.7s linear;
+	border-left: 1px solid var(--color-border-success);
+	border-top: 1px solid var(--color-border-success);
+	border-bottom: 1px solid var(--color-border-success);
+	box-sizing: border-box;
 }
 .form-control:focus {
-	width: 100%;
-	/* max-width: 1280px; */
-	/* transition: width 0.5s linear; */
+	width: calc(100vw - 150px);
 }
 
 .form-control::placeholder {
 	color: var(--color-main);
 }
-
+.button-container {
+	display: flex;
+	flex-direction: row;
+	width: 150px;
+	min-width: 150px;
+	position: relative;
+	justify-content: flex-end;
+	background-color: var(--bg-default);
+	border-top: 1px solid var(--color-border-success);
+	border-bottom: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-left: 0;
+	border-radius: 0px 2px 2px 0px;
+	box-sizing: border-box;
+}
 .btn-primary {
 	display: block;
 	width: 50px;
 	margin-bottom: 0;
-	border-radius: 2px;
 	cursor: pointer;
-	border: none;
+	background-color: var(--bg-default);
+	border: 0;
 }
 
 #resetButton {
@@ -480,18 +475,18 @@ input:focus {
 		margin-bottom: 0;
 		border-radius: 0;
 		cursor: pointer;
-		border: none;
 		display: flex;
 	}
-
+}
+@media (min-width: 1280px) {
 	.form-control {
-		width: 440px;
+		width: 340px;
 	}
 	.form-control.form-control-search {
-		width: 60vw;
+		width: 1130px;
 	}
 	.form-control:focus {
-		width: 60vw;
+		width: 1130px;
 	}
 }
 </style>
