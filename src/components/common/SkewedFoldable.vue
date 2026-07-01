@@ -86,8 +86,8 @@ import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichme
 export default defineComponent({
 	name: 'SkewedFoldable',
 	props: {
-		bg: { type: String, default: 'white' },
-		text: { type: String, default: 'black' },
+		bg: { type: String, default: 'var(--bg-default)' },
+		text: { type: String, default: 'var(--color-default)' },
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
 		icon: { type: String, default: 'schedule' },

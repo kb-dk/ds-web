@@ -8,10 +8,10 @@ function createSVGCurvedLine(points: pointItem[]) {
 	svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
-	path.setAttribute('fill', '#002f70'); // No fill to avoid closing the path
-	path.setAttribute('stroke', 'white');
-	path.setAttribute('stroke-width', '0.5');
-	path.setAttribute('fill-opacity', '0.5');
+	path.setAttribute('fill', '#002e70'); // No fill to avoid closing the path
+	path.setAttribute('stroke', '#001c44');
+	path.setAttribute('stroke-width', '2');
+	path.setAttribute('fill-opacity', '1');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
 
 	// Normalize y coordinates to fit within [0, 100] range
@@ -50,6 +50,39 @@ function createSVGCurvedLine(points: pointItem[]) {
 	path.setAttribute('d', d);
 
 	svg.appendChild(path);
+
+	const defs = document.createElementNS(svgns, 'defs');
+	const clipPath = document.createElementNS(svgns, 'clipPath');
+	const clipId = `clip-${Math.random().toString(36).slice(2)}`;
+
+	clipPath.setAttribute('id', clipId);
+
+	const clipShape = path.cloneNode(true) as SVGElement;
+	clipShape.removeAttribute('fill');
+	clipShape.removeAttribute('stroke');
+
+	clipPath.appendChild(clipShape);
+	defs.appendChild(clipPath);
+	svg.appendChild(defs);
+
+	for (let i = 0; i < normalizedPoints.length; i += 1) {
+		const p = normalizedPoints[i];
+
+		const line = document.createElementNS(svgns, 'line');
+
+		line.setAttribute('x1', String(p.x));
+		line.setAttribute('y1', '100');
+		line.setAttribute('x2', String(p.x));
+		line.setAttribute('y2', String(Number(p.y - 10)));
+		line.setAttribute('class', 'line-class');
+		line.setAttribute('stroke', '#ffffff27');
+		line.setAttribute('stroke-width', '1');
+		line.setAttribute('vector-effect', 'non-scaling-stroke');
+		line.setAttribute('clip-path', `url(#${clipId})`);
+
+		svg.appendChild(line);
+	}
+
 	return svg;
 }
 
