@@ -1,6 +1,7 @@
 :root{
     /*background-colors*/
     --bg-main:#ea9fbc;
+    --bg-main-light:#f0bcd0;
     --bg-cta:#ea9fbc;
     --bg-light:#ea9fbc1a;
     --bg-remove:#f7ae3b;
@@ -10,7 +11,7 @@
     --bg-transparent: transparent;
     --bg-golden:#e0b500;
     --bg-default-gray: #ccc;
-    --bg-secondary-light: #caf0fe;
+    --bg-secondary-light: #324666;
     --bg-secondary-light-20: #F0FBFF;
     --bg-header: #002e70;
     --bg-footer: #013277;
@@ -25,7 +26,7 @@
 
     /*borders*/
     --color-border-active: #001C43;
-    --color-border-light:#96e2fd;
+    --color-border-light:#FBECF2;
     --color-border-golden:#e0b500;
     --color-border-success:#ea9fbc;
     --color-border-disabled:#757575;

@@ -73,10 +73,9 @@ export default defineComponent({
 }
 
 .spot-link:hover {
-	.link {
-		transition: border-color linear 0.3s ease-in-out;
-		border-bottom-color: var(--color-border-success);
-	}
+	transition: background-color 0.3s linear;
+	background-color: var(--bg-secondary-light);
 	cursor: pointer;
+	box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0) inset;
 }
 </style>

@@ -55,11 +55,11 @@ export default defineComponent({
 	border-radius: 0px;
 	border: 1px solid var(--color-border-success);
 	box-sizing: border-box;
-
 	position: relative;
 	overflow: hidden;
 	flex-wrap: wrap;
 	align-content: baseline;
+	box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.34) inset;
 }
 .spot .icon {
 	width: 40px;
