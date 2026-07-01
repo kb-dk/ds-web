@@ -182,7 +182,7 @@ export default defineComponent({
 	margin-left: 0px;
 	width: calc(80% - 2px);
 	/* border: 1px solid #757575; */
-	border-top: 0px solid #757575;
+	/* border-top: 0px solid #757575; */
 }
 
 .autocomplete.active {
