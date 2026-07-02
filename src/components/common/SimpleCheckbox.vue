@@ -26,7 +26,7 @@
 			<span
 				v-if="icon"
 				:class="[
-					'display-image material-icons',
+					'display-image icon material-icons',
 					{ disabled: (amount === '0' && !checked) || (disabled && !checked), outline: iconFilled },
 				]"
 			>
@@ -207,6 +207,12 @@ export default defineComponent({
 	background-position: center center;
 }
 
+.display-image.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .display-image.disabled.no-icon {
 	opacity: 0.3;
 }
@@ -274,6 +280,10 @@ export default defineComponent({
 
 .checkbox-container.disabled .label {
 	cursor: default;
+}
+
+.checkbox-container.disabled .icon {
+	color: var(--color-disabled-font);
 }
 
 .label:hover .underline {
