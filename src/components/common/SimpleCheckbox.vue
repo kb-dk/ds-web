@@ -24,13 +24,14 @@
 				@change="updateSelection(!checked, title, fqkey)"
 			/>
 			<span
-				v-if="svg"
+				v-if="icon"
 				:class="[
-					'display-image svg',
-					santizeAndSimplify(svg),
-					{ disabled: (amount === '0' && !checked) || (disabled && !checked) },
+					'display-image material-icons',
+					{ disabled: (amount === '0' && !checked) || (disabled && !checked), outline: iconFilled },
 				]"
-			></span>
+			>
+				{{ icon }}
+			</span>
 			<span
 				v-if="channel"
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
@@ -87,11 +88,18 @@ export default defineComponent({
 				return '';
 			},
 		},
-		svg: {
+		icon: {
 			type: String,
 			required: false,
 			default() {
 				return '';
+			},
+		},
+		iconFilled: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
 			},
 		},
 		channel: {
@@ -201,10 +209,6 @@ export default defineComponent({
 
 .display-image.disabled {
 	filter: grayscale(100%) brightness(4);
-}
-
-.display-image.svg {
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 }
 
 .display-image.channel {
@@ -396,40 +400,6 @@ input:focus {
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
-}
-
-.svg.diverse {
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
-}
-.svg.dokumentar {
-	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
-}
-.svg.film-og-serier {
-	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
-}
-.svg.kultur-og-oplysning {
-	background-image: url('@/assets/icons/blue/kultur-blue.svg');
-}
-.svg.livsstil {
-	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
-}
-.svg.musik {
-	background-image: url('@/assets/icons/blue/musik-blue.svg');
-}
-.svg.nyheder-politik-og-samfund {
-	background-image: url('@/assets/icons/blue/nyheder-blue.svg');
-}
-.svg.sport {
-	background-image: url('@/assets/icons/blue/sport-blue.svg');
-}
-.svg.humor-quiz-og-underholdning {
-	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
-}
-.svg.natur-og-videnskab {
-	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
-}
-.svg.brn-og-unge {
-	background-image: url('@/assets/icons/blue/born-blue.svg');
 }
 .label {
 	cursor: pointer;
