@@ -16,8 +16,11 @@
 					</button>
 				</div>
 				<h1 class="filter-headline">
-					{{ t('facets.headline') }}
-					<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
+						{{ t('facets.headline') }}
+						<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					</span>
+					<span v-else>{{ t('facets.starHeadline') }}</span>
 				</h1>
 			</div>
 			<div class="category-container">
@@ -25,11 +28,19 @@
 					v-model="searchResultStore.preliminarySearchMethod"
 					name="SelectedSearchMethod"
 					:options="selectedSearchMethodOptions"
+					:disable="
+						searchResultStore.currentQuery === '' ||
+						searchResultStore.currentQuery === '*:*' ||
+						searchResultStore.currentQuery === '*'
+					"
+					@change="setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod)"
 				/>
 				<CustomRadioGroup
 					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
 					:options="selectedSearchMaterialOptions"
+					:disable="searchResultStore.numFound === 0"
+					@change="setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter)"
 				/>
 				<FilterExpander
 					type="checkbox"
@@ -37,7 +48,6 @@
 					icon="category"
 					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
 					:item-array="genreArray"
-					:use-headline-translation="true"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
 					:facet-type="'genre_facet'"
@@ -82,7 +92,6 @@
 					:item-array="getTVFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
-					:use-headline-translation="false"
 					:facet-type="'creator_affiliation_facet'"
 				>
 					<fieldset
@@ -123,7 +132,6 @@
 					:item-array="getRadioFacets(channelsArray)"
 					:update-entity="updateFacet"
 					:filter-name-cutoff="5"
-					:use-headline-translation="false"
 					:facet-type="'creator_affiliation_facet'"
 				>
 					<fieldset
@@ -158,9 +166,8 @@
 				<FilterExpander
 					type="time"
 					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
-					icon="event"
+					icon="calendar_today"
 					:subline="createTimeFacetSubline"
-					:use-headline-translation="true"
 					:update-entity="updateTimeSearch"
 					:item-array="yearArray"
 				>
@@ -176,13 +183,13 @@
 						>
 							<CustomTimelineSelect
 								:current-selected="timeSliderValues[0]"
-								:list-items="selectYears"
+								:list-items="getYearRanges"
 								:label="$t('timeSearch.from')"
 								@update-selected="updateStartYear"
 							/>
 							<CustomTimelineSelect
 								:current-selected="timeSliderValues[1]"
-								:list-items="selectYears"
+								:list-items="getYearRanges"
 								:label="$t('timeSearch.to')"
 								@update-selected="updateEndYear"
 							/>
@@ -217,28 +224,29 @@
 					</div>
 				</FilterExpander>
 			</div>
-
-			<KBButton
-				button-type="btn-main-default"
-				button-color="main"
-				button-size="medium"
-				class="btn-medium btn-main-medium"
-				:button-text="`${t('facets.seeResults', {
-					count: Number(searchResultStore.numFound),
-					resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
-				})}`"
-				right-icon-name="arrow_forward_ios"
-				:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
-				:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
-				@click="searchResultStore.showFacets = false"
-			></KBButton>
+			<div class="show-results-container">
+				<KBButton
+					button-type="btn-main-default"
+					button-color="main"
+					button-size="medium"
+					class="btn-medium btn-main-medium"
+					:button-text="`${t('facets.seeResults', {
+						count: Number(searchResultStore.numFound),
+						resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
+					})}`"
+					right-icon-name="arrow_forward_ios"
+					:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
+					:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
+					@click="searchResultStore.showFacets = false"
+				></KBButton>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import '@/assets/styles/vue-slider-styles.css';
-import { defineComponent, onMounted, ref, watch, computed } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed, ComputedRef, onUnmounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
@@ -302,9 +310,10 @@ export default defineComponent({
 		const { t, locale } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
-		const selectYears = ref([] as string[]);
 		const data = ref([] as markerData[]);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
+		const windowWidth = ref(window.innerWidth);
+
 		const delimitationOptions = {
 			all: '',
 			tv: 'origin:"ds.tv"',
@@ -357,21 +366,27 @@ export default defineComponent({
 				value: 'date',
 				title: t('facets.timePeriod.date.title'),
 				description: t('facets.timePeriod.date.desc'),
+				icon: 'event',
 			},
 			{
 				value: 'period',
 				title: t('facets.timePeriod.period.title'),
-				description: t('facets.timePeriod.date.desc'),
+				description: t('facets.timePeriod.period.desc'),
+				icon: 'date_range',
 			},
 		]);
-
-		onMounted(() => {
+		const getYearRanges = computed(() => {
+			const selectYears = [];
 			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
-				selectYears.value.push(i.toString());
-				data.value.push({ key: i, value: i });
+				selectYears.push(i);
 			}
+			return selectYears;
+		});
+		onMounted(() => {
 			setCategoryArrayFromStore(searchResultStore.categoryFilters);
 			setChannelArrayFromStore(searchResultStore.channelFilters);
+
+			window.addEventListener('resize', updateWindowWidth);
 
 			const routeQueries = cloneRouteQuery(route);
 			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
@@ -394,6 +409,14 @@ export default defineComponent({
 				}
 			}
 		});
+
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateWindowWidth);
+		});
+
+		function updateWindowWidth() {
+			windowWidth.value = window.innerWidth;
+		}
 
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
@@ -469,10 +492,14 @@ export default defineComponent({
 			} else {
 				const selected = dataArray.filter((item) => item.selected).length;
 				const total = dataArray.length;
-				return t(translationKey, {
-					selected,
-					total,
-				});
+				if (windowWidth.value <= 640) {
+					return `${selected}/${total}`;
+				} else {
+					return t(translationKey, {
+						selected,
+						total,
+					});
+				}
 			}
 		};
 
@@ -604,7 +631,17 @@ export default defineComponent({
 		watch(
 			() => searchResultStore.showFacets,
 			() => {
-				toggleFacets();
+				if (facetsContainer.value !== null) {
+					toggleFacets();
+				} else {
+					watch(
+						() => facetsContainer,
+						() => {
+							toggleFacets();
+						},
+						{ deep: true },
+					);
+				}
 			},
 		);
 
@@ -630,17 +667,14 @@ export default defineComponent({
 		);
 
 		watch(
-			() => searchResultStore.preliminarySearchMethod,
-			() => {
-				setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod);
+			() => getYearRanges,
+			(newRange: ComputedRef<number[]>) => {
+				data.value = [];
+				for (let i = 0; i < newRange.value.length; i++) {
+					data.value.push({ key: newRange.value[i], value: newRange.value[i] });
+				}
 			},
-		);
-
-		watch(
-			() => searchResultStore.preliminaryFilter,
-			() => {
-				setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter);
-			},
+			{ deep: true, immediate: true },
 		);
 
 		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
@@ -663,9 +697,13 @@ export default defineComponent({
 				return `${t('facets.contentFrom')} ${firstYearOfContent.value}`;
 			} else {
 				if (searchResultStore.preliminaryPeriodSearch === 'period') {
-					return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
-						'facets.year',
-					)}: ${endDate.value.getFullYear()}`;
+					if (windowWidth.value <= 640) {
+						return `${startDate.value.getFullYear()} → ${endDate.value.getFullYear()}`;
+					} else {
+						return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
+							'facets.year',
+						)}: ${endDate.value.getFullYear()}`;
+					}
 				} else {
 					return new Intl.DateTimeFormat(locale.value, {
 						day: 'numeric',
@@ -681,6 +719,7 @@ export default defineComponent({
 			endDate.value.setFullYear(timeSliderValues.value[1]);
 			setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
 		};
+
 		const setTimeSearchMethodAndExecute = (startDate: string, endDate: string) => {
 			searchResultStore.resetAutocomplete();
 			const routeQueries = cloneRouteQuery(route);
@@ -855,7 +894,7 @@ export default defineComponent({
 			selectedSearchMaterialOptions,
 			preliminaryPeriodSearchOptions,
 			firstYearOfContent,
-			selectYears,
+			getYearRanges,
 			updateStartYear,
 			updateEndYear,
 			startYear,
@@ -864,6 +903,8 @@ export default defineComponent({
 			createTimeFacetSubline,
 			returnCategoryIcon,
 			returnFilledIconStatus,
+			setSearchMethodAndExecute,
+			setDelimitationFilterAndExecute,
 		};
 	},
 });
@@ -961,6 +1002,13 @@ fieldset {
 
 .headline-section {
 	padding-left: 12px;
+}
+
+.show-results-container {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 10px;
 }
 
 .time-facet-button {
@@ -1101,6 +1149,7 @@ h2 {
 	box-sizing: border-box;
 	margin-top: 25px;
 	margin-bottom: 30px;
+	gap: 8px;
 }
 
 .genre {

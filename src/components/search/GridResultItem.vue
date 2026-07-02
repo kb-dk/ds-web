@@ -3,6 +3,7 @@
 		ref="gridContainer"
 		draggable="false"
 		class="grid-result-item"
+		:style="{ backgroundColor: background }"
 	>
 		<Transition
 			name="result"
@@ -175,7 +176,7 @@ export default defineComponent({
 			required: true,
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
-		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
+		background: { type: String as PropType<string>, required: false, default: 'var(--bg-default)' },
 		fullPostUrl: {
 			type: Boolean as PropType<boolean>,
 			default() {
@@ -269,10 +270,6 @@ export default defineComponent({
 		);
 
 		onMounted(() => {
-			if (gridContainer.value) {
-				gridContainer.value.style.setProperty('--bg-color', props.background);
-			}
-
 			if (props.resultdata?.origin && props.resultdata.origin.split('.')[1] === 'tv') {
 				getImageData();
 			}
@@ -297,7 +294,6 @@ export default defineComponent({
 
 <style scoped>
 .grid-result-item {
-	--bg-color: #ffffff;
 	width: 100%;
 	max-width: 100%;
 	border-bottom: 1px solid var(--color-border-active);

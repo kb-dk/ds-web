@@ -83,7 +83,7 @@
 						:title="$t('search.mainCategories')"
 						class="main-categories-header"
 						:reverse="true"
-						background-color="#001C43"
+						background-color="var(--bg-default)"
 					>
 						<template #content>
 							<div class="showcase-container">
@@ -230,7 +230,7 @@ export default defineComponent({
 					searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
 					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
-					searchResultStore.getSearchResults(route.query.q as string);
+					searchResultStore.getSearchResults(searchResultStore.currentQuery as string);
 					setCurrentTitleForPage();
 				} else if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
@@ -261,7 +261,7 @@ export default defineComponent({
 						searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 						searchResultStore.setRowCountFromURL(route.query.rows as string);
 						timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
-						searchResultStore.getSearchResults(route.query.q as string);
+						searchResultStore.getSearchResults(searchResultStore.currentQuery as string);
 
 						setCurrentTitleForPage();
 					}

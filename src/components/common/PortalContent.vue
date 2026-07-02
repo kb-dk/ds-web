@@ -4,8 +4,8 @@
 			<SkewedFoldable
 				:title="$t('timeSearch.timeMachine')"
 				:left="false"
-				bg="#001C43"
-				text="#ea9fbc"
+				bg="var(--bg-default)"
+				text="var(--color-main)"
 				icon="schedule"
 				:subtitle="$t('timeSearch.timeMachineSubtitle')"
 				:fullwidth="true"
@@ -15,7 +15,7 @@
 				<TimeSearchComponent
 					:title="$t('timeSearch.timeMachine')"
 					:subtitle="$t('timeSearch.timeMachineSubtitle')"
-					text="#ea9fbc"
+					text="var(--color-main)"
 				></TimeSearchComponent>
 			</SkewedFoldable>
 		</div>

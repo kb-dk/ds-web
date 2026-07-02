@@ -8,12 +8,12 @@
 			{{ title }}
 		</h3>
 		<div
-			ref="top"
 			:class="getClasses('top')"
+			:style="{ backgroundColor: backgroundColor }"
 		></div>
 		<div
-			ref="content"
 			class="full-width"
+			:style="{ backgroundColor: backgroundColor }"
 		>
 			<div
 				ref="container"
@@ -23,8 +23,8 @@
 			</div>
 		</div>
 		<div
-			ref="bottom"
 			:class="getClasses('bottom')"
+			:style="{ backgroundColor: backgroundColor }"
 		></div>
 	</div>
 </template>
@@ -45,7 +45,7 @@ export default defineComponent({
 		backgroundColor: {
 			type: String as PropType<string>,
 			default() {
-				return '#002e70';
+				return 'var(--bg-default)';
 			},
 		},
 		dottedEdges: {
@@ -81,10 +81,7 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const top = ref<HTMLDivElement>();
-		const content = ref<HTMLDivElement>();
 		const container = ref<HTMLDivElement>();
-		const bottom = ref<HTMLDivElement>();
 
 		const getClasses = (prefix: string) => {
 			let classes = `${prefix}-edge`;
@@ -95,13 +92,10 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			if (top.value) top.value.style.backgroundColor = props.backgroundColor;
-			if (content.value) content.value.style.backgroundColor = props.backgroundColor;
 			if (container.value) container.value.style.alignItems = props.alignItems;
-			if (bottom.value) bottom.value.style.backgroundColor = props.backgroundColor;
 		});
 
-		return { top, content, container, bottom, getClasses };
+		return { container, getClasses };
 	},
 });
 </script>

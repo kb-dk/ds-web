@@ -35,7 +35,7 @@
 
     /*rounded*/
     --rounded-small: var(--scale-50);
-    --rounded-medium: var(--scale-150);
+    --rounded-medium: var(--scale-100);
     --rounded-large: var(--scale-800);
     
     /*padding*/
