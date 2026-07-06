@@ -63,7 +63,9 @@ temporary styling until patterns from design system are implemented
 	margin-bottom: 80px;
 	margin-top: 34px;
 }
-
+.grid-display * {
+	gap: 0px;
+}
 .related-record.draggable-item {
 	margin-left: 20px;
 	flex: 0 0 30%;

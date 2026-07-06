@@ -248,8 +248,12 @@ h2 {
 	margin-bottom: 34px;
 }
 
+.time-results * {
+	gap: 0px;
+}
+
 .time-result-item {
-	margin-left: 20px;
+	margin-left: 15px;
 	flex: 0 0 30%;
 	box-sizing: border-box;
 	background-color: var(--bg-secondary-light-20);
