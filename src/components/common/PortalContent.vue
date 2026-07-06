@@ -19,16 +19,18 @@
 				></TimeSearchComponent>
 			</SkewedFoldable>
 		</div>
-		<TiltedDivider
-			:right="false"
-			:title="
-				$t('frontpage.fromTheArchive', {
-					month: new Date().toLocaleString(currentLocale, { month: 'long' }),
-				})
-			"
-			:data-testid="addTestDataEnrichment('TiltedDivider', 'PortalContent', 'through-time-header', 0)"
-		></TiltedDivider>
+		<div class="title">
+			<h2 class="heading-display">
+				{{ t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) }) }}
+			</h2>
+		</div>
+
 		<div class="container">
+			<div class="container-backdrop">
+				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+			</div>
+
 			<GridDisplay
 				:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
 				:row-nr="4"
@@ -46,7 +48,6 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
-import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
@@ -57,14 +58,15 @@ import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
 		GridDisplay,
 		TimeSearchComponent,
-		TiltedDivider,
 		SkewedFoldable,
+		ContainerSplitBar,
 	},
 
 	setup() {
@@ -198,6 +200,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.title {
+	width: 100%;
+	color: var(--color-main);
+}
 .time-search {
 	background-color: var(--bg-default);
 	margin-bottom: -70px;
@@ -216,8 +222,22 @@ export default defineComponent({
 }
 
 .container {
-	background-color: var(--bg-default);
+	background-color: var(--bg-secondary-light-20);
 	width: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+.container-backdrop {
+	position: absolute;
+	height: 100%;
+	width: 100vw;
+	background-color: var(--bg-secondary-light-20);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
 }
 
 .categories {

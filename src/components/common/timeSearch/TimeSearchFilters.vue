@@ -421,7 +421,7 @@ export default defineComponent({
 	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
-	margin-bottom: 30px;
+	margin-bottom: 0px;
 	font-size: 26px;
 	text-transform: capitalize;
 }
@@ -983,6 +983,9 @@ fieldset {
 	}
 	.slider-container {
 		height: 200px;
+	}
+	.to-from-container {
+		margin-bottom: 30px;
 	}
 }
 
