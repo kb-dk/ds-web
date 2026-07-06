@@ -277,13 +277,7 @@
          "allMaterialsLink":"https://www.kb.dk/en/find-materials"
 
       },
-      "placeholders": {
-         "drArchive":"Search for example by title or year",
-         "booksAndMaterials":"Search title, author, journal, database etc. ",
-         "kbdk":"Search on website",
-         "webshop":"Search in our webshop",
-         "seeAllMaterials":"See all materials"
-      },
+      "placeholders": "Search...",
       "limitedFilters":{
          "title":"Too many filters",
          "subtitle":"You have reached the limit of filters we support. To add another filter, you have to remove another."

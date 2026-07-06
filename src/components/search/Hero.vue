@@ -1,12 +1,5 @@
 <template>
 	<div class="hero-container">
-		<div class="container">
-			<h1 :aria-label="`${t('hero.title')}`">
-				<span class="headline heading-display">
-					<span class="text">{{ t('hero.title') }}</span>
-				</span>
-			</h1>
-		</div>
 		<img
 			:src="backgroundImage"
 			title="search background"
@@ -27,7 +20,6 @@ import hero1 from '@/assets/images/hero_image_1_PLACEHOLDER.jpg';
 
 export default defineComponent({
 	name: 'Hero',
-
 	setup() {
 		const authStore = useAuthStore();
 		const { t } = useI18n();
@@ -66,26 +58,10 @@ export default defineComponent({
 	display: flex;
 	margin-bottom: 6vw;
 	z-index: 3;
-	overflow: hidden;
+	overflow: visible;
 	transition: background-color 0.5s linear 0s;
 }
 
-h1 .headline {
-	display: block;
-	background-color: transparent;
-	width: fit-content;
-	padding: 0px 10px;
-	pointer-events: all;
-	position: relative;
-	z-index: 1;
-	pointer-events: none;
-	text-transform: uppercase;
-	letter-spacing: 1.15px;
-	color: var(--color-main);
-}
-h1 {
-	margin-top: 0;
-}
 .hue-overlay {
 	content: '';
 	position: absolute;
@@ -104,6 +80,7 @@ h1 {
 	max-width: 1680px;
 	bottom: 0;
 }
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -120,9 +97,7 @@ h1 {
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
 	.container {
-		flex-direction: row;
 		margin-left: 12px;
-		justify-content: space-between;
 		height: 100%;
 	}
 	h1 {
@@ -150,9 +125,7 @@ h1 {
 	}
 	.container {
 		display: flex;
-		flex-direction: row;
 		max-width: 1150px;
-		justify-content: space-between;
 		width: 100%;
 	}
 }
