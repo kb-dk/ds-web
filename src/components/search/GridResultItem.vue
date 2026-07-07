@@ -15,6 +15,7 @@
 			>
 				<router-link
 					:to="{ name: 'Record', params: { id: resultdata.id } }"
+					v-bind="slotProps"
 					draggable="false"
 					class="link-title"
 					role="link"
@@ -175,6 +176,12 @@ export default defineComponent({
 			type: Number as PropType<number>,
 			required: true,
 		},
+		slotProps: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
 		background: { type: String as PropType<string>, required: false, default: 'var(--bg-default)' },
 		fullPostUrl: {
@@ -296,11 +303,11 @@ export default defineComponent({
 .grid-result-item {
 	width: 100%;
 	max-width: 100%;
-	border-bottom: 1px solid var(--color-border-active);
+	border-bottom: 1px solid var(--color-border-success);
 	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
-	color: var(--color-main);
+	color: var(--color-default);
 	background-color: var(--bg-default);
 }
 
@@ -311,7 +318,7 @@ export default defineComponent({
 .link-title {
 	font-size: 14px;
 	text-decoration: none;
-	color: var(--color-main);
+	color: var(--color-default);
 	display: grid;
 }
 
@@ -336,7 +343,7 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	text-align: center;
 	align-content: center;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 
 .loading-color {
@@ -402,7 +409,7 @@ export default defineComponent({
 
 .title {
 	font-weight: var(--fw-bold);
-	color: var(--color-main);
+	color: var(--color-default);
 	margin-bottom: 10px;
 	max-width: 100%;
 	text-overflow: ellipsis;
@@ -419,10 +426,10 @@ export default defineComponent({
 	height: 20px;
 }
 .episode-text {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .title.loading {
-	background-color: var(--color-main);
+	background-color: var(--color-default);
 	border-radius: 10px;
 	margin-top: 15px;
 }

@@ -1,9 +1,10 @@
 :root{
     /*background-colors*/
     --bg-main:#ea9fbc;
-    --bg-main-light:#f0bcd0;
+    --bg-main-2: #F0BCD0;
+    --bg-main-3: #FBECF2;
     --bg-cta:#ea9fbc;
-    --bg-light:#ea9fbc1a;
+    --bg-light:#17294F;
     --bg-remove:#f7ae3b;
     --bg-main-hover:#c4f1ed;
     --bg-disabled:#757575;
