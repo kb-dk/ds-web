@@ -1,8 +1,8 @@
 <template>
 	<div :class="expanderOpen ? 'expand-container open' : 'expand-container'">
-		<h3
+		<label
 			ref="headlineRef"
-			class="headline"
+			class="headline label-medium"
 			role="button"
 			@click="toggleExpander($event)"
 		>
@@ -32,7 +32,7 @@
 				:button-text="`${subline}`"
 				@click="removeFilters($event, facetType, itemArray)"
 			></KBButton>
-		</h3>
+		</label>
 		<div
 			ref="expandContainer"
 			:class="fade ? 'expander' : 'expander'"
