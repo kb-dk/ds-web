@@ -266,7 +266,7 @@ export default defineComponent({
 }
 .btn-cta:not(:disabled):hover {
 	transition: all 0.3s ease 0s;
-	background-color: var(--bg-main-light);
+	background-color: var(--bg-main-2);
 	border-color: var(--color-border-light);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
