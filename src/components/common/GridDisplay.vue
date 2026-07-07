@@ -62,12 +62,16 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 	margin-bottom: 80px;
 	margin-top: 34px;
+	/* width: 100%;
+	display: flex;
+	justify-content: center;
+	height: 100%; */
 }
 .grid-display * {
 	gap: 0px;
 }
 .related-record.draggable-item {
-	margin-left: 20px;
+	margin-left: 15px;
 	flex: 0 0 30%;
 	box-sizing: border-box;
 	background-color: var(--bg-secondary-light-20);
@@ -77,8 +81,5 @@ temporary styling until patterns from design system are implemented
 	-o-user-select: none;
 	user-select: none;
 	user-drag: none;
-}
-.related-record.draggable-item:first-of-type {
-	margin-left: 0px;
 }
 </style>

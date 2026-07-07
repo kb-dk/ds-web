@@ -10,7 +10,7 @@
 			mode="out-in"
 		>
 			<div
-				v-if="resultdata != null && !loading"
+				v-if="resultdata != null && !loading && false"
 				class="data"
 			>
 				<router-link
@@ -83,37 +83,35 @@
 			</div>
 			<div
 				v-else
-				class="loading-placeholder"
+				class="loading-placeholder data"
 			>
 				<div
-					v-if="loading"
+					v-if="loading || true"
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
 				<div class="thumb-container loading-color">
-					<NoFacetContent
-						v-if="!loading"
-						position="relative"
-					></NoFacetContent>
+					<NoFacetContent v-if="!loading && false"></NoFacetContent>
+					<div v-else></div>
 				</div>
 				<div class="material-icons loading-icon">play_circle_filled</div>
 				<div
-					:style="`width:${Math.random() * 30 + 40}%`"
+					:style="`width:${Math.random() * 30 + 40}px`"
 					class="date loading"
 				></div>
 				<div class="date-loading-container">
 					<div class="material-icons loading-icon">schedule</div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}%`"
+						:style="`width:${Math.random() * 20 + 20}px`"
 						class="date loading"
 					></div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}%`"
+						:style="`width:${Math.random() * 20 + 20}px`"
 						class="date loading"
 					></div>
 				</div>
 				<div
-					:style="`width:${Math.random() * 30 + 50}%`"
+					:style="`width:${Math.random() * 30 + 50}px`"
 					class="title loading"
 				></div>
 				<div class="summary loading">
@@ -300,6 +298,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.loading-placeholder {
+	padding-right: 40px;
+}
 .grid-result-item {
 	width: 100%;
 	max-width: 100%;
@@ -347,9 +348,9 @@ export default defineComponent({
 }
 
 .loading-color {
+	position: relative;
 	background-color: rgba(170, 170, 170, 1);
 }
-
 .date-loading-container {
 	display: flex;
 	align-items: flex-end;
