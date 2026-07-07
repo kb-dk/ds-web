@@ -9,15 +9,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -33,15 +35,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -57,15 +61,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -135,6 +141,18 @@ export default defineComponent({
 				return false;
 			},
 		},
+		customIconLeft: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		customIconRight: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup(props) {
 		const attrs = useAttrs();
@@ -164,6 +182,7 @@ export default defineComponent({
 	width: fit-content;
 	min-height: 34px;
 	line-height: 1;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-text::first-letter {
 	text-transform: capitalize;
@@ -239,7 +258,6 @@ export default defineComponent({
 /* Call to action buttons */
 .btn-cta {
 	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-cta .btn-text {
 	border-bottom: 1px solid transparent;
@@ -247,10 +265,10 @@ export default defineComponent({
 	transition: 200ms;
 }
 .btn-cta:not(:disabled):hover {
-	transition: all 5s ease 0s;
-	.btn-text {
-		border-color: var(--color-border-active);
-	}
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .btn-cta.medium .material-icons {
 	font-size: calc(var(--fs-lead) + 8px);
