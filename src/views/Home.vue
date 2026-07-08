@@ -1,7 +1,7 @@
 <template>
 	<div class="home-container">
 		<div>
-			<!-- <Hero /> -->
+			<Hero />
 			<PortalContent />
 		</div>
 	</div>
@@ -18,6 +18,7 @@ export default defineComponent({
 	name: 'Home',
 	components: {
 		PortalContent,
+		Hero,
 	},
 
 	setup() {
@@ -50,6 +51,7 @@ temporary styling until patterns from design system are implemented
 	padding-right: 12px;
 	padding-left: 12px;
 	background-color: var(--bg-default);
+	/* margin-top: -85px; */
 }
 
 .home-container {

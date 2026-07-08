@@ -1,54 +1,53 @@
 <template>
-	<div class="search-box">
+	<div
+		v-if="route.name !== 'Record'"
+		class="search-box"
+	>
 		<div class="search-container">
 			<div class="container main-12">
-				<div class="row">
-					<div class="col">
-						<form
-							ref="searchFormRef"
-							:class="route.query.q === undefined && route.name === 'Search' ? 'searchform find' : 'searchform'"
-							action=" "
-							method=" "
-							role="search"
-							@submit.prevent="search()"
-						>
-							<div
-								role="group"
-								:class="debounceMechanic ? 'rdl-advanced-search locked' : 'rdl-advanced-search'"
-							>
-								<div class="rdl-advanced-search-input">
-									<label
-										for="focusSearchInput"
-										class="sr-only"
-									>
-										{{ t('search.searchInput') }}
-									</label>
-									<input
-										id="focusSearchInput"
-										v-model="searchResultStore.currentQuery"
-										spellcheck="false"
-										autocomplete="off"
-										type="search"
-										:disabled="debounceMechanic ? true : false"
-										class="form-control"
-										:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholders.${selectedPortal}`)"
-										name="simpleSearch"
-										:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
-										@keydown="updateKeystrokeForAutocomplete"
-									/>
-									<Transition name="fade">
-										<div class="autocomplete-container">
-											<Autocomplete :keystroke="keyStrokeEvent" />
-										</div>
-									</Transition>
-								</div>
+				<form
+					ref="searchFormRef"
+					action=" "
+					method=" "
+					role="search"
+					class="search-form"
+					@submit.prevent="search()"
+				>
+					<div
+						role="group"
+						:class="debounceMechanic ? 'rdl-advanced-search locked' : 'rdl-advanced-search'"
+					>
+						<div class="search-bar-container">
+							<div class="rdl-advanced-search-input">
+								<label
+									for="focusSearchInput"
+									class="sr-only"
+								>
+									{{ t('search.searchInput') }}
+								</label>
+								<input
+									id="focusSearchInput"
+									v-model="searchResultStore.currentQuery"
+									spellcheck="false"
+									autocomplete="off"
+									type="search"
+									:disabled="debounceMechanic ? true : false"
+									class="form-control label-big"
+									:class="{ 'form-control-search': route.name === 'Search' }"
+									:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
+									name="simpleSearch"
+									:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
+									@keydown="updateKeystrokeForAutocomplete"
+								/>
+							</div>
+							<div class="button-container">
 								<div
 									v-if="searchResultStore.loading"
 									class="spinner-container"
 								>
 									<div
 										:aria-busy="searchResultStore.loading ? true : false"
-										:class="searchResultStore.loading ? 'spinner show' : 'spinner hide'"
+										:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
 									></div>
 								</div>
 								<button
@@ -71,114 +70,6 @@
 										close
 									</i>
 								</button>
-								<div class="dropdown bootstrap-select">
-									<button
-										ref="selectButtonRef"
-										type="button"
-										class="btn dropdown-toggle btn-outline-primary"
-										data-toggle="dropdown"
-										aria-haspopup="listbox"
-										aria-expanded="false"
-										title="Select portal"
-										aria-controls="searchbar-select-portal"
-										:data-testid="addTestDataEnrichment('button', 'portal', 'select-portal-toggle', 0)"
-										@click="togglePortalSelector()"
-									>
-										<div class="filter-option">
-											<div class="filter-option-inner">
-												<div class="filter-option-inner-inner">
-													{{ t(`search.portals.${selectedPortal}`) }}
-												</div>
-											</div>
-										</div>
-									</button>
-									<div
-										:class="showPortalSelector ? 'portal-dropdown-menu select-show' : 'portal-dropdown-menu'"
-										style=""
-									>
-										<div
-											id="bs-select-1"
-											class="inner show"
-											role="listbox"
-											tabindex="1"
-										>
-											<ul
-												class="portal-dropdown-menu-inner inner show"
-												:data-testid="addTestDataEnrichment('dropdown', 'searchbar', 'portal', 0)"
-												role="presentation"
-												style="margin-top: 0px; margin-bottom: 0px"
-											>
-												<li
-													role="option"
-													class="selected active"
-												>
-													<button
-														type="button"
-														class="dropdown-item"
-														:title="t(`search.portals.${selectorValues[0].name}`)"
-														:data-testid="addTestDataEnrichment('button', 'portal', 'drarchive', 0)"
-														@click="selectPortal(0)"
-													>
-														<span class="text">
-															{{ t(`search.portals.${selectorValues[0].name}`) }}
-														</span>
-													</button>
-												</li>
-												<li role="option">
-													<button
-														type="button"
-														class="dropdown-item"
-														:title="t(`search.portals.${selectorValues[1].name}`)"
-														:data-testid="addTestDataEnrichment('button', 'portal', 'primo', 0)"
-														@click="selectPortal(1)"
-													>
-														<span class="text">
-															{{ t(`search.portals.${selectorValues[1].name}`) }}
-														</span>
-													</button>
-												</li>
-												<li role="option">
-													<button
-														type="button"
-														class="dropdown-item"
-														:title="t(`search.portals.${selectorValues[2].name}`)"
-														:data-testid="addTestDataEnrichment('button', 'portal', 'kbdk', 0)"
-														@click="selectPortal(2)"
-													>
-														<span class="text">
-															{{ t(`search.portals.${selectorValues[2].name}`) }}
-														</span>
-													</button>
-												</li>
-												<li role="option">
-													<button
-														type="button"
-														class="dropdown-item"
-														:title="t(`search.portals.${selectorValues[3].name}`)"
-														:data-testid="addTestDataEnrichment('button', 'portal', 'webshop', 0)"
-														@click="selectPortal(3)"
-													>
-														<span class="text">
-															{{ t(`search.portals.${selectorValues[3].name}`) }}
-														</span>
-													</button>
-												</li>
-												<li role="option">
-													<a
-														:title="t(`search.portals.${selectorValues[4].name}`)"
-														class="dropdown-item"
-														:href="t('search.portals.allMaterialsLink')"
-														:data-testid="addTestDataEnrichment('link', 'portal', 'all-materials', 0)"
-													>
-														<span class="text">
-															{{ t(`search.portals.${selectorValues[4].name}`) }}
-														</span>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
 								<button
 									id="searchButton"
 									ref="searchButton"
@@ -189,8 +80,6 @@
 									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
 									@submit="search()"
 								>
-									<span class="d-none d-search-inline-flex searchSpan">{{ t('search.searchbtn') }}</span>
-									<span class="d-inline-flex d-search-none searchHereSpan">{{ t('search.searchHere') }}</span>
 									<i
 										class="material-icons"
 										aria-hidden="true"
@@ -199,16 +88,22 @@
 									</i>
 								</button>
 							</div>
-						</form>
+						</div>
+
+						<Transition name="fade">
+							<div class="autocomplete-container">
+								<Autocomplete :keystroke="keyStrokeEvent" />
+							</div>
+						</Transition>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
@@ -216,18 +111,13 @@ import router from '@/router';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import gsap from 'gsap';
-import { PortalSelectItem } from '@/types/SearchBarTypes';
 
 export default defineComponent({
 	name: 'Searchbar',
 	components: {
 		Autocomplete,
 	},
-	props: {
-		searchBarOpen: { type: Boolean as PropType<boolean>, required: true },
-	},
-	setup(props) {
+	setup() {
 		const { t } = useI18n();
 		const searchResultStore = useSearchResultStore();
 		const debounceMechanic = ref(false);
@@ -238,43 +128,6 @@ export default defineComponent({
 		const selectedPortal = ref('drArchive');
 		const route = useRoute();
 		const selectButtonRef = ref<HTMLButtonElement | null>(null);
-		const selectorValues: PortalSelectItem[] = [
-			{
-				name: 'drArchive',
-				destination: '',
-			},
-			{
-				name: 'booksAndMaterials',
-				destination:
-					'https://soeg.kb.dk/discovery/search?query=any,contains,sq&tab=Everything&search_scope=MyInst_and_CI&vid=45KBDK_KGL:KGL&lang=',
-			},
-			{
-				name: 'kbdk',
-				destination: 'https://www.kb.dk/search/site?search_api_fulltext=sq&search_type=kbdk',
-			},
-			{
-				name: 'webshop',
-				destination: 'https://webshop.kb.dk/?s=sq&post_type=product',
-			},
-			{
-				name: 'seeAllMaterials',
-				destination: '',
-			},
-		];
-		const closePortal = (e: MouseEvent) => {
-			if (selectButtonRef.value instanceof HTMLButtonElement && e.target instanceof Node) {
-				if (!selectButtonRef.value.contains(e.target)) {
-					togglePortalSelector();
-				}
-			}
-		};
-
-		onUnmounted(() => {
-			if (showPortalSelector.value) {
-				document.removeEventListener('click', closePortal);
-			}
-		});
-
 		watch(
 			() => searchResultStore.currentQuery,
 			(newStart: string, prevStart: string) => {
@@ -294,96 +147,44 @@ export default defineComponent({
 			},
 		);
 
-		watch(
-			() => props.searchBarOpen,
-			() => {
-				if (!props.searchBarOpen) {
-					gsap.to(searchFormRef.value, {
-						height: '0px',
-						duration: 0.5,
-						overwrite: true,
-						opacity: 1,
-						overflow: 'hidden',
-						onComplete: () => {
-							gsap.set(searchFormRef.value, {
-								display: 'none',
-								overwrite: true,
-							});
-						},
-					});
-				} else {
-					gsap.set(searchFormRef.value, {
-						display: 'block',
-						overwrite: true,
-						onComplete: () => {
-							gsap.to(searchFormRef.value, {
-								height: 'auto',
-								duration: 0.5,
-								overwrite: true,
-								opacity: 1,
-								onComplete: () => {
-									gsap.set(searchFormRef.value, {
-										overflow: 'visible',
-									});
-								},
-							});
-						},
-					});
-				}
-			},
-		);
-
 		const updateKeystrokeForAutocomplete = (e: KeyboardEvent) => {
 			keyStrokeEvent.value = e;
 		};
 
 		const getAutocompleteResponse = (query: string) => {
-			if (
-				query !== undefined &&
-				query.length >= 3 &&
-				!searchResultStore.blockAutocomplete &&
-				selectedPortal.value === 'drArchive'
-			) {
+			if (query !== undefined && query.length >= 3 && !searchResultStore.blockAutocomplete) {
 				searchResultStore.getAutocompleteResults(query);
 			}
 		};
 
 		const search = () => {
-			if (selectedPortal.value === 'drArchive') {
-				if (
-					router.currentRoute.value.name !== 'Search' ||
-					searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
-				) {
-					searchResultStore.searchResult = [];
-				}
-				searchResultStore.resetAutocomplete();
-				searchResultStore.channelFilters = [];
-				searchResultStore.categoryFilters = [];
-				clearTimeout(AutocompleteTimer);
-				debounceMechanic.value = true;
-				setTimeout(() => {
-					debounceMechanic.value = false;
-				}, 500);
-				let query: LocationQueryRaw = {
-					q: searchResultStore.currentQuery === '' ? ':*' : searchResultStore.currentQuery,
-					start: 0,
-				};
-
-				searchResultStore.preliminaryFilter = '';
-
-				query.sort = encodeURIComponent(`score desc`);
-
-				router.push({
-					name: 'Search',
-					query: query,
-				});
-			} else {
-				let URL = selectorValues.find((item) => item.name === selectedPortal.value)?.destination;
-				if (URL) {
-					URL = URL.replace(/sq/g, encodeURIComponent(searchResultStore.currentQuery));
-					window.location.href = URL;
-				}
+			if (
+				router.currentRoute.value.name !== 'Search' ||
+				searchResultStore.lastSearchQuery !== searchResultStore.currentQuery
+			) {
+				searchResultStore.searchResult = [];
 			}
+			searchResultStore.resetAutocomplete();
+			searchResultStore.channelFilters = [];
+			searchResultStore.categoryFilters = [];
+			clearTimeout(AutocompleteTimer);
+			debounceMechanic.value = true;
+			setTimeout(() => {
+				debounceMechanic.value = false;
+			}, 500);
+			let query: LocationQueryRaw = {
+				q: searchResultStore.currentQuery === '' ? ':*' : searchResultStore.currentQuery,
+				start: 0,
+			};
+
+			searchResultStore.preliminaryFilter = '';
+
+			query.sort = encodeURIComponent(`score desc`);
+
+			router.push({
+				name: 'Search',
+				query: query,
+			});
 		};
 
 		const reset = () => {
@@ -400,21 +201,6 @@ export default defineComponent({
 			}
 		};
 
-		const togglePortalSelector = () => {
-			showPortalSelector.value = !showPortalSelector.value;
-			if (showPortalSelector.value) {
-				document.addEventListener('click', closePortal);
-			} else {
-				document.removeEventListener('click', closePortal);
-			}
-		};
-
-		const selectPortal = (selected: number) => {
-			selectedPortal.value = selectorValues[selected].name;
-			togglePortalSelector();
-			(document.querySelector('#focusSearchInput') as HTMLInputElement)?.focus();
-		};
-
 		return {
 			searchResultStore,
 			debounceMechanic,
@@ -426,12 +212,9 @@ export default defineComponent({
 			keyStrokeEvent,
 			addTestDataEnrichment,
 			searchFormRef,
-			togglePortalSelector,
 			showPortalSelector,
-			selectPortal,
 			selectButtonRef,
 			selectedPortal,
-			selectorValues,
 			route,
 		};
 	},
@@ -459,52 +242,30 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .material-icons {
-	font-family: 'Material Icons';
-	font-weight: normal;
-	font-style: normal;
-	font-size: 24px;
-	line-height: 1;
-	letter-spacing: normal;
-	text-transform: none;
-	display: inline-block;
-	white-space: nowrap;
-	word-wrap: normal;
-	direction: ltr;
-	-webkit-font-feature-settings: 'liga';
-	-webkit-font-smoothing: antialiased;
+	color: var(--color-main);
+	font-size: var(--fs-xl);
 }
 
 .autocomplete-container {
-	position: relative;
-	z-index: 10;
+	z-index: 15;
 }
 
 #searchButton,
-#focusSearchInput,
-.rdl-advanced-radio {
-	transition: color 0.1s linear 0s;
+#resetButton {
+	padding: 0 10px 0 0;
 }
-
-#focusSearchInput:focus-visible {
-	box-shadow: 0 0 0 3px #002f7091 !important;
-	border-radius: 4px !important;
-	transition: box-shadow 0.2s ease-in-out;
+.search-form {
+	width: 100%;
 }
-
 .locked {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;
 }
 
 .locked #searchButton,
-.locked #focusSearchInput,
-.locked .rdl-advanced-radio {
+.locked #focusSearchInput {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;
-}
-
-.searchform.find .rdl-advanced-search {
-	border: 1px solid #002e70;
 }
 
 :host {
@@ -513,18 +274,15 @@ input[type='search']::-webkit-search-results-decoration {
 	display: block;
 }
 
-.searchform {
-	transition: all 0.25s linear 0s;
-	overflow: visible;
-	border: 1px solid transparent;
-}
-
 .search-box {
-	height: 100%;
-	position: relative;
 	z-index: 6;
+	left: 0;
+	width: 100%;
+	border-radius: var(--rounded-small);
+	display: flex;
+	position: absolute;
+	top: 100%;
 }
-
 .btn-icon i {
 	margin-left: auto;
 }
@@ -540,44 +298,39 @@ input[type='search']::-webkit-search-results-decoration {
 	align-content: center;
 	justify-content: center;
 	align-items: center;
-	background-size: cover;
-	background-position: center;
-	background-color: var(--bg-default);
 }
 
 .btn-icon {
 	display: inline-flex;
 	align-items: center;
-	padding-top: 12px;
-	padding-right: 8px;
-	padding-bottom: 12px;
 }
 
-textarea:focus,
+input:focus-visible,
 input:focus {
 	outline: none;
 }
 /* For .rdl-advanced-search and .rdl-spot-search .rdl-advanced-search */
 .container {
-	padding-right: 12px;
-	padding-left: 12px;
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
-	/* display: flex;
-			align-content: center;
-			flex-wrap: wrap; */
+	box-sizing: border-box;
 }
 
 .spinner-container {
-	width: 30px;
+	/* width: 30px; */
 	position: absolute;
-	right: 60px;
+	/* right: 60px; */
+	display: flex;
+	right: initial;
+	margin-top: initial;
+	position: initial;
+	width: 48px;
 }
 
 .spinner {
 	width: 100%;
-	--spinner-color: #171717;
+	--spinner-color: #ffffff;
 	--spinner-mask: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='50' height='50' viewBox='0 0 50 50' xml:space='preserve'%3E%3Ccircle stroke-width='1.86' fill='none' stroke='currentColor' cx='25' cy='25' r='14'/%3E%3C/svg%3E");
 	--spinner-size: 3rem;
 	display: block;
@@ -614,77 +367,89 @@ input:focus {
 
 .rdl-advanced-search {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	color: #171717;
-	margin-bottom: 12px;
-	border: 0px solid #f5f5f5;
-	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.24);
-	border-radius: 0px;
+	flex-direction: column;
+	color: var(--color-main);
+	flex-wrap: nowrap;
+	border-radius: var(--rounded-medium);
+	height: 71px;
+	overflow: visible;
 }
 .rdl-advanced-search-input {
-	background-color: white;
-	margin-bottom: 32px;
+	color: var(--color-main);
+}
+.search-bar-container {
 	width: 100%;
+	display: flex;
+	flex-direction: row;
+	box-sizing: border-box;
 }
 .form-control {
-	width: 100%;
+	width: calc(100vw - 150px);
 	padding: 6px 12px;
-	border: 1px solid #757575;
-	border-radius: 2px;
-	height: 3rem;
-	padding: 0.375rem 0.75rem;
+	border-radius: var(--rounded-small) 0px 0px var(--rounded-small);
+	color: var(--color-main);
+	background-color: var(--bg-default);
+	padding: 20px 12px;
+	height: 71px;
+	border: none;
+	/* display: block; */
+	background-clip: padding-box;
+	transition: all 0.3s linear;
+	transition-delay: 0.5s;
+	border-left: 1px solid var(--color-border-success);
+	border-top: 1px solid var(--color-border-success);
+	border-bottom: 1px solid var(--color-border-success);
+	box-sizing: border-box;
 }
-.col {
-	flex-basis: 0;
-	flex-grow: 1;
-	max-width: 100%;
-	position: relative;
-	width: 100%;
-	/* 			padding-right: 12px;
-			padding-left: 12px; */
-}
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
+.form-control:focus,
+.form-control:focus-visible {
+	transition: all 0.5s linear;
+	width: calc(100vw - 150px);
 }
 
+.form-control::placeholder {
+	color: var(--color-main);
+}
+.button-container {
+	display: flex;
+	flex-direction: row;
+	width: 150px;
+	min-width: 150px;
+	position: relative;
+	justify-content: flex-end;
+	background-color: var(--bg-default);
+	border-top: 1px solid var(--color-border-success);
+	border-bottom: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-left: 0;
+	border-radius: 0px var(--rounded-small) var(--rounded-small) 0px;
+	box-sizing: border-box;
+}
+.button-container:focus {
+}
 .btn-primary {
 	display: block;
-	width: 100%;
-	color: #fff;
-	padding: 0 22px;
-	background: #002e70;
+	width: 50px;
 	margin-bottom: 0;
-	border-radius: 2px;
-	padding: 13px 2.875rem;
-	font-size: 1rem;
-	line-height: 1.25rem;
-	border-radius: 0.25rem;
 	cursor: pointer;
-	border: none;
+	background-color: var(--bg-default);
+	border: 0;
 }
 
 #resetButton {
 	position: absolute;
 	width: 40px;
 	right: 25px;
-	padding-left: 0px;
-	padding-top: 7px;
-	padding-bottom: 7px;
 	top: 5px;
-	background-color: transparent;
 	color: #002e70;
+	position: unset;
+	width: unset;
+	right: unset;
 }
 
 .btn-icon {
 	display: inline-flex;
 	align-items: center;
-	padding-top: 12px;
-	padding-right: 8px;
-	padding-bottom: 12px;
 }
 
 .btn-icon span {
@@ -703,415 +468,45 @@ input:focus {
 	border: 0;
 }
 
-.rdl-advanced-radio {
-	background-color: #002e70;
-	display: flex;
-	width: calc(100% - 1px);
-	height: 48px;
-	margin-bottom: 22px;
-	color: white;
-	line-height: 48px;
-	justify-content: space-evenly;
-	position: absolute;
-	top: -47px;
-}
-
-.rdl-advanced-radio label,
-.rdl-advanced-radio input {
-	cursor: pointer;
-}
-
-.rdl-advanced-radio label {
-	margin-right: 15px;
-}
-
-.d-none {
-	display: none;
-}
-
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
 	box-shadow: 0 0 0 0.2rem rgba(0, 46, 112, 0.5);
 }
 
-.bootstrap-select {
-	width: auto;
-	min-width: 220px;
-	margin-bottom: 0;
-	position: relative;
-	vertical-align: middle;
-	display: none;
-	width: 100%;
-	border: 1px solid black;
-	height: 48px;
-	margin-bottom: 26px;
-	border-radius: 0.25rem;
-}
-
-.selectpicker {
-	position: absolute !important;
-	bottom: 0;
-	left: 50%;
-	display: block !important;
-	width: 0.5px !important;
-	height: 100% !important;
-	padding: 0 !important;
-	opacity: 0 !important;
-	border: none;
-	z-index: 0 !important;
-}
-
-.dropdown-toggle {
-	position: relative;
-	width: 100%;
-	text-align: right;
-	white-space: nowrap;
-	display: inline-flex;
-	align-items: center;
-	justify-content: space-between;
-	border-radius: 2px;
-	padding: 0.375rem 0.75rem;
-	height: 3rem;
-	font-size: 1rem;
-	line-height: 2.25rem;
-	margin-bottom: 0;
-	padding: 20px 12px;
-	height: 72px;
-	border: none;
-	background: white;
-	cursor: pointer;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	color: #002e70;
-
-	width: 100%;
-	padding: 6px 12px;
-	height: auto;
-}
-
-.dropdown-toggle::after {
-	vertical-align: middle;
-	margin-left: 1rem;
-	border: none;
-	content: 'expand_more';
-	font-family: 'Material Icons', serif;
-	font-weight: normal;
-	font-style: normal;
-	font-size: 24px;
-	display: inline-block;
-	line-height: 1;
-	text-transform: none;
-	letter-spacing: normal;
-	word-wrap: normal;
-	white-space: nowrap;
-	direction: ltr;
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
-	-moz-osx-font-smoothing: grayscale;
-	font-feature-settings: 'liga';
-}
-
-.portal-dropdown-menu-inner li:last-child {
-	border-top: 1px solid #d6d6d6;
-}
-
-.filter-option {
-	position: static;
-	top: 0;
-	left: 0;
-	float: left;
-	height: 100%;
-	width: 100%;
-	text-align: left;
-	overflow: hidden;
-	flex: 0 1 auto;
-}
-
-.dropdown-item {
-	display: block;
-	width: 100%;
-	padding: 0.75rem 0.75rem;
-	clear: both;
-	font-weight: 400;
-	color: #171717;
-	text-align: inherit;
-	text-decoration: none;
-	white-space: nowrap;
-	background-color: transparent;
-	border: 0;
-	margin: 3px 3px;
-	max-width: 100%;
-	box-sizing: border-box;
-	width: calc(100% - 6px);
-}
-
-.portal-dropdown-menu {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	z-index: 5;
-	display: none;
-	float: left;
-	min-width: 10rem;
-	padding: 0 0;
-	margin: 0.125rem 0 0;
-	font-size: 1rem;
-	color: #212529;
-	text-align: left;
-	list-style: none;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	border-radius: 0.125rem;
-	min-width: 100%;
-}
-
-.portal-dropdown-menu-inner {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	z-index: 5;
-	float: left;
-	min-width: 10rem;
-	padding: 0 0;
-	margin: 0.125rem 0 0;
-	font-size: 1rem;
-	color: #212529;
-	text-align: left;
-	list-style: none;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid #f5f5f5;
-	border-radius: 0.125rem;
-	min-width: 100%;
-	margin-left: -2px;
-	top: -2px;
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-}
-
-.portal-dropdown-menu-inner button,
-.portal-dropdown-menu-inner a {
-	font-size: 16px;
-	transition: all 0.3s linear 0s;
-}
-
-.portal-dropdown-menu-inner button:hover,
-.portal-dropdown-menu-inner a:hover {
-	color: #002e70;
-	background-color: #f2f4f8;
-	cursor: pointer;
-}
-
-.portal-dropdown-menu.select-show {
-	display: block;
-}
 #bs-select-1-3 {
 	border-top: 1px solid #d6d6d6;
 }
 
-#bs-select-1-3:after {
-	content: 'link';
-	float: right;
-	line-height: 1.5rem;
-	font-family: 'Material Icons';
-	font-size: 24px;
-	transform: translate(-100%, 0px);
-}
-
-.bootstrap-select .portal-dropdown-menu li {
-	position: relative;
-	padding: 0;
-	margin: 0;
-	overflow: hidden;
-}
-
-.bootstrap-select .portal-dropdown-menu.inner {
-	position: static;
-	float: none;
-	border: 0;
-	padding: 0;
-	margin: 0;
-	border-radius: 0;
-	box-shadow: none;
-}
-
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
-	.container {
-		max-width: 640px;
-	}
-}
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-	.rdl-advanced-radio {
-		width: 50%;
-	}
-
-	.bootstrap-select {
-		display: block;
-	}
-
-	.container {
-		max-width: 990px;
-	}
-
-	.bootstrap-select {
-		width: calc(50% - 10px);
-		box-sizing: border-box;
-	}
-
-	.dropdown-toggle {
-		height: 46px;
-	}
-
-	#searchButton {
-		width: calc(50% - 10px);
-		box-sizing: border-box;
-		height: 48px;
-	}
-}
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
-	.spinner-container {
-		background-color: white;
-		display: flex;
-		right: initial;
-		margin-top: initial;
-		position: initial;
-		width: 48px;
-	}
-
-	#searchButton {
-		width: auto;
-		height: auto;
-	}
-
-	.dropdown-toggle {
-		height: 71px;
-		padding: 20px 12px;
-	}
-
-	.portal-dropdown-menu {
-		top: 71px;
-	}
-
-	.bootstrap-select {
-		border: 0px;
-		margin-bottom: 0px;
-		width: auto;
-	}
-
 	.btn-icon i {
 		margin-left: initial;
-	}
-
-	.rdl-advanced-radio {
-		position: absolute;
-		top: -40px;
-		left: 0px;
-		margin-top: unset;
-		margin-bottom: unset;
-		width: auto;
-		padding: 5px 20px;
-		height: 30px;
-		line-height: 30px;
-	}
-
-	#resetButton {
-		position: unset;
-		width: unset;
-		right: unset;
-		padding: 0 22px;
-		background: #fff;
-	}
-
-	.d-search-none {
-		display: none;
-	}
-
-	.d-none {
-		display: block;
 	}
 
 	.btn-primary {
 		width: auto;
 		margin-bottom: 0;
 		color: #002e70;
-		background-color: #fff;
 		flex-direction: column-reverse;
 		align-items: center;
 		justify-content: center;
 		color: #002e70;
-		padding: 0 22px;
-		background: #fff;
 		margin-bottom: 0;
 		border-radius: 0;
 		cursor: pointer;
-		border: none;
 		display: flex;
-	}
-
-	.rdl-advanced-search {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		color: #171717;
-		margin-bottom: 12px;
-		flex-wrap: nowrap;
-		border: 1px solid #f5f5f5;
-		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-		border-radius: 2px;
-		height: 71px;
-	}
-	.rdl-advanced-search-input {
-		width: 100%;
-	}
-	.form-control {
-		padding: 20px 12px;
-		height: 71px;
-		border: none;
-		display: block;
-		width: 100%;
-		font-size: 1.01rem;
-		font-weight: 400;
-		line-height: 1.5;
-		color: #495057;
-		background-color: #fff;
-		background-clip: padding-box;
-		border-radius: 2px;
-		transition:
-			border-color 0.15s ease-in-out,
-			box-shadow 0.15s ease-in-out;
 	}
 }
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-	.container {
-		display: flex;
-		/* flex-direction: column; */
-		max-width: 1150px;
-	}
-
-	.spinner-container {
-		background-color: white;
-		display: flex;
-		right: initial;
-		margin-top: initial;
-		position: initial;
-	}
-}
-/* MEDIA QUERY 1150 */
-@media (min-width: 1150px) {
-	.container {
-		max-width: 1280px;
-	}
-}
-/* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
-	.container {
-		padding-right: 12px;
-		padding-left: 12px;
+	.form-control {
+		width: 340px;
+	}
+	.form-control.form-control-search {
+		width: 1130px;
+	}
+	.form-control:focus,
+	.form-control:focus-visible {
+		width: 1130px;
 	}
 }
 </style>

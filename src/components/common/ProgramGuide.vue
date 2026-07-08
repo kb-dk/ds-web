@@ -83,7 +83,7 @@
 							>
 								<div class="program-text">
 									<span class="material-icons">
-										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 									</span>
 									{{ item.title[0] }}
 								</div>

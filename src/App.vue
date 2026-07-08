@@ -23,7 +23,7 @@
 	</header>
 	<main
 		id="main-content"
-		class="content"
+		:class="`content ${route.name as string}`"
 	>
 		<Facets v-if="route.name === 'Search'"></Facets>
 		<Underlay></Underlay>
@@ -372,7 +372,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#main-content {
+#main-content .Home {
 	background-color: var(--bg-default);
 }
 #cookiescript_reportdate a,
@@ -395,12 +395,6 @@ export default defineComponent({
 
 :focus {
 	outline: none;
-}
-
-:focus-visible {
-	box-shadow: 0 0 0 3px #02204bea !important;
-	border-radius: 4px !important;
-	transition: box-shadow 0.2s ease-in-out;
 }
 
 .result-enter-active,
@@ -459,7 +453,7 @@ export default defineComponent({
 }
 
 .search-to-home-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -498,7 +492,7 @@ export default defineComponent({
 }
 
 .home-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -532,7 +526,7 @@ export default defineComponent({
 }
 
 .record-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -586,7 +580,7 @@ export default defineComponent({
 }
 
 .search-to-record-leave-to {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -614,7 +608,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
-	background-color: var(--bg-default);
 }
 
 .content {

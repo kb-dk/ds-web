@@ -1,5 +1,6 @@
 <template>
 	<div class="portal-container container">
+		<SpotContainer></SpotContainer>
 		<div class="time-search">
 			<SkewedFoldable
 				:title="$t('timeSearch.timeMachine')"
@@ -58,6 +59,7 @@ import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import SpotContainer from '@/components/common/SpotContainer.vue';
 import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
@@ -66,6 +68,7 @@ export default defineComponent({
 		GridDisplay,
 		TimeSearchComponent,
 		SkewedFoldable,
+		SpotContainer,
 		ContainerSplitBar,
 	},
 
@@ -211,6 +214,7 @@ export default defineComponent({
 
 .portal-container {
 	position: relative;
+	/* margin-top: -110px !important; */
 	align-items: center;
 }
 .categories,
@@ -264,6 +268,19 @@ export default defineComponent({
 	.date-picker {
 		display: grid;
 		justify-content: center;
+	}
+}
+
+@media (min-width: 2000px) {
+	.date-picker,
+	.time-search {
+		/* margin-top: -3vw; */
+	}
+}
+@media (min-width: 4000px) {
+	.date-picker,
+	.time-search {
+		/* margin-top: -1.5vw; */
 	}
 }
 </style>

@@ -453,6 +453,7 @@ h3 {
 }
 .search-container {
 	width: 100%;
+	margin-top: 15px;
 }
 
 .search-resultset {

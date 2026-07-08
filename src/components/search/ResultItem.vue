@@ -40,7 +40,7 @@
 									}`"
 									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 								>
-									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 								</span>
 								<p class="label-small">
 									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
@@ -121,7 +121,7 @@
 							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							class="material-icons ph-icon"
 						>
-							play_circle_filled
+							play_circle
 						</div>
 						<span
 							class="line"
@@ -241,7 +241,7 @@ export default defineComponent({
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation);
 			imageDataObj.imgOption = 'cover';
-			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.icon = 'play_circle';
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
@@ -258,7 +258,7 @@ export default defineComponent({
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
-						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.icon = 'play_circle';
 						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
@@ -672,7 +672,6 @@ export default defineComponent({
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
 		border-left: 1px solid var(--color-border-active);
-		background-color: var(--bg-default);
 	}
 
 	.backfade {
