@@ -78,9 +78,11 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import { returnCategoryIcon, returnFilledIconStatus } from '@/utils/icon-utils';
+import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
+
 export default defineComponent({
 	name: 'SpotCategories',
-	components: { SimpleSpot, KBButton },
+	components: { SimpleSpot, KBButton, NoFacetContent },
 	setup() {
 		const { t } = useI18n();
 		const searchResultStore = useSearchResultStore();
