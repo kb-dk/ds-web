@@ -15,68 +15,54 @@
 				:init="true"
 				@new-search="fetchNewTimeResults()"
 			></TimeSearchFilters>
+
 			<div class="result-container">
-				<div class="result-header">
-					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
-					<KBButton
-						class="btn-medium"
-						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-						button-type="btn-cta"
-						button-color="cta"
-						button-size="medium"
-						:is-router-link="true"
-						right-icon-name="arrow_forward_ios"
-						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-							'timeSearch.result',
-							timeSearchStore.numFound,
-						)} `"
-						@click="timeSearchBehavior()"
-					></KBButton>
+				<div class="container-backdrop">
+					<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+					<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 				</div>
 				<div class="time-results">
-					<div
-						v-for="(item, index) in timeSearchStore.timeResults"
-						:key="index"
-						class="time-result-item"
+					<ItemSlider
+						:padding="true"
+						bg="var(--bg-secondary-light-20)"
+						item-class="time-result"
 					>
-						<GridResultItem
-							:loading="timeSearchStore.loading"
-							:resultdata="item"
-							:index="index"
-							background="var(--bg-default)"
-						></GridResultItem>
+						<template #default="slotProps">
+							<div
+								v-for="(item, index) in timeSearchStore.timeResults"
+								:key="index"
+								class="time-result-item"
+							>
+								<GridResultItem
+									:loading="timeSearchStore.loading"
+									:resultdata="item"
+									:index="index"
+									background="var(--bg-secondary-light-20)"
+									:slot-props="slotProps"
+								></GridResultItem>
+							</div>
+						</template>
+					</ItemSlider>
+					<div class="result-header">
+						<KBButton
+							class="btn-medium"
+							:to="timeSearchLink"
+							:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+							button-type="btn-cta"
+							button-color="cta"
+							button-size="medium"
+							:is-router-link="true"
+							right-icon-name="arrow_forward_ios"
+							:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
+								'timeSearch.result',
+								timeSearchStore.numFound,
+							)} `"
+							@click="timeSearchBehavior()"
+						></KBButton>
 					</div>
 				</div>
 			</div>
-			<div class="further-recap">
-				<div class="further-link">
-					<div class="recap label-small">
-						<span>{{ `${getYears(timeSliderValues)} ${t('timeSearch.year', getYears(timeSliderValues))}` }}</span>
-						/
-						<span>{{ getSublineForMonths(months, t) }}</span>
-						/
-						<span>{{ getSublineForDays(days, t) }}</span>
-						/
-						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
-					</div>
-					<KBButton
-						class="btn-medium"
-						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
-						button-type="btn-cta"
-						button-color="cta"
-						button-size="medium"
-						:is-router-link="true"
-						right-icon-name="arrow_forward_ios"
-						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-							'timeSearch.result',
-							timeSearchStore.numFound,
-						)} `"
-						@click="timeSearchBehavior()"
-					></KBButton>
-				</div>
-			</div>
+			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 		</template>
 	</EdgedContentArea>
 </template>
@@ -109,7 +95,8 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
 import KBButton from '@/components/common/KBButton.vue';
-
+import ItemSlider from '@/components/search/ItemSlider.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
@@ -117,6 +104,8 @@ export default defineComponent({
 		EdgedContentArea,
 		TimeSearchFilters,
 		KBButton,
+		ItemSlider,
+		ContainerSplitBar,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -228,69 +217,52 @@ h2 {
 
 .result-container {
 	width: 100%;
-	padding-top: 45px;
-}
-
-.result-header {
+	position: relative;
 	display: flex;
+	justify-content: center;
+	height: 100%;
+}
+.container-backdrop {
+	position: absolute;
+	height: 100%;
+	width: 100vw;
+	background-color: var(--bg-secondary-light-20);
 	justify-content: space-between;
-	padding-bottom: 20px;
+	display: flex;
 	flex-direction: column;
 }
-
-.further-link a:visited {
+.result-header {
+	display: flex;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	justify-content: end;
 }
 
 .selection-header {
 	color: var(--color-main);
-	padding-top: 4px;
-}
-
-.further-recap {
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.recap {
-	padding-bottom: 10px;
-}
-
-.recap span {
-	background-color: var(--bg-default);
-	color: var(--color-main);
-	border-radius: 4px;
-	width: fit-content;
-	padding-left: 3px;
-	padding-right: 3px;
-}
-
-.further-link {
-	display: flex;
-	align-items: flex-end;
-	flex-direction: column;
-}
-
-.further-results {
-	display: flex;
-	align-items: flex-end;
-	flex-direction: column;
-	justify-content: center;
 }
 
 .time-results {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	gap: 20px;
-	flex-wrap: wrap;
-	padding-bottom: 20px;
+	position: relative;
+	margin-top: 34px;
+	margin-bottom: 34px;
+}
+
+.time-results * {
+	gap: 0px;
 }
 
 .time-result-item {
-	flex: 1 1 calc(100%);
-	max-width: calc(100%);
+	margin-left: 15px;
+	flex: 0 0 30%;
 	box-sizing: border-box;
+	background-color: var(--bg-secondary-light-20);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	user-drag: none;
 }
 
 .header {
@@ -315,44 +287,5 @@ h2 {
 }
 .header p {
 	margin: 0;
-}
-@media (max-width: 480px) {
-	.time-result-item:nth-child(n + 3) {
-		display: none;
-	}
-}
-
-@media (max-width: 990px) {
-	.time-result-item:nth-child(n + 5) {
-		display: none;
-	}
-	.result-container {
-		padding-top: 85px;
-	}
-}
-
-@media (min-width: 480px) {
-	.time-result-item {
-		flex: 1 1 calc(50% - 20px);
-		max-width: calc(50% - 15px);
-		box-sizing: border-box;
-	}
-	.result-header {
-		flex-direction: unset;
-	}
-}
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-	.figures {
-		top: 0px;
-	}
-	.time-result-item {
-		flex: 1 1 calc(25% - 20px);
-		max-width: calc(25% - 15px);
-		box-sizing: border-box;
-	}
-	.header {
-		display: block;
-	}
 }
 </style>
