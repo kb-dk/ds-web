@@ -1,5 +1,8 @@
 <template>
-	<div :class="{ 'item-slider-container': displaySliderArrows }">
+	<div
+		class="item-container"
+		:class="{ 'item-slider-container': displaySliderArrows }"
+	>
 		<div
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
@@ -161,6 +164,10 @@ export default defineComponent({
 	display: flex;
 	justify-content: flex-start;
 }
+
+.item-container {
+	width: 100%;
+}
 .item-slider {
 	position: relative;
 	overflow: hidden;
@@ -169,7 +176,7 @@ export default defineComponent({
 	height: 0px;
 	align-items: center;
 	overflow-x: auto;
-	gap: 15px;
+	gap: 20px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
