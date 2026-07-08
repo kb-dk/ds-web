@@ -436,7 +436,7 @@ export default defineComponent({
 		left 0.25s,
 		opacity 0.25s,
 		width 0.25s;
-	opacity: 0.35;
+	opacity: 0.6;
 	background-color: var(--bg-default);
 }
 
