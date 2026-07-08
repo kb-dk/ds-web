@@ -10,7 +10,7 @@
 			mode="out-in"
 		>
 			<div
-				v-if="resultdata != null && !loading && false"
+				v-if="resultdata != null && !loading"
 				class="data"
 			>
 				<router-link
@@ -86,14 +86,13 @@
 				class="loading-placeholder data"
 			>
 				<div
-					v-if="loading || true"
+					v-if="loading"
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
 				<div class="loading-metadata-container">
 					<div class="thumb-container loading-color">
-						<NoFacetContent v-if="!loading && false"></NoFacetContent>
-						<div v-else></div>
+						<NoFacetContent v-if="!loading"></NoFacetContent>
 					</div>
 					<div class="material-icons loading-icon">play_circle</div>
 					<div
