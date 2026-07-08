@@ -62,16 +62,14 @@
 	>
 		<span
 			v-if="leftIconName || customIconLeft"
-			class="material-icons left"
-			:class="customIconLeft"
+			:class="['material-icons left', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName || customIconRight"
-			class="material-icons right"
-			:class="customIconRight"
+			:class="['material-icons right', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ rightIconName }}
 		</span>
@@ -106,6 +104,12 @@ export default defineComponent({
 			required: true,
 		},
 		isRouterLink: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		iconFilled: {
 			type: Boolean,
 			default() {
 				return false;

@@ -26,7 +26,7 @@
 					</div>
 					<div class="date">
 						<span class="material-icons">
-							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 						</span>
 						<div
 							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
@@ -96,7 +96,7 @@
 						position="relative"
 					></NoFacetContent>
 				</div>
-				<div class="material-icons loading-icon">play_circle_filled</div>
+				<div class="material-icons loading-icon">play_circle</div>
 				<div
 					:style="`width:${Math.random() * 30 + 40}%`"
 					class="date loading"
@@ -221,7 +221,7 @@ export default defineComponent({
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation || '');
 			imageDataObj.imgOption = 'cover';
-			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.icon = 'play_circle';
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
@@ -238,7 +238,7 @@ export default defineComponent({
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
-						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.icon = 'play_circle';
 						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})

@@ -17,7 +17,8 @@
 				button-size="small"
 				class="btn-small"
 				:button-text="`${t(`categories.${santizeAndSimplify(category.name)}`)}`"
-				:custom-icon-left="`category-image ${santizeAndSimplify(category.name)}`"
+				:left-icon-name="returnCategoryIcon(category.name)"
+				:icon-filled="returnFilledIconStatus(category.name)"
 				:is-router-link="true"
 				:data-testid="addTestDataEnrichment('link', 'category-item', `catergory-${category.name}`, i)"
 				:to="{
@@ -76,6 +77,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
 import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
+import { returnCategoryIcon, returnFilledIconStatus } from '@/utils/icon-utils';
 export default defineComponent({
 	name: 'SpotCategories',
 	components: { SimpleSpot, KBButton },
@@ -133,7 +135,17 @@ export default defineComponent({
 				);
 			}
 		});
-		return { t, categories, categoriesLoaded, quotation, scrollToTop, addTestDataEnrichment, santizeAndSimplify };
+		return {
+			t,
+			categories,
+			categoriesLoaded,
+			quotation,
+			scrollToTop,
+			addTestDataEnrichment,
+			santizeAndSimplify,
+			returnCategoryIcon,
+			returnFilledIconStatus,
+		};
 	},
 });
 </script>

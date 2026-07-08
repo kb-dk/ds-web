@@ -66,7 +66,8 @@
 									:key="`genreCheckbox-${index}`"
 									:fqkey="'genre_facet'"
 									:title="singleFacet.title"
-									:svg="singleFacet.title"
+									:icon="returnCategoryIcon(singleFacet.title)"
+									:icon-filled="returnFilledIconStatus(singleFacet.title)"
 									:amount="categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
 									:time-search-active="timeSearchStore.timeFacetsOpen"
 									:number="index"
@@ -85,7 +86,7 @@
 				<FilterExpander
 					type="checkbox"
 					:headline="$t('facets.tvChannels', 2)"
-					icon="play_circle_filled"
+					icon="play_circle"
 					:subline="`${getSublineForFacets(getTVFacets(channelsArray), 'facets.selectedTVChannels')}`"
 					:fade="false"
 					:item-array="getTVFacets(channelsArray)"
@@ -281,6 +282,7 @@ import KBButton from '@/components/common/KBButton.vue';
 import VueSlider from 'vue-3-slider-component';
 import { createFocusTrap } from '@/utils/focus-trap';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
+import { returnCategoryIcon, returnFilledIconStatus } from '@/utils/icon-utils';
 
 export default defineComponent({
 	name: 'Facets',
@@ -348,7 +350,7 @@ export default defineComponent({
 			{
 				value: 'origin:"ds.tv"',
 				title: t('facets.searchMaterial.tv.title'),
-				icon: 'play_circle_filled',
+				icon: 'play_circle',
 				description: t('facets.searchMaterial.tv.desc'),
 			},
 			{
@@ -899,6 +901,8 @@ export default defineComponent({
 			endYear,
 			selectedDate,
 			createTimeFacetSubline,
+			returnCategoryIcon,
+			returnFilledIconStatus,
 			setSearchMethodAndExecute,
 			setDelimitationFilterAndExecute,
 		};

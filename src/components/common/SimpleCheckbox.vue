@@ -24,13 +24,14 @@
 				@change="updateSelection(!checked, title, fqkey)"
 			/>
 			<span
-				v-if="svg"
+				v-if="icon"
 				:class="[
-					'display-image svg',
-					santizeAndSimplify(svg),
-					{ disabled: (amount === '0' && !checked) || (disabled && !checked) },
+					'display-image icon material-icons',
+					{ disabled: (amount === '0' && !checked) || (disabled && !checked), outline: iconFilled },
 				]"
-			></span>
+			>
+				{{ icon }}
+			</span>
 			<span
 				v-if="channel"
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
@@ -87,11 +88,18 @@ export default defineComponent({
 				return '';
 			},
 		},
-		svg: {
+		icon: {
 			type: String,
 			required: false,
 			default() {
 				return '';
+			},
+		},
+		iconFilled: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
 			},
 		},
 		channel: {
@@ -199,16 +207,14 @@ export default defineComponent({
 	background-position: center center;
 }
 
+.display-image.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .display-image.disabled.no-icon {
 	opacity: 0.3;
-}
-
-.display-image.svg {
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
-}
-
-.display-image.svg.disabled {
-	background-image: url('@/assets/icons/gray/diverse-gray.svg');
 }
 
 .display-image.channel {
@@ -274,6 +280,10 @@ export default defineComponent({
 
 .checkbox-container.disabled .label {
 	cursor: default;
+}
+
+.checkbox-container.disabled .icon {
+	color: var(--color-disabled-font);
 }
 
 .label:hover .underline {
@@ -400,74 +410,6 @@ input:focus {
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
-}
-
-.svg.diverse {
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
-}
-.svg.dokumentar {
-	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
-}
-.svg.film-og-serier {
-	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
-}
-.svg.kultur-og-oplysning {
-	background-image: url('@/assets/icons/blue/kultur-blue.svg');
-}
-.svg.livsstil {
-	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
-}
-.svg.musik {
-	background-image: url('@/assets/icons/blue/musik-blue.svg');
-}
-.svg.nyheder-politik-og-samfund {
-	background-image: url('@/assets/icons/blue/nyheder-blue.svg');
-}
-.svg.sport {
-	background-image: url('@/assets/icons/blue/sport-blue.svg');
-}
-.svg.humor-quiz-og-underholdning {
-	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
-}
-.svg.natur-og-videnskab {
-	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
-}
-.svg.brn-og-unge {
-	background-image: url('@/assets/icons/blue/born-blue.svg');
-}
-
-.svg.diverse.disabled {
-	background-image: url('@/assets/icons/gray/diverse-gray.svg');
-}
-.svg.dokumentar.disabled {
-	background-image: url('@/assets/icons/gray/dokumentar-gray.svg');
-}
-.svg.film-og-serier.disabled {
-	background-image: url('@/assets/icons/gray/fiktion-gray.svg');
-}
-.svg.kultur-og-oplysning.disabled {
-	background-image: url('@/assets/icons/gray/kultur-gray.svg');
-}
-.svg.livsstil.disabled {
-	background-image: url('@/assets/icons/gray/livsstil-gray.svg');
-}
-.svg.musik.disabled {
-	background-image: url('@/assets/icons/gray/musik-gray.svg');
-}
-.svg.nyheder-politik-og-samfund.disabled {
-	background-image: url('@/assets/icons/gray/nyheder-gray.svg');
-}
-.svg.sport.disabled {
-	background-image: url('@/assets/icons/gray/sport-gray.svg');
-}
-.svg.humor-quiz-og-underholdning.disabled {
-	background-image: url('@/assets/icons/gray/underholdning-gray.svg');
-}
-.svg.natur-og-videnskab.disabled {
-	background-image: url('@/assets/icons/gray/videnskab-gray.svg');
-}
-.svg.brn-og-unge.disabled {
-	background-image: url('@/assets/icons/gray/born-gray.svg');
 }
 .label {
 	cursor: pointer;
