@@ -63,14 +63,12 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 	margin-bottom: 80px;
 	margin-top: 34px;
-	/* width: 100%;
+	width: 100%;
 	display: flex;
 	justify-content: center;
-	height: 100%; */
+	height: 100%;
 }
-.grid-display * {
-	gap: 0px;
-}
+
 .related-record.draggable-item {
 	margin-left: 15px;
 	flex: 0 0 30%;
