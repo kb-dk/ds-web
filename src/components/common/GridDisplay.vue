@@ -4,6 +4,7 @@
 			:padding="true"
 			bg="var(--bg-secondary-light-20)"
 			item-class="rotational-results"
+			bg-scroll-blue="true"
 		>
 			<template #default="slotProps">
 				<div

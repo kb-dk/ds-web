@@ -90,43 +90,45 @@
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
-				<div class="thumb-container loading-color">
-					<NoFacetContent v-if="!loading && false"></NoFacetContent>
-					<div v-else></div>
-				</div>
-				<div class="material-icons loading-icon">play_circle</div>
-				<div
-					:style="`width:${Math.random() * 30 + 40}px`"
-					class="date loading"
-				></div>
-				<div class="date-loading-container">
-					<div class="material-icons loading-icon">schedule</div>
+				<div class="loading-metadata-container">
+					<div class="thumb-container loading-color">
+						<NoFacetContent v-if="!loading && false"></NoFacetContent>
+						<div v-else></div>
+					</div>
+					<div class="material-icons loading-icon">play_circle</div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}px`"
+						:style="`width:${Math.random() * 30 + 40}px`"
 						class="date loading"
 					></div>
+					<div class="date-loading-container">
+						<div class="material-icons loading-icon">schedule</div>
+						<div
+							:style="`width:${Math.random() * 20 + 20}px`"
+							class="date loading"
+						></div>
+						<div
+							:style="`width:${Math.random() * 20 + 20}px`"
+							class="date loading"
+						></div>
+					</div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}px`"
-						class="date loading"
+						:style="`width:${Math.random() * 30 + 50}px`"
+						class="title loading"
 					></div>
-				</div>
-				<div
-					:style="`width:${Math.random() * 30 + 50}px`"
-					class="title loading"
-				></div>
-				<div class="summary loading">
-					<div
-						class="word"
-						:style="`width:100%`"
-					></div>
-					<div
-						class="word"
-						:style="`width:100%`"
-					></div>
-					<div
-						class="word"
-						:style="`width:80%`"
-					></div>
+					<div class="summary loading">
+						<div
+							class="word"
+							:style="`width:100%`"
+						></div>
+						<div
+							class="word"
+							:style="`width:100%`"
+						></div>
+						<div
+							class="word"
+							:style="`width:80%`"
+						></div>
+					</div>
 				</div>
 			</div>
 		</Transition>
@@ -299,7 +301,13 @@ export default defineComponent({
 
 <style scoped>
 .loading-placeholder {
+	position: relative;
+	min-width: 100px;
 	padding-right: 40px;
+	overflow: hidden;
+}
+.loading-metadata-container {
+	/* width: 100%; */
 }
 .grid-result-item {
 	width: 100%;

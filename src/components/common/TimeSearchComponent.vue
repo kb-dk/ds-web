@@ -26,6 +26,7 @@
 						:padding="true"
 						bg="var(--bg-secondary-light-20)"
 						item-class="time-result"
+						bg-scroll-blue="true"
 					>
 						<template #default="slotProps">
 							<div
