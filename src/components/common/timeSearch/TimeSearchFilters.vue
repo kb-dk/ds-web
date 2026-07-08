@@ -436,8 +436,8 @@ export default defineComponent({
 		left 0.25s,
 		opacity 0.25s,
 		width 0.25s;
-	opacity: 0.85;
-	background-color: #fafafa;
+	opacity: 0.35;
+	background-color: var(--bg-default);
 }
 
 .start-block {

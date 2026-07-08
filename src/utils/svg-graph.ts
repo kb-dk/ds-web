@@ -8,8 +8,8 @@ function createSVGCurvedLine(points: pointItem[]) {
 	svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
-	path.setAttribute('fill', '#002e70'); // No fill to avoid closing the path
-	path.setAttribute('stroke', '#001c44');
+	path.setAttribute('fill', '#ea9fbc'); // No fill to avoid closing the path
+	path.setAttribute('stroke', '#ea9fbc');
 	path.setAttribute('stroke-width', '2');
 	path.setAttribute('fill-opacity', '1');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
