@@ -12,9 +12,9 @@ function createSVGCurvedLine(points: pointItem[]) {
 	gradient.setAttribute('y2', '0%');
 
 	const stops = [
-		{ offset: '0%', color: '#f8a8c8' },
-		{ offset: '50%', color: '#9d7bff' },
-		{ offset: '100%', color: '#4cc3ff' },
+		{ offset: '0%', color: '#FBECF2' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#ea9fbc' },
 	];
 
 	stops.forEach(({ offset, color }) => {
@@ -26,14 +26,36 @@ function createSVGCurvedLine(points: pointItem[]) {
 
 	svg.appendChild(gradient);
 
+	const gradient2 = document.createElementNS(svgns, 'linearGradient');
+	gradient2.setAttribute('id', 'curveGradient2');
+	gradient2.setAttribute('x1', '0%');
+	gradient2.setAttribute('y1', '0%');
+	gradient2.setAttribute('x2', '100%');
+	gradient2.setAttribute('y2', '0%');
+
+	const stops2 = [
+		{ offset: '0%', color: '#ea9fbc' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#FBECF2' },
+	];
+
+	stops2.forEach(({ offset, color }) => {
+		const stop = document.createElementNS(svgns, 'stop');
+		stop.setAttribute('offset', offset);
+		stop.setAttribute('stop-color', color);
+		gradient2.appendChild(stop);
+	});
+
+	svg.appendChild(gradient2);
+
 	svg.setAttribute('height', '100%');
 	svg.setAttribute('width', '100%');
 	svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
-	path.setAttribute('fill', 'url(#curveGradient)');
-	path.setAttribute('stroke', '#FBECF2');
-	path.setAttribute('stroke-width', '0.5');
+	path.setAttribute('fill', 'url(#curveGradient2)');
+	path.setAttribute('stroke', 'url(#curveGradient)');
+	path.setAttribute('stroke-width', '1');
 	path.setAttribute('fill-opacity', '1');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
 
