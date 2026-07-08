@@ -303,7 +303,6 @@ export default defineComponent({
 .loading-placeholder {
 	position: relative;
 	min-width: 100px;
-	padding-right: 40px;
 	overflow: hidden;
 }
 .loading-metadata-container {

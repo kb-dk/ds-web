@@ -1,7 +1,7 @@
 <template>
 	<div class="grid-display">
 		<ItemSlider
-			:padding="true"
+			:padding="false"
 			bg="var(--bg-secondary-light-20)"
 			item-class="rotational-results"
 			bg-scroll-blue="true"

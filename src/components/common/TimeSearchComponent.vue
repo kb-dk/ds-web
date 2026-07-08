@@ -23,7 +23,7 @@
 				</div>
 				<div class="time-results">
 					<ItemSlider
-						:padding="true"
+						:padding="false"
 						bg="var(--bg-secondary-light-20)"
 						item-class="time-result"
 						bg-scroll-blue="true"
@@ -245,16 +245,13 @@ h2 {
 
 .time-results {
 	position: relative;
-	margin-top: 34px;
+	margin-top: 54px;
 	margin-bottom: 34px;
-}
-
-.time-results * {
-	gap: 0px;
+	gap: 15px;
+	width: 100%;
 }
 
 .time-result-item {
-	margin-left: 15px;
 	flex: 0 0 30%;
 	box-sizing: border-box;
 	background-color: var(--bg-secondary-light-20);

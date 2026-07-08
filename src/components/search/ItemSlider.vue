@@ -176,7 +176,7 @@ export default defineComponent({
 	height: 0px;
 	align-items: center;
 	overflow-x: auto;
-	gap: 15px;
+	gap: 20px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
