@@ -2,23 +2,11 @@
 	<div class="portal-container container">
 		<SpotContainer></SpotContainer>
 		<div class="time-search">
-			<SkewedFoldable
+			<TimeSearchComponent
 				:title="$t('timeSearch.timeMachine')"
-				:left="false"
-				bg="var(--bg-default)"
-				text="var(--color-main)"
-				icon="schedule"
 				:subtitle="$t('timeSearch.timeMachineSubtitle')"
-				:fullwidth="true"
-				:dashed-bottom="false"
-				:shadow-bottom="false"
-			>
-				<TimeSearchComponent
-					:title="$t('timeSearch.timeMachine')"
-					:subtitle="$t('timeSearch.timeMachineSubtitle')"
-					text="var(--color-main)"
-				></TimeSearchComponent>
-			</SkewedFoldable>
+				text="var(--color-main)"
+			></TimeSearchComponent>
 		</div>
 		<div class="title">
 			<h2 class="heading-display">
@@ -50,7 +38,6 @@ import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -67,7 +54,6 @@ export default defineComponent({
 	components: {
 		GridDisplay,
 		TimeSearchComponent,
-		SkewedFoldable,
 		SpotContainer,
 		ContainerSplitBar,
 	},
@@ -209,20 +195,16 @@ export default defineComponent({
 }
 .time-search {
 	background-color: var(--bg-default);
-	margin-bottom: -70px;
+	width: 100%;
+	position: relative;
+	z-index: 1;
+	margin-bottom: 20px !important;
 }
 
 .portal-container {
 	position: relative;
 	/* margin-top: -110px !important; */
 	align-items: center;
-}
-.categories,
-.date-picker,
-.time-search {
-	position: relative;
-	width: calc(100% + 24px);
-	margin-left: -12px;
 }
 
 .container {
@@ -249,10 +231,6 @@ export default defineComponent({
 }
 .date-picker {
 	z-index: 2;
-}
-.time-search {
-	z-index: 1;
-	margin-bottom: 40px !important;
 }
 
 @media (min-width: 990px) {

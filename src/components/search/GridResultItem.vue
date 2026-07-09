@@ -316,6 +316,7 @@ export default defineComponent({
 	position: relative;
 	color: var(--color-default);
 	background-color: var(--bg-default);
+	min-height: 340px;
 }
 
 .grid-result-item:hover:after {
@@ -340,9 +341,9 @@ export default defineComponent({
 	left: 50%;
 	width: 20px;
 	line-height: 0.5;
-	margin-top: 15px;
 	transform-origin: center;
 	will-change: transform;
+	bottom: -5px;
 }
 
 .thumb-container {
