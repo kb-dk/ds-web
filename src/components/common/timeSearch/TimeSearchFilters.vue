@@ -568,6 +568,8 @@ fieldset {
 .slider-whiteoff-container {
 	position: relative;
 	margin-bottom: 20px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 .explanation-for-data {
 	position: absolute;
@@ -952,6 +954,8 @@ fieldset {
 	top: 0px;
 	height: 0px;
 	visibility: hidden;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
@@ -999,6 +1003,14 @@ fieldset {
 
 	.explanation-for-data {
 		display: flex;
+	}
+}
+@media (min-width: 1320px) {
+	.slider-whiteoff-container {
+		padding: 0;
+	}
+	.data-container {
+		padding: 0;
 	}
 }
 </style>
