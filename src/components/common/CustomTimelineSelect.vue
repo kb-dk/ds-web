@@ -95,15 +95,13 @@ export default defineComponent({
 
 .select-container select {
 	border: 0px;
-	background-color: white;
-	border: 1px solid #dadada;
+	border: 1px solid var(--color-main);
 	border-radius: 4px;
 	padding: 4px 50px 5px 8px;
-	color: var(--color-default);
+	color: var(--color-main);
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	background-color: white;
-	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
+	background: url('@/assets/icons/blue/dd-arrow-blue.svg') var(--bg-default);
 	background-repeat: no-repeat;
 	background-position-x: 85px;
 	background-position-y: 13px;
@@ -113,7 +111,7 @@ export default defineComponent({
 }
 
 .select-container:hover select {
-	border: 1px solid #002e70;
+	border: 1px solid var(--bg-main-3);
 	cursor: pointer;
 }
 
@@ -129,7 +127,7 @@ label {
 	display: block;
 	width: 1px;
 	height: 24px;
-	background-color: lightgrey;
+	background-color: var(--color-main);
 	top: 10px;
 	right: 0px;
 	position: absolute;

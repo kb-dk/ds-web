@@ -3,14 +3,59 @@ import { pointItem } from '@/types/TimeSearchTypes';
 function createSVGCurvedLine(points: pointItem[]) {
 	const svgns = 'http://www.w3.org/2000/svg';
 	const svg = document.createElementNS(svgns, 'svg');
+
+	const gradient = document.createElementNS(svgns, 'linearGradient');
+	gradient.setAttribute('id', 'curveGradient');
+	gradient.setAttribute('x1', '0%');
+	gradient.setAttribute('y1', '0%');
+	gradient.setAttribute('x2', '100%');
+	gradient.setAttribute('y2', '0%');
+
+	const stops = [
+		{ offset: '0%', color: '#FBECF2' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#ea9fbc' },
+	];
+
+	stops.forEach(({ offset, color }) => {
+		const stop = document.createElementNS(svgns, 'stop');
+		stop.setAttribute('offset', offset);
+		stop.setAttribute('stop-color', color);
+		gradient.appendChild(stop);
+	});
+
+	svg.appendChild(gradient);
+
+	const gradient2 = document.createElementNS(svgns, 'linearGradient');
+	gradient2.setAttribute('id', 'curveGradient2');
+	gradient2.setAttribute('x1', '0%');
+	gradient2.setAttribute('y1', '0%');
+	gradient2.setAttribute('x2', '100%');
+	gradient2.setAttribute('y2', '0%');
+
+	const stops2 = [
+		{ offset: '0%', color: '#ea9fbc' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#FBECF2' },
+	];
+
+	stops2.forEach(({ offset, color }) => {
+		const stop = document.createElementNS(svgns, 'stop');
+		stop.setAttribute('offset', offset);
+		stop.setAttribute('stop-color', color);
+		gradient2.appendChild(stop);
+	});
+
+	svg.appendChild(gradient2);
+
 	svg.setAttribute('height', '100%');
 	svg.setAttribute('width', '100%');
 	svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
-	path.setAttribute('fill', '#ea9fbc'); // No fill to avoid closing the path
-	path.setAttribute('stroke', '#ea9fbc');
-	path.setAttribute('stroke-width', '2');
+	path.setAttribute('fill', 'url(#curveGradient2)');
+	path.setAttribute('stroke', 'url(#curveGradient)');
+	path.setAttribute('stroke-width', '1');
 	path.setAttribute('fill-opacity', '1');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
 
@@ -75,7 +120,7 @@ function createSVGCurvedLine(points: pointItem[]) {
 		line.setAttribute('x2', String(p.x));
 		line.setAttribute('y2', String(Number(p.y - 10)));
 		line.setAttribute('class', 'line-class');
-		line.setAttribute('stroke', '#ffffff27');
+		line.setAttribute('stroke', '#493f431e');
 		line.setAttribute('stroke-width', '1');
 		line.setAttribute('vector-effect', 'non-scaling-stroke');
 		line.setAttribute('clip-path', `url(#${clipId})`);
