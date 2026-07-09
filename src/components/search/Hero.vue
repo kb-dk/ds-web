@@ -1,13 +1,23 @@
 <template>
 	<div class="hero-container">
-		<img
-			ref="imageRef"
-			title="search background"
-			class="bg-image"
-			fetchpriority="high"
-			:srcset="srcSetValues"
-			sizes="100vw"
-		/>
+		<picture>
+			<source
+				:srcset="currentImages.desktop"
+				media="(width > 991px)"
+			/>
+			<source
+				:srcset="currentImages.tablet"
+				media="(width > 641px)"
+			/>
+			<img
+				ref="imageRef"
+				:src="currentImages.mobile"
+				class="bg-image"
+				fetchpriority="high"
+				title="search background"
+				alt=""
+			/>
+		</picture>
 		<div class="hue-overlay"></div>
 	</div>
 </template>
@@ -32,13 +42,26 @@ export default defineComponent({
 		const { t } = useI18n();
 		const currentProgress = ref();
 		const imageRef = ref<HTMLImageElement | null>();
-		const srcSetValues = computed(() => {
-			if (authStore.heroBannerNumber === 1) {
-				return `${hero1Mobile} 640w, ${hero1Tablet} 980w, ${hero1Desktop} 1920w`;
-			} else if (authStore.heroBannerNumber === 2) {
-				return `${hero2Mobile} 640w, ${hero2Tablet} 980w, ${hero2Desktop} 1920w`;
-			} else {
-				return `${hero3Mobile} 640w, ${hero3Tablet} 980w, ${hero3Desktop} 1920w`;
+		const currentImages = computed(() => {
+			switch (authStore.heroBannerNumber) {
+				case 1:
+					return {
+						mobile: hero1Mobile,
+						tablet: hero1Tablet,
+						desktop: hero1Desktop,
+					};
+				case 2:
+					return {
+						mobile: hero2Mobile,
+						tablet: hero2Tablet,
+						desktop: hero2Desktop,
+					};
+				default:
+					return {
+						mobile: hero3Mobile,
+						tablet: hero3Tablet,
+						desktop: hero3Desktop,
+					};
 			}
 		});
 		onMounted(() => {
@@ -66,7 +89,7 @@ export default defineComponent({
 			currentProgress,
 			t,
 			imageRef,
-			srcSetValues,
+			currentImages,
 		};
 	},
 });
