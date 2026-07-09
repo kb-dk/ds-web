@@ -73,7 +73,7 @@ export default defineComponent({
 
 .bg-image {
 	width: 100vw;
-	height: 300px;
+	height: 100%;
 	object-fit: cover;
 	position: absolute;
 	background-color: var(--bg-default);
@@ -107,21 +107,13 @@ export default defineComponent({
 	.hero-container {
 		height: 475px;
 	}
-	.bg-image {
-		height: 400px;
-	}
 }
 
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.hero-container {
 		justify-content: center;
-	}
-	.hero-container {
-		height: 575px;
-	}
-	.bg-image {
-		height: 500px;
+		height: 810px;
 	}
 	.container {
 		display: flex;
