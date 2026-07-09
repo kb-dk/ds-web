@@ -18,7 +18,6 @@
 				alt=""
 			/>
 		</picture>
-		<div class="hue-overlay"></div>
 	</div>
 </template>
 <script lang="ts">
@@ -106,20 +105,15 @@ export default defineComponent({
 	margin-bottom: 20px;
 }
 
-.hue-overlay {
-	content: '';
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	max-width: 1420px;
-	width: 100vw;
-}
-
 .bg-image {
 	display: block;
 	width: 100%;
 	height: auto;
 	max-width: 1420px;
+}
+
+.hero-container picture {
+	width: 100%;
 }
 
 /* MEDIA QUERY 800 */
@@ -128,10 +122,30 @@ export default defineComponent({
 		margin-left: 0px;
 	}
 }
-@media (min-width: 1680px) {
-	.hue-overlay {
-		background-image: linear-gradient(to right, var(--bg-default), transparent 100px),
-			linear-gradient(to left, var(--bg-default), transparent 100px);
+
+@media (min-width: 1280px) {
+	.hero-container picture {
+		width: initial;
+	}
+}
+
+@media (min-width: 990px) and (max-width: 1279px) {
+	.bg-image {
+		object-fit: cover;
+		height: 563px !important;
+	}
+}
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+	.bg-image {
+		object-fit: cover;
+		height: 680px;
+	}
+}
+@media (min-width: 1440px) {
+	.bg-image {
+		object-fit: cover;
+		height: 800px !important;
 	}
 }
 </style>

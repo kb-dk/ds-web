@@ -191,4 +191,57 @@ export default defineComponent({
 		top: 305px !important;
 	}
 }
+
+@media (min-width: 990px) and (max-width: 1279px) {
+	.line:nth-of-type(1) {
+		top: 44.07px !important;
+	}
+	.line:nth-of-type(2) {
+		top: 154.43px !important;
+	}
+	.line:nth-of-type(3) {
+		top: 339px !important;
+	}
+	.line:nth-of-type(4) {
+		top: 497px !important;
+	}
+	.line:nth-of-type(5) {
+		top: 698px !important;
+	}
+}
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+	.line:nth-of-type(1) {
+		top: 44.07px !important;
+	}
+	.line:nth-of-type(2) {
+		top: 154.43px !important;
+	}
+	.line:nth-of-type(3) {
+		top: 355px !important;
+	}
+	.line:nth-of-type(4) {
+		top: 615px !important;
+	}
+	.line:nth-of-type(5) {
+		top: 815px !important;
+	}
+}
+@media (min-width: 1440px) {
+	.line:nth-of-type(1) {
+		top: 44.07px !important;
+	}
+	.line:nth-of-type(2) {
+		top: 154.43px;
+	}
+	.line:nth-of-type(3) {
+		top: 427px;
+	}
+	.line:nth-of-type(4) {
+		top: 730px;
+	}
+	.line:nth-of-type(5) {
+		top: 933px !important;
+	}
+}
 </style>
