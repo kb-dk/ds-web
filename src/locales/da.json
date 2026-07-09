@@ -529,7 +529,7 @@
     "ChoseMaterialDesc":"Der skal være valgt mindst et materiale for at få et søgeresultat."
   },
   "hero": {
-      "title":"DR-arkiv",
+      "title":"DR-arkivet",
       "subtitle":"Det Kgl. Biblioteks",
       "progress":"Vi har nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
