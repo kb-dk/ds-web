@@ -954,8 +954,7 @@ fieldset {
 	top: 0px;
 	height: 0px;
 	visibility: hidden;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-right: 30px;
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
