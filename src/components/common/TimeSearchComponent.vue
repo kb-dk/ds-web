@@ -224,6 +224,7 @@ h2 {
 	justify-content: space-between;
 	display: flex;
 	flex-direction: column;
+	margin-top: 5px;
 }
 .result-header {
 	display: flex;
@@ -278,5 +279,10 @@ h2 {
 }
 .header p {
 	margin: 0;
+}
+@media (min-width: 640px) {
+	.container-backdrop {
+		margin-top: 0;
+	}
 }
 </style>
