@@ -69,19 +69,15 @@
 import { HeaderType } from '@/types/HeaderType';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { defineComponent, onMounted, PropType, ref, toRaw, watch } from 'vue';
+import { defineComponent, onMounted, ref, toRaw, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'HeaderMenu',
-	props: {
-		searchBarOpen: { type: Boolean as PropType<boolean>, required: true },
-	},
+	props: {},
 
-	emits: ['toggleSearchBar'],
-	setup(props, { emit }) {
+	setup() {
 		const { t, messages, locale } = useI18n();
 		const currentLocaleMessages = ref(undefined as unknown as HeaderType);
 		const mainHeaderRef = ref<HTMLFormElement | null>(null);
@@ -97,33 +93,6 @@ export default defineComponent({
 			const routeQueries = { ...route.query };
 			routeQueries.locale = locale.value;
 			router.replace({ query: routeQueries });
-		};
-
-		const toggleSearchBar = () => {
-			emit('toggleSearchBar');
-		};
-
-		const toggleMainHeader = () => {
-			if (!menuOpen.value) {
-				mainHeaderRef.value?.classList.toggle('collapse');
-				mainHeaderRef.value?.classList.toggle('show');
-				gsap.to(mainHeaderRef.value, {
-					height: 'auto',
-					duration: 0.25,
-					overwrite: false,
-				});
-			} else {
-				gsap.to(mainHeaderRef.value, {
-					height: '0px',
-					duration: 0.25,
-					overwrite: false,
-					onComplete: () => {
-						mainHeaderRef.value?.classList.toggle('collapse');
-						mainHeaderRef.value?.classList.toggle('show');
-					},
-				});
-			}
-			menuOpen.value = !menuOpen.value;
 		};
 
 		onMounted(() => {
@@ -144,8 +113,6 @@ export default defineComponent({
 			t,
 			currentLocaleMessages,
 			addTestDataEnrichment,
-			toggleSearchBar,
-			toggleMainHeader,
 			menuOpen,
 		};
 	},
@@ -155,7 +122,8 @@ export default defineComponent({
 <style scoped>
 .overall-header {
 	position: relative;
-	z-index: 4;
+	z-index: 3;
+	height: 42px;
 	background-color: var(--bg-header);
 	display: flex;
 	justify-content: center;

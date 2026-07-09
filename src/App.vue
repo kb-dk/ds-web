@@ -428,7 +428,7 @@ export default defineComponent({
 
 .test-env {
 	text-transform: uppercase;
-	position: sticky;
+	position: absolute;
 	height: 30px;
 	line-height: 30px;
 	font-size: 16px;
@@ -438,8 +438,6 @@ export default defineComponent({
 	width: 100%;
 	z-index: 5;
 	text-align: center;
-	background: #002e70;
-
 	span {
 		border-bottom: 1px solid white;
 	}

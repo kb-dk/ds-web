@@ -3,7 +3,7 @@
 		v-if="route.name !== 'Record'"
 		class="search-box"
 	>
-		<div class="search-container">
+		<div :class="hasFocus || route.name === 'Search' ? 'search-container wide' : 'search-container'">
 			<div class="container main-12">
 				<form
 					ref="searchFormRef"
@@ -12,93 +12,92 @@
 					role="search"
 					class="search-form"
 					@submit.prevent="search()"
+					@focusin="hasFocus = true"
+					@focusout="hasFocus = false"
 				>
 					<div
 						role="group"
 						:class="debounceMechanic ? 'rdl-advanced-search locked' : 'rdl-advanced-search'"
 					>
 						<div class="search-bar-container">
-							<div class="rdl-advanced-search-input">
-								<label
-									for="focusSearchInput"
-									class="sr-only"
-								>
-									{{ t('search.searchInput') }}
-								</label>
-								<input
-									id="focusSearchInput"
-									v-model="searchResultStore.currentQuery"
-									spellcheck="false"
-									autocomplete="off"
-									type="search"
-									:disabled="debounceMechanic ? true : false"
-									class="form-control label-big"
-									:class="{ 'form-control-search': route.name === 'Search' }"
-									:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
-									name="simpleSearch"
-									:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
-									@keydown="updateKeystrokeForAutocomplete"
-								/>
-							</div>
-							<div class="button-container">
-								<div
-									v-if="searchResultStore.loading"
-									class="spinner-container"
-								>
-									<div
-										:aria-busy="searchResultStore.loading ? true : false"
-										:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
-									></div>
-								</div>
-								<button
-									v-if="
-										searchResultStore.searchResult.length !== 0 ||
-										searchResultStore.searchFired === true ||
-										(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
-									"
-									id="resetButton"
-									type="button"
-									aria-label="reset"
-									class="btn btn-primary btn-icon"
-									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
-									@click="reset()"
-								>
-									<i
-										class="material-icons"
-										aria-hidden="true"
-									>
-										close
-									</i>
-								</button>
-								<button
-									id="searchButton"
-									ref="searchButton"
-									:disabled="debounceMechanic ? true : false"
-									type="submit"
-									aria-label="search"
-									class="btn btn-primary btn-icon"
-									:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
-									@submit="search()"
-								>
-									<i
-										class="material-icons"
-										aria-hidden="true"
-									>
-										search
-									</i>
-								</button>
-							</div>
+							<label
+								for="focusSearchInput"
+								class="sr-only"
+							>
+								{{ t('search.searchInput') }}
+							</label>
+							<input
+								id="focusSearchInput"
+								v-model="searchResultStore.currentQuery"
+								spellcheck="false"
+								autocomplete="off"
+								type="search"
+								:disabled="debounceMechanic ? true : false"
+								class="form-control label-big"
+								:class="{ 'form-control-search': route.name === 'Search' }"
+								:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
+								name="simpleSearch"
+								:data-testid="addTestDataEnrichment('input', 'searchbar', 'search-field', 0)"
+								@keydown="updateKeystrokeForAutocomplete"
+							/>
 						</div>
-
-						<Transition name="fade">
-							<div class="autocomplete-container">
-								<Autocomplete :keystroke="keyStrokeEvent" />
+						<div class="button-container">
+							<div
+								v-if="searchResultStore.loading"
+								class="spinner-container"
+							>
+								<div
+									:aria-busy="searchResultStore.loading ? true : false"
+									:class="searchResultStore.loading || true ? 'spinner show' : 'spinner hide'"
+								></div>
 							</div>
-						</Transition>
+							<button
+								v-if="
+									searchResultStore.searchResult.length !== 0 ||
+									searchResultStore.searchFired === true ||
+									(searchResultStore.currentQuery.length !== 0 && searchResultStore.currentQuery !== undefined)
+								"
+								id="resetButton"
+								type="button"
+								aria-label="reset"
+								class="btn btn-primary btn-icon"
+								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-reset', 0)"
+								@click="reset()"
+							>
+								<i
+									class="material-icons"
+									aria-hidden="true"
+								>
+									close
+								</i>
+							</button>
+							<button
+								id="searchButton"
+								ref="searchButton"
+								:disabled="debounceMechanic ? true : false"
+								type="submit"
+								aria-label="search"
+								class="btn btn-primary btn-icon"
+								:data-testid="addTestDataEnrichment('button', 'searchbar', 'search-execute', 0)"
+								@submit="search()"
+							>
+								<i
+									class="material-icons"
+									aria-hidden="true"
+								>
+									search
+								</i>
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>
 		</div>
+		<Transition name="fade">
+			<div class="autocomplete-container">
+				<Autocomplete :keystroke="keyStrokeEvent" />
+			</div>
+		</Transition>
 	</div>
 </template>
 
@@ -119,6 +118,7 @@ export default defineComponent({
 	},
 	setup() {
 		const { t } = useI18n();
+		const hasFocus = ref(false);
 		const searchResultStore = useSearchResultStore();
 		const debounceMechanic = ref(false);
 		const keyStrokeEvent = ref<KeyboardEvent | undefined>(undefined);
@@ -216,6 +216,7 @@ export default defineComponent({
 			selectButtonRef,
 			selectedPortal,
 			route,
+			hasFocus,
 		};
 	},
 });
@@ -277,11 +278,12 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	z-index: 6;
 	left: 0;
-	width: 100%;
+	width: stretch;
 	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
-	top: 100%;
+	top: 192px;
+	flex-direction: column;
 }
 .btn-icon i {
 	margin-left: auto;
@@ -292,12 +294,23 @@ input[type='search']::-webkit-search-results-decoration {
 	cursor: default;
 }
 
+.search-container.wide {
+	width: 100%;
+}
+
 .search-container {
 	display: flex;
 	height: 100%;
+	width: 490px;
 	align-content: center;
 	justify-content: center;
 	align-items: center;
+	border: 1px solid var(--color-main);
+	border-radius: var(--rounded-medium);
+	overflow: hidden;
+	box-sizing: border-box;
+	transition: all 0.35s cubic-bezier(0.85, 0.09, 0.15, 0.91);
+	background-color: var(--bg-default);
 }
 
 .btn-icon {
@@ -367,16 +380,14 @@ input:focus {
 
 .rdl-advanced-search {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	color: var(--color-main);
 	flex-wrap: nowrap;
 	border-radius: var(--rounded-medium);
 	height: 71px;
 	overflow: visible;
 }
-.rdl-advanced-search-input {
-	color: var(--color-main);
-}
+
 .search-bar-container {
 	width: 100%;
 	display: flex;
@@ -384,7 +395,7 @@ input:focus {
 	box-sizing: border-box;
 }
 .form-control {
-	width: calc(100vw - 150px);
+	width: calc(490px - 150px);
 	padding: 6px 12px;
 	border-radius: var(--rounded-small) 0px 0px var(--rounded-small);
 	color: var(--color-main);
@@ -392,19 +403,12 @@ input:focus {
 	padding: 20px 12px;
 	height: 71px;
 	border: none;
-	/* display: block; */
 	background-clip: padding-box;
-	transition: all 0.3s linear;
-	transition-delay: 0.5s;
-	border-left: 1px solid var(--color-border-success);
-	border-top: 1px solid var(--color-border-success);
-	border-bottom: 1px solid var(--color-border-success);
 	box-sizing: border-box;
 }
 .form-control:focus,
 .form-control:focus-visible {
-	transition: all 0.5s linear;
-	width: calc(100vw - 150px);
+	width: calc(100%);
 }
 
 .form-control::placeholder {
@@ -418,14 +422,9 @@ input:focus {
 	position: relative;
 	justify-content: flex-end;
 	background-color: var(--bg-default);
-	border-top: 1px solid var(--color-border-success);
-	border-bottom: 1px solid var(--color-border-success);
-	border-right: 1px solid var(--color-border-success);
 	border-left: 0;
 	border-radius: 0px var(--rounded-small) var(--rounded-small) 0px;
 	box-sizing: border-box;
-}
-.button-container:focus {
 }
 .btn-primary {
 	display: block;
@@ -497,16 +496,12 @@ input:focus {
 		display: flex;
 	}
 }
-@media (min-width: 1280px) {
+@media (max-width: 505px) {
+	.search-container {
+		width: 100% !important;
+	}
 	.form-control {
-		width: 340px;
-	}
-	.form-control.form-control-search {
-		width: 1130px;
-	}
-	.form-control:focus,
-	.form-control:focus-visible {
-		width: 1130px;
+		width: 100%;
 	}
 }
 </style>

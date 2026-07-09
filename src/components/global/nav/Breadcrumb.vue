@@ -102,7 +102,7 @@
 			</span>
 			<div class="search-tip">
 				<InfoComponent
-					icon="info_outline"
+					icon="info"
 					:title="t('search.frontpageGuide.title')"
 					modal-align="right"
 				>
@@ -314,7 +314,6 @@ export default defineComponent({
 .breadcrumb {
 	height: 47px;
 	position: relative;
-	background-color: var(--bg-default);
 	z-index: 1;
 	display: flex;
 	flex-direction: row;
@@ -344,6 +343,7 @@ export default defineComponent({
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	color: var(--color-main);
 }
 
 .dot-button:hover {
@@ -437,9 +437,8 @@ export default defineComponent({
 }
 
 .bg-container {
-	z-index: 5;
-	background-color: var(--bg-default);
 	position: relative;
+	top: 50px;
 }
 
 .breadcrumb-title {
