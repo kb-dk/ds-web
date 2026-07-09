@@ -174,62 +174,62 @@ export default defineComponent({
 
 @media (max-width: 990px) {
 	.line:nth-of-type(1) {
-		top: 44.07px !important;
+		top: 44.07px;
 	}
 	.line:nth-of-type(2) {
-		top: 154.43px !important;
+		top: 154.43px;
 	}
 	.line:nth-of-type(3) {
 		opacity: 0.7 !important;
-		top: 139px !important;
+		top: 139px;
 	}
 	.line:nth-of-type(4) {
 		opacity: 0.2 !important;
-		top: 197px !important;
+		top: 197px;
 	}
 	.line:nth-of-type(5) {
-		top: 305px !important;
+		top: 305px;
 	}
 }
 
 @media (min-width: 990px) and (max-width: 1279px) {
 	.line:nth-of-type(1) {
-		top: 44.07px !important;
+		top: 44.07px;
 	}
 	.line:nth-of-type(2) {
-		top: 154.43px !important;
+		top: 154.43px;
 	}
 	.line:nth-of-type(3) {
-		top: 339px !important;
+		top: 339px;
 	}
 	.line:nth-of-type(4) {
-		top: 497px !important;
+		top: 497px;
 	}
 	.line:nth-of-type(5) {
-		top: 698px !important;
+		top: 698px;
 	}
 }
 
 @media (min-width: 1280px) and (max-width: 1439px) {
 	.line:nth-of-type(1) {
-		top: 44.07px !important;
+		top: 44.07px;
 	}
 	.line:nth-of-type(2) {
-		top: 154.43px !important;
+		top: 154.43px;
 	}
 	.line:nth-of-type(3) {
-		top: 355px !important;
+		top: 355px;
 	}
 	.line:nth-of-type(4) {
-		top: 615px !important;
+		top: 615px;
 	}
 	.line:nth-of-type(5) {
-		top: 815px !important;
+		top: 815px;
 	}
 }
 @media (min-width: 1440px) {
 	.line:nth-of-type(1) {
-		top: 44.07px !important;
+		top: 44.07px;
 	}
 	.line:nth-of-type(2) {
 		top: 154.43px;
@@ -241,7 +241,7 @@ export default defineComponent({
 		top: 730px;
 	}
 	.line:nth-of-type(5) {
-		top: 933px !important;
+		top: 933px;
 	}
 }
 </style>
