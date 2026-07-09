@@ -240,25 +240,5 @@ export default defineComponent({
 		width: 100%;
 		margin-left: 0px;
 	}
-
-	.time-search,
-	.categories,
-	.date-picker {
-		display: grid;
-		justify-content: center;
-	}
-}
-
-@media (min-width: 2000px) {
-	.date-picker,
-	.time-search {
-		/* margin-top: -3vw; */
-	}
-}
-@media (min-width: 4000px) {
-	.date-picker,
-	.time-search {
-		/* margin-top: -1.5vw; */
-	}
 }
 </style>
