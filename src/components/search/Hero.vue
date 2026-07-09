@@ -1,22 +1,39 @@
 <template>
 	<div class="hero-container">
-		<img
-			:src="backgroundImage"
-			title="search background"
-			alt="Image of the Royal Danish Library"
-			class="bg-image"
-			fetchpriority="high"
-		/>
+		<picture>
+			<source
+				:srcset="currentImages.desktop"
+				media="(width > 991px)"
+			/>
+			<source
+				:srcset="currentImages.tablet"
+				media="(width > 641px)"
+			/>
+			<img
+				ref="imageRef"
+				:src="currentImages.mobile"
+				class="bg-image"
+				fetchpriority="high"
+				title="search background"
+				alt=""
+			/>
+		</picture>
 		<div class="hue-overlay"></div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
-import hero1 from '@/assets/images/hero_image_1_PLACEHOLDER.jpg';
-// import hero2 from '@/assets/images/hero_image_2.jpg';
-// import hero3 from '@/assets/images/hero_image_3.jpg';
+import hero1Desktop from '@/assets/images/hero1_desktop.jpg';
+import hero1Tablet from '@/assets/images/hero1_tablet.jpg';
+import hero1Mobile from '@/assets/images/hero1_mobile.jpg';
+import hero2Desktop from '@/assets/images/hero2_desktop.jpg';
+import hero2Tablet from '@/assets/images/hero2_tablet.jpg';
+import hero2Mobile from '@/assets/images/hero2_mobile.jpg';
+import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
+import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
+import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
 
 export default defineComponent({
 	name: 'Hero',
@@ -24,29 +41,55 @@ export default defineComponent({
 		const authStore = useAuthStore();
 		const { t } = useI18n();
 		const currentProgress = ref();
-		const backgroundImage = computed(() => {
-			return hero1;
-			// if (randomImageNumber.value === 1) {
-			// 	return hero1;
-			// }
-			// if (randomImageNumber.value === 2) {
-			// 	return hero2;
-			// }
-			// return hero3;
+		const imageRef = ref<HTMLImageElement | null>();
+		const currentImages = computed(() => {
+			switch (authStore.heroBannerNumber) {
+				case 1:
+					return {
+						mobile: hero1Mobile,
+						tablet: hero1Tablet,
+						desktop: hero1Desktop,
+					};
+				case 2:
+					return {
+						mobile: hero2Mobile,
+						tablet: hero2Tablet,
+						desktop: hero2Desktop,
+					};
+				default:
+					return {
+						mobile: hero3Mobile,
+						tablet: hero3Tablet,
+						desktop: hero3Desktop,
+					};
+			}
 		});
-		// const randomImageNumber = ref<number>(1);
 		onMounted(() => {
 			if (authStore.currentArchiveProgress !== 0) {
 				currentProgress.value = authStore.currentArchiveProgress;
 			}
-			// randomImageNumber.value = Math.floor(Math.random() * 3) + 1;
+			if (imageRef.value) {
+				if (authStore.heroBannerNumber === 0) {
+					const randomNumber = Math.floor(Math.random() * 3) + 1;
+					authStore.heroBannerNumber = randomNumber;
+				}
+
+				if (authStore.heroBannerNumber === 1) {
+					imageRef.value.alt = 'Image of King Frederik X proclamation';
+				} else if (authStore.heroBannerNumber === 2) {
+					imageRef.value.alt = '';
+				} else {
+					imageRef.value.alt = '';
+				}
+			}
 		});
 
 		return {
-			backgroundImage,
 			authStore,
 			currentProgress,
 			t,
+			imageRef,
+			currentImages,
 		};
 	},
 });
@@ -54,12 +97,13 @@ export default defineComponent({
 <style scoped>
 .hero-container {
 	position: relative;
-	height: 350px;
+	height: 100%;
+	width: 100%;
+	justify-content: center;
 	display: flex;
-	margin-bottom: 6vw;
 	z-index: 3;
 	overflow: visible;
-	transition: background-color 0.5s linear 0s;
+	margin-bottom: 20px;
 }
 
 .hue-overlay {
@@ -67,81 +111,21 @@ export default defineComponent({
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	max-width: 1680px;
+	max-width: 1420px;
 	width: 100vw;
 }
 
 .bg-image {
-	width: 100vw;
-	height: 300px;
-	object-fit: cover;
-	position: absolute;
-	background-color: var(--bg-default);
-	max-width: 1680px;
-	bottom: 0;
-}
-
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
-	.container {
-		max-width: 640px;
-	}
-}
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-	.container {
-		max-width: 990px;
-	}
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 1420px;
 }
 
 /* MEDIA QUERY 800 */
 @media (min-width: 800px) {
-	.container {
-		margin-left: 12px;
-		height: 100%;
-	}
 	h1 {
 		margin-left: 0px;
-	}
-
-	.hero-container {
-		height: 475px;
-	}
-	.bg-image {
-		height: 400px;
-	}
-}
-
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-	.hero-container {
-		justify-content: center;
-	}
-	.hero-container {
-		height: 575px;
-	}
-	.bg-image {
-		height: 500px;
-	}
-	.container {
-		display: flex;
-		max-width: 1150px;
-		width: 100%;
-	}
-}
-/* MEDIA QUERY 1150 */
-@media (min-width: 1150px) {
-	.container {
-		max-width: 1280px;
-	}
-}
-/* MEDIA QUERY 1280 */
-@media (min-width: 1280px) {
-	.container {
-		padding-right: 12px;
-		padding-left: 12px;
-		width: 100%;
-		margin-left: initial;
 	}
 }
 @media (min-width: 1680px) {
