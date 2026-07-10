@@ -105,7 +105,7 @@ export default defineComponent({
 	transform: rotate(3.677deg);
 }
 
-.search .line:nth-of-type(2) {
+.search .line.animate:nth-of-type(2) {
 	top: 154.43px;
 }
 
@@ -122,7 +122,7 @@ export default defineComponent({
 	opacity: 1;
 }
 
-.search .line:nth-of-type(3) {
+.search .line.animate:nth-of-type(3) {
 	opacity: 0.7;
 	top: 139px;
 }
@@ -140,7 +140,7 @@ export default defineComponent({
 	opacity: 1;
 }
 
-.search .line:nth-of-type(4) {
+.search .line.animate:nth-of-type(4) {
 	opacity: 0.2;
 	top: 197px;
 }
@@ -163,6 +163,7 @@ export default defineComponent({
 
 .search .line.animate:nth-of-type(5) {
 	width: 1280px;
+	top: 305px;
 	transition:
 		top 750ms ease,
 		width 750ms ease 750ms !important;
