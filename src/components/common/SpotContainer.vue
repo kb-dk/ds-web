@@ -55,6 +55,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 	flex-direction: column;
+	margin-bottom: 20px;
 }
 .spot-row {
 	display: flex;

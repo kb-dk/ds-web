@@ -1,71 +1,66 @@
 <template>
-	<EdgedContentArea background-color="var(--bg-default)">
-		<template #content>
-			<div
-				class="header"
-				:style="`color: ${text}`"
-			>
-				<h2 class="heading-sub">{{ title }}</h2>
-				<p>
-					<span>{{ subtitle }}</span>
-				</p>
-			</div>
-			<TimeSearchFilters
-				:timeline="true"
-				:init="true"
-				@new-search="fetchNewTimeResults()"
-			></TimeSearchFilters>
+	<div
+		class="header"
+		:style="`color: ${text}`"
+	>
+		<h2 class="heading-sub">{{ title }}</h2>
+		<p>
+			<span>{{ subtitle }}</span>
+		</p>
+	</div>
+	<TimeSearchFilters
+		:timeline="true"
+		:init="true"
+		@new-search="fetchNewTimeResults()"
+	></TimeSearchFilters>
 
-			<div class="result-container">
-				<div class="container-backdrop">
-					<ContainerSplitBar :is-top="true"></ContainerSplitBar>
-					<ContainerSplitBar :is-top="false"></ContainerSplitBar>
-				</div>
-				<div class="time-results">
-					<ItemSlider
-						:padding="false"
-						bg="var(--bg-secondary-light-20)"
-						item-class="time-result"
-						bg-scroll-blue="true"
-					>
-						<template #default="slotProps">
-							<div
-								v-for="(item, index) in timeSearchStore.timeResults"
-								:key="index"
-								class="time-result-item"
-							>
-								<GridResultItem
-									:loading="timeSearchStore.loading"
-									:resultdata="item"
-									:index="index"
-									background="var(--bg-secondary-light-20)"
-									:slot-props="slotProps"
-								></GridResultItem>
-							</div>
-						</template>
-					</ItemSlider>
-					<div class="result-header">
-						<KBButton
-							class="btn-medium"
-							:to="timeSearchLink"
-							:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-							button-type="btn-cta"
-							button-color="cta"
-							button-size="medium"
-							:is-router-link="true"
-							right-icon-name="arrow_forward_ios"
-							:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-								'timeSearch.result',
-								timeSearchStore.numFound,
-							)} `"
-							@click="timeSearchBehavior()"
-						></KBButton>
-					</div>
-				</div>
-			</div>
+	<div class="result-container">
+		<div class="container-backdrop">
+			<ContainerSplitBar :is-top="true"></ContainerSplitBar>
 			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
-		</template>
-	</EdgedContentArea>
+		</div>
+		<div class="time-results">
+			<ItemSlider
+				:padding="false"
+				bg="var(--bg-secondary-light-20)"
+				item-class="time-result"
+				bg-scroll-blue="true"
+			>
+				<template #default="slotProps">
+					<div
+						v-for="(item, index) in timeSearchStore.timeResults"
+						:key="index"
+						class="time-result-item"
+					>
+						<GridResultItem
+							:loading="timeSearchStore.loading"
+							:resultdata="item"
+							:index="index"
+							background="var(--bg-secondary-light-20)"
+							:slot-props="slotProps"
+						></GridResultItem>
+					</div>
+				</template>
+			</ItemSlider>
+			<div class="result-header">
+				<KBButton
+					class="btn-medium"
+					:to="timeSearchLink"
+					:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+					button-type="btn-cta"
+					button-color="cta"
+					button-size="medium"
+					:is-router-link="true"
+					right-icon-name="arrow_forward_ios"
+					:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
+						'timeSearch.result',
+						timeSearchStore.numFound,
+					)} `"
+					@click="timeSearchBehavior()"
+				></KBButton>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -83,7 +78,7 @@ import {
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+// import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
@@ -102,7 +97,6 @@ export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
 		GridResultItem,
-		EdgedContentArea,
 		TimeSearchFilters,
 		KBButton,
 		ItemSlider,
@@ -215,7 +209,6 @@ export default defineComponent({
 h2 {
 	color: var(--color-main);
 }
-
 .result-container {
 	width: 100%;
 	position: relative;
@@ -231,6 +224,7 @@ h2 {
 	justify-content: space-between;
 	display: flex;
 	flex-direction: column;
+	margin-top: 5px;
 }
 .result-header {
 	display: flex;
@@ -285,5 +279,10 @@ h2 {
 }
 .header p {
 	margin: 0;
+}
+@media (min-width: 640px) {
+	.container-backdrop {
+		margin-top: 0;
+	}
 }
 </style>
