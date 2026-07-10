@@ -11,9 +11,6 @@ import p8 from '@/assets/images/audio-thumbnails/p8.jpg';
 import fdr from '@/assets/images/filter-thumbnails/dr.jpg';
 import fdr1 from '@/assets/images/filter-thumbnails/dr1.jpg';
 import fdr2 from '@/assets/images/filter-thumbnails/dr2.jpg';
-import fdrk from '@/assets/images/filter-thumbnails/drk.jpg';
-import fdrultra from '@/assets/images/filter-thumbnails/drultra.jpg';
-import fdruppdate from '@/assets/images/filter-thumbnails/drupdate.jpg';
 import fp1 from '@/assets/images/filter-thumbnails/p1.jpg';
 import fp2 from '@/assets/images/filter-thumbnails/p2.jpg';
 import fp3 from '@/assets/images/filter-thumbnails/p3.jpg';
@@ -30,21 +27,20 @@ const getEntryId = (recordData: BroadcastRecordType) => {
 
 const getFilterThumbnail = (channel: string) => {
 	channel = channel.toLowerCase();
+	console.log(channel);
+
 	switch (true) {
+		case channel.includes('dr p5000'):
+			return fdr;
+
+		case channel.includes('DR Klassisk'):
+			return fdr;
+
 		case channel.includes('dr 1'):
 			return fdr1;
 
 		case channel.includes('dr 2'):
 			return fdr2;
-
-		case channel.includes('dr update'):
-			return fdruppdate;
-
-		case channel.includes('dr ultra'):
-			return fdrultra;
-
-		case channel.includes('dr k'):
-			return fdrk;
 
 		case channel.includes('ramasjang'):
 			return frama;
