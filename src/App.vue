@@ -441,6 +441,7 @@ export default defineComponent({
 	span {
 		border-bottom: 1px solid white;
 	}
+	pointer-events: none;
 }
 
 /* SEARCH TO HOME TRANSITION */
