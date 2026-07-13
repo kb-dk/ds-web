@@ -249,6 +249,14 @@ input[type='search']::-webkit-search-results-decoration {
 
 .autocomplete-container {
 	z-index: 15;
+	border-bottom: 1px solid var(--color-border-success);
+	border-left: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-radius: 0 0 var(--rounded-medium) var(--rounded-medium);
+	overflow: hidden;
+	background-color: var(--bg-default);
+	margin-top: -2px;
+	width: fit-content;
 }
 
 #searchButton,
@@ -279,7 +287,6 @@ input[type='search']::-webkit-search-results-decoration {
 	z-index: 6;
 	left: 0;
 	width: stretch;
-	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
 	top: 192px;
@@ -306,7 +313,7 @@ input[type='search']::-webkit-search-results-decoration {
 	justify-content: center;
 	align-items: center;
 	border: 1px solid var(--color-main);
-	border-radius: var(--rounded-medium);
+	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
 	overflow: hidden;
 	box-sizing: border-box;
 	transition: all 0.35s cubic-bezier(0.85, 0.09, 0.15, 0.91);
@@ -331,9 +338,7 @@ input:focus {
 }
 
 .spinner-container {
-	/* width: 30px; */
 	position: absolute;
-	/* right: 60px; */
 	display: flex;
 	right: initial;
 	margin-top: initial;
