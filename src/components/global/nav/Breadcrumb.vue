@@ -438,7 +438,7 @@ export default defineComponent({
 
 .bg-container {
 	position: relative;
-	top: 50px;
+	margin-top: 50px;
 }
 
 .breadcrumb-title {
