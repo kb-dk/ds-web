@@ -278,7 +278,12 @@ input[type='search']::-webkit-search-results-decoration {
 .search-box {
 	z-index: 6;
 	left: 0;
+	/* Chromium */
 	width: stretch;
+	/* Firefox */
+	width: -moz-available;
+	/* Safari */
+	width: -webkit-fil-available;
 	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
