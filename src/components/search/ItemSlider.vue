@@ -198,13 +198,13 @@ export default defineComponent({
 	background-color: rgb(66, 66, 66);
 }
 .item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 .item-slider::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 .item-slider::-webkit-scrollbar-track {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 
 .item-slider.active a {
