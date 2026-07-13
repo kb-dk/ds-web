@@ -95,8 +95,8 @@ export default defineComponent({
 	padding: var(--padding-00, 10px) var(--padding-medium);
 	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
 	gap: var(--padding-02);
-	background-color: var(--color-default);
-	color: var(--color-main);
+	background-color: var(--bg-transparent);
+	color: var(--color-default);
 	border: none;
 	border-bottom: 1px solid transparent;
 }
@@ -105,7 +105,7 @@ export default defineComponent({
 	cursor: default;
 }
 .btn.active {
-	border-bottom: 1px solid var(--Colors-Borders-active, #002e70);
+	border-bottom: 1px solid var(--color-border-active);
 }
 .relevance-btn.active {
 	cursor: default;
@@ -124,6 +124,6 @@ export default defineComponent({
 	color: var(--color-disabled-sort);
 }
 .sort-arrows .arrow-active {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 </style>
