@@ -331,7 +331,7 @@ export default defineComponent({
 .outer-container {
 	z-index: 1;
 	position: relative;
-	border-bottom: 1px solid var(--color-border-active);
+	border-bottom: 1px solid var(--color-border-success);
 }
 
 .arrow {
@@ -387,14 +387,14 @@ export default defineComponent({
 	width: 100%;
 	overflow: hidden;
 	max-width: 100%;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .title {
 	text-decoration: none;
 }
 .title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
-	color: var(--color-main);
+	color: var(--color-default);
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
@@ -418,7 +418,7 @@ export default defineComponent({
 	margin: 0;
 }
 .episode-text {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .episode-split-icon {
 	padding-right: 3px;
@@ -519,7 +519,7 @@ export default defineComponent({
 	display: inline-block;
 	width: 50px;
 	height: 14px;
-	background-color: var(--bg-main);
+	background-color: var(--bg-defalt);
 	border-radius: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -533,7 +533,7 @@ export default defineComponent({
 .placeholder-w .line {
 	display: inline-block;
 	border-radius: 10px;
-	background-color: var(--bg-main);
+	background-color: var(--bg-defalt);
 	width: 30px;
 	height: 14px;
 	width: 25%;
@@ -671,11 +671,11 @@ export default defineComponent({
 
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
-		border-left: 1px solid var(--color-border-active);
+		border-left: 1px solid var(--color-border-success);
 	}
 
 	.backfade {
-		background: var(--bg-light);
+		background: white;
 		transition: all 0.3s ease-in-out 0s;
 		content: '';
 		z-index: 0;
