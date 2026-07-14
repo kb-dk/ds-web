@@ -283,7 +283,7 @@ input[type='search']::-webkit-search-results-decoration {
 	/* Firefox */
 	width: -moz-available;
 	/* Safari */
-	width: -webkit-fil-available;
+	width: -webkit-fill-available;
 	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
