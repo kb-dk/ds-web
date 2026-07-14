@@ -55,29 +55,31 @@
 					class="container find"
 				>
 					<div class="no-filter-container">
-						<h1>{{ t('find.headline') }}</h1>
-						<p>{{ t('find.subtitle') }}</p>
-						<h2>{{ t('find.maybeYouWantTo') }}</h2>
-						<div class="extra-options">
-							<KBButton
-								button-type="btn-main-medium"
-								button-color="main"
-								button-size="medium"
-								:button-text="t('find.restoreFilters')"
-								left-icon-name="tune"
-								class="btn-medium"
-								:is-router-link="true"
-								:to="searchResultStore.previousRoute"
-							></KBButton>
-							<KBButton
-								button-type="btn-main-medium"
-								button-color="main"
-								button-size="medium"
-								:button-text="t('find.GoToFrontpage')"
-								class="btn-medium"
-								:is-router-link="true"
-								:to="{ name: 'Home' }"
-							></KBButton>
+						<div class="content-container">
+							<h1>{{ t('find.headline') }}</h1>
+							<p>{{ t('find.subtitle') }}</p>
+							<h2>{{ t('find.maybeYouWantTo') }}</h2>
+							<div class="extra-options">
+								<KBButton
+									button-type="btn-main-medium"
+									button-color="main"
+									button-size="medium"
+									:button-text="t('find.restoreFilters')"
+									left-icon-name="tune"
+									class="btn-medium"
+									:is-router-link="true"
+									:to="searchResultStore.previousRoute"
+								></KBButton>
+								<KBButton
+									button-type="btn-main-medium"
+									button-color="main"
+									button-size="medium"
+									:button-text="t('find.GoToFrontpage')"
+									class="btn-medium"
+									:is-router-link="true"
+									:to="{ name: 'Home' }"
+								></KBButton>
+							</div>
 						</div>
 						<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
 						<div class="end-container">
@@ -477,7 +479,6 @@ h3 {
 	display: flex;
 	gap: 25px;
 	flex-direction: column;
-	margin-bottom: 45px;
 }
 
 .extra-options a {
@@ -522,6 +523,9 @@ h3 {
 	height: 100%;
 	width: 100%;
 }
+.content-container {
+	padding-bottom: 40px;
+}
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -550,9 +554,7 @@ h3 {
 	.mobile-edge {
 		display: none;
 	}
-	.extra-options {
-		margin-bottom: 0px;
-	}
+
 	.container {
 		display: flex;
 		flex-direction: column;
