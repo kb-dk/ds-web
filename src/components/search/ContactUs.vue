@@ -46,7 +46,7 @@ export default defineComponent({
 	position: relative;
 	top: calc(-6vw);
 	left: 1%;
-	color: var(--color-default);
+	color: var(--color-main);
 }
 
 .material-icons {

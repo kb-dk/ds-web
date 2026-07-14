@@ -95,7 +95,6 @@ export default defineComponent({
 	left: 0;
 	height: stretch;
 	height: -webkit-fill-available;
-	height: -moz-available;
 	width: 100vw;
 	background-color: var(--bg-default);
 	justify-content: space-between;

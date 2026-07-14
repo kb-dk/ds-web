@@ -54,53 +54,40 @@
 					v-if="route.query.q === undefined"
 					class="container find"
 				>
-					<h1>{{ t('find.headline') }}</h1>
-					<p>{{ t('find.subtitle') }}</p>
-					<h2>{{ t('find.maybeYouWantTo') }}</h2>
-					<div class="extra-options">
-						<KBButton
-							button-type="btn-main-medium"
-							button-color="main"
-							button-size="medium"
-							:button-text="t('find.restoreFilters')"
-							left-icon-name="tune"
-							class="btn-medium"
-							:is-router-link="true"
-							:to="searchResultStore.previousRoute"
-						></KBButton>
-						<KBButton
-							button-type="btn-main-medium"
-							button-color="main"
-							button-size="medium"
-							:button-text="t('find.GoToFrontpage')"
-							class="btn-medium"
-							:is-router-link="true"
-							:to="{ name: 'Home' }"
-						></KBButton>
+					<div class="no-filter-container">
+						<h1>{{ t('find.headline') }}</h1>
+						<p>{{ t('find.subtitle') }}</p>
+						<h2>{{ t('find.maybeYouWantTo') }}</h2>
+						<div class="extra-options">
+							<KBButton
+								button-type="btn-main-medium"
+								button-color="main"
+								button-size="medium"
+								:button-text="t('find.restoreFilters')"
+								left-icon-name="tune"
+								class="btn-medium"
+								:is-router-link="true"
+								:to="searchResultStore.previousRoute"
+							></KBButton>
+							<KBButton
+								button-type="btn-main-medium"
+								button-color="main"
+								button-size="medium"
+								:button-text="t('find.GoToFrontpage')"
+								class="btn-medium"
+								:is-router-link="true"
+								:to="{ name: 'Home' }"
+							></KBButton>
+						</div>
+						<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+						<div class="end-container">
+							<SpotCategories></SpotCategories>
+							<ContactUs
+								class="contact-us"
+								:relative-position="false"
+							></ContactUs>
+						</div>
 					</div>
-					<EdgedContentArea
-						:lines="true"
-						:title="$t('search.mainCategories')"
-						class="main-categories-header"
-						:reverse="true"
-						background-color="var(--bg-default)"
-					>
-						<template #content>
-							<div class="showcase-container">
-								<MainCategories
-									:title="$t('timeSearch.searchCategories')"
-									text="white"
-									:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-									:show-header="false"
-								></MainCategories>
-							</div>
-						</template>
-					</EdgedContentArea>
-					<ContactUs
-						class="contact-us"
-						:relative-position="false"
-					></ContactUs>
-					<div class="expanded-area"></div>
 				</div>
 				<div
 					v-if="route.fullPath === '/find' && route.query.q !== undefined"
@@ -132,8 +119,8 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import { Priority, Severity } from '@/types/NotificationType';
 import { normalizeFq } from '@/utils/filter-utils';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
+import SpotCategories from '@/components/common/SpotCategories.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
@@ -143,10 +130,10 @@ export default defineComponent({
 		Pagination,
 		SearchOverhead,
 		NoHits,
-		EdgedContentArea,
-		MainCategories,
 		ContactUs,
 		KBButton,
+		ContainerSplitBar,
+		SpotCategories,
 	},
 
 	setup() {
@@ -394,6 +381,23 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
 .page-count {
 	color: var(--color-main);
 }
@@ -501,7 +505,7 @@ h3 {
 }
 
 .find h2 {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 
 .container {
@@ -510,7 +514,13 @@ h3 {
 	margin-left: auto;
 	padding-right: 12px;
 	padding-left: 12px;
-	color: var(--color-main);
+	color: var(--color-default);
+	height: 100%;
+	justify-content: space-between;
+}
+.no-filter-container {
+	height: 100%;
+	width: 100%;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
