@@ -57,8 +57,13 @@
 					</div>
 				</div>
 			</div>
+			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 		</div>
-		<ContactUs></ContactUs>
+		<div class="container-backdrop"></div>
+
+		<div class="end-container">
+			<ContactUs></ContactUs>
+		</div>
 	</div>
 </template>
 
@@ -68,10 +73,11 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
 import KBButton from '@/components/common/KBButton.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: '404',
-	components: { ContactUs, KBButton },
+	components: { ContactUs, KBButton, ContainerSplitBar },
 	setup() {
 		const { t } = useI18n();
 		const getImgServerSrcURL = () => {
@@ -84,6 +90,25 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
+
 .not-found {
 	display: flex;
 	flex-direction: column;
