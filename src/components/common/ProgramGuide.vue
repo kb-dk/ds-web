@@ -21,7 +21,7 @@
 			<ItemSlider
 				ref="programSliderRef"
 				:padding="true"
-				bg="transparent"
+				bg="var(--bg-main-3)"
 				item-class="extra-program"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
@@ -351,7 +351,7 @@ export default defineComponent({
 <style scoped>
 .guide-button {
 	cursor: pointer;
-	border: 1px solid var(--color-border-active);
+	border: 1px solid var(--color-border-success);
 	border-radius: 0px;
 	display: flex;
 	justify-content: center;
@@ -369,18 +369,20 @@ export default defineComponent({
 	background-color: var(--bg-main);
 }
 .guide-button.active {
-	background-color: #00255a;
-	color: white;
+	background-color: var(--bg-main);
+	color: var(--color-default);
 }
 .guide-button:hover {
-	background-color: #c4f1ed;
-	color: #0a2e70;
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .daily-program {
 	--bg-color: #ffffff;
 
 	color: #323232;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-success);
 	margin-bottom: 10px;
 	margin-left: 20px;
 	margin-right: 20px;
@@ -397,7 +399,7 @@ export default defineComponent({
 	position: absolute;
 	height: 10px;
 	text-align: center;
-	color: #002e70;
+	color: var(--color-main);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
@@ -443,7 +445,7 @@ export default defineComponent({
 	word-break: keep-all;
 	overflow: hidden;
 	background-color: white;
-	color: #0a2e70;
+	color: var(--color-default);
 	text-align: center;
 	text-decoration: none;
 	transition: all 0.25s linear 0s;
@@ -454,14 +456,14 @@ export default defineComponent({
 	white-space: nowrap;
 }
 .programs:hover {
-	background-color: #c4f1ed;
-	color: #0a2e70;
-	border: 1px solid #0a2e70;
+	background-color: var(--bg-main-2);
+	color: var((--color-default));
+	border: 1px solid var(--color-border-active);
 }
 .programs-current {
-	background-color: #c4f1ed;
-	color: #0a2e70;
-	border: 1px solid #0a2e70;
+	background-color: var(--bg-main-2);
+	color: var((--color-default));
+	border: 1px solid var(--color-border-active);
 }
 .between-program {
 	width: 0px;
@@ -492,7 +494,7 @@ export default defineComponent({
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	color: #002e70;
+	color: var(--color-default);
 }
 .between-program-no-text {
 	justify-content: center;
@@ -508,7 +510,7 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: #f3f3f3;
+	background-color: var(--bg-main-3);
 	position: relative;
 	box-sizing: border-box;
 	padding: 20px 0px 12px 0px;
@@ -522,7 +524,7 @@ export default defineComponent({
 	display: flex;
 	pointer-events: all;
 	text-decoration: none;
-	color: #002e70;
+	color: var(--color-default);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -579,7 +581,7 @@ export default defineComponent({
 	height: 1.5em;
 	display: flex;
 	flex-direction: row;
-	color: #002e70;
+	color: var(--color-default);
 	user-select: none;
 }
 .hour-display > * {
