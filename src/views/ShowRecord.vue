@@ -170,6 +170,8 @@ export default defineComponent({
 			switch (type) {
 				case 'recordCall': {
 					let errorMsg = '';
+					console.log(err.response);
+
 					if (err.response?.status === 403) {
 						authStore.isAllowedToDisplayContent = false;
 						errorMsg = t('error.record.notAllowed');
@@ -310,7 +312,6 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
-	min-height: 100vh;
 	width: 100%;
 }
 
