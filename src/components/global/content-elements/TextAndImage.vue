@@ -35,8 +35,7 @@ temporary styling until patterns from design system are implemented
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	margin-bottom: 30px;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .imageAndTextContainer .con {
 	width: 100%;
