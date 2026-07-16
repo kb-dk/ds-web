@@ -230,8 +230,8 @@ export default defineComponent({
 }
 .reset {
 	background: var(--bg-golden);
-	color: var(--color-main);
-	border: 1px solid var(--color-border-golden);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-succcess);
 }
 .transparent {
 	background-color: var(--bg-transparent);
@@ -332,36 +332,8 @@ export default defineComponent({
 	font-size: calc(var(--fs-meta) + 2px);
 }
 .btn-tag:hover {
-	border: 1px solid var(--color-border-golden);
+	border: 1px solid var(--color-border-succcess);
 	background: var(--bg-golden);
-	color: var(--color-main);
-}
-.btn-tag-reset {
-	padding: var(--padding-02) var(--padding-01);
-	gap: var(--padding-small);
-	color: var(--color-main);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-golden);
-	background: var(--bg-golden);
-}
-.btn-tag-reset .material-icons {
-	font-size: calc(var(--fs-meta) + 2px);
-}
-
-.btn-tag-sub {
-	padding: var(--padding-01) var(--padding-medium);
-	gap: var(--padding-small);
-	color: var(--color-main);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-light);
-	background: var(--bg-light);
-}
-.btn-tag-sub .material-icons {
-	font-size: calc(var(--fs-meta) + 2px);
-}
-.btn-tag-sub:hover {
-	border: 1px solid var(--color-border-golden);
-	background: var(--bg-golden);
-	color: var(--color-main);
+	color: var(--color-default);
 }
 </style>
