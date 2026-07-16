@@ -66,15 +66,11 @@ export default defineComponent({
 	justify-content: flex-start;
 	transition-delay: 0.25s !important;
 	transition: height 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91);
-	height: 305px;
+	background-color: var(--bg-default);
 }
 
 .header-container.home {
 	background-color: var(--bg-default);
-}
-
-.headline-container {
-	height: 110px !important;
 }
 
 .header-container.search {
@@ -141,11 +137,5 @@ h1 {
 .bcfade-leave-to {
 	opacity: 0;
 	transition: opacity 0.25s ease 0s;
-}
-
-@media (min-width: 990px) {
-	.header-container {
-		height: 152px;
-	}
 }
 </style>

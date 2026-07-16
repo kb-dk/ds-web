@@ -107,11 +107,11 @@ export default defineComponent({
 }
 .not-found-container {
 	box-sizing: border-box;
-	background-color: var(--bg-default);
+	background-color: white;
 	position: relative;
 	top: calc(-6vw);
 	z-index: 1;
-	color: var(--color-main);
+	color: var(--color-default);
 	width: 100%;
 	justify-content: space-around;
 }
@@ -123,7 +123,7 @@ export default defineComponent({
 .edge-top {
 	width: 110%;
 	position: relative;
-	background-color: #002e70;
+	background-color: white;
 	height: 6vw;
 	left: -5%;
 	transform: rotateZ(-2deg);
