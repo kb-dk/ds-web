@@ -192,6 +192,7 @@ export default defineComponent({
 .title {
 	width: 100%;
 	color: var(--color-main);
+	margin-bottom: 20px;
 }
 .time-search {
 	background-color: var(--bg-default);
