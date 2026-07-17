@@ -146,7 +146,13 @@
 				></GridResultItem>
 			</div>
 		</div>
-		<ContactUs :relative-position="false"></ContactUs>
+		<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+		<div class="end-container">
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
+		</div>
 	</div>
 </template>
 
@@ -166,6 +172,7 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
 import KBButton from '@/components/common/KBButton.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -177,6 +184,7 @@ export default defineComponent({
 		Duration,
 		ProgramGuide,
 		KBButton,
+		ContainerSplitBar,
 	},
 
 	props: {
@@ -263,6 +271,24 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 65px;
+	position: relative;
+	flex-direction: column;
+}
+
 h3 {
 	margin-top: 0;
 }
@@ -337,7 +363,7 @@ h4 {
 }
 
 .boardcast-record-data {
-	color: var(--color-main);
+	color: var(--color-default);
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
@@ -420,7 +446,7 @@ h4 {
 }
 .related-content-title {
 	padding: 0px 20px;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .related-record {
 	flex: 0 0 90%;
