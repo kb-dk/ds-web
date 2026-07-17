@@ -73,7 +73,8 @@ export default defineComponent({
 	background-color: var(--bg-default);
 }
 
-.header-container.search {
+.header-container.search,
+.header-container.notfound {
 	background-color: var(--color-default);
 	height: 322px;
 	transition-delay: 0.25s !important;
