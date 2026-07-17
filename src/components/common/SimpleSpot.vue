@@ -85,6 +85,7 @@ export default defineComponent({
 	justify-content: start;
 	align-items: flex-start;
 	text-align: start;
+	flex-direction: column;
 	/* word-break: break-all; */
 }
 .spot.main {

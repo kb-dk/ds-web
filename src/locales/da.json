@@ -345,6 +345,9 @@
   "notification": {
       "close":"Luk notifikation"
   },
+  "spots": {
+   "readMoreSubtitle":"Før du går på opdagelse, kan du læse om arkivets indhold, baggrund og begrænsninger - og få gode råd til at søge i næsten 100 års radio og tv."
+  },
   "footer": {
     "contactInfo":"Kontaktinformationer",
     "cookie":"Cookieindstillinger",

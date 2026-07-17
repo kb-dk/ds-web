@@ -348,6 +348,9 @@
   "notification": {
       "close":"Close notification"
    },
+   "spots": {
+      "readMoreSubtitle":"Before going on descovery you can read about the archives content, background and limitations - and get some good advice to search in nearly a 100 years of radio and TV."
+  },
    "footer": {
       "contactInfo":"Contact information",
       "cookie":"Cookie Settings",
