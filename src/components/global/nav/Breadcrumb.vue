@@ -122,7 +122,6 @@ export default defineComponent({
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
-		const timeout: Ref<number | null> = ref(null);
 		const searchWord = computed(() => {
 			if (searchResultStore.lastSearchQuery) {
 				if (searchResultStore.lastSearchQuery !== '*:*') {
