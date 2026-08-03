@@ -312,9 +312,8 @@ export default defineComponent({
 	transform: rotateX(180deg);
 }
 .btn-dropdown-default:hover {
-	background-color: var(--bg-main-light-20);
+	background-color: var(--bg-main-light);
 	color: var(--color-default);
-	border-color: var(--color-border-active);
 }
 .btn-dropdown-default .btn-text {
 	display: none;
