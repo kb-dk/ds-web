@@ -47,7 +47,7 @@ export default defineComponent({
 }
 
 .not-allowed-banner {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 	justify-content: center;
 	height: 200px;
 	position: relative;
@@ -55,7 +55,7 @@ export default defineComponent({
 	border: 1px solid #f4b664;
 	display: flex;
 	flex-direction: row;
-	color: white;
+	color: var(--color-main);
 	margin-left: 1%;
 	margin-top: 1%;
 	font-size: 14px;
@@ -69,7 +69,7 @@ export default defineComponent({
 }
 
 .not-allowed-text a {
-	color: white;
+	color: var(--color-main);
 }
 
 .not-allowed-lock {
