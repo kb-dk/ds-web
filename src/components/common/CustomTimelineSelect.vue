@@ -27,7 +27,9 @@
 				</option>
 			</select>
 		</label>
-		<div class="line"></div>
+		<div class="line">
+			<span class="material-icons">keyboard_arrow_down</span>
+		</div>
 	</div>
 </template>
 
@@ -101,10 +103,8 @@ export default defineComponent({
 	color: var(--color-main);
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	background: url('@/assets/icons/blue/dd-arrow-blue.svg') var(--bg-default);
-	background-repeat: no-repeat;
-	background-position-x: 85px;
-	background-position-y: 13px;
+	color: var(--color-default);
+	background-color: var(--bg-main);
 	width: 118px;
 	box-sizing: border-box;
 	height: 48px;
@@ -113,6 +113,10 @@ export default defineComponent({
 .select-container:hover select {
 	border: 1px solid var(--bg-main-3);
 	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 
 label {
@@ -122,22 +126,29 @@ label {
 	gap: 5px;
 	align-items: center;
 }
-
 .line {
 	display: block;
 	width: 1px;
-	height: 24px;
-	background-color: var(--color-main);
-	top: 10px;
+	height: 100%;
+	background-color: var(--bg-default);
+	top: 0;
 	right: 0px;
 	position: absolute;
+	display: flex;
+	justify-content: start;
+	align-items: center;
 	margin-right: 52px;
+	pointer-events: none;
+}
+.line span {
+	color: var(--color-default);
+	font-size: var(--fs-xl);
+	margin-left: 5px;
 }
 
 select option {
 	padding: 5px;
 }
-
 .single-entry {
 	padding: 5px 10px;
 }
