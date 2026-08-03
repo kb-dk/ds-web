@@ -258,7 +258,6 @@ temporary styling until patterns from design system are implemented
 -->
 <style scoped>
 .broadcast-record {
-	background-color: var(--bg-default);
 	color: var(--color-main);
 }
 h3 {
