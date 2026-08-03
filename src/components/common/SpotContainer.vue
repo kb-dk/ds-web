@@ -4,11 +4,8 @@
 			<spot-categories></spot-categories>
 		</div>
 		<div class="spot-row">
-			<simple-spot spot-size="small">
-				<span class="label-big">En kasse til noget display 349.994 minutters noget helt tilbage fra 1931.</span>
-			</simple-spot>
 			<simple-spot
-				spot-size="small"
+				spot-size="medium"
 				icon-name="link"
 				color="light"
 				class="spot-link"
@@ -21,6 +18,7 @@
 				>
 					{{ t('hero.linkText') }}
 				</a>
+				<p class="label-reg">{{ t('spots.readMoreSubtitle') }}</p>
 			</simple-spot>
 			<advanced-spot spot-size="medium"></advanced-spot>
 		</div>
