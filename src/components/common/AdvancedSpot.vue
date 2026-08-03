@@ -10,18 +10,18 @@
 				class="hero-info"
 			>
 				<div class="info">
-					<div class="progress-headline">
-						<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
-						<p>
-							{{ t('hero.explanation') }}
-						</p>
-					</div>
 					<div class="process-bar">
 						<div
 							v-for="i in 20"
 							:key="i"
 							:class="progress(i)"
 						></div>
+					</div>
+					<div class="progress-headline">
+						<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
+						<p>
+							{{ t('hero.explanation') }}
+						</p>
 					</div>
 				</div>
 			</div>
@@ -99,6 +99,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.progress-headline {
+	margin-top: 20px;
+}
 .progress-headline > * {
 	margin: 0;
 }
@@ -129,8 +132,9 @@ export default defineComponent({
 	position: absolute;
 	width: 100%;
 	left: 0px;
-	bottom: 0px;
+	top: 0px;
 	background-color: var(--bg-default);
+	z-index: 1;
 }
 
 .step {
