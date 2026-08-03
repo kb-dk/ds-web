@@ -401,7 +401,7 @@ temporary styling until patterns from design system are implemented
 	flex-direction: column;
 }
 .page-count {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .fade-enter-active,
 .fade-leave-active {

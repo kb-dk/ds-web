@@ -198,13 +198,13 @@ export default defineComponent({
 	background-color: rgb(66, 66, 66);
 }
 .item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 .item-slider::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 .item-slider::-webkit-scrollbar-track {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 
 .item-slider.active a {
@@ -234,7 +234,7 @@ export default defineComponent({
 	opacity: 0;
 	align-items: center;
 	z-index: 10;
-	background-color: rgb(255, 255, 255);
+	background-color: var(--bg-default);
 	user-select: none;
 	cursor: pointer;
 	pointer-events: none;
@@ -253,9 +253,9 @@ export default defineComponent({
 	height: 40px;
 	width: 40px;
 	border-radius: 30px;
-	background-color: #002e70;
+	background-color: var(--bg-main);
 	justify-content: center;
-	color: white;
+	color: var(--color-default);
 	align-items: center;
 	display: flex;
 	text-align: center;

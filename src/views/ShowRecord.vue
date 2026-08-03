@@ -310,7 +310,6 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
-	min-height: 100vh;
 	width: 100%;
 }
 

@@ -3,7 +3,7 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<div class="data-size">
+		<!-- <div class="data-size">
 			<KBButton
 				button-type="btn-dropdown-default"
 				button-color="transparent"
@@ -14,7 +14,7 @@
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 				@click="toggleExplanation()"
 			></KBButton>
-		</div>
+		</div> -->
 
 		<div class="to-from-container">
 			<CustomTimelineSelect
@@ -118,13 +118,12 @@ import {
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
-import KBButton from '@/components/common/KBButton.vue';
+// import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
 		CustomTimelineSelect,
 		VueSlider,
-		KBButton,
 	},
 
 	props: {

@@ -3,58 +3,12 @@
 		<div class="breadcrumb container">
 			<span class="material-icons home-icon">home</span>
 			<span class="material-icons back-arrow">chevron_left</span>
-			<Transition name="breadcrumb">
-				<button
-					v-if="dotsShown"
-					class="dot-button"
-					@click="showDotContent()"
-				>
-					...&nbsp;&nbsp;/
-				</button>
-			</Transition>
-			<Transition name="breadcrumb-content">
-				<div
-					v-if="prelinksShown"
-					class="dot-content"
-					@mouseleave="hideDotContentOnDelay()"
-					@mouseover="resetTimeout()"
-				>
-					<a
-						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'home-logo', 0)"
-						href="https://www.kb.dk"
-						class="level-1"
-						:title="t('breadcrumb.frontpage')"
-					>
-						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.frontpage') }}</span>
-					</a>
-					<span class="line">/</span>
-
-					<a
-						:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'find-materials', 1)"
-						href="https://www.kb.dk/find-materiale"
-						class="level-2"
-						:title="t('breadcrumb.findMaterials')"
-					>
-						<span class="breadcrumb-title btn-reg">{{ t('breadcrumb.findMaterials') }}</span>
-					</a>
-					<span class="line level-2">/</span>
-				</div>
-			</Transition>
-
-			<div class="level-3">
-				<KBButton
-					button-type="btn-main-small"
-					button-color="main"
-					button-size="small"
-					class="btn-reg"
-					:to="{ path: '/' }"
-					:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'frontpage', 2)"
-					:is-router-link="true"
-					:title="t('breadcrumb.drArchive')"
-					:button-text="t('breadcrumb.drArchive')"
-					@click="searchResultStore.resetSearch()"
-				></KBButton>
-			</div>
+			<router-link
+				class="level-3"
+				:to="{ name: 'Home' }"
+			>
+				{{ t('breadcrumb.frontpage') }}
+			</router-link>
 
 			<span
 				v-if="$route.name === 'Search'"
@@ -100,7 +54,7 @@
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
-			<div class="search-tip">
+			<!-- <div class="search-tip">
 				<InfoComponent
 					icon="info"
 					:title="t('search.frontpageGuide.title')"
@@ -148,7 +102,7 @@
 						</p>
 					</div>
 				</InfoComponent>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -158,24 +112,16 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import InfoComponent from '@/components/common/InfoComponent.vue';
-import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
-	components: {
-		InfoComponent,
-		KBButton,
-	},
+	components: {},
 	setup() {
 		const { t, locale } = useI18n();
 		const router = useRouter();
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
-		const prelinksShown = ref(false);
-		const dotsShown = ref(true);
-		const timeout: Ref<number | null> = ref(null);
 		const searchWord = computed(() => {
 			if (searchResultStore.lastSearchQuery) {
 				if (searchResultStore.lastSearchQuery !== '*:*') {
@@ -193,37 +139,6 @@ export default defineComponent({
 				return '';
 			}
 		});
-
-		const resetTimeout = () => {
-			if (timeout.value !== null) {
-				clearTimeout(timeout.value);
-				timeout.value = null;
-			}
-		};
-
-		const hideDotContentOnDelay = () => {
-			timeout.value = setTimeout(() => {
-				togglePreLinks(false);
-				toggleDots(true);
-			}, 5000);
-		};
-
-		const showDotContent = () => {
-			togglePreLinks(true);
-			toggleDots(false);
-			timeout.value = setTimeout(() => {
-				togglePreLinks(false);
-				toggleDots(true);
-			}, 5000);
-		};
-
-		const togglePreLinks = (value: boolean) => {
-			prelinksShown.value = value;
-		};
-
-		const toggleDots = (value: boolean) => {
-			dotsShown.value = value;
-		};
 
 		onMounted(() => {
 			let back = router.options.history.state.back as string;
@@ -253,13 +168,6 @@ export default defineComponent({
 			lastPath,
 			searchResultStore,
 			currentPage,
-			prelinksShown,
-			togglePreLinks,
-			toggleDots,
-			dotsShown,
-			hideDotContentOnDelay,
-			showDotContent,
-			resetTimeout,
 			searchWord,
 		};
 	},
@@ -319,7 +227,9 @@ export default defineComponent({
 	flex-direction: row;
 	font-size: 16px;
 }
-
+.breadcrumb a {
+	color: var(--color-main);
+}
 .dot-content {
 	overflow: hidden;
 	white-space: nowrap;
@@ -359,6 +269,7 @@ export default defineComponent({
 	display: initial;
 }
 .level-3 {
+	margin-left: 4px;
 	margin-right: 4px;
 }
 .record .level-5,
@@ -401,23 +312,8 @@ export default defineComponent({
 .breadcrumb a {
 	text-decoration: none;
 }
-
-.breadcrumb a:hover span {
-	color: #002e70;
-}
-.breadcrumb .link:hover span {
-	color: var(--color-default);
-}
-.breadcrumb a:hover .line {
-	color: black;
-}
-
-.breadcrumb a:hover .highlighted {
-	color: #002e70;
-}
-
 .breadcrumb a:visited {
-	color: black;
+	color: var(--color-main);
 }
 
 .btn-reg.highlighted {
