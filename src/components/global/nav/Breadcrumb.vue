@@ -122,8 +122,6 @@ export default defineComponent({
 		const lastPath = ref('');
 		const searchResultStore = useSearchResultStore();
 		const route = useRoute();
-		const prelinksShown = ref(false);
-		const dotsShown = ref(true);
 		const timeout: Ref<number | null> = ref(null);
 		const searchWord = computed(() => {
 			if (searchResultStore.lastSearchQuery) {
@@ -142,37 +140,6 @@ export default defineComponent({
 				return '';
 			}
 		});
-
-		const resetTimeout = () => {
-			if (timeout.value !== null) {
-				clearTimeout(timeout.value);
-				timeout.value = null;
-			}
-		};
-
-		const hideDotContentOnDelay = () => {
-			timeout.value = setTimeout(() => {
-				togglePreLinks(false);
-				toggleDots(true);
-			}, 5000);
-		};
-
-		const showDotContent = () => {
-			togglePreLinks(true);
-			toggleDots(false);
-			timeout.value = setTimeout(() => {
-				togglePreLinks(false);
-				toggleDots(true);
-			}, 5000);
-		};
-
-		const togglePreLinks = (value: boolean) => {
-			prelinksShown.value = value;
-		};
-
-		const toggleDots = (value: boolean) => {
-			dotsShown.value = value;
-		};
 
 		onMounted(() => {
 			let back = router.options.history.state.back as string;
@@ -202,13 +169,6 @@ export default defineComponent({
 			lastPath,
 			searchResultStore,
 			currentPage,
-			prelinksShown,
-			togglePreLinks,
-			toggleDots,
-			dotsShown,
-			hideDotContentOnDelay,
-			showDotContent,
-			resetTimeout,
 			searchWord,
 		};
 	},
