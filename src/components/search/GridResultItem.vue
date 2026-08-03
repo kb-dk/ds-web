@@ -182,7 +182,7 @@ export default defineComponent({
 			},
 		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
-		background: { type: String as PropType<string>, required: false, default: 'var(--bg-default)' },
+		background: { type: String as PropType<string>, required: false, default: 'white' },
 		fullPostUrl: {
 			type: Boolean as PropType<boolean>,
 			default() {

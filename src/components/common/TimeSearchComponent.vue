@@ -22,7 +22,7 @@
 		<div class="time-results">
 			<ItemSlider
 				:padding="false"
-				bg="var(--bg-secondary-light-20)"
+				bg="var(--bg-backdrop)"
 				item-class="time-result"
 				bg-scroll-blue="true"
 			>
@@ -36,7 +36,7 @@
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
 							:index="index"
-							background="var(--bg-secondary-light-20)"
+							background="var(--bg-backdrop)"
 							:slot-props="slotProps"
 						></GridResultItem>
 					</div>
@@ -220,7 +220,7 @@ h2 {
 	position: absolute;
 	height: 100%;
 	width: 100vw;
-	background-color: var(--bg-secondary-light-20);
+	background-color: var(--bg-backdrop);
 	justify-content: space-between;
 	display: flex;
 	flex-direction: column;
@@ -248,7 +248,7 @@ h2 {
 .time-result-item {
 	flex: 0 0 30%;
 	box-sizing: border-box;
-	background-color: var(--bg-secondary-light-20);
+	background-color: var(--bg-backdrop);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
