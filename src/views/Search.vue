@@ -395,7 +395,7 @@ temporary styling until patterns from design system are implemented
 -->
 <style scoped>
 .page-count {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .fade-enter-active,
 .fade-leave-active {

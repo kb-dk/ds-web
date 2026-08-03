@@ -54,7 +54,7 @@
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
 			</span>
-			<div class="search-tip">
+			<!-- <div class="search-tip">
 				<InfoComponent
 					icon="info"
 					:title="t('search.frontpageGuide.title')"
@@ -102,7 +102,7 @@
 						</p>
 					</div>
 				</InfoComponent>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -112,13 +112,10 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useRoute, useRouter } from 'vue-router';
 import { useSearchResultStore } from '@/store/searchResultStore';
-import InfoComponent from '@/components/common/InfoComponent.vue';
 
 export default defineComponent({
 	name: 'Breadcrumb',
-	components: {
-		InfoComponent,
-	},
+	components: {},
 	setup() {
 		const { t, locale } = useI18n();
 		const router = useRouter();

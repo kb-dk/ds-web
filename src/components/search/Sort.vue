@@ -163,11 +163,11 @@ export default defineComponent({
 .sort p {
 	margin: 0;
 	padding: 0;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 
 .sort-icon {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 
 @media (min-width: 640px) {
