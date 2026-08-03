@@ -146,7 +146,13 @@
 				></GridResultItem>
 			</div>
 		</div>
-		<ContactUs :relative-position="false"></ContactUs>
+		<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+		<div class="end-container">
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
+		</div>
 	</div>
 </template>
 
@@ -166,6 +172,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
 import KBButton from '@/components/common/KBButton.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -177,6 +184,7 @@ export default defineComponent({
 		GridResultItem,
 		ProgramGuide,
 		KBButton,
+		ContainerSplitBar,
 	},
 
 	props: {
@@ -257,8 +265,25 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 65px;
+	position: relative;
+	flex-direction: column;
+}
 .broadcast-record {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 h3 {
 	margin-top: 0;
@@ -418,7 +443,7 @@ h4 {
 	max-width: 100%;
 }
 .related-content-title {
-	color: var(--color-main);
+	color: var(--color-default);
 	padding: 0px 20px;
 }
 .related-record {
