@@ -179,14 +179,11 @@ export default defineComponent({
 	padding: 0px 0px;
 	height: calc(100% + 1px);
 	box-sizing: border-box;
-	/* 	border-left: 1px solid var(--color-border-success);
-	border-right: 1px solid var(--color-border-success); */
 }
 
 .autocomplete.active {
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
 	border-radius: 0px 0px var(--rounded-small) var(--rounded-small);
-	border-bottom: 1px solid var(--color-border-success);
 }
 
 .autocomplete button {
@@ -272,7 +269,6 @@ export default defineComponent({
 	content: '';
 	display: block;
 	padding: 0px 10px;
-	/* border-top: 1px solid rgb(229, 228, 226); */
 	height: 1px;
 	position: relative;
 	transition: all 0.2s linear 0s;
@@ -280,32 +276,6 @@ export default defineComponent({
 	z-index: 0;
 }
 
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
-	.autocomplete {
-		/* border: 1px solid #757575; */
-		border-top: 0px;
-		/* width: calc(80% - 2px); */
-	}
-}
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-}
-
-@media (min-width: 800px) {
-	.autocomplete {
-		/* border: 1px solid #f5f5f5; */
-		/* border-top: 0px solid #f5f5f5; */
-		margin-top: -1px;
-		width: 50%;
-	}
-}
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-}
-/* MEDIA QUERY 1150 */
-@media (min-width: 1150px) {
-}
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
 	.autocomplete {

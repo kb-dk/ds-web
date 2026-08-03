@@ -67,6 +67,7 @@ export default defineComponent({
 	transition-delay: 0.25s !important;
 	transition: height 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91);
 	background-color: var(--bg-default);
+	min-height: 170px;
 }
 
 .header-container.home {

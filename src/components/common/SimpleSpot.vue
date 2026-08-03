@@ -59,7 +59,14 @@ export default defineComponent({
 	overflow: hidden;
 	flex-wrap: wrap;
 	align-content: baseline;
+}
+.spot::after {
+	content: '';
+	position: absolute;
+	inset: 0;
 	box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.34) inset;
+	pointer-events: none;
+	z-index: 2;
 }
 .spot .icon {
 	width: 40px;
