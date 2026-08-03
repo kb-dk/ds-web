@@ -37,15 +37,10 @@
 				</a>
 				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
-
-			<TiltedDivider
-				:title="$t('search.searchGuide.title')"
-				:right="true"
-			></TiltedDivider>
 			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
-						<h2>{{ $t('search.searchGuide.subtitle') }}</h2>
+						<h2>{{ $t('search.searchGuide.title') }}</h2>
 						<ul>
 							<li>
 								<p>{{ $t('search.searchGuide.first') }}</p>
@@ -86,27 +81,14 @@
 				</template>
 				<template #image><div class="material-icons search-icon">search</div></template>
 			</TextAndImage>
-			<EdgedContentArea
-				:lines="true"
-				:title="$t('search.mainCategories')"
-				class="main-categories-header"
-				background-color="var(--bg-default)"
-			>
-				<template #content>
-					<div class="showcase-container">
-						<MainCategories
-							:title="$t('timeSearch.searchCategories')"
-							text="var(--color-main)"
-							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-							:show-header="true"
-						></MainCategories>
-					</div>
-				</template>
-			</EdgedContentArea>
-			<ContactUs
-				class="contact-us"
-				:relative-position="false"
-			></ContactUs>
+			<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+			<div class="end-container">
+				<SpotCategories></SpotCategories>
+				<ContactUs
+					class="contact-us"
+					:relative-position="false"
+				></ContactUs>
+			</div>
 		</div>
 	</Transition>
 </template>
@@ -115,23 +97,24 @@
 import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SpellChecker from '@/components/search/SpellChecker.vue';
-import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
 import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
+// import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
 import { useI18n } from 'vue-i18n';
+import SpotCategories from '../common/SpotCategories.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
 		ContactUs,
-		MainCategories,
 		SpellChecker,
-		TiltedDivider,
 		TextAndImage,
 		EdgedContentArea,
+		SpotCategories,
+		ContainerSplitBar,
 	},
 	setup() {
 		const { t, locale } = useI18n();
@@ -153,6 +136,24 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
+
 .no-hits * {
 	padding: 0;
 	box-sizing: border-box;
@@ -176,7 +177,7 @@ export default defineComponent({
 	align-items: center;
 	padding: 50px 0px;
 	flex-direction: row;
-	color: var(--color-main);
+	color: var(--color-default);
 	flex-wrap: wrap;
 	align-content: center;
 	box-sizing: border-box;
@@ -207,7 +208,7 @@ export default defineComponent({
 	word-wrap: break-word;
 	hyphens: auto;
 	max-width: 800px;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 h2 {
 	margin: 0;
@@ -215,7 +216,7 @@ h2 {
 .no-hits-heading-subtitle {
 	margin-top: 10px;
 	max-width: 750px;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 .no-hits-heading-subtitle a {
 	font-size: var(--fs-base);
@@ -225,7 +226,7 @@ h2 {
 .search-icon {
 	text-align: center;
 	font-size: 150px;
-	color: var(--color-main);
+	color: var(--color-default);
 }
 ul p {
 	margin: 0;
@@ -237,7 +238,6 @@ ul p {
 
 @media (min-width: 990px) {
 	.contact-us {
-		margin-top: -40px;
 		padding-bottom: 40px;
 	}
 	.search-icon {

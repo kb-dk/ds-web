@@ -13,17 +13,15 @@
 			:data-testid="addTestDataEnrichment('button', 'ContactUs', 'link-to-ask-about-library', 0)"
 		></KBButton>
 	</div>
-	<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
-import ContainerSplitBar from '../global/content-elements/ContainerSplitBar.vue';
 export default defineComponent({
 	name: 'ContactUs',
-	components: { KBButton, ContainerSplitBar },
+	components: { KBButton },
 	props: {
 		relativePosition: {
 			type: Boolean as PropType<boolean>,
@@ -48,7 +46,7 @@ export default defineComponent({
 	position: relative;
 	top: calc(-6vw);
 	left: 1%;
-	color: var(--color-default);
+	color: var(--color-main);
 }
 
 .material-icons {
