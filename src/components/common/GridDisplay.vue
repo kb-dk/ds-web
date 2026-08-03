@@ -2,7 +2,7 @@
 	<div class="grid-display">
 		<ItemSlider
 			:padding="false"
-			bg="var(--bg-secondary-light-20)"
+			bg="var(--bg-backdrop)"
 			item-class="rotational-results"
 			bg-scroll-blue="true"
 		>
@@ -16,7 +16,7 @@
 						:loading="!loaded"
 						:resultdata="spots[i]"
 						:index="i"
-						background="var(--bg-secondary-light-20)"
+						background="var(--bg-backdrop)"
 						:class="{ 'current-record': current === i }"
 						:slot-props="slotProps"
 					></GridResultItem>
@@ -73,7 +73,7 @@ temporary styling until patterns from design system are implemented
 	margin-left: 15px;
 	flex: 0 0 30%;
 	box-sizing: border-box;
-	background-color: var(--bg-secondary-light-20);
+	background-color: var(--bg-backdrop);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
