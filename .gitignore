@@ -1,6 +1,8 @@
+aegis/
 .DS_Store
 node_modules
 /dist
+.git
 
 # deploy scripts
 deploy-to-test.sh
@@ -8,6 +10,7 @@ build-release-artifact.sh
 README_RELEASE_ARTIFACT.md
 
 # local env files
+.env
 .env.local
 .env.*.local
 .env.local.*
@@ -30,5 +33,3 @@ pnpm-debug.log*
 *.sw?
 /.project
 /test-1.0.0.tar.gz
-
-.env
