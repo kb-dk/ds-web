@@ -1,3 +1,35 @@
+aegis/
+.DS_Store
 node_modules
-npm-debug.log
+/dist
 .git
+
+# deploy scripts
+deploy-to-test.sh
+build-release-artifact.sh
+README_RELEASE_ARTIFACT.md
+
+# local env files
+.env
+.env.local
+.env.*.local
+.env.local.*
+# lighthouse reports
+*.report.html
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/.project
+/test-1.0.0.tar.gz
