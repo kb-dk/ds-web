@@ -1,0 +1,23 @@
+services:
+  ds-web:
+    image: ds-web/master:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    cap_drop:
+      - ALL
+    environment:
+      TZ: UTC
+    ports:
+      - "3000:3000"
+    env_file:
+      - aegis/docker/ds-web/.env
+    networks:
+      - ds_archive_network
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  ds_archive_network:
+    name: ds_archive_network
+    driver: bridge
