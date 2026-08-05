@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
     cap_drop:
       - ALL
+    command: [ "npm", "run", "dev" ]
     container_name: ds-web
     environment:
       TZ: UTC
@@ -17,6 +18,9 @@ services:
       - ds_archive_network
     security_opt:
       - no-new-privileges:true
+    volumes:
+      - .:/app
+      - /app/node_modules # Prevent node_modules from being overwritten
 
 networks:
   ds_archive_network:
