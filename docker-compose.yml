@@ -1,6 +1,5 @@
 services:
   ds-web:
-    image: ds-web/master:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,12 +9,13 @@ services:
     container_name: ds-web
     environment:
       TZ: UTC
-    ports:
-      - "3000:3000"
     env_file:
-      - aegis/docker/ds-web/.env
+      aegis/docker/ds-web/.env
+    image: ds-web/master:latest
     networks:
       - ds_archive_network
+    ports:
+      - "3000:3000"
     security_opt:
       - no-new-privileges:true
     volumes:
