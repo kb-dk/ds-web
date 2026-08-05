@@ -60,6 +60,8 @@ Your folder structure should now look like this:
     └── aegis
 ```
 
+If you want to have the container using the real services, then change the environment variables in `aegis/docker/ds-web/.env`.
+
 ## Start the Docker service
 
 The Docker Compose enables hot reloading.
