@@ -5,13 +5,12 @@ FROM node:20.10.0-alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json first to leverage Docker caching
-COPY package*.json ./
+COPY package*.json .
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-# This will include your .env file as long as it isn't excluded in .dockerignore
 COPY . .
 
 # Add a non-root user
