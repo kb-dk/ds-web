@@ -22,7 +22,52 @@ services:
       - .:/app
       - /app/node_modules # Prevent node_modules from being overwritten
 
+  umami:
+    image: umamisoftware/umami:3.2.0
+    environment:
+      TZ: UTC
+      DATABASE_URL: postgresql://umami:p0stgr3s@postgres-umami:5432/umami
+      APP_SECRET: replace-me-with-a-random-string
+    ports:
+      - "3100:3000"
+    depends_on:
+      postgres-umami:
+        condition: service_healthy
+    init: true
+    networks:
+      - umami_network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl http://localhost:3100/api/heartbeat" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres-umami:
+    image: postgres:18-alpine3.24
+    environment:
+      TZ: UTC
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: p0stgr3s
+    ports:
+      - "3110:5432"
+    volumes:
+      - umami_db_data:/var/lib/postgresql
+    networks:
+      - umami_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "--username=$${POSTGRES_USER}", "--database=$${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  umami_db_data:
+
 networks:
   ds_archive_network:
     name: ds_archive_network
+    driver: bridge
+  umami_network:
+    name: umami_network
     driver: bridge
