@@ -71,14 +71,14 @@ export default defineComponent({
 }
 
 .radio-option.checked {
-	background-color: var(--bg-secondary-light);
-	border: 1px solid var(--color-borders-light);
+	background-color: var(--bg-main-light);
+	border: 1px solid var(--color-border-success);
 	border-radius: 4px;
 }
 
 .radio-option:hover {
-	background-color: var(--bg-secondary-light-20);
-	border: 1px solid var(--color-border-light-focused);
+	background-color: var(--bg-main-3);
+	border: 1px solid var(--color-border-success-lighter);
 	border-radius: 4px;
 }
 
@@ -92,7 +92,7 @@ export default defineComponent({
 }
 
 .radio-icon {
-	color: #0a2e70;
+	color: var(--color-default);
 	margin-right: 5px;
 }
 
@@ -124,7 +124,7 @@ export default defineComponent({
 	display: inline-block;
 	width: 24px;
 	height: 24px;
-	border: 2px solid #0a2e70;
+	border: 2px solid var(--color-default);
 	border-radius: 50%;
 	background: white;
 	margin-right: 5px;
@@ -139,7 +139,7 @@ export default defineComponent({
 .radio-option .dot {
 	width: 10px;
 	height: 10px;
-	background: #0a2e70;
+	background: var(--color-default);
 	border-radius: 50%;
 }
 
