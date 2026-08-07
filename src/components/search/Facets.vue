@@ -940,7 +940,7 @@ export default defineComponent({
 }
 
 .filter-headline {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .filter-headline .bold {
@@ -955,7 +955,7 @@ export default defineComponent({
 .filter-header .material-icons {
 	width: 40px;
 	height: 40px;
-	color: #002e70;
+	color: var(--color-default);
 	font-size: 40px;
 	display: flex;
 	justify-content: center;
@@ -1139,9 +1139,11 @@ h2 {
 	z-index: 2;
 	position: relative;
 	cursor: pointer;
+	color: var(--color-default);
 }
 
-.genre-facets {
+.genre-facets,
+.facet-options {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -1150,6 +1152,7 @@ h2 {
 	margin-top: 25px;
 	margin-bottom: 30px;
 	gap: 8px;
+	flex-direction: column;
 }
 
 .genre {

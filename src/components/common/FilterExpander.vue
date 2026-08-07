@@ -248,9 +248,9 @@ export default defineComponent({
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	transition: all 0.15s linear 0s;
-	border-top: 1px solid #0a2e70;
-	border-bottom: 1px solid #0a2e70;
-	color: #0a2e70;
+	border-top: 1px solid var(--color-default);
+	border-bottom: 1px solid var(--color-default);
+	color: var(--color-default);
 	box-sizing: border-box;
 	height: auto;
 	background-color: rgba(255, 255, 255, 0.5);
@@ -334,7 +334,7 @@ export default defineComponent({
 	height: 0;
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
-	border-bottom: 6px solid #0a2e70;
+	border-bottom: 6px solid var(--color-default);
 	position: absolute;
 	transition: all 0.15s ease-in-out 0s;
 	transform: scaleY(0);
@@ -351,7 +351,7 @@ export default defineComponent({
 	height: 0;
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
-	border-top: 6px solid #0a2e70;
+	border-top: 6px solid var(--color-default);
 	transform: scaleY(0);
 	transform-origin: top;
 	transition: all 0.15s ease-in-out 0s;
@@ -397,7 +397,7 @@ export default defineComponent({
 	padding: 10px 5px;
 	width: 20px;
 	height: 23px;
-	background-color: #0a2e70;
+	background-color: var(--color-default);
 	color: white;
 	font-size: 24px;
 	display: flex;

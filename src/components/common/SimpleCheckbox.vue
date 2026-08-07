@@ -211,6 +211,7 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	color: var(--color-default);
 }
 
 .display-image.disabled.no-icon {
@@ -267,14 +268,14 @@ export default defineComponent({
 }
 
 .checkbox-container:hover {
-	background-color: var(--bg-secondary-light-20);
-	border: 1px solid var(--color-border-light-focused);
+	background-color: var(--bg-main-3);
+	border: 1px solid var(--color-border-success-lighter);
 	border-radius: 4px;
 }
 
 .checkbox-container.checked {
-	background-color: var(--bg-secondary-light);
-	border: 1px solid var(--color-borders-light);
+	background-color: var(--bg-main-light);
+	border: 1px solid var(--color-border-success);
 	border-radius: 4px;
 }
 
@@ -339,7 +340,7 @@ export default defineComponent({
 	max-width: calc(100% - 95px);
 	white-space: nowrap;
 	overflow: clip;
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .loading .checkbox:after {
@@ -388,13 +389,13 @@ input:focus {
 	display: block;
 	width: 20px;
 	height: 20px;
-	border: 3px solid #002e70;
+	border: 3px solid var(--color-default);
 	border-radius: 4px;
 	box-sizing: border-box;
 }
 
 .checkbox:checked:after {
-	background-color: #002e70;
+	background-color: var(--color-default);
 }
 
 .checkbox:checked:before {
