@@ -38,6 +38,7 @@
     --color-border-transparent: transparent;
     --color-border-light-focused: #96E2FD;
     --color-borders-light: #96E2FD;
+    --color-border-success-transparent: #ea9fbc3d;
 
     /*rounded*/
     --rounded-small: var(--scale-50);

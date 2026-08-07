@@ -11,6 +11,10 @@
 				{{ iconName }}
 			</span>
 		</div>
+		<div
+			v-else
+			class="icon"
+		></div>
 		<div class="inner"><slot></slot></div>
 	</div>
 </template>
@@ -53,10 +57,9 @@ export default defineComponent({
 	height: 100%;
 	min-height: 190px;
 	border-radius: 0px;
-	border: 1px solid var(--color-border-success);
+	border: 1px solid var(--color-border-success-transparent);
 	box-sizing: border-box;
 	position: relative;
-	overflow: hidden;
 	flex-wrap: wrap;
 	align-content: baseline;
 }
@@ -86,13 +89,14 @@ export default defineComponent({
 }
 .spot .inner {
 	width: 100%;
-	height: inherit;
 	padding: 20px;
+	height: calc(100% - 80px);
 	display: flex;
 	justify-content: start;
 	align-items: flex-start;
 	text-align: start;
 	flex-direction: column;
+	position: relative;
 	/* word-break: break-all; */
 }
 .spot.main {
@@ -110,6 +114,7 @@ export default defineComponent({
 .spot.medium {
 	width: 100%;
 	max-width: 100%;
+	height: 200px;
 }
 .spot.large {
 	width: 100%;

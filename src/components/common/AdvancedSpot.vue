@@ -4,19 +4,22 @@
 		:color="color"
 		:icon-name="iconName"
 	>
-		<transition name="fade">
+		<TransitionGroup name="fade">
+			<div
+				v-show="authStore.currentArchiveProgress !== 0"
+				class="process-bar"
+			>
+				<div
+					v-for="i in 20"
+					:key="i"
+					:class="progress(i)"
+				></div>
+			</div>
 			<div
 				v-show="authStore.currentArchiveProgress !== 0"
 				class="hero-info"
 			>
 				<div class="info">
-					<div class="process-bar">
-						<div
-							v-for="i in 20"
-							:key="i"
-							:class="progress(i)"
-						></div>
-					</div>
 					<div class="progress-headline">
 						<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
 						<p>
@@ -25,12 +28,12 @@
 					</div>
 				</div>
 			</div>
-		</transition>
+		</TransitionGroup>
 	</simple-spot>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { defineComponent, onMounted, PropType, ref, TransitionGroup, watch } from 'vue';
 import SimpleSpot from '@/components/common/SimpleSpot.vue';
 import { useAuthStore } from '@/store/authStore';
 import gsap from 'gsap';
@@ -99,9 +102,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.progress-headline {
-	margin-top: 20px;
-}
 .progress-headline > * {
 	margin: 0;
 }
@@ -109,10 +109,8 @@ export default defineComponent({
 .hero-info {
 	max-width: 100%;
 	/* position: relative; */
-	z-index: 0;
 	display: flex;
 	box-sizing: border-box;
-	height: 150px;
 	justify-content: flex-start;
 }
 
@@ -127,22 +125,23 @@ export default defineComponent({
 }
 
 .process-bar {
-	height: 34px;
+	height: 40px;
 	display: flex;
+	width: calc(100% + 1px);
 	position: absolute;
-	width: 100%;
 	left: 0px;
-	top: 0px;
+	top: -40px;
 	background-color: var(--bg-default);
-	z-index: 1;
 }
 
 .step {
 	width: 5%;
 	height: 100%;
 	box-sizing: border-box;
-	border-left: 1px solid rgba(255, 255, 255, 0.05);
+	border-left: 1px solid var(--bg-main);
 	transition: all 0.15s ease-in-out 0s;
+	position: relative;
+	z-index: 1;
 }
 
 .step.darkblue {
@@ -156,20 +155,32 @@ export default defineComponent({
 .step.lightblue {
 	background-color: var(--bg-main);
 	opacity: 0.85;
+	z-index: 5;
+	height: calc(100% + 2px);
+	margin-top: -1px;
 }
 
 .step.grey {
 	background-color: var(--bg-main);
 	opacity: 0.75;
+	z-index: 5;
+	height: calc(100% + 2px);
+	margin-top: -1px;
 }
 
 .step.lightgrey {
 	background-color: var(--bg-main);
 	opacity: 0.7;
+	z-index: 5;
+	height: calc(100% + 2px);
+	margin-top: -1px;
 }
 
 .step.white {
-	background-color: transparent;
+	background-color: var(--bg-default);
 	border-color: transparent;
+	z-index: 5;
+	height: calc(100% + 2px);
+	margin-top: -2px;
 }
 </style>
