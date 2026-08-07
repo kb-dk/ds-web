@@ -54,6 +54,7 @@ export default defineComponent({
 	height: 100%;
 	flex-direction: column;
 	margin-bottom: 20px;
+	gap: 50px;
 }
 .spot-row {
 	display: flex;
@@ -62,13 +63,17 @@ export default defineComponent({
 	height: 100%;
 	flex-wrap: wrap;
 	/* background-repeat: no-repeat; */
-
 	justify-content: space-between;
 }
 .link {
 	color: inherit;
 	text-decoration: inherit;
 	border-bottom: 1px solid transparent;
+	font-size: var(--fs-md);
+	line-height: var(--lh-medium-tight);
+	font-weight: var(--fw-regular);
+	font-family: 'LibreBaskerville';
+	margin: 0px;
 }
 
 .spot-link:hover {

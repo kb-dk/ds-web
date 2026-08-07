@@ -32,6 +32,10 @@ body,button{
     font-family: noway, sans-serif;
 }
 
+h1, h2 {
+    font-family: 'LibreBaskerville';
+}
+
 @font-face {
 	font-family: 'noway';
 	font-style: normal;

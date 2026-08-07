@@ -8,7 +8,7 @@
 			v-if="categoriesLoaded && categories.length"
 			class="spot-categories"
 		>
-			<h3>{{ categories.length }} {{ t('facets.genres', 2) }}:</h3>
+			<h1>{{ categories.length }} {{ t('facets.genres', 2) }}:</h1>
 			<KBButton
 				v-for="(category, i) in categories"
 				:key="category.name"
@@ -165,6 +165,11 @@ h3 {
 	flex-wrap: wrap;
 	align-items: baseline;
 }
+
+.spot-categories h1 {
+	padding-right: 15px;
+}
+
 .spot-categories > * {
 	margin-right: 3px;
 	margin-left: 7px;

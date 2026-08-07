@@ -29,6 +29,10 @@
 				:label="$t('timeSearch.to')"
 				@update-selected="updateEndYear"
 			/>
+			<p class="year-count label-regular">
+				<span class="equal-sign">=</span>
+				{{ $t('timeSearch.periodOf', { number: Math.ceil(timeSliderValues[1] - timeSliderValues[0] + 1) }) }}
+			</p>
 		</div>
 		<div class="slider-whiteoff-container">
 			<Transition name="fade">
@@ -423,6 +427,15 @@ export default defineComponent({
 	margin-bottom: 0px;
 	font-size: 26px;
 	text-transform: capitalize;
+}
+
+.year-count {
+	color: var(--color-main);
+	text-transform: initial;
+}
+
+.equal-sign {
+	padding: 0px 5px;
 }
 
 .data-highlight {

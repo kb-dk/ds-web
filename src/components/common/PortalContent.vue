@@ -4,7 +4,6 @@
 		<div class="time-search">
 			<TimeSearchComponent
 				:title="$t('timeSearch.timeMachine')"
-				:subtitle="$t('timeSearch.timeMachineSubtitle')"
 				text="var(--color-main)"
 			></TimeSearchComponent>
 		</div>
