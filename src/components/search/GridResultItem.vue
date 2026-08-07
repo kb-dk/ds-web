@@ -332,18 +332,23 @@ export default defineComponent({
 
 .grid-result-item:after {
 	transition: all 0.3s linear 0s;
+	display: flex;
 	content: '•';
 	position: absolute;
-	height: 10px;
+	font-size: 16px;
+	height: 11px;
 	text-align: center;
-	color: var(--color-main);
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0.5;
+	line-height: 0;
 	transform-origin: center;
 	will-change: transform;
-	bottom: -5px;
+	bottom: -4px;
+	background-color: white;
+	justify-content: center;
+	align-items: center;
 }
 
 .thumb-container {

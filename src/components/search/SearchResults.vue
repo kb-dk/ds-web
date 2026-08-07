@@ -151,7 +151,7 @@ export default defineComponent({
 	position: absolute;
 	height: 10px;
 	text-align: center;
-	color: var(--color-main);
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
@@ -166,11 +166,11 @@ export default defineComponent({
 	position: absolute;
 	height: 16px;
 	text-align: center;
-	color: var(--color-main);
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	top: 50%;
-	width: 10px;
-	line-height: 0.75;
+	width: 11px;
+	line-height: 1;
 	margin-top: -5px;
 	left: 0px;
 	display: none;
