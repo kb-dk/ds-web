@@ -46,7 +46,7 @@
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<h3>{{ $t('record.aired') }}</h3>
+					<p class="lead">{{ $t('record.aired') }}</p>
 					<div class="info label-medium">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
@@ -389,10 +389,10 @@ h4 {
 }
 
 .right-side-metadata-box {
-	color: var(--color-main);
+	color: var(--color-default);
 	width: 100%;
 	padding: 20px 10px 30px 10px;
-	background-color: var(--bg-light);
+	background-color: var(--bg-main-3);
 	box-sizing: border-box;
 	text-transform: capitalize;
 }

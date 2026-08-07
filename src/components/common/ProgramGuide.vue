@@ -397,22 +397,26 @@ export default defineComponent({
 		background-color 0.1s ease-in-out 0s;
 }
 .hors-dot {
+	display: flex;
 	position: absolute;
-	height: 10px;
+	height: 11px;
 	text-align: center;
-	color: var(--color-main);
+	color: var(--color-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0.5;
-	margin-top: -3px;
+	line-height: 0;
+	margin-top: 0px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: transparent;
 	z-index: 1;
 	transition:
 		transform 0.3s ease-in-out 0s,
 		background-color 0.1s ease-in-out 0.2s;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	margin-top: -7px;
 }
 .daily-program-expanded {
 	overflow-y: hidden;
