@@ -489,6 +489,10 @@ export default defineComponent({
 	transition: all 0.5s ease-in-out 0s;
 }
 
+.content.record {
+	margin-top: 20px;
+}
+
 .search-to-home-leave-to {
 	margin-top: 50px;
 	opacity: 0;
@@ -577,23 +581,35 @@ export default defineComponent({
 
 /* SEARCH TO RECORD TRANSITION */
 
+.search-to-record-enter-active {
+	transition:
+		margin-top 0.25s linear 0.5s,
+		opacity 0.25s linear 0.5s;
+}
+
+.search-to-record-leave-active {
+	transition:
+		margin-top 0.25s linear,
+		opacity 0.25s linear;
+}
+
 .search-to-record-enter-from {
-	transform: translateY(50px);
+	margin-top: 50px;
 	opacity: 0;
 }
 
 .search-to-record-enter-to {
-	transform: translateY(20px);
+	margin-top: 0px;
 	opacity: 1;
 }
 
 .search-to-record-leave-from {
 	opacity: 1;
-	transform: translateY(20px);
+	margin-top: 0px;
 }
 
 .search-to-record-leave-to {
-	transform: translateY(50px);
+	margin-top: 50px;
 	opacity: 0;
 }
 
