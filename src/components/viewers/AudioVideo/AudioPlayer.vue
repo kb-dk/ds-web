@@ -170,7 +170,7 @@ export default defineComponent({
 		watch(
 			() => route.params.id,
 			() => {
-				if (KalturaPlayer) {
+				if (audioPlayer) {
 					audioPlayer.destroy();
 				}
 				setupPlayer();
@@ -186,7 +186,7 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
+			if (audioPlayer) {
 				audioPlayer.destroy();
 			}
 		});

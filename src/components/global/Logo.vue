@@ -1,5 +1,8 @@
 <template>
-	<div class="logo-container container">
+	<div
+		class="logo-container container"
+		:class="{ ready }"
+	>
 		<div
 			v-for="n in 5"
 			:key="n"
@@ -26,10 +29,7 @@ export default defineComponent({
 				ready.value = true;
 			});
 		});
-
-		return {
-			ready,
-		};
+		return { ready };
 	},
 });
 </script>
@@ -38,6 +38,12 @@ export default defineComponent({
 .logo-container {
 	position: absolute !important;
 	z-index: 4 !important;
+	opacity: 0;
+	transition: opacity 500ms ease;
+}
+
+.logo-container.ready {
+	opacity: 1;
 }
 
 .line {
@@ -46,11 +52,15 @@ export default defineComponent({
 	background: var(--color-main);
 	transform-origin: center;
 	position: absolute;
-	opacity: 0;
 }
 
-.search .line {
+.search .line,
+.record .line {
 	transition: all 1.5s ease-in-out;
+}
+
+.header-container.record .line.animate:nth-of-type(5) {
+	opacity: 0;
 }
 
 .line.animate {
@@ -74,77 +84,68 @@ export default defineComponent({
 			1
 		);
 }
-
 .line:nth-of-type(1) {
 	transform: rotate(0deg);
 	top: 0px;
 	transform-origin: left;
 	transition-delay: 0.1s !important;
 }
-
 .line.animate:nth-of-type(1) {
 	top: 44.07px;
 	transform: rotate(-8.096deg);
 	opacity: 1;
 }
-
-.search .line:nth-of-type(1) {
+.search .line:nth-of-type(1),
+.record .line:nth-of-type(1) {
 	top: 44.07px;
 }
-
 .line:nth-of-type(2) {
 	transform: rotate(0deg);
 	top: 0px;
 	transform-origin: right;
 	transition-delay: 0.2s !important;
 }
-
 .line.animate:nth-of-type(2) {
 	top: 154.43px;
 	opacity: 1;
 	transform: rotate(3.677deg);
 }
-
-.search .line.animate:nth-of-type(2) {
+.search .line.animate:nth-of-type(2),
+.record .line.animate:nth-of-type(2) {
 	top: 154.43px;
 }
-
 .line:nth-of-type(3) {
 	transform: rotate(0deg);
 	top: 0px;
 	transform-origin: left;
 	transition-delay: 0.3s !important;
 }
-
 .line.animate:nth-of-type(3) {
 	top: 427px;
 	transform: rotate(3.677deg);
 	opacity: 1;
 }
-
-.search .line.animate:nth-of-type(3) {
+.search .line.animate:nth-of-type(3),
+.record .line.animate:nth-of-type(3) {
 	opacity: 0.7;
 	top: 139px;
 }
-
 .line:nth-of-type(4) {
 	transform: rotate(0deg);
 	top: 0px;
 	transform-origin: right;
 	transition-delay: 0.4s !important;
 }
-
 .line.animate:nth-of-type(4) {
 	top: 730px;
 	transform: rotate(-4.458deg);
 	opacity: 1;
 }
-
-.search .line.animate:nth-of-type(4) {
+.search .line.animate:nth-of-type(4),
+.record .line.animate:nth-of-type(4) {
 	opacity: 0.2;
 	top: 197px;
 }
-
 .line:nth-of-type(5) {
 	transform: rotate(0deg);
 	top: 0px;
@@ -154,25 +155,22 @@ export default defineComponent({
 		width 750ms ease,
 		top 750ms ease 750ms !important;
 }
-
 .line.animate:nth-of-type(5) {
 	top: 945px;
 	opacity: 1;
 	transform: rotate(0deg);
 }
-
-.search .line.animate:nth-of-type(5) {
+.search .line.animate:nth-of-type(5),
+.record .line.animate:nth-of-type(5) {
 	width: 1280px;
 	top: 305px;
 	transition:
 		top 750ms ease,
 		width 750ms ease 750ms !important;
 }
-
 .search .line:nth-of-type(5) {
 	top: 305px;
 }
-
 @media (max-width: 990px) {
 	.line.animate:nth-of-type(1) {
 		top: 44.07px;
@@ -192,7 +190,6 @@ export default defineComponent({
 		top: 305px;
 	}
 }
-
 @media (min-width: 990px) and (max-width: 1279px) {
 	.line.animate:nth-of-type(1) {
 		top: 44.07px;
@@ -210,7 +207,6 @@ export default defineComponent({
 		top: 698px;
 	}
 }
-
 @media (min-width: 1280px) and (max-width: 1439px) {
 	.line.animate:nth-of-type(1) {
 		top: 44.07px;
