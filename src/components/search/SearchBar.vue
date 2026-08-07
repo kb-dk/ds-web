@@ -95,7 +95,10 @@
 		</div>
 		<Transition name="fade">
 			<div class="autocomplete-container">
-				<Autocomplete :keystroke="keyStrokeEvent" />
+				<Autocomplete
+					:has-focus="hasFocus"
+					:keystroke="keyStrokeEvent"
+				/>
 			</div>
 		</Transition>
 	</div>
@@ -249,9 +252,6 @@ input[type='search']::-webkit-search-results-decoration {
 
 .autocomplete-container {
 	z-index: 15;
-	border-bottom: 1px solid var(--color-border-success);
-	border-left: 1px solid var(--color-border-success);
-	border-right: 1px solid var(--color-border-success);
 	border-radius: 0 0 var(--rounded-medium) var(--rounded-medium);
 	overflow: hidden;
 	background-color: var(--bg-default);

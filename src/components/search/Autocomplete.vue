@@ -1,41 +1,46 @@
 <!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div :class="searchResultStore.autocompleteResult.length > 0 ? 'autocomplete active' : 'autocomplete'">
-		<Transition
-			name="fade"
-			mode="out-in"
+	<Transition name="fade">
+		<div
+			v-if="searchResultStore.autocompleteResult.length > 0 && hasFocus"
+			:class="searchResultStore.autocompleteResult.length > 0 ? 'autocomplete active' : 'autocomplete'"
 		>
-			<ul
-				v-if="searchResultStore.autocompleteResult.length > 0"
-				ref="autocomplete"
-				role="listbox"
-				class="autocomplete-list"
-				aria-label="autocomplete list"
+			<Transition
+				name="fade"
+				mode="out-in"
 			>
-				<li
-					v-for="(item, i) in searchResultStore.autocompleteResult"
-					:key="i"
-					role="option"
-					:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
+				<ul
+					v-if="searchResultStore.autocompleteResult.length > 0 && hasFocus"
+					ref="autocomplete"
+					role="listbox"
+					class="autocomplete-list"
+					aria-label="autocomplete list"
 				>
-					<button
-						:title="item?.term"
-						:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
-						@click="executeOnSelection($event, i + 1)"
-						@mouseenter="updateSelectedElement(i + 1)"
-						@mouseleave="updateSelectedElement(0)"
+					<li
+						v-for="(item, i) in searchResultStore.autocompleteResult"
+						:key="i"
+						role="option"
+						:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 					>
-						<span
-							class="autocomplete-term"
-							v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
-						></span>
-						<span class="number">{{ `(${item.weight})` }}</span>
-					</button>
-				</li>
-			</ul>
-		</Transition>
-	</div>
+						<button
+							:title="item?.term"
+							:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
+							@click="executeOnSelection($event, i + 1)"
+							@mouseenter="updateSelectedElement(i + 1)"
+							@mouseleave="updateSelectedElement(0)"
+						>
+							<span
+								class="autocomplete-term"
+								v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
+							></span>
+							<span class="number">{{ `(${item.weight})` }}</span>
+						</button>
+					</li>
+				</ul>
+			</Transition>
+		</div>
+	</Transition>
 </template>
 
 <script lang="ts">
@@ -53,6 +58,10 @@ export default defineComponent({
 		keystroke: {
 			type: KeyboardEvent,
 			default: null,
+		},
+		hasFocus: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -128,11 +137,11 @@ export default defineComponent({
 			}
 		};
 
-		const executeOnSelection = (e: PointerEvent, n: number) => {
+		const executeOnSelection = (e: PointerEvent | MouseEvent, n: number) => {
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
 				// pointerType mouse is for a mouse click, where pointerType would be "" if enter
-				if (e.pointerType === 'mouse') {
+				if (e instanceof PointerEvent && e.pointerType === 'mouse') {
 					//updated selected element to make sure it picks the clicked element.
 					updateSelectedElement(n);
 				}
@@ -174,16 +183,53 @@ export default defineComponent({
 <style scoped>
 .autocomplete {
 	z-index: 5;
-	background-color: var(--bg-light);
+	background-color: var(--bg-default);
 	width: 100%;
 	padding: 0px 0px;
 	height: calc(100% + 1px);
 	box-sizing: border-box;
+	border-bottom: 1px solid var(--color-border-success);
+	border-left: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-radius: 0 0 var(--rounded-medium) var(--rounded-medium);
+	border-top: 1px solid var(--bg-default);
+	position: relative;
+	transition: all 0.2s ease-in-out 0s;
+}
+
+.autocomplete::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 100%;
+	height: 1px;
+	width: 1px;
+	background-color: var(--color-border-success);
+	z-index: 5;
+}
+
+.autocomplete::after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	width: 100%;
+	height: 1px;
+	width: 1px;
+	background-color: var(--bg-default);
+	z-index: 5;
+}
+
+.autocomplete:empty {
+	height: 0px;
+	border: 0px;
 }
 
 .autocomplete.active {
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-	border-radius: 0px 0px var(--rounded-small) var(--rounded-small);
 }
 
 .autocomplete button {
@@ -240,7 +286,6 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
-	background-color: var(--bg-light);
 }
 
 .autocomplete ul li:hover,
