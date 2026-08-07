@@ -1,6 +1,6 @@
 <template>
 	<header
-		:aria-label="`${route.name as string} header`"
+		:aria-label="`${String(route.name).toLowerCase()} header`"
 		class="header"
 	>
 		<a
@@ -23,7 +23,7 @@
 	</header>
 	<main
 		id="main-content"
-		:class="`content ${route.name as string}`"
+		:class="`content ${String(route.name).toLowerCase()}`"
 	>
 		<Facets v-if="route.name === 'Search'"></Facets>
 		<Underlay></Underlay>
@@ -83,6 +83,7 @@ export default defineComponent({
 		const authStore = useAuthStore();
 		const searchResultStore = useSearchResultStore();
 		const errorManager = inject('errorManager') as ErrorManagerType;
+		const routerReady = ref(false);
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -122,6 +123,15 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
+			await router.isReady();
+			routerReady.value = true;
+			watch(
+				() => route.name,
+				(newRoute) => {
+					document.body.classList.toggle('notFrontpage', newRoute !== 'Home');
+				},
+				{ immediate: true },
+			);
 			//for now, we set the title of the app to the archive. Can be changed if we ever go portal-mode.
 			document.title = t('app.titles.frontpage.archive.name') as string;
 
@@ -365,6 +375,7 @@ export default defineComponent({
 			transitionName,
 			isDevelopment,
 			returnCurrentEnv,
+			routerReady,
 			t,
 		};
 	},
@@ -372,9 +383,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#main-content .Home {
-	background-color: var(--bg-default);
-}
 #cookiescript_reportdate a,
 #cookiescript_cookiescriptlink,
 #cookiescript_reportlink {
@@ -418,7 +426,7 @@ export default defineComponent({
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.25s ease;
+	transition: opacity height backgroundColor 0.25s ease;
 }
 
 .fade-enter-from,
@@ -470,8 +478,15 @@ export default defineComponent({
 	z-index: 3;
 }
 
-#main-content {
-	min-height: 50vh;
+.content.home {
+	background-color: var(--bg-default);
+	min-height: 100vh;
+	transition: all 0.5s ease-in-out 0.1s;
+}
+
+.content.search {
+	background-color: white;
+	transition: all 0.5s ease-in-out 0s;
 }
 
 .search-to-home-leave-to {
@@ -554,34 +569,32 @@ export default defineComponent({
 
 .search-to-record-enter-active,
 .search-to-record-leave-active {
-	transition: all 0.25s linear;
+	transition:
+		transform 0.25s linear,
+		opacity 0.25s linear;
 	position: relative;
 }
 
 /* SEARCH TO RECORD TRANSITION */
 
 .search-to-record-enter-from {
-	margin-top: 50px;
+	transform: translateY(50px);
 	opacity: 0;
-	position: absolute;
 }
 
 .search-to-record-enter-to {
-	margin-top: 0px;
+	transform: translateY(20px);
 	opacity: 1;
-	position: relative;
 }
 
 .search-to-record-leave-from {
-	top: 0px;
 	opacity: 1;
-	position: relative;
+	transform: translateY(20px);
 }
 
 .search-to-record-leave-to {
-	// margin-top: -50px;
+	transform: translateY(50px);
 	opacity: 0;
-	position: relative;
 }
 
 body {
@@ -589,6 +602,13 @@ body {
 	padding: 0;
 	overscroll-behavior: none;
 	overflow-x: hidden;
+	background-color: var(--bg-default);
+	transition: backgroundColor 0.5s ease-in-out 5s;
+}
+
+body.notFrontpage {
+	background-color: white;
+	transition: backgroundColor 0.5s ease-in-out 0s;
 }
 
 .remove-body-scroll {
@@ -609,9 +629,13 @@ body {
 	overflow-x: hidden;
 }
 
+footer {
+	flex-shrink: 0;
+}
+
 .content {
+	min-height: 100vh;
 	position: relative;
-	background-color: white;
 }
 
 @media (min-width: 1280px) {

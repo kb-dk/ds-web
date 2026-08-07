@@ -13,10 +13,12 @@
 			<Transition name="bcfade">
 				<Breadcrumb v-if="routerReady && $route.name !== 'Home'" />
 			</Transition>
-			<SearchBar></SearchBar>
+			<Transition name="sbfade">
+				<SearchBar v-if="$route.name !== undefined && $route.name !== 'Record'"></SearchBar>
+			</Transition>
 		</div>
 	</div>
-	<TransitionGroup name="fade">
+	<TransitionGroup name="linefade">
 		<div
 			v-if="routerReady && $route.name !== 'Home'"
 			class="line first"
@@ -65,17 +67,27 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-start;
 	transition-delay: 0.25s !important;
-	transition: height 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91);
+	transition: all 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91) 0s;
 	background-color: var(--bg-default);
-	min-height: 170px;
+	height: 170px;
 }
 
 .header-container.home {
 	background-color: var(--bg-default);
 }
 
+.header-container.record {
+	height: 230px;
+}
+
+.header-container.record,
+.header-container.search {
+	overflow: hidden;
+}
+
 .header-container.search,
 .header-container.notfound {
+	transition: all 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91) 0s;
 	background-color: var(--color-default);
 	height: 322px;
 	transition-delay: 0.25s !important;
@@ -130,6 +142,29 @@ h1 {
 	background: rgba(234, 159, 188, 0.2);
 }
 
+.linefade-enter-active,
+.linefade-leave-active {
+	transition:
+		opacity 500ms ease 0.5s,
+		height 500ms ease 0.5s;
+	overflow: hidden;
+}
+
+.linefade-enter-from,
+.linefade-leave-to {
+	transition:
+		opacity 150ms ease 0s,
+		height 150ms ease 0s;
+	opacity: 0;
+	height: 0;
+}
+
+.linefade-enter-to,
+.linefade-leave-from {
+	opacity: 1;
+	height: 20px;
+}
+
 .bcfade-enter-active,
 .bcfade-leave-active {
 	transition: opacity 0.25s ease 0.5s;
@@ -139,5 +174,18 @@ h1 {
 .bcfade-leave-to {
 	opacity: 0;
 	transition: opacity 0.25s ease 0s;
+}
+
+.sbfade-enter-active {
+	transition: opacity 0.25s ease 0.5s;
+}
+
+.sbfade-leave-active {
+	transition: opacity 0.25s ease;
+}
+
+.sbfade-enter-from,
+.sbfade-leave-to {
+	opacity: 0;
 }
 </style>

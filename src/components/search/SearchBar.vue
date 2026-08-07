@@ -3,7 +3,13 @@
 		v-if="route.name !== 'Record'"
 		class="search-box"
 	>
-		<div :class="hasFocus || route.name === 'Search' ? 'search-container wide' : 'search-container'">
+		<div
+			:class="
+				hasFocus || route.name === 'Search' || searchResultStore.currentQuery
+					? 'search-container wide'
+					: 'search-container'
+			"
+		>
 			<div class="container main-12">
 				<form
 					ref="searchFormRef"
@@ -419,7 +425,11 @@ input:focus {
 }
 .form-control:focus,
 .form-control:focus-visible {
-	width: calc(100%);
+	width: calc(490px - 150px);
+}
+
+.form-control:not(:placeholder-shown) {
+	width: calc(490px - 150px);
 }
 
 .form-control::placeholder {

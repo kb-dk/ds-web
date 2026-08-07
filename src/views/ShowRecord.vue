@@ -321,7 +321,7 @@ export default defineComponent({
 }
 
 .record-data {
-	padding-top: 0 25px 25px 25px;
+	padding: 0 25px 25px 25px;
 }
 
 /* MEDIA QUERY 480 */

@@ -166,7 +166,7 @@ export default defineComponent({
 		watch(
 			() => props.entryId,
 			() => {
-				if (KalturaPlayer) {
+				if (videoPlayer) {
 					videoPlayer.destroy();
 				}
 				setupPlayer();
@@ -182,7 +182,7 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
+			if (videoPlayer) {
 				videoPlayer.destroy();
 			}
 		});
