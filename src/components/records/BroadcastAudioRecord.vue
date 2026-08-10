@@ -358,10 +358,6 @@ h4 {
 	margin-right: 3px;
 }
 
-.material-icons.blue {
-	color: var(--color-main);
-}
-
 .boardcast-record-data {
 	color: var(--color-default);
 	display: flex;
@@ -401,6 +397,10 @@ h4 {
 	background-color: var(--bg-main-3);
 	box-sizing: border-box;
 	text-transform: capitalize;
+}
+
+.right-side-metadata-box .material-icons {
+	color: var(--color-default);
 }
 
 .related-record {

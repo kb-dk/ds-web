@@ -405,7 +405,6 @@ export default defineComponent({
 	left: 50%;
 	width: 20px;
 	line-height: 0;
-	margin-top: 0px;
 	transform-origin: center;
 	will-change: transform;
 	z-index: 1;
