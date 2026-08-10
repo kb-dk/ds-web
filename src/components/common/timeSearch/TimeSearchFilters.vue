@@ -366,14 +366,6 @@ export default defineComponent({
 			emitNewSearch();
 		};
 
-		const figuresImage = computed(() => {
-			return new URL(`@/assets/images/dr_kalender-sprite2.png`, import.meta.url).href;
-		});
-
-		const timelapseImage = computed(() => {
-			return new URL(`@/assets/images/timegoes.svg`, import.meta.url).href;
-		});
-
 		return {
 			t,
 			months,
@@ -388,8 +380,6 @@ export default defineComponent({
 			updateAllCheckbox,
 			updateEndYear,
 			updateStartYear,
-			figuresImage,
-			timelapseImage,
 			timeSearchStore,
 			dataContainer,
 			emitNewSearch,

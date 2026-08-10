@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref, TransitionGroup, watch } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import SimpleSpot from '@/components/common/SimpleSpot.vue';
 import { useAuthStore } from '@/store/authStore';
 import gsap from 'gsap';
