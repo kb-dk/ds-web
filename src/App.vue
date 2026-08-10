@@ -83,7 +83,6 @@ export default defineComponent({
 		const authStore = useAuthStore();
 		const searchResultStore = useSearchResultStore();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		const routerReady = ref(false);
 
 		const html = document.querySelector('html');
 		html?.setAttribute('lang', 'da');
@@ -123,12 +122,12 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
-			await router.isReady();
-			routerReady.value = true;
 			watch(
 				() => route.name,
 				(newRoute) => {
-					document.body.classList.toggle('notFrontpage', newRoute !== 'Home');
+					if (newRoute !== undefined) {
+						document.body.classList.toggle('notFrontpage', newRoute !== 'Home');
+					}
 				},
 				{ immediate: true },
 			);
@@ -375,7 +374,6 @@ export default defineComponent({
 			transitionName,
 			isDevelopment,
 			returnCurrentEnv,
-			routerReady,
 			t,
 		};
 	},

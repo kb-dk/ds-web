@@ -7,6 +7,7 @@
 		<TransitionGroup name="fade">
 			<div
 				v-show="authStore.currentArchiveProgress !== 0"
+				key="1"
 				class="process-bar"
 			>
 				<div
@@ -17,6 +18,7 @@
 			</div>
 			<div
 				v-show="authStore.currentArchiveProgress !== 0"
+				key="2"
 				class="hero-info"
 			>
 				<div class="info">
