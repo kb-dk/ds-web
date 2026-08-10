@@ -453,7 +453,7 @@ h4 {
 
 .genre-link {
 	text-transform: none;
-	color: var(--color-main);
+	color: var(--color-default);
 	text-decoration: none;
 }
 .annotation-text {

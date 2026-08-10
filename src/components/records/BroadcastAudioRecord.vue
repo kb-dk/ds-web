@@ -454,7 +454,7 @@ h4 {
 }
 
 .genre-link {
-	color: var(--color-main);
+	color: var(--color-default);
 	text-decoration: none;
 	text-transform: none;
 }
