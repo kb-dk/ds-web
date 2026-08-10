@@ -39,7 +39,6 @@
 					v-model="searchResultStore.preliminaryFilter"
 					name="SelectedSearchMaterials"
 					:options="selectedSearchMaterialOptions"
-					:disable="searchResultStore.numFound === 0"
 					@change="setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter)"
 				/>
 				<FilterExpander
@@ -826,6 +825,12 @@ export default defineComponent({
 					focusTrap = createFocusTrap(facetsContainer.value, () => {
 						searchResultStore.showFacets = false;
 					});
+				}
+				const startTimeFilter = searchResultStore.filters.find((filter) => filter.includes('fq=startTime'));
+				if (!startTimeFilter) {
+					selectedDate.value = undefined;
+					timeSliderValues.value[0] = startYear.value.getFullYear();
+					timeSliderValues.value[1] = endYear.value.getFullYear();
 				}
 				gsap.set(facetsContainer.value, {
 					display: 'block',
