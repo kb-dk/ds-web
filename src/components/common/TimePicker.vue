@@ -271,6 +271,13 @@ export default defineComponent({
 
 		const displayValue = ref(formatDate(props.modelValue));
 
+		watch(
+			() => props.modelValue,
+			(val) => {
+				displayValue.value = formatDate(val);
+			},
+		);
+
 		watch(displayValue, (val) => {
 			if (inputTimer.value) {
 				clearTimeout(inputTimer.value);

@@ -27,7 +27,6 @@ const getEntryId = (recordData: BroadcastRecordType) => {
 
 const getFilterThumbnail = (channel: string) => {
 	channel = channel.toLowerCase();
-	console.log(channel);
 
 	switch (true) {
 		case channel.includes('dr p5000'):
