@@ -22,11 +22,13 @@ export default defineComponent({
 
 	setup() {
 		const ready = ref(false);
-
 		onMounted(async () => {
 			await nextTick();
+			//This ensures that Firefox gets the class during animation steps
 			requestAnimationFrame(() => {
-				ready.value = true;
+				requestAnimationFrame(() => {
+					ready.value = true;
+				});
 			});
 		});
 		return { ready };
