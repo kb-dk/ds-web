@@ -81,7 +81,8 @@ export default defineComponent({
 }
 
 .header-container.record,
-.header-container.search {
+.header-container.search,
+.header-container.notfound {
 	overflow: hidden;
 }
 
