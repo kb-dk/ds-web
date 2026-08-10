@@ -3,7 +3,10 @@
 		<Logo></Logo>
 		<HeaderMenu></HeaderMenu>
 		<div class="container headline-container">
-			<router-link :to="{ name: 'Home' }">
+			<router-link
+				class="headline-link"
+				:to="{ name: 'Home' }"
+			>
 				<h1 :aria-label="`${t('hero.title')}`">
 					<span class="headline heading-display">
 						<span class="text">{{ t('hero.title') }}</span>
@@ -127,7 +130,11 @@ h1 {
 	display: block;
 	width: fit-content;
 	position: relative;
-	top: 24px;
+}
+
+.headline-link {
+	margin-top: 24px;
+	width: fit-content;
 }
 
 .line {
