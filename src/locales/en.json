@@ -131,7 +131,7 @@
       "record": "Programme"
    },
    "timeSearch": {
-      "timeMachine":"Select a period that you would like to view content from.",
+      "timeMachine":"Select a period that you would like to view content from",
       "periodOf":"Period of {number} years | Priod of {number} year",
       "searchDate": "Search by date",
       "searchCategories": "Search by category",
