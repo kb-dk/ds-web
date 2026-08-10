@@ -131,7 +131,7 @@
       "record": "Udsendelse"
    },
    "timeSearch": {
-      "timeMachine":"Udvælg en periode, som du gerne vil se indhold fra.",
+      "timeMachine":"Udvælg en periode, som du gerne vil se indhold fra",
       "periodOf":"Periode på {number} år",
       "searchDate": "Søg via dato",
       "searchCategories": "Søg via kategori",
