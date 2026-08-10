@@ -112,7 +112,11 @@ export default defineComponent({
 					break;
 				case 'Tab':
 					if (searchResultStore.autocompleteResult?.length > 0) {
-						moveSelectorDown();
+						if (e.shiftKey) {
+							moveSelectorUp();
+						} else {
+							moveSelectorDown();
+						}
 						e.preventDefault();
 					}
 					break;
