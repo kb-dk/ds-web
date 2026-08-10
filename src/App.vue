@@ -480,7 +480,7 @@ export default defineComponent({
 
 .content.home {
 	background-color: var(--bg-default);
-	min-height: 100vh;
+	min-height: 50vh;
 	transition: all 0.5s ease-in-out 0.1s;
 }
 
@@ -650,7 +650,7 @@ footer {
 }
 
 .content {
-	min-height: 100vh;
+	min-height: 50vh;
 	position: relative;
 }
 

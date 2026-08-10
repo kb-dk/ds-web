@@ -96,7 +96,8 @@ export default defineComponent({
 	opacity: 1;
 }
 .search .line:nth-of-type(1),
-.record .line:nth-of-type(1) {
+.record .line:nth-of-type(1),
+.notfound .line:nth-of-type(1) {
 	top: 44.07px;
 }
 .line:nth-of-type(2) {
@@ -111,7 +112,8 @@ export default defineComponent({
 	transform: rotate(3.677deg);
 }
 .search .line.animate:nth-of-type(2),
-.record .line.animate:nth-of-type(2) {
+.record .line.animate:nth-of-type(2),
+.notfound .line.animate:nth-of-type(2) {
 	top: 154.43px;
 }
 .line:nth-of-type(3) {
@@ -126,7 +128,8 @@ export default defineComponent({
 	opacity: 1;
 }
 .search .line.animate:nth-of-type(3),
-.record .line.animate:nth-of-type(3) {
+.record .line.animate:nth-of-type(3),
+.notfound .line.animate:nth-of-type(3) {
 	opacity: 0.7;
 	top: 139px;
 }
@@ -142,7 +145,8 @@ export default defineComponent({
 	opacity: 1;
 }
 .search .line.animate:nth-of-type(4),
-.record .line.animate:nth-of-type(4) {
+.record .line.animate:nth-of-type(4),
+.notfound .line.animate:nth-of-type(4) {
 	opacity: 0.2;
 	top: 197px;
 }
@@ -161,7 +165,8 @@ export default defineComponent({
 	transform: rotate(0deg);
 }
 .search .line.animate:nth-of-type(5),
-.record .line.animate:nth-of-type(5) {
+.record .line.animate:nth-of-type(5),
+.notfound .line.animate:nth-of-type(5) {
 	width: 1280px;
 	top: 305px;
 	transition:
