@@ -82,6 +82,7 @@
 				</FilterExpander>
 
 				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.radio&quot;'"
 					type="checkbox"
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle_filled"
@@ -122,6 +123,7 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.tv&quot;'"
 					type="checkbox"
 					:headline="$t('facets.radioChannels', 2)"
 					icon="volume_up"
