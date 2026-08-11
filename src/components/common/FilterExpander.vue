@@ -1,7 +1,8 @@
 <template>
 	<div :class="expanderOpen ? 'expand-container open' : 'expand-container'">
-		<label
+		<button
 			ref="headlineRef"
+			:disabled="disabled"
 			class="headline label-medium"
 			role="button"
 			@click="toggleExpander($event)"
@@ -32,7 +33,7 @@
 				:button-text="`${subline}`"
 				@click="removeFilters($event, facetType, itemArray)"
 			></KBButton>
-		</label>
+		</button>
 		<div
 			ref="expandContainer"
 			:class="fade ? 'expander' : 'expander'"
@@ -41,6 +42,7 @@
 		</div>
 		<div class="expander-toggle">
 			<button
+				:disabled="disabled"
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
 				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-status-toggle`, 0)"
 				:title="expanderOpen ? 'Close' : 'Open'"
@@ -71,6 +73,7 @@ export default defineComponent({
 		KBButton,
 	},
 	props: {
+		disabled: { type: Boolean, required: false, default: false },
 		type: {
 			type: String as PropType<string>,
 			required: true,
@@ -170,6 +173,7 @@ export default defineComponent({
 
 		const toggleExpander = (e: Event) => {
 			e.stopPropagation();
+			e.preventDefault();
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
 					height: '0px',
@@ -257,6 +261,10 @@ export default defineComponent({
 	margin-bottom: 25px;
 }
 
+.headline:disabled {
+	cursor: auto;
+}
+
 .headline {
 	width: 100%;
 	padding: 0px;
@@ -269,6 +277,7 @@ export default defineComponent({
 	background-color: rgba(202, 240, 254, 0.1);
 	text-transform: capitalize;
 	font-weight: 100;
+	border: 0;
 }
 
 .entry-number {
@@ -325,6 +334,19 @@ export default defineComponent({
 
 .toggle-button.open:before {
 	transform: scaleY(1);
+}
+
+.toggle-button:disabled {
+	cursor: auto;
+	background-color: gray;
+}
+
+.toggle-button:disabled:before {
+	border-bottom: 6px solid gray;
+}
+
+.toggle-button:disabled:after {
+	border-top: 6px solid gray;
 }
 
 .toggle-button:before {

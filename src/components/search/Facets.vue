@@ -83,6 +83,7 @@
 				</FilterExpander>
 
 				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.radio&quot;'"
 					type="checkbox"
 					:headline="$t('facets.tvChannels', 2)"
 					icon="play_circle"
@@ -123,6 +124,7 @@
 					</fieldset>
 				</FilterExpander>
 				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.tv&quot;'"
 					type="checkbox"
 					:headline="$t('facets.radioChannels', 2)"
 					icon="volume_up"
@@ -174,6 +176,7 @@
 						v-model="searchResultStore.preliminaryPeriodSearch"
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
+						@change="onPreliminaryPeriodChange"
 					/>
 					<TransitionGroup name="result">
 						<div
@@ -644,26 +647,23 @@ export default defineComponent({
 			},
 		);
 
-		watch(
-			() => searchResultStore.preliminaryPeriodSearch,
-			() => {
-				const routeQueries = cloneRouteQuery(route);
-				routeQueries.start = 0;
-				const existingFq = normalizeFq(routeQueries.fq as string[] | string);
-				const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
-				if (startTimeFilter) {
-					const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
-					if (index !== -1) {
-						existingFq.splice(index, 1);
-					}
+		const onPreliminaryPeriodChange = () => {
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
 				}
-				routeQueries.fq = existingFq;
-				router.push({
-					name: 'Search',
-					query: routeQueries,
-				});
-			},
-		);
+			}
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
 
 		watch(
 			() => getYearRanges,
@@ -910,6 +910,7 @@ export default defineComponent({
 			returnFilledIconStatus,
 			setSearchMethodAndExecute,
 			setDelimitationFilterAndExecute,
+			onPreliminaryPeriodChange,
 		};
 	},
 });
