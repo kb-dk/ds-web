@@ -1,6 +1,6 @@
 <template>
 	<div :class="expanderOpen ? 'expand-container open' : 'expand-container'">
-		<label
+		<button
 			ref="headlineRef"
 			class="headline label-medium"
 			role="button"
@@ -32,7 +32,7 @@
 				:button-text="`${subline}`"
 				@click="removeFilters($event, facetType, itemArray)"
 			></KBButton>
-		</label>
+		</button>
 		<div
 			ref="expandContainer"
 			:class="fade ? 'expander' : 'expander'"
@@ -170,6 +170,7 @@ export default defineComponent({
 
 		const toggleExpander = (e: Event) => {
 			e.stopPropagation();
+			e.preventDefault();
 			if (expanderOpen.value) {
 				gsap.to(expandContainer.value, {
 					height: '0px',
@@ -269,6 +270,7 @@ export default defineComponent({
 	background-color: rgba(202, 240, 254, 0.1);
 	text-transform: capitalize;
 	font-weight: 100;
+	border: 0;
 }
 
 .entry-number {

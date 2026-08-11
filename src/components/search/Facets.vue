@@ -173,6 +173,7 @@
 						v-model="searchResultStore.preliminaryPeriodSearch"
 						name="preliminaryPeriodSearch"
 						:options="preliminaryPeriodSearchOptions"
+						@change="onPreliminaryPeriodChange"
 					/>
 					<TransitionGroup name="result">
 						<div
@@ -642,26 +643,23 @@ export default defineComponent({
 			},
 		);
 
-		watch(
-			() => searchResultStore.preliminaryPeriodSearch,
-			() => {
-				const routeQueries = cloneRouteQuery(route);
-				routeQueries.start = 0;
-				const existingFq = normalizeFq(routeQueries.fq as string[] | string);
-				const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
-				if (startTimeFilter) {
-					const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
-					if (index !== -1) {
-						existingFq.splice(index, 1);
-					}
+		const onPreliminaryPeriodChange = () => {
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
 				}
-				routeQueries.fq = existingFq;
-				router.push({
-					name: 'Search',
-					query: routeQueries,
-				});
-			},
-		);
+			}
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
 
 		watch(
 			() => getYearRanges,
@@ -906,6 +904,7 @@ export default defineComponent({
 			createTimeFacetSubline,
 			setSearchMethodAndExecute,
 			setDelimitationFilterAndExecute,
+			onPreliminaryPeriodChange,
 		};
 	},
 });
