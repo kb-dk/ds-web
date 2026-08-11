@@ -134,18 +134,18 @@
 
 .vue-slider-dot-handle:hover:before {
 	left: -2px;
-	border-color: var(--color-main);
+	border-color: var(--color-default);
 }
 .vue-slider-dot-handle:hover:after {
-	left: 2px;border-color: var(--color-main);
+	left: 2px;border-color: var(--color-default);
 }
 .vue-slider-dot-handle:active:before{
 	left:-5px;
-	border-color: var(--color-main);
+	border-color: var(--color-default);
 }
 .vue-slider-dot-handle:active:after{
 	left:5px;
-	border-color: var(--color-main);
+	border-color: var(--color-default);
 }
 .vue-slider-mark {
 	width: 2px !important;
