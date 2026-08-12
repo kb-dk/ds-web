@@ -193,6 +193,9 @@ export default defineComponent({
 	color: var(--color-main);
 	margin-bottom: 20px;
 }
+.title .heading-display::first-letter {
+	text-transform: capitalize;
+}
 .time-search {
 	background-color: var(--bg-default);
 	width: 100%;
