@@ -201,6 +201,7 @@ export default defineComponent({
 			searchResultStore.loading = false;
 			setPreliminaryFilter('');
 			router.push({ name: 'Home' });
+			hasFocus.value = false;
 		};
 
 		const setPreliminaryFilter = (value: string) => {
@@ -412,7 +413,7 @@ input:focus {
 	box-sizing: border-box;
 }
 .form-control {
-	width: calc(490px - 150px);
+	width: 100%;
 	padding: 6px 12px;
 	border-radius: var(--rounded-small) 0px 0px var(--rounded-small);
 	color: var(--color-main);
@@ -422,14 +423,6 @@ input:focus {
 	border: none;
 	background-clip: padding-box;
 	box-sizing: border-box;
-}
-.form-control:focus,
-.form-control:focus-visible {
-	width: calc(490px - 150px);
-}
-
-.form-control:not(:placeholder-shown) {
-	width: calc(490px - 150px);
 }
 
 .form-control::placeholder {
@@ -520,9 +513,6 @@ input:focus {
 @media (max-width: 505px) {
 	.search-container {
 		width: 100% !important;
-	}
-	.form-control {
-		width: 100%;
 	}
 }
 </style>
