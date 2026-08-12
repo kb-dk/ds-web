@@ -130,23 +130,54 @@ export default defineComponent({
 	width: 100%;
 	margin-bottom: 40px;
 }
+@property --initialColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor1 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor2 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+
+@property --endColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
 
 .hit-box.data:hover .vert-dot,
 .hit-box.data:hover .hors-dot {
-	background-color: transparent;
+	/* background-color: transparent; */
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0s;
+		--initialColor 0.2s ease-in,
+		--midPointColor1 0.2s ease-in,
+		--midPointColor2 0.2s ease-in,
+		--endColor 0.2s ease-in;
 }
-
+.hit-box.data:hover .hors-dot {
+	--initialColor: white;
+	--midPointColor1: white;
+	--midPointColor2: rgba(235, 235, 235, 1);
+	--endColor: rgba(253, 253, 253, 1);
+}
 .hit-box .vert-dot,
 .hit-box .hors-dot {
 	transition:
-		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s;
+		all 0.3s ease-in-out 0s,
+		--initialColor 0.3s ease-out,
+		--midPointColor1 0.3s ease-out,
+		--midPointColor2 0.3s ease-out,
+		--endColor 0.3s ease-out;
 }
-
 .hors-dot {
 	position: absolute;
 	height: 10px;
@@ -160,6 +191,13 @@ export default defineComponent({
 	transform-origin: center;
 	will-change: transform;
 	z-index: 1;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 50%,
+		var(--midPointColor2) 50%,
+		var(--endColor) 100%
+	);
 }
 
 .vert-dot {
@@ -175,6 +213,7 @@ export default defineComponent({
 	left: 0px;
 	display: none;
 	z-index: 1;
+	background-color: white;
 }
 
 .search-results {
