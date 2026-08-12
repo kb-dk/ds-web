@@ -266,10 +266,6 @@ input[type='search']::-webkit-search-results-decoration {
 	width: fit-content;
 }
 
-#searchButton,
-#resetButton {
-	padding: 0 10px 0 0;
-}
 .search-form {
 	width: 100%;
 }
@@ -282,6 +278,12 @@ input[type='search']::-webkit-search-results-decoration {
 .locked #focusSearchInput {
 	/* https://jxnblk.github.io/grays/ */
 	color: #767676;
+}
+
+#searchButton {
+	margin-right: 4px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 }
 
 :host {
@@ -450,14 +452,15 @@ input:focus {
 }
 
 #resetButton {
-	position: absolute;
 	width: 40px;
 	right: 25px;
 	top: 5px;
 	color: #002e70;
-	position: unset;
 	width: unset;
 	right: unset;
+	margin-right: 4px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 }
 
 .btn-icon {
