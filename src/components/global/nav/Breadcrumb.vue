@@ -47,62 +47,17 @@
 				<span class="line">/</span>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>
-			<span v-if="$route.name === 'Record'">/</span>
-			<span
-				v-if="$route.name === 'Record'"
-				class="level-6 btn-reg"
-			>
-				<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
-			</span>
-			<!-- <div class="search-tip">
-				<InfoComponent
-					icon="info"
-					:title="t('search.frontpageGuide.title')"
-					modal-align="right"
+			<Transition name="fade">
+				<div
+					v-if="$route.name === 'Record'"
+					key="level-6"
 				>
-					<div class="search-help">
-						<span v-if="locale === 'en'">
-							{{ t('search.frontpageGuide.disclaimer') }}
-							<br />
-							<br />
-						</span>
-						<span>
-							{{ t('search.frontpageGuide.first.part1') + ' ' }}
-						</span>
-						<span class="cursive-text">
-							{{ t('search.frontpageGuide.first.cursive1') + ' ' }}
-						</span>
-						<span>
-							{{ t('search.frontpageGuide.first.part2') + ' ' }}
-						</span>
-						<span class="cursive-text">
-							{{ t('search.frontpageGuide.first.cursive2') + ' ' }}
-						</span>
-						<span>
-							{{ t('search.frontpageGuide.first.part3') + ' ' }}
-						</span>
-						<span class="cursive-text">
-							{{ t('search.frontpageGuide.first.cursive3') }}
-						</span>
-						<p>
-							{{ t('search.frontpageGuide.second') }}
-						</p>
-						<p>
-							{{ t('search.frontpageGuide.third') }}
-						</p>
-						<p>
-							<a
-								class="link"
-								target="_blank"
-								:href="t('search.frontpageGuide.link')"
-							>
-								<span class="material-icons">link</span>
-								<span class="link-text">{{ t('search.frontpageGuide.linktext') }}</span>
-							</a>
-						</p>
-					</div>
-				</InfoComponent>
-			</div> -->
+					<span>/</span>
+					<span class="level-6 btn-reg">
+						<span class="breadcrumb-title">{{ t('breadcrumb.record') }}</span>
+					</span>
+				</div>
+			</Transition>
 		</div>
 	</div>
 </template>
@@ -175,50 +130,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Base transition styles */
-.breadcrumb-enter-active,
-.breadcrumb-leave-active {
-	transition: all 0.5s ease;
-	max-width: 50px;
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s ease;
 }
 
-.breadcrumb-enter-active {
-	transition-delay: 0.5s; /* Delay for enter transition */
-}
-
-.breadcrumb-enter-from,
-.breadcrumb-leave-to {
+.fade-enter-from,
+.fade-leave-to {
 	opacity: 0;
-	max-width: 0px;
 }
-
-.breadcrumb-leave-active {
-	pointer-events: none; /* Avoid triggering mouse events during fade-out */
-	transition-delay: 0s; /* No delay for leave transition */
-}
-
-/* Base transition styles */
-.breadcrumb-content-enter-active,
-.breadcrumb-content-leave-active {
-	transition: all 0.5s ease;
-	max-width: 200px;
-}
-
-.breadcrumb-content-enter-active {
-	transition-delay: 0.2s; /* Delay for enter transition */
-}
-
-.breadcrumb-content-enter-from,
-.breadcrumb-content-leave-to {
-	opacity: 0;
-	max-width: 0px;
-}
-
-.breadcrumb-content-leave-active {
-	pointer-events: none; /* Avoid triggering mouse events during fade-out */
-	transition-delay: 0s; /* No delay for leave transition */
-}
-
 .breadcrumb {
 	height: 47px;
 	position: relative;
@@ -276,7 +196,21 @@ export default defineComponent({
 .record .level-6 {
 	display: initial;
 }
-
+.record .level-6 {
+	/* opacity: 0; */
+}
+/* .record .level-6 {
+	animation-name: fadeIn;
+	animation-duration: 1s;
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+} */
 .record .level-5 .line {
 	display: none;
 }
