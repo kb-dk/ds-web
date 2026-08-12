@@ -246,7 +246,7 @@ h2 {
 }
 
 .time-result-item {
-	flex: 0 0 30%;
+	flex: 0 0 70%;
 	box-sizing: border-box;
 	background-color: var(--bg-backdrop);
 	-webkit-user-select: none;
@@ -283,6 +283,9 @@ h2 {
 @media (min-width: 640px) {
 	.container-backdrop {
 		margin-top: 0;
+	}
+	.time-result-item {
+		flex: 0 0 30%;
 	}
 }
 </style>

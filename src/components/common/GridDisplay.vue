@@ -71,7 +71,7 @@ temporary styling until patterns from design system are implemented
 
 .related-record.draggable-item {
 	margin-left: 15px;
-	flex: 0 0 30%;
+	flex: 0 0 70%;
 	box-sizing: border-box;
 	background-color: var(--bg-backdrop);
 	-webkit-user-select: none;
@@ -80,5 +80,10 @@ temporary styling until patterns from design system are implemented
 	-o-user-select: none;
 	user-select: none;
 	user-drag: none;
+}
+@media (min-width: 640px) {
+	.related-record.draggable-item {
+		flex: 0 0 30%;
+	}
 }
 </style>
