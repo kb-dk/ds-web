@@ -379,7 +379,6 @@ h4 {
 }
 
 .right-side {
-	overflow: hidden;
 	flex: 0 0 100%;
 	max-width: 100%;
 }

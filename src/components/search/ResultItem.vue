@@ -385,12 +385,18 @@ export default defineComponent({
 .information {
 	text-overflow: ellipsis;
 	width: 100%;
-	overflow: hidden;
 	max-width: 100%;
 	color: var(--color-default);
 }
+
+.information > * {
+	margin-left: 5px;
+}
+
 .title {
 	text-decoration: none;
+	display: block;
+	width: fit-content;
 }
 .title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
@@ -399,8 +405,8 @@ export default defineComponent({
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 75ch;
-
+	max-width: 75ch;
+	width: fit-content;
 	height: 26px;
 	position: relative;
 	display: block;
@@ -429,6 +435,7 @@ export default defineComponent({
 .result-image-wrapper {
 	width: 100%;
 	height: 150px;
+	margin-top: 4px;
 }
 
 .where,
