@@ -14,7 +14,6 @@
 				:src="currentImages.mobile"
 				class="bg-image"
 				fetchpriority="high"
-				title="search background"
 				alt=""
 			/>
 		</picture>
