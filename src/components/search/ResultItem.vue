@@ -627,7 +627,7 @@ export default defineComponent({
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;
-		height: 190px;
+		height: 215px;
 		flex-direction: row;
 	}
 	.information {
@@ -635,7 +635,7 @@ export default defineComponent({
 	}
 	.summary {
 		position: absolute;
-		top: 110px;
+		top: 135px;
 	}
 	.result-image-wrapper {
 		width: 200px;
@@ -653,6 +653,9 @@ export default defineComponent({
 	.subtitle {
 		display: flex;
 		flex-direction: row;
+	}
+	.summary {
+		top: 110px;
 	}
 }
 
