@@ -14,9 +14,9 @@
 				<a
 					ref="spotLink"
 					:href="t('hero.link')"
-					class="label-big link"
+					class="link"
 				>
-					{{ t('hero.linkText') }}
+					<h2>{{ t('hero.linkText') }}</h2>
 				</a>
 				<p class="label-reg">{{ t('spots.readMoreSubtitle') }}</p>
 			</simple-spot>
@@ -69,13 +69,10 @@ export default defineComponent({
 	color: inherit;
 	text-decoration: inherit;
 	border-bottom: 1px solid transparent;
-	font-size: var(--fs-md);
-	line-height: var(--lh-medium-tight);
-	font-weight: var(--fw-regular);
-	font-family: 'LibreBaskerville';
+}
+.link h2 {
 	margin: 0px;
 }
-
 .spot-link:hover {
 	transition: background-color 0.3s linear;
 	background-color: var(--bg-secondary-light);

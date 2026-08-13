@@ -8,7 +8,7 @@
 			v-if="categoriesLoaded && categories.length"
 			class="spot-categories"
 		>
-			<h1>{{ categories.length }} {{ t('facets.genres', 2) }}:</h1>
+			<h2>{{ categories.length }} {{ t('facets.genres', 2) }}:</h2>
 			<KBButton
 				v-for="(category, i) in categories"
 				:key="category.name"
@@ -42,7 +42,7 @@
 					class="shimmer"
 				></div>
 				<span class="loading"></span>
-				<h3>{{ t('facets.genres', 2) }}:</h3>
+				<h2>{{ t('facets.genres', 2) }}:</h2>
 			</div>
 
 			<div
@@ -188,7 +188,7 @@ h3 {
 }
 .loading-header .loading {
 	width: 35px;
-	height: calc(var(--fs-sm) - 5px);
+	height: calc(var(--fs-xl) - 5px);
 	margin-right: 5px;
 }
 .loading-container {

@@ -3,7 +3,7 @@
 		class="header"
 		:style="`color: ${text}`"
 	>
-		<h1>{{ title }}</h1>
+		<h2>{{ title }}</h2>
 		<p>
 			<span>{{ subtitle }}</span>
 		</p>
