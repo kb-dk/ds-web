@@ -15,7 +15,7 @@
 				button-type="btn-cta"
 				button-color="cta"
 				button-size="small"
-				class="btn-small"
+				class="btn-medium"
 				:button-text="`${t(`categories.${santizeAndSimplify(category.name)}`)}`"
 				:left-icon-name="returnCategoryIcon(category.name)"
 				:icon-filled="returnFilledIconStatus(category.name)"
