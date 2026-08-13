@@ -163,12 +163,7 @@ export default defineComponent({
 		--midPointColor2 0.2s ease-in,
 		--endColor 0.2s ease-in;
 }
-.hit-box.data:hover .hors-dot {
-	--initialColor: white;
-	--midPointColor1: white;
-	--midPointColor2: rgba(235, 235, 235, 1);
-	--endColor: rgba(253, 253, 253, 1);
-}
+
 .hit-box .vert-dot,
 .hit-box .hors-dot {
 	transition:
@@ -253,6 +248,12 @@ export default defineComponent({
 @media (min-width: 800px) {
 	.vert-dot {
 		display: block;
+	}
+	.hit-box.data:hover .hors-dot {
+		--initialColor: white;
+		--midPointColor1: white;
+		--midPointColor2: rgba(235, 235, 235, 1);
+		--endColor: rgba(253, 253, 253, 1);
 	}
 }
 
