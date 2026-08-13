@@ -1,9 +1,6 @@
 <template>
 	<div class="spot-container">
 		<div class="spot-row">
-			<spot-categories></spot-categories>
-		</div>
-		<div class="spot-row">
 			<simple-spot
 				spot-size="medium"
 				icon-name="link"
@@ -21,6 +18,9 @@
 				<p class="label-reg">{{ t('spots.readMoreSubtitle') }}</p>
 			</simple-spot>
 			<advanced-spot spot-size="medium"></advanced-spot>
+		</div>
+		<div class="spot-row">
+			<spot-categories></spot-categories>
 		</div>
 	</div>
 </template>
