@@ -14,7 +14,7 @@
 				:key="category.name"
 				button-type="btn-cta"
 				button-color="cta"
-				button-size="small"
+				button-size="medium"
 				class="btn-medium"
 				:button-text="`${t(`categories.${santizeAndSimplify(category.name)}`)}`"
 				:left-icon-name="returnCategoryIcon(category.name)"
