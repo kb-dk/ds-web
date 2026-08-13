@@ -166,7 +166,7 @@ h3 {
 	align-items: baseline;
 }
 
-.spot-categories h1 {
+.spot-categories h2 {
 	padding-right: 15px;
 }
 
