@@ -15,13 +15,13 @@
 						close
 					</button>
 				</div>
-				<h1 class="filter-headline">
+				<h2 class="filter-headline">
 					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
 						{{ t('facets.headline') }}
 						<span class="bold">{{ searchResultStore.currentQuery }}</span>
 					</span>
 					<span v-else>{{ t('facets.starHeadline') }}</span>
-				</h1>
+				</h2>
 			</div>
 			<div class="category-container">
 				<CustomRadioGroup
@@ -1092,10 +1092,6 @@ fieldset {
 	padding-bottom: 30px;
 }
 
-h2 {
-	font-size: 16px;
-	color: black;
-}
 .facet-box {
 	margin-bottom: 15px;
 	padding: 10px;

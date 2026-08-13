@@ -73,7 +73,7 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<h3 class="title label-medium">
+					<h3 class="title">
 						{{ resultdata.title[0] }}
 					</h3>
 					<p class="summary fixed-size">

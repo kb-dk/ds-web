@@ -70,7 +70,8 @@ export default defineComponent({
 	text-decoration: inherit;
 	border-bottom: 1px solid transparent;
 }
-.link h2 {
+.link h2,
+.spot-link p {
 	margin: 0px;
 }
 .spot-link:hover {
