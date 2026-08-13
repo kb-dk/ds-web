@@ -63,10 +63,11 @@ temporary styling until patterns from design system are implemented
 	position: relative;
 	margin-bottom: 80px;
 	margin-top: 34px;
-	width: 100%;
+	width: 100vw;
 	display: flex;
 	justify-content: center;
 	height: 100%;
+	max-width: 2400px;
 }
 
 .related-record.draggable-item {
@@ -83,7 +84,7 @@ temporary styling until patterns from design system are implemented
 }
 @media (min-width: 640px) {
 	.related-record.draggable-item {
-		flex: 0 0 30%;
+		flex: 0 0 400px;
 	}
 }
 </style>
