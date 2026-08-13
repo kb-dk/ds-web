@@ -320,6 +320,7 @@ export default defineComponent({
 .material-icons {
 	display: flex;
 	flex-wrap: wrap;
+	height: 30px;
 }
 
 .filter-button-text {
