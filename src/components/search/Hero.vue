@@ -116,13 +116,6 @@ export default defineComponent({
 	width: 100%;
 }
 
-/* MEDIA QUERY 800 */
-@media (min-width: 800px) {
-	h1 {
-		margin-left: 0px;
-	}
-}
-
 @media (min-width: 1280px) {
 	.hero-container picture {
 		width: initial;

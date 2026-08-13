@@ -627,7 +627,7 @@ export default defineComponent({
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;
-		height: 175px;
+		height: 190px;
 		flex-direction: row;
 	}
 	.information {
@@ -658,7 +658,7 @@ export default defineComponent({
 
 @media (min-width: 800px) {
 	.container {
-		height: 150px;
+		height: 175px;
 	}
 	.result-image-wrapper {
 		height: initial;

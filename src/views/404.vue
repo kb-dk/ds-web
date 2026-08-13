@@ -12,7 +12,7 @@
 					/>
 				</div>
 				<div class="not-found-details">
-					<h1>{{ t('error.wrongUrl.header') }}</h1>
+					<h2>{{ t('error.wrongUrl.header') }}</h2>
 					<p>{{ t('error.wrongUrl.text') }}</p>
 					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
 					<div class="extra-suggest">

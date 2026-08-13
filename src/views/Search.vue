@@ -56,7 +56,7 @@
 				>
 					<div class="no-filter-container">
 						<div class="content-container">
-							<h1>{{ t('find.headline') }}</h1>
+							<h2>{{ t('find.headline') }}</h2>
 							<p>{{ t('find.subtitle') }}</p>
 							<h2>{{ t('find.maybeYouWantTo') }}</h2>
 							<div class="extra-options">

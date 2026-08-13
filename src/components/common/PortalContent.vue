@@ -8,7 +8,7 @@
 			></TimeSearchComponent>
 		</div>
 		<div class="title">
-			<h2 class="heading-display">
+			<h2>
 				{{ t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) }) }}
 			</h2>
 		</div>
@@ -193,7 +193,7 @@ export default defineComponent({
 	color: var(--color-main);
 	margin-bottom: 20px;
 }
-.title .heading-display::first-letter {
+.title h2::first-letter {
 	text-transform: capitalize;
 }
 .time-search {

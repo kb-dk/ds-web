@@ -20,12 +20,12 @@
     font-family: 'LibreBaskerville';
 }
 h1 {
-    font-size: var(--fs-xl);
+    font-size: var(--fs-xl-fixed);
     line-height: var(--lh-small);
     font-weight: var(--fw-regular);
 }
 h2 {
-    font-size: var(--fs-md);
+    font-size: var(--fs-xl);
     line-height: var(--lh-medium-tight);
     font-weight: var(--fw-regular);
 }

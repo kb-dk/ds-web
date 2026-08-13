@@ -9,7 +9,7 @@
 		>
 			<div class="row">
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column1.title }}</h2>
+					<h3>{{ currentLocaleMessages.column1.title }}</h3>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column1.links"
@@ -26,7 +26,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column2.title }}</h2>
+					<h3>{{ currentLocaleMessages.column2.title }}</h3>
 
 					<ul>
 						<li
@@ -44,7 +44,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column3.title }}</h2>
+					<h3>{{ currentLocaleMessages.column3.title }}</h3>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column3.links"
@@ -248,7 +248,7 @@ export default defineComponent({
 	background-color: var(--bg-main);
 }
 
-h2 {
+h3 {
 	margin-bottom: 12px;
 	margin-top: 0;
 	padding-left: 5px;

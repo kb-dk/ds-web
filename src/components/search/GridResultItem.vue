@@ -73,9 +73,9 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<div class="title label-medium">
+					<h3 class="title">
 						{{ resultdata.title[0] }}
-					</div>
+					</h3>
 					<p class="summary fixed-size">
 						{{ resultdata.description }}
 					</p>
@@ -421,9 +421,9 @@ export default defineComponent({
 }
 
 .title {
-	font-weight: var(--fw-bold);
+	/* font-weight: var(--fw-bold); */
 	color: var(--color-default);
-	margin-bottom: 10px;
+	margin: 0px;
 	max-width: 100%;
 	text-overflow: ellipsis;
 	white-space: nowrap;

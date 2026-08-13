@@ -1,7 +1,7 @@
 <template>
 	<div class="about">
 		<div class="about-content">
-			<h1>This is an about page</h1>
+			<h2>This is an about page</h2>
 			<p>Gotta be a loooot of stuff here later i reckon!</p>
 			<router-link to="/">Go to start</router-link>
 		</div>
