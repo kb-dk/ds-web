@@ -65,7 +65,8 @@
 						<div class="dp-selectors">
 							<select
 								v-model="selectedMonth"
-								class="btn-big"
+								class="btn-medium"
+								:name="$t('timeSearch.from')"
 								@change="onMonthChange"
 							>
 								<option
@@ -79,7 +80,8 @@
 
 							<select
 								v-model="selectedYear"
-								class="btn-big"
+								class="btn-medium"
+								:name="$t('timeSearch.to')"
 								@change="onYearChange"
 							>
 								<option
@@ -590,15 +592,15 @@ export default defineComponent({
 	background-color: white;
 	border: 1px solid #dadada;
 	border-radius: 4px;
-	padding: 4px 50px 5px 8px;
-	color: #002e70;
+	padding: 4px 25px 5px 8px;
+	color: var(--color-default);
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	background-color: white;
 	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
 	background-repeat: no-repeat;
-	background-position-x: 85px;
-	background-position-y: 13px;
+	background-position-x: 105px;
+	background-position-y: 17px;
 	width: 118px;
 	box-sizing: border-box;
 	height: 48px;
