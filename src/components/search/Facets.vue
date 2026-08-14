@@ -15,13 +15,13 @@
 						close
 					</button>
 				</div>
-				<div class="filter-headline">
-					<h2 v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
+				<h2 class="filter-headline">
+					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
 						{{ t('facets.headline') }}
-						<h2 class="bold">{{ searchResultStore.currentQuery }}</h2>
-					</h2>
-					<h2 v-else>{{ t('facets.starHeadline') }}</h2>
-				</div>
+						<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					</span>
+					<span v-else>{{ t('facets.starHeadline') }}</span>
+				</h2>
 			</div>
 			<div class="category-container">
 				<CustomRadioGroup

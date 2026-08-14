@@ -14,7 +14,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h1>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h1>
+					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
@@ -379,7 +379,6 @@ h4 {
 }
 
 .right-side {
-	overflow: hidden;
 	flex: 0 0 100%;
 	max-width: 100%;
 }

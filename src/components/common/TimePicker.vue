@@ -559,12 +559,16 @@ export default defineComponent({
 	clip: rect(1px, 1px, 1px, 1px);
 }
 
+.dp-day-label {
+	color: var(--color-default);
+}
+
 .dp-day-outside .dp-day-label {
 	color: #aaa; /* light grey */
 }
 
 .material-icons {
-	color: var(--color-main);
+	color: var(--color-default);
 }
 
 .datepicker-explanation {
@@ -592,14 +596,14 @@ export default defineComponent({
 	background-color: white;
 	border: 1px solid #dadada;
 	border-radius: 4px;
-	padding: 4px 25px 5px 8px;
+	padding: 4px 50px 5px 8px;
 	color: var(--color-default);
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	background-color: white;
 	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
 	background-repeat: no-repeat;
-	background-position-x: 105px;
+	background-position-x: 100px;
 	background-position-y: 17px;
 	width: 118px;
 	box-sizing: border-box;
@@ -614,7 +618,8 @@ export default defineComponent({
 }
 
 .dp-day:hover {
-	background-color: var(--bg-light);
+	background-color: var(--bg-main-3);
+	border: 1px solid var(--color-border-success-lighter);
 }
 
 .dp-day-disabled {
@@ -626,26 +631,25 @@ export default defineComponent({
 
 .dp-input {
 	padding: 8px 10px;
-	width: calc(266px - 22px);
+	width: calc(278px - 22px);
 	height: 22px;
 	font-family: noway, sans-serif;
 	font-size: 20px;
-	color: #0a2e70;
+	color: var(--color-default);
 	border-radius: 4px;
-	border: 1px solid var(--color-main);
+	border: 1px solid #ddd;
 	height: 48px;
 	box-sizing: border-box;
 }
 
 .dp-toggle {
 	background: transparent;
-	border: 1px solid var(--bg-default-gray);
 	padding: 8px;
 	border-radius: 4px;
 	height: 48px;
 	width: 48px;
 	cursor: pointer;
-	border: 1px solid var(--color-main);
+	border: 1px solid #ddd;
 	transition: all 0.15s linear 0s;
 }
 
@@ -653,12 +657,9 @@ export default defineComponent({
 	transition: all 0.15s linear 0s;
 }
 
-.dp-toggle:hover span {
-	color: #ffffff;
-}
-
 .dp-toggle:hover {
-	background-color: var(--color-main);
+	background-color: var(--bg-main-3);
+	border: 1px solid var(--color-border-success-lighter);
 }
 
 .dp-selectors select {

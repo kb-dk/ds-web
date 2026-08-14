@@ -14,7 +14,6 @@
 				:src="currentImages.mobile"
 				class="bg-image"
 				fetchpriority="high"
-				title="search background"
 				alt=""
 			/>
 		</picture>
@@ -114,13 +113,6 @@ export default defineComponent({
 
 .hero-container picture {
 	width: 100%;
-}
-
-/* MEDIA QUERY 800 */
-@media (min-width: 800px) {
-	h1 {
-		margin-left: 0px;
-	}
 }
 
 @media (min-width: 1280px) {

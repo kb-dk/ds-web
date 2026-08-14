@@ -19,7 +19,7 @@
 						v-if="hitCount > 0 || noHits"
 						class="hit-count"
 					>
-						<h1
+						<h2
 							v-if="query !== ''"
 							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
 						>
@@ -28,7 +28,7 @@
 									? `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.hitcount', hitCount)} "${query}"`
 									: `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.filterSearch', hitCount)}`
 							}}
-						</h1>
+						</h2>
 						<span v-else></span>
 					</div>
 				</div>

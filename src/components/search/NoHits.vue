@@ -4,13 +4,13 @@
 		mode="out-in"
 	>
 		<div>
-			<h1 class="no-hits-heading">
+			<h2 class="no-hits-heading">
 				{{
 					searchResultStore.lastSearchQuery === '*:*'
 						? $t('search.nohitWithFilter', { filterSearch: $t('search.filterSearch') })
 						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
 				}}
-			</h1>
+			</h2>
 			<EdgedContentArea
 				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"

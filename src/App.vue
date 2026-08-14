@@ -399,10 +399,6 @@ export default defineComponent({
 	top: 0;
 }
 
-:focus {
-	outline: none;
-}
-
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;

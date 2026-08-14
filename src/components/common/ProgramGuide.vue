@@ -145,7 +145,12 @@
 				</template>
 			</ItemSlider>
 		</div>
-		<div class="hors-dot">•</div>
+		<div
+			class="hors-dot"
+			:class="{ active: dailyProgramExpanded }"
+		>
+			•
+		</div>
 	</div>
 </template>
 
@@ -394,7 +399,50 @@ export default defineComponent({
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0s;
+		--initialColor 0.3s ease-in,
+		--midPointColor1 0.3s ease-in,
+		--midPointColor2 0.3s ease-in,
+		--endColor 0.3s ease-out;
+}
+@property --initialColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor1 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor2 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+
+@property --endColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+.daily-program:hover .hors-dot.active {
+	--initialColor: rgba(249, 234, 240, 1);
+	--midPointColor1: rgba(235, 223, 228, 1);
+	--midPointColor2: white;
+	--endColor: white;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 58%,
+		var(--midPointColor2) 58%,
+		var(--endColor) 100%
+	);
+}
+.hors-dot.active {
+	--initialColor: rgba(247, 232, 238, 1);
+	--midPointColor1: rgba(234, 222, 227, 1);
+	--midPointColor2: white;
+	--endColor: white;
 }
 .hors-dot {
 	display: flex;
@@ -411,11 +459,22 @@ export default defineComponent({
 	z-index: 1;
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s;
+		background-color 0.1s ease-in-out 0.2s,
+		--initialColor 0.5s ease-out,
+		--midPointColor1 0.5s ease-out,
+		--midPointColor2 0.5s ease-out,
+		--endColor 0.5s ease-out;
 	align-content: center;
 	align-items: center;
 	justify-content: center;
 	margin-top: -7px;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 65%,
+		var(--midPointColor2) 65%,
+		var(--endColor) 100%
+	);
 }
 .daily-program-expanded {
 	overflow-y: hidden;

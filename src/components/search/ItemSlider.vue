@@ -169,6 +169,7 @@ export default defineComponent({
 	width: 100%;
 }
 .item-slider {
+	padding: 4px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
