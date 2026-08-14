@@ -59,6 +59,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
 	const notificationStore = useNotificationStore();
+	const searchFieldFocused = ref(false);
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -489,5 +490,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		RadioFacets,
 		preliminarySearchMethod,
 		preliminaryPeriodSearch,
+		searchFieldFocused,
 	};
 });
