@@ -1,19 +1,17 @@
 <template>
 	<div class="daily-program">
-		<div class="extra-features">
-			<button
-				:class="dailyProgramExpanded ? 'guide-button active' : 'guide-button'"
-				:title="`${$t('search.programGuide')} - ${creator} ${startDate}`"
-				:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
-				@click="showProgramGuide()"
-			>
-				<span class="material-icons calendar-view-icon">view_day</span>
-				{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
-				<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
-					expand_more
-				</span>
-			</button>
-		</div>
+		<button
+			:class="dailyProgramExpanded ? 'guide-button active' : 'guide-button'"
+			:title="`${$t('search.programGuide')} - ${creator} ${startDate}`"
+			:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
+			@click="showProgramGuide()"
+		>
+			<span class="material-icons calendar-view-icon">view_day</span>
+			{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
+			<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
+				expand_more
+			</span>
+		</button>
 		<div
 			ref="extraContentRef"
 			class="extra-content"
@@ -399,10 +397,10 @@ export default defineComponent({
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
-		--initialColor 0.3s ease-in,
-		--midPointColor1 0.3s ease-in,
-		--midPointColor2 0.3s ease-in,
-		--endColor 0.3s ease-out;
+		--initialColor 0.3s ease,
+		--midPointColor1 0.3s ease,
+		--midPointColor2 0.3s ease,
+		--endColor 0.3s ease;
 }
 @property --initialColor {
 	syntax: '<color>';
@@ -444,6 +442,19 @@ export default defineComponent({
 	--midPointColor2: white;
 	--endColor: white;
 }
+.guide-button:hover ~ .hors-dot {
+	--initialColor: rgba(239, 188, 208, 1);
+	--midPointColor1: rgba(239, 188, 208, 1);
+	--midPointColor2: white;
+	--endColor: white;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 55%,
+		var(--midPointColor2) 55%,
+		var(--endColor) 100%
+	);
+}
 .hors-dot {
 	display: flex;
 	position: absolute;
@@ -459,11 +470,10 @@ export default defineComponent({
 	z-index: 1;
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s,
-		--initialColor 0.5s ease-out,
-		--midPointColor1 0.5s ease-out,
-		--midPointColor2 0.5s ease-out,
-		--endColor 0.5s ease-out;
+		--initialColor 0.3s ease-in-out,
+		--midPointColor1 0.3s ease-in-out,
+		--midPointColor2 0.3s ease-in-out,
+		--endColor 0.3s ease-in-out;
 	align-content: center;
 	align-items: center;
 	justify-content: center;
@@ -686,6 +696,14 @@ export default defineComponent({
 	}
 	.program-button.active {
 		margin-bottom: 0px;
+	}
+}
+@media (min-width: 870px) {
+	.guide-button:hover ~ .hors-dot {
+		--initialColor: white;
+		--midPointColor1: white;
+		--midPointColor2: white;
+		--endColor: white;
 	}
 }
 </style>
