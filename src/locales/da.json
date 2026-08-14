@@ -56,8 +56,8 @@
       "fromTheArchive":"{month} måned på DR gennem tiden"
    },
    "facets" : {
-      "headline":"Filtrér din søgning på:",
-      "starHeadline": "Filtrér din søgning.",
+      "headline":"Filtrér din søgning på ",
+      "starHeadline": "Filtrér din søgning",
       "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
       "selectedGenres": "{selected} af {total} kategorier valgt",
