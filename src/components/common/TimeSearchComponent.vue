@@ -42,22 +42,24 @@
 					</div>
 				</template>
 			</ItemSlider>
-			<div class="result-header">
-				<KBButton
-					class="btn-medium"
-					:to="timeSearchLink"
-					:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-					button-type="btn-cta"
-					button-color="cta"
-					button-size="medium"
-					:is-router-link="true"
-					right-icon-name="arrow_forward_ios"
-					:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-						'timeSearch.result',
-						timeSearchStore.numFound,
-					)} `"
-					@click="timeSearchBehavior()"
-				></KBButton>
+			<div class="result-header-container">
+				<div class="result-header">
+					<KBButton
+						class="btn-medium"
+						:to="timeSearchLink"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+						button-type="btn-cta"
+						button-color="cta"
+						button-size="medium"
+						:is-router-link="true"
+						right-icon-name="arrow_forward_ios"
+						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
+							'timeSearch.result',
+							timeSearchStore.numFound,
+						)} `"
+						@click="timeSearchBehavior()"
+					></KBButton>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -211,10 +213,10 @@ h2 {
 }
 .result-container {
 	width: 100%;
+	height: 680px;
 	position: relative;
 	display: flex;
 	justify-content: center;
-	height: 100%;
 }
 .container-backdrop {
 	position: absolute;
@@ -226,11 +228,18 @@ h2 {
 	flex-direction: column;
 	margin-top: 5px;
 }
+.result-header-container {
+	width: 100vw;
+	display: flex;
+	max-width: 1256px;
+	position: absolute;
+	justify-self: center;
+}
 .result-header {
 	display: flex;
 	padding-top: 20px;
-	padding-bottom: 20px;
 	justify-content: end;
+	width: 100%;
 }
 
 .selection-header {
@@ -242,7 +251,9 @@ h2 {
 	margin-top: 54px;
 	margin-bottom: 34px;
 	gap: 15px;
-	width: 100%;
+	width: 98vw;
+	max-width: 2400px;
+	height: 100%;
 }
 
 .time-result-item {
@@ -285,7 +296,7 @@ h2 {
 		margin-top: 0;
 	}
 	.time-result-item {
-		flex: 0 0 30%;
+		flex: 0 0 400px;
 	}
 }
 </style>

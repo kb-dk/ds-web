@@ -166,7 +166,8 @@ export default defineComponent({
 }
 
 .item-container {
-	width: 100%;
+	width: inherit;
+	max-width: 1920px;
 }
 .item-slider {
 	padding: 4px;
