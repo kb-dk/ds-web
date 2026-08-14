@@ -46,7 +46,7 @@ export default defineComponent({
 
 <style scoped>
 .spell-check-query a {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .spell-check-collations {
@@ -61,14 +61,14 @@ export default defineComponent({
 	display: inline-flex;
 }
 .spell-check-suggestion:nth-child(odd) {
-	color: #002e70;
+	color: var(--color-default);
 	margin-right: 50px;
 }
 .spell-check-suggestion:nth-child(odd):hover {
 	text-decoration: underline;
 }
 .spell-check-suggestion:nth-child(even) {
-	color: black;
+	color: var(--color-default);
 	font-size: 16px;
 }
 </style>
