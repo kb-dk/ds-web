@@ -277,7 +277,7 @@
          "allMaterialsLink":"https://www.kb.dk/en/find-materials"
 
       },
-      "placeholders": "Search...",
+      "placeholder": "Search...",
       "limitedFilters":{
          "title":"Too many filters",
          "subtitle":"You have reached the limit of filters we support. To add another filter, you have to remove another."

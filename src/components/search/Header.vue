@@ -89,11 +89,9 @@ export default defineComponent({
 }
 
 .header-container.record,
-.header-container.search,
 .header-container.notfound {
 	overflow: hidden;
 }
-
 .headline-link {
 	text-decoration: none;
 	margin-top: 24px;
