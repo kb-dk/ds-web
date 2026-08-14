@@ -65,7 +65,8 @@
 						<div class="dp-selectors">
 							<select
 								v-model="selectedMonth"
-								class="btn-big"
+								class="btn-medium"
+								:name="$t('timeSearch.from')"
 								@change="onMonthChange"
 							>
 								<option
@@ -79,7 +80,8 @@
 
 							<select
 								v-model="selectedYear"
-								class="btn-big"
+								class="btn-medium"
+								:name="$t('timeSearch.to')"
 								@change="onYearChange"
 							>
 								<option
