@@ -1,24 +1,26 @@
 <template>
 	<div :class="`header-container ${typeof $route.name === 'string' ? $route.name.toLowerCase() : ''}`">
-		<Logo></Logo>
 		<HeaderMenu></HeaderMenu>
-		<div class="container headline-container">
-			<router-link
-				class="headline-link"
-				:to="{ name: 'Home' }"
-			>
-				<h1 :aria-label="`${t('hero.title')}`">
-					<span class="headline heading-display">
-						<span class="text">{{ t('hero.title') }}</span>
-					</span>
-				</h1>
-			</router-link>
-			<Transition name="bcfade">
-				<Breadcrumb v-if="routerReady && $route.name !== 'Home'" />
-			</Transition>
-			<Transition name="sbfade">
-				<SearchBar v-if="$route.name !== undefined && $route.name !== 'Record'"></SearchBar>
-			</Transition>
+		<Logo></Logo>
+		<div class="container">
+			<div class="headline-container">
+				<router-link
+					class="headline-link"
+					:to="{ name: 'Home' }"
+				>
+					<h1 :aria-label="`${t('hero.title')}`">
+						<span class="headline heading-display">
+							<span class="text">{{ t('hero.title') }}</span>
+						</span>
+					</h1>
+				</router-link>
+				<Transition name="bcfade">
+					<Breadcrumb v-if="routerReady && $route.name !== 'Home'" />
+				</Transition>
+				<Transition name="sbfade">
+					<SearchBar v-if="$route.name !== undefined && $route.name !== 'Record'"></SearchBar>
+				</Transition>
+			</div>
 		</div>
 	</div>
 	<TransitionGroup name="linefade">
@@ -73,6 +75,8 @@ export default defineComponent({
 	transition: all 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91) 0s;
 	background-color: var(--bg-default);
 	height: 322px;
+	z-index: 4;
+	width: 100%;
 }
 
 .header-container.home {
@@ -89,6 +93,13 @@ export default defineComponent({
 	overflow: hidden;
 }
 
+.headline-link {
+	text-decoration: none;
+	margin-top: 24px;
+	width: fit-content;
+	display: block;
+}
+
 .header-container.search,
 .header-container.notfound {
 	transition: all 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91) 0s;
@@ -97,18 +108,6 @@ export default defineComponent({
 	transition-delay: 0.25s !important;
 }
 
-.container {
-	position: relative;
-	display: flex;
-	z-index: 4;
-	width: 100%;
-	max-width: 1280px;
-	flex-direction: column;
-	/* align-items: baseline; */
-}
-.container > a {
-	text-decoration: none;
-}
 h1 .headline {
 	display: block;
 	background-color: transparent;
@@ -131,12 +130,6 @@ h1 {
 	width: fit-content;
 	position: relative;
 }
-
-.headline-link {
-	margin-top: 24px;
-	width: fit-content;
-}
-
 .line {
 	width: 100%;
 	height: 20px;
@@ -200,6 +193,57 @@ h1 {
 @media (min-width: 990px) {
 	.header-container {
 		height: 170px;
+	}
+}
+
+.container {
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-color: var(--bg-default);
+	width: 100%;
+}
+
+.home-container {
+	background-color: var(--bg-default);
+	width: 100%;
+}
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.container {
+		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.container {
+		max-width: 990px;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.container {
+		max-width: 1304px;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.container {
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

@@ -1092,6 +1092,9 @@ fieldset {
 	padding-bottom: 30px;
 }
 
+h2 {
+	display: inline-block;
+}
 .facet-box {
 	margin-bottom: 15px;
 	padding: 10px;

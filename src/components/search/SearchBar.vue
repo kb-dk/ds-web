@@ -294,7 +294,6 @@ input[type='search']::-webkit-search-results-decoration {
 
 .search-box {
 	z-index: 6;
-	left: 0;
 	/* Chromium */
 	width: stretch;
 	/* Firefox */
@@ -304,8 +303,9 @@ input[type='search']::-webkit-search-results-decoration {
 	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
-	top: 192px;
+	top: 233px;
 	flex-direction: column;
+	max-width: calc(100% - 24px);
 }
 .btn-icon i {
 	margin-left: auto;
@@ -344,7 +344,6 @@ input:focus-visible,
 input:focus {
 	outline: none;
 }
-/* For .rdl-advanced-search and .rdl-spot-search .rdl-advanced-search */
 .container {
 	margin-right: auto;
 	margin-left: auto;
@@ -516,6 +515,12 @@ input:focus {
 @media (max-width: 505px) {
 	.search-container {
 		width: 100% !important;
+	}
+}
+
+@media (min-width: 1319px) {
+	.search-box {
+		max-width: calc(1280px);
 	}
 }
 </style>

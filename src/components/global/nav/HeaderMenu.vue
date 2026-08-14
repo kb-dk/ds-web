@@ -136,6 +136,7 @@ export default defineComponent({
 	width: 100%;
 	flex-direction: row;
 	align-items: center;
+	padding: 0px 12px;
 }
 .rdl-logo {
 	background-image: url('@/assets/images/KB_logo_inverted.svg');

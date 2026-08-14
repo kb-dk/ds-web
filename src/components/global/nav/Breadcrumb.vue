@@ -269,6 +269,8 @@ export default defineComponent({
 .bg-container {
 	position: relative;
 	margin-top: 50px;
+	width: 100%;
+	max-width: 1280px;
 }
 
 .breadcrumb-title {
@@ -397,10 +399,6 @@ export default defineComponent({
 	.container {
 		padding-right: 0px;
 		padding-left: 0px;
-	}
-	.bg-container {
-		padding-left: 12px;
-		padding-right: 12px;
 	}
 }
 </style>
