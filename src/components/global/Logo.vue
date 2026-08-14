@@ -54,6 +54,7 @@ export default defineComponent({
 	background: var(--color-main);
 	transform-origin: center;
 	position: absolute;
+	max-width: calc(100% - 24px);
 }
 
 .search .line,
@@ -169,7 +170,7 @@ export default defineComponent({
 .search .line.animate:nth-of-type(5),
 .record .line.animate:nth-of-type(5),
 .notfound .line.animate:nth-of-type(5) {
-	width: 1280px;
+	width: calc(100% - 24px);
 	top: 305px;
 	transition:
 		top 750ms ease,
@@ -211,10 +212,11 @@ export default defineComponent({
 		top: 497px;
 	}
 	.line.animate:nth-of-type(5) {
-		top: 698px;
+		top: 693px;
 	}
 }
-@media (min-width: 1280px) and (max-width: 1439px) {
+
+@media (min-width: 1280px) and (max-width: 1479px) {
 	.line.animate:nth-of-type(1) {
 		top: 44.07px;
 	}
@@ -228,10 +230,10 @@ export default defineComponent({
 		top: 615px;
 	}
 	.line.animate:nth-of-type(5) {
-		top: 815px;
+		top: 813px;
 	}
 }
-@media (min-width: 1440px) {
+@media (min-width: 1480px) {
 	.line.animate:nth-of-type(1) {
 		top: 44.07px;
 	}
@@ -245,7 +247,66 @@ export default defineComponent({
 		top: 730px;
 	}
 	.line.animate:nth-of-type(5) {
-		top: 933px;
+		top: 953px;
+	}
+}
+
+@media (min-width: 1280px) {
+	.search .line.animate:nth-of-type(5),
+	.record .line.animate:nth-of-type(5),
+	.notfound .line.animate:nth-of-type(5) {
+		width: 1280px;
+	}
+}
+
+.container {
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-color: var(--bg-default);
+	width: 100%;
+}
+
+.home-container {
+	background-color: var(--bg-default);
+	width: 100%;
+}
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.container {
+		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.container {
+		max-width: 990px;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.container {
+		max-width: 1304px;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.container {
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

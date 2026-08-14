@@ -125,17 +125,17 @@ export default defineComponent({
 @media (min-width: 990px) and (max-width: 1279px) {
 	.bg-image {
 		object-fit: cover;
-		height: 563px !important;
+		height: 540px !important;
 	}
 }
 
-@media (min-width: 1280px) and (max-width: 1439px) {
+@media (min-width: 1280px) and (max-width: 1479px) {
 	.bg-image {
 		object-fit: cover;
-		height: 680px;
+		height: 660px;
 	}
 }
-@media (min-width: 1440px) {
+@media (min-width: 1480px) {
 	.bg-image {
 		object-fit: cover;
 		height: 800px !important;
