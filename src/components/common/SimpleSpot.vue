@@ -97,6 +97,7 @@ export default defineComponent({
 	text-align: start;
 	flex-direction: column;
 	position: relative;
+	min-height: 130px;
 	/* word-break: break-all; */
 }
 .spot.main {
@@ -113,8 +114,8 @@ export default defineComponent({
 }
 .spot.medium {
 	width: 100%;
+	height: 100%;
 	max-width: 100%;
-	height: 200px;
 }
 .spot.large {
 	width: 100%;

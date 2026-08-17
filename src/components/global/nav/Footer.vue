@@ -259,7 +259,7 @@ h3 {
 	overflow: hidden;
 	background-color: var(--bg-default);
 	color: var(--color-main);
-	padding: 36px 0 0px;
+	padding: 36px 5px 0px;
 	position: relative;
 	bottom: 0px;
 	box-sizing: border-box;

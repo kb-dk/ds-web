@@ -53,10 +53,10 @@
 						button-size="medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
-						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-							'timeSearch.result',
-							timeSearchStore.numFound,
-						)} `"
+						:button-text="`${$t('facets.seeResults', {
+							count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
+							resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
+						})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
 						@click="timeSearchBehavior()"
 					></KBButton>
 				</div>
@@ -213,7 +213,7 @@ h2 {
 }
 .result-container {
 	width: 100%;
-	height: 680px;
+	height: 100%;
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -232,8 +232,9 @@ h2 {
 	width: 100vw;
 	display: flex;
 	max-width: 1256px;
-	position: absolute;
-	justify-self: center;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
 }
 .result-header {
 	display: flex;
@@ -249,7 +250,7 @@ h2 {
 .time-results {
 	position: relative;
 	margin-top: 54px;
-	margin-bottom: 34px;
+	margin-bottom: 90px;
 	gap: 15px;
 	width: 98vw;
 	max-width: 2400px;
@@ -272,6 +273,7 @@ h2 {
 	margin: 0;
 	position: relative;
 	padding-bottom: 25px;
+	padding-left: 20px;
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
