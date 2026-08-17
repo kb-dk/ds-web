@@ -23,16 +23,13 @@
 			</div>
 		</div>
 	</div>
-	<TransitionGroup name="linefade">
-		<div
-			v-if="routerReady && $route.name !== 'Home'"
-			class="line first"
-		></div>
-		<div
-			v-if="routerReady && $route.name !== 'Home'"
-			class="line second"
-		></div>
-	</TransitionGroup>
+	<ContainerSplitBar
+		:show-bars="routerReady && $route.name !== 'Home'"
+		:is-top="true"
+		:animate-bars="true"
+		top-color="var(--bg-main-2)"
+		bottom-color="var(--bg-main-3)"
+	></ContainerSplitBar>
 </template>
 
 <script lang="ts">
@@ -43,10 +40,11 @@ import SearchBar from '@/components/search/SearchBar.vue';
 import Breadcrumb from '@/components/global/nav/Breadcrumb.vue';
 import { useRouter } from 'vue-router';
 import Logo from '@/components/global/Logo.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'Header',
-	components: { HeaderMenu, SearchBar, Breadcrumb, Logo },
+	components: { HeaderMenu, SearchBar, Breadcrumb, Logo, ContainerSplitBar },
 	props: {
 		locale: { type: String, required: true },
 	},
@@ -128,42 +126,6 @@ h1 {
 	width: fit-content;
 	position: relative;
 }
-.line {
-	width: 100%;
-	height: 20px;
-}
-
-.line.first {
-	background: rgba(234, 159, 188, 0.7);
-}
-
-.line.second {
-	background: rgba(234, 159, 188, 0.2);
-}
-
-.linefade-enter-active,
-.linefade-leave-active {
-	transition:
-		opacity 500ms ease 0.5s,
-		height 500ms ease 0.5s;
-	overflow: hidden;
-}
-
-.linefade-enter-from,
-.linefade-leave-to {
-	transition:
-		opacity 150ms ease 0s,
-		height 150ms ease 0s;
-	opacity: 0;
-	height: 0;
-}
-
-.linefade-enter-to,
-.linefade-leave-from {
-	opacity: 1;
-	height: 20px;
-}
-
 .bcfade-enter-active,
 .bcfade-leave-active {
 	transition: opacity 0.25s ease 0.5s;

@@ -50,6 +50,7 @@
 						</div>
 					</div>
 				</div>
+				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 				<div
 					v-if="route.query.q === undefined"
 					class="container find"
@@ -81,7 +82,13 @@
 								></KBButton>
 							</div>
 						</div>
-						<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+						<div class="container-backdrop">
+							<ContainerSplitBar
+								:is-top="false"
+								top-color="var(--bg-main-3)"
+								bottom-color="var(--bg-main-2)"
+							></ContainerSplitBar>
+						</div>
 						<div class="end-container">
 							<SpotCategories></SpotCategories>
 							<ContactUs
@@ -526,6 +533,7 @@ h3 {
 .content-container {
 	padding-bottom: 40px;
 }
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
