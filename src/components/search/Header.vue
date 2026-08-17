@@ -201,7 +201,6 @@ h1 {
 	box-sizing: border-box;
 	padding-right: 12px;
 	padding-left: 12px;
-	background-color: var(--bg-default);
 	width: 100%;
 }
 

@@ -14,7 +14,7 @@
 				:src="currentImages.mobile"
 				class="bg-image"
 				fetchpriority="high"
-				alt=""
+				:alt="locale === 'da' ? currentImages.daAlt : currentImages.enAlt"
 			/>
 		</picture>
 		<div class="credit container">{{ currentImages.credit }}</div>
@@ -38,7 +38,7 @@ export default defineComponent({
 	name: 'Hero',
 	setup() {
 		const authStore = useAuthStore();
-		const { t } = useI18n();
+		const { t, locale } = useI18n();
 		const currentProgress = ref();
 		const imageRef = ref<HTMLImageElement | null>();
 		const currentImages = computed(() => {
@@ -49,6 +49,10 @@ export default defineComponent({
 						tablet: hero1Tablet,
 						desktop: hero1Desktop,
 						credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
+						daAlt:
+							'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
+						enAlt:
+							'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
 					};
 				case 2:
 					return {
@@ -56,6 +60,10 @@ export default defineComponent({
 						tablet: hero2Tablet,
 						desktop: hero2Desktop,
 						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
+						daAlt:
+							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
+						enAlt:
+							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
 					};
 				default:
 					return {
@@ -63,6 +71,8 @@ export default defineComponent({
 						tablet: hero3Tablet,
 						desktop: hero3Desktop,
 						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
+						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
+						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
 					};
 			}
 		});
@@ -77,11 +87,11 @@ export default defineComponent({
 				}
 
 				if (authStore.heroBannerNumber === 1) {
-					imageRef.value.alt = 'Image of King Frederik X proclamation';
+					imageRef.value.alt = t('hero.firstImage');
 				} else if (authStore.heroBannerNumber === 2) {
-					imageRef.value.alt = '';
+					imageRef.value.alt = t('hero.secondImage');
 				} else {
-					imageRef.value.alt = '';
+					imageRef.value.alt = t('hero.thirdImage');
 				}
 			}
 		});
@@ -92,6 +102,7 @@ export default defineComponent({
 			t,
 			imageRef,
 			currentImages,
+			locale,
 		};
 	},
 });
