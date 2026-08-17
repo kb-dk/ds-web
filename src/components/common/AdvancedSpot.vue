@@ -132,7 +132,7 @@ export default defineComponent({
 	width: calc(100% + 1px);
 	position: absolute;
 	left: 0px;
-	top: -40px;
+	top: -68px;
 	background-color: var(--bg-default);
 }
 
