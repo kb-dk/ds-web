@@ -17,6 +17,7 @@
 				alt=""
 			/>
 		</picture>
+		<div class="credit container">{{ currentImages.credit }}</div>
 	</div>
 </template>
 <script lang="ts">
@@ -47,18 +48,21 @@ export default defineComponent({
 						mobile: hero1Mobile,
 						tablet: hero1Tablet,
 						desktop: hero1Desktop,
+						credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
 					};
 				case 2:
 					return {
 						mobile: hero2Mobile,
 						tablet: hero2Tablet,
 						desktop: hero2Desktop,
+						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
 					};
 				default:
 					return {
 						mobile: hero3Mobile,
 						tablet: hero3Tablet,
 						desktop: hero3Desktop,
+						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
 					};
 			}
 		});
@@ -102,6 +106,17 @@ export default defineComponent({
 	z-index: 3;
 	overflow: visible;
 	margin-bottom: 20px;
+	flex-direction: column;
+	align-items: center;
+}
+
+.credit {
+	color: var(--color-credits);
+	display: flex;
+	align-items: flex-end;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	justify-content: flex-end;
 }
 
 .bg-image {
@@ -138,6 +153,50 @@ export default defineComponent({
 	.bg-image {
 		object-fit: cover;
 		height: 800px !important;
+	}
+}
+
+.container {
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-color: var(--bg-default);
+	width: 100%;
+}
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.container {
+		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
+	}
+}
+/* MEDIA QUERY 640 */
+@media (min-width: 640px) {
+	.container {
+		max-width: 990px;
+	}
+}
+/* MEDIA QUERY 990 */
+@media (min-width: 990px) {
+	.container {
+		max-width: 1150px;
+	}
+}
+/* MEDIA QUERY 1150 */
+@media (min-width: 1150px) {
+	.container {
+		max-width: 1280px;
+	}
+}
+/* MEDIA QUERY 1280 */
+@media (min-width: 1280px) {
+	.container {
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 </style>

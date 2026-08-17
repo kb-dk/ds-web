@@ -116,6 +116,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 	max-width: 100%;
+	height: 280px;
 }
 .spot.large {
 	width: 100%;

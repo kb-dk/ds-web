@@ -74,8 +74,7 @@ export default defineComponent({
 	transition-delay: 0.25s !important;
 	transition: all 0.25s cubic-bezier(0.85, 0.09, 0.15, 0.91) 0s;
 	background-color: var(--bg-default);
-	height: 170px;
-	position: relative;
+	height: 322px;
 	z-index: 4;
 	width: 100%;
 }
@@ -89,11 +88,9 @@ export default defineComponent({
 }
 
 .header-container.record,
-.header-container.search,
 .header-container.notfound {
 	overflow: hidden;
 }
-
 .headline-link {
 	text-decoration: none;
 	margin-top: 24px;
@@ -189,6 +186,12 @@ h1 {
 .sbfade-enter-from,
 .sbfade-leave-to {
 	opacity: 0;
+}
+
+@media (min-width: 990px) {
+	.header-container {
+		height: 170px;
+	}
 }
 
 .container {

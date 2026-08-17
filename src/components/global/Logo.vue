@@ -7,20 +7,21 @@
 			v-for="n in 5"
 			:key="n"
 			class="line"
-			:class="{ animate: ready }"
-			:style="{ animationDuration: `${n * 0.9}s` }"
+			:class="{ animate: ready, fifth: n === 5, wide: searchResultStore.searchFieldFocused }"
 		></div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, nextTick } from 'vue';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'Logo',
 	props: {},
 
 	setup() {
+		const searchResultStore = useSearchResultStore();
 		const ready = ref(false);
 		onMounted(async () => {
 			await nextTick();
@@ -31,7 +32,7 @@ export default defineComponent({
 				});
 			});
 		});
-		return { ready };
+		return { ready, searchResultStore };
 	},
 });
 </script>
@@ -248,6 +249,14 @@ export default defineComponent({
 	}
 	.line.animate:nth-of-type(5) {
 		top: 953px;
+	}
+}
+
+@media (max-width: 990px) {
+	.fifth.wide {
+		width: calc(100% - 24px);
+		transition: width 750ms ease !important;
+		transition-delay: 0s !important;
 	}
 }
 

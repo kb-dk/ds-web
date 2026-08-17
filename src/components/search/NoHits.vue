@@ -15,7 +15,7 @@
 				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
 				:lines="true"
 				:dotted-edges="false"
-				background-color="var(--bg-default)"
+				background-color="var(--bg-main-2)"
 				align-items="start"
 				:line-padding="false"
 			>

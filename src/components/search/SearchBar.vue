@@ -3,13 +3,7 @@
 		v-if="route.name !== 'Record'"
 		class="search-box"
 	>
-		<div
-			:class="
-				hasFocus || route.name === 'Search' || searchResultStore.currentQuery
-					? 'search-container wide'
-					: 'search-container'
-			"
-		>
+		<div :class="isSearchFieldOpen ? 'search-container wide' : 'search-container'">
 			<div class="container main-12">
 				<form
 					ref="searchFormRef"
@@ -111,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch, computed } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import Autocomplete from '@/components/search/Autocomplete.vue';
 import { LocationQueryRaw } from 'vue-router';
@@ -204,6 +198,18 @@ export default defineComponent({
 			hasFocus.value = false;
 		};
 
+		const isSearchFieldOpen = computed(() => {
+			return !!(hasFocus.value || route.name === 'Search' || searchResultStore.currentQuery);
+		});
+
+		watch(
+			isSearchFieldOpen,
+			(isOpen: boolean) => {
+				searchResultStore.searchFieldFocused = isOpen;
+			},
+			{ immediate: true },
+		);
+
 		const setPreliminaryFilter = (value: string) => {
 			searchResultStore.preliminaryFilter = value;
 			if (searchResultStore.currentQuery !== '' && searchResultStore.currentQuery !== undefined) {
@@ -227,6 +233,7 @@ export default defineComponent({
 			selectedPortal,
 			route,
 			hasFocus,
+			isSearchFieldOpen,
 		};
 	},
 });
@@ -316,10 +323,6 @@ input[type='search']::-webkit-search-results-decoration {
 	cursor: default;
 }
 
-.search-container.wide {
-	width: 100%;
-}
-
 .search-container {
 	display: flex;
 	height: 100%;
@@ -331,8 +334,12 @@ input[type='search']::-webkit-search-results-decoration {
 	border-radius: var(--rounded-medium) var(--rounded-medium) 0 0;
 	overflow: hidden;
 	box-sizing: border-box;
-	transition: all 0.35s cubic-bezier(0.85, 0.09, 0.15, 0.91);
+	transition: all 750ms ease;
 	background-color: var(--bg-default);
+}
+
+.search-container.wide {
+	width: 100%;
 }
 
 .btn-icon {
