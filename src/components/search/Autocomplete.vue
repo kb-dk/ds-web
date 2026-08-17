@@ -70,6 +70,7 @@ export default defineComponent({
 		const currentSelectedAutocomplete = ref(0);
 
 		const doAutocompleteSearch = (query: string) => {
+			console.log('heyooo!');
 			const rdyQuery = `"${query.replaceAll('"', '\\"')}"`;
 			router.push({
 				name: 'Search',
@@ -109,6 +110,7 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
+					doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
 					break;
 				case 'Tab':
 					if (searchResultStore.autocompleteResult?.length > 0) {
