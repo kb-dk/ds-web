@@ -69,8 +69,8 @@ export default defineComponent({
 		const searchResultStore = useSearchResultStore();
 		const currentSelectedAutocomplete = ref(0);
 
-		const doAutocompleteSearch = (query: string) => {
-			console.log('heyooo!');
+		const doAutocompleteSearch = (query: string, e: Event) => {
+			e.preventDefault();
 			const rdyQuery = `"${query.replaceAll('"', '\\"')}"`;
 			router.push({
 				name: 'Search',
@@ -110,7 +110,7 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
+					doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
 					break;
 				case 'Tab':
 					if (searchResultStore.autocompleteResult?.length > 0) {
@@ -151,7 +151,7 @@ export default defineComponent({
 					//updated selected element to make sure it picks the clicked element.
 					updateSelectedElement(n);
 				}
-				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
+				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
 			}
 		};
 
