@@ -81,8 +81,8 @@ export default defineComponent({
 }
 @media (min-width: 640px) {
 	.spot-container {
-		margin-bottom: 20px;
-		gap: 50px;
+		margin-bottom: 150px;
+		gap: 56px;
 	}
 }
 </style>

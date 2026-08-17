@@ -188,10 +188,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
+h2 {
+	margin: 0px;
+}
 .title {
 	width: 100%;
 	color: var(--color-main);
-	margin-bottom: 20px;
+	margin-bottom: 38px;
 	padding-left: 20px;
 }
 .title h2::first-letter {
@@ -202,7 +205,6 @@ export default defineComponent({
 	width: 100%;
 	position: relative;
 	z-index: 1;
-	margin-bottom: 20px !important;
 }
 
 .portal-container {
@@ -236,7 +238,11 @@ export default defineComponent({
 .date-picker {
 	z-index: 2;
 }
-
+@media (min-width: 640px) {
+	.title {
+		margin-top: 38px;
+	}
+}
 @media (min-width: 990px) {
 	.categories,
 	.date-picker,

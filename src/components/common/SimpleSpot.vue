@@ -72,12 +72,12 @@ export default defineComponent({
 	z-index: 2;
 }
 .spot .icon {
-	width: 40px;
+	width: 68px;
 	align-items: center;
 	display: flex;
 	text-align: center;
 	justify-content: center;
-	height: 40px;
+	height: 68px;
 	background-color: var(--bg-main);
 	color: var(--color-default);
 	border-radius: 0 0 var(--rounded-medium) 0;
@@ -85,11 +85,11 @@ export default defineComponent({
 	left: 0;
 }
 .icon .material-icons {
-	font-size: var(--fs-lead);
+	font-size: var(--fs-lg);
 }
 .spot .inner {
 	width: 100%;
-	padding: 20px;
+	padding: 36px 20px 20px 20px;
 	height: calc(100% - 80px);
 	display: flex;
 	justify-content: start;
@@ -130,7 +130,6 @@ export default defineComponent({
 		max-width: 49%;
 	}
 	.spot {
-		margin-bottom: 10px;
 		border-radius: var(--rounded-medium);
 	}
 }

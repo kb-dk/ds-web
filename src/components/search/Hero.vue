@@ -105,7 +105,7 @@ export default defineComponent({
 	display: flex;
 	z-index: 3;
 	overflow: visible;
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 	flex-direction: column;
 	align-items: center;
 }
@@ -115,7 +115,6 @@ export default defineComponent({
 	display: flex;
 	align-items: flex-end;
 	padding-top: 10px;
-	padding-bottom: 30px;
 	justify-content: flex-end;
 }
 
