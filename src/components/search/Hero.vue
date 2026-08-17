@@ -107,6 +107,7 @@ export default defineComponent({
 	overflow: visible;
 	margin-bottom: 20px;
 	flex-direction: column;
+	align-items: center;
 }
 
 .credit {
