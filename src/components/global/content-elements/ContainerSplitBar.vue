@@ -3,11 +3,13 @@
 		<TransitionGroup name="linefade">
 			<div
 				v-if="showBars"
+				key="1"
 				class="bar"
 				:class="`${isTop ? 'bar-1' : 'bar-2'}`"
 			></div>
 			<div
 				v-if="showBars"
+				key="2"
 				class="bar"
 				:class="`${isTop ? 'bar-2' : 'bar-1'}`"
 			></div>

@@ -50,9 +50,13 @@
 						</div>
 					</div>
 				</div>
-				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+				<ContainerSplitBar
+					key="2"
+					:is-top="false"
+				></ContainerSplitBar>
 				<div
 					v-if="route.query.q === undefined"
+					key="3"
 					class="container find"
 				>
 					<div class="no-filter-container">
@@ -100,7 +104,7 @@
 				</div>
 				<div
 					v-if="route.fullPath === '/find' && route.query.q !== undefined"
-					key="2"
+					key="4"
 					class="container"
 				>
 					<Transition
