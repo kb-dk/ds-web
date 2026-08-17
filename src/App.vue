@@ -613,12 +613,12 @@ body {
 	overscroll-behavior: none;
 	overflow-x: hidden;
 	background-color: var(--bg-default);
-	transition: backgroundColor 0.5s ease-in-out 5s;
+	transition: background-color 0.25s ease-in-out 0ms;
 }
 
 body.notFrontpage {
 	background-color: white;
-	transition: backgroundColor 0.5s ease-in-out 0s;
+	transition: background-color 0.5s ease-in-out 0s;
 }
 
 .remove-body-scroll {

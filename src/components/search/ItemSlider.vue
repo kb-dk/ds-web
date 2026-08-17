@@ -184,7 +184,6 @@ export default defineComponent({
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
 	box-sizing: border-box;
-	scale: '1.0';
 }
 
 .item-slider.padding {

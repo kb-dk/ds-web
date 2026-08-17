@@ -279,6 +279,7 @@ h2 {
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .header h2 {

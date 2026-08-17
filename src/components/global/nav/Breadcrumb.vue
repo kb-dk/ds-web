@@ -268,7 +268,7 @@ export default defineComponent({
 
 .bg-container {
 	position: relative;
-	margin-top: 50px;
+	margin-top: 25px;
 	width: 100%;
 	max-width: 1280px;
 }

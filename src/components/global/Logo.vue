@@ -175,7 +175,8 @@ export default defineComponent({
 	top: 305px;
 	transition:
 		top 750ms ease,
-		width 750ms ease 750ms !important;
+		width 750ms ease 750ms,
+		opacity 250ms ease 750ms !important;
 }
 .search .line:nth-of-type(5) {
 	top: 305px;
