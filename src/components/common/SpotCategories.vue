@@ -153,9 +153,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-h3 {
+h2 {
 	margin: 0;
-	display: contents;
 	text-align: center;
 }
 .spot-categories {

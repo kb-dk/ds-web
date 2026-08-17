@@ -217,6 +217,7 @@ h2 {
 	position: relative;
 	display: flex;
 	justify-content: center;
+	margin-bottom: 112px;
 }
 .container-backdrop {
 	position: absolute;
@@ -238,7 +239,8 @@ h2 {
 }
 .result-header {
 	display: flex;
-	padding-top: 20px;
+	/* weird padding to equal 56 in total */
+	padding-top: 41px;
 	justify-content: end;
 	width: 100%;
 }
@@ -249,7 +251,7 @@ h2 {
 
 .time-results {
 	position: relative;
-	margin-top: 54px;
+	margin-top: 56px;
 	margin-bottom: 90px;
 	gap: 15px;
 	width: 98vw;
@@ -272,7 +274,7 @@ h2 {
 .header {
 	margin: 0;
 	position: relative;
-	padding-bottom: 25px;
+	padding-bottom: 38px;
 	padding-left: 20px;
 	text-align: left;
 	max-width: 1280px;
@@ -299,6 +301,9 @@ h2 {
 	}
 	.time-result-item {
 		flex: 0 0 400px;
+	}
+	.time-results {
+		margin-bottom: 72px;
 	}
 }
 </style>
