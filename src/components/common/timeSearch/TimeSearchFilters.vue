@@ -410,7 +410,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	align-content: center;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
@@ -571,8 +571,8 @@ fieldset {
 .slider-whiteoff-container {
 	position: relative;
 	margin-bottom: 20px;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 25px;
+	padding-right: 25px;
 }
 .explanation-for-data {
 	position: absolute;
@@ -992,6 +992,7 @@ fieldset {
 	}
 	.to-from-container {
 		margin-bottom: 30px;
+		flex-wrap: nowrap;
 	}
 }
 

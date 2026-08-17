@@ -160,10 +160,11 @@ h3 {
 }
 .spot-categories {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	width: 100%;
 	flex-wrap: wrap;
 	align-items: baseline;
+	padding-bottom: 56px;
 }
 
 .spot-categories h2 {
@@ -259,6 +260,13 @@ h3 {
 	}
 	100% {
 		background-position: 0% center;
+	}
+}
+
+@media (min-width: 640px) {
+	.spot-categories {
+		flex-direction: row;
+		padding-bottom: 0;
 	}
 }
 </style>

@@ -192,6 +192,7 @@ export default defineComponent({
 	width: 100%;
 	color: var(--color-main);
 	margin-bottom: 20px;
+	padding-left: 20px;
 }
 .title h2::first-letter {
 	text-transform: capitalize;

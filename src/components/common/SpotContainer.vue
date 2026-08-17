@@ -53,8 +53,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 	flex-direction: column;
-	margin-bottom: 20px;
-	gap: 50px;
+	margin-bottom: 56px;
 }
 .spot-row {
 	display: flex;
@@ -79,5 +78,11 @@ export default defineComponent({
 	background-color: var(--bg-secondary-light);
 	cursor: pointer;
 	box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0) inset;
+}
+@media (min-width: 640px) {
+	.spot-container {
+		margin-bottom: 20px;
+		gap: 50px;
+	}
 }
 </style>
