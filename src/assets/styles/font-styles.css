@@ -35,6 +35,9 @@ body,button{
 h1, h2 {
     font-family: 'LibreBaskerville';
 }
+input.form-control {
+    font-family: 'LibreBaskerville';
+}
 
 @font-face {
 	font-family: 'noway';
