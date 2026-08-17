@@ -55,14 +55,14 @@ export default defineComponent({
 						mobile: hero2Mobile,
 						tablet: hero2Tablet,
 						desktop: hero2Desktop,
-						credit: 'Lars Hansen/Ritzau Scanpix',
+						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
 					};
 				default:
 					return {
 						mobile: hero3Mobile,
 						tablet: hero3Tablet,
 						desktop: hero3Desktop,
-						credit: 'Erik Gleie/Ritzau Scanpix',
+						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
 					};
 			}
 		});
