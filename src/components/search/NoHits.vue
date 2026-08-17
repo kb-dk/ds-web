@@ -11,36 +11,23 @@
 						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
 				}}
 			</h2>
-			<EdgedContentArea
-				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
-				:lines="true"
-				:dotted-edges="false"
-				background-color="var(--bg-main-2)"
-				align-items="start"
-				:line-padding="false"
-			>
-				<template #content>
-					<h2>{{ $t('search.maybeYouMeant') }}</h2>
-					<div class="no-hits">
-						<SpellChecker :spell-check="searchResultStore.spellCheck" />
-					</div>
-				</template>
-			</EdgedContentArea>
+			<h3>{{ $t('search.maybeYouMeant') }}</h3>
+			<div class="no-hits">
+				<SpellChecker :spell-check="searchResultStore.spellCheck" />
+			</div>
 			<div class="no-hits-heading-subtitle">
-				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
-				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
+				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 				<a
 					:href="$t('search.nohitSubtitle.link')"
 					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
 				>
 					{{ $t('search.nohitSubtitle.readMore') }}
 				</a>
-				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
 			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
-						<h2>{{ $t('search.searchGuide.title') }}</h2>
+						<h3>{{ $t('search.searchGuide.title') }}</h3>
 						<ul>
 							<li>
 								<p>{{ $t('search.searchGuide.first') }}</p>
@@ -98,8 +85,6 @@ import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SpellChecker from '@/components/search/SpellChecker.vue';
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-// import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
 import { useI18n } from 'vue-i18n';
@@ -112,7 +97,6 @@ export default defineComponent({
 		ContactUs,
 		SpellChecker,
 		TextAndImage,
-		EdgedContentArea,
 		SpotCategories,
 		ContainerSplitBar,
 	},
@@ -153,7 +137,10 @@ export default defineComponent({
 	position: relative;
 	flex-direction: column;
 }
-
+.no-hits {
+	margin-top: 22px;
+	margin-bottom: 38px;
+}
 .no-hits * {
 	padding: 0;
 	box-sizing: border-box;
@@ -209,6 +196,7 @@ export default defineComponent({
 	hyphens: auto;
 	max-width: 800px;
 	color: var(--color-default);
+	margin-bottom: 56px;
 }
 h2 {
 	margin: 0;
