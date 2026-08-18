@@ -42,6 +42,7 @@ export default defineComponent({
 		const currentProgress = ref();
 		const imageRef = ref<HTMLImageElement | null>();
 		const currentImages = computed(() => {
+			console.log('authStore.heroBannerNumber', authStore.heroBannerNumber);
 			switch (authStore.heroBannerNumber) {
 				case 1:
 					return {
@@ -60,10 +61,8 @@ export default defineComponent({
 						tablet: hero2Tablet,
 						desktop: hero2Desktop,
 						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
-						daAlt:
-							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
-						enAlt:
-							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
+						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
+						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
 					};
 				default:
 					return {
@@ -71,8 +70,10 @@ export default defineComponent({
 						tablet: hero3Tablet,
 						desktop: hero3Desktop,
 						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
-						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
-						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
+						daAlt:
+							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
+						enAlt:
+							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
 					};
 			}
 		});
@@ -84,14 +85,6 @@ export default defineComponent({
 				if (authStore.heroBannerNumber === 0) {
 					const randomNumber = Math.floor(Math.random() * 3) + 1;
 					authStore.heroBannerNumber = randomNumber;
-				}
-
-				if (authStore.heroBannerNumber === 1) {
-					imageRef.value.alt = t('hero.firstImage');
-				} else if (authStore.heroBannerNumber === 2) {
-					imageRef.value.alt = t('hero.secondImage');
-				} else {
-					imageRef.value.alt = t('hero.thirdImage');
 				}
 			}
 		});
