@@ -113,6 +113,11 @@ p.lead {
     line-height: var(--lh-large);
     font-weight: var(--fw-regular);
 }
+.search-input {
+    font-size: var(--fs-xl);
+    line-height: var(--lh-medium-tight);
+    font-weight: var(--fw-regular);
+}
 
 /* Menu */
 .menu-main {

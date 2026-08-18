@@ -33,7 +33,7 @@
 								autocomplete="off"
 								type="search"
 								:disabled="debounceMechanic ? true : false"
-								class="form-control label-big"
+								class="form-control search-input"
 								:class="{ 'form-control-search': route.name === 'Search' }"
 								:placeholder="searchResultStore.searchFired ? '' : t(`search.placeholder`)"
 								name="simpleSearch"
