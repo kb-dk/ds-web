@@ -42,7 +42,6 @@ export default defineComponent({
 		const currentProgress = ref();
 		const imageRef = ref<HTMLImageElement | null>();
 		const currentImages = computed(() => {
-			console.log('authStore.heroBannerNumber', authStore.heroBannerNumber);
 			switch (authStore.heroBannerNumber) {
 				case 1:
 					return {
