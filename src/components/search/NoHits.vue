@@ -226,7 +226,7 @@ ul p {
 
 @media (min-width: 990px) {
 	.contact-us {
-		padding-bottom: 38px;
+		padding-bottom: 20px;
 	}
 	.search-icon {
 		font-size: 256px;
