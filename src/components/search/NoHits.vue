@@ -133,7 +133,7 @@ export default defineComponent({
 }
 .end-container {
 	display: flex;
-	margin-top: 40px;
+	margin-top: 90px;
 	position: relative;
 	flex-direction: column;
 }
@@ -220,13 +220,13 @@ ul p {
 	margin: 0;
 }
 .contact-us {
-	margin-top: 0;
+	margin-top: 38px;
 	padding-bottom: 0;
 }
 
 @media (min-width: 990px) {
 	.contact-us {
-		padding-bottom: 40px;
+		padding-bottom: 38px;
 	}
 	.search-icon {
 		font-size: 256px;
