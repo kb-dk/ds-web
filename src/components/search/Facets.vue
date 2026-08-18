@@ -1124,7 +1124,14 @@ h2 {
 	box-shadow:
 		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
 		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-	background-color: rgb(255 255 255 / 15%);
+	background: #fbecf2;
+	background: linear-gradient(
+		180deg,
+		rgba(251, 236, 242, 0.6) 0px,
+		rgba(251, 236, 242, 0.6) 300px,
+		rgba(251, 236, 242, 0.2) 100%
+	);
+
 	backdrop-filter: blur(15px) brightness(165%);
 }
 
