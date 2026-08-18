@@ -50,61 +50,61 @@
 						</div>
 					</div>
 				</div>
+				<ContainerSplitBar
+					key="2"
+					:is-top="false"
+				></ContainerSplitBar>
 				<div
 					v-if="route.query.q === undefined"
+					key="3"
 					class="container find"
 				>
-					<h1>{{ t('find.headline') }}</h1>
-					<p>{{ t('find.subtitle') }}</p>
-					<h2>{{ t('find.maybeYouWantTo') }}</h2>
-					<div class="extra-options">
-						<KBButton
-							button-type="btn-main-medium"
-							button-color="main"
-							button-size="medium"
-							:button-text="t('find.restoreFilters')"
-							left-icon-name="tune"
-							class="btn-medium"
-							:is-router-link="true"
-							:to="searchResultStore.previousRoute"
-						></KBButton>
-						<KBButton
-							button-type="btn-main-medium"
-							button-color="main"
-							button-size="medium"
-							:button-text="t('find.GoToFrontpage')"
-							class="btn-medium"
-							:is-router-link="true"
-							:to="{ name: 'Home' }"
-						></KBButton>
-					</div>
-					<EdgedContentArea
-						:lines="true"
-						:title="$t('search.mainCategories')"
-						class="main-categories-header"
-						:reverse="true"
-						background-color="#caf0fe"
-					>
-						<template #content>
-							<div class="showcase-container">
-								<MainCategories
-									:title="$t('timeSearch.searchCategories')"
-									text="white"
-									:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-									:show-header="false"
-								></MainCategories>
+					<div class="no-filter-container">
+						<div class="content-container">
+							<h2>{{ t('find.headline') }}</h2>
+							<p>{{ t('find.subtitle') }}</p>
+							<h2>{{ t('find.maybeYouWantTo') }}</h2>
+							<div class="extra-options">
+								<KBButton
+									button-type="btn-main-medium"
+									button-color="main"
+									button-size="medium"
+									:button-text="t('find.restoreFilters')"
+									left-icon-name="tune"
+									class="btn-medium"
+									:is-router-link="true"
+									:to="searchResultStore.previousRoute"
+								></KBButton>
+								<KBButton
+									button-type="btn-main-medium"
+									button-color="main"
+									button-size="medium"
+									:button-text="t('find.GoToFrontpage')"
+									class="btn-medium"
+									:is-router-link="true"
+									:to="{ name: 'Home' }"
+								></KBButton>
 							</div>
-						</template>
-					</EdgedContentArea>
-					<ContactUs
-						class="contact-us"
-						:relative-position="false"
-					></ContactUs>
-					<div class="expanded-area"></div>
+						</div>
+						<div class="container-backdrop">
+							<ContainerSplitBar
+								:is-top="false"
+								top-color="var(--bg-main-3)"
+								bottom-color="var(--bg-main-2)"
+							></ContainerSplitBar>
+						</div>
+						<div class="end-container">
+							<SpotCategories></SpotCategories>
+							<ContactUs
+								class="contact-us"
+								:relative-position="false"
+							></ContactUs>
+						</div>
+					</div>
 				</div>
 				<div
 					v-if="route.fullPath === '/find' && route.query.q !== undefined"
-					key="2"
+					key="4"
 					class="container"
 				>
 					<Transition
@@ -132,8 +132,8 @@ import { ErrorManagerType } from '@/types/ErrorManagerType';
 import NoHits from '@/components/search/NoHits.vue';
 import { Priority, Severity } from '@/types/NotificationType';
 import { normalizeFq } from '@/utils/filter-utils';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
+import SpotCategories from '@/components/common/SpotCategories.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
@@ -143,10 +143,10 @@ export default defineComponent({
 		Pagination,
 		SearchOverhead,
 		NoHits,
-		EdgedContentArea,
-		MainCategories,
 		ContactUs,
 		KBButton,
+		ContainerSplitBar,
+		SpotCategories,
 	},
 
 	setup() {
@@ -227,9 +227,10 @@ export default defineComponent({
 							}
 						}
 					}
+					searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 					searchResultStore.setFiltersFromURL(routeFacetQueries as string[]);
 					timeSearchStore.setFiltersFromUrl(routeFacetQueries as string[]);
-					searchResultStore.getSearchResults(route.query.q as string);
+					searchResultStore.getSearchResults(searchResultStore.currentQuery as string);
 					setCurrentTitleForPage();
 				} else if (route.query.q === undefined) {
 					searchResultStore.resetSearch();
@@ -254,12 +255,13 @@ export default defineComponent({
 						searchResultStore.queryLimitReached = false;
 					}
 					if (!queryLimitReached.value) {
+						searchResultStore.setPreliminarySearchMethodFromURL(route.query.q as string);
 						searchResultStore.setFiltersFromURL(route.query.fq as string[]);
 						searchResultStore.setSortFromURL(route.query.sort as string);
 						searchResultStore.setCurrentQueryFromURL(route.query.q as string);
 						searchResultStore.setRowCountFromURL(route.query.rows as string);
 						timeSearchStore.setFiltersFromUrl(route.query.fq as string[]);
-						searchResultStore.getSearchResults(route.query.q as string);
+						searchResultStore.getSearchResults(searchResultStore.currentQuery as string);
 
 						setCurrentTitleForPage();
 					}
@@ -392,6 +394,26 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
+.page-count {
+	color: var(--color-default);
+}
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.25s;
@@ -448,6 +470,7 @@ h3 {
 }
 .search-container {
 	width: 100%;
+	margin-top: 15px;
 }
 
 .search-resultset {
@@ -467,7 +490,6 @@ h3 {
 	display: flex;
 	gap: 25px;
 	flex-direction: column;
-	margin-bottom: 45px;
 }
 
 .extra-options a {
@@ -488,14 +510,14 @@ h3 {
 }
 
 .extra-options a:hover {
-	background-color: #c4f1ed;
+	background-color: var(--bg-default);
 	color: #002e70;
 	border-color: #002e70;
 	outline: 1px solid #002e70;
 }
 
 .find h2 {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .container {
@@ -504,7 +526,18 @@ h3 {
 	margin-left: auto;
 	padding-right: 12px;
 	padding-left: 12px;
+	color: var(--color-default);
+	height: 100%;
+	justify-content: space-between;
 }
+.no-filter-container {
+	height: 100%;
+	width: 100%;
+}
+.content-container {
+	padding-bottom: 40px;
+}
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -533,9 +566,7 @@ h3 {
 	.mobile-edge {
 		display: none;
 	}
-	.extra-options {
-		margin-bottom: 0px;
-	}
+
 	.container {
 		display: flex;
 		flex-direction: column;

@@ -1,122 +1,101 @@
 <template>
 	<div class="hero-container">
-		<img
-			:src="backgroundImage"
-			title="search background"
-			alt="Image of the Royal Danish Library"
-			class="bg-image"
-			fetchpriority="high"
-		/>
-		<div class="hue-overlay"></div>
-		<div class="bluify"></div>
-		<div class="noise"></div>
-		<div class="container">
-			<h1 :aria-label="`${t('hero.subtitle')} ${t('hero.title')}`">
-				<span class="subtitle heading-sub">
-					<span class="text">{{ t('hero.subtitle') }}</span>
-				</span>
-				<span class="headline heading-display">
-					<span class="text">{{ t('hero.title') }}</span>
-				</span>
-			</h1>
-			<transition name="fade">
-				<div
-					v-show="authStore.currentArchiveProgress !== 0"
-					class="hero-info"
-				>
-					<div class="info">
-						<div class="progress-headline">
-							<h2>{{ t('hero.progress', { index: Math.round(currentProgress) }) }}</h2>
-							<p>
-								{{ t('hero.explanation') }}
-							</p>
-							<p>
-								<a
-									class="link"
-									:href="t('hero.link')"
-								>
-									<span class="material-icons">link</span>
-									<span class="link-text">{{ t('hero.linkText') }}</span>
-								</a>
-							</p>
-						</div>
-						<div class="process-bar">
-							<div
-								:style="{
-									left: `calc(${currentProgress}% - 50px)`,
-									transform: `translateX(calc(300% - (${currentProgress}% * 4)))`,
-								}"
-								class="percentage label-big"
-							>
-								{{ Math.round(currentProgress) }}%
-							</div>
-							<div
-								v-for="i in 20"
-								:key="i"
-								:class="progress(i)"
-							></div>
-						</div>
-					</div>
-				</div>
-			</transition>
-		</div>
+		<picture>
+			<source
+				:srcset="currentImages.desktop"
+				media="(width > 991px)"
+			/>
+			<source
+				:srcset="currentImages.tablet"
+				media="(width > 641px)"
+			/>
+			<img
+				ref="imageRef"
+				:src="currentImages.mobile"
+				class="bg-image"
+				fetchpriority="high"
+				:alt="locale === 'da' ? currentImages.daAlt : currentImages.enAlt"
+			/>
+		</picture>
+		<div class="credit container">{{ currentImages.credit }}</div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref, watch, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
-import gsap from 'gsap';
+import hero1Desktop from '@/assets/images/hero1_desktop.jpg';
+import hero1Tablet from '@/assets/images/hero1_tablet.jpg';
+import hero1Mobile from '@/assets/images/hero1_mobile.jpg';
+import hero2Desktop from '@/assets/images/hero2_desktop.jpg';
+import hero2Tablet from '@/assets/images/hero2_tablet.jpg';
+import hero2Mobile from '@/assets/images/hero2_mobile.jpg';
+import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
+import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
+import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
 
 export default defineComponent({
 	name: 'Hero',
-
 	setup() {
 		const authStore = useAuthStore();
-		const { t } = useI18n();
+		const { t, locale } = useI18n();
 		const currentProgress = ref();
-		const backgroundImage = computed(() => {
-			return new URL(`@/assets/images/rgb_hero_dr.png`, import.meta.url).href;
+		const imageRef = ref<HTMLImageElement | null>();
+		const currentImages = computed(() => {
+			console.log('authStore.heroBannerNumber', authStore.heroBannerNumber);
+			switch (authStore.heroBannerNumber) {
+				case 1:
+					return {
+						mobile: hero1Mobile,
+						tablet: hero1Tablet,
+						desktop: hero1Desktop,
+						credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
+						daAlt:
+							'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
+						enAlt:
+							'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
+					};
+				case 2:
+					return {
+						mobile: hero2Mobile,
+						tablet: hero2Tablet,
+						desktop: hero2Desktop,
+						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
+						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
+						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
+					};
+				default:
+					return {
+						mobile: hero3Mobile,
+						tablet: hero3Tablet,
+						desktop: hero3Desktop,
+						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
+						daAlt:
+							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
+						enAlt:
+							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
+					};
+			}
 		});
-
 		onMounted(() => {
 			if (authStore.currentArchiveProgress !== 0) {
 				currentProgress.value = authStore.currentArchiveProgress;
 			}
+			if (imageRef.value) {
+				if (authStore.heroBannerNumber === 0) {
+					const randomNumber = Math.floor(Math.random() * 3) + 1;
+					authStore.heroBannerNumber = randomNumber;
+				}
+			}
 		});
 
-		const progress = (index: number) => {
-			const maxRange = 20;
-			let pt = Math.round((maxRange / 100) * currentProgress.value);
-			if (index < pt) return 'step darkblue';
-			if (index === pt) return 'step darkblue';
-			if (index === pt + 1) return 'step blue';
-			if (index === pt + 2) return 'step lightblue';
-			if (index === pt + 3) return 'step grey';
-			if (index === pt + 4) return 'step lightgrey';
-			if (index > pt + 4) return 'step white';
-		};
-
-		watch(
-			() => authStore.currentArchiveProgress,
-			(newVal: number) => {
-				if (newVal !== 0) {
-					gsap.to(currentProgress, {
-						value: authStore.currentArchiveProgress,
-						duration: 2,
-						ease: 'power2.out',
-						snap: { value: 1 },
-					});
-				}
-			},
-		);
-
 		return {
-			backgroundImage,
 			authStore,
-			progress,
 			currentProgress,
 			t,
+			imageRef,
+			currentImages,
+			locale,
 		};
 	},
 });
@@ -124,284 +103,78 @@ export default defineComponent({
 <style scoped>
 .hero-container {
 	position: relative;
-	height: auto;
-	display: flex;
-	margin-top: -120px;
-	margin-bottom: 6vw;
-	align-items: center;
-	z-index: 3;
-	overflow: hidden;
-	transition: background-color 0.5s linear 0s;
-}
-h1 {
-	pointer-events: none;
-}
-
-.process-bar {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	height: 34px;
-	display: flex;
-	padding: 5px 15px;
-}
-
-.percentage {
-	position: absolute;
-	text-align: center;
-	color: white;
-	transition: all 0.1s linear 0s;
-}
-
-.step {
-	width: 5%;
 	height: 100%;
-	box-sizing: border-box;
-	border-left: 1px solid rgba(255, 255, 255, 0.05);
-	transition: all 0.15s ease-in-out 0s;
-}
-
-.step.darkblue {
-	background-color: #0a2e70;
-}
-.step.blue {
-	background-color: #002e70cc;
-}
-
-.step.lightblue {
-	background-color: #002e7066;
-}
-
-.step.grey {
-	background-color: #ffffff66;
-}
-
-.step.lightgrey {
-	background-color: #ffffffcc;
-}
-
-.step.white {
-	background-color: white;
-}
-
-h1 .headline,
-h1 .subtitle {
-	display: block;
-	background-color: white;
-	width: fit-content;
-	padding: 0px 10px;
-	pointer-events: all;
-}
-
-h1 .subtitle {
-	margin-top: 10%;
-}
-
-.container {
 	width: 100%;
+	justify-content: center;
 	display: flex;
+	z-index: 3;
+	overflow: visible;
+	margin-bottom: 24px;
 	flex-direction: column;
-	align-items: flex-start;
-	justify-content: space-evenly;
-}
-.container h1 {
-	margin-top: 135px;
-	margin-bottom: 55px;
-}
-
-.progress-headline {
-	background-color: white;
-	box-shadow: 0 0px 2px rgb(0 0 0 / 0.3);
-	margin: 15px 15px 0px 15px;
-}
-
-.hero-info {
-	max-width: 100%;
-	position: relative;
-	z-index: 0;
-	display: flex;
-	border-top: 1px solid white;
-	border-bottom: 1px solid white;
-	background-color: rgba(255, 255, 255, 0.35);
-	box-sizing: border-box;
-	padding-bottom: 75px;
-}
-
-.info {
-	height: 100%;
-	margin-top: 0%;
-	display: flex;
-	/* margin-bottom: calc(70px - 3vw); */
-	flex-direction: column;
-}
-
-.hero-info h2,
-.hero-info p,
-.hero-info .link-container {
-	padding: 5px 15px;
-	color: #0a2e70;
-}
-.hero-info .link-container {
-	font-weight: 100;
-}
-.hero-info h2 {
-	padding: 12px 25px 6px 25px;
-}
-
-h1 {
-	margin-left: 12px;
-}
-
-.hero-info p {
-	padding: 0px 25px 17px 25px;
-}
-
-.hero-info h2,
-.hero-info p {
-	margin: 0;
-}
-
-.hero-info .link-container {
-	display: block;
-}
-
-.link {
-	color: #0a2e70;
-	text-align: left;
-	text-decoration: none;
-	border-radius: 4px;
-	display: flex;
 	align-items: center;
-	width: fit-content;
-}
-.link > .material-icons {
-	margin-right: 2px;
-}
-.link-text {
-	transition: 200ms;
-	border-bottom: 1px solid transparent;
-}
-.link:hover {
-	transition: all 5s ease 0s;
-	.link-text {
-		border-color: #0a2e70;
-	}
-}
-.subtitle {
-	text-align: center;
-	letter-spacing: 0px;
-	color: #0b0d0a;
 }
 
-.headline {
-	text-align: center;
-	letter-spacing: 1.15px;
-	color: #0b0d0a;
-	text-transform: uppercase;
-	position: relative;
-	top: -1px;
-}
-
-.hue-overlay {
-	width: 100vw;
-	height: 100%;
-	position: absolute;
-	background: linear-gradient(40deg, #c1f0f6 0%, #e0bbe4 20%, #ffd7b5 40%, #ffd1dc 60%, #e0bbe4 80%, #c1f0f6 100%);
-	background-size: 100% 100%;
-	mix-blend-mode: difference;
-	opacity: 0.2;
-}
-
-.bluify {
-	width: 100vw;
-	height: 100%;
-	position: absolute;
-	background-size: 100% 100%;
-	background: radial-gradient(circle, rgba(0, 46, 112, 0) 0%, rgba(0, 46, 112, 0.1) 30%, rgba(0, 46, 112, 0.7) 100%);
-	pointer-events: none;
-}
-
-h1 {
-	position: relative;
-	z-index: 1;
+.credit {
+	color: var(--color-credits);
+	display: flex;
+	align-items: flex-end;
+	padding-top: 10px;
+	justify-content: flex-end;
 }
 
 .bg-image {
-	width: 100vw;
-	height: 100%;
-	object-fit: cover;
-	position: absolute;
-	animation: hueRotate 5s infinite;
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 1420px;
 }
 
-.hero-container:hover {
-	background-color: #0a2e70;
+.hero-container picture {
+	width: 100%;
 }
 
-.noise {
-	background-image: url('@/assets/images/noise.jpg');
-	position: fixed;
-	top: -25%;
-	left: -50%;
-	right: -50%;
-	bottom: -50%;
-	width: 200%;
-	height: 150%;
-	object-fit: cover;
-	position: absolute;
-	mix-blend-mode: overlay;
-	opacity: 0.5;
-	animation: noiseEffect 0.1s infinite alternate-reverse;
-	filter: grayscale(1);
-}
-
-@keyframes hueRotate {
-	0% {
-		filter: hue-rotate(0deg) grayscale(0.5);
-	}
-	100% {
-		filter: hue-rotate(360deg) grayscale(0.5);
+@media (min-width: 1280px) {
+	.hero-container picture {
+		width: initial;
 	}
 }
 
-@keyframes noiseEffect {
-	0% {
-		transform: translate(0, 0);
+@media (min-width: 990px) and (max-width: 1279px) {
+	.bg-image {
+		object-fit: cover;
+		height: 540px !important;
 	}
-	10% {
-		transform: translate(-5%, -5%);
+}
+
+@media (min-width: 1280px) and (max-width: 1479px) {
+	.bg-image {
+		object-fit: cover;
+		height: 660px;
 	}
-	20% {
-		transform: translate(-10%, 5%);
+}
+@media (min-width: 1480px) {
+	.bg-image {
+		object-fit: cover;
+		height: 800px !important;
 	}
-	30% {
-		transform: translate(5%, -10%);
-	}
-	40% {
-		transform: translate(-5%, 15%);
-	}
-	50% {
-		transform: translate(-10%, 5%);
-	}
-	60% {
-		transform: translate(15%, 0);
-	}
-	70% {
-		transform: translate(0, 10%);
-	}
-	80% {
-		transform: translate(-15%, 0);
-	}
-	90% {
-		transform: translate(10%, 5%);
-	}
-	100% {
-		transform: translate(5%, 0);
-	}
+}
+
+.container {
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-color: var(--bg-default);
+	width: 100%;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 /* MEDIA QUERY 640 */
@@ -410,95 +183,10 @@ h1 {
 		max-width: 990px;
 	}
 }
-
-/* MEDIA QUERY 800 */
-@media (min-width: 800px) {
-	.container {
-		flex-direction: row;
-		margin-left: 12px;
-		justify-content: space-between;
-		height: 100%;
-	}
-	h1 {
-		margin-left: 0px;
-	}
-	.container h1 {
-		margin-top: 125px;
-	}
-	.process-bar {
-		padding: 5px 20px;
-		margin-bottom: 20px;
-	}
-	.progress-headline {
-		margin: 20px 0px 0px 0px;
-	}
-	.hero-info h2 {
-		padding: 14px 20px 0px 20px;
-	}
-	.hero-info p {
-		padding: 6px 20px 20px 20px;
-	}
-
-	.hero-info {
-		max-width: 440px;
-		position: relative;
-		z-index: 0;
-		height: 100%;
-		bottom: 0px;
-		display: flex;
-		border-left: 2px solid white;
-		border-right: 2px solid white;
-		background-color: rgba(255, 255, 255, 0.5);
-		margin-right: 12px;
-		box-sizing: border-box;
-	}
-	.hero-info .link-container {
-		padding: 5px 20px;
-	}
-	.hero-info .info {
-		margin-top: 125px;
-	}
-	.hero-container {
-		height: 500px;
-	}
-}
-
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
-	.hero-info h2 {
-		padding: 14px 25px 0px 25px;
-	}
-	.hero-info p {
-		padding: 6px 25px 20px 25px;
-	}
-	.hero-info {
-		max-width: 580px;
-	}
-	.process-bar {
-		padding: 5px 25px;
-	}
-	.hero-info .info {
-		margin-top: 105px;
-	}
-	.hero-info .link-container {
-		padding: 5px 25px;
-	}
-	.hero-container {
-		justify-content: center;
-	}
 	.container {
-		display: flex;
-		flex-direction: row;
 		max-width: 1150px;
-		justify-content: space-between;
-	}
-	.container h1 {
-		margin-top: 105px;
-	}
-	.link-container .link:hover {
-		background-color: #c4f1ed;
-		color: #0a2e70;
-		border: 1px solid #0a2e70;
 	}
 }
 /* MEDIA QUERY 1150 */
@@ -509,29 +197,9 @@ h1 {
 }
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
-	.hero-info {
-		max-width: 620px;
-	}
-	.hero-info p {
-		padding: 6px 45px 20px 45px;
-	}
-	.hero-info h2 {
-		padding: 14px 45px 0px 45px;
-	}
-	.process-bar {
-		padding: 5px 45px;
-	}
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
-		width: 100%;
-		margin-left: initial;
-	}
-	.hero-info {
-		margin-right: 0px;
-	}
-	.hero-info .link-container {
-		padding: 5px 45px;
 	}
 }
 </style>

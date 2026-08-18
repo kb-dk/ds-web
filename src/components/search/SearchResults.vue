@@ -130,28 +130,54 @@ export default defineComponent({
 	width: 100%;
 	margin-bottom: 40px;
 }
+@property --initialColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor1 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor2 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+
+@property --endColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
 
 .hit-box.data:hover .vert-dot,
 .hit-box.data:hover .hors-dot {
-	background-color: transparent;
+	/* background-color: transparent; */
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0s;
+		--initialColor 0.2s ease-in,
+		--midPointColor1 0.2s ease-in,
+		--midPointColor2 0.2s ease-in,
+		--endColor 0.2s ease-in;
 }
 
 .hit-box .vert-dot,
 .hit-box .hors-dot {
 	transition:
-		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s;
+		all 0.3s ease-in-out 0s,
+		--initialColor 0.3s ease-out,
+		--midPointColor1 0.3s ease-out,
+		--midPointColor2 0.3s ease-out,
+		--endColor 0.3s ease-out;
 }
-
 .hors-dot {
 	position: absolute;
 	height: 10px;
 	text-align: center;
-	color: #002e70;
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
@@ -159,24 +185,30 @@ export default defineComponent({
 	margin-top: -5px;
 	transform-origin: center;
 	will-change: transform;
-	background-color: white;
 	z-index: 1;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 50%,
+		var(--midPointColor2) 50%,
+		var(--endColor) 100%
+	);
 }
 
 .vert-dot {
 	position: absolute;
 	height: 16px;
 	text-align: center;
-	color: #002e70;
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	top: 50%;
-	width: 10px;
-	line-height: 0.75;
+	width: 11px;
+	line-height: 1;
 	margin-top: -5px;
 	left: 0px;
 	display: none;
-	background: white;
 	z-index: 1;
+	background-color: white;
 }
 
 .search-results {
@@ -216,6 +248,12 @@ export default defineComponent({
 @media (min-width: 800px) {
 	.vert-dot {
 		display: block;
+	}
+	.hit-box.data:hover .hors-dot {
+		--initialColor: white;
+		--midPointColor1: white;
+		--midPointColor2: rgba(235, 235, 235, 1);
+		--endColor: rgba(253, 253, 253, 1);
 	}
 }
 

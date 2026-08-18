@@ -1,40 +1,32 @@
 <template>
-	<EdgedContentArea background-color="#FAFAFA">
-		<template #content>
-			<div
-				class="header"
-				:style="`color: ${text}`"
+	<div
+		class="header"
+		:style="`color: ${text}`"
+	>
+		<h2>{{ title }}</h2>
+		<p>
+			<span>{{ subtitle }}</span>
+		</p>
+	</div>
+	<TimeSearchFilters
+		:timeline="true"
+		:init="true"
+		@new-search="fetchNewTimeResults()"
+	></TimeSearchFilters>
+
+	<div class="result-container">
+		<div class="container-backdrop">
+			<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+		</div>
+		<div class="time-results">
+			<ItemSlider
+				:padding="false"
+				bg="var(--bg-backdrop)"
+				item-class="time-result"
+				bg-scroll-blue="true"
 			>
-				<h2 class="heading-sub">{{ title }}</h2>
-				<p>
-					<span>{{ subtitle }}</span>
-				</p>
-			</div>
-			<TimeSearchFilters
-				:timeline="true"
-				:init="true"
-				@new-search="fetchNewTimeResults()"
-			></TimeSearchFilters>
-			<div class="result-container">
-				<div class="result-header">
-					<h2 class="selection-header">{{ t('timeSearch.selection') }}:</h2>
-					<KBButton
-						class="btn-medium"
-						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-						button-type="btn-cta"
-						button-color="cta"
-						button-size="medium"
-						:is-router-link="true"
-						right-icon-name="arrow_forward_ios"
-						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-							'timeSearch.result',
-							timeSearchStore.numFound,
-						)} `"
-						@click="timeSearchBehavior()"
-					></KBButton>
-				</div>
-				<div class="time-results">
+				<template #default="slotProps">
 					<div
 						v-for="(item, index) in timeSearchStore.timeResults"
 						:key="index"
@@ -44,41 +36,33 @@
 							:loading="timeSearchStore.loading"
 							:resultdata="item"
 							:index="index"
-							background="#ffffff"
+							background="var(--bg-backdrop)"
+							:slot-props="slotProps"
 						></GridResultItem>
 					</div>
-				</div>
-			</div>
-			<div class="further-recap">
-				<div class="further-link">
-					<div class="recap label-small">
-						<span>{{ `${getYears(timeSliderValues)} ${t('timeSearch.year', getYears(timeSliderValues))}` }}</span>
-						/
-						<span>{{ getSublineForMonths(months, t) }}</span>
-						/
-						<span>{{ getSublineForDays(days, t) }}</span>
-						/
-						<span>{{ getSublineForTimeslots(timeslots, t) }}</span>
-					</div>
+				</template>
+			</ItemSlider>
+			<div class="result-header-container">
+				<div class="result-header">
 					<KBButton
 						class="btn-medium"
 						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `bottom-more-link`, 0)"
+						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 						button-type="btn-cta"
 						button-color="cta"
 						button-size="medium"
 						:is-router-link="true"
 						right-icon-name="arrow_forward_ios"
-						:button-text="`Vis ${new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)} ${$t(
-							'timeSearch.result',
-							timeSearchStore.numFound,
-						)} `"
+						:button-text="`${$t('facets.seeResults', {
+							count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
+							resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
+						})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
 						@click="timeSearchBehavior()"
 					></KBButton>
 				</div>
 			</div>
-		</template>
-	</EdgedContentArea>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -96,7 +80,7 @@ import {
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
+// import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
@@ -109,14 +93,16 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
 import KBButton from '@/components/common/KBButton.vue';
-
+import ItemSlider from '@/components/search/ItemSlider.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
 		GridResultItem,
-		EdgedContentArea,
 		TimeSearchFilters,
 		KBButton,
+		ItemSlider,
+		ContainerSplitBar,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -133,7 +119,7 @@ export default defineComponent({
 				start: 0,
 				rows: 10,
 				fq: [],
-				sort: `random_${Date.now()} ASC`,
+				/* sort: `random_${Date.now()} ASC`, */
 			},
 		});
 
@@ -194,7 +180,7 @@ export default defineComponent({
 					start: 0,
 					rows: 10,
 					fq: fqArray,
-					sort: `random_${Date.now()} ASC`,
+					/* sort: `random_${Date.now()} ASC`, */
 				},
 			};
 		};
@@ -223,84 +209,77 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-	color: #002e70;
+	color: var(--color-main);
 }
-
 .result-container {
 	width: 100%;
-	padding-top: 25px;
+	height: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 112px;
 }
-
+.container-backdrop {
+	position: absolute;
+	height: 100%;
+	width: 100vw;
+	background-color: var(--bg-backdrop);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	margin-top: 5px;
+}
+.result-header-container {
+	width: 100vw;
+	display: flex;
+	max-width: 1256px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+}
 .result-header {
 	display: flex;
-	justify-content: space-between;
-	padding-bottom: 20px;
-	flex-direction: column;
-}
-
-.further-link a:visited {
+	/* weird padding to equal 56 in total */
+	padding-top: 41px;
+	justify-content: end;
+	width: 100%;
 }
 
 .selection-header {
-	color: #002e70;
-	padding-top: 4px;
-}
-
-.further-recap {
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.recap {
-	padding-bottom: 10px;
-}
-
-.recap span {
-	background-color: #d9f5fe;
-	color: #002e70;
-	border-radius: 4px;
-	width: fit-content;
-	padding-left: 3px;
-	padding-right: 3px;
-}
-
-.further-link {
-	display: flex;
-	align-items: flex-end;
-	flex-direction: column;
-}
-
-.further-results {
-	display: flex;
-	align-items: flex-end;
-	flex-direction: column;
-	justify-content: center;
+	color: var(--color-main);
 }
 
 .time-results {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	gap: 20px;
-	flex-wrap: wrap;
-	padding-bottom: 20px;
+	position: relative;
+	margin-top: 56px;
+	margin-bottom: 90px;
+	gap: 15px;
+	width: 98vw;
+	max-width: 2400px;
+	height: 100%;
 }
 
 .time-result-item {
-	flex: 1 1 calc(100%);
-	max-width: calc(100%);
+	flex: 0 0 70%;
 	box-sizing: border-box;
+	background-color: var(--bg-backdrop);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	user-drag: none;
 }
 
 .header {
 	margin: 0;
 	position: relative;
-	padding-bottom: 25px;
+	padding-bottom: 38px;
+	padding-left: 20px;
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;
-	display: none;
+	box-sizing: border-box;
 }
 
 .header h2 {
@@ -317,40 +296,15 @@ h2 {
 .header p {
 	margin: 0;
 }
-@media (max-width: 480px) {
-	.time-result-item:nth-child(n + 3) {
-		display: none;
-	}
-}
-
-@media (max-width: 990px) {
-	.time-result-item:nth-child(n + 5) {
-		display: none;
-	}
-}
-
-@media (min-width: 480px) {
-	.time-result-item {
-		flex: 1 1 calc(50% - 20px);
-		max-width: calc(50% - 15px);
-		box-sizing: border-box;
-	}
-	.result-header {
-		flex-direction: unset;
-	}
-}
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-	.figures {
-		top: 0px;
+@media (min-width: 640px) {
+	.container-backdrop {
+		margin-top: 0;
 	}
 	.time-result-item {
-		flex: 1 1 calc(25% - 20px);
-		max-width: calc(25% - 15px);
-		box-sizing: border-box;
+		flex: 0 0 400px;
 	}
-	.header {
-		display: block;
+	.time-results {
+		margin-bottom: 72px;
 	}
 }
 </style>

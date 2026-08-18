@@ -14,10 +14,11 @@
 					:data-testid="addTestDataEnrichment('link', 'SpellChecker', 'link-to-search-suggestion', index - 1)"
 				>
 					<div class="spell-check-suggestion">
-						{{ `"${spellCheck?.collations[index].collationQuery}"` }}
-					</div>
-					<div class="spell-check-suggestion">
-						{{ $t('search.didYouMeanCount', { spellCheckHits: spellCheck?.collations[index].hits.toString() }) }}
+						{{
+							`"${spellCheck?.collations[index].collationQuery}" ${$t('search.didYouMeanCount', {
+								spellCheckHits: spellCheck?.collations[index].hits.toString(),
+							})}`
+						}}
 					</div>
 				</router-link>
 			</div>
@@ -46,7 +47,7 @@ export default defineComponent({
 
 <style scoped>
 .spell-check-query a {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .spell-check-collations {
@@ -59,16 +60,9 @@ export default defineComponent({
 }
 .spell-check-suggestion {
 	display: inline-flex;
+	text-decoration: none;
 }
-.spell-check-suggestion:nth-child(odd) {
-	color: #002e70;
-	margin-right: 50px;
-}
-.spell-check-suggestion:nth-child(odd):hover {
+.spell-check-suggestion:hover {
 	text-decoration: underline;
-}
-.spell-check-suggestion:nth-child(even) {
-	color: black;
-	font-size: 16px;
 }
 </style>

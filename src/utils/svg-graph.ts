@@ -3,15 +3,60 @@ import { pointItem } from '@/types/TimeSearchTypes';
 function createSVGCurvedLine(points: pointItem[]) {
 	const svgns = 'http://www.w3.org/2000/svg';
 	const svg = document.createElementNS(svgns, 'svg');
+
+	const gradient = document.createElementNS(svgns, 'linearGradient');
+	gradient.setAttribute('id', 'curveGradient');
+	gradient.setAttribute('x1', '0%');
+	gradient.setAttribute('y1', '0%');
+	gradient.setAttribute('x2', '100%');
+	gradient.setAttribute('y2', '0%');
+
+	const stops = [
+		{ offset: '0%', color: '#FBECF2' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#ea9fbc' },
+	];
+
+	stops.forEach(({ offset, color }) => {
+		const stop = document.createElementNS(svgns, 'stop');
+		stop.setAttribute('offset', offset);
+		stop.setAttribute('stop-color', color);
+		gradient.appendChild(stop);
+	});
+
+	svg.appendChild(gradient);
+
+	const gradient2 = document.createElementNS(svgns, 'linearGradient');
+	gradient2.setAttribute('id', 'curveGradient2');
+	gradient2.setAttribute('x1', '0%');
+	gradient2.setAttribute('y1', '0%');
+	gradient2.setAttribute('x2', '100%');
+	gradient2.setAttribute('y2', '0%');
+
+	const stops2 = [
+		{ offset: '0%', color: '#ea9fbc' },
+		{ offset: '50%', color: '#F0BCD0' },
+		{ offset: '100%', color: '#FBECF2' },
+	];
+
+	stops2.forEach(({ offset, color }) => {
+		const stop = document.createElementNS(svgns, 'stop');
+		stop.setAttribute('offset', offset);
+		stop.setAttribute('stop-color', color);
+		gradient2.appendChild(stop);
+	});
+
+	svg.appendChild(gradient2);
+
 	svg.setAttribute('height', '100%');
 	svg.setAttribute('width', '100%');
 	svg.setAttribute('viewBox', '0 0 100 100'); // Use a square viewBox for simplicity
 	svg.setAttribute('preserveAspectRatio', 'none');
 	const path = document.createElementNS(svgns, 'path');
-	path.setAttribute('fill', '#caf0fe'); // No fill to avoid closing the path
-	path.setAttribute('stroke', '#F7AE3B4D');
+	path.setAttribute('fill', 'url(#curveGradient2)');
+	path.setAttribute('stroke', 'url(#curveGradient)');
 	path.setAttribute('stroke-width', '1');
-	path.setAttribute('opacity', '1');
+	path.setAttribute('fill-opacity', '1');
 	path.setAttribute('vector-effect', 'non-scaling-stroke');
 
 	// Normalize y coordinates to fit within [0, 100] range
@@ -50,6 +95,39 @@ function createSVGCurvedLine(points: pointItem[]) {
 	path.setAttribute('d', d);
 
 	svg.appendChild(path);
+
+	const defs = document.createElementNS(svgns, 'defs');
+	const clipPath = document.createElementNS(svgns, 'clipPath');
+	const clipId = `clip-${Math.random().toString(36).slice(2)}`;
+
+	clipPath.setAttribute('id', clipId);
+
+	const clipShape = path.cloneNode(true) as SVGElement;
+	clipShape.removeAttribute('fill');
+	clipShape.removeAttribute('stroke');
+
+	clipPath.appendChild(clipShape);
+	defs.appendChild(clipPath);
+	svg.appendChild(defs);
+
+	for (let i = 0; i < normalizedPoints.length; i += 1) {
+		const p = normalizedPoints[i];
+
+		const line = document.createElementNS(svgns, 'line');
+
+		line.setAttribute('x1', String(p.x));
+		line.setAttribute('y1', '100');
+		line.setAttribute('x2', String(p.x));
+		line.setAttribute('y2', String(Number(p.y - 10)));
+		line.setAttribute('class', 'line-class');
+		line.setAttribute('stroke', '#493f431e');
+		line.setAttribute('stroke-width', '1');
+		line.setAttribute('vector-effect', 'non-scaling-stroke');
+		line.setAttribute('clip-path', `url(#${clipId})`);
+
+		svg.appendChild(line);
+	}
+
 	return svg;
 }
 

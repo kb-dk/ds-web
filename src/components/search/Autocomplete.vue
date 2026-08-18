@@ -1,41 +1,46 @@
 <!--v-html rule is disabled below as the contents is sanitized with DOMPurify-->
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div :class="searchResultStore.autocompleteResult.length > 0 ? 'autocomplete active' : 'autocomplete'">
-		<Transition
-			name="fade"
-			mode="out-in"
+	<Transition name="fade">
+		<div
+			v-if="searchResultStore.autocompleteResult.length > 0 && hasFocus"
+			:class="searchResultStore.autocompleteResult.length > 0 ? 'autocomplete active' : 'autocomplete'"
 		>
-			<ul
-				v-if="searchResultStore.autocompleteResult.length > 0"
-				ref="autocomplete"
-				role="listbox"
-				class="autocomplete-list"
-				aria-label="autocomplete list"
+			<Transition
+				name="fade"
+				mode="out-in"
 			>
-				<li
-					v-for="(item, i) in searchResultStore.autocompleteResult"
-					:key="i"
-					role="option"
-					:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
+				<ul
+					v-if="searchResultStore.autocompleteResult.length > 0 && hasFocus"
+					ref="autocomplete"
+					role="listbox"
+					class="autocomplete-list"
+					aria-label="autocomplete list"
 				>
-					<button
-						:title="item?.term"
-						:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
-						@click="executeOnSelection($event, i + 1)"
-						@mouseenter="updateSelectedElement(i + 1)"
-						@mouseleave="updateSelectedElement(0)"
+					<li
+						v-for="(item, i) in searchResultStore.autocompleteResult"
+						:key="i"
+						role="option"
+						:class="i === currentSelectedAutocomplete - 1 ? 'hl' : ''"
 					>
-						<span
-							class="autocomplete-term"
-							v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
-						></span>
-						<span class="number">{{ `(${item.weight})` }}</span>
-					</button>
-				</li>
-			</ul>
-		</Transition>
-	</div>
+						<button
+							:title="item?.term"
+							:data-testid="addTestDataEnrichment('button', 'autcomplete', `term-${item.term}`, i)"
+							@click="executeOnSelection($event, i + 1)"
+							@mouseenter="updateSelectedElement(i + 1)"
+							@mouseleave="updateSelectedElement(0)"
+						>
+							<span
+								class="autocomplete-term"
+								v-html="`${setBoldAndSanitize(searchResultStore.currentQuery || '', item?.term)}`"
+							></span>
+							<span class="number">{{ `(${item.weight})` }}</span>
+						</button>
+					</li>
+				</ul>
+			</Transition>
+		</div>
+	</Transition>
 </template>
 
 <script lang="ts">
@@ -54,13 +59,18 @@ export default defineComponent({
 			type: KeyboardEvent,
 			default: null,
 		},
+		hasFocus: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	setup(props) {
 		const searchResultStore = useSearchResultStore();
 		const currentSelectedAutocomplete = ref(0);
 
-		const doAutocompleteSearch = (query: string) => {
+		const doAutocompleteSearch = (query: string, e: Event) => {
+			e.preventDefault();
 			const rdyQuery = `"${query.replaceAll('"', '\\"')}"`;
 			router.push({
 				name: 'Search',
@@ -100,10 +110,15 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
+					doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
 					break;
 				case 'Tab':
 					if (searchResultStore.autocompleteResult?.length > 0) {
-						moveSelectorDown();
+						if (e.shiftKey) {
+							moveSelectorUp();
+						} else {
+							moveSelectorDown();
+						}
 						e.preventDefault();
 					}
 					break;
@@ -128,15 +143,15 @@ export default defineComponent({
 			}
 		};
 
-		const executeOnSelection = (e: PointerEvent, n: number) => {
+		const executeOnSelection = (e: PointerEvent | MouseEvent, n: number) => {
 			if (currentSelectedAutocomplete.value !== 0) {
 				e.preventDefault();
 				// pointerType mouse is for a mouse click, where pointerType would be "" if enter
-				if (e.pointerType === 'mouse') {
+				if (e instanceof PointerEvent && e.pointerType === 'mouse') {
 					//updated selected element to make sure it picks the clicked element.
 					updateSelectedElement(n);
 				}
-				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term);
+				doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
 			}
 		};
 
@@ -173,21 +188,54 @@ export default defineComponent({
 
 <style scoped>
 .autocomplete {
-	position: absolute;
 	z-index: 5;
-	background-color: white;
-	width: 50%;
+	background-color: var(--bg-default);
+	width: 100%;
 	padding: 0px 0px;
-	margin-top: -1px;
-	margin-left: 0px;
-	width: calc(80% - 2px);
-	border: 1px solid #757575;
-	border-top: 0px solid #757575;
+	height: calc(100% + 1px);
+	box-sizing: border-box;
+	border-bottom: 1px solid var(--color-border-success);
+	border-left: 1px solid var(--color-border-success);
+	border-right: 1px solid var(--color-border-success);
+	border-radius: 0 0 var(--rounded-medium) var(--rounded-medium);
+	border-top: 1px solid var(--bg-default);
+	position: relative;
+	transition: all 0.2s ease-in-out 0s;
+}
+
+.autocomplete::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 100%;
+	height: 1px;
+	width: 1px;
+	background-color: var(--color-border-success);
+	z-index: 5;
+}
+
+.autocomplete::after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	width: 100%;
+	height: 1px;
+	width: 1px;
+	background-color: var(--bg-default);
+	z-index: 5;
+}
+
+.autocomplete:empty {
+	height: 0px;
+	border: 0px;
 }
 
 .autocomplete.active {
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
-	border-radius: 0px 0px 2px 2px;
 }
 
 .autocomplete button {
@@ -209,10 +257,11 @@ export default defineComponent({
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: inline-block;
+	color: var(--color-main);
 }
 
 .autocomplete button .number {
-	color: #757575;
+	color: var(--color-main);
 	margin-left: 5px;
 	font-size: 12px;
 }
@@ -223,8 +272,8 @@ export default defineComponent({
 }
 
 .autocomplete li:has(> button:focus) {
-	background: #fff6c4;
-	color: #002e70;
+	background: var(--bg-secondary-light);
+	color: var(--color-main);
 }
 
 .autocomplete button:focus {
@@ -236,7 +285,6 @@ export default defineComponent({
 	list-style-type: none;
 	padding: 0px 0px;
 	margin: 0;
-	background-color: white;
 }
 
 .autocomplete ul li {
@@ -244,17 +292,16 @@ export default defineComponent({
 	transition: all 0.2s linear 0s;
 	text-wrap: nowrap;
 	text-overflow: ellipsis;
-	background-color: white;
 }
 
 .autocomplete ul li:hover,
 .autocomplete .hl {
-	background: #fff6c4;
+	background: var(--bg-secondary-light);
 }
 
 .autocomplete ul li:hover button,
 .autocomplete .hl button {
-	color: #002e70;
+	color: var(--color-main);
 	cursor: pointer;
 }
 
@@ -273,7 +320,6 @@ export default defineComponent({
 	content: '';
 	display: block;
 	padding: 0px 10px;
-	border-top: 1px solid rgb(229, 228, 226);
 	height: 1px;
 	position: relative;
 	transition: all 0.2s linear 0s;
@@ -281,34 +327,10 @@ export default defineComponent({
 	z-index: 0;
 }
 
-/* MEDIA QUERY 480 */
-@media (min-width: 480px) {
-	.autocomplete {
-		border: 1px solid #757575;
-		border-top: 0px;
-		width: calc(80% - 2px);
-	}
-}
-/* MEDIA QUERY 640 */
-@media (min-width: 640px) {
-}
-
-@media (min-width: 800px) {
-	.autocomplete {
-		border: 1px solid #f5f5f5;
-		border-top: 0px solid #f5f5f5;
-		margin-top: -1px;
-		margin-left: -1px;
-		width: calc(50%);
-	}
-}
-/* MEDIA QUERY 990 */
-@media (min-width: 990px) {
-}
-/* MEDIA QUERY 1150 */
-@media (min-width: 1150px) {
-}
 /* MEDIA QUERY 1280 */
 @media (min-width: 1280px) {
+	.autocomplete {
+		width: 490px;
+	}
 }
 </style>

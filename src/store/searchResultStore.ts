@@ -43,7 +43,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const filters = ref([] as Array<string>);
 	const channelFilters = ref([] as Array<string>);
 	const categoryFilters = ref([] as Array<string>);
+	const TVFacets = ref([] as Array<string>);
+	const RadioFacets = ref([] as Array<string>);
 	const preliminaryFilter = ref('');
+	const preliminarySearchMethod = ref('');
+	const preliminaryPeriodSearch = ref('date');
 	const showFacets = ref(false);
 	const blockAutocomplete = ref(false);
 	const resultGrid = ref(false);
@@ -55,6 +59,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const totalPages = computed(() => Math.ceil(numFound.value / Number(rowCount.value)));
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
 	const notificationStore = useNotificationStore();
+	const searchFieldFocused = ref(false);
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -114,7 +119,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (URLFilters instanceof Array) {
 				URLFilters.forEach((filter) => {
 					if (filter?.split('%3A')[0].includes('origin')) {
-						preliminaryFilter.value = filter;
+						preliminaryFilter.value = decodeURIComponent(filter);
 					} else if (filter?.split('%3A')[0].includes('creator_affiliation_facet')) {
 						const cleanedString = filter.replace(/[()]/g, '');
 						channelFilters.value = cleanedString.split(' OR ');
@@ -128,7 +133,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			} else {
 				const str = URLFilters;
 				if (str.split('%3A')[0].includes('origin')) {
-					filters.value.push(`fq=${str}`);
+					preliminaryFilter.value = decodeURIComponent(str);
 				} else if (str.split('%3A')[0].includes('creator_affiliation_facet')) {
 					const cleanedString = str.replace(/[()]/g, '');
 					channelFilters.value = cleanedString.split(' OR ');
@@ -139,6 +144,16 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 					str !== '' ? filters.value.push(`fq=${str}`) : null;
 				}
 			}
+		}
+	};
+
+	const setPreliminarySearchMethodFromURL = (query: string) => {
+		if (query.includes('title:')) {
+			preliminarySearchMethod.value = 'title';
+		} else if (query.includes('description:')) {
+			preliminarySearchMethod.value = 'desc';
+		} else {
+			preliminarySearchMethod.value = 'all';
 		}
 	};
 
@@ -213,6 +228,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		channelFilters.value = [];
 		categoryFilters.value = [];
 		preliminaryFilter.value = '';
+		preliminarySearchMethod.value = 'all';
+		if (currentQuery.value.includes('title:') || currentQuery.value.includes('description:')) {
+			currentQuery.value = currentQuery.value.split(':')[1].replaceAll('"', '');
+		}
 	};
 
 	const resetAutocomplete = () => {
@@ -286,9 +305,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	};
 
 	const getSearchResults = async (query: string) => {
-		if (currentQuery.value === '*:*') {
-			currentQuery.value = '';
-		}
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
 
@@ -321,7 +337,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			presetGenreFilters += `&fq=${preliminaryFilter.value}`;
 			presetChannelFilters += `&fq=${preliminaryFilter.value}`;
 		}
-
 		currentChannelFacetString.value = presetChannelFilters;
 		currentGenreFacetString.value = presetGenreFilters;
 
@@ -377,6 +392,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
 			}
+		}
+		if (currentQuery.value === '*:*') {
+			currentQuery.value = '';
 		}
 	};
 
@@ -447,6 +465,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		setFiltersFromURL,
 		setStartFromURL,
 		setCurrentQueryFromURL,
+		setPreliminarySearchMethodFromURL,
 		resetStart,
 		setSortFromURL,
 		resetSort,
@@ -467,5 +486,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		maxPages,
 		queryLimitReached,
 		filterQueryLength,
+		TVFacets,
+		RadioFacets,
+		preliminarySearchMethod,
+		preliminaryPeriodSearch,
+		searchFieldFocused,
 	};
 });

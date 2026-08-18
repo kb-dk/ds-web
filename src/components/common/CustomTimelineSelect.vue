@@ -6,7 +6,7 @@
 				v-model="selected"
 				:data-testid="addTestDataEnrichment('select', 'timeline-select', `${label}-select`, 0)"
 				:name="label"
-				class="btn-big"
+				class="btn-medium"
 				@change="updated($event)"
 			>
 				<option
@@ -27,7 +27,9 @@
 				</option>
 			</select>
 		</label>
-		<div class="line"></div>
+		<div class="line">
+			<span class="material-icons">keyboard_arrow_down</span>
+		</div>
 	</div>
 </template>
 
@@ -40,7 +42,7 @@ export default defineComponent({
 	name: 'CustomTimelineSelect',
 	props: {
 		listItems: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<string[] | number[]>,
 			default() {
 				return [];
 			},
@@ -95,49 +97,58 @@ export default defineComponent({
 
 .select-container select {
 	border: 0px;
-	background-color: white;
-	border: 1px solid #dadada;
+	border: 1px solid var(--color-main);
 	border-radius: 4px;
 	padding: 4px 50px 5px 8px;
-	color: #002e70;
+	color: var(--color-main);
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	background-color: white;
-	background: url('@/assets/icons/blue/dd-arrow-blue.svg') white;
-	background-repeat: no-repeat;
-	background-position-x: 85px;
-	background-position-y: 13px;
+	color: var(--color-default);
+	background-color: var(--bg-main);
 	width: 118px;
+	box-sizing: border-box;
+	height: 48px;
 }
 
 .select-container:hover select {
-	border: 1px solid #002e70;
+	border: 1px solid var(--bg-main-3);
 	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 
 label {
 	padding-right: 10px;
-	color: black;
+	color: var(--color-main);
 	display: flex;
 	gap: 5px;
 	align-items: center;
 }
-
 .line {
 	display: block;
 	width: 1px;
-	height: 24px;
-	background-color: lightgrey;
-	top: 10px;
+	height: 100%;
+	background-color: var(--bg-default);
+	top: 0;
 	right: 0px;
 	position: absolute;
+	display: flex;
+	justify-content: start;
+	align-items: center;
 	margin-right: 52px;
+	pointer-events: none;
+}
+.line span {
+	color: var(--color-default);
+	font-size: var(--fs-xl);
+	margin-left: 5px;
 }
 
 select option {
 	padding: 5px;
 }
-
 .single-entry {
 	padding: 5px 10px;
 }

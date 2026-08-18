@@ -1,5 +1,8 @@
 <template>
-	<div :class="{ 'item-slider-container': displaySliderArrows }">
+	<div
+		class="item-container"
+		:class="{ 'item-slider-container': displaySliderArrows }"
+	>
 		<div
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
@@ -161,7 +164,13 @@ export default defineComponent({
 	display: flex;
 	justify-content: flex-start;
 }
+
+.item-container {
+	width: inherit;
+	max-width: 1920px;
+}
 .item-slider {
+	padding: 4px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -169,13 +178,12 @@ export default defineComponent({
 	height: 0px;
 	align-items: center;
 	overflow-x: auto;
-	gap: 15px;
+	gap: 20px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
 	box-sizing: border-box;
-	scale: '1.0';
 }
 
 .item-slider.padding {
@@ -191,13 +199,13 @@ export default defineComponent({
 	background-color: rgb(66, 66, 66);
 }
 .item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 .item-slider::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 .item-slider::-webkit-scrollbar-track {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 
 .item-slider.active a {
@@ -227,7 +235,7 @@ export default defineComponent({
 	opacity: 0;
 	align-items: center;
 	z-index: 10;
-	background-color: rgb(255, 255, 255);
+	background-color: var(--bg-default);
 	user-select: none;
 	cursor: pointer;
 	pointer-events: none;
@@ -246,9 +254,9 @@ export default defineComponent({
 	height: 40px;
 	width: 40px;
 	border-radius: 30px;
-	background-color: #002e70;
+	background-color: var(--bg-main);
 	justify-content: center;
-	color: white;
+	color: var(--color-default);
 	align-items: center;
 	display: flex;
 	text-align: center;

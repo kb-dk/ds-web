@@ -9,15 +9,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -33,15 +35,17 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -57,15 +61,15 @@
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
-			class="material-icons left"
+			v-if="leftIconName || customIconLeft"
+			:class="['material-icons left', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
-			class="material-icons right"
+			v-if="rightIconName || customIconRight"
+			:class="['material-icons right', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ rightIconName }}
 		</span>
@@ -105,6 +109,12 @@ export default defineComponent({
 				return false;
 			},
 		},
+		iconFilled: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 		leftIconName: {
 			type: String,
 			default() {
@@ -133,6 +143,18 @@ export default defineComponent({
 			type: Boolean,
 			default() {
 				return false;
+			},
+		},
+		customIconLeft: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		customIconRight: {
+			type: String,
+			default() {
+				return '';
 			},
 		},
 	},
@@ -164,6 +186,10 @@ export default defineComponent({
 	width: fit-content;
 	min-height: 34px;
 	line-height: 1;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-text::first-letter {
+	text-transform: capitalize;
 }
 .btn:disabled {
 	background-color: var(--bg-disabled);
@@ -195,21 +221,21 @@ export default defineComponent({
 .main {
 	background-color: var(--bg-main);
 	color: var(--color-default);
-	border: 1px solid var(--color-border-active);
+	border: 1px solid var(--color-border-succcess);
 }
 .cta {
 	background-color: var(--bg-cta);
-	color: var(--color-main);
+	color: var(--color-default);
 	border: 1px solid var(--color-border-success);
 }
 .reset {
 	background: var(--bg-golden);
-	color: var(--color-main);
-	border: 1px solid var(--color-border-golden);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-succcess);
 }
 .transparent {
 	background-color: var(--bg-transparent);
-	color: var(--color-main);
+	color: var(--color-default);
 	border: 1px solid var(--color-border-transparent);
 }
 .inverted {
@@ -223,8 +249,10 @@ export default defineComponent({
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-main-medium:hover {
-	background-color: var(--bg-main-hover);
-	color: var(--color-main);
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .btn-main-small {
 	border-radius: var(--rounded-medium);
@@ -236,7 +264,6 @@ export default defineComponent({
 /* Call to action buttons */
 .btn-cta {
 	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-cta .btn-text {
 	border-bottom: 1px solid transparent;
@@ -244,10 +271,10 @@ export default defineComponent({
 	transition: 200ms;
 }
 .btn-cta:not(:disabled):hover {
-	transition: all 5s ease 0s;
-	.btn-text {
-		border-color: var(--color-border-active);
-	}
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .btn-cta.medium .material-icons {
 	font-size: calc(var(--fs-lead) + 8px);
@@ -257,7 +284,7 @@ export default defineComponent({
 }
 .btn-cta:disabled {
 	border-color: var(--color-border-disabled);
-	color: var(--bg-default);
+	color: white;
 }
 /* Dropdown buttons */
 .btn-dropdown-default {
@@ -285,9 +312,8 @@ export default defineComponent({
 	transform: rotateX(180deg);
 }
 .btn-dropdown-default:hover {
-	background-color: var(--bg-main-hover);
-	color: var(--color-main);
-	border-color: var(--color-border-active);
+	background-color: var(--bg-main-light);
+	color: var(--color-default);
 }
 .btn-dropdown-default .btn-text {
 	display: none;
@@ -306,8 +332,8 @@ export default defineComponent({
 	font-size: calc(var(--fs-meta) + 2px);
 }
 .btn-tag:hover {
-	border: 1px solid var(--color-border-golden);
+	border: 1px solid var(--color-border-succcess);
 	background: var(--bg-golden);
-	color: var(--color-main);
+	color: var(--color-default);
 }
 </style>

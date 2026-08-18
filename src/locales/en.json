@@ -42,21 +42,6 @@
       "secondary":
          [
             {
-               "title": "Collect and return",
-               "link": "https://www.kb.dk/en/services/loans-and-returns"
-            },{
-               "title": "New user", 
-               "link": "https://www.kb.dk/en/become-library-user"
-            },{
-               "title": "About us", 
-               "link": "https://www.kb.dk/en/about-us"
-            },{
-               "title": "Webshop", 
-               "link": "https://webshop.kb.dk/"
-            },{
-               "title": "Opening hours", 
-               "link": "https://www.kb.dk/en/opening-hours"
-            },{
                "title": "På dansk", 
                "link": "#",
                "id": "localeSwitcher"
@@ -65,50 +50,78 @@
                "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=en",
                "icon": "account_circle"
             }
-         ],
-      "primary":
-         [
-            {
-               "title": "Find materials",
-               "link": "https://www.kb.dk/en/find-materials"
-            },{
-               "title": "Inspiration", 
-               "link": "https://www.kb.dk/en/inspiration"
-            },{
-               "title": "Events", 
-               "link": "https://www.kb.dk/en/events"
-            },{
-               "title": "Services", 
-               "link": "https://www.kb.dk/en/services"
-            },{
-               "title": "Visit us", 
-               "link": "https://www.kb.dk/en/visit-us"
-            },{
-               "title": "Close",
-               "altTitle": "Search", 
-               "id": "searchToggle",
-               "icon": "search"
-            }
          ]
    },
    "frontpage": {
       "fromTheArchive":"The month of {month} on DR through time"
    },
    "facets" : {
+      "headline":"Filter your search for ",
+      "starHeadline": "Filter your search",
       "allGenres": "all categories",
       "genres": "category | categories",
+      "selectedGenres": "{selected} of {total} categories selected",
       "genresSubtitle": "Select a category and explore the programmes.",
       "allChannels":"all channels",
+      "selectedTVChannels":"{selected} of {total} channels selected",
+      "selectedRadioChannels":"{selected} of {total} kanalchannelser selected",
       "channels":"channel | channels",
+      "tvChannels":"TV channel | TV channels",
+      "radioChannels": "RADIO channel | RADIO channels",
       "chosen":"chosen",
+      "contentFrom": "Content dating back to",
       "reset":"reset",
       "choose": "Select",
+      "seeResults": "See your {resultCount} result | See your {resultCount} results",
+      "to":"To",
+      "from":"From",
+      "year":"year",
       "slowResponse": {
          "title": "Slow response time",
          "text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
       },
-      "remove":"Remove"
-
+      "remove":"Remove",
+      "searchingIn":"Only searching with",
+      "desc":"description",
+      "title":"title",
+      "searchMethod": {
+         "all": {
+            "title": "Search everything",
+            "desc": "Searches across all metadata fields."
+         },
+         "title": {
+            "title": "Search titles only",
+            "desc": "Searches only in the title field."
+         },
+         "desc": {
+            "title": "Search descriptions only",
+            "desc": "Searches only in the description field."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title": "Search both TV and RADIO",
+            "desc": "Searches both RADIO and TV records."
+         },
+         "tv": {
+            "title": "Search TV only",
+            "desc": "Searches only in TV records."
+         },
+         "radio": {
+            "title": "Search RADIO only",
+            "desc": "Searches only in RADIO records."
+         }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Date",
+            "desc":"Searches for a single day."
+         },
+         "period": {
+            "title":"Period",
+            "desc":"Searches for a period of years."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Frontpage",
@@ -118,7 +131,8 @@
       "record": "Programme"
    },
    "timeSearch": {
-      "timeMachine":"Search by period",
+      "timeMachine":"Select a period that you would like to view content from",
+      "periodOf":"Period of {number} years | Priod of {number} year",
       "searchDate": "Search by date",
       "searchCategories": "Search by category",
       "year":"year | years",
@@ -144,7 +158,6 @@
       "allTimeslots":"All hours",
       "selection":"A selection of the results",
       "dateSubtitle": "Here you can select a specific date and see what was aired that day.",
-      "timeMachineSubtitle": "Here you can select years, months, and days of the week, if you are looking for programmes from a specific period in time. When you click through to the list of results, you will get more filtering options.",
       "searchCategoriesSubtitle": "Select a category and explore the programmes. The categories primarily contain TV programmes, while you will find most of the radio programmes in the “Radio jumble box.”",
       "monthHeadline":"Select months",
       "dayHeadline":"Select days of the week",
@@ -201,11 +214,9 @@
      "nohit":"Sorry, we did not find any results matching your search for \"{query}\"",
      "nohitWithFilter":"We are sorrry no {filterSearch}",
      "nohitSubtitle": {
-        "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
-        "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",
         "readMore": "Read more about what the archive contains.",
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet",
-        "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
+        "subtitleText": "We’re working on making it easier for you to find what you’re looking for. Thanks for your patience! Below, we’ve put together a few search tips that might help."
      },
      "episode":"Episode",
      "pageNumberPlaceholder": "Enter page",
@@ -264,13 +275,7 @@
          "allMaterialsLink":"https://www.kb.dk/en/find-materials"
 
       },
-      "placeholders": {
-         "drArchive":"Search for example by title or year",
-         "booksAndMaterials":"Search title, author, journal, database etc. ",
-         "kbdk":"Search on website",
-         "webshop":"Search in our webshop",
-         "seeAllMaterials":"See all materials"
-      },
+      "placeholder": "Search...",
       "limitedFilters":{
          "title":"Too many filters",
          "subtitle":"You have reached the limit of filters we support. To add another filter, you have to remove another."
@@ -341,6 +346,9 @@
   "notification": {
       "close":"Close notification"
    },
+   "spots": {
+      "readMoreSubtitle":"Before you start exploring, you can learn more about the archive’s content, history and limitations — and find helpful guidance on how to search nearly 100 years of Danish radio and television."
+  },
    "footer": {
       "contactInfo":"Contact information",
       "cookie":"Cookie Settings",
@@ -543,7 +551,9 @@
       "natur-og-videnskab":"Nature and science",
       "nyheder-politik-og-samfund":"News, politics, and society",
       "radio-rodekasse":"Mixed radio",
-      "tv-rodekasse":"Mixed TV"
+      "tv-rodekasse":"Mixed TV",
+      "sport": "Sport"
+
    },
    "find":{
       "headline":"What do you want to search for?",
@@ -551,5 +561,13 @@
       "maybeYouWantTo":"Or maybe you would rather:",
       "restoreFilters":"Restore filters from previous search",
       "GoToFrontpage":"Go to the front page of DR-arkivet"
+   },
+   "calendar": {
+      "open":"Open calendar",
+      "close": "Close calendar",
+      "explanation": "Type a date in format DD-MM-YYYY or pick from the calendar.",
+      "select": "Select date",
+      "nextMonth": "Next month",
+      "prevMonth":"Previous month"
    }
 }

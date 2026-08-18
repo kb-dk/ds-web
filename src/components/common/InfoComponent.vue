@@ -8,6 +8,7 @@
 			button-color="transparent"
 			button-size="default"
 			:button-is-active="showContent"
+			:custom-style="{ boxShadow: 'none' }"
 			@click="toggleModal($event)"
 		></KBButton>
 	</div>

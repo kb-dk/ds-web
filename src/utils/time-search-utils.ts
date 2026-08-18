@@ -6,7 +6,7 @@ import { months, days, timeslots, startDate, endDate } from '@/components/common
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
 		? 1
-		: Number(TimeSliderValues[1] - TimeSliderValues[0]);
+		: Number(TimeSliderValues[1] - TimeSliderValues[0] + 1);
 };
 
 const getMonths = (months: SelectorData[]) => {

@@ -3,6 +3,7 @@
 		ref="gridContainer"
 		draggable="false"
 		class="grid-result-item"
+		:style="{ backgroundColor: background }"
 	>
 		<Transition
 			name="result"
@@ -14,6 +15,7 @@
 			>
 				<router-link
 					:to="{ name: 'Record', params: { id: resultdata.id } }"
+					v-bind="slotProps"
 					draggable="false"
 					class="link-title"
 					role="link"
@@ -24,7 +26,7 @@
 					</div>
 					<div class="date">
 						<span class="material-icons">
-							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 						</span>
 						<div
 							:title="resultdata.creator_affiliation + ', ' + getStartTime(resultdata)"
@@ -71,9 +73,9 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<div class="title label-medium">
+					<h3 class="title">
 						{{ resultdata.title[0] }}
-					</div>
+					</h3>
 					<p class="summary fixed-size">
 						{{ resultdata.description }}
 					</p>
@@ -81,52 +83,51 @@
 			</div>
 			<div
 				v-else
-				class="loading-placeholder"
+				class="loading-placeholder data"
 			>
 				<div
 					v-if="loading"
 					:style="`animation-delay:${Math.random() * 2}s`"
 					class="shimmer"
 				></div>
-				<div class="thumb-container loading-color">
-					<NoFacetContent
-						v-if="!loading"
-						position="relative"
-					></NoFacetContent>
-				</div>
-				<div class="material-icons loading-icon">play_circle_filled</div>
-				<div
-					:style="`width:${Math.random() * 30 + 40}%`"
-					class="date loading"
-				></div>
-				<div class="date-loading-container">
-					<div class="material-icons loading-icon">schedule</div>
+				<div class="loading-metadata-container">
+					<div class="thumb-container loading-color">
+						<NoFacetContent v-if="!loading"></NoFacetContent>
+					</div>
+					<div class="material-icons loading-icon">play_circle</div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}%`"
+						:style="`width:${Math.random() * 30 + 40}px`"
 						class="date loading"
 					></div>
+					<div class="date-loading-container">
+						<div class="material-icons loading-icon">schedule</div>
+						<div
+							:style="`width:${Math.random() * 20 + 20}px`"
+							class="date loading"
+						></div>
+						<div
+							:style="`width:${Math.random() * 20 + 20}px`"
+							class="date loading"
+						></div>
+					</div>
 					<div
-						:style="`width:${Math.random() * 20 + 20}%`"
-						class="date loading"
+						:style="`width:${Math.random() * 30 + 50}px`"
+						class="title loading"
 					></div>
-				</div>
-				<div
-					:style="`width:${Math.random() * 30 + 50}%`"
-					class="title loading"
-				></div>
-				<div class="summary loading">
-					<div
-						class="word"
-						:style="`width:100%`"
-					></div>
-					<div
-						class="word"
-						:style="`width:100%`"
-					></div>
-					<div
-						class="word"
-						:style="`width:80%`"
-					></div>
+					<div class="summary loading">
+						<div
+							class="word"
+							:style="`width:100%`"
+						></div>
+						<div
+							class="word"
+							:style="`width:100%`"
+						></div>
+						<div
+							class="word"
+							:style="`width:80%`"
+						></div>
+					</div>
 				</div>
 			</div>
 		</Transition>
@@ -174,8 +175,14 @@ export default defineComponent({
 			type: Number as PropType<number>,
 			required: true,
 		},
+		slotProps: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 		loading: { type: Boolean as PropType<boolean>, required: true },
-		background: { type: String as PropType<string>, required: false, default: '#ffffff' },
+		background: { type: String as PropType<string>, required: false, default: 'white' },
 		fullPostUrl: {
 			type: Boolean as PropType<boolean>,
 			default() {
@@ -213,7 +220,7 @@ export default defineComponent({
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation || '');
 			imageDataObj.imgOption = 'cover';
-			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.icon = 'play_circle';
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
@@ -230,7 +237,7 @@ export default defineComponent({
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
-						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.icon = 'play_circle';
 						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
@@ -269,10 +276,6 @@ export default defineComponent({
 		);
 
 		onMounted(() => {
-			if (gridContainer.value) {
-				gridContainer.value.style.setProperty('--bg-color', props.background);
-			}
-
 			if (props.resultdata?.origin && props.resultdata.origin.split('.')[1] === 'tv') {
 				getImageData();
 			}
@@ -296,16 +299,24 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.loading-placeholder {
+	position: relative;
+	min-width: 100px;
+	overflow: hidden;
+}
+.loading-metadata-container {
+	/* width: 100%; */
+}
 .grid-result-item {
-	--bg-color: #ffffff;
 	width: 100%;
 	max-width: 100%;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-success);
 	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
-	color: #323232;
-	background-color: var(--bg-color);
+	color: var(--color-default);
+	background-color: var(--bg-default);
+	min-height: 340px;
 }
 
 .grid-result-item:hover:after {
@@ -315,24 +326,29 @@ export default defineComponent({
 .link-title {
 	font-size: 14px;
 	text-decoration: none;
-	color: black;
+	color: var(--color-default);
 	display: grid;
 }
 
 .grid-result-item:after {
 	transition: all 0.3s linear 0s;
+	display: flex;
 	content: '•';
 	position: absolute;
-	height: 10px;
+	font-size: 16px;
+	height: 11px;
 	text-align: center;
-	color: #002e70;
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0.5;
-	margin-top: 15px;
+	line-height: 0;
 	transform-origin: center;
 	will-change: transform;
+	bottom: -4px;
+	background-color: white;
+	justify-content: center;
+	align-items: center;
 }
 
 .thumb-container {
@@ -340,13 +356,13 @@ export default defineComponent({
 	aspect-ratio: 4/2;
 	text-align: center;
 	align-content: center;
-	color: white;
+	color: var(--color-default);
 }
 
 .loading-color {
+	position: relative;
 	background-color: rgba(170, 170, 170, 1);
 }
-
 .date-loading-container {
 	display: flex;
 	align-items: flex-end;
@@ -405,11 +421,10 @@ export default defineComponent({
 }
 
 .title {
-	font-weight: var(--fw-bold);
-	color: #002e70;
-	margin-bottom: 10px;
+	/* font-weight: var(--fw-bold); */
+	color: var(--color-default);
+	margin: 0px;
 	max-width: 100%;
-	color: #002e70;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -424,10 +439,10 @@ export default defineComponent({
 	height: 20px;
 }
 .episode-text {
-	color: #002e70;
+	color: var(--color-default);
 }
 .title.loading {
-	background-color: #002e70;
+	background-color: var(--color-default);
 	border-radius: 10px;
 	margin-top: 15px;
 }

@@ -1,169 +1,258 @@
 <template>
 	<div
+		v-if="Object.keys(searchResultStore.initFacets || {}).length > 0"
 		ref="facetsContainer"
 		class="search-facets"
 	>
-		<div class="search-facets-flex">
-			<EdgedContentArea
-				:lines="true"
-				:line-padding="false"
-				background-color="#FAFAFA"
-			>
-				<template #content>
-					<div class="time-facets-toggle">
-						<div class="container">
-							<button
-								ref="timeFacetButton"
-								role="switch"
-								aria-checked="false"
-								:class="timeSearchStore.timeFacetsOpen ? 'time-facet-button open' : 'time-facet-button closed'"
-								@click="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
-							>
-								<span class="material-icons first">today</span>
-								<span class="toggle-time-text btn-medium">{{ t('timeSearch.filterOpenButton') }}</span>
-								<span :class="timeSearchStore.timeFacetsOpen ? 'dark-bar open' : 'dark-bar closed'">
-									<span class="dot">
-										<TransitionGroup>
-											<div
-												v-if="timeSearchStore.timeFacetsOpen"
-												class="close"
-											></div>
-											<div
-												v-else
-												class="check"
-											></div>
-										</TransitionGroup>
-									</span>
-								</span>
-							</button>
-						</div>
-					</div>
-					<div
-						ref="timeFacets"
-						class="time-facets"
+		<div class="facet-container">
+			<div class="headline-section">
+				<div class="filter-header">
+					<div class="material-icons filters">tune</div>
+					<button
+						class="closeBtn material-icons"
+						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
 					>
-						<div class="container">
-							<TimeSearchFilters
-								:timeline="false"
-								:picker="true"
-								:init="false"
-								:disabled="searchResultStore.queryLimitReached"
-								@new-search="newSearch(true)"
-								@close="timeSearchStore.setTimeFacetsOpen(!timeSearchStore.timeFacetsOpen)"
-							></TimeSearchFilters>
-						</div>
-					</div>
-					<div class="facet-container">
-						<div class="flex-container">
-							<div class="category-container">
-								<CustomExpander
-									:headline="$t('facets.choose') + ' ' + $t('facets.genres', 2)"
-									icon="category"
-									:subline="`${getSublineForFacets(genreArray, 'facets.genres', 'facets.allGenres')}`"
-									:item-array="genreArray"
-									:use-headline-translation="true"
-									:update-entity="updateFacet"
-									:filter-name-cutoff="5"
-									:facet-type="'genre_facet'"
-								>
-									<fieldset
-										v-if="searchResultStore.firstBackendFetchExecuted"
-										class="genre-facets"
-									>
-										<TransitionGroup name="result">
-											<div
-												v-for="(singleFacet, index) in simplifyFacets(
-													searchResultStore.initFacets.facet_fields.genre_facet,
-												)"
-												:key="index + 'genre_facet'"
-												class="genre"
-											>
-												<GenreCheckbox
-													:fqkey="'genre_facet'"
-													:title="singleFacet.title"
-													:amount="
-														categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'
-													"
-													:time-search-active="timeSearchStore.timeFacetsOpen"
-													:number="index"
-													:checked="
-														channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)
-													"
-													:loading="searchResultStore.loadingGenres"
-													:update="updateCheckbox"
-													:parent-array="genreArray"
-													:disabled="searchResultStore.queryLimitReached"
-												/>
-											</div>
-										</TransitionGroup>
-									</fieldset>
-								</CustomExpander>
-							</div>
-							<CustomExpander
-								:headline="$t('facets.choose') + ' ' + $t('facets.channels', 2)"
-								icon="toc"
-								:subline="`${getSublineForFacets(channelsArray, 'facets.channels', 'facets.allChannels')}`"
-								:fade="true"
-								:item-array="channelsArray"
-								:update-entity="updateFacet"
-								:filter-name-cutoff="5"
-								:use-headline-translation="false"
-								:facet-type="'creator_affiliation_facet'"
+						close
+					</button>
+				</div>
+				<h2 class="filter-headline">
+					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
+						{{ t('facets.headline') }}
+						<span class="bold">{{ searchResultStore.currentQuery }}</span>
+					</span>
+					<span v-else>{{ t('facets.starHeadline') }}</span>
+				</h2>
+			</div>
+			<div class="category-container">
+				<CustomRadioGroup
+					v-model="searchResultStore.preliminarySearchMethod"
+					name="SelectedSearchMethod"
+					:options="selectedSearchMethodOptions"
+					:disable="
+						searchResultStore.currentQuery === '' ||
+						searchResultStore.currentQuery === '*:*' ||
+						searchResultStore.currentQuery === '*'
+					"
+					@change="setSearchMethodAndExecute(searchResultStore.preliminarySearchMethod)"
+				/>
+				<CustomRadioGroup
+					v-model="searchResultStore.preliminaryFilter"
+					name="SelectedSearchMaterials"
+					:options="selectedSearchMaterialOptions"
+					@change="setDelimitationFilterAndExecute(searchResultStore.preliminaryFilter)"
+				/>
+				<FilterExpander
+					type="checkbox"
+					:headline="$t('facets.genres', 2)"
+					icon="category"
+					:subline="`${getSublineForFacets(genreArray, 'facets.selectedGenres')}`"
+					:item-array="genreArray"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:facet-type="'genre_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="genre-facets"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in simplifyFacets(searchResultStore.initFacets.facet_fields.genre_facet)"
+								:key="index + 'genre_facet'"
+								class="genre"
 							>
-								<fieldset
-									v-if="searchResultStore.firstBackendFetchExecuted"
-									class="facet-options"
-								>
-									<TransitionGroup name="result">
-										<div
-											v-for="(singleFacet, index) in channelsArray"
-											:key="`${index}-facet`"
-											:class="{
-												'checkbox end': index >= (channelsArray.length / 4) * 3,
-												'checkbox semi-end':
-													index >= channelsArray.length / 2 && index < (channelsArray.length / 4) * 3,
-												checkbox: index < channelsArray.length / 2,
-											}"
-										>
-											<SimpleCheckbox
-												:key="`channelCheckbox-${index}`"
-												:fqkey="'creator_affiliation_facet'"
-												:title="singleFacet.name"
-												:amount="
-													channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'
-												"
-												:number="index"
-												:parent-array="channelsArray"
-												:update="updateCheckbox"
-												:checked="
-													channelFilterExists(
-														'creator_affiliation_facet',
-														singleFacet.name,
-														searchResultStore.channelFilters,
-													)
-												"
-												:loading="searchResultStore.loadingChannels"
-												:disabled="searchResultStore.queryLimitReached"
-											/>
-										</div>
-									</TransitionGroup>
-								</fieldset>
-							</CustomExpander>
+								<SimpleCheckbox
+									:key="`genreCheckbox-${index}`"
+									:fqkey="'genre_facet'"
+									:title="singleFacet.title"
+									:icon="returnCategoryIcon(singleFacet.title)"
+									:icon-filled="returnFilledIconStatus(singleFacet.title)"
+									:amount="categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
+									:time-search-active="timeSearchStore.timeFacetsOpen"
+									:number="index"
+									:checked="channelFilterExists('genre_facet', singleFacet.title, searchResultStore.categoryFilters)"
+									:loading="searchResultStore.loadingGenres"
+									:update="updateCheckbox"
+									:parent-array="genreArray"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.categoryFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+
+				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.radio&quot;'"
+					type="checkbox"
+					:headline="$t('facets.tvChannels', 2)"
+					icon="play_circle"
+					:subline="`${getSublineForFacets(getTVFacets(channelsArray), 'facets.selectedTVChannels')}`"
+					:fade="false"
+					:item-array="getTVFacets(channelsArray)"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getTVFacets(channelsArray)"
+								:key="`${index}-tv-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-tv-checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="getTVFacets(channelsArray)"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.channelFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+				<FilterExpander
+					:disabled="searchResultStore.preliminaryFilter === 'origin:&quot;ds.tv&quot;'"
+					type="checkbox"
+					:headline="$t('facets.radioChannels', 2)"
+					icon="volume_up"
+					:subline="`${getSublineForFacets(getRadioFacets(channelsArray), 'facets.selectedRadioChannels')}`"
+					:fade="false"
+					:item-array="getRadioFacets(channelsArray)"
+					:update-entity="updateFacet"
+					:filter-name-cutoff="5"
+					:facet-type="'creator_affiliation_facet'"
+				>
+					<fieldset
+						v-if="searchResultStore.firstBackendFetchExecuted"
+						class="facet-options"
+					>
+						<TransitionGroup name="result">
+							<div
+								v-for="(singleFacet, index) in getRadioFacets(channelsArray)"
+								:key="`${index}-radio-facet`"
+							>
+								<SimpleCheckbox
+									:key="`channel-radio-checkbox-${index}`"
+									:fqkey="'creator_affiliation_facet'"
+									:title="singleFacet.name"
+									:channel="singleFacet.name"
+									:amount="channelFacets.find((item) => item.title === singleFacet.name)?.number.toString() || '0'"
+									:number="index"
+									:parent-array="getRadioFacets(channelsArray)"
+									:update="updateCheckbox"
+									:checked="
+										channelFilterExists('creator_affiliation_facet', singleFacet.name, searchResultStore.channelFilters)
+									"
+									:loading="searchResultStore.loadingChannels"
+									:disabled="searchResultStore.queryLimitReached"
+									:filter-array="searchResultStore.channelFilters"
+								/>
+							</div>
+						</TransitionGroup>
+					</fieldset>
+				</FilterExpander>
+				<FilterExpander
+					type="time"
+					:headline="`${t('facets.timePeriod.date.title')} / ${t('facets.timePeriod.period.title')}`"
+					icon="calendar_today"
+					:subline="createTimeFacetSubline"
+					:update-entity="updateTimeSearch"
+					:item-array="yearArray"
+				>
+					<CustomRadioGroup
+						v-model="searchResultStore.preliminaryPeriodSearch"
+						name="preliminaryPeriodSearch"
+						:options="preliminaryPeriodSearchOptions"
+						@change="onPreliminaryPeriodChange"
+					/>
+					<TransitionGroup name="result">
+						<div
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="to-from-container"
+						>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[0]"
+								:list-items="getYearRanges"
+								:label="$t('timeSearch.from')"
+								@update-selected="updateStartYear"
+							/>
+							<CustomTimelineSelect
+								:current-selected="timeSliderValues[1]"
+								:list-items="getYearRanges"
+								:label="$t('timeSearch.to')"
+								@update-selected="updateEndYear"
+							/>
 						</div>
+						<fieldset
+							v-if="searchResultStore.preliminaryPeriodSearch === 'period'"
+							class="facet-options time-search-filter-container"
+						>
+							<VueSlider
+								v-if="data.length > 0"
+								ref="vueSliderRef"
+								v-model="timeSliderValues"
+								:clickable="true"
+								:drag-on-click="true"
+								:data="data"
+								data-label="key"
+								tooltip="always"
+								@drag-end="updateTimeSearch"
+							></VueSlider>
+						</fieldset>
+					</TransitionGroup>
+					<div
+						v-if="searchResultStore.preliminaryPeriodSearch === 'date'"
+						class="date-picker-container"
+					>
+						<TimePicker
+							v-model="selectedDate"
+							name="filterTimePicker"
+							:start-date="startYear"
+							:end-date="endYear"
+						/>
 					</div>
-				</template>
-			</EdgedContentArea>
+				</FilterExpander>
+			</div>
+			<div class="show-results-container">
+				<KBButton
+					button-type="btn-main-default"
+					button-color="main"
+					button-size="medium"
+					class="btn-medium btn-main-medium"
+					:button-text="`${t('facets.seeResults', {
+						count: Number(searchResultStore.numFound),
+						resultCount: new Intl.NumberFormat('de-DE').format(searchResultStore.numFound),
+					})}`"
+					right-icon-name="arrow_forward_ios"
+					:custom-style="{ alignSelf: 'flex-end', marginRight: '12px' }"
+					:data-testid="addTestDataEnrichment('button', 'filters-see-results', 'filters-show-results-button', 0)"
+					@click="searchResultStore.showFacets = false"
+				></KBButton>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import '@/assets/styles/vue-slider-styles.css';
+import { defineComponent, onMounted, ref, watch, computed, ComputedRef, onUnmounted } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { FacetResultType } from '@/types/GenericSearchResultTypes';
 import { useRoute, useRouter } from 'vue-router';
-import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import SimpleCheckbox from '@/components/common/SimpleCheckbox.vue';
 import {
 	addChannelOrCategoryFilter,
@@ -173,36 +262,40 @@ import {
 	extendFacetPairToSelectorData,
 	normalizeFq,
 	removeChannelOrCategoryFilter,
-	removeTimeFacetsFromRoute,
 	simplifyFacets,
 } from '@/utils/filter-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
+import { markerData, SelectorData } from '@/types/TimeSearchTypes';
 import { FacetPair } from '@/types/GenericRecordTypes';
 import { useI18n } from 'vue-i18n';
+import TimePicker from '@/components/common/TimePicker.vue';
 import gsap from 'gsap';
 import {
-	days,
-	endDate,
 	endYear,
-	months,
-	startDate,
 	startYear,
-	timeslots,
+	timeSliderValues,
+	startDate,
+	endDate,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import CustomExpander from '@/components/common/CustomExpander.vue';
-import GenreCheckbox from '@/components/search/GenreCheckbox.vue';
-import { resetAllSelectorValues } from '@/utils/time-search-utils';
+import FilterExpander from '@/components/common/FilterExpander.vue';
 import { santizeAndSimplify } from '@/utils/test-enrichments';
+import CustomRadioGroup from '@/components/common/CustomRadioGroup.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
+import VueSlider from 'vue-3-slider-component';
+import { createFocusTrap } from '@/utils/focus-trap';
+import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
+import { returnCategoryIcon, returnFilledIconStatus } from '@/utils/icon-utils';
 
 export default defineComponent({
 	name: 'Facets',
 	components: {
 		SimpleCheckbox,
-		TimeSearchFilters,
-		EdgedContentArea,
-		CustomExpander,
-		GenreCheckbox,
+		FilterExpander,
+		CustomRadioGroup,
+		KBButton,
+		VueSlider,
+		CustomTimelineSelect,
+		TimePicker,
 	},
 
 	setup() {
@@ -215,13 +308,118 @@ export default defineComponent({
 		const timeFacets = ref<HTMLElement | null>(null);
 		const timeFacetButton = ref<HTMLButtonElement | null>(null);
 		const lastUpdate = ref(0);
-		const { t } = useI18n();
+		const selectedDate = ref<Date | undefined>();
+		const { t, locale } = useI18n();
 		const router = useRouter();
 		const route = useRoute();
+		const data = ref([] as markerData[]);
+		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
+		const windowWidth = ref(window.innerWidth);
+
+		const delimitationOptions = {
+			all: '',
+			tv: 'origin:"ds.tv"',
+			radio: 'origin:"ds.radio"',
+		};
+
+		let focusTrap: ReturnType<typeof createFocusTrap> | null = null;
 
 		const channelsArray = ref([] as SelectorData[]);
 		const genreArray = ref([] as SelectorData[]);
 		const translatedGenreArray = ref([] as SelectorData[]);
+		const yearArray = ref([] as SelectorData[]);
+
+		const selectedSearchMethodOptions = computed(() => [
+			{ value: 'all', title: t('facets.searchMethod.all.title'), description: t('facets.searchMethod.all.desc') },
+			{
+				value: 'title',
+				title: t('facets.searchMethod.title.title'),
+				description: t('facets.searchMethod.title.desc'),
+			},
+			{
+				value: 'desc',
+				title: t('facets.searchMethod.desc.title'),
+				description: t('facets.searchMethod.desc.desc'),
+			},
+		]);
+
+		const selectedSearchMaterialOptions = computed(() => [
+			{
+				value: '',
+				title: t('facets.searchMaterial.both.title'),
+				description: t('facets.searchMaterial.both.desc'),
+			},
+			{
+				value: 'origin:"ds.tv"',
+				title: t('facets.searchMaterial.tv.title'),
+				icon: 'play_circle',
+				description: t('facets.searchMaterial.tv.desc'),
+			},
+			{
+				value: 'origin:"ds.radio"',
+				title: t('facets.searchMaterial.radio.title'),
+				icon: 'volume_up',
+				description: t('facets.searchMaterial.radio.title'),
+			},
+		]);
+
+		const preliminaryPeriodSearchOptions = computed(() => [
+			{
+				value: 'date',
+				title: t('facets.timePeriod.date.title'),
+				description: t('facets.timePeriod.date.desc'),
+				icon: 'event',
+			},
+			{
+				value: 'period',
+				title: t('facets.timePeriod.period.title'),
+				description: t('facets.timePeriod.period.desc'),
+				icon: 'date_range',
+			},
+		]);
+		const getYearRanges = computed(() => {
+			const selectYears = [];
+			for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
+				selectYears.push(i);
+			}
+			return selectYears;
+		});
+		onMounted(() => {
+			setCategoryArrayFromStore(searchResultStore.categoryFilters);
+			setChannelArrayFromStore(searchResultStore.channelFilters);
+
+			window.addEventListener('resize', updateWindowWidth);
+
+			const routeQueries = cloneRouteQuery(route);
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const [, startDate, endDate] = decodeURIComponent(startTimeFilter).match(/\[(.+?) TO (.+?)\]/) ?? [];
+				const startDateObj = new Date(startDate);
+				const endDateObj = new Date(endDate);
+				if (
+					startDateObj.getFullYear() === endDateObj.getFullYear() &&
+					startDateObj.getMonth() === endDateObj.getMonth() &&
+					startDateObj.getDate() === endDateObj.getDate()
+				) {
+					searchResultStore.preliminaryPeriodSearch = 'date';
+					selectedDate.value = new Date(startDateObj);
+				} else {
+					searchResultStore.preliminaryPeriodSearch = 'period';
+					timeSliderValues.value[0] = startDateObj.getFullYear();
+					timeSliderValues.value[1] = endDateObj.getFullYear();
+				}
+			}
+		});
+
+		onUnmounted(() => {
+			window.removeEventListener('resize', updateWindowWidth);
+		});
+
+		function updateWindowWidth() {
+			windowWidth.value = window.innerWidth;
+		}
+
 		if (searchResultStore.firstBackendFetchExecuted && Object.keys(searchResultStore.initFacets).length !== 0) {
 			channelsArray.value = extendFacetPairToSelectorData(
 				simplifyFacets(searchResultStore.initFacets.facet_fields.creator_affiliation_facet),
@@ -249,6 +447,29 @@ export default defineComponent({
 			);
 		}
 
+		const getTVFacets = (channelArray: SelectorData[]) => {
+			const returnArray = [];
+			for (const obj of channelArray) {
+				if (searchResultStore.TVFacets.includes(obj.name)) {
+					returnArray.push(obj);
+				}
+			}
+			return returnArray;
+		};
+
+		const firstYearOfContent = computed(() => {
+			return startYear.value.getFullYear();
+		});
+
+		const getRadioFacets = (channelArray: SelectorData[]) => {
+			const returnArray = [];
+			for (const obj of channelArray) {
+				if (searchResultStore.RadioFacets.includes(obj.name)) {
+					returnArray.push(obj);
+				}
+			}
+			return returnArray;
+		};
 		const updateCheckbox = (
 			array: SelectorData[],
 			index: number,
@@ -259,25 +480,28 @@ export default defineComponent({
 		) => {
 			if (title && key) {
 				const routeQueries = channelFilterExists(key, title, filterArray)
-					? removeChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key)
-					: addChannelOrCategoryFilter(route, createFilter(title, key), timeSearchStore.timeFacetsOpen, key);
+					? removeChannelOrCategoryFilter(route, createFilter(title, key), true, key)
+					: addChannelOrCategoryFilter(route, createFilter(title, key), true, key);
 				routeQueries.start = 0;
 				router.push({ query: routeQueries });
 				array[index].selected = val;
 			}
 		};
 
-		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string, allTranslationKey: string) => {
-			if (
-				dataArray.filter((item) => item.selected).length === 0 ||
-				dataArray.filter((item) => item.selected).length === dataArray.length
-			) {
-				return `${t(allTranslationKey)}`;
+		const getSublineForFacets = (dataArray: SelectorData[], translationKey: string) => {
+			if (dataArray.filter((item) => item.selected).length === 0) {
+				return ``;
 			} else {
-				return `${dataArray.filter((item) => item.selected).length} ${t(
-					translationKey,
-					dataArray.filter((item) => item.selected).length,
-				)}`;
+				const selected = dataArray.filter((item) => item.selected).length;
+				const total = dataArray.length;
+				if (windowWidth.value <= 640) {
+					return `${selected}/${total}`;
+				} else {
+					return t(translationKey, {
+						selected,
+						total,
+					});
+				}
 			}
 		};
 
@@ -294,6 +518,45 @@ export default defineComponent({
 			},
 			{ deep: true },
 		);
+		watch(
+			() => vueSliderRef.value,
+			(newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					if (newVal) {
+						const dots = Array.from(document.querySelectorAll('.vue-slider-dot')) as HTMLDivElement[];
+						dots.forEach((dot, index) => {
+							dot.tabIndex = -1;
+							dot.ariaLabel = 'Time selector';
+							dot.setAttribute('data-testid', addTestDataEnrichment('input', 'vue-slider', `slider-${index}`, index));
+						});
+					}
+				}
+			},
+		);
+
+		watch(
+			() => route.query.fq,
+			(newFq) => {
+				/*
+				we have to do this, because vue acts weird here.
+				when we have normal route changes, it seems like we get an array here,
+				but when we use brower back and forth buttons, we get strings, IF there is only one filter.
+				Weird and breaking behavior, that we have to account for here.
+				*/
+				const normalizedFq: string[] = Array.isArray(newFq) ? (newFq as string[]) : newFq ? [newFq as string] : [];
+				const originFilter = normalizedFq.find((fq: string) => fq.includes('origin'));
+				if (originFilter) {
+					if (decodeURIComponent(originFilter) === delimitationOptions.radio) {
+						searchResultStore.preliminaryFilter = 'origin:"ds.radio"';
+					} else if (decodeURIComponent(originFilter) === delimitationOptions.tv) {
+						searchResultStore.preliminaryFilter = 'origin:"ds.tv"';
+					}
+				} else {
+					searchResultStore.preliminaryFilter = '';
+				}
+			},
+			{ immediate: true },
+		);
 
 		watch(
 			() => searchResultStore.categoryFilters,
@@ -302,6 +565,24 @@ export default defineComponent({
 			},
 		);
 
+		watch(
+			() => selectedDate.value,
+			(date: Date | undefined) => {
+				if (!date) {
+					return;
+				}
+
+				const start = new Date(date);
+				start.setHours(0, 0, 0, 0);
+
+				const end = new Date(date);
+				end.setHours(23, 59, 59, 999);
+
+				startDate.value = start;
+				endDate.value = end;
+				setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
+			},
+		);
 		const setCategoryArrayFromStore = (items: string[]) => {
 			genreArray.value.forEach((item) => {
 				item.selected = false;
@@ -352,25 +633,47 @@ export default defineComponent({
 		watch(
 			() => searchResultStore.showFacets,
 			() => {
-				toggleFacets();
+				if (facetsContainer.value !== null) {
+					toggleFacets();
+				} else {
+					watch(
+						() => facetsContainer,
+						() => {
+							toggleFacets();
+						},
+						{ deep: true },
+					);
+				}
 			},
 		);
 
-		onMounted(() => {
-			setCategoryArrayFromStore(searchResultStore.categoryFilters);
-			setChannelArrayFromStore(searchResultStore.channelFilters);
-			if (timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'false') {
-				toggleTimeFacets();
-			} else if (!timeSearchStore.timeFacetsOpen && timeFacetButton.value?.getAttribute('aria-checked') === 'true') {
-				toggleTimeFacets();
+		const onPreliminaryPeriodChange = () => {
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
+				}
 			}
-		});
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
 
 		watch(
-			() => timeSearchStore.timeFacetsOpen,
-			() => {
-				toggleTimeFacets();
+			() => getYearRanges,
+			(newRange: ComputedRef<number[]>) => {
+				data.value = [];
+				for (let i = 0; i < newRange.value.length; i++) {
+					data.value.push({ key: newRange.value[i], value: newRange.value[i] });
+				}
 			},
+			{ deep: true, immediate: true },
 		);
 
 		const updateFacet = (array: SelectorData[], index: number, val: boolean, key: string) => {
@@ -385,146 +688,183 @@ export default defineComponent({
 			router.push({ query: routeQueries });
 		};
 
-		const newSearch = (yearSearch: boolean) => {
-			const routeQueries = cloneRouteQuery(route);
-			routeQueries.q = searchResultStore.currentQuery;
-			if (routeQueries.q === '') {
-				routeQueries.q = '*:*';
-			}
-			routeQueries.start = 0;
-			routeQueries.sort = yearSearch ? 'startTime asc' : '';
-			const dayString = days.value
-				.filter((day: SelectorData) => day.selected)
-				.map((day: SelectorData) => day.value)
-				.join(' OR ');
-
-			const monthString = months.value
-				.filter((month: SelectorData) => month.selected)
-				.map((month: SelectorData) => month.value)
-				.join(' OR ');
-
-			const timeslotString = timeslots.value
-				.filter((timeslot: SelectorData) => timeslot.selected)
-				.map((timeslot: SelectorData) => timeslot.value)
-				.join(' OR ');
-
-			if (!routeQueries.fq) {
-				routeQueries.fq = [];
-			}
-
-			const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
-
+		const createTimeFacetSubline = computed(() => {
 			if (
-				yearSearch &&
-				startDate.value !== null &&
-				endDate.value !== null &&
-				(startDate.value.getTime() !== startYear.value.getTime() || endDate.value.getTime() !== endYear.value.getTime())
+				startDate.value.getTime() === startYear.value.getTime() &&
+				endDate.value.getTime() === endYear.value.getTime()
 			) {
-				startDate.value.setHours(0, 0, 0); // Start of the day
-				endDate.value.setHours(23, 59, 59); // End of the day
-				existingFq.push(
-					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
-				);
+				return `${t('facets.contentFrom')} ${firstYearOfContent.value}`;
+			} else {
+				if (searchResultStore.preliminaryPeriodSearch === 'period') {
+					if (windowWidth.value <= 640) {
+						return `${startDate.value.getFullYear()} → ${endDate.value.getFullYear()}`;
+					} else {
+						return `${t('facets.from')} ${t('facets.year')}: ${startDate.value.getFullYear()} → ${t('facets.to')} ${t(
+							'facets.year',
+						)}: ${endDate.value.getFullYear()}`;
+					}
+				} else {
+					return new Intl.DateTimeFormat(locale.value, {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+					}).format(selectedDate.value);
+				}
 			}
-			dayString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
-			monthString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
-			timeslotString !== '' ? existingFq.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
+		});
 
+		const updateTimeSearch = () => {
+			startDate.value.setFullYear(timeSliderValues.value[0]);
+			endDate.value.setFullYear(timeSliderValues.value[1]);
+			setTimeSearchMethodAndExecute(startDate.value.toISOString(), endDate.value.toISOString());
+		};
+
+		const setTimeSearchMethodAndExecute = (startDate: string, endDate: string) => {
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			const startTimeFilter = existingFq.find((fq: string) => fq.includes('startTime'));
+			if (startTimeFilter) {
+				const index = existingFq.findIndex((fq: string) => fq === startTimeFilter);
+				if (index !== -1) {
+					existingFq.splice(index, 1);
+				}
+			}
+			existingFq.push(encodeURIComponent(`startTime:[${startDate} TO ${endDate}]`));
 			routeQueries.fq = existingFq;
-
 			router.push({
 				name: 'Search',
 				query: routeQueries,
 			});
-
-			if (searchResultStore.filterQueryLength > 900) {
-				searchResultStore.queryLimitReached = true;
-			} else {
-				searchResultStore.queryLimitReached = false;
+		};
+		const setSearchMethodAndExecute = (choice: string) => {
+			let orgQuery = searchResultStore.currentQuery;
+			if (
+				searchResultStore.currentQuery.includes('title:') ||
+				searchResultStore.currentQuery.includes('description:')
+			) {
+				orgQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
 			}
+			let newQuery = '';
+			if (choice === 'title') {
+				newQuery = `title:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'title';
+			} else if (choice === 'desc') {
+				newQuery = `description:"${orgQuery}"`;
+				searchResultStore.preliminarySearchMethod = 'desc';
+			} else {
+				newQuery = orgQuery;
+				searchResultStore.preliminarySearchMethod = 'all';
+			}
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			routeQueries.q = newQuery;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			routeQueries.fq = existingFq;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
-		const toggleTimeFacets = () => {
-			if (!timeSearchStore.timeFacetsOpen) {
-				timeFacetButton.value?.setAttribute('aria-checked', 'false');
-				gsap.to(timeFacets.value, {
-					height: '0px',
-					paddingTop: '0px',
-					marginBottom: '0px',
-					duration: 0.5,
-					overwrite: true,
-					onComplete: () => {
-						gsap.set(timeFacets.value, {
-							display: 'none',
-						});
-					},
-				});
-				const routeQueries = cloneRouteQuery(route);
-				const existingFq = removeTimeFacetsFromRoute(normalizeFq(routeQueries.fq));
-				removeAllTimeFilters();
+		const setDelimitationFilterAndExecute = (choice: string) => {
+			let val = '';
+			if (choice === 'origin:"ds.tv"') {
+				val = delimitationOptions.tv;
+			} else if (choice === 'origin:"ds.radio"') {
+				val = delimitationOptions.radio;
+			} else {
+				val = delimitationOptions.all;
+			}
+			searchResultStore.resetAutocomplete();
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.start = 0;
+			const existingFq = normalizeFq(routeQueries.fq as string[] | string);
+			if (existingFq) {
+				const creatorAffiliationFilter = existingFq.find((fq: string) => fq.includes('origin'));
+				if (creatorAffiliationFilter) {
+					const index = existingFq.findIndex((fq: string) => fq === creatorAffiliationFilter);
+					if (index !== -1) {
+						existingFq.splice(index, 1);
+					}
+				}
+				if (val !== '') {
+					existingFq.push(encodeURIComponent(val));
+				}
 				routeQueries.fq = existingFq;
-				router.push({
-					name: 'Search',
-					query: routeQueries,
-				});
 			} else {
-				timeFacetButton.value?.setAttribute('aria-checked', 'true');
-				gsap.set(timeFacets.value, {
-					display: 'flex',
-					flexDirection: 'column',
-					onComplete: () => {
-						gsap.to(timeFacets.value, {
-							height: 'auto',
-							paddingTop: '30px',
-							marginBottom: '20px',
-							duration: 0.5,
-							overwrite: true,
-						});
-					},
-				});
+				if (val !== '') {
+					routeQueries.fq = [];
+					routeQueries.fq.push(encodeURIComponent(val));
+				}
 			}
-		};
-
-		const removeAllTimeFilters = () => {
-			resetAllSelectorValues(days.value);
-			resetAllSelectorValues(months.value);
-			resetAllSelectorValues(timeslots.value);
-			const startHolder = new Date(startYear.value.getTime());
-			const endHolder = new Date(endYear.value.getTime());
-			startDate.value = startHolder;
-			endDate.value = endHolder;
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
 		const toggleFacets = () => {
 			if (!searchResultStore.showFacets) {
 				gsap.to(facetsContainer.value, {
-					height: '0px',
 					duration: 0.5,
 					overwrite: true,
 					opacity: 0,
-					marginBottom: '0px',
+					marginLeft: '-15px',
 					onComplete: () => {
+						focusTrap?.deactivate();
 						gsap.set(facetsContainer.value, {
 							display: 'none',
 						});
 					},
 				});
 			} else {
+				if (facetsContainer.value) {
+					focusTrap = createFocusTrap(facetsContainer.value, () => {
+						searchResultStore.showFacets = false;
+					});
+				}
+				const startTimeFilter = searchResultStore.filters.find((filter) => filter.includes('fq=startTime'));
+				if (!startTimeFilter) {
+					selectedDate.value = undefined;
+					timeSliderValues.value[0] = startYear.value.getFullYear();
+					timeSliderValues.value[1] = endYear.value.getFullYear();
+				}
 				gsap.set(facetsContainer.value, {
 					display: 'block',
 					onComplete: () => {
+						focusTrap?.activate();
 						gsap.to(facetsContainer.value, {
-							height: 'auto',
-							marginBottom: '0px',
 							duration: 0.5,
 							opacity: 1,
+							marginLeft: '0px',
 							overwrite: true,
 						});
 					},
 				});
 			}
 		};
+		const updateStartYear = (val: number) => {
+			timeSliderValues.value[0] = Number(val);
+			startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			if (Number(val) > timeSliderValues.value[1]) {
+				timeSliderValues.value[1] = Number(val);
+				endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 
+		const updateEndYear = (val: number) => {
+			endDate.value !== null ? endDate.value.setFullYear(val) : null;
+			timeSliderValues.value[1] = Number(val);
+			if (Number(val) < timeSliderValues.value[0]) {
+				timeSliderValues.value[0] = Number(val);
+				startDate.value !== null ? startDate.value.setFullYear(val) : null;
+			}
+			updateTimeSearch();
+		};
 		return {
 			currentFacets,
 			lastUpdate,
@@ -537,17 +877,40 @@ export default defineComponent({
 			toggleFacets,
 			facetsContainer,
 			timeFacets,
-			newSearch,
 			timeFacetButton,
 			timeSearchStore,
 			t,
 			channelsArray,
 			genreArray,
+			yearArray,
 			updateFacet,
 			updateCheckbox,
+			updateTimeSearch,
 			getSublineForFacets,
 			santizeAndSimplify,
 			translatedGenreArray,
+			getTVFacets,
+			getRadioFacets,
+			addTestDataEnrichment,
+			vueSliderRef,
+			timeSliderValues,
+			data,
+			selectedSearchMethodOptions,
+			selectedSearchMaterialOptions,
+			preliminaryPeriodSearchOptions,
+			firstYearOfContent,
+			getYearRanges,
+			updateStartYear,
+			updateEndYear,
+			startYear,
+			endYear,
+			selectedDate,
+			createTimeFacetSubline,
+			returnCategoryIcon,
+			returnFilledIconStatus,
+			setSearchMethodAndExecute,
+			setDelimitationFilterAndExecute,
+			onPreliminaryPeriodChange,
 		};
 	},
 });
@@ -565,21 +928,59 @@ export default defineComponent({
 	width: 100%;
 }
 
+.date-picker-container {
+	margin-bottom: 25px;
+}
+
 .facet-enter-from,
 .facet-leave-to {
 	opacity: 0;
 	height: 0%;
 }
 
+.filter-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 12px 20px 0px;
+}
+
+.filter-headline {
+	color: var(--color-default);
+}
+
+.filter-headline .bold {
+	font-weight: var(--fw-bold);
+}
+
+.filter-header button {
+	border: 0px;
+	background-color: transparent;
+}
+
+.filter-header .material-icons {
+	width: 40px;
+	height: 40px;
+	color: var(--color-default);
+	font-size: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .time-facets {
 	display: none;
-	height: 0px;
 	overflow: hidden;
 	position: relative;
-	width: 100vw;
 	background-color: #d9f5fe;
+	min-height: 100vh;
+	display: fixed;
+	top: 0px;
+	margin-left: -15px;
 }
-.expand-container {
+
+.btn.right {
+	float: right;
 }
 
 fieldset {
@@ -605,14 +1006,15 @@ fieldset {
 	font-size: 40px;
 }
 
-.category-container {
-	margin-bottom: 45px;
+.headline-section {
+	padding-left: 12px;
 }
 
-.search-facets-flex {
+.show-results-container {
+	width: 100%;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	justify-content: flex-end;
+	margin-bottom: 10px;
 }
 
 .time-facet-button {
@@ -645,13 +1047,33 @@ fieldset {
 
 .facet-container {
 	display: flex;
-	height: auto;
+	height: 0px;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-x: hidden;
 	gap: 20px;
 	box-sizing: border-box;
 	padding-bottom: 15px;
 	width: 100%;
+	min-height: calc(100vh);
+}
+
+.facet-container::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.facet-container::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.facet-container::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+}
+
+/* harmless, but usually no-op in modern browsers */
+.facet-container::-webkit-scrollbar-button {
+	display: none;
 }
 
 .facet-options {
@@ -659,15 +1081,19 @@ fieldset {
 	width: 100%;
 	margin-top: 10px;
 }
-
+.time-search-filter-container {
+	height: 120px;
+	margin-bottom: 70px;
+	margin-left: 40px;
+	width: calc(100% - 82px);
+}
 .flex-container {
 	width: 100%;
 	padding-bottom: 30px;
 }
 
 h2 {
-	font-size: 16px;
-	color: black;
+	display: inline-block;
 }
 .facet-box {
 	margin-bottom: 15px;
@@ -685,108 +1111,59 @@ h2 {
 }
 
 .search-facets {
+	left: 0px;
 	box-sizing: border-box;
-	overflow-x: visible;
-	overflow-y: clip;
-	position: relative;
-	height: 0px;
+	position: fixed;
 	display: none;
 	opacity: 0;
-	align-items: center;
-	justify-content: center;
+	top: 0px;
+	height: 100vh;
+	max-width: 100%;
+	width: 500px;
+	z-index: 7;
+	box-shadow:
+		rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+		rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+	background: #fbecf2;
+	background: linear-gradient(
+		180deg,
+		rgba(251, 236, 242, 0.6) 0px,
+		rgba(251, 236, 242, 0.6) 300px,
+		rgba(251, 236, 242, 0.2) 100%
+	);
+	backdrop-filter: blur(15px) brightness(165%);
 }
 
-.dark-bar {
-	min-width: 50px;
-	width: 50px;
-	background-color: #d5d5d5;
-	height: 24px;
-	border-radius: 20px;
-	margin-left: 20px;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open {
-	background-color: #002e70;
-}
-
-.dark-bar .dot {
-	width: 18px;
-	height: 18px;
-	display: block;
-	background-color: white;
-	border-radius: 15px;
-	top: 3px;
-	left: 3px;
+.search-facets-flex {
+	height: 100%;
+	width: 100%;
 	position: relative;
-	transition: all 0.1s linear 0s;
-}
-
-.dark-bar.open .dot {
-	left: 29px;
-}
-
-.dark-bar .dot .close:before {
-	content: '';
-	display: block;
-	width: 7px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 10px;
-	left: 2px;
-	position: relative;
-}
-.dark-bar .dot .close:after {
-	content: '';
-	display: block;
-	width: 12px;
-	height: 2px;
-	background-color: #002e70;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	position: relative;
-	left: 5px;
-}
-
-.dark-bar .dot .check:before {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(45deg);
-	top: 8px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
-}
-.dark-bar .dot .check:after {
-	content: '';
-	display: block;
-	width: 15px;
-	height: 2px;
-	background-color: #757575;
-	transform-origin: center;
-	transform: rotateZ(-45deg);
-	top: 6px;
-	left: 1px;
-	position: relative;
-	border-radius: 15px;
-}
-
-.genre-facets {
+	top: 0px;
+	left: 0px;
 	display: flex;
-	gap: 30px 10px;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+.closeBtn {
+	z-index: 2;
+	position: relative;
+	cursor: pointer;
+	color: var(--color-default);
+}
+
+.genre-facets,
+.facet-options {
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	min-height: 200px;
 	box-sizing: border-box;
 	margin-top: 25px;
 	margin-bottom: 30px;
+	gap: 8px;
+	flex-direction: column;
 }
 
 .genre {
@@ -795,13 +1172,21 @@ h2 {
 	margin: 0px 0px;
 	box-sizing: border-box;
 }
+.to-from-container {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 30px;
+	font-size: 26px;
+	text-transform: capitalize;
+}
 
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
-	.genre {
-		width: calc(50% - 10px);
-		margin: 0px;
-	}
 	.container {
 		max-width: 640px;
 	}
@@ -810,10 +1195,6 @@ h2 {
 @media (min-width: 640px) {
 	.time-facet-button {
 		width: fit-content;
-	}
-
-	.facet-options {
-		column-count: 2;
 	}
 
 	.facet-options .checkbox {
@@ -827,12 +1208,6 @@ h2 {
 	.facet-options .checkbox.semi-end {
 		border-right: 0px solid rgba(230, 230, 230, 1);
 	}
-
-	.genre {
-		width: calc(50% - 15px);
-		flex: 0 0 calc(50% - 15px);
-		margin: 0px 0px;
-	}
 	.container {
 		max-width: 990px;
 	}
@@ -842,23 +1217,8 @@ h2 {
 }
 
 @media (min-width: 990px) {
-	.facet-options {
-		column-count: 4;
-	}
-
 	.facet-options .checkbox.semi-end {
 		border-right: 1px solid rgba(230, 230, 230, 1);
-	}
-
-	.genre-facets {
-		padding: 0px 5px;
-		gap: 45px 40px;
-		justify-content: flex-start;
-	}
-	.genre {
-		width: calc(25% - 30px);
-		flex: 0 0 calc(25% - 30px);
-		margin: 0px 0px;
 	}
 	.container {
 		max-width: 1150px;
@@ -878,6 +1238,13 @@ h2 {
 		margin: auto;
 		padding-right: 0;
 		padding-left: 0;
+	}
+}
+
+@media (min-width: 2130px) {
+	.search-facets {
+		margin-right: 1605px;
+		left: initial !important;
 	}
 }
 </style>

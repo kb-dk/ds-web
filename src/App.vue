@@ -1,6 +1,6 @@
 <template>
 	<header
-		:aria-label="`${route.name as string} header`"
+		:aria-label="`${String(route.name).toLowerCase()} header`"
 		class="header"
 	>
 		<a
@@ -23,8 +23,10 @@
 	</header>
 	<main
 		id="main-content"
-		class="content"
+		:class="`content ${String(route.name).toLowerCase()}`"
 	>
+		<Facets v-if="route.name === 'Search'"></Facets>
+		<Underlay></Underlay>
 		<router-view v-slot="{ Component }">
 			<transition
 				:name="transitionName || 'fade'"
@@ -47,15 +49,18 @@ import Spinner from '@/components/global/spinner/Spinner.vue';
 import { LocalStorageWrapper } from '@/utils/local-storage-wrapper';
 import Footer from '@/components/global/nav/Footer.vue';
 import Header from '@/components/search/Header.vue';
+import Facets from '@/components/search/Facets.vue';
 import { useAuthStore } from '@/store/authStore';
 import { APIService } from '@/api/api-service';
 import { APIAuthMessagesType, APISearchResponseType } from '@/types/APIResponseTypes';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { Priority, Severity } from '@/types/NotificationType';
+import Underlay from './components/search/Underlay.vue';
 import '@/assets/styles/font-styles.css';
 import '@/assets/styles/elements.css';
 import '@/assets/styles/base.css';
+import { startYear, endYear, startDate, endDate } from './components/common/timeSearch/TimeSearchInitValues.js';
 
 export default defineComponent({
 	name: 'App',
@@ -64,6 +69,8 @@ export default defineComponent({
 		Spinner,
 		Footer,
 		Header,
+		Facets,
+		Underlay,
 	},
 	setup() {
 		const td = ref(0.4);
@@ -115,6 +122,15 @@ export default defineComponent({
 		});
 
 		onMounted(async () => {
+			watch(
+				() => route.name,
+				(newRoute) => {
+					if (newRoute !== undefined) {
+						document.body.classList.toggle('notFrontpage', newRoute !== 'Home');
+					}
+				},
+				{ immediate: true },
+			);
 			//for now, we set the title of the app to the archive. Can be changed if we ever go portal-mode.
 			document.title = t('app.titles.frontpage.archive.name') as string;
 
@@ -126,6 +142,16 @@ export default defineComponent({
 					if (newVal) {
 						// ask for facets
 						const facetAPICall = APIService.getFullResultWithFacets();
+						APIService.getTVFacets().then((response) => {
+							searchResultStore.TVFacets = response.data.facet_counts.facet_fields.creator_affiliation_facet.filter(
+								(entry) => typeof entry === 'string',
+							);
+						});
+						APIService.getRadioFacets().then((response) => {
+							searchResultStore.RadioFacets = response.data.facet_counts.facet_fields.creator_affiliation_facet.filter(
+								(entry) => typeof entry === 'string',
+							);
+						});
 						let facetAPiCallFurfilled = false;
 						// timeout promise for long responsetimes. (7 seconds pt.)
 						const maximumWaitTime = new Promise<void>((resolve) => {
@@ -148,9 +174,28 @@ export default defineComponent({
 						Promise.race([facetAPICall, maximumWaitTime])
 							.then((response) => {
 								if (response) {
+									const isTimeFiltersSet =
+										startDate.value.getTime() !== startYear.value.getTime() ||
+										endDate.value.getTime() !== endYear.value.getTime();
+
 									//if api comes back first, we get the results and set our boolean to true.
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									const years = searchResultStore.initFacets.facet_fields.temporal_start_year;
+
+									startYear.value = new Date(startYear.value);
+									startYear.value.setFullYear(Number(years[0]));
+
+									endYear.value = new Date(endYear.value);
+									endYear.value.setFullYear(Number(years[years.length - 2]));
+
+									if (!isTimeFiltersSet) {
+										const startHolder = new Date(startYear.value.getTime());
+										const endHolder = new Date(endYear.value.getTime());
+										startDate.value = startHolder;
+										endDate.value = endHolder;
+									}
+
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}
@@ -161,8 +206,26 @@ export default defineComponent({
 								// if the timeout was first, we still want the api promise returned here
 								// unless it the results were already back - then we ignore this.
 								if (!facetAPiCallFurfilled) {
+									const isTimeFiltersSet =
+										startDate.value.getTime() !== startYear.value.getTime() ||
+										endDate.value.getTime() !== endYear.value.getTime();
 									const typedResponse = response as APISearchResponseType;
 									searchResultStore.initFacets = typedResponse.data.facet_counts;
+									const years = searchResultStore.initFacets.facet_fields.temporal_start_year;
+
+									startYear.value = new Date(startYear.value);
+									startYear.value.setFullYear(Number(years[0]));
+
+									endYear.value = new Date(endYear.value);
+									endYear.value.setFullYear(Number(years[years.length - 2]));
+
+									if (!isTimeFiltersSet) {
+										const startHolder = new Date(startYear.value.getTime());
+										const endHolder = new Date(endYear.value.getTime());
+										startDate.value = startHolder;
+										endDate.value = endHolder;
+									}
+
 									searchResultStore.firstBackendFetchExecuted = true;
 									facetAPiCallFurfilled = true;
 								}
@@ -336,16 +399,6 @@ export default defineComponent({
 	top: 0;
 }
 
-:focus {
-	outline: none;
-}
-
-:focus-visible {
-	box-shadow: 0 0 0 3px #02204bea !important;
-	border-radius: 4px !important;
-	transition: box-shadow 0.2s ease-in-out;
-}
-
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;
@@ -367,7 +420,7 @@ export default defineComponent({
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.25s ease;
+	transition: opacity height backgroundColor 0.25s ease;
 }
 
 .fade-enter-from,
@@ -377,7 +430,7 @@ export default defineComponent({
 
 .test-env {
 	text-transform: uppercase;
-	position: sticky;
+	position: absolute;
 	height: 30px;
 	line-height: 30px;
 	font-size: 16px;
@@ -387,11 +440,10 @@ export default defineComponent({
 	width: 100%;
 	z-index: 5;
 	text-align: center;
-	background: #002e70;
-
 	span {
 		border-bottom: 1px solid white;
 	}
+	pointer-events: none;
 }
 
 /* SEARCH TO HOME TRANSITION */
@@ -402,7 +454,7 @@ export default defineComponent({
 }
 
 .search-to-home-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -420,8 +472,19 @@ export default defineComponent({
 	z-index: 3;
 }
 
-#main-content {
+.content.home {
+	background-color: var(--bg-default);
 	min-height: 50vh;
+	transition: all 0.5s ease-in-out 0.1s;
+}
+
+.content.search {
+	background-color: white;
+	transition: all 0.5s ease-in-out 0s;
+}
+
+.content.record {
+	margin-top: 20px;
 }
 
 .search-to-home-leave-to {
@@ -441,7 +504,7 @@ export default defineComponent({
 }
 
 .home-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -475,7 +538,7 @@ export default defineComponent({
 }
 
 .record-to-search-enter-from {
-	margin-top: -50px;
+	// margin-top: -50px;
 	opacity: 0;
 	position: relative;
 }
@@ -504,34 +567,44 @@ export default defineComponent({
 
 .search-to-record-enter-active,
 .search-to-record-leave-active {
-	transition: all 0.25s linear;
+	transition:
+		transform 0.25s linear,
+		opacity 0.25s linear;
 	position: relative;
 }
 
 /* SEARCH TO RECORD TRANSITION */
 
+.search-to-record-enter-active {
+	transition:
+		margin-top 0.25s linear 0.5s,
+		opacity 0.25s linear 0.5s;
+}
+
+.search-to-record-leave-active {
+	transition:
+		margin-top 0.25s linear,
+		opacity 0.25s linear;
+}
+
 .search-to-record-enter-from {
 	margin-top: 50px;
 	opacity: 0;
-	position: absolute;
 }
 
 .search-to-record-enter-to {
 	margin-top: 0px;
 	opacity: 1;
-	position: relative;
 }
 
 .search-to-record-leave-from {
-	top: 0px;
 	opacity: 1;
-	position: relative;
+	margin-top: 0px;
 }
 
 .search-to-record-leave-to {
-	margin-top: -50px;
+	margin-top: 50px;
 	opacity: 0;
-	position: relative;
 }
 
 body {
@@ -539,6 +612,13 @@ body {
 	padding: 0;
 	overscroll-behavior: none;
 	overflow-x: hidden;
+	background-color: var(--bg-default);
+	transition: background-color 0.25s ease-in-out 0ms;
+}
+
+body.notFrontpage {
+	background-color: white;
+	transition: background-color 0.5s ease-in-out 0s;
 }
 
 .remove-body-scroll {
@@ -559,9 +639,13 @@ body {
 	overflow-x: hidden;
 }
 
+footer {
+	flex-shrink: 0;
+}
+
 .content {
+	min-height: 50vh;
 	position: relative;
-	background-color: white;
 }
 
 @media (min-width: 1280px) {

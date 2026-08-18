@@ -1,6 +1,6 @@
 <template>
 	<div class="record-container">
-		<div class="container top-offset">
+		<div class="container">
 			<div class="record-data">
 				<!-- TODO handle empty response scenario -->
 				<div v-if="!loading && recordData !== null">
@@ -310,7 +310,6 @@ export default defineComponent({
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
-	min-height: 100vh;
 	width: 100%;
 }
 
@@ -322,15 +321,9 @@ export default defineComponent({
 }
 
 .record-data {
-	padding-top: 25px 25px 25px 25px;
+	padding: 0 25px 25px 25px;
 }
 
-.top-offset {
-	position: relative;
-	background: white;
-	top: -20px;
-	z-index: 3;
-}
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -340,13 +333,10 @@ export default defineComponent({
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.record-data {
-		padding: 25px 25px 25px 25px;
+		padding: 0 25px 25px 25px;
 	}
 	.container {
 		max-width: 990px;
-	}
-	.top-offset {
-		top: -40px;
 	}
 }
 /* MEDIA QUERY 990 */
@@ -356,20 +346,11 @@ export default defineComponent({
 		flex-direction: column;
 		max-width: 1150px;
 	}
-	.top-offset {
-		top: -60px;
-		margin-left: 24px;
-		margin-right: 24px;
-		z-index: 4;
-	}
 }
 /* MEDIA QUERY 1150 */
 @media (min-width: 1150px) {
 	.container {
 		max-width: 1280px;
-	}
-	.top-offset {
-		top: calc(-6vw + 10px);
 	}
 	/* MEDIA QUERY 1280 */
 	@media (min-width: 1280px) {
@@ -377,17 +358,6 @@ export default defineComponent({
 			padding-right: 0;
 			padding-left: 0;
 			width: 100%;
-		}
-	}
-	@media (min-width: 2000px) {
-		.top-offset {
-			top: calc(-4vw + 10px);
-		}
-	}
-
-	@media (min-width: 4000px) {
-		.top-offset {
-			top: calc(-2vw + 10px);
 		}
 	}
 }

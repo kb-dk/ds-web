@@ -170,7 +170,7 @@ export default defineComponent({
 		watch(
 			() => route.params.id,
 			() => {
-				if (KalturaPlayer) {
+				if (audioPlayer) {
 					audioPlayer.destroy();
 				}
 				setupPlayer();
@@ -186,7 +186,7 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
+			if (audioPlayer) {
 				audioPlayer.destroy();
 			}
 		});
@@ -202,16 +202,13 @@ export default defineComponent({
 }
 
 .audio-player-box {
-	background-color: black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	margin-left: 0px;
 	overflow-y: hidden;
-	padding-top: 31px;
 	padding-bottom: 31px;
-	background-color: white;
 	position: relative;
 }
 

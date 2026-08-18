@@ -146,8 +146,8 @@ export default defineComponent({
 }
 
 .image-item {
-	width: calc(100% + 1px);
-	height: calc(100% + 1px);
+	width: calc(100% + 2px);
+	height: calc(100% + 2px);
 	object-fit: cover;
 	transition:
 		opacity 0.3s ease-in-out 0s,

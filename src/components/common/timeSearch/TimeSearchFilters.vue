@@ -3,7 +3,7 @@
 		v-show="timeline"
 		class="slider-container"
 	>
-		<div class="data-size">
+		<!-- <div class="data-size">
 			<KBButton
 				button-type="btn-dropdown-default"
 				button-color="transparent"
@@ -14,7 +14,7 @@
 				:data-testid="addTestDataEnrichment('button', 'time-search-filters', 'toggle-data-button', 0)"
 				@click="toggleExplanation()"
 			></KBButton>
-		</div>
+		</div> -->
 
 		<div class="to-from-container">
 			<CustomTimelineSelect
@@ -29,6 +29,10 @@
 				:label="$t('timeSearch.to')"
 				@update-selected="updateEndYear"
 			/>
+			<p class="year-count">
+				<span class="equal-sign">=</span>
+				{{ $t('timeSearch.periodOf', { number: Math.ceil(timeSliderValues[1] - timeSliderValues[0] + 1) }) }}
+			</p>
 		</div>
 		<div class="slider-whiteoff-container">
 			<Transition name="fade">
@@ -53,8 +57,16 @@
 			<div
 				ref="dataContainer"
 				class="data-container"
-			></div>
-			<div class="dotted-separator"></div>
+			>
+				<div
+					ref="highlightStart"
+					class="data-highlight start-block"
+				></div>
+				<div
+					ref="highlightEnd"
+					class="data-highlight end-block"
+				></div>
+			</div>
 			<Transition name="fade">
 				<VueSlider
 					v-if="data.length > 0"
@@ -70,181 +82,6 @@
 			</Transition>
 		</div>
 	</div>
-	<div
-		v-show="picker"
-		class="picker-container"
-	>
-		<CustomExpander
-			ref="yearSearch"
-			:headline="t('timeSearch.yearHeadline')"
-			icon="event"
-			:subline="getSublineForYears(startDate, endDate, t)"
-		>
-			<div class="picker-background"><DatePicker @date-search="emitNewSearch"></DatePicker></div>
-		</CustomExpander>
-	</div>
-	<div class="time-selection">
-		<div class="month-selector-expanding">
-			<fieldset>
-				<CustomExpander
-					:headline="t('timeSearch.monthHeadline')"
-					icon="event"
-					:subline="getSublineForMonths(months, t)"
-					:item-array="months"
-					:update-entity="updateCheckbox"
-				>
-					<ItemSlider
-						bg-scroll-white="true"
-						bg="#ffffff00"
-						item-class="month"
-					>
-						<div class="select-container month">
-							<div class="checkbox all">
-								<CustomTimelineCheckbox
-									:index="0"
-									name="timeSearch.all"
-									:val="allMonthsChecked"
-									:tilted="false"
-									:disabled="searchResultStore.queryLimitReached"
-									:update="updateAllCheckbox"
-									:parent-array="months"
-								></CustomTimelineCheckbox>
-							</div>
-							<div class="month-selector">
-								<div
-									:style="'background-image:url(' + figuresImage + ')'"
-									class="figures"
-								></div>
-								<div class="gradient"></div>
-								<div class="all-months-items">
-									<div
-										v-for="(item, index) in months"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="months[index].name"
-											:val="months[index].selected"
-											:tilted="true"
-											:update="updateCheckbox"
-											:disabled="searchResultStore.queryLimitReached"
-											:parent-array="months"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</div>
-					</ItemSlider>
-				</CustomExpander>
-			</fieldset>
-		</div>
-		<div class="overall-selector">
-			<div class="select-container days">
-				<fieldset>
-					<CustomExpander
-						:headline="t('timeSearch.dayHeadline')"
-						icon="date_range"
-						:subline="getSublineForDays(days, t)"
-						:item-array="days"
-						:update-entity="updateCheckbox"
-					>
-						<ItemSlider
-							bg-scroll-white="true"
-							bg="#ffffff00"
-							item-class="month"
-						>
-							<div class="expand-container-days">
-								<div class="checkbox all">
-									<CustomTimelineCheckbox
-										:index="1"
-										name="timeSearch.all"
-										:val="allDaysChecked"
-										:disabled="searchResultStore.queryLimitReached"
-										:tilted="false"
-										:parent-array="days"
-										:update="updateAllCheckbox"
-									></CustomTimelineCheckbox>
-								</div>
-								<div class="all-days-items">
-									<div class="day-gradient"></div>
-									<div
-										v-for="(item, index) in days"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="days[index].name"
-											:val="days[index].selected"
-											:disabled="searchResultStore.queryLimitReached"
-											:tilted="true"
-											:update="updateCheckbox"
-											:parent-array="days"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</ItemSlider>
-					</CustomExpander>
-				</fieldset>
-			</div>
-			<div class="select-container select-time">
-				<fieldset>
-					<CustomExpander
-						:headline="t('timeSearch.timeslotHeadline')"
-						icon="schedule"
-						:subline="getSublineForTimeslots(timeslots, t)"
-						:item-array="timeslots"
-						:update-entity="updateCheckbox"
-						:filter-name-cutoff="13"
-					>
-						<ItemSlider
-							bg-scroll-white="true"
-							bg="#ffffff00"
-							item-class="month"
-						>
-							<div class="expand-container-time">
-								<div class="checkbox all">
-									<CustomTimelineCheckbox
-										:index="2"
-										name="timeSearch.all"
-										:val="allTimeslotsChecked"
-										:tilted="false"
-										:disabled="searchResultStore.queryLimitReached"
-										:parent-array="timeslots"
-										:update="updateAllCheckbox"
-									></CustomTimelineCheckbox>
-								</div>
-								<div class="all-timeslot-items">
-									<div
-										:style="'background-image:url(' + timelapseImage + ')'"
-										class="timelapse"
-									></div>
-									<div class="time-gradient"></div>
-									<div
-										v-for="(item, index) in timeslots"
-										:key="index"
-										class="checkbox"
-									>
-										<CustomTimelineCheckbox
-											:index="index"
-											:name="timeslots[index].name"
-											:val="timeslots[index].selected"
-											:tilted="true"
-											:disabled="searchResultStore.queryLimitReached"
-											:update="updateCheckbox"
-											:parent-array="timeslots"
-										></CustomTimelineCheckbox>
-									</div>
-								</div>
-							</div>
-						</ItemSlider>
-					</CustomExpander>
-				</fieldset>
-			</div>
-		</div>
-	</div>
 </template>
 
 <script lang="ts">
@@ -252,8 +89,6 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import VueSlider from 'vue-3-slider-component';
 import CustomTimelineSelect from '@/components/common/CustomTimelineSelect.vue';
-import ItemSlider from '@/components/search/ItemSlider.vue';
-import CustomTimelineCheckbox from '@/components/common/CustomTimelineCheckbox.vue';
 import {
 	days,
 	endDate,
@@ -276,8 +111,6 @@ import {
 import { dataItem, markerData, pointItem, SelectorData } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import CustomExpander from '@/components/common/CustomExpander.vue';
-import DatePicker from '@/components/common/timeSearch/DatePicker.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
@@ -289,17 +122,12 @@ import {
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useRoute } from 'vue-router';
-import KBButton from '@/components/common/KBButton.vue';
+// import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
 	name: 'TimeSearchFilters',
 	components: {
 		CustomTimelineSelect,
-		ItemSlider,
-		CustomTimelineCheckbox,
 		VueSlider,
-		CustomExpander,
-		DatePicker,
-		KBButton,
 	},
 
 	props: {
@@ -333,11 +161,13 @@ export default defineComponent({
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
 		const dataContainer = ref<HTMLDivElement>();
+		const highlightStart = ref<HTMLDivElement>();
+		const highlightEnd = ref<HTMLDivElement>();
+
 		const closeDataExplanation = ref<HTMLButtonElement>();
 		const fullYearArray = ref([] as pointItem[]);
 		const data = ref([] as markerData[]);
 		const selectYears = ref([] as string[]);
-		const yearSearch = ref<typeof CustomExpander>();
 		const dataButton = ref<HTMLDivElement>();
 		const expToggled = ref(false);
 		const vueSliderRef = ref<InstanceType<typeof VueSlider> | null>(null);
@@ -372,6 +202,7 @@ export default defineComponent({
 						(newVal: boolean) => {
 							if (newVal && Object.keys(searchResultStore.initFacets).length !== 0) {
 								constructSVG();
+								updateVisualPresentation();
 							} else {
 								/* TODO: Error here! */
 							}
@@ -380,6 +211,14 @@ export default defineComponent({
 				}
 			}
 		});
+
+		watch(
+			timeSliderValues,
+			() => {
+				updateVisualPresentation();
+			},
+			{ deep: true },
+		);
 
 		watch(
 			() => vueSliderRef.value,
@@ -460,6 +299,22 @@ export default defineComponent({
 			}
 		};
 
+		const updateVisualPresentation = () => {
+			if (props.timeline) {
+				const startIndex = computed(() => data.value.findIndex((d) => d.key === timeSliderValues.value[0]));
+				const endIndex = computed(() => data.value.findIndex((d) => d.key === timeSliderValues.value[1]));
+				const total = computed(() => data.value.length - 1);
+				const leftPercent = computed(() => (startIndex.value / total.value) * 100);
+				const rightPercent = computed(() => (endIndex.value / total.value) * 100);
+				if (!highlightStart.value || !highlightEnd.value) {
+					return;
+				}
+				highlightStart.value.style.width = `${leftPercent.value}%`;
+				highlightEnd.value.style.left = `${rightPercent.value}%`;
+				highlightEnd.value.style.width = `${100 - rightPercent.value + 1}%`;
+			}
+		};
+
 		const updateStartYear = (val: number) => {
 			timeSliderValues.value[0] = Number(val);
 			startDate.value !== null ? startDate.value.setFullYear(val) : null;
@@ -511,14 +366,6 @@ export default defineComponent({
 			emitNewSearch();
 		};
 
-		const figuresImage = computed(() => {
-			return new URL(`@/assets/images/dr_kalender-sprite2.png`, import.meta.url).href;
-		});
-
-		const timelapseImage = computed(() => {
-			return new URL(`@/assets/images/timegoes.svg`, import.meta.url).href;
-		});
-
 		return {
 			t,
 			months,
@@ -533,15 +380,12 @@ export default defineComponent({
 			updateAllCheckbox,
 			updateEndYear,
 			updateStartYear,
-			figuresImage,
-			timelapseImage,
 			timeSearchStore,
 			dataContainer,
 			emitNewSearch,
 			getSublineForMonths,
 			getSublineForDays,
 			getSublineForTimeslots,
-			yearSearch,
 			getSublineForYears,
 			dataButton,
 			toggleExplanation,
@@ -549,6 +393,8 @@ export default defineComponent({
 			closeTimeFacets,
 			addTestDataEnrichment,
 			vueSliderRef,
+			highlightStart,
+			highlightEnd,
 			closeDataExplanation,
 			searchResultStore,
 			allDaysChecked,
@@ -564,13 +410,45 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	align-content: center;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
 	gap: 10px;
-	margin-bottom: 30px;
+	margin-bottom: 0px;
 	font-size: 26px;
 	text-transform: capitalize;
+}
+
+.year-count {
+	color: var(--color-main);
+	text-transform: initial;
+	margin: 0;
+}
+
+.equal-sign {
+	padding: 0px 5px;
+}
+
+.data-highlight {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	height: 100%;
+	pointer-events: none;
+	transition:
+		left 0.25s,
+		opacity 0.25s,
+		width 0.25s;
+	opacity: 0.6;
+	background-color: var(--bg-default);
+}
+
+.start-block {
+	left: 0;
+}
+
+.end-block {
+	right: 0; /* initial */
 }
 
 .expand-container-days {
@@ -692,7 +570,9 @@ fieldset {
 
 .slider-whiteoff-container {
 	position: relative;
-	display: none;
+	margin-bottom: 20px;
+	padding-left: 25px;
+	padding-right: 25px;
 }
 .explanation-for-data {
 	position: absolute;
@@ -703,9 +583,9 @@ fieldset {
 	z-index: 10;
 	border: 1px solid #002e70;
 	color: #002e70;
-	padding: 35px 0px 35px 30px;
+	padding: 46px 0px 64px 30px;
 	box-sizing: border-box;
-	display: flex;
+	display: none;
 	color: white;
 }
 .explanation-for-data:hover button {
@@ -812,6 +692,7 @@ fieldset {
 	margin-bottom: 0px;
 	position: relative;
 	width: 100%;
+	margin-bottom: 60px;
 }
 
 @media (min-width: 450px) {
@@ -878,7 +759,6 @@ fieldset {
 	gap: 2px;
 	height: 130px;
 	position: relative;
-	margin-top: -94px;
 	z-index: 2;
 	margin-bottom: 40px;
 }
@@ -1065,16 +945,18 @@ fieldset {
 }
 
 .data-container {
-	width: calc(100%);
-	height: 60px;
+	width: calc(100% - 50px);
 	overflow: hidden;
 	user-select: none;
 	pointer-events: none;
 	position: absolute;
 	z-index: 4;
 	margin-top: 2px;
-	border-bottom: 1px solid #002e70;
+	border-radius: 4px;
 	box-sizing: border-box;
+	top: 0px;
+	height: 0px;
+	visibility: hidden;
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
@@ -1094,24 +976,43 @@ fieldset {
 	.slider-whiteoff-container {
 		display: block;
 	}
-	.data-size {
-		display: block;
-	}
-
 	.display-data-button {
 		display: block;
 	}
 	.slider-container {
-		height: 96px;
 		padding-bottom: 40px;
-		margin-bottom: 80px;
-		margin-top: 15px;
+	}
+	.data-container {
+		height: 200px;
+		visibility: visible;
+	}
+	.slider-container {
+		height: 200px;
+	}
+	.to-from-container {
+		margin-bottom: 30px;
+		flex-wrap: nowrap;
 	}
 }
 
 @media (min-width: 990px) {
 	.to-from-container {
 		justify-content: flex-start;
+	}
+	.data-size {
+		display: block;
+	}
+
+	.explanation-for-data {
+		display: flex;
+	}
+}
+@media (min-width: 1320px) {
+	.slider-whiteoff-container {
+		padding: 0;
+	}
+	.data-container {
+		width: calc(100%);
 	}
 }
 </style>

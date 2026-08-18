@@ -387,11 +387,12 @@ export default defineComponent({
 .arrow-pager {
 	text-decoration: none !important;
 }
-
+.active {
+	text-decoration: none !important;
+}
 .active span {
-	color: white;
-	background-color: #002e70;
-	text-decoration: none;
+	color: var(--color-default);
+	background-color: var(--bg-main-light);
 }
 
 button,
@@ -408,11 +409,11 @@ button,
 }
 .pager-buttons a {
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .pager-buttons a:visited {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 :disabled {
@@ -423,7 +424,7 @@ button span,
 .dots {
 	padding: 2px 5px;
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-default);
 	border-radius: 3px;
 	transition: all 0.2s linear 0s;
 	line-height: 25px;
@@ -434,7 +435,7 @@ button span,
 }
 
 .input-label {
-	color: #002e70;
+	color: var(--color-default);
 	height: 31px;
 	width: fit-content;
 	display: inline;
@@ -457,17 +458,17 @@ button span,
 
 .page-select-input {
 	background: #ffffff 0% 0% no-repeat padding-box;
-	color: #002e70;
-	border: 0px solid #002e70;
+	color: var(--color-default);
+	border: 0px solid var(--color-border-active);
 	border-radius: 2px;
 	height: 25px;
 	width: 80px;
 	padding: 2px 5px;
-	outline: 1px solid #002e70;
+	outline: 1px solid var(--color-border-active);
 }
 
 .page-select-input:focus-visible {
-	outline: 2px solid #002e70;
+	outline: 2px solid var(--color-border-active);
 }
 
 .page-select-input-error {
@@ -505,7 +506,7 @@ button span,
 	display: inline;
 }
 .morePagesMessage .topOfScreen {
-	color: #002e70;
+	color: var(--color-default);
 	cursor: pointer;
 }
 .topOfScreen > span {

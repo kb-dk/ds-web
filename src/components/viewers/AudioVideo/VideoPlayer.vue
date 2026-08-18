@@ -166,7 +166,7 @@ export default defineComponent({
 		watch(
 			() => props.entryId,
 			() => {
-				if (KalturaPlayer) {
+				if (videoPlayer) {
 					videoPlayer.destroy();
 				}
 				setupPlayer();
@@ -182,7 +182,7 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
+			if (videoPlayer) {
 				videoPlayer.destroy();
 			}
 		});
@@ -204,7 +204,6 @@ export default defineComponent({
 	width: 100%;
 	margin-left: 0px;
 	overflow-y: hidden;
-	padding-top: 31px;
 	padding-bottom: 31px;
 	background-color: white;
 	position: relative;

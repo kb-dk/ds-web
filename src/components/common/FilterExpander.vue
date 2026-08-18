@@ -1,0 +1,431 @@
+<template>
+	<div :class="expanderOpen ? 'expand-container open' : 'expand-container'">
+		<button
+			ref="headlineRef"
+			:disabled="disabled"
+			class="headline label-medium"
+			role="button"
+			@click="toggleExpander($event)"
+		>
+			<span class="material-icons icon">{{ icon }}</span>
+			{{ headline }}
+			<span
+				v-if="!timeSearchOngoing && type === 'time'"
+				class="entry-number label-regular label"
+			>
+				{{ subline }}
+			</span>
+			<span
+				v-if="type !== 'time' && subline.length === 0 && itemArray.length > 0"
+				class="entry-number label-regular label"
+			>
+				({{ itemArray.length }} {{ headline }})
+			</span>
+			<KBButton
+				v-if="(type !== 'time' && subline.length > 0) || (timeSearchOngoing && type === 'time')"
+				button-type="btn-tag"
+				button-color="main"
+				:class="'label-regular'"
+				button-size="default"
+				:custom-style="{ marginRight: '12px', marginLeft: 'auto' }"
+				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-remove-filter`, 0)"
+				right-icon-name="close"
+				:button-text="`${subline}`"
+				@click="removeFilters($event, facetType, itemArray)"
+			></KBButton>
+		</button>
+		<div
+			ref="expandContainer"
+			:class="fade ? 'expander' : 'expander'"
+		>
+			<slot></slot>
+		</div>
+		<div class="expander-toggle">
+			<button
+				:disabled="disabled"
+				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
+				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-status-toggle`, 0)"
+				:title="expanderOpen ? 'Close' : 'Open'"
+				:aria-expanded="expanderOpen"
+				@click="toggleExpander($event)"
+			>
+				{{ expanderOpen ? '-' : '+' }}
+			</button>
+		</div>
+	</div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, PropType, computed } from 'vue';
+import gsap from 'gsap';
+import { SelectorData } from '@/types/TimeSearchTypes';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import KBButton from '@/components/common/KBButton.vue';
+import { removeFilterAndSearch } from '@/utils/filter-utils';
+import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { startDate, endDate, startYear, endYear } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { removeTimeFacetsFromRoute, cloneRouteQuery } from '@/utils/filter-utils';
+
+export default defineComponent({
+	name: 'FilterExpander',
+	components: {
+		KBButton,
+	},
+	props: {
+		disabled: { type: Boolean, required: false, default: false },
+		type: {
+			type: String as PropType<string>,
+			required: true,
+		},
+		headline: {
+			type: String as PropType<string>,
+			required: true,
+		},
+		filterNameCutoff: {
+			type: Number as PropType<number>,
+			required: false,
+			default() {
+				return 3;
+			},
+		},
+		icon: {
+			type: String as PropType<string>,
+			required: true,
+		},
+		subline: {
+			type: String as PropType<string>,
+			required: true,
+		},
+		fade: {
+			type: Boolean as PropType<boolean>,
+			required: false,
+			default: false,
+		},
+		itemArray: {
+			type: Array as PropType<SelectorData[]>,
+			required: false,
+			default() {
+				return [] as SelectorData[];
+			},
+		},
+		facetType: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		mobileSubline: {
+			type: String as PropType<string>,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		updateEntity: {
+			type: Function,
+			default() {
+				return null;
+			},
+		},
+	},
+
+	setup(props) {
+		const expanderOpen = ref(false);
+		const expandContainer = ref<HTMLElement | null>(null);
+		const headlineRef = ref();
+		const route = useRoute();
+		const router = useRouter();
+		const { t } = useI18n();
+		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
+			props.updateEntity(parent, index, val, props.facetType);
+		};
+
+		const removeFilters = (e: Event, facetType: string, itemArray: Array<SelectorData>) => {
+			e.stopPropagation();
+			if (props.type !== 'time') {
+				removeFilterAndSearch(facetType, router, route, itemArray);
+			} else {
+				removeTimeFlitersAndExecute();
+			}
+		};
+
+		const removeTimeFlitersAndExecute = () => {
+			const routeQueries = cloneRouteQuery(route);
+			routeQueries.fq = removeTimeFacetsFromRoute(routeQueries.fq);
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
+		};
+
+		const timeSearchOngoing = computed(() => {
+			return (
+				(startDate !== null &&
+					(startDate as unknown as string) !== '' &&
+					startDate.value.getTime() !== startYear.value.getTime()) ||
+				(endDate !== null &&
+					(endDate as unknown as string) !== '' &&
+					endDate.value.getTime() !== endYear.value.getTime())
+			);
+		});
+
+		const toggleExpander = (e: Event) => {
+			e.stopPropagation();
+			e.preventDefault();
+			if (expanderOpen.value) {
+				gsap.to(expandContainer.value, {
+					height: '0px',
+					duration: 0.35,
+					overwrite: true,
+					paddingBottom: '0px',
+					backgroundColor: 'transparent',
+					opacity: 0,
+					onComplete: () => {
+						gsap.set(expandContainer.value, {
+							display: props.fade ? 'block' : 'none',
+							overwrite: true,
+						});
+					},
+				});
+			} else {
+				gsap.set(expandContainer.value, {
+					display: 'block',
+					overwrite: true,
+					backgroundColor: '#CAF0FE1A',
+					onComplete: () => {
+						headlineRef.value.focus();
+						gsap.to(expandContainer.value, {
+							height: 'auto',
+							duration: 0.35,
+							overwrite: true,
+							paddingBottom: '10px',
+							opacity: 1,
+							onComplete: () => {
+								const el = expandContainer.value;
+								if (el) {
+									const scroller = el.closest('.facet-container');
+									if (scroller) {
+										const rect = el.getBoundingClientRect();
+										const parentRect = scroller.getBoundingClientRect();
+
+										scroller.scrollTo({
+											top: rect.top - parentRect.top + scroller.scrollTop - 16,
+											behavior: 'smooth',
+										});
+									}
+								}
+							},
+						});
+					},
+				});
+			}
+			expanderOpen.value = !expanderOpen.value;
+		};
+
+		return {
+			expanderOpen,
+			toggleExpander,
+			expandContainer,
+			passAlongUpdate,
+			addTestDataEnrichment,
+			headlineRef,
+			removeFilterAndSearch,
+			removeFilters,
+			t,
+			startDate,
+			endDate,
+			startYear,
+			endYear,
+			timeSearchOngoing,
+		};
+	},
+});
+</script>
+<style scoped>
+.expand-container {
+	z-index: 1;
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	transition: all 0.15s linear 0s;
+	border-top: 1px solid var(--color-default);
+	border-bottom: 1px solid var(--color-default);
+	color: var(--color-default);
+	box-sizing: border-box;
+	height: auto;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin-bottom: 25px;
+}
+
+.headline:disabled {
+	cursor: auto;
+}
+
+.headline {
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.5s linear 0s;
+	background-color: rgba(202, 240, 254, 0.1);
+	text-transform: capitalize;
+	font-weight: 100;
+	border: 0;
+}
+
+.entry-number {
+	margin-right: 12px;
+	margin-left: auto;
+	text-transform: none;
+}
+
+.headline:hover {
+	transition: all 0.5s linear 0s;
+}
+
+.icon {
+	font-size: 40px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.expander {
+	overflow: hidden;
+	height: 0px;
+	width: 100%;
+	opacity: 0;
+	display: none;
+	position: relative;
+}
+
+.expand-container .expander.fade:before {
+	pointer-events: none;
+	content: '';
+	display: block;
+	width: 100%;
+	height: 30px;
+	background: linear-gradient(0deg, rgba(250, 250, 250, 1) 20%, rgba(255, 255, 255, 0) 100%);
+	position: absolute;
+	margin-top: 35px;
+	z-index: 1;
+	transition: all 0.1s linear 0.3s;
+	opacity: 1;
+}
+
+.expand-container:hover,
+.expand-container.open {
+	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.24) inset;
+}
+
+.expand-container.open {
+	background-color: white;
+}
+
+.expand-container.open .expander {
+	background-color: white;
+}
+
+.toggle-button.open:before {
+	transform: scaleY(1);
+}
+
+.toggle-button:disabled {
+	cursor: auto;
+	background-color: gray;
+}
+
+.toggle-button:disabled:before {
+	border-bottom: 6px solid gray;
+}
+
+.toggle-button:disabled:after {
+	border-top: 6px solid gray;
+}
+
+.toggle-button:before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 6px solid var(--color-default);
+	position: absolute;
+	transition: all 0.15s ease-in-out 0s;
+	transform: scaleY(0);
+	transform-origin: bottom;
+	top: -17px;
+	left: 0px;
+}
+
+.toggle-button:after {
+	position: absolute;
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 6px solid var(--color-default);
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: all 0.15s ease-in-out 0s;
+	top: 11px;
+	left: 0px;
+}
+
+.toggle-button.closed:after {
+	transform: scaleY(1);
+}
+
+.expand-container.open .expander.fade:before {
+	opacity: 0;
+	transition: all 0.1s linear 0s;
+}
+
+.expander-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	height: 0px;
+	left: 50%;
+	position: relative;
+	transform: translate(-30px, 0px);
+}
+
+.expander {
+	overflow: hidden;
+	height: 0px;
+	width: 100%;
+	opacity: 0;
+	display: none;
+	position: relative;
+	background-color: transparent;
+}
+
+.toggle-button {
+	z-index: 5;
+	border: 0px solid transparent;
+	cursor: pointer;
+	background-color: transparent;
+	padding: 10px 5px;
+	width: 20px;
+	height: 23px;
+	background-color: var(--color-default);
+	color: white;
+	font-size: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	transition: all 0.15s linear 0s;
+}
+</style>

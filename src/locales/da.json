@@ -42,21 +42,6 @@
       "secondary":
          [
             {
-               "title": "Lån og aflevering",
-               "link": "https://www.kb.dk/services/laan-og-aflevering"
-            },{
-               "title": "Bliv bruger", 
-               "link": "https://www.kb.dk/bliv-bruger"
-            },{
-               "title": "Om os", 
-               "link": "https://www.kb.dk/om-os"
-            },{
-               "title": "Webshop", 
-               "link": "https://webshop.kb.dk/"
-            },{
-               "title": "Åbningstider", 
-               "link": "https://www.kb.dk/aabningstider"
-            },{
                "title": "In english", 
                "link": "#",
                "id": "localeSwitcher"
@@ -65,49 +50,78 @@
                "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
                "icon": "account_circle"
             }
-         ],
-      "primary":
-         [
-            {
-               "title": "Find materiale",
-               "link": "https://www.kb.dk/find-materiale"
-            },{
-               "title": "Inspiration", 
-               "link": "https://www.kb.dk/inspiration"
-            },{
-               "title": "Arrangementer", 
-               "link": "https://www.kb.dk/arrangementer"
-            },{
-               "title": "Services", 
-               "link": "https://www.kb.dk/services"
-            },{
-               "title": "Besøg os", 
-               "link": "https://www.kb.dk/besoeg-os"
-            },{
-               "title": "Luk", 
-               "altTitle": "Søg",
-               "id": "searchToggle",
-               "icon": "search"
-            }
          ]
    },
    "frontpage": {
       "fromTheArchive":"{month} måned på DR gennem tiden"
    },
    "facets" : {
+      "headline":"Filtrér din søgning på ",
+      "starHeadline": "Filtrér din søgning",
       "allGenres": "Alle kategorier",
       "genres": "kategori | kategorier",
-     "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
+      "selectedGenres": "{selected} af {total} kategorier valgt",
+      "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
       "allChannels":"Alle kanaler",
+      "selectedTVChannels":"{selected} af {total} kanaler valgt",
+      "selectedRadioChannels":"{selected} af {total} kanaler valgt",
       "channels":"kanal | kanaler",
+      "tvChannels":"TV kanal | TV kanaler",
+      "radioChannels": "RADIO kanal | RADIO kanaler",
       "chosen":"Valgt",
+      "contentFrom": "Indhold tilbage fra ",
       "reset":"nulstil",
-     "choose": "Vælg",
-     "slowResponse": {
-       "title": "Lang respons tid",
-       "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
-     },
-     "remove":"Fjern"
+      "choose": "Vælg",
+      "seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
+      "to":"Til",
+      "from":"Fra",
+      "year":"år",
+      "slowResponse": {
+         "title": "Lang respons tid",
+         "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
+      },
+     "remove":"Fjern",
+     "searchingIn":"Søger kun på",
+     "desc":"beskrivelse",
+     "title":"titel",
+     "searchMethod": {
+         "all": {
+            "title":"Søg i alt",
+            "desc":"Der søges i alle metadata-felter."
+         },
+         "title": {
+            "title":"Søg kun på titler",
+            "desc":"Der søges kun i titel-feltet."
+         },
+         "desc": {
+            "title":"Søg kun på beskrivelser",
+            "desc":"Der søges kun i beskrivelses-feltet."
+         }
+      },
+      "searchMaterial": {
+         "both": {
+            "title":"Søg på både TV og RADIO",
+            "desc":"Der søges både i RADIO-poster og TV-poster."
+         },
+         "tv": {
+            "title":"Søg kun på TV",
+            "desc":"Der søges kun i TV-poster."
+         },
+         "radio": {
+            "title":"Søg kun på RADIO",
+            "desc":"Der søges kun i RADIO-poster."
+         }
+      },
+      "timePeriod": {
+         "date": {
+            "title":"Dato",
+            "desc":"Der søges på en dag."
+         },
+         "period": {
+            "title":"Periode",
+            "desc":"Der søges på en år-række."
+         }
+      }
    },
    "breadcrumb": {
       "frontpage":"Forside",
@@ -117,9 +131,10 @@
       "record": "Udsendelse"
    },
    "timeSearch": {
-      "timeMachine":"Søg via periode",
-     "searchDate": "Søg via dato",
-     "searchCategories": "Søg via kategori",
+      "timeMachine":"Udvælg en periode, som du gerne vil se indhold fra",
+      "periodOf":"Periode på {number} år",
+      "searchDate": "Søg via dato",
+      "searchCategories": "Søg via kategori",
       "year":"år | år",
       "month":"måned | måneder",
       "week":"uge | uger",
@@ -143,7 +158,6 @@
       "allTimeslots":"Hele døgnet",
       "selection":"Et udpluk af resultaterne",
      "dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag.",
-     "timeMachineSubtitle": "Her kan du vælge årstal, måneder og ugedage, hvis du søger udsendelser sendt i en bestemt periode. Når du klikker dig videre til resultatlisten, får du flere filtreringsmuligheder.",
      "searchCategoriesSubtitle": "Vælg en kategori og gå på opdagelse i udsendelserne. Kategorierne indeholder primært TV-udsendelser, mens du finder de fleste af radioudsendelserne i “Radio-rodekassen.”",
       "monthHeadline":"Vælg måneder",
       "dayHeadline":"Vælg ugedage",
@@ -197,11 +211,9 @@
      "hitcount": " resultat fundet med | resultater fundet med",
      "filterSearch": " resultater fundet med dine filtre",
      "nohitSubtitle": {
-       "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger.",
-       "secondPart": "Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
        "readMore": "Læs mere om, hvad arkivet indeholder.",
        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
-       "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
+       "subtitleText": "Vi arbejder løbende på at gøre det lettere for dig at finde det, du leder efter. Tak for tålmodigheden! Nedenfor har vi samlet nogle gode råd til søgning, som måske kan hjælpe dig videre. "
      },
      "episode":"Episode",
     "pageNumberPlaceholder": "Indtast sidetal",
@@ -261,12 +273,7 @@
          "seeAllMaterials":"Se alt materiale",
          "allMaterialsLink":"https://www.kb.dk/find-materiale"
       },
-      "placeholders": {
-         "drArchive":"Søg for eksempel på titel eller år",
-         "booksAndMaterials":"Søg på titel, forfatter, tidsskrift, database etc.",
-         "kbdk":"Søg i hjemmesiden",
-         "webshop":"Søg i webshoppen"
-      },
+      "placeholder": "Søg...",
       "limitedFilters":{
          "title":"For mange filtre",
          "subtitle":"Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."
@@ -335,6 +342,9 @@
   },
   "notification": {
       "close":"Luk notifikation"
+  },
+  "spots": {
+   "readMoreSubtitle":"Før du går på opdagelse, kan du læse om arkivets indhold, baggrund og begrænsninger - og få gode råd til at søge i næsten 100 års radio og tv."
   },
   "footer": {
     "contactInfo":"Kontaktinformationer",
@@ -520,7 +530,7 @@
     "ChoseMaterialDesc":"Der skal være valgt mindst et materiale for at få et søgeresultat."
   },
   "hero": {
-      "title":"DR-arkiv",
+      "title":"DR-arkivet",
       "subtitle":"Det Kgl. Biblioteks",
       "progress":"Vi har nået {index}%...",
       "explanation":"I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
@@ -538,7 +548,8 @@
       "natur-og-videnskab":"Natur og videnskab",
       "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
       "radio-rodekasse":"Blandet radio",
-      "tv-rodekasse":"Blandet TV"
+      "tv-rodekasse":"Blandet TV",
+      "sport": "Sport"
    },
    "find":{
       "headline":"Hvad vil du søge efter?",
@@ -546,5 +557,13 @@
       "maybeYouWantTo":"Eller måske vil du hellere:",
       "restoreFilters":"Gendanne filtre fra sidste søgning",
       "GoToFrontpage":"Til forsiden af DR-arkivet"
+   },
+   "calendar": {
+      "open":"Åben kalender",
+      "close": "Luk kalender",
+      "explanation": "Skriv en dato i formatet DD-MM-ÅÅÅÅ eller vælg fra kalenderen.",
+      "select": "Vælg dato",
+      "nextMonth": "Næste måned",
+      "prevMonth":"Forrige måned"
    }
 }

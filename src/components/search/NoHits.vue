@@ -4,48 +4,30 @@
 		mode="out-in"
 	>
 		<div>
-			<h1 class="no-hits-heading">
+			<h2 class="no-hits-heading">
 				{{
 					searchResultStore.lastSearchQuery === '*:*'
 						? $t('search.nohitWithFilter', { filterSearch: $t('search.filterSearch') })
 						: $t('search.nohit', { query: searchResultStore.lastSearchQuery })
 				}}
-			</h1>
-			<EdgedContentArea
-				v-if="searchResultStore.spellCheck?.collations && searchResultStore.spellCheck?.collations.length > 0"
-				:lines="true"
-				:dotted-edges="false"
-				background-color="#c4f1ed"
-				align-items="start"
-				:line-padding="false"
-			>
-				<template #content>
-					<h2>{{ $t('search.maybeYouMeant') }}</h2>
-					<div class="no-hits">
-						<SpellChecker :spell-check="searchResultStore.spellCheck" />
-					</div>
-				</template>
-			</EdgedContentArea>
+			</h2>
+			<h3>{{ $t('search.maybeYouMeant') }}</h3>
+			<div class="no-hits">
+				<SpellChecker :spell-check="searchResultStore.spellCheck" />
+			</div>
 			<div class="no-hits-heading-subtitle">
-				<p>{{ $t('search.nohitSubtitle.firstPart') }}</p>
-				<p>{{ $t('search.nohitSubtitle.secondPart') }}</p>
+				<p>{{ $t('search.nohitSubtitle.subtitleText') }}</p>
 				<a
 					:href="$t('search.nohitSubtitle.link')"
 					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
 				>
 					{{ $t('search.nohitSubtitle.readMore') }}
 				</a>
-				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
 			</div>
-
-			<TiltedDivider
-				:title="$t('search.searchGuide.title')"
-				:right="true"
-			></TiltedDivider>
 			<TextAndImage :hide-image-on-mobile="true">
 				<template #text>
 					<div>
-						<h2>{{ $t('search.searchGuide.subtitle') }}</h2>
+						<h3>{{ $t('search.searchGuide.title') }}</h3>
 						<ul>
 							<li>
 								<p>{{ $t('search.searchGuide.first') }}</p>
@@ -86,27 +68,14 @@
 				</template>
 				<template #image><div class="material-icons search-icon">search</div></template>
 			</TextAndImage>
-			<EdgedContentArea
-				:lines="true"
-				:title="$t('search.mainCategories')"
-				class="main-categories-header"
-				background-color="#caf0fe"
-			>
-				<template #content>
-					<div class="showcase-container">
-						<MainCategories
-							:title="$t('timeSearch.searchCategories')"
-							text="#002e70"
-							:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-							:show-header="true"
-						></MainCategories>
-					</div>
-				</template>
-			</EdgedContentArea>
-			<ContactUs
-				class="contact-us"
-				:relative-position="false"
-			></ContactUs>
+			<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+			<div class="end-container">
+				<SpotCategories></SpotCategories>
+				<ContactUs
+					class="contact-us"
+					:relative-position="false"
+				></ContactUs>
+			</div>
 		</div>
 	</Transition>
 </template>
@@ -115,23 +84,21 @@
 import { defineComponent } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import SpellChecker from '@/components/search/SpellChecker.vue';
-import TiltedDivider from '@/components/global/content-elements/TiltedDivider.vue';
 import TextAndImage from '@/components/global/content-elements/TextAndImage.vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
 import { useI18n } from 'vue-i18n';
+import SpotCategories from '../common/SpotCategories.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'NoHits',
 	components: {
 		ContactUs,
-		MainCategories,
 		SpellChecker,
-		TiltedDivider,
 		TextAndImage,
-		EdgedContentArea,
+		SpotCategories,
+		ContainerSplitBar,
 	},
 	setup() {
 		const { t, locale } = useI18n();
@@ -153,6 +120,27 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 90px;
+	position: relative;
+	flex-direction: column;
+}
+.no-hits {
+	margin-top: 22px;
+	margin-bottom: 38px;
+}
 .no-hits * {
 	padding: 0;
 	box-sizing: border-box;
@@ -176,7 +164,7 @@ export default defineComponent({
 	align-items: center;
 	padding: 50px 0px;
 	flex-direction: row;
-	color: white;
+	color: var(--color-default);
 	flex-wrap: wrap;
 	align-content: center;
 	box-sizing: border-box;
@@ -185,7 +173,7 @@ export default defineComponent({
 .material-icons {
 	display: block;
 	background: -webkit-linear-gradient(#eee, rgb(255, 220, 164));
-	background: -webkit-linear-gradient(#002e70);
+	background: -webkit-linear-gradient(var(--bg-default));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-size: 50px;
@@ -207,6 +195,8 @@ export default defineComponent({
 	word-wrap: break-word;
 	hyphens: auto;
 	max-width: 800px;
+	color: var(--color-default);
+	margin-bottom: 56px;
 }
 h2 {
 	margin: 0;
@@ -214,6 +204,7 @@ h2 {
 .no-hits-heading-subtitle {
 	margin-top: 10px;
 	max-width: 750px;
+	color: var(--color-default);
 }
 .no-hits-heading-subtitle a {
 	font-size: var(--fs-base);
@@ -223,20 +214,19 @@ h2 {
 .search-icon {
 	text-align: center;
 	font-size: 150px;
-	color: #002e70;
+	color: var(--color-default);
 }
 ul p {
 	margin: 0;
 }
 .contact-us {
-	margin-top: 0;
+	margin-top: 38px;
 	padding-bottom: 0;
 }
 
 @media (min-width: 990px) {
 	.contact-us {
-		margin-top: -40px;
-		padding-bottom: 40px;
+		padding-bottom: 20px;
 	}
 	.search-icon {
 		font-size: 256px;

@@ -40,7 +40,7 @@
 									}`"
 									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 								>
-									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 								</span>
 								<p class="label-small">
 									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
@@ -121,7 +121,7 @@
 							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							class="material-icons ph-icon"
 						>
-							play_circle_filled
+							play_circle
 						</div>
 						<span
 							class="line"
@@ -241,7 +241,7 @@ export default defineComponent({
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation);
 			imageDataObj.imgOption = 'cover';
-			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.icon = 'play_circle';
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
@@ -258,7 +258,7 @@ export default defineComponent({
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
-						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.icon = 'play_circle';
 						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
@@ -331,7 +331,7 @@ export default defineComponent({
 .outer-container {
 	z-index: 1;
 	position: relative;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-success);
 }
 
 .arrow {
@@ -385,26 +385,32 @@ export default defineComponent({
 .information {
 	text-overflow: ellipsis;
 	width: 100%;
-	overflow: hidden;
 	max-width: 100%;
+	color: var(--color-default);
 }
+
+.information > * {
+	margin-left: 5px;
+}
+
 .title {
 	text-decoration: none;
+	display: block;
+	width: fit-content;
 }
 .title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
-	color: #002e70;
+	color: var(--color-default);
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 75ch;
-
+	max-width: 75ch;
+	width: fit-content;
 	height: 26px;
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
-	color: #002e70;
 }
 .subtitle {
 	display: flex;
@@ -418,7 +424,7 @@ export default defineComponent({
 	margin: 0;
 }
 .episode-text {
-	color: #002e70;
+	color: var(--color-default);
 }
 .episode-split-icon {
 	padding-right: 3px;
@@ -429,6 +435,7 @@ export default defineComponent({
 .result-image-wrapper {
 	width: 100%;
 	height: 150px;
+	margin-top: 4px;
 }
 
 .where,
@@ -519,7 +526,7 @@ export default defineComponent({
 	display: inline-block;
 	width: 50px;
 	height: 14px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-defalt);
 	border-radius: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -533,7 +540,7 @@ export default defineComponent({
 .placeholder-w .line {
 	display: inline-block;
 	border-radius: 10px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-defalt);
 	width: 30px;
 	height: 14px;
 	width: 25%;
@@ -620,7 +627,7 @@ export default defineComponent({
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;
-		height: 175px;
+		height: 215px;
 		flex-direction: row;
 	}
 	.information {
@@ -628,7 +635,7 @@ export default defineComponent({
 	}
 	.summary {
 		position: absolute;
-		top: 110px;
+		top: 135px;
 	}
 	.result-image-wrapper {
 		width: 200px;
@@ -647,11 +654,14 @@ export default defineComponent({
 		display: flex;
 		flex-direction: row;
 	}
+	.summary {
+		top: 110px;
+	}
 }
 
 @media (min-width: 800px) {
 	.container {
-		height: 150px;
+		height: 175px;
 	}
 	.result-image-wrapper {
 		height: initial;
@@ -671,7 +681,7 @@ export default defineComponent({
 
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
-		border-left: 1px solid rgba(230, 230, 230, 1);
+		border-left: 1px solid var(--color-border-success);
 	}
 
 	.backfade {
@@ -697,7 +707,6 @@ export default defineComponent({
 			opacity 0.3s ease-in-out,
 			visibility 0s linear 0.3s; /* Delay visibility hiding */
 	}
-
 	.result-item-wrapper.data:hover .backfade {
 		opacity: 0.6;
 		visibility: visible; /* Show immediately */

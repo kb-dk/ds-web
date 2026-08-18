@@ -1,72 +1,24 @@
 <template>
 	<div class="portal-container container">
-		<div class="categories">
-			<SkewedFoldable
-				:title="$t('timeSearch.searchCategories')"
-				:left="false"
-				bg="#caf0fe"
-				text="#0a2e70"
-				icon="category"
-				:fullwidth="true"
-				:shadow-bottom="true"
-				:shadow-top="true"
-				:always-expand="true"
-				:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-				:hover-effect="true"
-			>
-				<MainCategories
-					:title="$t('timeSearch.searchCategories')"
-					text="#0a2e70"
-					:subtitle="$t('timeSearch.searchCategoriesSubtitle')"
-				></MainCategories>
-			</SkewedFoldable>
-		</div>
-		<div class="date-picker">
-			<SkewedFoldable
-				:title="$t('timeSearch.searchDate')"
-				:left="true"
-				bg="#caf0fe"
-				icon="event"
-				:subtitle="$t('timeSearch.dateSubtitle')"
-				:fullwidth="true"
-				text="#0a2e70"
-				:always-expand="true"
-				:dashed-bottom="true"
-				:shadow-bottom="true"
-				:hover-effect="true"
-			>
-				<DayPicker />
-			</SkewedFoldable>
-		</div>
+		<SpotContainer></SpotContainer>
 		<div class="time-search">
-			<SkewedFoldable
+			<TimeSearchComponent
 				:title="$t('timeSearch.timeMachine')"
-				:left="false"
-				bg="#fafafa"
-				text="#0a2e70"
-				icon="schedule"
-				:subtitle="$t('timeSearch.timeMachineSubtitle')"
-				:fullwidth="true"
-				:dashed-bottom="true"
-				:shadow-bottom="false"
-			>
-				<TimeSearchComponent
-					:title="$t('timeSearch.timeMachine')"
-					:subtitle="$t('timeSearch.timeMachineSubtitle')"
-					text="#0a2e70"
-				></TimeSearchComponent>
-			</SkewedFoldable>
+				text="var(--color-main)"
+			></TimeSearchComponent>
 		</div>
-		<TiltedDivider
-			:right="false"
-			:title="
-				$t('frontpage.fromTheArchive', {
-					month: new Date().toLocaleString(currentLocale, { month: 'long' }),
-				})
-			"
-			:data-testid="addTestDataEnrichment('TiltedDivider', 'PortalContent', 'through-time-header', 0)"
-		></TiltedDivider>
+		<div class="title">
+			<h2>
+				{{ t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) }) }}
+			</h2>
+		</div>
+
 		<div class="container">
+			<div class="container-backdrop">
+				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+			</div>
+
 			<GridDisplay
 				:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
 				:row-nr="4"
@@ -84,11 +36,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import GridDisplay from '@/components/common/GridDisplay.vue';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import TimeSearchComponent from '@/components/common/TimeSearchComponent.vue';
-import TiltedDivider from '../global/content-elements/TiltedDivider.vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import DayPicker from '@/components/common/timeSearch/DayPicker.vue';
-import MainCategories from '@/components/common/MainCategories.vue';
-import SkewedFoldable from '@/components/common/SkewedFoldable.vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -97,16 +45,16 @@ import { APISearchResponseType } from '@/types/APIResponseTypes';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { CuratedItemsType } from '@/types/CuratedItemsType';
+import SpotContainer from '@/components/common/SpotContainer.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'PortalContent',
 	components: {
 		GridDisplay,
 		TimeSearchComponent,
-		TiltedDivider,
-		DayPicker,
-		MainCategories,
-		SkewedFoldable,
+		SpotContainer,
+		ContainerSplitBar,
 	},
 
 	setup() {
@@ -240,26 +188,48 @@ export default defineComponent({
 </script>
 
 <style scoped>
+h2 {
+	margin: 0px;
+}
+.title {
+	width: 100%;
+	color: var(--color-main);
+	margin-bottom: 38px;
+	padding-left: 20px;
+}
+.title h2::first-letter {
+	text-transform: capitalize;
+}
 .time-search {
-	margin-bottom: -70px;
+	background-color: var(--bg-default);
+	width: 100%;
+	position: relative;
+	z-index: 1;
 }
 
 .portal-container {
 	position: relative;
-	margin-top: -110px !important;
+	/* margin-top: -110px !important; */
 	align-items: center;
-}
-.categories,
-.date-picker,
-.time-search {
-	position: relative;
-	margin-top: -6.1vw;
-	width: calc(100% + 24px);
-	margin-left: -12px;
 }
 
 .container {
+	background-color: var(--bg-secondary-light-20);
 	width: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+.container-backdrop {
+	position: absolute;
+	height: 100%;
+	width: 100vw;
+	background-color: var(--bg-backdrop);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
 }
 
 .categories {
@@ -268,37 +238,17 @@ export default defineComponent({
 .date-picker {
 	z-index: 2;
 }
-.time-search {
-	z-index: 1;
-	margin-bottom: 40px !important;
+@media (min-width: 640px) {
+	.title {
+		margin-top: 38px;
+	}
 }
-
 @media (min-width: 990px) {
 	.categories,
 	.date-picker,
 	.time-search {
 		width: 100%;
 		margin-left: 0px;
-	}
-
-	.time-search,
-	.categories,
-	.date-picker {
-		display: grid;
-		justify-content: center;
-	}
-}
-
-@media (min-width: 2000px) {
-	.date-picker,
-	.time-search {
-		margin-top: -3vw;
-	}
-}
-@media (min-width: 4000px) {
-	.date-picker,
-	.time-search {
-		margin-top: -1.5vw;
 	}
 }
 </style>

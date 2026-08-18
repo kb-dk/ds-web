@@ -1,19 +1,17 @@
 <template>
 	<div class="daily-program">
-		<div class="extra-features">
-			<button
-				:class="dailyProgramExpanded ? 'guide-button active' : 'guide-button'"
-				:title="`${$t('search.programGuide')} - ${creator} ${startDate}`"
-				:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
-				@click="showProgramGuide()"
-			>
-				<span class="material-icons calendar-view-icon">view_day</span>
-				{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
-				<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
-					expand_more
-				</span>
-			</button>
-		</div>
+		<button
+			:class="dailyProgramExpanded ? 'guide-button active' : 'guide-button'"
+			:title="`${$t('search.programGuide')} - ${creator} ${startDate}`"
+			:data-testid="addTestDataEnrichment('button', 'program-guide', `show-programguide`, 0)"
+			@click="showProgramGuide()"
+		>
+			<span class="material-icons calendar-view-icon">view_day</span>
+			{{ `${$t('search.programGuide')} - ${creator}, ${startDate}` }}
+			<span :class="dailyProgramExpanded ? 'material-icons expand-icon turned' : 'material-icons expand-icon'">
+				expand_more
+			</span>
+		</button>
 		<div
 			ref="extraContentRef"
 			class="extra-content"
@@ -21,7 +19,7 @@
 			<ItemSlider
 				ref="programSliderRef"
 				:padding="true"
-				bg="transparent"
+				bg="var(--bg-main-3)"
 				item-class="extra-program"
 				:display-slider-arrows="true"
 				:visible="dailyProgramExpanded"
@@ -83,7 +81,7 @@
 							>
 								<div class="program-text">
 									<span class="material-icons">
-										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 									</span>
 									{{ item.title[0] }}
 								</div>
@@ -145,7 +143,12 @@
 				</template>
 			</ItemSlider>
 		</div>
-		<div class="hors-dot">•</div>
+		<div
+			class="hors-dot"
+			:class="{ active: dailyProgramExpanded }"
+		>
+			•
+		</div>
 	</div>
 </template>
 
@@ -351,12 +354,13 @@ export default defineComponent({
 <style scoped>
 .guide-button {
 	cursor: pointer;
-	border: 1px solid rgba(230, 230, 230, 1);
+	border: 0;
+	border-bottom: 1px solid var(--color-border-success);
 	border-radius: 0px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: #002e70;
+	color: var(--color-default);
 	transition:
 		all 0.3s ease-in-out 0s,
 		margin-bottom 0s linear 0s;
@@ -366,22 +370,23 @@ export default defineComponent({
 	width: fit-content;
 	font-size: 18px;
 	border-radius: var(--Rounded-md, 4px) var(--Rounded-md, 4px) 0 0;
-	border: 1px solid #002e70;
-	background-color: #f0fbff;
+	background-color: white;
 }
 .guide-button.active {
-	background-color: #00255a;
-	color: white;
+	background-color: var(--bg-main);
+	color: var(--color-default);
 }
 .guide-button:hover {
-	background-color: #c4f1ed;
-	color: #0a2e70;
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .daily-program {
 	--bg-color: #ffffff;
 
 	color: #323232;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-success);
 	margin-bottom: 10px;
 	margin-left: 20px;
 	margin-right: 20px;
@@ -392,25 +397,94 @@ export default defineComponent({
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0s;
+		--initialColor 0.3s ease,
+		--midPointColor1 0.3s ease,
+		--midPointColor2 0.3s ease,
+		--endColor 0.3s ease;
+}
+@property --initialColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor1 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+@property --midPointColor2 {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+
+@property --endColor {
+	syntax: '<color>';
+	initial-value: white;
+	inherits: false;
+}
+.daily-program:hover .hors-dot.active {
+	--initialColor: rgba(249, 234, 240, 1);
+	--midPointColor1: rgba(235, 223, 228, 1);
+	--midPointColor2: white;
+	--endColor: white;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 58%,
+		var(--midPointColor2) 58%,
+		var(--endColor) 100%
+	);
+}
+.hors-dot.active {
+	--initialColor: rgba(247, 232, 238, 1);
+	--midPointColor1: rgba(234, 222, 227, 1);
+	--midPointColor2: white;
+	--endColor: white;
+}
+.guide-button:hover ~ .hors-dot {
+	--initialColor: rgba(239, 188, 208, 1);
+	--midPointColor1: rgba(239, 188, 208, 1);
+	--midPointColor2: white;
+	--endColor: white;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 55%,
+		var(--midPointColor2) 55%,
+		var(--endColor) 100%
+	);
 }
 .hors-dot {
+	display: flex;
 	position: absolute;
-	height: 10px;
+	height: 11px;
 	text-align: center;
-	color: #002e70;
+	color: var(--color-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0.5;
-	margin-top: -3px;
+	line-height: 0;
 	transform-origin: center;
 	will-change: transform;
-	background-color: transparent;
 	z-index: 1;
 	transition:
 		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s;
+		--initialColor 0.3s ease-in-out,
+		--midPointColor1 0.3s ease-in-out,
+		--midPointColor2 0.3s ease-in-out,
+		--endColor 0.3s ease-in-out;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	margin-top: -7px;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 65%,
+		var(--midPointColor2) 65%,
+		var(--endColor) 100%
+	);
 }
 .daily-program-expanded {
 	overflow-y: hidden;
@@ -444,7 +518,7 @@ export default defineComponent({
 	word-break: keep-all;
 	overflow: hidden;
 	background-color: white;
-	color: #0a2e70;
+	color: var(--color-default);
 	text-align: center;
 	text-decoration: none;
 	transition: all 0.25s linear 0s;
@@ -455,14 +529,14 @@ export default defineComponent({
 	white-space: nowrap;
 }
 .programs:hover {
-	background-color: #c4f1ed;
-	color: #0a2e70;
-	border: 1px solid #0a2e70;
+	background-color: var(--bg-main-2);
+	color: var((--color-default));
+	border: 1px solid var(--color-border-active);
 }
 .programs-current {
-	background-color: #c4f1ed;
-	color: #0a2e70;
-	border: 1px solid #0a2e70;
+	background-color: var(--bg-main-2);
+	color: var((--color-default));
+	border: 1px solid var(--color-border-active);
 }
 .between-program {
 	width: 0px;
@@ -493,7 +567,7 @@ export default defineComponent({
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	color: #002e70;
+	color: var(--color-default);
 }
 .between-program-no-text {
 	justify-content: center;
@@ -509,7 +583,7 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: #f3f3f3;
+	background-color: var(--bg-main-3);
 	position: relative;
 	box-sizing: border-box;
 	padding: 20px 0px 12px 0px;
@@ -523,7 +597,7 @@ export default defineComponent({
 	display: flex;
 	pointer-events: all;
 	text-decoration: none;
-	color: #002e70;
+	color: var(--color-default);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -580,7 +654,7 @@ export default defineComponent({
 	height: 1.5em;
 	display: flex;
 	flex-direction: row;
-	color: #002e70;
+	color: var(--color-default);
 	user-select: none;
 }
 .hour-display > * {
@@ -622,6 +696,14 @@ export default defineComponent({
 	}
 	.program-button.active {
 		margin-bottom: 0px;
+	}
+}
+@media (min-width: 870px) {
+	.guide-button:hover ~ .hors-dot {
+		--initialColor: white;
+		--midPointColor1: white;
+		--midPointColor2: white;
+		--endColor: white;
 	}
 }
 </style>

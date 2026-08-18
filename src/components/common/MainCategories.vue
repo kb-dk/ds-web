@@ -31,7 +31,9 @@
 				>
 					{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
 					<span class="number label-regular">{{ entity.number.toLocaleString('de-DE') }}</span>
-					<span :class="`category-image ${santizeAndSimplify(entity.name)}`"></span>
+					<span :class="['category-image', 'material-icons', { outline: returnFilledIconStatus(entity.name) }]">
+						{{ returnCategoryIcon(entity.name) }}
+					</span>
 				</router-link>
 			</div>
 		</div>
@@ -72,6 +74,7 @@ import { useSearchResultStore } from '@/store/searchResultStore';
 import NoFacetContent from '@/components/global/content-elements/NoFacetContent.vue';
 import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
+import { returnCategoryIcon, returnFilledIconStatus } from '@/utils/icon-utils';
 
 export default defineComponent({
 	name: 'MainCategories',
@@ -79,7 +82,7 @@ export default defineComponent({
 	props: {
 		title: { type: String, default: '' },
 		subtitle: { type: String, default: '' },
-		text: { type: String, default: 'black' },
+		text: { type: String, default: 'var(--bg-default)' },
 		showHeader: { type: Boolean, default: false },
 	},
 	setup() {
@@ -140,7 +143,17 @@ export default defineComponent({
 			});
 		};
 
-		return { t, categories, addTestDataEnrichment, categoriesLoaded, quotation, santizeAndSimplify, scrollToTop };
+		return {
+			t,
+			categories,
+			addTestDataEnrichment,
+			categoriesLoaded,
+			quotation,
+			santizeAndSimplify,
+			scrollToTop,
+			returnCategoryIcon,
+			returnFilledIconStatus,
+		};
 	},
 });
 </script>
@@ -239,7 +252,6 @@ export default defineComponent({
 	z-index: 20;
 	top: -25px;
 	left: -1px;
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
 	filter: hue-rotate(5deg);
 }
 
@@ -259,40 +271,6 @@ export default defineComponent({
 	background: #c4f1ed 0% 0% no-repeat padding-box;
 	border: 2px solid #002e70;
 	border-radius: 4px;
-}
-
-.diverse {
-	background-image: url('@/assets/icons/blue/diverse-blue.svg');
-}
-.dokumentar {
-	background-image: url('@/assets/icons/blue/dokumentar-blue.svg');
-}
-.film-og-serier {
-	background-image: url('@/assets/icons/blue/fiktion-blue.svg');
-}
-.kultur-og-oplysning {
-	background-image: url('@/assets/icons/blue/kultur-blue.svg');
-}
-.livsstil {
-	background-image: url('@/assets/icons/blue/livsstil-blue.svg');
-}
-.musik {
-	background-image: url('@/assets/icons/blue/musik-blue.svg');
-}
-.nyheder-politik-og-samfund {
-	background-image: url('@/assets/icons/blue/nyheder-blue.svg');
-}
-.sport {
-	background-image: url('@/assets/icons/blue/sport-blue.svg');
-}
-.humor-quiz-og-underholdning {
-	background-image: url('@/assets/icons/blue/underholdning-blue.svg');
-}
-.natur-og-videnskab {
-	background-image: url('@/assets/icons/blue/videnskab-blue.svg');
-}
-.brn-og-unge {
-	background-image: url('@/assets/icons/blue/born-blue.svg');
 }
 
 .container {

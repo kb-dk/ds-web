@@ -14,7 +14,7 @@
 		<div class="boardcast-record-data">
 			<div class="main-record-data">
 				<div class="record-data">
-					<h1>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h1>
+					<h2>{{ recordData.name[0].value ? recordData.name[0].value : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
 				</div>
 				<div class="back-link">
@@ -46,7 +46,7 @@
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<h3>{{ $t('record.aired') }}</h3>
+					<p class="lead">{{ $t('record.aired') }}</p>
 					<div class="info label-medium">
 						<span class="material-icons blue">event</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
@@ -146,7 +146,13 @@
 				></GridResultItem>
 			</div>
 		</div>
-		<ContactUs :relative-position="false"></ContactUs>
+		<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+		<div class="end-container">
+			<ContactUs
+				class="contact-us"
+				:relative-position="false"
+			></ContactUs>
+		</div>
 	</div>
 </template>
 
@@ -166,6 +172,7 @@ import GridResultItem from '@/components/search/GridResultItem.vue';
 import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
 import KBButton from '@/components/common/KBButton.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'BroadcastAudioRecord',
@@ -177,6 +184,7 @@ export default defineComponent({
 		Duration,
 		ProgramGuide,
 		KBButton,
+		ContainerSplitBar,
 	},
 
 	props: {
@@ -263,6 +271,24 @@ export default defineComponent({
 temporary styling until patterns from design system are implemented 
 -->
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 65px;
+	position: relative;
+	flex-direction: column;
+}
+
 h3 {
 	margin-top: 0;
 }
@@ -332,11 +358,8 @@ h4 {
 	margin-right: 3px;
 }
 
-.material-icons.blue {
-	color: #002e70;
-}
-
 .boardcast-record-data {
+	color: var(--color-default);
 	display: flex;
 	flex-direction: column;
 	margin: 0px 20px;
@@ -362,18 +385,21 @@ h4 {
 }
 
 .right-side {
-	overflow: hidden;
 	flex: 0 0 100%;
 	max-width: 100%;
 }
 
 .right-side-metadata-box {
-	color: #002e70;
+	color: var(--color-default);
 	width: 100%;
 	padding: 20px 10px 30px 10px;
-	background-color: #f0fbff;
+	background-color: var(--bg-main-3);
 	box-sizing: border-box;
 	text-transform: capitalize;
+}
+
+.right-side-metadata-box .material-icons {
+	color: var(--color-default);
 }
 
 .related-record {
@@ -410,7 +436,7 @@ h4 {
 }
 
 .divider.darkblue {
-	background-color: #002e70;
+	background-color: var(--bg-main);
 }
 
 .related-content {
@@ -419,6 +445,7 @@ h4 {
 }
 .related-content-title {
 	padding: 0px 20px;
+	color: var(--color-default);
 }
 .related-record {
 	flex: 0 0 90%;
@@ -426,7 +453,7 @@ h4 {
 }
 
 .genre-link {
-	color: #002e70;
+	color: var(--color-default);
 	text-decoration: none;
 	text-transform: none;
 }
@@ -437,9 +464,9 @@ h4 {
 }
 
 .link-container {
-	background-color: #0a2e70;
+	background-color: var(--bg-light);
 	width: fit-content;
-	color: white;
+	color: var(--color-main);
 	text-align: center;
 	text-decoration: none;
 	border-radius: 4px;

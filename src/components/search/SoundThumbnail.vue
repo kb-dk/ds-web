@@ -15,7 +15,7 @@
 			class="material-icons play"
 			aria-hidden="true"
 		>
-			play_circle_filled
+			play_circle
 		</span>
 	</div>
 </template>
