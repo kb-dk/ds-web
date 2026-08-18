@@ -214,11 +214,9 @@
      "nohit":"Sorry, we did not find any results matching your search for \"{query}\"",
      "nohitWithFilter":"We are sorrry no {filterSearch}",
      "nohitSubtitle": {
-        "firstPart": "We are sorry that it was not possible to find a result for your search. Not all programmes in the archive are linked to good search words yet, so it may take a few tries to find what you are looking for.",
-        "secondPart": "Perhaps you have searched for something that has not yet entered the archive or that we are not allowed to show in the archive.",
         "readMore": "Read more about what the archive contains.",
         "link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet",
-        "lastPart": "We hope for your understanding and patience - we are working to make the archive material more searchable. Below we have collected some advice about searching, which may help you further. "
+        "subtitleText": "We’re working on making it easier for you to find what you’re looking for. Thanks for your patience! Below, we’ve put together a few search tips that might help."
      },
      "episode":"Episode",
      "pageNumberPlaceholder": "Enter page",

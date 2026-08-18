@@ -211,11 +211,9 @@
      "hitcount": " resultat fundet med | resultater fundet med",
      "filterSearch": " resultater fundet med dine filtre",
      "nohitSubtitle": {
-       "firstPart": "Vi beklager, at det ikke var muligt at finde et resultat til din søgning. Det er endnu ikke alle udsendelser i arkivet, der er koblet op på gode søgeord, så det kan godt kræve et par forsøg at finde frem til det, du søger.",
-       "secondPart": "Måske har du søgt noget, som endnu ikke er kommet i arkivet, eller som vi ikke må vise i arkivet.",
        "readMore": "Læs mere om, hvad arkivet indeholder.",
        "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
-       "lastPart": "Vi håber på din forståelse og tålmodighed - vi arbejder på at gøre arkivmaterialet mere søgbart. Nedenfor har vi samlet nogle gode råd om søgning, som måske kan hjælpe dig videre."
+       "subtitleText": "Vi arbejder løbende på at gøre det lettere for dig at finde det, du leder efter. Tak for tålmodigheden! Nedenfor har vi samlet nogle gode råd til søgning, som måske kan hjælpe dig videre. "
      },
      "episode":"Episode",
     "pageNumberPlaceholder": "Indtast sidetal",

@@ -16,7 +16,7 @@
 				<SpellChecker :spell-check="searchResultStore.spellCheck" />
 			</div>
 			<div class="no-hits-heading-subtitle">
-				<p>{{ $t('search.nohitSubtitle.lastPart') }}</p>
+				<p>{{ $t('search.nohitSubtitle.subtitleText') }}</p>
 				<a
 					:href="$t('search.nohitSubtitle.link')"
 					:data-testid="addTestDataEnrichment('link', 'NoHits', 'link-to-about', 0)"
