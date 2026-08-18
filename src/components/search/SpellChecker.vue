@@ -60,6 +60,9 @@ export default defineComponent({
 }
 .spell-check-suggestion {
 	display: inline-flex;
+	text-decoration: none;
+}
+.spell-check-suggestion:hover {
 	text-decoration: underline;
 }
 </style>
