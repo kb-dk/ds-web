@@ -945,7 +945,7 @@ fieldset {
 }
 
 .data-container {
-	width: calc(100%);
+	width: calc(100% - 50px);
 	overflow: hidden;
 	user-select: none;
 	pointer-events: none;
@@ -957,7 +957,6 @@ fieldset {
 	top: 0px;
 	height: 0px;
 	visibility: hidden;
-	padding-right: 30px;
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 1200px) {
@@ -1013,7 +1012,7 @@ fieldset {
 		padding: 0;
 	}
 	.data-container {
-		padding: 0;
+		width: calc(100%);
 	}
 }
 </style>
