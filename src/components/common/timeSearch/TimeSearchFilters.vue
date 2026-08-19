@@ -21,12 +21,14 @@
 				:current-selected="timeSliderValues[0]"
 				:list-items="selectYears"
 				:label="$t('timeSearch.from')"
+				label-color="var(--color-main)"
 				@update-selected="updateStartYear"
 			/>
 			<CustomTimelineSelect
 				:current-selected="timeSliderValues[1]"
 				:list-items="selectYears"
 				:label="$t('timeSearch.to')"
+				label-color="var(--color-main)"
 				@update-selected="updateEndYear"
 			/>
 			<p class="year-count">

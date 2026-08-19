@@ -1,6 +1,9 @@
 <template>
 	<div class="select-container">
-		<label class="label-big">
+		<label
+			class="label-big"
+			:style="{ color: labelColor }"
+		>
 			{{ label }}:
 			<select
 				v-model="selected"
@@ -57,6 +60,12 @@ export default defineComponent({
 			type: String,
 			default() {
 				return '';
+			},
+		},
+		labelColor: {
+			type: String,
+			default() {
+				return 'var(--color-default)';
 			},
 		},
 	},
@@ -121,7 +130,6 @@ export default defineComponent({
 
 label {
 	padding-right: 10px;
-	color: var(--color-main);
 	display: flex;
 	gap: 5px;
 	align-items: center;
