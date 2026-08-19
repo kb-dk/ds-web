@@ -51,6 +51,7 @@
 					</div>
 				</div>
 				<ContainerSplitBar
+					v-if="route.query.q !== undefined"
 					key="2"
 					:is-top="false"
 				></ContainerSplitBar>
