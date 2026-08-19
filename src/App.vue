@@ -329,12 +329,24 @@ export default defineComponent({
 			if (typedResponse.data.alert1) {
 				errorManager.submitCustomError(
 					'messages-error',
-					t('error.title'),
+					getErrorHeadline(typedResponse.data.severity),
 					typedResponse.data.alert1,
 					getSevertiyFromResponse(typedResponse.data.severity),
 					true,
 					Priority.HIGH,
 				);
+			}
+		};
+
+		const getErrorHeadline = (severity?: Severity): string => {
+			if (severity === 1) {
+				return 'Succes';
+			} else if (severity === 2) {
+				return 'Information';
+			} else if (severity === 3) {
+				return 'Vigtig besked';
+			} else {
+				return 'Fejlmeddelelse';
 			}
 		};
 
