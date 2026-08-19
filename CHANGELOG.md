@@ -4,6 +4,17 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-08-19
+
+## Changed
+- New design throughout the entire platform.
+- Updated filter placement and reworked filter containers.
+- Updates to timeline design.
+- Various minor bugfixes throughout the entire platform.
+
+## Added
+- New filter feature for only searching in titles or descriptions.
+
 ## [1.1.11] - 2026-06-17
 
 ## Changed
