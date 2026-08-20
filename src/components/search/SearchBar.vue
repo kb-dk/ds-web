@@ -342,6 +342,10 @@ input[type='search']::-webkit-search-results-decoration {
 	width: 100%;
 }
 
+.notfound .search-container {
+	width: 100%;
+}
+
 .btn-icon {
 	display: inline-flex;
 	align-items: center;

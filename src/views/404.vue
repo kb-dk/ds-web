@@ -14,7 +14,7 @@
 				<div class="not-found-details">
 					<h2>{{ t('error.wrongUrl.header') }}</h2>
 					<p>{{ t('error.wrongUrl.text') }}</p>
-					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
+					<h3>{{ t('error.wrongUrl.altHeader') }}</h3>
 					<div class="extra-suggest">
 						<div>
 							<KBButton
