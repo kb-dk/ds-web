@@ -228,11 +228,13 @@ export default defineComponent({
 }
 .level-1,
 .level-2,
+.level-3,
 .level-4,
 .level-5,
 .level-6 {
-	height: 20px;
+	height: 30px;
 	align-content: center;
+	font-size: var(--fs-base-fixed);
 }
 .home-icon {
 	display: none;
