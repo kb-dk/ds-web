@@ -4,6 +4,16 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-08-20
+
+## Changed
+- Fixed small bug where filters status button would not visually update after a star search.
+- Changed a few h2 and h3 around.
+- fixed min-height on item-slider content for a more smooth transition between content and skeletons.
+- Added _blank so the "read more" link opens on a new page.
+- Fixed so the breadcrumb acts nicely on all screens and sizes.
+- Added a small transition out on the spot-link container.
+
 ## [1.2.0] - 2026-08-19
 
 ## Changed
