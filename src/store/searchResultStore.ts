@@ -358,6 +358,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			//window.scrollTo({ top: 0, behavior: 'smooth' });
 			searchFired.value = true;
 			loading.value = true;
+			if (currentQuery.value === '*:*') {
+				currentQuery.value = '';
+			}
 			spellCheck.value = {} as unknown as SpellCheckType;
 			const responseData = await APIService.getSearchResults(
 				query,
@@ -392,9 +395,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
 			}
-		}
-		if (currentQuery.value === '*:*') {
-			currentQuery.value = '';
 		}
 	};
 

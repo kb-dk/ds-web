@@ -12,6 +12,7 @@
 					ref="spotLink"
 					:href="t('hero.link')"
 					class="link"
+					target="_blank"
 				>
 					<h2>{{ t('hero.linkText') }}</h2>
 				</a>

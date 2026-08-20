@@ -118,7 +118,7 @@ h1 .headline {
 }
 
 h1 .headline .text {
-	font-size: var(--fs-xl-fixed);
+	font-size: var(--fs-xxl);
 }
 h1 {
 	margin: 0;
@@ -170,6 +170,7 @@ h1 {
 	background-color: var(--bg-default);
 	width: 100%;
 }
+
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
@@ -177,7 +178,11 @@ h1 {
 		padding-right: 12px;
 		padding-left: 12px;
 	}
+	.headline .text {
+		font-size: var(--fs-xl-fixed) !important;
+	}
 }
+
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.container {
