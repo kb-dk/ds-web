@@ -442,6 +442,7 @@ h4 {
 	max-width: 100%;
 }
 .related-content-title {
+	margin-top: 50px;
 	color: var(--color-default);
 	padding: 0px 20px;
 }

@@ -122,7 +122,7 @@ export default defineComponent({
 <style scoped>
 .overall-header {
 	position: relative;
-	z-index: 3;
+	z-index: 5;
 	height: 42px;
 	background-color: var(--bg-header);
 	display: flex;
@@ -172,7 +172,6 @@ export default defineComponent({
 	align-items: center;
 }
 .header-item > * {
-	text-transform: uppercase;
 	text-decoration: none;
 	color: var(--color-main);
 }
@@ -203,5 +202,11 @@ export default defineComponent({
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
+}
+
+@media (min-width: 520px) {
+	.overall-header {
+		z-index: 3;
+	}
 }
 </style>

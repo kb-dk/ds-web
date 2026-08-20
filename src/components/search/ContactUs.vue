@@ -39,6 +39,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .contact {
+	margin-top: 50px;
 	margin-left: 1%;
 	color: var(--color-main);
 }

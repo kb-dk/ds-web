@@ -110,7 +110,9 @@ export default defineComponent({
 					moveSelectorUp();
 					break;
 				case 'Enter':
-					doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
+					if (currentSelectedAutocomplete.value !== 0) {
+						doAutocompleteSearch(searchResultStore.autocompleteResult[currentSelectedAutocomplete.value - 1].term, e);
+					}
 					break;
 				case 'Tab':
 					if (searchResultStore.autocompleteResult?.length > 0) {

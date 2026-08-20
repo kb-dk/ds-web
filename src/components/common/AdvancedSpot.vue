@@ -127,7 +127,7 @@ export default defineComponent({
 }
 
 .process-bar {
-	height: 40px;
+	height: 68px;
 	display: flex;
 	width: calc(100% + 1px);
 	position: absolute;
