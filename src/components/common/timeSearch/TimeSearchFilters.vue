@@ -699,7 +699,7 @@ fieldset {
 
 @media (min-width: 450px) {
 	.slider-container {
-		height: 100px;
+		height: 130px;
 	}
 }
 

@@ -185,7 +185,9 @@ export default defineComponent({
 	padding-bottom: 15px;
 	box-sizing: border-box;
 }
-
+.item-slider .grid-result-item {
+	min-height: 445px;
+}
 .item-slider.padding {
 	padding-left: 15px;
 	padding-right: 15px;
@@ -260,6 +262,11 @@ export default defineComponent({
 	align-items: center;
 	display: flex;
 	text-align: center;
+}
+@media (min-width: 640px) {
+	.item-slider .grid-result-item {
+		min-height: 470px;
+	}
 }
 @media (min-width: 990px) {
 	.item-slider-direction-arrow {
