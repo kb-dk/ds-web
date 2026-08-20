@@ -64,7 +64,7 @@
 						<div class="content-container">
 							<h2>{{ t('find.headline') }}</h2>
 							<p>{{ t('find.subtitle') }}</p>
-							<h2>{{ t('find.maybeYouWantTo') }}</h2>
+							<h3>{{ t('find.maybeYouWantTo') }}</h3>
 							<div class="extra-options">
 								<KBButton
 									button-type="btn-main-medium"
