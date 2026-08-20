@@ -197,7 +197,9 @@ export default defineComponent({
 	max-width: 800px;
 	color: var(--color-default);
 	margin-bottom: 56px;
+	margin-top: 56px;
 }
+
 h2 {
 	margin: 0;
 }
