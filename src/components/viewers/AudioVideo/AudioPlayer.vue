@@ -89,7 +89,13 @@ export default defineComponent({
 		};
 
 		const appendScript = () => {
-			let kalturaScript = document.createElement('script');
+			const existingScript = document.getElementById('kaltura-player-script');
+
+			if (existingScript) {
+				bootstrapPlayer();
+				return;
+			}
+			const kalturaScript = document.createElement('script');
 			kalturaScript.setAttribute(
 				'src',
 				authStore.streamingBaseUrlAudio !== ''
@@ -130,9 +136,11 @@ export default defineComponent({
 					const audio = document.querySelector('#audio-player') as HTMLElement | null;
 					if (audio) {
 						const innerAudio = audio?.querySelector('video') as HTMLVideoElement | null;
-						if (innerAudio) innerAudio.disablePictureInPicture = true;
+						if (innerAudio) {
+							innerAudio.disablePictureInPicture = true;
+						}
+						audio.setAttribute('data-testid', 'audio-player-kaltura-container-0');
 					}
-					audio ? audio.setAttribute('data-testid', 'audio-player-kaltura-container-0') : null;
 				});
 				audioPlayer.addEventListener(audioPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
@@ -168,20 +176,17 @@ export default defineComponent({
 		});
 
 		watch(
-			() => route.params.id,
+			() => props.entryId,
 			() => {
 				if (audioPlayer) {
 					audioPlayer.destroy();
 				}
+				restrictedErrorDispatched.value = false;
 				setupPlayer();
 			},
 		);
 
 		const setupPlayer = () => {
-			const script = document.getElementById('kaltura-player-script');
-			if (script) {
-				script.parentNode?.removeChild(script);
-			}
 			appendScript();
 		};
 

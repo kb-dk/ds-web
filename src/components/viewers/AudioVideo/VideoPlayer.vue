@@ -86,7 +86,13 @@ export default defineComponent({
 		};
 
 		const appendScript = () => {
-			let kalturaScript = document.createElement('script');
+			const existingScript = document.getElementById('kaltura-player-script');
+
+			if (existingScript) {
+				bootstrapPlayer();
+				return;
+			}
+			const kalturaScript = document.createElement('script');
 			kalturaScript.setAttribute(
 				'src',
 				authStore.streamingBaseUrlVideo !== ''
@@ -125,9 +131,11 @@ export default defineComponent({
 					const video = document.querySelector('#video-player') as HTMLElement | null;
 					if (video) {
 						const innerVideo = video?.querySelector('video') as HTMLVideoElement | null;
-						if (innerVideo) innerVideo.disablePictureInPicture = true;
+						if (innerVideo) {
+							innerVideo.disablePictureInPicture = true;
+						}
+						video.setAttribute('data-testid', 'video-player-kaltura-container-0');
 					}
-					video ? video.setAttribute('data-testid', 'video-player-kaltura-container-0') : null;
 				});
 				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
@@ -169,15 +177,12 @@ export default defineComponent({
 				if (videoPlayer) {
 					videoPlayer.destroy();
 				}
+				restrictedErrorDispatched.value = false;
 				setupPlayer();
 			},
 		);
 
 		const setupPlayer = () => {
-			const script = document.getElementById('kaltura-player-script');
-			if (script) {
-				script.parentNode?.removeChild(script);
-			}
 			appendScript();
 		};
 
