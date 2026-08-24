@@ -30,7 +30,7 @@ export interface GenericSearchResultType {
 	creator_affiliation: string;
 	creator_affiliation_facet: string;
 	shelf_location: string;
-	title: string;
+	title?: string;
 	topic: string[];
 	type_of_resource: string[];
 	thumbnail: string;
