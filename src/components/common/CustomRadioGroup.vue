@@ -9,7 +9,7 @@
 			:icon="obj.icon"
 			:value="obj.value"
 			:title="obj.title"
-			:data-testid="addTestDataEnrichment('radio', 'custom-radio-group', `radio-${obj.title}`, 0)"
+			:data-testid="addTestDataEnrichment('radio', 'custom-radio-group', `radio-${name}`, index)"
 			:disabled="disable"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
