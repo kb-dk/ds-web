@@ -72,9 +72,9 @@
 								draggable="false"
 								:to="{ name: 'Record', params: { id: item.id }, query: { autoplay: true } }"
 								role="link"
-								:title="`${$t('search.title')} - ${item.title[0]}\n${$t('search.startTime')} - ${
-									item.temporal_start_time_da_string
-								}`"
+								:title="`${$t('search.title')} - ${item.title ? item.title[0] : t('app.titles.unknown')}\n${$t(
+									'search.startTime',
+								)} - ${item.temporal_start_time_da_string}`"
 								class="programs"
 								:style="{ width: `${getProgramWidth(`programs${index}`) - 8}px` }"
 								:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-program-${item.id}`, index)"
@@ -83,7 +83,7 @@
 									<span class="material-icons">
 										{{ item.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 									</span>
-									{{ item.title[0] }}
+									{{ item.title ? item.title[0] : t('app.titles.unknown') }}
 								</div>
 								<div class="program-text">
 									<span class="material-icons">schedule</span>
@@ -157,6 +157,7 @@ import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ComponentPublicInstance, defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import gsap from 'gsap';
+import { useI18n } from 'vue-i18n';
 import ItemSlider from '@/components/search/ItemSlider.vue';
 import { useRouter } from 'vue-router';
 export default defineComponent({
@@ -194,6 +195,7 @@ export default defineComponent({
 		const extraContentCurrentRef = ref<Array<ComponentPublicInstance<HTMLElement> | null>>([]);
 		const programSliderRef = ref<HTMLElement | null>(null);
 		const router = useRouter();
+		const { t } = useI18n();
 		const shortPrograms = ref<Array<number>>([]);
 		const betweenProgramsCorrection = ref(0);
 		const programWidth = ref<Map<string, number>>(new Map());
@@ -346,6 +348,7 @@ export default defineComponent({
 			loaded,
 			getProgramWidth,
 			betweenProgramsCorrection,
+			t,
 		};
 	},
 });
