@@ -17,6 +17,7 @@
 				ref="input"
 				v-model="displayValue"
 				class="dp-input"
+				:data-testid="addTestDataEnrichment('input', 'time-picker', 'dp-input', 0)"
 				:aria-invalid="invalid"
 				:aria-describedby="hintId"
 				placeholder="DD-MM-YYYY"
@@ -35,6 +36,7 @@
 			<button
 				type="button"
 				class="dp-toggle"
+				:data-testid="addTestDataEnrichment('button', 'time-picker', 'dp-toggle', 0)"
 				:aria-expanded="opened"
 				:aria-controls="calendarId"
 				:aria-label="opened ? t('calendar.close') : t('calendar.open')"
@@ -66,6 +68,7 @@
 							<select
 								v-model="selectedMonth"
 								class="btn-medium"
+								:data-testid="addTestDataEnrichment('select', 'time-picker', 'dp-selector-month', 0)"
 								:name="$t('timeSearch.from')"
 								@change="onMonthChange"
 							>
@@ -81,6 +84,7 @@
 							<select
 								v-model="selectedYear"
 								class="btn-medium"
+								:data-testid="addTestDataEnrichment('select', 'time-picker', 'dp-selector-year', 0)"
 								:name="$t('timeSearch.to')"
 								@change="onYearChange"
 							>
@@ -99,6 +103,7 @@
 							type="button"
 							:aria-label="t('calendar.prevMonth')"
 							class="material-icons change-month left"
+							:data-testid="addTestDataEnrichment('button', 'time-picker', 'dp-prev-month', 0)"
 							@click="prevMonth"
 						>
 							keyboard_arrow_left
@@ -108,6 +113,7 @@
 							type="button"
 							:aria-label="t('calendar.nextMonth')"
 							class="material-icons change-month right"
+							:data-testid="addTestDataEnrichment('button', 'time-picker', 'dp-next-month', 0)"
 							@click="nextMonth"
 						>
 							keyboard_arrow_right
@@ -153,6 +159,7 @@
 								:tabindex="isSameDate(day.date, focusDate) ? 0 : -1"
 								:aria-label="day.ariaLabel"
 								:data-key="day.key"
+								:data-testid="addTestDataEnrichment('button', 'time-picker', `dp-day-${monthTitle}`, day.label)"
 								@click="selectDay(day.date)"
 								@keydown="onDayKeydown($event, day)"
 							>
@@ -171,6 +178,7 @@ import { defineComponent, ref, computed, watch, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { CalendarDay } from '@/types/CalendarTypes';
 import { startYear, endYear } from './timeSearch/TimeSearchInitValues';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -524,6 +532,7 @@ export default defineComponent({
 			formatErrorDate,
 			startYear,
 			endYear,
+			addTestDataEnrichment,
 		};
 	},
 });

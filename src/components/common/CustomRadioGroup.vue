@@ -9,6 +9,7 @@
 			:icon="obj.icon"
 			:value="obj.value"
 			:title="obj.title"
+			:data-testid="addTestDataEnrichment('radio', 'custom-radio-group', `radio-${name}`, index)"
 			:disabled="disable"
 			:description="obj.description"
 			:checked="modelValue === obj.value"
@@ -32,6 +33,7 @@ export interface RadioButtonOption {
 import { defineComponent } from 'vue';
 import CustomRadioButton from '@/components/common/CustomRadioButton.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	components: { CustomRadioButton },
@@ -50,7 +52,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		const searchResultStore = useSearchResultStore();
-		return { emit, searchResultStore };
+		return { emit, searchResultStore, addTestDataEnrichment };
 	},
 });
 </script>
