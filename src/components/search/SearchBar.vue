@@ -176,7 +176,7 @@ export default defineComponent({
 				debounceMechanic.value = false;
 			}, 500);
 			let query: LocationQueryRaw = {
-				q: searchResultStore.currentQuery === '' ? ':*' : searchResultStore.currentQuery,
+				q: searchResultStore.currentQuery === '' ? '*:*' : searchResultStore.currentQuery,
 				start: 0,
 			};
 
