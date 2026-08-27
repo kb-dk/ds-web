@@ -3,7 +3,7 @@
 		class="item-container"
 		:class="{ 'item-slider-container': displaySliderArrows }"
 	>
-		<div
+		<button
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
 			@click="moveSlider(-550)"
@@ -11,20 +11,20 @@
 			<div class="item-slider-direction-arrow-inner">
 				<span class="material-icons">arrow_back_ios_new</span>
 			</div>
-		</div>
+		</button>
 		<div
 			ref="itemSliderRef"
 			:class="setSliderClasses()"
 		>
 			<slot :disable-links="move"></slot>
 		</div>
-		<div
+		<button
 			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
 			class="item-slider-direction-arrow right"
 			@click="moveSlider(550)"
 		>
 			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
-		</div>
+		</button>
 	</div>
 </template>
 
@@ -243,6 +243,7 @@ export default defineComponent({
 	pointer-events: none;
 	top: 45px;
 	border-radius: 30px;
+	border: none;
 }
 .item-slider-direction-arrow.right {
 	right: 12px;
@@ -253,8 +254,8 @@ export default defineComponent({
 	justify-content: center;
 }
 .item-slider-direction-arrow-inner {
-	height: 40px;
-	width: 40px;
+	height: 36px;
+	width: 36px;
 	border-radius: 30px;
 	background-color: var(--bg-main);
 	justify-content: center;
@@ -262,6 +263,12 @@ export default defineComponent({
 	align-items: center;
 	display: flex;
 	text-align: center;
+	transition: all 0.1s linear;
+}
+.item-slider-direction-arrow:hover .item-slider-direction-arrow-inner {
+	transition: all 0.1s linear;
+	height: 40px;
+	width: 40px;
 }
 @media (min-width: 640px) {
 	.item-slider .grid-result-item {
