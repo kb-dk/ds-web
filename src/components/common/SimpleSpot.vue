@@ -100,6 +100,9 @@ export default defineComponent({
 	min-height: 130px;
 	/* word-break: break-all; */
 }
+.spot.medium .inner {
+	padding-bottom: 56px;
+}
 .spot.main {
 	background-color: var(--bg-main);
 	color: var(--color-default);
@@ -116,7 +119,6 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 	max-width: 100%;
-	height: 280px;
 }
 .spot.large {
 	width: 100%;
@@ -131,6 +133,12 @@ export default defineComponent({
 	}
 	.spot {
 		border-radius: var(--rounded-medium);
+	}
+	.spot.medium {
+		height: 280px;
+	}
+	.spot.medium .inner {
+		padding-bottom: 20px;
 	}
 }
 
