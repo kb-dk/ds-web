@@ -270,7 +270,7 @@ export default defineComponent({
 
 .bg-container {
 	position: relative;
-	margin-top: 25px;
+	margin-top: 56px;
 	width: 100%;
 	max-width: 1280px;
 }
@@ -336,7 +336,12 @@ export default defineComponent({
 		border-color: var(--color-default);
 	}
 }
-
+/* MEDIA QUERY 480 */
+@media (min-width: 480px) {
+	.bg-container {
+		margin-top: 25px;
+	}
+}
 /* MEDIA QUERY 510 */
 @media (min-width: 510px) {
 	.container {
