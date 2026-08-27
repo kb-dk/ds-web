@@ -289,7 +289,10 @@ export default defineComponent({
 .headline:hover {
 	transition: all 0.5s linear 0s;
 }
-
+.headline,
+.headline span {
+	color: var(--color-default);
+}
 .icon {
 	font-size: 40px;
 	padding-right: 10px;
