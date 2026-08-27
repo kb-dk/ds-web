@@ -285,7 +285,7 @@ temporary styling until patterns from design system are implemented
 .broadcast-record {
 	color: var(--color-default);
 }
-h3 {
+h2 {
 	margin-top: 0;
 }
 h4 {
@@ -306,7 +306,6 @@ h4 {
 }
 
 .video-container {
-	min-height: 300px;
 	width: 100%;
 }
 
