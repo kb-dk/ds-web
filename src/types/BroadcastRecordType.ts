@@ -4,7 +4,7 @@ import { PublicationType } from './GenericRecordTypes';
 export interface BroadcastRecordType {
 	'@type': string;
 	id: string;
-	name: NameType[];
+	name: string[] | string;
 	publication: PublicationType;
 	annotation?: string;
 	encodesCreativeWork?: CreativeWork;
@@ -17,10 +17,6 @@ export interface BroadcastRecordType {
 	identifier: IdentifierType[];
 	contentUrl: string;
 	'kb:internal': KbInternal;
-}
-
-interface NameType {
-	value: string;
 }
 
 interface KbInternal {
