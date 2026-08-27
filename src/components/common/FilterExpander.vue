@@ -275,7 +275,6 @@ export default defineComponent({
 	cursor: pointer;
 	transition: all 0.5s linear 0s;
 	background-color: rgba(202, 240, 254, 0.1);
-	color: var(--color-default);
 	text-transform: capitalize;
 	font-weight: 100;
 	border: 0;
@@ -290,12 +289,14 @@ export default defineComponent({
 .headline:hover {
 	transition: all 0.5s linear 0s;
 }
-
+.headline,
+.headline span {
+	color: var(--color-default);
+}
 .icon {
 	font-size: 40px;
 	padding-right: 10px;
 	padding-left: 10px;
-	color: var(--color-default);
 }
 
 .expander {
