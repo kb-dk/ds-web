@@ -65,7 +65,7 @@
 								<SimpleCheckbox
 									:key="`genreCheckbox-${index}`"
 									:fqkey="'genre_facet'"
-									:title="singleFacet.title"
+									:title="`${t(`categories.${santizeAndSimplify(singleFacet.title)}`)}`"
 									:icon="returnCategoryIcon(singleFacet.title)"
 									:icon-filled="returnFilledIconStatus(singleFacet.title)"
 									:amount="categoryFacets.find((item) => item.title === singleFacet.title)?.number.toString() || '0'"
