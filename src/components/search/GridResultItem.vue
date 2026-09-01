@@ -459,6 +459,10 @@ export default defineComponent({
 	align-items: center;
 }
 
+.data {
+	min-height: 470px;
+}
+
 .title {
 	/* font-weight: var(--fw-bold); */
 	color: var(--color-default);

@@ -182,6 +182,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 	text-align: right;
+	padding-right: 30px;
 }
 
 .display-option {
@@ -193,6 +194,9 @@ export default defineComponent({
 	height: 30px;
 	border-bottom: 1px solid transparent;
 	color: var(--color-secondary-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .filter-container {
@@ -203,9 +207,6 @@ export default defineComponent({
 
 .display-option.list {
 	position: relative;
-	margin-left: 30px;
-	margin-right: 5px;
-	padding-left: 2px;
 }
 
 .hit-count {
@@ -222,7 +223,6 @@ export default defineComponent({
 
 .display-option.list,
 .display-option.grid {
-	top: 2px;
 	position: relative;
 }
 
@@ -232,10 +232,7 @@ export default defineComponent({
 }
 
 .display-option.list span {
-	font-size: 35px;
 	position: relative;
-	top: -5px;
-	left: -5px;
 }
 
 .container {
@@ -333,6 +330,14 @@ export default defineComponent({
 	display: flex;
 	flex-wrap: wrap;
 	height: 30px;
+	width: 30px;
+	align-items: center;
+	justify-content: center;
+}
+
+.list .material-icons {
+	font-size: 35px;
+	margin-top: -4px;
 }
 
 .filter-button-text {
