@@ -31,7 +31,12 @@
 			</select>
 		</label>
 		<div class="line">
-			<span class="material-icons">keyboard_arrow_down</span>
+			<span
+				aria-hidden="true"
+				class="material-icons"
+			>
+				keyboard_arrow_down
+			</span>
 		</div>
 	</div>
 </template>

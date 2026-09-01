@@ -1,21 +1,33 @@
 <template>
 	<div
 		v-if="Object.keys(searchResultStore.initFacets || {}).length > 0"
+		id="search-filters"
 		ref="facetsContainer"
 		class="search-facets"
+		role="region"
+		aria-labelledby="filter-headline"
 	>
 		<div class="facet-container">
 			<div class="headline-section">
 				<div class="filter-header">
-					<div class="material-icons filters">tune</div>
+					<div
+						aria-hidden="true"
+						class="material-icons filters"
+					>
+						tune
+					</div>
 					<button
 						class="closeBtn material-icons"
+						:aria-label="t('facets.closeFacets')"
 						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
 					>
 						close
 					</button>
 				</div>
-				<h2 class="filter-headline">
+				<h2
+					id="filter-headline"
+					class="filter-headline"
+				>
 					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
 						{{ t('facets.headline') }}
 						<span class="bold">{{ searchResultStore.currentQuery }}</span>

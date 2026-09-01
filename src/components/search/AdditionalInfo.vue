@@ -7,6 +7,7 @@
 			:title="$t('search.thumbnailButton')"
 			:data-testid="addTestDataEnrichment('button', 'additional-info', `show-thumbnails`, nr)"
 			:button-is-active="extraContentShown"
+			:aria-label="`${t('additionalInfo.openButton')}`"
 			:button-text="$t('search.thumbnail')"
 			left-icon-name="photo_library"
 			right-icon-name="expand_more"
@@ -44,7 +45,9 @@
 						<ImageComponent :image-data="thumbnailImageData[index]"></ImageComponent>
 					</div>
 					<div class="img-stamp">
-						<p class="label-small">{{ convertSecondstoShow(timeStamps[index]) }}</p>
+						<p class="label-small">
+							{{ convertSecondstoShow(timeStamps[index]) }}
+						</p>
 					</div>
 				</div>
 			</template>
@@ -54,9 +57,15 @@
 			class="watch-program"
 			:to="{ name: 'Record', params: { id: id } }"
 			:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, 0)"
+			:aria-label="`${title}, ${t('additionalInfo.goToBroadcast')}`"
 		>
 			<p class="btn-reg">{{ $t('search.watchProgram') }}</p>
-			<span class="material-icons link-arrow">chevron_right</span>
+			<span
+				aria-hidden="true"
+				class="material-icons link-arrow"
+			>
+				chevron_right
+			</span>
 		</router-link>
 		<div class="full-duration">
 			<p class="label-medium">| {{ convertSecondstoShow(duration) }}</p>
@@ -88,6 +97,7 @@ export default defineComponent({
 	},
 	props: {
 		id: { type: String, required: true },
+		title: { type: String, required: true },
 		type: { type: String, required: true },
 		kalturaId: { type: String, required: true },
 		duration: { type: Number, required: true },

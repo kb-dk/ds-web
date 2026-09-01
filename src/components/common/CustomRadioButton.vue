@@ -9,21 +9,26 @@
 			:disabled="disabled"
 			@change="onChange"
 		/>
-		<div class="outer-dot">
+		<div
+			aria-hidden="true"
+			class="outer-dot"
+		>
 			<Transition name="fade-dot">
 				<span
 					v-if="checked"
 					class="dot"
+					aria-hidden="true"
 				></span>
 			</Transition>
 		</div>
 		<span
 			v-if="icon"
+			aria-hidden="true"
 			class="material-icons radio-icon"
 		>
 			{{ icon }}
 		</span>
-		<span>{{ title }}</span>
+		<span aria-hidden="true">{{ title }}</span>
 	</label>
 </template>
 

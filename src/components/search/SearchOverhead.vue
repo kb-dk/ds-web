@@ -3,11 +3,11 @@
 		<div class="row">
 			<div class="hit-count">
 				<div :class="['filter-options', { disabled: searchResultStore.loading }]">
-					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
+					<div :class="`filter-buttons`">
 						<KBButton
 							ref="toggleFacetsButton"
-							role="switch"
-							aria-checked="true"
+							aria-controls="search-filters"
+							:aria-expanded="searchResultStore.showFacets"
 							class="btn-medium"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
 							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"
@@ -45,9 +45,7 @@
 									class="page-count"
 								>
 									<p class="label-small">
-										{{ t('search.page') }}
-										{{ searchResultStore.pageNumber }}
-										{{ t('search.of') }}
+										{{ t('search.page') }} {{ searchResultStore.pageNumber }} {{ t('search.of') }}
 										{{ searchResultStore.maxPages }}
 									</p>
 								</div>
@@ -63,8 +61,9 @@
 								</div>
 							</Transition>
 						</div>
-
 						<button
+							:aria-label="t('search.listView')"
+							:aria-pressed="!searchResultStore.resultGrid"
 							:class="
 								searchResultStore.loading
 									? 'display-option list loading'
@@ -75,9 +74,16 @@
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-list', 0)"
 							@click="setGridAndLoadResults(false)"
 						>
-							<span class="material-icons">toc</span>
+							<span
+								aria-hidden="true"
+								class="material-icons"
+							>
+								toc
+							</span>
 						</button>
 						<button
+							:aria-label="t('search.gridView')"
+							:aria-pressed="searchResultStore.resultGrid"
 							:class="
 								searchResultStore.loading
 									? 'display-option grid loading'
@@ -85,11 +91,15 @@
 									  ? 'display-option grid active'
 									  : 'display-option grid'
 							"
-							class="display-option grid"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-grid', 0)"
 							@click="setGridAndLoadResults(true)"
 						>
-							<span class="material-icons">apps</span>
+							<span
+								aria-hidden="true"
+								class="material-icons"
+							>
+								apps
+							</span>
 						</button>
 					</div>
 				</div>
@@ -170,6 +180,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 	text-align: right;
+	padding-right: 30px;
 }
 
 .display-option {
@@ -181,6 +192,9 @@ export default defineComponent({
 	height: 30px;
 	border-bottom: 1px solid transparent;
 	color: var(--color-secondary-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .filter-container {
@@ -191,9 +205,6 @@ export default defineComponent({
 
 .display-option.list {
 	position: relative;
-	margin-left: 30px;
-	margin-right: 5px;
-	padding-left: 2px;
 }
 
 .hit-count {
@@ -210,7 +221,6 @@ export default defineComponent({
 
 .display-option.list,
 .display-option.grid {
-	top: 2px;
 	position: relative;
 }
 
@@ -220,10 +230,7 @@ export default defineComponent({
 }
 
 .display-option.list span {
-	font-size: 35px;
 	position: relative;
-	top: -5px;
-	left: -5px;
 }
 
 .container {
@@ -321,6 +328,14 @@ export default defineComponent({
 	display: flex;
 	flex-wrap: wrap;
 	height: 30px;
+	width: 30px;
+	align-items: center;
+	justify-content: center;
+}
+
+.list .material-icons {
+	font-size: 35px;
+	margin-top: -4px;
 }
 
 .filter-button-text {

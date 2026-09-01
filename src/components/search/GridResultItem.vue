@@ -1,9 +1,10 @@
 <template>
-	<div
+	<article
 		ref="gridContainer"
 		draggable="false"
 		class="grid-result-item"
 		:style="{ backgroundColor: background }"
+		:aria-labelledby="`article-title-${index}`"
 	>
 		<Transition
 			name="result"
@@ -24,8 +25,17 @@
 					<div class="thumb-container">
 						<ImageComponent :image-data="imageData"></ImageComponent>
 					</div>
+					<h3
+						:id="`article-title-${index}`"
+						class="title"
+					>
+						{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
+					</h3>
 					<div class="date">
-						<span class="material-icons">
+						<span
+							class="material-icons"
+							:aria-label="resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')"
+						>
 							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 						</span>
 						<div
@@ -36,7 +46,12 @@
 						</div>
 					</div>
 					<div class="duration">
-						<span class="material-icons">schedule</span>
+						<span
+							class="material-icons"
+							aria-hidden="true"
+						>
+							schedule
+						</span>
 						<span class="record-duration label-small">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
@@ -54,7 +69,7 @@
 						class="episode"
 					>
 						<span
-							role="img"
+							:aria-label="t('record.episode')"
 							class="material-icons episode-split-icon"
 						>
 							segment
@@ -73,9 +88,6 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<h3 class="title">
-						{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
-					</h3>
 					<p class="summary fixed-size">
 						{{ resultdata.description }}
 					</p>
@@ -94,6 +106,10 @@
 					<div class="thumb-container loading-color">
 						<NoFacetContent v-if="!loading"></NoFacetContent>
 					</div>
+					<div
+						:style="`width:${Math.random() * 30 + 50}px`"
+						class="title loading"
+					></div>
 					<div class="material-icons loading-icon">play_circle</div>
 					<div
 						:style="`width:${Math.random() * 30 + 40}px`"
@@ -110,10 +126,6 @@
 							class="date loading"
 						></div>
 					</div>
-					<div
-						:style="`width:${Math.random() * 30 + 50}px`"
-						class="title loading"
-					></div>
 					<div class="summary loading">
 						<div
 							class="word"
@@ -131,7 +143,13 @@
 				</div>
 			</div>
 		</Transition>
-	</div>
+		<div
+			aria-hidden="true"
+			class="hors-dot"
+		>
+			•
+		</div>
+	</article>
 </template>
 
 <script lang="ts">
@@ -316,7 +334,6 @@ export default defineComponent({
 	width: 100%;
 	max-width: 100%;
 	border-bottom: 1px solid var(--color-border-success);
-	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
 	color: var(--color-default);
@@ -335,25 +352,49 @@ export default defineComponent({
 	display: grid;
 }
 
-.grid-result-item:after {
-	transition: all 0.3s linear 0s;
-	display: flex;
-	content: '•';
+.h3 {
+	padding-bottom: 15px;
+}
+
+.grid-result-item:hover .hors-dot {
+	/* background-color: transparent; */
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		--initialColor 0.2s ease-in,
+		--midPointColor1 0.2s ease-in,
+		--midPointColor2 0.2s ease-in,
+		--endColor 0.2s ease-in;
+}
+
+.hors-dot {
+	transition:
+		all 0.3s ease-in-out 0s,
+		--initialColor 0.3s ease-out,
+		--midPointColor1 0.3s ease-out,
+		--midPointColor2 0.3s ease-out,
+		--endColor 0.3s ease-out;
+}
+.hors-dot {
 	position: absolute;
-	font-size: 16px;
-	height: 11px;
+	height: 10px;
 	text-align: center;
 	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0;
+	line-height: 0.5;
+	margin-top: -5px;
 	transform-origin: center;
 	will-change: transform;
-	bottom: -4px;
-	background-color: white;
-	justify-content: center;
-	align-items: center;
+	z-index: 1;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 50%,
+		var(--midPointColor2) 50%,
+		var(--endColor) 100%
+	);
 }
 
 .thumb-container {
@@ -423,6 +464,10 @@ export default defineComponent({
 	margin-right: 3px;
 	position: relative;
 	align-items: center;
+}
+
+.data {
+	min-height: 470px;
 }
 
 .title {

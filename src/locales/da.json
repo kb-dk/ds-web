@@ -1,569 +1,605 @@
 {
-   "app": {
-      "skip":"Spring til hovedindhold",
-      "titles": {
-         "unknown":"Ukendt udsendelse",
-         "frontpage": {
-            "archive":  {
-               "name": "DR-arkiv",
-               "suffix": " - DR-arkiv"
-            },
-           "about": "Om"
-         },
-         "search":" Søgning på",
-         "SearchWith":"Søgning med",
-         "PeriodSearch":"Søgning i perioden",
-         "to":"til",
-         "filter":"filter | filtre",
-         "default":"Søgning i DR-arkivet",
-         "genre_facet":"kategorien | kategorierne",
-         "creator_affiliation_facet":"kanalen | kanalerne",
-         "temporal_start_month":"måned | måneder",
-         "temporal_start_day_da":"dag | dage",
-         "temporal_start_hour_da": "tidspunkt | tidspunkter"
-      },
-      "frontPages": {
-         "TVRadioDR":"Velkommen til Det Kgl. Biblioteks DR-arkiv",
-        "loadingError": "Indlæsning fejlede"
-      },
-      "a11y": {
-         "imageComponentTitle":"ikon til billedet",
-         "facebook":"Link til Facebook",
-         "linkedin":"Link til LinkedIn",
-         "instagram":"Link til Instagram",
-         "soundIcon":"lyd afspilnings ikon",
-         "goToPost":"Gå til udsendelse",
-         "broadcastTimeAndPlace":"Afspilningskanal og tid",
-         "broadcastDuration":"Udsendelsens varighed"
-      }
+	"app": {
+      "logoText":"Det kongelige biblioteks logo. Gå til hovedsiden",
+		"open": "Åben",
+		"close": "Luk",
+		"skip": "Spring til hovedindhold",
+		"titles": {
+			"unknown": "Ukendt udsendelse",
+			"frontpage": {
+				"archive": {
+					"name": "DR-arkiv",
+					"suffix": " - DR-arkiv"
+				},
+				"about": "Om"
+			},
+			"search": " Søgning på",
+			"SearchWith": "Søgning med",
+			"PeriodSearch": "Søgning i perioden",
+			"to": "til",
+			"filter": "filter | filtre",
+			"default": "Søgning i DR-arkivet",
+			"genre_facet": "kategorien | kategorierne",
+			"creator_affiliation_facet": "kanalen | kanalerne",
+			"temporal_start_month": "måned | måneder",
+			"temporal_start_day_da": "dag | dage",
+			"temporal_start_hour_da": "tidspunkt | tidspunkter"
+		},
+		"frontPages": {
+			"TVRadioDR": "Velkommen til Det Kgl. Biblioteks DR-arkiv",
+			"loadingError": "Indlæsning fejlede"
+		},
+		"a11y": {
+			"imageComponentTitle": "ikon til billedet",
+			"facebook": "Link til Facebook",
+			"linkedin": "Link til LinkedIn",
+			"instagram": "Link til Instagram",
+			"soundIcon": "lyd afspilnings ikon",
+			"goToPost": "Gå til udsendelse",
+			"broadcastTimeAndPlace": "Afspilningskanal og tid",
+			"broadcastDuration": "Udsendelsens varighed"
+		}
+	},
+   "icons": {
+      "categories":"Kategorier"
    },
-
-   "header":{
-      "secondary":
-         [
-            {
-               "title": "In english", 
-               "link": "#",
-               "id": "localeSwitcher"
-            },{
-               "title": "Login", 
-               "link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
-               "icon": "account_circle"
-            }
-         ]
-   },
-   "frontpage": {
-      "fromTheArchive":"{month} måned på DR gennem tiden"
-   },
-   "facets" : {
-      "headline":"Filtrér din søgning på ",
-      "starHeadline": "Filtrér din søgning",
-      "allGenres": "Alle kategorier",
-      "genres": "kategori | kategorier",
-      "selectedGenres": "{selected} af {total} kategorier valgt",
-      "genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
-      "allChannels":"Alle kanaler",
-      "selectedTVChannels":"{selected} af {total} kanaler valgt",
-      "selectedRadioChannels":"{selected} af {total} kanaler valgt",
-      "channels":"kanal | kanaler",
-      "tvChannels":"TV kanal | TV kanaler",
-      "radioChannels": "RADIO kanal | RADIO kanaler",
-      "chosen":"Valgt",
-      "contentFrom": "Indhold tilbage fra ",
-      "reset":"nulstil",
-      "choose": "Vælg",
-      "seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
-      "to":"Til",
-      "from":"Fra",
-      "year":"år",
-      "slowResponse": {
-         "title": "Lang respons tid",
-         "text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
-      },
-     "remove":"Fjern",
-     "searchingIn":"Søger kun på",
-     "desc":"beskrivelse",
-     "title":"titel",
-     "searchMethod": {
-         "all": {
-            "title":"Søg i alt",
-            "desc":"Der søges i alle metadata-felter."
-         },
-         "title": {
-            "title":"Søg kun på titler",
-            "desc":"Der søges kun i titel-feltet."
-         },
-         "desc": {
-            "title":"Søg kun på beskrivelser",
-            "desc":"Der søges kun i beskrivelses-feltet."
-         }
-      },
-      "searchMaterial": {
-         "both": {
-            "title":"Søg på både TV og RADIO",
-            "desc":"Der søges både i RADIO-poster og TV-poster."
-         },
-         "tv": {
-            "title":"Søg kun på TV",
-            "desc":"Der søges kun i TV-poster."
-         },
-         "radio": {
-            "title":"Søg kun på RADIO",
-            "desc":"Der søges kun i RADIO-poster."
-         }
-      },
-      "timePeriod": {
-         "date": {
-            "title":"Dato",
-            "desc":"Der søges på en dag."
-         },
-         "period": {
-            "title":"Periode",
-            "desc":"Der søges på en år-række."
-         }
-      }
-   },
-   "breadcrumb": {
-      "frontpage":"Forside",
-      "findMaterials": "Find materiale",
-      "drArchive": "DR-arkivet",
-      "search":"Søgning",
-      "record": "Udsendelse"
-   },
-   "timeSearch": {
-      "timeMachine":"Udvælg en periode, som du gerne vil se indhold fra",
-      "periodOf":"Periode på {number} år",
-      "searchDate": "Søg via dato",
-      "searchCategories": "Søg via kategori",
-      "year":"år | år",
-      "month":"måned | måneder",
-      "week":"uge | uger",
-      "day":"dag | dage",
-      "weekday":"ugedag | ugedage",
-      "timePeriods": "tidspunkt | tidspunkter",
-      "chosenTimeslots":"Valgte tidspunkter",
-      "foundResults":"fundne resultater",
-      "allChosen":"Alle valgt",
-      "chosen": "valgt",
-      "notApplied":"ikke i brug",
-      "and":"og", 
-      "data":"Arkivmateriale",
-      "from":"Fra",
-      "to":"Til",
-      "timeHits": "Der er i alt ",
-      "result":"resultat | resultater",
-      "all":"alle",
-      "allMonths":"Alle måneder i perioden",
-      "allDays":"Alle ugedage i perioden",
-      "allTimeslots":"Hele døgnet",
-      "selection":"Et udpluk af resultaterne",
-     "dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag.",
-     "searchCategoriesSubtitle": "Vælg en kategori og gå på opdagelse i udsendelserne. Kategorierne indeholder primært TV-udsendelser, mens du finder de fleste af radioudsendelserne i “Radio-rodekassen.”",
-      "monthHeadline":"Vælg måneder",
-      "dayHeadline":"Vælg ugedage",
-      "timeslotHeadline":"Vælg tidspunkter",
-      "yearHeadline":"Vælg dato eller periode",
-      "filterOpenButton":"Dato, periode og tidspunkter",
-      "filterCloseButton":"Luk tidspunkter",
-      "filterApplyButton":"Anvend",
-      "months": {
-         "january": "januar",
-         "february": "februar",
-         "march": "marts",
-         "april": "april",
-         "may": "maj",
-         "june": "juni",
-         "july": "juli",
-         "august": "august",
-         "september": "september",
-         "october": "oktober",
-         "november": "november",
-         "december": "december"
-      },
-      "weekdays": {
-         "monday": "mandage",
-         "tuesday": "tirsdage",
-         "wednesday": "onsdage",
-         "thursday": "torsdage",
-         "friday": "fredage",
-         "saturday": "lørdage",
-         "sunday": "søndage"
-     },
-     "timeslots": {
-         "morning":"06.00 - 12.00",
-         "midday":"12.00 - 18.00",
-         "evening":"18.00 - 24.00",
-         "night":"00.00 - 06.00"
-     }
-   },
-  "datepicker": {
-      "error":"Skriv en dato mellem {start} og {end}",
-      "date":"Dato",
-      "to":"Til",
-      "unknownLength":"Ukendt tidsperiode"
-   },
-  "search":{
-     "showing":"Viser",
-     "outOf":"ud af",
-     "recordThumbnail":"Miniaturebillede af {title}",
-     "watchProgram": "Se udsendelse",
-     "searchbtn":"Søg",
-     "hitcount": " resultat fundet med | resultater fundet med",
-     "filterSearch": " resultater fundet med dine filtre",
-     "nohitSubtitle": {
-       "readMore": "Læs mere om, hvad arkivet indeholder.",
-       "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
-       "subtitleText": "Vi arbejder løbende på at gøre det lettere for dig at finde det, du leder efter. Tak for tålmodigheden! Nedenfor har vi samlet nogle gode råd til søgning, som måske kan hjælpe dig videre. "
-     },
-     "episode":"Episode",
-    "pageNumberPlaceholder": "Indtast sidetal",
-     "tipsTitle": "Et par fif til din søgning",
-     "mainCategories": "led videre i vores hovedkategorier",
-     "nohit":"Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",
-     "nohitWithFilter":"Vi beklager ingen {filterSearch}",
-     "showFilters":"Vis filtre",
-     "hideFilters":"Skjul filtre",
-    "resetFilters": "Nulstil filtre",
-     "nextPage":"Næste side",
-     "previousPage":"Forrige side",
-     "page": "Side",
-     "goToPage":"Gå til side {n}",
-    "goToThePage": "Gå til siden",
-    "morePagesMessage":{
-      "1": "For hurtigst muligt at kunne vise dig et godt søgeresultat, har vi valgt kun at hente ca. 1.000 af de ",
-      "2": "{totalHits}",
-      "3": "resultater, din søgning finder. Hvis du ønsker at se et andet udsnit af resultaterne, kan du benytte dig af ",
-      "4": "sorteringsmulighederne.",
-      "5":"Alternativt kan du prøve at justere din søgning via filtrering eller nye søgeord."
-    },
-     "sortAfter":"Sorteret efter ",
-     "sortBy": "Sorter efter",
-    "selected": "Valgt",
-     "title": "Titel",
-     "relevance":"Bedste match",
-     "date":"Dato",
-     "channels":"Kanaler",
-     "relatedSubjects":"Relaterede emner",
-    "relatedContent": "Relateret indhold",
-    "programGuide":"Programoversigt",
-    "noGuideContent":"Ikke noget i arkivet",
-     "didYouMean": "Mente du \"{spellCheckQuery}\"?",
-     "didYouMeanCount": "({spellCheckHits} resultater)",
-     "maybeYouMeant": "Måske mente du?",
-     "searchInput":"Søg på KB",
-     "searchHere":"Søg her",
-     "tv":"TV",
-     "radio":"Radio",
-     "all":"Alt",
-    "thumbnail": "Oversigt",
-     "thumbnailButton":"Se billede-oversigt",
-     "thumbnailLink": "Billede {index} ved {timestamp}",
-     "of":"af",
-     "startTime":"starttid",
-    "dataQuantity":{
-      "firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der meget materiale, og i andre er der kun lidt eller ingenting.",
-      "secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
-    },
-    "showContent": "Anvend",
-     "portals": {
-         "drArchive":"DR-arkivet",
-         "booksAndMaterials":"Bøger og tidskrifter",
-         "kbdk":"Søg på kb.dk",
-         "webshop":"Webshop",
-         "seeAllMaterials":"Se alt materiale",
-         "allMaterialsLink":"https://www.kb.dk/find-materiale"
-      },
-      "placeholder": "Søg...",
-      "limitedFilters":{
-         "title":"For mange filtre",
-         "subtitle":"Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."
-      },
-    "searchGuide": {
-      "title":"Gode råd til din søgning",
-      "subtitle": "Måske kan du forbedre din søgning med en af disse metoder",
-      "first": "Prøv med færre eller andre søgeord",
-      "secondEnglish":"",
-      "second": {
-        "line1": "Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a",
-        "line2": "Så søger du både på Sonia og Sonja"
-      },
-      "third": {
-        "line1": "Prøv at skrive * i slutningen af et ord, eksempelvis skov*",
-        "line2": "Så søger du på skov, skovens, skovtur og så videre"
-      },
-      "fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt",
-      "readMore": "Læs mere om søgetips",
-      "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning"
-    },
-    "frontpageGuide": {
-      "title":"Hvordan søger jeg bedst?",
-      "disclaimer":"",
-      "first":{
-        "part1": "Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis",
-        "cursive1": "hotel",
-        "part2": "ikke vil finde resultater, hvor der står",
-        "cursive2": "hoteller",
-        "part3": "eller",
-        "cursive3": "badehotel."
-      },
-      "second":"Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.",
-      "third":"Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori, kanal eller tid.",
-      "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning",
-      "linktext":"Læs flere gode råd om søgning"
-    },
-    "contactUs": "Kontakt os gerne, hvis du har brug for hjælp"
-  },
-  "record":{
-     "duration":"Varighed",
-     "noBroadcastData":"Ingen sendetid",
-     "seeMaterial":"See material",
-    "toFrontpage": "DR-arkivet",
-    "back": "Tilbage til søgning",
-    "aired": "Sendt",
-     "timestamp":"kl. ",
-     "title":"Titel",
-     "genre":"Genre",
-     "annotation": "Bemærkning",
-     "copy": "Del link",
-     "copyTitleSuccess":"Linket er nu kopieret",
-     "copyMessageSuccess":"",
-     "copyTitleFailed":"Kopiering fejlede.",
-     "copyMessageFailed":"Linket blev ikke kopieret. Kopier URL i stedet.",
-     "moreMetadataBroadcast":"Yderligere information om udsendelsen",
-     "missingStreamingUrl":"Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise.",
-     "noRecordFound":"Vi kan desværre ikke finde den udsendelse, som du forsøger at tilgå :(",
-     "noRecordFoundExplained":"Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner."
-  },
-  "duration":{
-   "hours":"t",
-   "minutes":"min",
-   "seconds":"sek",
-   "unknown":"Ukendt længde"
-  },
-  "notification": {
-      "close":"Luk notifikation"
-  },
-  "spots": {
-   "readMoreSubtitle":"Før du går på opdagelse, kan du læse om arkivets indhold, baggrund og begrænsninger - og få gode råd til at søge i næsten 100 års radio og tv."
-  },
-  "footer": {
-    "contactInfo":"Kontaktinformationer",
-    "cookie":"Cookieindstillinger",
-    "column1": {
-       "title": "Genveje",
-       "links": {
-         "1": {
-             "title": "Om DR-arkivet",
-             "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
-          },
-          "2": {
-             "title": "Find Materiale",
-             "link": "https://www.kb.dk/find-materiale"
-          },
-          "3": {
-             "title": "Inspiration",
-             "link": "https://www.kb.dk/inspiration"
-          },
-          "4": {
-             "title": "Arrangementer",
-             "link": "https://www.kb.dk/arrangementer"
-          },
-          "5": {
-             "title": "Services",
-             "link": "https://www.kb.dk/services"
-          },
-          "6": {
-             "title": "Besøg os",
-             "link": "https://www.kb.dk/besoeg-os"
-          }
-       }
-    },
-    "column2": {
-      "title": "Brug os",
-       "links": {
-          "1": {
-             "title": "Mediestream",
-             "link": "https://www2.statsbiblioteket.dk/mediestream/"
-          },
-          "2": {
-             "title": "Digitale samlinger",
-             "link": "https://www.kb.dk/find-materiale/tjenester/digitale-samlinger"
-          },
-          "3": {
-             "title": "Radio- og TV-samlingen",
-             "link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
-          },
-          "4": {
-             "title": "Find danske radio- og tv udsendelser",
-             "link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
-          },
-          "5": {
-             "title": "Bibliotekssystemet",
-             "link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
-          }
-       }
-    },
-    "column3": {
-       "title": "Information",
-       "links": {
-          "1": {
-             "title": "Ledige stillinger",
-             "link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
-          },
-          "2": {
-             "title": "Reglementer",
-             "link": "https://www.kb.dk/reglementer"
-          },
-          "3": {
-             "title": "Ophavsret",
-             "link": "https://www.kb.dk/ophavsret"
-          },
-          "4": {
-             "title": "Privatlivs- og persondatapolitik",
-             "link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
-          },
-          "5": {
-             "title": "Tilgængelighedserklæring",
-             "link": "https://www.was.digst.dk/kb-dk"
-          },
-          "6": {
-             "title": "Driftsstatus",
-             "link": "https://www.kb.dk/driftsstatus"
-          }
-       }
-    },
-    "column4": {
-      "links": {
-         "1": {
-            "title": "Spørg biblioteket",
-            "link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet/spoerg-om-dr-arkivet"
-         },
-         "2": {
-            "title": "kb@kb.dk",
-            "link": "mailto:kb@kb.dk"
-         },
-         "3": {
-            "title": "Tel: (+45) 33 47 47 47",
-            "link": ""
-         },
-         "4": {
-            "title": "Pressekontakt",
-            "link": "https://www.kb.dk/om-os/presse"
-         },
-         "5": {
-            "title": "EAN: 5798000795297",
-            "link": ""
-         }
-      }
-    }
-  },
-  "some": {
-   "facebook": {
-      "title":"Følg os på Facebook",
-      "link":"https://www.facebook.com/DetKglBibliotek/"
-   },
-   "instagram": {
-      "title":"Følg os på Instagram",
-      "link":"https://www.instagram.com/detkglbibliotek/"
-   },
-   "linkedin": {
-      "title":"Følg os på LinkedIn",
-      "link":"https://www.linkedin.com/company/det-kgl-bibliotek/"
-   }
-  },
-  "error": {
-    "title": "Fejlmeddelelse",
-    "record": {
-      "loadingFailed": "Udsendelsen kunne ikke hentes.",
-      "notAllowed":"Du har ikke adgang til materialet",
-      "unknown": "Ukendt",
-      "restricted":"DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
-      "restrictedExplained":"Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
-    },
-    "players":{
-      "video": {
-         "fileInit":"Noget gik galt - vi kan ikke finde denne video",
-         "playerInit":"Videoafspilleren er ikke tilgængelig i øjeblikket",
-         "generic":"Noget gik galt - vi kan ikke afspille videoen i øjeblikket"
-      },
-      "audio": {
-         "fileInit":"Noget gik galt - vi kan ikke finde denne udsendelse",
-         "playerInit":"Audioafspilleren er ikke tilgængelig i øjeblikket",
-         "generic":"Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
-      }
-   },
-    "backend": {
-      "bff": {
-        "notResponsive": "Noget indhold på denne side kunne ikke hentes."
-      },
-      "solr": {
-        "notResponsive":"Der er en fejl i systemet, som vi arbejder på at løse hurtigst muligt. Vi håber på din forståelse og tålmodighed"
-      }
-    },
-   "auth": {
-      "serviceFailed":"Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere.",
-     "notAllowedHeader": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
-     "notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
-   },
-    "infoError": {
-      "title": "Der skete en fejl",
-      "relatedContent": "Relateret indhold svarer ikke.",
-      "programGuide": "Indholdet kunne ikke hentes",
-      "featuredContent": "Fremhævet indhold under DR gennem tiden svarer ikke.",
-      "thumbnails": "Billede-oversigten svarer ikke.",
-      "thumbnail": "Miniaturebilleder kan ikke hentes.",
-      "timeMachine": "Periode-filtre svarer ikke - prøv igen senere.",
-      "searchResult": "Søgeresultat svarer ikke - prøv igen senere.",
-      "pageNumber": "Sidetallet findes ikke."
-    },
-   "searchfailed":"Noget gik galt med din søgning",
-   "malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
-    "wrongUrl": {
-      "header": "Vi kan desværre ikke finde den side, du søger :(",
-      "text": "Prøv at lave en søgning i søgefeltet eller gå til forsiden af DR-arkivet for at benytte de forskellige indgange til arkivmaterialet.",
-      "altHeader": "Måske leder du efter",
-      "notAllowedButtonHeader": "Du kan komme videre til",
-      "frontPage": "Forsiden af DR-arkivet",
-      "kbPage": "Forsiden af Det Kgl. Bibliotek"
-    },
-    "choseMaterialTitle":"Der skal være valgt et materiale",
-    "ChoseMaterialDesc":"Der skal være valgt mindst et materiale for at få et søgeresultat."
-  },
-  "hero": {
-      "title":"DR-arkivet",
-      "subtitle":"Det Kgl. Biblioteks",
-      "progress":"Vi har nået {index}%...",
-      "explanation":"I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
-      "linkText":"Læs mere om DR-arkivet",
-      "link":"https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
-   },
-   "categories": {
-      "brn-og-unge":"Børn og unge",
-      "dokumentar": "Dokumentar",
-      "film-og-serier": "Film og serier",
-      "humor-quiz-og-underholdning":"Humor, quiz og underholdning",
-      "kultur-og-oplysning":"Kultur og oplysning",
-      "livsstil":"Livsstil",
-      "musik":"Musik",
-      "natur-og-videnskab":"Natur og videnskab",
-      "nyheder-politik-og-samfund":"Nyheder, politik og samfund",
-      "radio-rodekasse":"Blandet radio",
-      "tv-rodekasse":"Blandet TV",
-      "sport": "Sport"
-   },
-   "find":{
-      "headline":"Hvad vil du søge efter?",
-      "subtitle":"Skriv i søgefeltet eller vælg en kategori for at begynde din søgning.",
-      "maybeYouWantTo":"Eller måske vil du hellere:",
-      "restoreFilters":"Gendanne filtre fra sidste søgning",
-      "GoToFrontpage":"Til forsiden af DR-arkivet"
-   },
-   "calendar": {
-      "open":"Åben kalender",
-      "close": "Luk kalender",
-      "explanation": "Skriv en dato i formatet DD-MM-ÅÅÅÅ eller vælg fra kalenderen.",
-      "select": "Vælg dato",
-      "nextMonth": "Næste måned",
-      "prevMonth":"Forrige måned"
-   }
+	"header": {
+		"secondary": [
+			{
+				"title": "In english",
+				"link": "#",
+				"id": "localeSwitcher"
+			},
+			{
+				"title": "Login",
+				"link": "https://soeg.kb.dk/discovery/account?vid=45KBDK_KGL%3AKGL&section=overview&lang=da",
+				"icon": "account_circle"
+			}
+		]
+	},
+	"frontpage": {
+		"fromTheArchive": "{month} måned på DR gennem tiden",
+      "fromTheArchiveAlt":"Find udvalgte udsendelser fra denne måned gennem tiden"
+	},
+	"facets": {
+		"headline": "Filtrér din søgning på ",
+		"starHeadline": "Filtrér din søgning",
+		"allGenres": "Alle kategorier",
+		"genres": "kategori | kategorier",
+		"selectedGenres": "{selected} af {total} kategorier valgt",
+		"genresSubtitle": "Vælg, hvilken kategori du gerne vil søge i.",
+		"allChannels": "Alle kanaler",
+		"selectedTVChannels": "{selected} af {total} kanaler valgt",
+		"selectedRadioChannels": "{selected} af {total} kanaler valgt",
+		"channels": "kanal | kanaler",
+		"tvChannels": "TV kanal | TV kanaler",
+		"radioChannels": "RADIO kanal | RADIO kanaler",
+		"chosen": "Valgt",
+		"contentFrom": "Indhold tilbage fra ",
+		"reset": "nulstil",
+		"choose": "Vælg",
+		"seeResults": "Se dit {resultCount} resultat | Se dine {resultCount} resultater",
+		"to": "Til",
+		"from": "Fra",
+		"year": "år",
+      "closeFacets":"Luk filtrering",
+		"slowResponse": {
+			"title": "Lang respons tid",
+			"text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
+		},
+		"remove": "Fjern",
+		"deselect":"Fravælg",
+		"searchingIn": "Søger kun på",
+		"desc": "beskrivelse",
+		"title": "titel",
+		"searchMethod": {
+			"all": {
+				"title": "Søg i alt",
+				"desc": "Der søges i alle metadata-felter."
+			},
+			"title": {
+				"title": "Søg kun på titler",
+				"desc": "Der søges kun i titel-feltet."
+			},
+			"desc": {
+				"title": "Søg kun på beskrivelser",
+				"desc": "Der søges kun i beskrivelses-feltet."
+			}
+		},
+		"searchMaterial": {
+			"both": {
+				"title": "Søg på både TV og RADIO",
+				"desc": "Der søges både i RADIO-poster og TV-poster."
+			},
+			"tv": {
+				"title": "Søg kun på TV",
+				"desc": "Der søges kun i TV-poster."
+			},
+			"radio": {
+				"title": "Søg kun på RADIO",
+				"desc": "Der søges kun i RADIO-poster."
+			}
+		},
+		"timePeriod": {
+			"date": {
+				"title": "Dato",
+				"desc": "Der søges på en dag."
+			},
+			"period": {
+				"title": "Periode",
+				"desc": "Der søges på en år-række."
+			}
+		}
+	},
+	"breadcrumb": {
+		"frontpage": "Forside",
+		"findMaterials": "Find materiale",
+		"drArchive": "DR-arkivet",
+		"search": "Søgning",
+		"record": "Udsendelse",
+      "goToFrontpage": "Gå til forsiden",
+      "backToSearch": "Tilbage til søge resultater"
+	},
+	"timeSearch": {
+		"timeMachine": "Udvælg en periode, som du gerne vil se indhold fra",
+      "seePeriodResultsAlt": "Gå til resultat for den udvalgte periode",
+		"periodOf": "Periode på {number} år",
+		"searchDate": "Søg via dato",
+		"searchCategories": "Søg via kategori",
+		"year": "år | år",
+		"month": "måned | måneder",
+		"week": "uge | uger",
+		"day": "dag | dage",
+		"weekday": "ugedag | ugedage",
+		"timePeriods": "tidspunkt | tidspunkter",
+		"chosenTimeslots": "Valgte tidspunkter",
+		"foundResults": "fundne resultater",
+		"allChosen": "Alle valgt",
+		"chosen": "valgt",
+		"notApplied": "ikke i brug",
+		"and": "og",
+		"data": "Arkivmateriale",
+		"from": "Fra",
+		"to": "Til",
+		"timeHits": "Der er i alt ",
+		"result": "resultat | resultater",
+		"all": "alle",
+		"allMonths": "Alle måneder i perioden",
+		"allDays": "Alle ugedage i perioden",
+		"allTimeslots": "Hele døgnet",
+		"selection": "Et udpluk af resultaterne",
+		"dateSubtitle": "Her kan du vælge en bestemt dato og se, hvad der blev sendt den dag.",
+		"searchCategoriesSubtitle": "Vælg en kategori og gå på opdagelse i udsendelserne. Kategorierne indeholder primært TV-udsendelser, mens du finder de fleste af radioudsendelserne i “Radio-rodekassen.”",
+		"monthHeadline": "Vælg måneder",
+		"dayHeadline": "Vælg ugedage",
+		"timeslotHeadline": "Vælg tidspunkter",
+		"yearHeadline": "Vælg dato eller periode",
+		"filterOpenButton": "Dato, periode og tidspunkter",
+		"filterCloseButton": "Luk tidspunkter",
+		"filterApplyButton": "Anvend",
+		"months": {
+			"january": "januar",
+			"february": "februar",
+			"march": "marts",
+			"april": "april",
+			"may": "maj",
+			"june": "juni",
+			"july": "juli",
+			"august": "august",
+			"september": "september",
+			"october": "oktober",
+			"november": "november",
+			"december": "december"
+		},
+		"weekdays": {
+			"monday": "mandage",
+			"tuesday": "tirsdage",
+			"wednesday": "onsdage",
+			"thursday": "torsdage",
+			"friday": "fredage",
+			"saturday": "lørdage",
+			"sunday": "søndage"
+		},
+		"timeslots": {
+			"morning": "06.00 - 12.00",
+			"midday": "12.00 - 18.00",
+			"evening": "18.00 - 24.00",
+			"night": "00.00 - 06.00"
+		}
+	},
+	"datepicker": {
+		"error": "Skriv en dato mellem {start} og {end}",
+		"date": "Dato",
+		"to": "Til",
+		"unknownLength": "Ukendt tidsperiode"
+	},
+	"additionalInfo": {
+		"openButton":"Gå til oversigt over nedslag i udsendelsen med billeder",
+		"goToBroadcast":"gå til udsendelsen"
+	},
+	"search": {
+		"score":"relevans",
+		"title_sort_da":"titel",
+		"asc":"stigende",
+		"desc":"faldende",
+	  "searching": "Søger.", 
+		"searchComplete": "Søgning fuldført. Fandt {count} resultater, sorteret efter {sort}, vist i {view}-visning, i {dir} rækkefølge",
+		"grid": "gitter",
+		"list": "liste",
+    "gridView": "Skift til gittervisning",
+    "listView": "Skift til listevisning",
+		"showing": "Viser",
+		"outOf": "ud af",
+		"recordThumbnail": "Miniaturebillede af {title}",
+		"watchProgram": "Se udsendelse",
+		"searchbtn": "Søg",
+		"hitcount": " resultat fundet med | resultater fundet med",
+		"filterSearch": " resultater fundet med dine filtre",
+		"nohitSubtitle": {
+			"readMore": "Læs mere om, hvad arkivet indeholder.",
+			"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+			"subtitleText": "Vi arbejder løbende på at gøre det lettere for dig at finde det, du leder efter. Tak for tålmodigheden! Nedenfor har vi samlet nogle gode råd til søgning, som måske kan hjælpe dig videre. "
+		},
+		"episode": "Episode",
+		"pageNumberPlaceholder": "Indtast sidetal",
+		"tipsTitle": "Et par fif til din søgning",
+		"mainCategories": "led videre i vores hovedkategorier",
+		"nohit": "Vi fandt desværre ingen resultater, der matcher din søgning på \"{query}\"",
+		"nohitWithFilter": "Vi beklager ingen {filterSearch}",
+		"showFilters": "Vis filtre",
+		"hideFilters": "Skjul filtre",
+		"resetFilters": "Nulstil filtre",
+		"nextPage": "Næste side",
+		"previousPage": "Forrige side",
+		"page": "Side",
+		"goToPage": "Gå til side {n}",
+      "currentPage": "nuværende side {n}",
+		"goToThePage": "Gå til siden",
+		"morePagesMessage": {
+			"1": "For hurtigst muligt at kunne vise dig et godt søgeresultat, har vi valgt kun at hente ca. 1.000 af de ",
+			"2": "{totalHits}",
+			"3": "resultater, din søgning finder. Hvis du ønsker at se et andet udsnit af resultaterne, kan du benytte dig af ",
+			"4": "sorteringsmulighederne.",
+			"5": "Alternativt kan du prøve at justere din søgning via filtrering eller nye søgeord."
+		},
+		"sortAfter": "Sorteret efter ",
+		"sortBy": "Sorter efter",
+		"sortedAsc": "sorteret stigende",
+		"sortedDesc": "sortered faldende",
+		"selected": "Valgt",
+		"title": "Titel",
+		"relevance": "Bedste match",
+		"date": "Dato",
+		"channels": "Kanaler",
+		"relatedSubjects": "Relaterede emner",
+		"relatedContent": "Relateret indhold",
+		"programGuide": "Programoversigt",
+		"noGuideContent": "Ikke noget i arkivet",
+		"didYouMean": "Mente du \"{spellCheckQuery}\"?",
+		"didYouMeanCount": "({spellCheckHits} resultater)",
+		"maybeYouMeant": "Måske mente du?",
+		"searchInput": "Søg i DR-arkivet",
+		"searchHere": "Søg",
+		"tv": "TV",
+		"radio": "Radio",
+		"all": "Alt",
+		"thumbnail": "Oversigt",
+		"thumbnailButton": "Se billede-oversigt",
+		"thumbnailLink": "Billede {index} ved {timestamp}",
+		"of": "af",
+		"startTime": "starttid",
+		"dataQuantity": {
+			"firstPart": "Kurven viser, hvor meget DR-arkivmateriale du kan søge i fra de forskellige årstal. I nogle perioder er der meget materiale, og i andre er der kun lidt eller ingenting.",
+			"secondPart": "Vi arbejder hele tiden på at gøre flere udsendelser klar til at komme ud i onlinearkivet, og derfor vil kurven ændre sig i takt med, at der bliver tilføjet flere udsendelser."
+		},
+		"showContent": "Anvend",
+		"portals": {
+			"drArchive": "DR-arkivet",
+			"booksAndMaterials": "Bøger og tidskrifter",
+			"kbdk": "Søg på kb.dk",
+			"webshop": "Webshop",
+			"seeAllMaterials": "Se alt materiale",
+			"allMaterialsLink": "https://www.kb.dk/find-materiale"
+		},
+		"placeholder": "Søg...",
+		"limitedFilters": {
+			"title": "For mange filtre",
+			"subtitle": "Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."
+		},
+		"searchGuide": {
+			"title": "Gode råd til din søgning",
+			"subtitle": "Måske kan du forbedre din søgning med en af disse metoder",
+			"first": "Prøv med færre eller andre søgeord",
+			"secondEnglish": "",
+			"second": {
+				"line1": "Tjek stavningen. Hvis du er usikker, kan du skrive ? som erstatning for et bogstav - eksempelvis Son?a",
+				"line2": "Så søger du både på Sonia og Sonja"
+			},
+			"third": {
+				"line1": "Prøv at skrive * i slutningen af et ord, eksempelvis skov*",
+				"line2": "Så søger du på skov, skovens, skovtur og så videre"
+			},
+			"fourth": "Brug søgning via dato eller periode på DR-arkivets forside, hvis du har en fornemmelse af, hvornår udsendelsen blev sendt",
+			"readMore": "Læs mere om søgetips",
+			"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning"
+		},
+		"frontpageGuide": {
+			"title": "Hvordan søger jeg bedst?",
+			"disclaimer": "",
+			"first": {
+				"part1": "Søgefunktionen finder i udgangspunktet kun resultater, hvor dine søgeord fremgår i titel eller beskrivelse i lige præcis den form og stavemåde, du har skrevet dem. Det vil sige, at en søgning på eksempelvis",
+				"cursive1": "hotel",
+				"part2": "ikke vil finde resultater, hvor der står",
+				"cursive2": "hoteller",
+				"part3": "eller",
+				"cursive3": "badehotel."
+			},
+			"second": "Hvis du vil inkludere flere former af søgeordene, kan du bruge * i slutningen og/eller starten af ordet.",
+			"third": "Bemærk: Når du søger i søgefeltet, nulstilles dine evt. tidligere valg af filtre - eksempelvis kategori, kanal eller tid.",
+			"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet#soegning",
+			"linktext": "Læs flere gode råd om søgning"
+		},
+		"contactUs": "Kontakt os gerne, hvis du har brug for hjælp"
+	},
+	"record": {
+		"episode":"Episode",
+		"tvChannel":"Sendt på TV kanal",
+		"radioChannel":"Sendt på radio kanal",
+		"duration": "Varighed",
+		"noBroadcastData": "Ingen sendetid",
+		"seeMaterial": "See material",
+		"toFrontpage": "DR-arkivet",
+		"back": "Tilbage til søgning",
+		"aired": "Sendt",
+		"timestamp": "kl. ",
+		"title": "Titel",
+		"genre": "Genre",
+		"annotation": "Bemærkning",
+		"copy": "Del link",
+		"copyTitleSuccess": "Linket er nu kopieret",
+		"copyMessageSuccess": "",
+		"copyTitleFailed": "Kopiering fejlede.",
+		"copyMessageFailed": "Linket blev ikke kopieret. Kopier URL i stedet.",
+		"moreMetadataBroadcast": "Yderligere information om udsendelsen",
+		"missingStreamingUrl": "Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise.",
+		"noRecordFound": "Vi kan desværre ikke finde den udsendelse, som du forsøger at tilgå :(",
+		"noRecordFoundExplained": "Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner."
+	},
+	"duration": {
+		"hours": "t",
+		"minutes": "min",
+		"seconds": "sek",
+		"unknown": "Ukendt længde"
+	},
+	"notification": {
+		"close": "Luk notifikation"
+	},
+	"spots": {
+		"readMoreSubtitle": "Før du går på opdagelse, kan du læse om arkivets indhold, baggrund og begrænsninger - og få gode råd til at søge i næsten 100 års radio og tv."
+	},
+	"radioOptions": {
+		"SelectedSearchMethod": "Vælg hvad der søges i",
+		"SelectedSearchMaterials": "Vælg hvilke materialetyper der søges i",
+      "preliminaryPeriodSearch": "Vælg om der skal søges på en dato eller en periode"
+	},
+	"footer": {
+		"contactInfo": "Kontaktinformationer",
+		"cookie": "Cookieindstillinger",
+		"column1": {
+			"title": "Genveje",
+			"links": {
+				"1": {
+					"title": "Om DR-arkivet",
+					"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+				},
+				"2": {
+					"title": "Find Materiale",
+					"link": "https://www.kb.dk/find-materiale"
+				},
+				"3": {
+					"title": "Inspiration",
+					"link": "https://www.kb.dk/inspiration"
+				},
+				"4": {
+					"title": "Arrangementer",
+					"link": "https://www.kb.dk/arrangementer"
+				},
+				"5": {
+					"title": "Services",
+					"link": "https://www.kb.dk/services"
+				},
+				"6": {
+					"title": "Besøg os",
+					"link": "https://www.kb.dk/besoeg-os"
+				}
+			}
+		},
+		"column2": {
+			"title": "Brug os",
+			"links": {
+				"1": {
+					"title": "Mediestream",
+					"link": "https://www2.statsbiblioteket.dk/mediestream/"
+				},
+				"2": {
+					"title": "Digitale samlinger",
+					"link": "https://www.kb.dk/find-materiale/tjenester/digitale-samlinger"
+				},
+				"3": {
+					"title": "Radio- og TV-samlingen",
+					"link": "https://www.kb.dk/find-materiale/samlinger/radio-og-tv-samlingen"
+				},
+				"4": {
+					"title": "Find danske radio- og tv udsendelser",
+					"link": "https://www.kb.dk/find-materiale/guides/danske-radio-og-tv-udsendelser"
+				},
+				"5": {
+					"title": "Bibliotekssystemet",
+					"link": "https://soeg.kb.dk/discovery/search?vid=45KBDK_KGL:KGL&lang=da"
+				}
+			}
+		},
+		"column3": {
+			"title": "Information",
+			"links": {
+				"1": {
+					"title": "Ledige stillinger",
+					"link": "https://www.kb.dk/om-os/job-og-karriere/ledige-stillinger"
+				},
+				"2": {
+					"title": "Reglementer",
+					"link": "https://www.kb.dk/reglementer"
+				},
+				"3": {
+					"title": "Ophavsret",
+					"link": "https://www.kb.dk/ophavsret"
+				},
+				"4": {
+					"title": "Privatlivs- og persondatapolitik",
+					"link": "https://www.kb.dk/privatlivs-og-persondatapolitik"
+				},
+				"5": {
+					"title": "Tilgængelighedserklæring",
+					"link": "https://www.was.digst.dk/kb-dk"
+				},
+				"6": {
+					"title": "Driftsstatus",
+					"link": "https://www.kb.dk/driftsstatus"
+				}
+			}
+		},
+		"column4": {
+			"links": {
+				"1": {
+					"title": "Spørg biblioteket",
+					"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet/spoerg-om-dr-arkivet"
+				},
+				"2": {
+					"title": "kb@kb.dk",
+					"link": "mailto:kb@kb.dk"
+				},
+				"3": {
+					"title": "Tel: (+45) 33 47 47 47",
+					"link": ""
+				},
+				"4": {
+					"title": "Pressekontakt",
+					"link": "https://www.kb.dk/om-os/presse"
+				},
+				"5": {
+					"title": "EAN: 5798000795297",
+					"link": ""
+				}
+			}
+		}
+	},
+	"some": {
+		"facebook": {
+			"title": "Følg os på Facebook",
+			"link": "https://www.facebook.com/DetKglBibliotek/"
+		},
+		"instagram": {
+			"title": "Følg os på Instagram",
+			"link": "https://www.instagram.com/detkglbibliotek/"
+		},
+		"linkedin": {
+			"title": "Følg os på LinkedIn",
+			"link": "https://www.linkedin.com/company/det-kgl-bibliotek/"
+		}
+	},
+	"error": {
+		"title": "Fejlmeddelelse",
+		"record": {
+			"loadingFailed": "Udsendelsen kunne ikke hentes.",
+			"notAllowed": "Du har ikke adgang til materialet",
+			"unknown": "Ukendt",
+			"restricted": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
+			"restrictedExplained": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
+		},
+		"players": {
+			"video": {
+				"fileInit": "Noget gik galt - vi kan ikke finde denne video",
+				"playerInit": "Videoafspilleren er ikke tilgængelig i øjeblikket",
+				"generic": "Noget gik galt - vi kan ikke afspille videoen i øjeblikket"
+			},
+			"audio": {
+				"fileInit": "Noget gik galt - vi kan ikke finde denne udsendelse",
+				"playerInit": "Audioafspilleren er ikke tilgængelig i øjeblikket",
+				"generic": "Noget gik galt - vi kan ikke afspille lydfilen i øjeblikket"
+			}
+		},
+		"backend": {
+			"bff": {
+				"notResponsive": "Noget indhold på denne side kunne ikke hentes."
+			},
+			"solr": {
+				"notResponsive": "Der er en fejl i systemet, som vi arbejder på at løse hurtigst muligt. Vi håber på din forståelse og tålmodighed"
+			}
+		},
+		"auth": {
+			"serviceFailed": "Applikationens bagvedliggende services er ikke tilgængelige i øjeblikket - prøv igen senere.",
+			"notAllowedHeader": "DU HAR DESVÆRRE IKKE ADGANG TIL DENNE UDSENDELSE",
+			"notAllowedText": "Det kan skyldes at udsendelsen er underlagt ophavsret eller er klausuleret, for eksempel på grund af særligt sårbare medvirkende."
+		},
+		"infoError": {
+			"title": "Der skete en fejl",
+			"relatedContent": "Relateret indhold svarer ikke.",
+			"programGuide": "Indholdet kunne ikke hentes",
+			"featuredContent": "Fremhævet indhold under DR gennem tiden svarer ikke.",
+			"thumbnails": "Billede-oversigten svarer ikke.",
+			"thumbnail": "Miniaturebilleder kan ikke hentes.",
+			"timeMachine": "Periode-filtre svarer ikke - prøv igen senere.",
+			"searchResult": "Søgeresultat svarer ikke - prøv igen senere.",
+			"pageNumber": "Sidetallet findes ikke."
+		},
+		"searchfailed": "Noget gik galt med din søgning",
+		"malformeduri": "Noget gik galt med parametrene til din søgning - prøv at ændre din søgeterm",
+		"wrongUrl": {
+			"header": "Vi kan desværre ikke finde den side, du søger :(",
+			"text": "Prøv at lave en søgning i søgefeltet eller gå til forsiden af DR-arkivet for at benytte de forskellige indgange til arkivmaterialet.",
+			"altHeader": "Måske leder du efter",
+			"notAllowedButtonHeader": "Du kan komme videre til",
+			"frontPage": "Forsiden af DR-arkivet",
+			"kbPage": "Forsiden af Det Kgl. Bibliotek"
+		},
+		"choseMaterialTitle": "Der skal være valgt et materiale",
+		"ChoseMaterialDesc": "Der skal være valgt mindst et materiale for at få et søgeresultat."
+	},
+	"hero": {
+		"title": "DR-arkivet",
+		"subtitle": "Det Kgl. Biblioteks",
+		"progress": "Vi har nået {index}%...",
+		"explanation": "I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
+		"linkText": "Læs mere om DR-arkivet",
+		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+	},
+	"categories": {
+		"brn-og-unge": "Børn og unge",
+		"dokumentar": "Dokumentar",
+		"film-og-serier": "Film og serier",
+		"humor-quiz-og-underholdning": "Humor, quiz og underholdning",
+		"kultur-og-oplysning": "Kultur og oplysning",
+		"livsstil": "Livsstil",
+		"musik": "Musik",
+		"natur-og-videnskab": "Natur og videnskab",
+		"nyheder-politik-og-samfund": "Nyheder, politik og samfund",
+		"radio-rodekasse": "Blandet radio",
+		"tv-rodekasse": "Blandet TV",
+		"sport": "Sport"
+	},
+	"find": {
+		"headline": "Hvad vil du søge efter?",
+		"subtitle": "Skriv i søgefeltet eller vælg en kategori for at begynde din søgning.",
+		"maybeYouWantTo": "Eller måske vil du hellere:",
+		"restoreFilters": "Gendanne filtre fra sidste søgning",
+		"GoToFrontpage": "Til forsiden af DR-arkivet"
+	},
+	"calendar": {
+		"open": "Åben kalender",
+		"close": "Luk kalender",
+		"explanation": "Skriv en dato i formatet DD-MM-ÅÅÅÅ eller vælg fra kalenderen.",
+		"select": "Vælg dato",
+		"nextMonth": "Næste måned",
+		"prevMonth": "Forrige måned"
+	}
 }

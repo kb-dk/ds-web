@@ -42,7 +42,12 @@
 				:aria-label="opened ? t('calendar.close') : t('calendar.open')"
 				@click="toggle"
 			>
-				<span class="material-icons">calendar_month</span>
+				<span
+					aria-hidden="true"
+					class="material-icons"
+				>
+					calendar_month
+				</span>
 			</button>
 		</div>
 

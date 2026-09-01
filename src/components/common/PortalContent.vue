@@ -7,26 +7,34 @@
 				text="var(--color-main)"
 			></TimeSearchComponent>
 		</div>
-		<div class="title">
-			<h2>
-				{{ t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) }) }}
-			</h2>
-		</div>
-
-		<div class="container">
-			<div class="container-backdrop">
-				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
-				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+		<div
+			role="region"
+			aria-labelledby="selected-month-heading"
+		>
+			<div class="title">
+				<h2
+					id="selected-month-heading"
+					:aria-label="t('frontpage.fromTheArchiveAlt')"
+				>
+					{{
+						t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) })
+					}}
+				</h2>
 			</div>
-
-			<GridDisplay
-				:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
-				:row-nr="4"
-				:draggable="true"
-				:spots="searchResultStore.rotationalResult"
-				:loaded="dataLoaded"
-				:data-testid="addTestDataEnrichment('container', 'PortalContent', 'through-time-container', 0)"
-			></GridDisplay>
+			<div class="container">
+				<div class="container-backdrop">
+					<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+					<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+				</div>
+				<GridDisplay
+					:spot-nr="searchResultStore.rotationalResult.length === 0 ? 4 : searchResultStore.rotationalResult.length"
+					:row-nr="4"
+					:draggable="true"
+					:spots="searchResultStore.rotationalResult"
+					:loaded="dataLoaded"
+					:data-testid="addTestDataEnrichment('container', 'PortalContent', 'through-time-container', 0)"
+				></GridDisplay>
+			</div>
 		</div>
 	</div>
 </template>

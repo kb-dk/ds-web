@@ -24,8 +24,18 @@
 					:placeholder="getPlaceholderImage()"
 					:index="index"
 				></ResultItem>
-				<div class="vert-dot">•</div>
-				<div class="hors-dot">•</div>
+				<div
+					aria-hidden="true"
+					class="vert-dot"
+				>
+					•
+				</div>
+				<div
+					aria-hidden="true"
+					class="hors-dot"
+				>
+					•
+				</div>
 			</div>
 		</TransitionGroup>
 	</div>
