@@ -363,7 +363,8 @@
 	},
 	"radioOptions": {
 		"SelectedSearchMethod": "Vælg hvad der søges i",
-		"SelectedSearchMaterials": "Vælg hvilke materialetyper der søges i"
+		"SelectedSearchMaterials": "Vælg hvilke materialetyper der søges i",
+      "preliminaryPeriodSearch": "Vælg om der skal søges på en dato eller en periode"
 	},
 	"footer": {
 		"contactInfo": "Kontaktinformationer",

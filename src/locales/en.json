@@ -365,7 +365,8 @@
 	},
 	"radioOptions": {
 		"SelectedSearchMethod": "Choose what to search in",
-		"SelectedSearchMaterials": "Choose which material types to search in"
+		"SelectedSearchMaterials": "Choose which material types to search in",
+      "preliminaryPeriodSearch": "Choose to search on a date or on a period"
 	},
 	"footer": {
 		"contactInfo": "Contact information",
