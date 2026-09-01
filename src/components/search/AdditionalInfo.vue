@@ -56,7 +56,12 @@
 			:data-testid="addTestDataEnrichment('link', 'additional-info', `individual-thumbnail-${id}`, 0)"
 		>
 			<p class="btn-reg">{{ $t('search.watchProgram') }}</p>
-			<span class="material-icons link-arrow">chevron_right</span>
+			<span
+				aria-hidden="true"
+				class="material-icons link-arrow"
+			>
+				chevron_right
+			</span>
 		</router-link>
 		<div class="full-duration">
 			<p class="label-medium">| {{ convertSecondstoShow(duration) }}</p>

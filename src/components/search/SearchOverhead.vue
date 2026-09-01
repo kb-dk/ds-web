@@ -65,6 +65,7 @@
 						</div>
 
 						<button
+							:aria-label="`${t('search.listView')}`"
 							:class="
 								searchResultStore.loading
 									? 'display-option list loading'
@@ -75,9 +76,15 @@
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-list', 0)"
 							@click="setGridAndLoadResults(false)"
 						>
-							<span class="material-icons">toc</span>
+							<span
+								aria-hidden="true"
+								class="material-icons"
+							>
+								toc
+							</span>
 						</button>
 						<button
+							:aria-label="`${t('search.gridView')}`"
 							:class="
 								searchResultStore.loading
 									? 'display-option grid loading'
@@ -89,7 +96,12 @@
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-grid', 0)"
 							@click="setGridAndLoadResults(true)"
 						>
-							<span class="material-icons">apps</span>
+							<span
+								aria-hidden="true"
+								class="material-icons"
+							>
+								apps
+							</span>
 						</button>
 					</div>
 				</div>

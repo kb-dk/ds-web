@@ -36,7 +36,10 @@
 				{{ $t('timeSearch.periodOf', { number: Math.ceil(timeSliderValues[1] - timeSliderValues[0] + 1) }) }}
 			</p>
 		</div>
-		<div class="slider-whiteoff-container">
+		<div
+			aria-hidden="true"
+			class="slider-whiteoff-container"
+		>
 			<Transition name="fade">
 				<div
 					v-show="expToggled"

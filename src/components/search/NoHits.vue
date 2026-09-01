@@ -66,7 +66,14 @@
 						</ul>
 					</div>
 				</template>
-				<template #image><div class="material-icons search-icon">search</div></template>
+				<template #image>
+					<div
+						aria-hidden="true"
+						class="material-icons search-icon"
+					>
+						search
+					</div>
+				</template>
 			</TextAndImage>
 			<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
 			<div class="end-container">

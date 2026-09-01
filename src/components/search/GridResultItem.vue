@@ -25,7 +25,10 @@
 						<ImageComponent :image-data="imageData"></ImageComponent>
 					</div>
 					<div class="date">
-						<span class="material-icons">
+						<span
+							class="material-icons"
+							aria-hidden="true"
+						>
 							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 						</span>
 						<div
@@ -36,7 +39,12 @@
 						</div>
 					</div>
 					<div class="duration">
-						<span class="material-icons">schedule</span>
+						<span
+							class="material-icons"
+							aria-hidden="true"
+						>
+							schedule
+						</span>
 						<span class="record-duration label-small">{{ $t('record.duration') }}:&nbsp;</span>
 						<Duration
 							:start-date="resultdata.startTime"
@@ -55,6 +63,7 @@
 					>
 						<span
 							role="img"
+							aria-hidden="true"
 							class="material-icons episode-split-icon"
 						>
 							segment
@@ -131,6 +140,12 @@
 				</div>
 			</div>
 		</Transition>
+		<div
+			aria-hidden="true"
+			class="hors-dot"
+		>
+			•
+		</div>
 	</div>
 </template>
 
@@ -316,7 +331,6 @@ export default defineComponent({
 	width: 100%;
 	max-width: 100%;
 	border-bottom: 1px solid var(--color-border-success);
-	padding-bottom: 20px;
 	margin-bottom: 10px;
 	position: relative;
 	color: var(--color-default);
@@ -335,25 +349,45 @@ export default defineComponent({
 	display: grid;
 }
 
-.grid-result-item:after {
-	transition: all 0.3s linear 0s;
-	display: flex;
-	content: '•';
+.grid-result-item:hover .hors-dot {
+	/* background-color: transparent; */
+	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
+	transition:
+		transform 0.3s ease-in-out 0s,
+		--initialColor 0.2s ease-in,
+		--midPointColor1 0.2s ease-in,
+		--midPointColor2 0.2s ease-in,
+		--endColor 0.2s ease-in;
+}
+
+.hors-dot {
+	transition:
+		all 0.3s ease-in-out 0s,
+		--initialColor 0.3s ease-out,
+		--midPointColor1 0.3s ease-out,
+		--midPointColor2 0.3s ease-out,
+		--endColor 0.3s ease-out;
+}
+.hors-dot {
 	position: absolute;
-	font-size: 16px;
-	height: 11px;
+	height: 10px;
 	text-align: center;
 	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	left: 50%;
 	width: 20px;
-	line-height: 0;
+	line-height: 0.5;
+	margin-top: -5px;
 	transform-origin: center;
 	will-change: transform;
-	bottom: -4px;
-	background-color: white;
-	justify-content: center;
-	align-items: center;
+	z-index: 1;
+	background: linear-gradient(
+		180deg,
+		var(--initialColor) 0%,
+		var(--midPointColor1) 50%,
+		var(--midPointColor2) 50%,
+		var(--endColor) 100%
+	);
 }
 
 .thumb-container {

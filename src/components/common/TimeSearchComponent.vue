@@ -1,64 +1,68 @@
 <template>
 	<div
-		class="header"
+		class="time-container"
+		role="region"
+		aria-labelledby="time-container-heading"
 		:style="`color: ${text}`"
 	>
-		<h2>{{ title }}</h2>
+		<h2 id="time-container-heading">{{ title }}</h2>
 		<p>
 			<span>{{ subtitle }}</span>
 		</p>
-	</div>
-	<TimeSearchFilters
-		:timeline="true"
-		:init="true"
-		@new-search="fetchNewTimeResults()"
-	></TimeSearchFilters>
 
-	<div class="result-container">
-		<div class="container-backdrop">
-			<ContainerSplitBar :is-top="true"></ContainerSplitBar>
-			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
-		</div>
-		<div class="time-results">
-			<ItemSlider
-				:padding="false"
-				bg="var(--bg-backdrop)"
-				item-class="time-result"
-				bg-scroll-blue="true"
-			>
-				<template #default="slotProps">
-					<div
-						v-for="(item, index) in timeSearchStore.timeResults"
-						:key="index"
-						class="time-result-item"
-					>
-						<GridResultItem
-							:loading="timeSearchStore.loading"
-							:resultdata="item"
-							:index="index"
-							background="var(--bg-backdrop)"
-							:slot-props="slotProps"
-						></GridResultItem>
+		<TimeSearchFilters
+			:timeline="true"
+			:init="true"
+			@new-search="fetchNewTimeResults()"
+		></TimeSearchFilters>
+
+		<div class="result-container">
+			<div class="container-backdrop">
+				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
+				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+			</div>
+			<div class="time-results">
+				<ItemSlider
+					:padding="false"
+					bg="var(--bg-backdrop)"
+					item-class="time-result"
+					bg-scroll-blue="true"
+				>
+					<template #default="slotProps">
+						<div
+							v-for="(item, index) in timeSearchStore.timeResults"
+							:key="index"
+							class="time-result-item"
+						>
+							<GridResultItem
+								:loading="timeSearchStore.loading"
+								:resultdata="item"
+								:index="index"
+								background="var(--bg-backdrop)"
+								:slot-props="slotProps"
+							></GridResultItem>
+						</div>
+					</template>
+				</ItemSlider>
+				<div class="result-header-container">
+					<div class="result-header">
+						<KBButton
+							class="btn-medium"
+							:to="timeSearchLink"
+							:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
+							button-type="btn-cta"
+							button-color="cta"
+							:aria-label="`${t('timeSearch.seePeriodResultsAlt')}`"
+							button-size="medium"
+							:is-router-link="true"
+							right-icon-name="arrow_forward_ios"
+							:button-text="`${$t('facets.seeResults', {
+								count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
+								resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
+							})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
+							@click="timeSearchBehavior()"
+						></KBButton>
 					</div>
-				</template>
-			</ItemSlider>
-			<div class="result-header-container">
-				<div class="result-header">
-					<KBButton
-						class="btn-medium"
-						:to="timeSearchLink"
-						:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
-						button-type="btn-cta"
-						button-color="cta"
-						button-size="medium"
-						:is-router-link="true"
-						right-icon-name="arrow_forward_ios"
-						:button-text="`${$t('facets.seeResults', {
-							count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
-							resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
-						})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
-						@click="timeSearchBehavior()"
-					></KBButton>
 				</div>
 			</div>
 		</div>
@@ -271,7 +275,7 @@ h2 {
 	user-drag: none;
 }
 
-.header {
+.time-container {
 	margin: 0;
 	position: relative;
 	padding-bottom: 38px;
@@ -282,18 +286,18 @@ h2 {
 	box-sizing: border-box;
 }
 
-.header h2 {
+.time-container h2 {
 	text-transform: none;
 	margin: 0;
 }
 
-.header span {
+.time-container span {
 	margin: 0;
 	display: block;
 	margin-top: 4px;
 	max-width: 720px;
 }
-.header p {
+.time-container p {
 	margin: 0;
 }
 @media (min-width: 640px) {

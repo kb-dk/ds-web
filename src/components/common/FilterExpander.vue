@@ -3,12 +3,20 @@
 		<button
 			ref="headlineRef"
 			:disabled="disabled"
+			:aria-expanded="expanderOpen"
+			:aria-controls="expanderId"
 			class="headline label-medium"
-			role="button"
 			@click="toggleExpander($event)"
 		>
-			<span class="material-icons icon">{{ icon }}</span>
+			<span
+				aria-hidden="true"
+				class="material-icons icon"
+			>
+				{{ icon }}
+			</span>
 			{{ headline }}
+		</button>
+		<span class="selected-filters">
 			<span
 				v-if="!timeSearchOngoing && type === 'time'"
 				class="entry-number label-regular label"
@@ -33,10 +41,11 @@
 				:button-text="`${subline}`"
 				@click="removeFilters($event, facetType, itemArray)"
 			></KBButton>
-		</button>
+		</span>
 		<div
+			:id="expanderId"
 			ref="expandContainer"
-			:class="fade ? 'expander' : 'expander'"
+			class="expander"
 		>
 			<slot></slot>
 		</div>
@@ -45,11 +54,12 @@
 				:disabled="disabled"
 				:class="expanderOpen ? 'toggle-button open' : 'toggle-button closed'"
 				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-status-toggle`, 0)"
-				:title="expanderOpen ? 'Close' : 'Open'"
+				:aria-label="expanderOpen ? `${t('app.close')} ${headline}` : `${t('app.open')} ${headline}`"
 				:aria-expanded="expanderOpen"
+				:aria-controls="expanderId"
 				@click="toggleExpander($event)"
 			>
-				{{ expanderOpen ? '-' : '+' }}
+				<span aria-hidden="true">{{ expanderOpen ? '-' : '+' }}</span>
 			</button>
 		</div>
 	</div>
@@ -59,7 +69,7 @@
 import { defineComponent, ref, PropType, computed } from 'vue';
 import gsap from 'gsap';
 import { SelectorData } from '@/types/TimeSearchTypes';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
 import KBButton from '@/components/common/KBButton.vue';
 import { removeFilterAndSearch } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
@@ -96,11 +106,6 @@ export default defineComponent({
 		subline: {
 			type: String as PropType<string>,
 			required: true,
-		},
-		fade: {
-			type: Boolean as PropType<boolean>,
-			required: false,
-			default: false,
 		},
 		itemArray: {
 			type: Array as PropType<SelectorData[]>,
@@ -141,6 +146,10 @@ export default defineComponent({
 		const passAlongUpdate = (parent: SelectorData[], index: number, val: boolean) => {
 			props.updateEntity(parent, index, val, props.facetType);
 		};
+
+		const expanderId = computed(() => {
+			return `filter-expander-${santizeAndSimplify(props.facetType)}-${santizeAndSimplify(props.headline)}`;
+		});
 
 		const removeFilters = (e: Event, facetType: string, itemArray: Array<SelectorData>) => {
 			e.stopPropagation();
@@ -184,7 +193,7 @@ export default defineComponent({
 					opacity: 0,
 					onComplete: () => {
 						gsap.set(expandContainer.value, {
-							display: props.fade ? 'block' : 'none',
+							display: 'none',
 							overwrite: true,
 						});
 					},
@@ -239,6 +248,7 @@ export default defineComponent({
 			startYear,
 			endYear,
 			timeSearchOngoing,
+			expanderId,
 		};
 	},
 });
@@ -263,6 +273,14 @@ export default defineComponent({
 
 .headline:disabled {
 	cursor: auto;
+}
+
+.selected-filters {
+	position: absolute;
+	height: 64px;
+	right: 0px;
+	display: flex;
+	align-items: center;
 }
 
 .headline {

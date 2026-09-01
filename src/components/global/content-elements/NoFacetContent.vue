@@ -1,6 +1,11 @@
 <template>
 	<div :class="`no-content-container`">
-		<span class="material-icons">warning</span>
+		<span
+			aria-hidden="true"
+			class="material-icons"
+		>
+			warning
+		</span>
 		<p>{{ $t('app.frontPages.loadingError') }}</p>
 	</div>
 </template>

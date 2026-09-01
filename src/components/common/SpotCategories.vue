@@ -3,12 +3,15 @@
 		spot-size="max"
 		color="light"
 		icon-name="category"
+		:icon-alt-text="t('icons.categories')"
 	>
 		<div
 			v-if="categoriesLoaded && categories.length"
 			class="spot-categories"
+			role="region"
+			aria-labelledby="categories-heading"
 		>
-			<h2>{{ categories.length }} {{ t('facets.genres', 2) }}:</h2>
+			<h2 id="categories-heading">{{ categories.length }} {{ t('facets.genres', 2) }}:</h2>
 			<KBButton
 				v-for="(category, i) in categories"
 				:key="category.name"

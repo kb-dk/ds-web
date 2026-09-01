@@ -17,7 +17,12 @@
 				</div>
 			</div>
 			<div class="not-allowed-lock">
-				<span class="material-icons">lock</span>
+				<span
+					aria-hidden="true"
+					class="material-icons"
+				>
+					lock
+				</span>
 			</div>
 		</div>
 	</div>

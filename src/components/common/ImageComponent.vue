@@ -17,6 +17,7 @@
 		<span
 			v-if="data.icon"
 			role="img"
+			aria-hidden="true"
 			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
 			:class="data.iconLowerRight ? 'type-symbol material-icons lower-right' : 'type-symbol material-icons'"
 			:style="`color: ${data.iconColor}`"

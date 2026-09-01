@@ -3,17 +3,33 @@
 		v-bind="attrs"
 		class="btn"
 		:class="{ active: active, 'relevance-btn': !hasArrowIcons }"
+		:aria-label="`${t('search.sortBy')} ${buttonText.toLowerCase()}${
+			active ? `, ${isAscSort ? t('search.sortedAsc') : t('search.sortedDesc')}` : ''
+		}`"
 	>
 		<span
 			v-if="leftIconName"
 			class="material-icons"
+			aria-hidden="true"
 		>
 			{{ leftIconName }}
 		</span>
-		<span class="btn-text">{{ buttonText }}</span>
+
+		<span class="btn-text">
+			{{ buttonText }}
+		</span>
+
+		<span
+			v-if="hasArrowIcons && active"
+			class="sr-only"
+		>
+			{{ isAscSort ? t('search.sortedAsc') : t('search.sortedDesc') }}
+		</span>
+
 		<div
 			v-if="hasArrowIcons"
 			class="sort-arrows"
+			aria-hidden="true"
 		>
 			<span
 				class="material-icons"
@@ -33,6 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, useAttrs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'KBButtonSort',
@@ -76,7 +93,9 @@ export default defineComponent({
 	},
 	setup() {
 		const attrs = useAttrs();
-		return { attrs };
+		const { t } = useI18n();
+
+		return { attrs, t };
 	},
 });
 </script>
@@ -100,6 +119,19 @@ export default defineComponent({
 	border: none;
 	border-bottom: 1px solid transparent;
 }
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
 .btn:disabled {
 	background-color: var(--bg-disabled);
 	cursor: default;

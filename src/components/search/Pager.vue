@@ -66,7 +66,11 @@
 					:to="navLink(pageNumber as number)"
 					:class="{ active: pageNumber === currentPageRef }"
 					:title="`${$t('search.page')} ${pageNumber}`"
-					:aria-label="$t('search.goToPage', Number(pageNumber))"
+					:aria-label="
+						pageNumber === currentPageRef
+							? $t('search.currentPage', Number(pageNumber))
+							: $t('search.goToPage', Number(pageNumber))
+					"
 					@click="goToPage(pageNumber as number)"
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>

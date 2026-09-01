@@ -1,5 +1,6 @@
 <template>
 	<div
+		aria-hidden="true"
 		class="logo-container container"
 		:class="{ ready }"
 	>

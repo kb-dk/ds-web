@@ -7,9 +7,15 @@
 		<div class="facet-container">
 			<div class="headline-section">
 				<div class="filter-header">
-					<div class="material-icons filters">tune</div>
+					<div
+						aria-hidden="true"
+						class="material-icons filters"
+					>
+						tune
+					</div>
 					<button
 						class="closeBtn material-icons"
+						:aria-label="t('facets.closeFacets')"
 						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
 					>
 						close

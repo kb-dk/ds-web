@@ -6,7 +6,7 @@
 					<a
 						href="https://www.kb.dk"
 						class="rdl-logo"
-						title="Logo of the Royal Danish Library"
+						:aria-label="`${t('app.logoText')}`"
 						data-testid="link-topmenu-logo-0"
 					>
 						<span class="sr-only">Royal Danish Library Logo</span>

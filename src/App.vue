@@ -1,8 +1,5 @@
 <template>
-	<header
-		:aria-label="`${String(route.name).toLowerCase()} header`"
-		class="header"
-	>
+	<header class="header">
 		<a
 			href="#main-content"
 			class="skip-link"

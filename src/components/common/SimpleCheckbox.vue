@@ -13,7 +13,6 @@
 			class="label label-regular"
 		>
 			<input
-				role="checkbox"
 				type="checkbox"
 				class="checkbox"
 				autocomplete="off"
@@ -25,6 +24,7 @@
 			/>
 			<span
 				v-if="icon"
+				aria-hidden="true"
 				:class="[
 					'display-image icon material-icons',
 					{ disabled: (amount === '0' && !checked) || (disabled && !checked), outline: iconFilled },
@@ -34,6 +34,7 @@
 			</span>
 			<span
 				v-if="channel"
+				aria-hidden="true"
 				:style="`background-image:url(${getFilterThumbnail(channel)})`"
 				:class="['display-image channel no-icon', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
 			></span>

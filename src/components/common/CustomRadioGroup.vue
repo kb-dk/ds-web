@@ -1,6 +1,7 @@
 <template>
 	<fieldset class="radio-set">
-		<legend class="sr-only">Choose option</legend>
+		{{ t('radioOptions.' + name) }}
+		<legend class="sr-only">{{ t('radioOptions.' + name) }}</legend>
 		<CustomRadioButton
 			v-for="(obj, index) in options"
 			:key="obj.value"
@@ -34,6 +35,7 @@ import { defineComponent } from 'vue';
 import CustomRadioButton from '@/components/common/CustomRadioButton.vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	components: { CustomRadioButton },
@@ -51,8 +53,9 @@ export default defineComponent({
 	emits: ['update:modelValue', 'change'],
 
 	setup(props, { emit }) {
+		const { t } = useI18n();
 		const searchResultStore = useSearchResultStore();
-		return { emit, searchResultStore, addTestDataEnrichment };
+		return { emit, searchResultStore, addTestDataEnrichment, t };
 	},
 });
 </script>
