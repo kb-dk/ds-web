@@ -1,5 +1,8 @@
 <template>
-	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
+	<article
+		:aria-labelledby="`article-title-${index}`"
+		:class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'"
+	>
 		<div class="backfade"></div>
 		<Transition
 			name="result"
@@ -17,7 +20,10 @@
 					:title="resultdata.title"
 				>
 					<div class="information">
-						<p class="label-medium-bold">
+						<h3
+							:id="`article-title-${index}`"
+							class="label-medium-bold"
+						>
 							{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
 							<span>
 								<div
@@ -28,7 +34,7 @@
 									keyboard_arrow_right
 								</div>
 							</span>
-						</p>
+						</h3>
 						<div class="subtitle">
 							<div class="subtitle-metadata">
 								<span
@@ -36,7 +42,9 @@
 									:class="`icons schedule material-icons ${
 										resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
 									}`"
-									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+									:aria-label="
+										resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')
+									"
 								>
 									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 								</span>
@@ -47,10 +55,8 @@
 							</div>
 							<div class="subtitle-metadata">
 								<div
-									role="img"
+									:aria-label="t('record.duration')"
 									class="material-icons icons schedule timeSVG"
-									:aria-label="t('app.a11y.broadcastDuration')"
-									aria-hidden="true"
 								>
 									schedule
 								</div>
@@ -63,7 +69,7 @@
 								class="episode subtitle-metadata"
 							>
 								<span
-									role="img"
+									:aria-label="t('record.episode')"
 									class="material-icons episode-split-icon"
 								>
 									segment
@@ -92,6 +98,7 @@
 
 				<AdditionalInfo
 					:id="resultdata.id"
+					:title="resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown')"
 					:type="resultdata.origin.split('.')[1]"
 					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
 					:duration="Number(resultdata.duration_ms)"
@@ -159,7 +166,7 @@
 				<div class="result-image-wrapper skeleton"></div>
 			</div>
 		</Transition>
-	</div>
+	</article>
 </template>
 
 <script lang="ts">
@@ -397,7 +404,7 @@ export default defineComponent({
 	display: block;
 	width: fit-content;
 }
-.title > .label-medium-bold {
+.label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
 	color: var(--color-default);
 	text-overflow: ellipsis;
@@ -409,7 +416,9 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
+	margin-top: 0px;
 }
+
 .subtitle {
 	display: flex;
 	flex-direction: column;

@@ -89,6 +89,7 @@
 			"text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
 		},
 		"remove": "Remove",
+		"deselect":"Deselect",
 		"searchingIn": "Only searching with",
 		"desc": "description",
 		"title": "title",
@@ -213,7 +214,19 @@
 		"to": "To",
 		"unknownLength": "Unknown timespan"
 	},
+	"additionalInfo": {
+		"openButton":"Go to overview of points in the broadcast with images",
+		"goToBroadcast":"go to broadcast"
+	},
 	"search": {
+		"score":"relevance",
+		"title_sort_da":"title",
+		"asc":"ascending",
+		"desc":"descending",
+		"searching": "Searching.",
+		"searchComplete": "Search complete. Found {count} results, sorted by {sort}, presented in {view} view, in {dir} order",
+		"grid": "grid",
+		"list": "list",
 		"gridView": "Change to grid view",
 		"listView": "Change to list view",
 		"showing": "Showing",
@@ -330,6 +343,9 @@
 		"contactUs": "Contact us if you need help"
 	},
 	"record": {
+		"episode":"Episode",
+		"tvChannel":"sent on TV channel",
+		"radioChannel":"sent on radio channel",
 		"duration": "Duration",
 		"noBroadcastData": "No air date",
 		"seeMaterial": "Se materiale",

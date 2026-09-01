@@ -1,9 +1,10 @@
 <template>
-	<div
+	<article
 		ref="gridContainer"
 		draggable="false"
 		class="grid-result-item"
 		:style="{ backgroundColor: background }"
+		:aria-labelledby="`article-title-${index}`"
 	>
 		<Transition
 			name="result"
@@ -24,10 +25,16 @@
 					<div class="thumb-container">
 						<ImageComponent :image-data="imageData"></ImageComponent>
 					</div>
+					<h3
+						:id="`article-title-${index}`"
+						class="title"
+					>
+						{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
+					</h3>
 					<div class="date">
 						<span
 							class="material-icons"
-							aria-hidden="true"
+							:aria-label="resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')"
 						>
 							{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 						</span>
@@ -62,8 +69,7 @@
 						class="episode"
 					>
 						<span
-							role="img"
-							aria-hidden="true"
+							:aria-label="t('record.episode')"
 							class="material-icons episode-split-icon"
 						>
 							segment
@@ -82,9 +88,6 @@
 						v-else
 						class="episode no-episode"
 					></div>
-					<h3 class="title">
-						{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
-					</h3>
 					<p class="summary fixed-size">
 						{{ resultdata.description }}
 					</p>
@@ -103,6 +106,10 @@
 					<div class="thumb-container loading-color">
 						<NoFacetContent v-if="!loading"></NoFacetContent>
 					</div>
+					<div
+						:style="`width:${Math.random() * 30 + 50}px`"
+						class="title loading"
+					></div>
 					<div class="material-icons loading-icon">play_circle</div>
 					<div
 						:style="`width:${Math.random() * 30 + 40}px`"
@@ -119,10 +126,6 @@
 							class="date loading"
 						></div>
 					</div>
-					<div
-						:style="`width:${Math.random() * 30 + 50}px`"
-						class="title loading"
-					></div>
 					<div class="summary loading">
 						<div
 							class="word"
@@ -146,7 +149,7 @@
 		>
 			•
 		</div>
-	</div>
+	</article>
 </template>
 
 <script lang="ts">
@@ -347,6 +350,10 @@ export default defineComponent({
 	text-decoration: none;
 	color: var(--color-default);
 	display: grid;
+}
+
+.h3 {
+	padding-bottom: 15px;
 }
 
 .grid-result-item:hover .hors-dot {

@@ -14,6 +14,13 @@
 			<span>{{ returnCurrentEnv() }}</span>
 			environment
 		</div>
+		<div
+			aria-live="polite"
+			aria-atomic="true"
+			class="sr-only"
+		>
+			{{ searchResultStore.searchStatusMessage }}
+		</div>
 		<Notifier></Notifier>
 		<Spinner></Spinner>
 		<Header :locale="currentLocale"></Header>
@@ -383,6 +390,7 @@ export default defineComponent({
 			transitionName,
 			isDevelopment,
 			returnCurrentEnv,
+			searchResultStore,
 			t,
 		};
 	},
@@ -411,6 +419,18 @@ export default defineComponent({
 .result-enter-active,
 .result-leave-active {
 	transition: all 0.15s ease-in-out;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 .result-enter {

@@ -65,6 +65,19 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
 	);
 
+	const searchStatusMessage = computed(() => {
+		if (loading.value) {
+			return t('search.searching');
+		}
+
+		return t('search.searchComplete', {
+			count: numFound.value,
+			sort: t(`search.${decodeURIComponent(sort.value).split(' ')[0]}`),
+			view: resultGrid.value ? t('search.grid') : t('search.list'),
+			dir: t(`search.${decodeURIComponent(sort.value).split(' ')[1]}`),
+		});
+	});
+
 	const pageNumber = computed(() => {
 		const pageStart = start.value ? Number(start.value) : 0;
 		return (pageStart + Number(rowCount.value)) / Number(rowCount.value);
@@ -491,5 +504,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		preliminarySearchMethod,
 		preliminaryPeriodSearch,
 		searchFieldFocused,
+		searchStatusMessage,
 	};
 });

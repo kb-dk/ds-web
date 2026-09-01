@@ -3,11 +3,11 @@
 		<div class="row">
 			<div class="hit-count">
 				<div :class="['filter-options', { disabled: searchResultStore.loading }]">
-					<div :class="`filter-buttons ${searchResultStore.showFacets ? 'filter-buttons-top-filter-active' : ''}`">
+					<div :class="`filter-buttons`">
 						<KBButton
 							ref="toggleFacetsButton"
-							role="switch"
-							aria-checked="true"
+							aria-controls="search-filters"
+							:aria-expanded="searchResultStore.showFacets"
 							class="btn-medium"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
 							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"
@@ -45,9 +45,7 @@
 									class="page-count"
 								>
 									<p class="label-small">
-										{{ t('search.page') }}
-										{{ searchResultStore.pageNumber }}
-										{{ t('search.of') }}
+										{{ t('search.page') }} {{ searchResultStore.pageNumber }} {{ t('search.of') }}
 										{{ searchResultStore.maxPages }}
 									</p>
 								</div>
@@ -63,9 +61,9 @@
 								</div>
 							</Transition>
 						</div>
-
 						<button
-							:aria-label="`${t('search.listView')}`"
+							:aria-label="t('search.listView')"
+							:aria-pressed="!searchResultStore.resultGrid"
 							:class="
 								searchResultStore.loading
 									? 'display-option list loading'
@@ -84,7 +82,8 @@
 							</span>
 						</button>
 						<button
-							:aria-label="`${t('search.gridView')}`"
+							:aria-label="t('search.gridView')"
+							:aria-pressed="searchResultStore.resultGrid"
 							:class="
 								searchResultStore.loading
 									? 'display-option grid loading'
@@ -92,7 +91,6 @@
 									  ? 'display-option grid active'
 									  : 'display-option grid'
 							"
-							class="display-option grid"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-grid', 0)"
 							@click="setGridAndLoadResults(true)"
 						>

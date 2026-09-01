@@ -17,6 +17,7 @@
 				<span
 					v-if="checked"
 					class="dot"
+					aria-hidden="true"
 				></span>
 			</Transition>
 		</div>
@@ -27,7 +28,7 @@
 		>
 			{{ icon }}
 		</span>
-		<span>{{ title }}</span>
+		<span aria-hidden="true">{{ title }}</span>
 	</label>
 </template>
 

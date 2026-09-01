@@ -50,16 +50,12 @@ export default defineComponent({
 		KBButtonSort,
 	},
 	setup() {
-		const showSortingOptions = ref(false);
 		const route = useRoute();
 		const router = useRouter();
 		const searchResultStore = useSearchResultStore();
 		const { t } = useI18n();
 		const sortAsc = ref(false);
 		const activeIndex = ref(-1);
-		const revealSortingOptions = () => {
-			showSortingOptions.value = !showSortingOptions.value;
-		};
 
 		watch(
 			() => route,
@@ -92,12 +88,10 @@ export default defineComponent({
 				sortAsc.value = false;
 			}
 			sortValue = `${sortValue} ${getAscOrDesc(sortAsc.value)}`;
-			const sort = encodeURIComponent(`${sortValue}`);
+			const sort = `${sortValue}`;
 			const start = `${0}`;
 			const query = { ...route.query, sort, start };
 			router.push({ query });
-			showSortingOptions.value = false;
-			searchResultStore.resetStart();
 		};
 
 		const getAscOrDesc = (sortAsc: boolean): string => {
@@ -116,8 +110,6 @@ export default defineComponent({
 		});
 
 		return {
-			revealSortingOptions,
-			showSortingOptions,
 			newSort,
 			sortAsc,
 			searchResultStore,

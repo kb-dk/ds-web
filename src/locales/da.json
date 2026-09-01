@@ -88,6 +88,7 @@
 			"text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
 		},
 		"remove": "Fjern",
+		"deselect":"Fravælg",
 		"searchingIn": "Søger kun på",
 		"desc": "beskrivelse",
 		"title": "titel",
@@ -212,9 +213,21 @@
 		"to": "Til",
 		"unknownLength": "Ukendt tidsperiode"
 	},
+	"additionalInfo": {
+		"openButton":"Gå til oversigt over nedslag i udsendelsen med billeder",
+		"goToBroadcast":"gå til udsendelsen"
+	},
 	"search": {
-   "gridView": "Skift til gittervisning",
-   "listView": "Skift til listevisning",
+		"score":"relevans",
+		"title_sort_da":"titel",
+		"asc":"stigende",
+		"desc":"faldende",
+	  "searching": "Søger.", 
+		"searchComplete": "Søgning fuldført. Fandt {count} resultater, sorteret efter {sort}, vist i {view}-visning, i {dir} rækkefølge",
+		"grid": "gitter",
+		"list": "liste",
+    "gridView": "Skift til gittervisning",
+    "listView": "Skift til listevisning",
 		"showing": "Viser",
 		"outOf": "ud af",
 		"recordThumbnail": "Miniaturebillede af {title}",
@@ -329,6 +342,9 @@
 		"contactUs": "Kontakt os gerne, hvis du har brug for hjælp"
 	},
 	"record": {
+		"episode":"Episode",
+		"tvChannel":"Sendt på TV kanal",
+		"radioChannel":"Sendt på radio kanal",
 		"duration": "Varighed",
 		"noBroadcastData": "Ingen sendetid",
 		"seeMaterial": "See material",

@@ -1,8 +1,11 @@
 <template>
 	<div
 		v-if="Object.keys(searchResultStore.initFacets || {}).length > 0"
+		id="search-filters"
 		ref="facetsContainer"
 		class="search-facets"
+		role="region"
+		aria-labelledby="filter-headline"
 	>
 		<div class="facet-container">
 			<div class="headline-section">
@@ -21,7 +24,10 @@
 						close
 					</button>
 				</div>
-				<h2 class="filter-headline">
+				<h2
+					id="filter-headline"
+					class="filter-headline"
+				>
 					<span v-if="searchResultStore.currentQuery !== '*:*' && searchResultStore.currentQuery !== ''">
 						{{ t('facets.headline') }}
 						<span class="bold">{{ searchResultStore.currentQuery }}</span>

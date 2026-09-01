@@ -1,6 +1,5 @@
 <template>
 	<fieldset class="radio-set">
-		{{ t('radioOptions.' + name) }}
 		<legend class="sr-only">{{ t('radioOptions.' + name) }}</legend>
 		<CustomRadioButton
 			v-for="(obj, index) in options"

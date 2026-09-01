@@ -39,6 +39,7 @@
 				:data-testid="addTestDataEnrichment('button', 'filter-expander', `${headline}-remove-filter`, 0)"
 				right-icon-name="close"
 				:button-text="`${subline}`"
+				:aria-label="`${subline} - ${t('facets.deselect')} ${t('app.titles.filter')}`"
 				@click="removeFilters($event, facetType, itemArray)"
 			></KBButton>
 		</span>
