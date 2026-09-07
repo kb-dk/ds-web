@@ -31,6 +31,7 @@
 				:to="navLink(currentPageRef - 1)"
 				:title="$t('search.previousPage')"
 				:aria-label="$t('search.previousPage')"
+				:data-testid="addTestDataEnrichment('link', 'pager', 'prev-page', 0)"
 				@click="scrollToHitsContainer()"
 			>
 				<i
@@ -71,6 +72,7 @@
 							? $t('search.currentPage', Number(pageNumber))
 							: $t('search.goToPage', Number(pageNumber))
 					"
+					:data-testid="addTestDataEnrichment('link', 'pager', 'page', index)"
 					@click="goToPage(pageNumber as number)"
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
@@ -82,6 +84,7 @@
 				:title="$t('search.nextPage')"
 				:aria-label="$t('search.nextPage')"
 				class="arrow-pager"
+				:data-testid="addTestDataEnrichment('link', 'pager', 'next-page', 0)"
 				@click="nextPage"
 			>
 				<i
@@ -146,6 +149,7 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Pager',
@@ -351,6 +355,7 @@ export default defineComponent({
 			scrollToTop,
 			navLink,
 			scrollToHitsContainer,
+			addTestDataEnrichment,
 		};
 	},
 });
