@@ -34,7 +34,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
 type SpotSizeType = 'small' | 'medium' | 'large' | 'max';
 type ColorType = 'main' | 'light';
 export default defineComponent({
@@ -64,8 +63,7 @@ export default defineComponent({
 		},
 	},
 	setup() {
-		const { t } = useI18n();
-		return { t };
+		return {};
 	},
 });
 </script>
