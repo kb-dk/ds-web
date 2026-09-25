@@ -744,11 +744,16 @@ export default defineComponent({
 		};
 		const setSearchMethodAndExecute = (choice: string) => {
 			let orgQuery = searchResultStore.currentQuery;
+
 			if (
 				searchResultStore.currentQuery.includes('title:') ||
 				searchResultStore.currentQuery.includes('description:')
 			) {
 				orgQuery = searchResultStore.currentQuery.split(':')[1].replaceAll('"', '');
+			} else {
+				if (orgQuery[0] === '"' && orgQuery[orgQuery.length - 1] === '"') {
+					orgQuery = orgQuery.replaceAll('"', '');
+				}
 			}
 			let newQuery = '';
 			if (choice === 'title') {
