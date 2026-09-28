@@ -8,140 +8,96 @@
 				<span
 					v-if="filtersActive"
 					key="1"
-					class="label-small"
+					class="label-regular"
 				>
 					{{ $t('search.selected') }}:
 				</span>
 				<div
-					v-if="searchResultStore.channelFilters.length !== 0"
 					key="2"
 					class="filter-group"
 				>
-					<!-- <KBButton
-						class="label-small"
-						:button-text="`${searchResultStore.channelFilters.length} ${t(
-							'facets.channels',
-							searchResultStore.channelFilters.length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="removeFilterAndSearch('creator_affiliation_facet')"
-					></KBButton> -->
-					<KBButton
-						v-for="(channel, index) in searchResultStore.channelFilters"
-						:key="index"
-						class="label-small"
-						:button-text="`${extractFilterText(channel)}`"
-						button-type="btn-tag-sub"
-						right-icon-name="close"
-						@click="removeSingleFilterAndSearch(channel)"
-					></KBButton>
-				</div>
-				<div
-					v-if="searchResultStore.categoryFilters.length !== 0"
-					key="3"
-					class="filter-group"
-				>
-					<!-- <KBButton
-						class="label-small"
-						:button-text="`${searchResultStore.categoryFilters.length} ${t(
-							'facets.genres',
-							searchResultStore.categoryFilters.length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="removeFilterAndSearch('genre')"
-					></KBButton> -->
-					<KBButton
-						v-for="(category, index) in searchResultStore.categoryFilters"
-						:key="index"
-						class="label-small"
-						:button-text="`${extractFilterText(category)}`"
-						button-type="btn-tag-sub"
-						right-icon-name="close"
-						@click="removeSingleFilterAndSearch(category)"
-					></KBButton>
-				</div>
-				<div v-if="months.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${months.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.month',
-							months.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(months, 'temporal_start_month')"
-					></KBButton>
-				</div>
-				<div v-if="days.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${days.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.weekday',
-							days.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(days, 'temporal_start_day_da')"
-					></KBButton>
-				</div>
-				<div v-if="timeslots.filter((entity) => entity.selected === true).length > 0">
-					<KBButton
-						class="label-small"
-						:button-text="`${timeslots.filter((entity) => entity.selected === true).length} ${t(
-							'timeSearch.timePeriods',
-							timeslots.filter((entity) => entity.selected === true).length,
-						)}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetTimeValueAndSearch(timeslots, 'temporal_start_hour_da')"
-					></KBButton>
-				</div>
-				<div
-					v-if="
-						(startDate !== null &&
-							(startDate as unknown as string) !== '' &&
-							startDate.getTime() !== startYear.getTime()) ||
-						(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
-					"
-				>
-					<KBButton
-						class="label-small"
-						:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="resetYearsAndSearch('startTime')"
-					></KBButton>
-				</div>
-				<div
-					v-if="searchResultStore.preliminaryFilter !== ''"
-					key="5"
-				>
-					<KBButton
-						class="label-small"
-						:button-text="`${preliminaryFilterText}`"
-						button-type="btn-tag-primary"
-						right-icon-name="close"
-						@click="removePreliminaryFilterAndSearch()"
-					></KBButton>
-				</div>
+					<div v-if="searchResultStore.channelFilters.length !== 0">
+						<KBButton
+							v-for="(channel, index) in searchResultStore.channelFilters"
+							:key="index"
+							class="label-regular"
+							:button-text="`${extractFilterText(channel)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removeSingleFilterAndSearch(channel)"
+						></KBButton>
+						|
+					</div>
 
-				<span
-					v-if="filtersActive"
-					key="6"
-					class="seperator"
-				>
-					|
-				</span>
+					<div v-if="searchResultStore.categoryFilters.length !== 0">
+						<KBButton
+							v-for="(category, index) in searchResultStore.categoryFilters"
+							:key="index"
+							class="label-regular"
+							:button-text="`${extractFilterText(category)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removeSingleFilterAndSearch(category)"
+						></KBButton>
+						|
+					</div>
+					<div
+						v-if="
+							(startDate !== null &&
+								(startDate as unknown as string) !== '' &&
+								startDate.getTime() !== startYear.getTime()) ||
+							(endDate !== null && (endDate as unknown as string) !== '' && endDate.getTime() !== endYear.getTime())
+						"
+					>
+						<KBButton
+							class="label-regular"
+							:button-text="`${presentDateSpan()} ${approxTimeDifference()}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="resetYearsAndSearch('startTime')"
+						></KBButton>
+						|
+					</div>
+					<div v-if="searchResultStore.preliminarySearchMethod !== 'all'">
+						<KBButton
+							class="label-regular"
+							:button-text="`${t('facets.searchingIn')} ${t(`facets.${searchResultStore.preliminarySearchMethod}`)}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removePreliminarySearchFilterAndSearch()"
+						></KBButton>
+					</div>
+					<div v-if="searchResultStore.preliminaryFilter !== ''">
+						<KBButton
+							class="label-regular"
+							:button-text="`${t('facets.searchingIn')} ${preliminaryFilterText}`"
+							button-type="btn-tag"
+							button-color="main"
+							button-size="small"
+							right-icon-name="close"
+							@click="removePreliminaryFilterAndSearch()"
+						></KBButton>
+						|
+					</div>
+				</div>
 				<div
 					v-if="filtersActive"
-					key="7"
+					key="8"
 				>
 					<KBButton
-						class="label-small"
+						class="label-regular"
 						:button-text="`${t('facets.reset')}`"
-						button-type="btn-tag-reset"
+						button-type="btn-tag"
+						button-color="reset"
+						button-size="small"
 						right-icon-name="close"
 						@click="resetAllFilters"
 					></KBButton>
@@ -164,12 +120,10 @@ import {
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import { resetAllSelectorValues } from '@/utils/time-search-utils';
-import { SelectorData } from '@/types/TimeSearchTypes';
 import { cloneRouteQuery, normalizeFq } from '@/utils/filter-utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
-import { santizeAndSimplify } from '@/utils/test-enrichments';
 import { removeChannelOrCategoryFilter } from '@/utils/filter-utils';
 export default defineComponent({
 	name: 'CurrentFilters',
@@ -189,16 +143,12 @@ export default defineComponent({
 				(endDate.value as unknown as string) !== ''
 			) {
 				if (
-					(days.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						months.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						timeslots.value.filter((entity: SelectorData) => entity.selected === true).length > 0 ||
-						searchResultStore.categoryFilters.length !== 0 ||
-						searchResultStore.channelFilters.length !== 0 ||
-						startDate.value.getTime() !== startYear.value.getTime() ||
-						endDate.value.getTime() !== endYear.value.getTime() ||
-						searchResultStore.preliminaryFilter !== '') &&
-					route.query.fq !== undefined &&
-					route.query.fq?.length !== 0
+					searchResultStore.categoryFilters.length !== 0 ||
+					searchResultStore.channelFilters.length !== 0 ||
+					startDate.value.getTime() !== startYear.value.getTime() ||
+					endDate.value.getTime() !== endYear.value.getTime() ||
+					searchResultStore.preliminarySearchMethod !== 'all' ||
+					searchResultStore.preliminaryFilter !== ''
 				) {
 					return true;
 				} else {
@@ -209,17 +159,26 @@ export default defineComponent({
 			}
 		});
 
-		const resetTimeValueAndSearch = (resetArray: SelectorData[], facet: string) => {
-			resetAllSelectorValues(resetArray);
-			removeFilterAndSearch(facet);
-		};
-
 		const resetYearsAndSearch = (facet: string) => {
 			if (startDate.value !== null && endDate.value !== null) {
 				startDate.value.setTime(startYear.value.getTime());
 				endDate.value.setTime(endYear.value.getTime());
 				removeFilterAndSearch(facet);
 			}
+		};
+
+		const removePreliminarySearchFilterAndSearch = () => {
+			searchResultStore.preliminarySearchMethod = 'all';
+			const routeQueries = cloneRouteQuery(route);
+			if (routeQueries.q.includes('title:')) {
+				routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+			} else if (routeQueries.q.includes('description:')) {
+				routeQueries.q = routeQueries.q.replace(/description:"([^"]*)"/g, (_match: string, content: string) => content);
+			}
+			router.push({
+				name: 'Search',
+				query: routeQueries,
+			});
 		};
 
 		const removePreliminaryFilterAndSearch = () => {
@@ -256,7 +215,6 @@ export default defineComponent({
 
 		const resetAllFilters = () => {
 			const routeQueries = cloneRouteQuery(route);
-			searchResultStore.resetFilters();
 			resetAllSelectorValues(days.value);
 			resetAllSelectorValues(timeslots.value);
 			resetAllSelectorValues(months.value);
@@ -273,6 +231,17 @@ export default defineComponent({
 
 			if (routeQueries.q === '*:*') {
 				delete routeQueries.q;
+			} else {
+				if (
+					searchResultStore.currentQuery.includes('title:') ||
+					searchResultStore.currentQuery.includes('description:')
+				) {
+					routeQueries.q = routeQueries.q.replace(/title:"([^"]*)"/g, (_match: string, content: string) => content);
+					routeQueries.q = routeQueries.q.replace(
+						/description:"([^"]*)"/g,
+						(_match: string, content: string) => content,
+					);
+				}
 			}
 
 			delete routeQueries.start;
@@ -324,23 +293,10 @@ export default defineComponent({
 			}
 		};
 
-		const calculatedYearSpan = () => {
-			if (
-				startDate.value !== null &&
-				endDate.value !== null &&
-				(startDate.value as unknown as string) !== '' &&
-				(endDate.value as unknown as string) !== ''
-			) {
-				return `(${endDate.value.getFullYear() - startDate.value.getFullYear() + 1}~ ${t(
-					'timeSearch.year',
-					endDate.value.getFullYear() - startDate.value.getFullYear() + 1,
-				)})`;
-			} else {
-				return '';
-			}
-		};
 		const preliminaryFilterText = computed(() => {
-			return decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1];
+			return searchResultStore.preliminaryFilter !== ''
+				? decodeURIComponent(searchResultStore.preliminaryFilter).split(':')[1].replaceAll('"', '').split('.')[1]
+				: '';
 		});
 
 		const extractFilterText = (filter: string) => {
@@ -354,11 +310,11 @@ export default defineComponent({
 			days,
 			months,
 			timeslots,
-			resetTimeValueAndSearch,
 			resetAllFilters,
 			removeFilterAndSearch,
 			resetYearsAndSearch,
 			removePreliminaryFilterAndSearch,
+			removePreliminarySearchFilterAndSearch,
 			startDate,
 			endDate,
 			startYear,
@@ -366,9 +322,9 @@ export default defineComponent({
 			approxTimeDifference,
 			t,
 			presentDateSpan,
-			calculatedYearSpan,
 			preliminaryFilterText,
-			santizeAndSimplify,
+			router,
+			route,
 			extractFilterText,
 			removeSingleFilterAndSearch,
 		};
@@ -384,8 +340,10 @@ export default defineComponent({
 	flex-wrap: wrap;
 }
 .filter-group {
-	display: flex;
-	flex-direction: row;
+	display: contents;
+}
+.filter-group > div {
+	display: contents;
 }
 .filter-group > :not(:first-child) {
 	margin-left: 5px;

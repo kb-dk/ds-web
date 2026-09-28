@@ -31,6 +31,7 @@
 				:to="navLink(currentPageRef - 1)"
 				:title="$t('search.previousPage')"
 				:aria-label="$t('search.previousPage')"
+				:data-testid="addTestDataEnrichment('link', 'pager', 'prev-page', 0)"
 				@click="scrollToHitsContainer()"
 			>
 				<i
@@ -67,6 +68,7 @@
 					:class="{ active: pageNumber === currentPageRef }"
 					:title="`${$t('search.page')} ${pageNumber}`"
 					:aria-label="$t('search.goToPage', Number(pageNumber))"
+					:data-testid="addTestDataEnrichment('link', 'pager', 'page', index)"
 					@click="goToPage(pageNumber as number)"
 				>
 					<span>{{ new Intl.NumberFormat('de-DE').format(Number(pageNumber)) }}</span>
@@ -78,6 +80,7 @@
 				:title="$t('search.nextPage')"
 				:aria-label="$t('search.nextPage')"
 				class="arrow-pager"
+				:data-testid="addTestDataEnrichment('link', 'pager', 'next-page', 0)"
 				@click="nextPage"
 			>
 				<i
@@ -121,7 +124,9 @@
 			</button> -->
 			<div class="go-to-button-container">
 				<KBButton
-					button-type="btn-cta-small"
+					button-type="btn-cta"
+					button-color="cta"
+					button-size="small"
 					class="btn-reg"
 					:button-text="$t('search.goToThePage')"
 					:disabled="inputIncorrect || selectPage === ''"
@@ -140,6 +145,7 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { useI18n } from 'vue-i18n';
 import KBButton from '@/components/common/KBButton.vue';
+import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'Pager',
@@ -345,6 +351,7 @@ export default defineComponent({
 			scrollToTop,
 			navLink,
 			scrollToHitsContainer,
+			addTestDataEnrichment,
 		};
 	},
 });
@@ -385,11 +392,12 @@ export default defineComponent({
 .arrow-pager {
 	text-decoration: none !important;
 }
-
+.active {
+	text-decoration: none !important;
+}
 .active span {
-	color: white;
-	background-color: #002e70;
-	text-decoration: none;
+	color: var(--color-default);
+	background-color: var(--bg-main-light);
 }
 
 button,
@@ -406,11 +414,11 @@ button,
 }
 .pager-buttons a {
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-default);
 }
 
 .pager-buttons a:visited {
-	color: #002e70;
+	color: var(--color-default);
 }
 
 :disabled {
@@ -421,7 +429,7 @@ button span,
 .dots {
 	padding: 2px 5px;
 	text-decoration: underline;
-	color: #002e70;
+	color: var(--color-default);
 	border-radius: 3px;
 	transition: all 0.2s linear 0s;
 	line-height: 25px;
@@ -432,7 +440,7 @@ button span,
 }
 
 .input-label {
-	color: #002e70;
+	color: var(--color-default);
 	height: 31px;
 	width: fit-content;
 	display: inline;
@@ -455,17 +463,17 @@ button span,
 
 .page-select-input {
 	background: #ffffff 0% 0% no-repeat padding-box;
-	color: #002e70;
-	border: 0px solid #002e70;
+	color: var(--color-default);
+	border: 0px solid var(--color-border-active);
 	border-radius: 2px;
 	height: 25px;
 	width: 80px;
 	padding: 2px 5px;
-	outline: 1px solid #002e70;
+	outline: 1px solid var(--color-border-active);
 }
 
 .page-select-input:focus-visible {
-	outline: 2px solid #002e70;
+	outline: 2px solid var(--color-border-active);
 }
 
 .page-select-input-error {
@@ -503,7 +511,7 @@ button span,
 	display: inline;
 }
 .morePagesMessage .topOfScreen {
-	color: #002e70;
+	color: var(--color-default);
 	cursor: pointer;
 }
 .topOfScreen > span {

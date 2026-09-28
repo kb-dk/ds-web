@@ -19,7 +19,7 @@
 							:title="resultdata.title"
 						>
 							<p class="label-medium-bold">
-								{{ resultdata.title[0] }}
+								{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
 								<span>
 									<div
 										role="img"
@@ -40,7 +40,7 @@
 									}`"
 									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 								>
-									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 								</span>
 								<p class="label-small">
 									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
@@ -107,6 +107,8 @@
 						left-icon-name="photo_library"
 						right-icon-name="expand_more"
 						button-type="btn-dropdown-default"
+						button-size="medium"
+						button-color="light"
 						@click="toggleAdditionalInfo(true)"
 					></KBButton>
 					<KBButton
@@ -119,12 +121,15 @@
 						right-icon-name="expand_more"
 						left-icon-name="content_copy"
 						class="btn-reg"
+						button-size="medium"
+						button-color="light"
 						@click="toggleAdditionalInfo(false)"
 					></KBButton>
 				</div>
 				<AdditionalInfo
 					:id="resultdata.id"
-					:file-id="resultdata.file_id ? resultdata.file_id : ''"
+					:type="resultdata.origin.split('.')[1]"
+					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
 					:duration="Number(resultdata.duration_ms)"
 					:open="isThumbnailsOpen"
 				></AdditionalInfo>
@@ -150,7 +155,7 @@
 							:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							class="material-icons ph-icon"
 						>
-							play_circle_filled
+							play_circle
 						</div>
 						<span
 							class="line"
@@ -271,11 +276,13 @@ export default defineComponent({
 		const isRerunsOpen = ref(false);
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
+			imageDataObj.altText = t('search.recordThumbnail', {
+				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
+			});
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation);
 			imageDataObj.imgOption = 'cover';
-			imageDataObj.icon = 'play_circle_filled';
+			imageDataObj.icon = 'play_circle';
 			imageDataObj.iconColor = 'white';
 			imageDataObj.iconLowerRight = true;
 			imageData.value = JSON.stringify(imageDataObj);
@@ -283,16 +290,18 @@ export default defineComponent({
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', { title: props.resultdata?.title[0] });
+			imageDataObj.altText = t('search.recordThumbnail', {
+				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
+			});
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
-			if (props.resultdata?.file_id) {
-				APIService.getThumbnail(props.resultdata.file_id)
+			if (props.resultdata?.kaltura_id) {
+				APIService.getThumbnail(props.resultdata.kaltura_id)
 					.then((thumbServiceResponse) => {
 						imageDataObj.imgSrc = thumbServiceResponse.data.default;
 						imageDataObj.placeholder = undefined;
 						imageDataObj.imgOption = 'cover';
-						imageDataObj.icon = 'play_circle_filled';
+						imageDataObj.icon = 'play_circle';
 						imageDataObj.iconColor = 'white';
 						imageData.value = JSON.stringify(imageDataObj);
 					})
@@ -378,7 +387,7 @@ export default defineComponent({
 .outer-container {
 	z-index: 1;
 	position: relative;
-	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	border-bottom: 1px solid var(--color-border-success);
 }
 
 .arrow {
@@ -432,26 +441,32 @@ export default defineComponent({
 .information {
 	text-overflow: ellipsis;
 	width: 100%;
-	overflow: hidden;
 	max-width: 100%;
+	color: var(--color-default);
 }
+
+.information > * {
+	margin-left: 5px;
+}
+
 .title {
 	text-decoration: none;
+	display: block;
+	width: fit-content;
 }
 .title > .label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
-	color: #002e70;
+	color: var(--color-default);
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 75ch;
-
+	max-width: 75ch;
+	width: fit-content;
 	height: 26px;
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
-	color: #002e70;
 }
 .subtitle {
 	display: flex;
@@ -465,7 +480,7 @@ export default defineComponent({
 	margin: 0;
 }
 .episode-text {
-	color: #002e70;
+	color: var(--color-default);
 }
 .episode-split-icon {
 	padding-right: 3px;
@@ -476,6 +491,7 @@ export default defineComponent({
 .result-image-wrapper {
 	width: 100%;
 	height: 150px;
+	margin-top: 4px;
 }
 
 .where,
@@ -566,7 +582,7 @@ export default defineComponent({
 	display: inline-block;
 	width: 50px;
 	height: 14px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-defalt);
 	border-radius: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -580,7 +596,7 @@ export default defineComponent({
 .placeholder-w .line {
 	display: inline-block;
 	border-radius: 10px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--bg-defalt);
 	width: 30px;
 	height: 14px;
 	width: 25%;
@@ -671,7 +687,7 @@ export default defineComponent({
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;
-		height: 175px;
+		height: 215px;
 		flex-direction: row;
 	}
 	.information {
@@ -679,7 +695,7 @@ export default defineComponent({
 	}
 	.summary {
 		position: absolute;
-		top: 110px;
+		top: 135px;
 	}
 	.result-image-wrapper {
 		width: 200px;
@@ -698,11 +714,14 @@ export default defineComponent({
 		display: flex;
 		flex-direction: row;
 	}
+	.summary {
+		top: 110px;
+	}
 }
 
 @media (min-width: 800px) {
 	.container {
-		height: 150px;
+		height: 175px;
 	}
 	.result-image-wrapper {
 		height: initial;
@@ -722,7 +741,7 @@ export default defineComponent({
 
 	.result-item-wrapper {
 		padding: 00px 0px 0px 20px;
-		border-left: 1px solid rgba(230, 230, 230, 1);
+		border-left: 1px solid var(--color-border-success);
 	}
 
 	.backfade {
@@ -748,7 +767,6 @@ export default defineComponent({
 			opacity 0.3s ease-in-out,
 			visibility 0s linear 0.3s; /* Delay visibility hiding */
 	}
-
 	.result-item-wrapper.data:hover .backfade {
 		opacity: 0.6;
 		visibility: visible; /* Show immediately */

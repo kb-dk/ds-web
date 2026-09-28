@@ -5,41 +5,41 @@
 			<p>{{ t('record.noRecordFoundExplained') }}</p>
 			<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
 			<div class="extra-suggest">
-				<a
-					class="btn-blue btn"
+				<KBButton
+					button-color="main"
+					button-size="medium"
+					button-type="btn-main-medium"
+					:button-text="t('error.wrongUrl.frontPage')"
 					href="/find-materiale/dr-arkivet/"
 					:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-home', 0)"
-				>
-					{{ t('error.wrongUrl.frontPage') }}
-				</a>
-				<a
-					class="btn-blue btn"
+				></KBButton>
+				<KBButton
+					button-color="main"
+					button-size="medium"
+					button-type="btn-main-medium"
+					:button-text="t('footer.column1.links.1.title')"
 					:href="t('footer.column1.links.1.link')"
 					:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-about', 0)"
-				>
-					{{ t('footer.column1.links.1.title') }}
-				</a>
-				<a
-					class="btn-blue btn"
+				></KBButton>
+				<KBButton
+					button-color="main"
+					button-size="medium"
+					button-type="btn-main-medium"
+					:button-text="t('error.wrongUrl.kbPage')"
 					href="https://www.kb.dk"
 					:data-testid="addTestDataEnrichment('button', 'unavailable-record', 'link-to-kb', 0)"
-				>
-					{{ t('error.wrongUrl.kbPage') }}
-				</a>
+				></KBButton>
 			</div>
 		</div>
-		<EdgedContentArea
-			:lines="true"
-			:line-padding="false"
-			background-color="#002e70"
-			:title="t('search.mainCategories')"
-		>
-			<template #content>
-				<MainCategories />
-			</template>
-		</EdgedContentArea>
-		<div class="contactus">
-			<ContactUs :relative-position="false" />
+		<div class="container-backdrop"><ContainerSplitBar :is-top="false"></ContainerSplitBar></div>
+		<div class="end-container">
+			<SpotCategories></SpotCategories>
+			<div class="contact-us">
+				<ContactUs
+					class="contact-us"
+					:relative-position="false"
+				></ContactUs>
+			</div>
 		</div>
 	</div>
 </template>
@@ -48,16 +48,18 @@
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import MainCategories from '@/components/common/MainCategories.vue';
-import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
-import ContactUs from '../search/ContactUs.vue';
+import ContactUs from '@/components/search/ContactUs.vue';
+import KBButton from '@/components/common/KBButton.vue';
+import SpotCategories from '@/components/common/SpotCategories.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: 'GenericRecord',
 	components: {
-		MainCategories,
-		EdgedContentArea,
 		ContactUs,
+		KBButton,
+		SpotCategories,
+		ContainerSplitBar,
 	},
 	setup() {
 		const { t } = useI18n();
@@ -66,68 +68,36 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
+.unavailable-record {
+	background-color: white;
+}
 .not-found-details {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	padding-bottom: 25px;
+	color: var(--color-default);
 }
-
-.btn {
-	display: inline-block;
-	font-weight: 400;
-	color: #171717;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	background-color: transparent;
-	border: 1px solid transparent;
-	border-top-color: transparent;
-	border-right-color: transparent;
-	border-bottom-color: transparent;
-	border-left-color: transparent;
-	padding: 13px 2.875rem;
-	font-size: 1rem;
-	line-height: 1.25rem;
-	border-radius: 0.25rem;
-	transition:
-		color 0.15s ease-in-out,
-		background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out,
-		box-shadow 0.15s ease-in-out;
-	margin-right: 15px;
-	margin-bottom: 15px;
-	white-space: nowrap;
-}
-.btn-light {
-	color: #212529;
-	background-color: #f2f4f8;
-	border-color: #f2f4f8;
-}
-.btn-blue {
-	color: white;
-	background-color: #002e70;
-	border-color: #f2f4f8;
-}
-.btn-light:hover {
-	color: #212529;
-	background-color: #d9dfeb;
-	border-color: #d1d8e6;
-}
-
-.btn-blue:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-	border-color: #002e70;
-}
-
-@media (min-width: 1200px) {
-	.contactus {
-		margin-bottom: -6vh;
-	}
+.extra-suggest {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
 }
 </style>

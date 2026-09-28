@@ -48,26 +48,27 @@ temporary styling until patterns from design system are implemented
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
-	padding-right: 12px;
-	padding-left: 12px;
-	margin-top: -85px;
+
+	background-color: var(--bg-default);
+	/* margin-top: -85px; */
 }
 
 .home-container {
+	background-color: var(--bg-default);
 	width: 100%;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
 	.container {
 		max-width: 640px;
-		padding-right: 12px;
-		padding-left: 12px;
 	}
 }
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.container {
 		max-width: 990px;
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 }
 /* MEDIA QUERY 990 */

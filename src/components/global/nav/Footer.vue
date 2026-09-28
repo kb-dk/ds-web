@@ -9,7 +9,7 @@
 		>
 			<div class="row">
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column1.title }}</h2>
+					<h3>{{ currentLocaleMessages.column1.title }}</h3>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column1.links"
@@ -26,7 +26,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column2.title }}</h2>
+					<h3>{{ currentLocaleMessages.column2.title }}</h3>
 
 					<ul>
 						<li
@@ -44,7 +44,7 @@
 					</ul>
 				</div>
 				<div class="column">
-					<h2 class="label-medium-bold">{{ currentLocaleMessages.column3.title }}</h2>
+					<h3>{{ currentLocaleMessages.column3.title }}</h3>
 					<ul>
 						<li
 							v-for="(link, index) in currentLocaleMessages.column3.links"
@@ -223,7 +223,7 @@ export default defineComponent({
 }
 
 .rdl-logo-inverted {
-	background-image: url('@/assets/images/logo-white.svg');
+	background-image: url('@/assets/images/logo.svg');
 	height: 48px;
 	margin-bottom: 32px;
 	background-position: 0;
@@ -233,7 +233,7 @@ export default defineComponent({
 
 .rdl-some-link {
 	align-items: center;
-	background-color: #fff;
+	background-color: var(--bg-main);
 	border-radius: 50%;
 	display: inline-flex;
 	height: 24px;
@@ -243,12 +243,12 @@ export default defineComponent({
 }
 
 .rdl-some-link i {
-	color: #002e70;
+	color: var(--color-default);
 	font-size: 0.875rem;
-	background-color: #fff;
+	background-color: var(--bg-main);
 }
 
-h2 {
+h3 {
 	margin-bottom: 12px;
 	margin-top: 0;
 	padding-left: 5px;
@@ -257,9 +257,9 @@ h2 {
 .global-footer {
 	width: 100%;
 	overflow: hidden;
-	background-color: #002e70;
-	color: white;
-	padding: 36px 0 0px;
+	background-color: var(--bg-default);
+	color: var(--color-main);
+	padding: 36px 5px 0px;
 	position: relative;
 	bottom: 0px;
 	box-sizing: border-box;
@@ -271,7 +271,7 @@ h2 {
 }
 
 a {
-	color: white;
+	color: var(--color-main);
 	text-decoration: none;
 }
 

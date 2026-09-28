@@ -5,7 +5,10 @@
 			:left-icon-name="icon"
 			:button-text="title"
 			button-type="btn-dropdown-default"
+			button-color="transparent"
+			button-size="default"
 			:button-is-active="showContent"
+			:custom-style="{ boxShadow: 'none' }"
 			@click="toggleModal($event)"
 		></KBButton>
 	</div>
@@ -24,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import KBButton from './KBButton.vue';
+import KBButton from '@/components/common/KBButton.vue';
 
 export default defineComponent({
 	name: 'InfoComponent',

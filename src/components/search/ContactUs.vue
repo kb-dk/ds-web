@@ -5,6 +5,8 @@
 			class="btn-medium"
 			:button-text="t('footer.column4.links.1.title')"
 			button-type="btn-main-medium"
+			button-color="main"
+			button-size="medium"
 			:is-router-link="true"
 			:href="t('footer.column4.links.1.link')"
 			left-icon-name="chat_bubble"
@@ -37,43 +39,15 @@ export default defineComponent({
 </script>
 <style scoped>
 .contact {
+	margin-top: 50px;
 	margin-left: 1%;
+	color: var(--color-main);
 }
 .contact-relative {
 	position: relative;
 	top: calc(-6vw);
 	left: 1%;
-}
-.btn {
-	background-color: #0a2e70;
-	width: fit-content;
-	color: white;
-	text-align: center;
-	text-decoration: none;
-	border-radius: 4px;
-	height: 40px;
-	display: flex;
-	box-sizing: border-box;
-	margin-bottom: 15px;
-	padding: 5px 14px 9px 14px;
-	flex-direction: row;
-	justify-content: center;
-	white-space: nowrap;
-	border: 1px solid #0a2e70;
-}
-.btn > .btn-medium {
-	margin: 0;
-}
-.btn-blue {
-	color: white;
-	background-color: #002e70;
-	border-color: #f2f4f8;
-}
-
-.btn-blue:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-	border-color: #002e70;
+	color: var(--color-main);
 }
 
 .material-icons {

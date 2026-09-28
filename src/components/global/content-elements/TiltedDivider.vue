@@ -58,7 +58,7 @@ temporary styling until patterns from design system are implemented
 .bar {
 	width: 100%;
 	height: 18px;
-	background-color: #002e70;
+	background-color: var(--bg-main);
 }
 
 h2 {
@@ -66,7 +66,7 @@ h2 {
 	padding: 0;
 	text-align: center;
 	letter-spacing: 1.15px;
-	color: #002e70;
+	color: var(--color-main);
 	top: 2px;
 	position: relative;
 }

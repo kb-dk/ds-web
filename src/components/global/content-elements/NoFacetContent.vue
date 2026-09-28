@@ -1,24 +1,16 @@
 <template>
-	<div :class="`no-content-container ${position}`">
+	<div :class="`no-content-container`">
 		<span class="material-icons">warning</span>
 		<p>{{ $t('app.frontPages.loadingError') }}</p>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	name: 'NoFacetContent',
-	props: {
-		position: {
-			type: String as PropType<string>,
-			default() {
-				'relative';
-			},
-		},
-	},
 	setup() {
 		const { t } = useI18n();
 		return { t };
@@ -31,6 +23,7 @@ temporary styling until patterns from design system are implemented
 -->
 <style scoped>
 .no-content-container {
+	top: 0;
 	position: absolute;
 	display: flex;
 	flex-direction: column;

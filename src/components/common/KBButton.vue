@@ -3,19 +3,23 @@
 		v-if="!isRouterLink"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
+		:class="`${buttonType} ${buttonColor} ${buttonSize} ${buttonIsActive ? 'active' : ''} ${
+			buttonText ? 'btn-with-text' : ''
+		}`"
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -24,20 +28,24 @@
 		v-if="isRouterLink && attrs.href"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
+		:class="`${buttonType} ${buttonColor} ${buttonSize} ${buttonIsActive ? 'active' : ''} ${
+			buttonText ? 'btn-with-text' : ''
+		}`"
 		:href="attrs.href.toString()"
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
+			v-if="leftIconName || customIconLeft"
 			class="material-icons left"
+			:class="customIconLeft"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
+			v-if="rightIconName || customIconRight"
 			class="material-icons right"
+			:class="customIconRight"
 		>
 			{{ rightIconName }}
 		</span>
@@ -46,20 +54,22 @@
 		v-if="isRouterLink && attrs.to"
 		v-bind="attrs"
 		class="btn"
-		:class="`${buttonType} ${buttonIsActive ? 'active' : ''} ${buttonText ? 'btn-with-text' : ''}`"
+		:class="`${buttonType} ${buttonColor} ${buttonSize} ${buttonIsActive ? 'active' : ''} ${
+			buttonText ? 'btn-with-text' : ''
+		}`"
 		:to="attrs.to"
 		:style="customStyle"
 	>
 		<span
-			v-if="leftIconName"
-			class="material-icons left"
+			v-if="leftIconName || customIconLeft"
+			:class="['material-icons left', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ leftIconName }}
 		</span>
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
-			v-if="rightIconName"
-			class="material-icons right"
+			v-if="rightIconName || customIconRight"
+			:class="['material-icons right', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ rightIconName }}
 		</span>
@@ -70,18 +80,14 @@
 import { defineComponent, PropType, ref, useAttrs, watch } from 'vue';
 
 type ButtonType =
-	| 'btn-cta-default'
-	| 'btn-cta-medium'
-	| 'btn-cta-small'
+	| 'btn-cta'
 	| 'btn-main-default'
 	| 'btn-main-medium'
 	| 'btn-main-small'
-	| 'btn-main-inverted'
 	| 'btn-dropdown-default'
-	| 'btn-tag-primary'
-	| 'btn-tag-sub'
-	| 'btn-tag-reset';
-
+	| 'btn-tag';
+type ButtonSize = 'medium' | 'default' | 'small';
+type ButtonColor = 'light' | 'main' | 'cta' | 'transparent' | 'reset' | 'inverted';
 export default defineComponent({
 	name: 'KBButton',
 	props: {
@@ -89,7 +95,21 @@ export default defineComponent({
 			type: String as PropType<ButtonType>,
 			required: true,
 		},
+		buttonSize: {
+			type: String as PropType<ButtonSize>,
+			required: true,
+		},
+		buttonColor: {
+			type: String as PropType<ButtonColor>,
+			required: true,
+		},
 		isRouterLink: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		iconFilled: {
 			type: Boolean,
 			default() {
 				return false;
@@ -125,6 +145,18 @@ export default defineComponent({
 				return false;
 			},
 		},
+		customIconLeft: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		customIconRight: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup(props) {
 		const attrs = useAttrs();
@@ -154,6 +186,7 @@ export default defineComponent({
 	width: fit-content;
 	min-height: 34px;
 	line-height: 1;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-text::first-letter {
 	text-transform: capitalize;
@@ -165,127 +198,97 @@ export default defineComponent({
 .btn-with-text .material-icons {
 	line-height: 0;
 }
+/* Button sizes */
+.medium {
+	padding: var(--padding-0, 14px) var(--padding-4, 22px);
+	gap: var(--padding-00, 10px);
+}
+.default {
+	padding: var(--padding-medium, 12px) var(--padding-1, 16px);
+	gap: var(--padding-01, 8px);
+}
+.small {
+	padding: var(--padding-01, 8px) var(--padding-0, 14px);
+	gap: var(--padding-02, 6px);
+}
 
-/* Primary buttons */
-.btn-main-medium {
-	padding: var(--padding-medium) var(--padding-1);
-	gap: var(--padding-01);
+/* Button color */
+.light {
+	background-color: var(--bg-light);
+	color: var(--color-main);
+	border: 1px solid var(--color-border-light);
+}
+.main {
 	background-color: var(--bg-main);
 	color: var(--color-default);
+	border: 1px solid var(--color-border-succcess);
+}
+.cta {
+	background-color: var(--bg-cta);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-success);
+}
+.reset {
+	background: var(--bg-golden);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-succcess);
+}
+.transparent {
+	background-color: var(--bg-transparent);
+	color: var(--color-default);
+	border: 1px solid var(--color-border-transparent);
+}
+.inverted {
+	background-color: var(--bg-default);
+	color: var(--color-main);
 	border: 1px solid var(--color-border-active);
+}
+/* Primary buttons */
+.btn-main-medium {
 	border-radius: var(--rounded-medium);
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 .btn-main-medium:hover {
-	background-color: var(--bg-main-hover);
-	color: var(--color-main);
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
 .btn-main-small {
-	padding: var(--padding-01) var(--padding-0);
-	gap: var(--padding-02);
-	background-color: var(--bg-main);
-	color: var(--color-default);
-	border: 1px solid var(--color-border-active);
 	border-radius: var(--rounded-medium);
 }
 .btn-main-small:hover {
 	background-color: var(--bg-main-hover);
 	color: var(--color-main);
 }
-.btn-main-inverted {
-	padding: var(--padding-medium) var(--padding-1);
-	gap: var(--padding-01);
-	background-color: var(--bg-default);
-	color: var(--color-main);
-	border: 1px solid var(--color-border-active);
-	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
-}
-.btn-main-inverted:hover {
-	background-color: var(--bg-main-hover);
-	color: var(--color-main);
-}
-
 /* Call to action buttons */
-.btn-cta-medium {
-	background-color: var(--bg-cta);
-	color: var(--color-main);
-	padding: var(--padding-medium) var(--padding-1);
-	gap: var(--padding-01);
+.btn-cta {
 	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
-.btn-cta-medium .btn-text {
+.btn-cta .btn-text {
 	border-bottom: 1px solid transparent;
 	margin-bottom: -1px;
 	transition: 200ms;
 }
-.btn-cta-medium:hover {
-	transition: all 5s ease 0s;
-	.btn-text {
-		border-color: var(--color-border-active);
-	}
+.btn-cta:not(:disabled):hover {
+	transition: all 0.3s ease 0s;
+	background-color: var(--bg-main-2);
+	border-color: var(--color-border-light);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
 }
-.btn-cta-medium .material-icons {
+.btn-cta.medium .material-icons {
 	font-size: calc(var(--fs-lead) + 8px);
 }
-.btn-cta-default {
-	background-color: var(--bg-cta);
-	color: var(--color-main);
-	padding: var(--padding-medium) var(--padding-1);
-	gap: var(--padding-01);
-	border-radius: var(--rounded-medium);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
-	box-sizing: border-box;
-}
-.btn-cta-default .btn-text {
-	border-bottom: 1px solid transparent;
-	margin-bottom: -1px;
-	transition: 200ms;
-}
-.btn-cta-default:hover {
-	transition: all 5s ease 0s;
-	.btn-text {
-		border-color: var(--color-border-active);
-	}
-}
-.btn-cta-default .material-icons {
+.btn-cta.default .material-icons {
 	font-size: calc(var(--fs-base) + 8px);
 }
-.btn-cta-small {
-	background-color: var(--bg-cta);
-	color: var(--color-main);
-	padding: var(--padding-01) var(--padding-0);
-	gap: var(--padding-03);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-success);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
-	box-sizing: border-box;
-}
-.btn-cta-small .btn-text {
-	border-bottom: 1px solid transparent;
-	margin-bottom: -1px;
-	transition: 200ms;
-}
-.btn-cta-small:disabled {
-	color: var(--color-default);
+.btn-cta:disabled {
 	border-color: var(--color-border-disabled);
-}
-
-.btn-cta-small:hover:not([disabled]) {
-	transition: all 5s ease 0s;
-	.btn-text {
-		border-color: var(--color-border-active);
-	}
+	color: white;
 }
 /* Dropdown buttons */
 .btn-dropdown-default {
-	background-color: var(--bg-transparent);
-	color: var(--color-main);
-	padding: var(--padding-00) var(--padding-medium);
-	gap: var(--padding-02);
 	box-sizing: border-box;
-	border: 1px solid transparent;
 	border-radius: var(--rounded-medium);
 }
 .btn-dropdown-default:disabled {
@@ -309,9 +312,8 @@ export default defineComponent({
 	transform: rotateX(180deg);
 }
 .btn-dropdown-default:hover {
-	background-color: var(--bg-main-hover);
-	color: var(--color-main);
-	border-color: var(--color-border-active);
+	background-color: var(--bg-main-light);
+	color: var(--color-default);
 }
 .btn-dropdown-default .btn-text {
 	display: none;
@@ -323,48 +325,15 @@ export default defineComponent({
 }
 
 /* Tag buttons */
-.btn-tag-primary {
-	padding: var(--padding-01) var(--padding-medium);
-	gap: var(--padding-small);
+.btn-tag {
+	border-radius: var(--rounded-medium);
+}
+.btn-tag .material-icons {
+	font-size: calc(var(--fs-meta) + 2px);
+}
+.btn-tag:hover {
+	border: 1px solid var(--color-border-succcess);
+	background: var(--bg-golden);
 	color: var(--color-default);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-active);
-	background: var(--bg-main);
-}
-.btn-tag-primary .material-icons {
-	font-size: calc(var(--fs-meta) + 2px);
-}
-.btn-tag-primary:hover {
-	border: 1px solid var(--color-border-golden);
-	background: var(--bg-golden);
-	color: var(--color-main);
-}
-.btn-tag-reset {
-	padding: var(--padding-02) var(--padding-01);
-	gap: var(--padding-small);
-	color: var(--color-main);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-golden);
-	background: var(--bg-golden);
-}
-.btn-tag-reset .material-icons {
-	font-size: calc(var(--fs-meta) + 2px);
-}
-
-.btn-tag-sub {
-	padding: var(--padding-01) var(--padding-medium);
-	gap: var(--padding-small);
-	color: var(--color-main);
-	border-radius: var(--rounded-medium);
-	border: 1px solid var(--color-border-light);
-	background: var(--bg-light);
-}
-.btn-tag-sub .material-icons {
-	font-size: calc(var(--fs-meta) + 2px);
-}
-.btn-tag-sub:hover {
-	border: 1px solid var(--color-border-golden);
-	background: var(--bg-golden);
-	color: var(--color-main);
 }
 </style>

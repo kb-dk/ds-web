@@ -8,12 +8,12 @@
 			{{ title }}
 		</h3>
 		<div
-			ref="top"
 			:class="getClasses('top')"
+			:style="{ backgroundColor: backgroundColor }"
 		></div>
 		<div
-			ref="content"
 			class="full-width"
+			:style="{ backgroundColor: backgroundColor }"
 		>
 			<div
 				ref="container"
@@ -23,8 +23,8 @@
 			</div>
 		</div>
 		<div
-			ref="bottom"
 			:class="getClasses('bottom')"
+			:style="{ backgroundColor: backgroundColor }"
 		></div>
 	</div>
 </template>
@@ -45,7 +45,7 @@ export default defineComponent({
 		backgroundColor: {
 			type: String as PropType<string>,
 			default() {
-				return '#002e70';
+				return 'var(--bg-default)';
 			},
 		},
 		dottedEdges: {
@@ -81,10 +81,7 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const top = ref<HTMLDivElement>();
-		const content = ref<HTMLDivElement>();
 		const container = ref<HTMLDivElement>();
-		const bottom = ref<HTMLDivElement>();
 
 		const getClasses = (prefix: string) => {
 			let classes = `${prefix}-edge`;
@@ -95,13 +92,10 @@ export default defineComponent({
 		};
 
 		onMounted(() => {
-			if (top.value) top.value.style.backgroundColor = props.backgroundColor;
-			if (content.value) content.value.style.backgroundColor = props.backgroundColor;
 			if (container.value) container.value.style.alignItems = props.alignItems;
-			if (bottom.value) bottom.value.style.backgroundColor = props.backgroundColor;
 		});
 
-		return { top, content, container, bottom, getClasses };
+		return { container, getClasses };
 	},
 });
 </script>
@@ -133,6 +127,7 @@ temporary styling until patterns from design system are implemented
 	align-items: center;
 	padding: 0px 0px;
 	flex-direction: column;
+	background-color: white;
 }
 
 .edge-content.lines {
@@ -183,7 +178,7 @@ h3 {
 	padding: 0;
 	text-align: center;
 	letter-spacing: 1.15px;
-	color: #002e70;
+	color: var(--color-main);
 	top: calc(2.5vw + 2px);
 	position: relative;
 	transform: matrix(1, 0.03, -0.03, 1, 0, 0);
@@ -196,6 +191,7 @@ h3:first-letter {
 	text-transform: uppercase;
 }
 .container {
+	background-color: var(--bg-main-2);
 	text-align: left;
 	padding-right: 12px;
 	padding-left: 12px;

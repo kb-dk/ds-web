@@ -21,6 +21,8 @@
 				v-for="(item, index) in selectedItems.selectedItems"
 				:key="`${index}-${item.name}`"
 				class="selected-entity label-small"
+				button-color="main"
+				button-size="small"
 				:data-testid="addTestDataEnrichment('button', 'timeline-headline', `${headline}-small-status-toggle`, 0)"
 				:button-text="
 					formatStringForTime(
@@ -30,19 +32,19 @@
 						),
 					)
 				"
-				button-type="btn-tag-primary"
+				button-type="btn-tag"
 				:title="`${t('facets.remove')} ${
 					useTranslation ? (item.translation ? t(item.translation) : t(item.name)) : item.name
 				}`"
 				right-icon-name="close"
 				@click="handleTimeFacetRemoval(item.index, $event)"
 			></KBButton>
-			<KBButton
+			<div
 				v-if="selectedItems.overflow > 0"
-				button-type="btn-tag-sub"
-				:button-text="`${selectedItems.overflow}+`"
-				class="label-small selected-entity"
-			></KBButton>
+				class="overflow-tag label-small selected-entity"
+			>
+				{{ `${selectedItems.overflow}+` }}
+			</div>
 		</div>
 	</button>
 </template>
@@ -110,7 +112,7 @@ export default defineComponent({
 
 	setup(props) {
 		const { t } = useI18n();
-		const maxSelectedItems = ref(11);
+		const maxSelectedItems = ref(9);
 
 		const dispatchClick = (e: Event) => {
 			e.stopPropagation();
@@ -150,9 +152,9 @@ export default defineComponent({
 			if (windowWidth < 500 && windowWidth > 390) {
 				maxSelectedItems.value = 3;
 			} else {
-				maxSelectedItems.value = Math.floor(windowWidth / 100 - 2);
-				if (maxSelectedItems.value > 11) {
-					maxSelectedItems.value = 11;
+				maxSelectedItems.value = Math.floor(windowWidth / 100 - 3);
+				if (maxSelectedItems.value > 9) {
+					maxSelectedItems.value = 9;
 				}
 			}
 		};
@@ -252,7 +254,20 @@ h2 {
 	max-height: 80px;
 	overflow: hidden;
 }
-
+.overflow-tag {
+	border-radius: var(--rounded-medium);
+	background-color: var(--bg-light);
+	color: var(--color-main);
+	border: 1px solid var(--color-border-light);
+	padding: var(--padding-01, 8px) var(--padding-0, 14px);
+	gap: var(--padding-02, 6px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	line-height: 1;
+	min-height: 34px;
+}
 @media (min-width: 990px) {
 	.headline-container {
 		height: 55px;

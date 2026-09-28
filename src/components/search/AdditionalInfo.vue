@@ -5,7 +5,7 @@
 	>
 		<ItemSlider
 			:padding="true"
-			bg="#F4FCFF"
+			bg="var(--bg-main-light-20)"
 			item-class="extra-thumbnail"
 			bg-scroll-blue="true"
 		>
@@ -69,7 +69,8 @@ export default defineComponent({
 	},
 	props: {
 		id: { type: String, required: true },
-		fileId: { type: String, required: true },
+		type: { type: String, required: true },
+		kalturaId: { type: String, required: true },
 		duration: { type: Number, required: true },
 		open: { type: Boolean },
 	},
@@ -88,7 +89,7 @@ export default defineComponent({
 
 		const showThumbnails = () => {
 			extraContentShown.value = !extraContentShown.value;
-			if (props.fileId && extraContentShown.value) {
+			if (props.kalturaId && extraContentShown.value) {
 				if (thumbnailImageData.value.length === 0) {
 					requestExtraThumbnails();
 				}
@@ -114,7 +115,7 @@ export default defineComponent({
 		};
 
 		const requestExtraThumbnails = () => {
-			APIService.getExtraThumbnails(props.fileId)
+			APIService.getExtraThumbnails(props.kalturaId)
 				.then((thumbServiceResponse) => {
 					const img = new Image();
 					img.src = thumbServiceResponse.data.sprite;
@@ -233,8 +234,8 @@ export default defineComponent({
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	padding-bottom: 10px;
-	background-color: var(--bg-additional-info);
+	padding-bottom: 30px;
+	background-color: var(--bg-main-light-20);
 	position: relative;
 }
 
@@ -256,12 +257,12 @@ export default defineComponent({
 	display: inline-block;
 	right: 0px;
 	z-index: 1;
-	margin-top: -18px;
+	margin-top: 0px;
 	padding: 0px 2px;
 	padding-right: 10px;
 	padding-left: 6px;
-	color: white;
-	background-color: #002e70;
+	color: var(--color-default);
+	background-color: transparent;
 
 	opacity: 0.9;
 }
@@ -273,8 +274,8 @@ export default defineComponent({
 	right: 15px;
 	z-index: 1;
 	align-items: center;
-	color: white;
-	background-color: #002e70;
+	color: var(--color-default);
+	background-color: var(--bg-main);
 	top: calc(50% - 35px);
 	padding: 5px 14px 5px 14px;
 	text-decoration: none;
@@ -288,9 +289,7 @@ export default defineComponent({
 	margin: 0;
 }
 .watch-program:hover {
-	background-color: #c4f1ed;
-	color: #002e70;
-	border-color: #002e70;
+	background-color: var(--bg-main-light);
 }
 .extra-thumbnail {
 	flex: 0 0 200px;
@@ -301,7 +300,6 @@ export default defineComponent({
 	flex-direction: column;
 	pointer-events: all;
 	text-decoration: none;
-	color: #002e70;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -327,7 +325,7 @@ export default defineComponent({
 .extra-thumbnail .img-stamp {
 	text-align: center;
 	font-size: 12px;
-	color: white;
+	color: var(--color-default);
 	height: 0.9rem;
 	position: relative;
 	display: flex;

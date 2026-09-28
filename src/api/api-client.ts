@@ -149,6 +149,14 @@ export class APIServiceClient {
 		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0`);
 	}
 
+	async getRadioFacets(): Promise<APISearchResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0&fq=origin:"ds.radio"`);
+	}
+
+	async getTVFacets(): Promise<APISearchResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/search/?q=*&facet=true&facet.limit=-1&rows=0&fq=origin:"ds.tv"`);
+	}
+
 	async getSearchResults(
 		query: string,
 		filters: string,
@@ -220,8 +228,8 @@ export class APIServiceClient {
 		return await this.httpClient.get(encodeURI(`bff/v1/proxy/mlt/?q=id:"${id}"&mlt.interestingTerms=list&rows=3`));
 	}
 
-	async getThumbnail(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&height=105`);
+	async getThumbnail(kalturaId: string): Promise<APIThumbnailsResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?kalturaId=${kalturaId}&width=200&height=105`);
 	}
 
 	async authenticate(): Promise<APIAuthResponseType> {
@@ -232,7 +240,7 @@ export class APIServiceClient {
 		return await this.httpClient.get('bff/v1/messages/');
 	}
 
-	async getExtraThumbnails(id: string): Promise<APIThumbnailsResponseType> {
-		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?fileId=${id}&width=200&numberOfThumbnails=20`);
+	async getExtraThumbnails(kalturaId: string): Promise<APIThumbnailsResponseType> {
+		return await this.httpClient.get(`bff/v1/proxy/thumbnail/?kalturaId=${kalturaId}&width=200&numberOfThumbnails=20`);
 	}
 }

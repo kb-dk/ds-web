@@ -12,13 +12,15 @@
 					/>
 				</div>
 				<div class="not-found-details">
-					<h1>{{ t('error.wrongUrl.header') }}</h1>
+					<h2>{{ t('error.wrongUrl.header') }}</h2>
 					<p>{{ t('error.wrongUrl.text') }}</p>
-					<h2>{{ t('error.wrongUrl.altHeader') }}</h2>
+					<h3>{{ t('error.wrongUrl.altHeader') }}</h3>
 					<div class="extra-suggest">
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="main"
+								button-size="medium"
 								class="btn-medium"
 								href="/find-materiale/dr-arkivet/"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-home', 0)"
@@ -29,7 +31,9 @@
 
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="main"
+								button-size="medium"
 								class="btn-medium"
 								:href="t('footer.column1.links.1.link')"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-about', 0)"
@@ -40,7 +44,9 @@
 
 						<div>
 							<KBButton
-								button-type="btn-main-inverted"
+								button-type="btn-main-medium"
+								button-color="main"
+								button-size="medium"
 								class="btn-medium"
 								href="https://www.kb.dk"
 								:data-testid="addTestDataEnrichment('button', '404', 'link-to-kb', 0)"
@@ -51,8 +57,13 @@
 					</div>
 				</div>
 			</div>
+			<ContainerSplitBar :is-top="false"></ContainerSplitBar>
 		</div>
-		<ContactUs></ContactUs>
+		<div class="container-backdrop"></div>
+
+		<div class="end-container">
+			<ContactUs></ContactUs>
+		</div>
 	</div>
 </template>
 
@@ -62,10 +73,11 @@ import { useI18n } from 'vue-i18n';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import ContactUs from '@/components/search/ContactUs.vue';
 import KBButton from '@/components/common/KBButton.vue';
+import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 
 export default defineComponent({
 	name: '404',
-	components: { ContactUs, KBButton },
+	components: { ContactUs, KBButton, ContainerSplitBar },
 	setup() {
 		const { t } = useI18n();
 		const getImgServerSrcURL = () => {
@@ -78,6 +90,25 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container-backdrop {
+	position: absolute;
+	left: 0;
+	height: stretch;
+	height: -webkit-fill-available;
+	width: 100vw;
+	background-color: var(--bg-default);
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+}
+.end-container {
+	display: flex;
+	margin-top: 40px;
+	position: relative;
+	flex-direction: column;
+}
+
 .not-found {
 	display: flex;
 	flex-direction: column;
@@ -101,11 +132,11 @@ export default defineComponent({
 }
 .not-found-container {
 	box-sizing: border-box;
-	background-color: #002e70;
+	background-color: white;
 	position: relative;
 	top: calc(-6vw);
 	z-index: 1;
-	color: white;
+	color: var(--color-default);
 	width: 100%;
 	justify-content: space-around;
 }
@@ -117,7 +148,7 @@ export default defineComponent({
 .edge-top {
 	width: 110%;
 	position: relative;
-	background-color: #002e70;
+	background-color: white;
 	height: 6vw;
 	left: -5%;
 	transform: rotateZ(-2deg);

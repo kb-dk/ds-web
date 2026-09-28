@@ -89,7 +89,13 @@ export default defineComponent({
 		};
 
 		const appendScript = () => {
-			let kalturaScript = document.createElement('script');
+			const existingScript = document.getElementById('kaltura-player-script');
+
+			if (existingScript) {
+				bootstrapPlayer();
+				return;
+			}
+			const kalturaScript = document.createElement('script');
 			kalturaScript.setAttribute(
 				'src',
 				authStore.streamingBaseUrlAudio !== ''
@@ -130,9 +136,11 @@ export default defineComponent({
 					const audio = document.querySelector('#audio-player') as HTMLElement | null;
 					if (audio) {
 						const innerAudio = audio?.querySelector('video') as HTMLVideoElement | null;
-						if (innerAudio) innerAudio.disablePictureInPicture = true;
+						if (innerAudio) {
+							innerAudio.disablePictureInPicture = true;
+						}
+						audio.setAttribute('data-testid', 'audio-player-kaltura-container-0');
 					}
-					audio ? audio.setAttribute('data-testid', 'audio-player-kaltura-container-0') : null;
 				});
 				audioPlayer.addEventListener(audioPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
@@ -168,25 +176,22 @@ export default defineComponent({
 		});
 
 		watch(
-			() => route.params.id,
+			() => props.entryId,
 			() => {
-				if (KalturaPlayer) {
+				if (audioPlayer) {
 					audioPlayer.destroy();
 				}
+				restrictedErrorDispatched.value = false;
 				setupPlayer();
 			},
 		);
 
 		const setupPlayer = () => {
-			const script = document.getElementById('kaltura-player-script');
-			if (script) {
-				script.parentNode?.removeChild(script);
-			}
 			appendScript();
 		};
 
 		onBeforeUnmount(() => {
-			if (KalturaPlayer) {
+			if (audioPlayer) {
 				audioPlayer.destroy();
 			}
 		});
@@ -202,16 +207,13 @@ export default defineComponent({
 }
 
 .audio-player-box {
-	background-color: black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	margin-left: 0px;
 	overflow-y: hidden;
-	padding-top: 31px;
 	padding-bottom: 31px;
-	background-color: white;
 	position: relative;
 }
 

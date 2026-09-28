@@ -1,17 +1,50 @@
 <template>
-	<div :class="getClassStyle()">
+	<div
+		:class="[
+			'checkbox-container',
+			{
+				disabled: amount === '0' || (disabled && !checked),
+				checked: checked === true,
+			},
+		]"
+	>
 		<label
 			:title="title"
-			class="label"
+			class="label label-regular"
 		>
-			<span class="title label-small-bold">{{ title }}</span>
+			<input
+				role="checkbox"
+				type="checkbox"
+				class="checkbox"
+				autocomplete="off"
+				:name="title"
+				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
+				:checked="checked"
+				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
+				@change="updateSelection(!checked, title, fqkey)"
+			/>
+			<span
+				v-if="icon"
+				:class="[
+					'display-image icon material-icons',
+					{ disabled: (amount === '0' && !checked) || (disabled && !checked), outline: iconFilled },
+				]"
+			>
+				{{ icon }}
+			</span>
+			<span
+				v-if="channel"
+				:style="`background-image:url(${getFilterThumbnail(channel)})`"
+				:class="['display-image channel no-icon', { disabled: (amount === '0' && !checked) || (disabled && !checked) }]"
+			></span>
+			<span class="title label-regular label">{{ title }}</span>
 			<Transition
 				mode="out-in"
 				name="result"
 			>
 				<span
 					v-if="!loading"
-					class="tag-number label-small"
+					class="tag-number label-regular label"
 				>
 					{{ displayAmount(amount) }}
 				</span>
@@ -29,18 +62,6 @@
 					></span>
 				</span>
 			</Transition>
-			<input
-				role="checkbox"
-				type="checkbox"
-				class="checkbox"
-				autocomplete="off"
-				:name="title"
-				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
-				:checked="checked"
-				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
-				@change="updateSelection(!checked, title, fqkey)"
-			/>
-			<div class="underline"></div>
 		</label>
 	</div>
 </template>
@@ -48,9 +69,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { SelectorData } from '@/types/TimeSearchTypes';
-import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { useSearchResultStore } from '@/store/searchResultStore';
-
+import { addTestDataEnrichment, santizeAndSimplify } from '@/utils/test-enrichments';
+import { getFilterThumbnail } from '@/utils/record-utils';
 export default defineComponent({
 	name: 'SimpleCheckbox',
 	props: {
@@ -62,6 +82,27 @@ export default defineComponent({
 			},
 		},
 		title: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		icon: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		iconFilled: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			},
+		},
+		channel: {
 			type: String,
 			required: false,
 			default() {
@@ -97,21 +138,28 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		filterArray: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 	},
 	setup(props) {
-		const searchResultStore = useSearchResultStore();
-
 		const displayAmount = (value: string | undefined) => {
 			return value ? `(${value})` : '';
 		};
 
 		const updateSelection = (checked: boolean, title: string | undefined, key: string | undefined) => {
-			props.update(props.parentArray, props.number, checked, title, key, searchResultStore.channelFilters);
+			props.update(props.parentArray, props.number, checked, title, key, props.filterArray);
 		};
-		const getClassStyle = () => {
-			return { 'checkbox-container': true, disabled: props.amount === '0' || (props.disabled && !props.checked) };
+		return {
+			displayAmount,
+			addTestDataEnrichment,
+			updateSelection,
+			santizeAndSimplify,
+			getFilterThumbnail,
 		};
-		return { displayAmount, addTestDataEnrichment, updateSelection, getClassStyle };
 	},
 });
 </script>
@@ -151,6 +199,29 @@ export default defineComponent({
 	opacity: 0.5;
 }
 
+.display-image {
+	width: 30px;
+	height: 30px;
+	padding: 0px 5px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.display-image.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--color-default);
+}
+
+.display-image.disabled.no-icon {
+	opacity: 0.3;
+}
+
+.display-image.channel {
+	background-size: contain;
+}
+
 .name {
 	height: 100%;
 	display: flex;
@@ -166,7 +237,7 @@ export default defineComponent({
 	margin: 5px 0px;
 	margin-left: 5px;
 	border-radius: 5px;
-	background-color: rgba(170, 170, 170, 1);
+	background-color: var(--color-disabled-font);
 	height: 12px;
 	display: inline-block;
 }
@@ -187,13 +258,33 @@ export default defineComponent({
 }
 
 .checkbox-container {
-	max-height: 24px;
-	padding: 0px 5px;
+	height: 36px;
+	margin: 0px 5px;
+	padding: 2px 5px;
 	text-align: left;
+	border: 1px solid transparent;
+	transition: all 0.2s linear 0s;
+	box-sizing: border-box;
+}
+
+.checkbox-container:hover {
+	background-color: var(--bg-main-3);
+	border: 1px solid var(--color-border-success-lighter);
+	border-radius: 4px;
+}
+
+.checkbox-container.checked {
+	background-color: var(--bg-main-light);
+	border: 1px solid var(--color-border-success);
+	border-radius: 4px;
 }
 
 .checkbox-container.disabled .label {
 	cursor: default;
+}
+
+.checkbox-container.disabled .icon {
+	color: var(--color-disabled-font);
 }
 
 .label:hover .underline {
@@ -202,6 +293,10 @@ export default defineComponent({
 
 .label {
 	position: relative;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+	height: 100%;
 }
 
 .underline {
@@ -214,15 +309,16 @@ export default defineComponent({
 
 .checkbox-container.disabled .title,
 .checkbox-container.disabled .tag-number {
-	color: rgb(177, 177, 177) !important;
+	color: var(--color-disabled-font);
 	font-weight: normal;
 }
 
 .tag-number {
 	color: #383838;
-	display: inline-block;
 	padding-left: 5px;
 	height: 100%;
+	margin-left: auto;
+	order: 2;
 }
 
 .loading.tag-number {
@@ -235,8 +331,8 @@ export default defineComponent({
 	margin: 0 0 0 5px;
 }
 .checkbox-container.disabled .loading.tag-number .text {
-	background-color: rgb(177, 177, 177) !important;
-	opacity: 0.5;
+	background-color: var(--color-disabled-font);
+	opacity: 1;
 }
 
 .title {
@@ -244,24 +340,17 @@ export default defineComponent({
 	max-width: calc(100% - 95px);
 	white-space: nowrap;
 	overflow: clip;
-	text-transform: uppercase;
-	color: #002e70;
-	display: inline-block;
+	color: var(--color-default);
 }
 
 .loading .checkbox:after {
-	border: 1px solid rgba(170, 170, 170, 1) !important;
+	border: 2px solid var(--color-disabled-font);
 	background-color: rgb(255, 255, 255) !important;
 	cursor: default;
 }
 
 .loading .checkbox:checked:after {
-	background-color: rgba(170, 170, 170, 1) !important;
-}
-
-.loading .checkbox:hover:before {
-	cursor: default !important;
-	border-color: white !important;
+	background-color: var(--color-disabled-font);
 }
 
 .checkbox:disabled {
@@ -270,29 +359,6 @@ export default defineComponent({
 
 .checkbox:disabled:hover {
 	cursor: default;
-}
-
-.checkbox:disabled:hover:after {
-	background-color: transparent;
-	cursor: default;
-}
-
-.checkbox:disabled:hover:after {
-	cursor: default;
-	background-color: #002e70;
-}
-
-.checkbox:hover:after {
-	background-color: #caf0fe;
-}
-
-.checkbox:checked:hover:before {
-	border-color: #002e70;
-	cursor: pointer;
-}
-.checkbox:checked:hover:after {
-	border-color: rgba(170, 170, 170, 1);
-	background-color: white;
 }
 
 input:focus {
@@ -308,7 +374,7 @@ input:focus {
 }
 
 .checkbox-container.disabled .checkbox:after {
-	border: 1px solid rgb(145, 145, 145);
+	border: 3px solid rgb(145, 145, 145);
 }
 
 .checkbox-container.disabled .checkbox:hover:after {
@@ -321,30 +387,31 @@ input:focus {
 	transition: all 0.15s linear 0s;
 	content: '';
 	display: block;
-	width: 15px;
-	height: 15px;
-	border: 1px solid #002e70;
+	width: 20px;
+	height: 20px;
+	border: 3px solid var(--color-default);
+	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 .checkbox:checked:after {
-	background-color: #002e70;
+	background-color: var(--color-default);
 }
 
 .checkbox:checked:before {
 	content: '';
 	display: block;
-	width: 7px;
-	height: 12px;
+	width: 9px;
+	height: 16px;
 	border-bottom: 2px solid white;
 	border-right: 2px solid white;
 	position: absolute;
-	top: 1px;
-	left: 5px;
+	top: -1px;
+	left: 6px;
 	box-sizing: border-box;
 	transform-origin: center;
 	transform: rotateZ(45deg);
 }
-
 .label {
 	cursor: pointer;
 }

@@ -1,6 +1,9 @@
 <template>
-	<div :class="{ 'item-slider-container': displaySliderArrows }">
-		<div
+	<div
+		class="item-container"
+		:class="{ 'item-slider-container': displaySliderArrows }"
+	>
+		<button
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
 			@click="moveSlider(-550)"
@@ -8,20 +11,20 @@
 			<div class="item-slider-direction-arrow-inner">
 				<span class="material-icons">arrow_back_ios_new</span>
 			</div>
-		</div>
+		</button>
 		<div
 			ref="itemSliderRef"
 			:class="setSliderClasses()"
 		>
 			<slot :disable-links="move"></slot>
 		</div>
-		<div
+		<button
 			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
 			class="item-slider-direction-arrow right"
 			@click="moveSlider(550)"
 		>
 			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
-		</div>
+		</button>
 	</div>
 </template>
 
@@ -161,7 +164,13 @@ export default defineComponent({
 	display: flex;
 	justify-content: flex-start;
 }
+
+.item-container {
+	width: inherit;
+	max-width: 1920px;
+}
 .item-slider {
+	padding: 4px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -169,15 +178,16 @@ export default defineComponent({
 	height: 0px;
 	align-items: center;
 	overflow-x: auto;
-	gap: 15px;
+	gap: 20px;
 	width: 100%;
 	height: 100%;
 	transition: all 0.3s linear 0s;
 	padding-bottom: 15px;
 	box-sizing: border-box;
-	scale: '1.0';
 }
-
+.item-slider .grid-result-item {
+	min-height: 445px;
+}
 .item-slider.padding {
 	padding-left: 15px;
 	padding-right: 15px;
@@ -191,13 +201,13 @@ export default defineComponent({
 	background-color: rgb(66, 66, 66);
 }
 .item-slider.blue-scrollbar::-webkit-scrollbar-thumb {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 .item-slider::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 .item-slider::-webkit-scrollbar-track {
-	background-color: #002e70;
+	background-color: var(--bg-default);
 }
 
 .item-slider.active a {
@@ -227,12 +237,13 @@ export default defineComponent({
 	opacity: 0;
 	align-items: center;
 	z-index: 10;
-	background-color: rgb(255, 255, 255);
+	background-color: var(--bg-default);
 	user-select: none;
 	cursor: pointer;
 	pointer-events: none;
 	top: 45px;
 	border-radius: 30px;
+	border: none;
 }
 .item-slider-direction-arrow.right {
 	right: 12px;
@@ -243,15 +254,26 @@ export default defineComponent({
 	justify-content: center;
 }
 .item-slider-direction-arrow-inner {
-	height: 40px;
-	width: 40px;
+	height: 36px;
+	width: 36px;
 	border-radius: 30px;
-	background-color: #002e70;
+	background-color: var(--bg-main);
 	justify-content: center;
-	color: white;
+	color: var(--color-default);
 	align-items: center;
 	display: flex;
 	text-align: center;
+	transition: all 0.1s linear;
+}
+.item-slider-direction-arrow:hover .item-slider-direction-arrow-inner {
+	transition: all 0.1s linear;
+	height: 40px;
+	width: 40px;
+}
+@media (min-width: 640px) {
+	.item-slider .grid-result-item {
+		min-height: 470px;
+	}
 }
 @media (min-width: 990px) {
 	.item-slider-direction-arrow {
