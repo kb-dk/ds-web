@@ -32,7 +32,6 @@
 					v-for="(item, index) in thumbnailImages"
 					:key="index"
 					draggable="false"
-					role="link"
 					class="extra-thumbnail"
 					:title="$t('search.thumbnailLink', { index: index + 1, timestamp: convertSecondstoShow(timeStamps[index]) })"
 					v-bind="slotProps"

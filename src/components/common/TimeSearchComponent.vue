@@ -52,7 +52,6 @@
 							:data-testid="addTestDataEnrichment('link', 'time-search-component', `top-more-link`, 0)"
 							button-type="btn-cta"
 							button-color="cta"
-							:aria-label="`${t('timeSearch.seePeriodResultsAlt')}`"
 							button-size="medium"
 							:is-router-link="true"
 							right-icon-name="arrow_forward_ios"

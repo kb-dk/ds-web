@@ -67,6 +67,7 @@
 					:to="navLink(pageNumber as number)"
 					:class="{ active: pageNumber === currentPageRef }"
 					:title="`${$t('search.page')} ${pageNumber}`"
+					:aria-current="pageNumber === currentPageRef ? 'page' : undefined"
 					:aria-label="
 						pageNumber === currentPageRef
 							? $t('search.currentPage', Number(pageNumber))

@@ -12,10 +12,7 @@
 			aria-labelledby="selected-month-heading"
 		>
 			<div class="title">
-				<h2
-					id="selected-month-heading"
-					:aria-label="t('frontpage.fromTheArchiveAlt')"
-				>
+				<h2 id="selected-month-heading	">
 					{{
 						t('frontpage.fromTheArchive', { month: new Date().toLocaleDateString(currentLocale, { month: 'long' }) })
 					}}

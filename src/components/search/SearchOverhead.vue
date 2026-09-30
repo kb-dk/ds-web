@@ -6,8 +6,6 @@
 					<div :class="`filter-buttons`">
 						<KBButton
 							ref="toggleFacetsButton"
-							aria-controls="search-filters"
-							:aria-expanded="searchResultStore.showFacets"
 							class="btn-medium"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-filters', 0)"
 							:button-text="searchResultStore.showFacets ? $t('search.hideFilters') : $t('search.showFilters')"

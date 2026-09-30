@@ -1,6 +1,6 @@
 {
 	"app": {
-      "logoText":"Logo of The Royal Danish Library. Go to the mainsite",
+		"logoText": "Logo of The Royal Danish Library. Go to the mainsite",
 		"open": "Open",
 		"close": "Close",
 		"skip": "Skip to main content",
@@ -35,14 +35,13 @@
 			"linkedin": "Link to LinkedIn",
 			"instagram": "Link to Instagram",
 			"soundIcon": "sound play icon",
-			"goToPost": "Go to post",
 			"broadcastTimeAndPlace": "Broadcast channel and time",
 			"broadcastDuration": "Broadcast duration"
 		}
 	},
-   "icons": {
-      "categories":"Categories"
-   },
+	"icons": {
+		"categories": "Categories"
+	},
 	"header": {
 		"secondary": [
 			{
@@ -59,8 +58,7 @@
 	},
 	"frontpage": {
 		"fromTheArchive": "The month of {month} on DR through time",
-      "fromTheArchiveAlt":"Find selected broadcasts from this month through time"
-
+		"fromTheArchiveAlt": "Find selected broadcasts from this month through time"
 	},
 	"facets": {
 		"headline": "Filter your search for ",
@@ -83,13 +81,13 @@
 		"to": "To",
 		"from": "From",
 		"year": "year",
-      "closeFacets":"Close filters",
+		"closeFacets": "Close filters",
 		"slowResponse": {
 			"title": "Slow response time",
 			"text": "We're sorry for long response, we are experiencing a lot of traffic at the moment"
 		},
 		"remove": "Remove",
-		"deselect":"Deselect",
+		"deselect": "Deselect",
 		"searchingIn": "Only searching with",
 		"desc": "description",
 		"title": "title",
@@ -138,12 +136,12 @@
 		"drArchive": "DR-arkivet",
 		"search": "Search",
 		"record": "Programme",
-      "goToFrontpage":"Go to the frontpage",
-      "backToSearch": "Back to search results"
+		"goToFrontpage": "DR Arkiv",
+		"backToSearch": "Back to search results"
 	},
 	"timeSearch": {
 		"timeMachine": "Select a period that you would like to view content from",
-      "seePeriodResultsAlt": "Go to the result for the selected period",
+		"seePeriodResultsAlt": "Go to the result for the selected period",
 		"periodOf": "Period of {number} years | Priod of {number} year",
 		"searchDate": "Search by date",
 		"searchCategories": "Search by category",
@@ -215,20 +213,25 @@
 		"unknownLength": "Unknown timespan"
 	},
 	"additionalInfo": {
-		"openButton":"Go to overview of points in the broadcast with images",
-		"goToBroadcast":"go to broadcast"
+		"openButton": "Open overview of points in the broadcast with images",
+		"goToBroadcast": "go to broadcast"
 	},
 	"search": {
-		"score":"relevance",
-		"title_sort_da":"title",
-		"asc":"ascending",
-		"desc":"descending",
+		"currentSort": "selected sort",
+		"sortedAsc": "sorted in ascending order",
+		"sortedDesc": "sorted in descending order",
+		"sortAscending": "Activate to sort in ascending order",
+		"sortDescending": "Activate to sort in descending order",
+		"score": "relevance",
+		"title_sort_da": "title",
+		"asc": "ascending",
+		"desc": "descending",
 		"searching": "Searching.",
 		"searchComplete": "Search complete. Found {count} results, sorted by {sort}, presented in {view} view, in {dir} order",
 		"grid": "grid",
 		"list": "list",
-		"gridView": "Change to grid view",
-		"listView": "Change to list view",
+		"gridView": "Grid view",
+		"listView": "List view",
 		"showing": "Showing",
 		"outOf": "out of",
 		"recordThumbnail": "Thumbnail from {title}",
@@ -254,7 +257,7 @@
 		"previousPage": "Previous page",
 		"page": "Page",
 		"goToPage": "Go to page {n}",
-      "currentPage": "current page {n}",
+		"currentPage": "current page {n}",
 		"goToThePage": "Go to the page",
 		"morePagesMessage": {
 			"1": "In order to show you a good search result as quickly as possible, we have chosen to only load approximately 1.000 of the ",
@@ -265,8 +268,6 @@
 		},
 		"sortAfter": "Sorted by ",
 		"sortBy": "Sort by",
-		"sortedAsc": "sorted ascending",
-		"sortedDesc": "sorted descending",
 		"selected": "Selected",
 		"title": "Title",
 		"relevance": "Best match",
@@ -343,9 +344,9 @@
 		"contactUs": "Contact us if you need help"
 	},
 	"record": {
-		"episode":"Episode",
-		"tvChannel":"sent on TV channel",
-		"radioChannel":"sent on radio channel",
+		"episode": "Episode",
+		"tvChannel": "sent on TV channel",
+		"radioChannel": "sent on radio channel",
 		"duration": "Duration",
 		"noBroadcastData": "No air date",
 		"seeMaterial": "Se materiale",
@@ -382,7 +383,7 @@
 	"radioOptions": {
 		"SelectedSearchMethod": "Choose what to search in",
 		"SelectedSearchMaterials": "Choose which material types to search in",
-      "preliminaryPeriodSearch": "Choose to search on a date or on a period"
+		"preliminaryPeriodSearch": "Choose to search on a date or on a period"
 	},
 	"footer": {
 		"contactInfo": "Contact information",

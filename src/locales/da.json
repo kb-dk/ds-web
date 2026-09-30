@@ -1,6 +1,6 @@
 {
 	"app": {
-      "logoText":"Det kongelige biblioteks logo. Gå til hovedsiden",
+		"logoText": "Det kongelige biblioteks logo. Gå til hovedsiden",
 		"open": "Åben",
 		"close": "Luk",
 		"skip": "Spring til hovedindhold",
@@ -35,14 +35,13 @@
 			"linkedin": "Link til LinkedIn",
 			"instagram": "Link til Instagram",
 			"soundIcon": "lyd afspilnings ikon",
-			"goToPost": "Gå til udsendelse",
 			"broadcastTimeAndPlace": "Afspilningskanal og tid",
 			"broadcastDuration": "Udsendelsens varighed"
 		}
 	},
-   "icons": {
-      "categories":"Kategorier"
-   },
+	"icons": {
+		"categories": "Kategorier"
+	},
 	"header": {
 		"secondary": [
 			{
@@ -59,7 +58,7 @@
 	},
 	"frontpage": {
 		"fromTheArchive": "{month} måned på DR gennem tiden",
-      "fromTheArchiveAlt":"Find udvalgte udsendelser fra denne måned gennem tiden"
+		"fromTheArchiveAlt": "Find udvalgte udsendelser fra denne måned gennem tiden"
 	},
 	"facets": {
 		"headline": "Filtrér din søgning på ",
@@ -82,13 +81,13 @@
 		"to": "Til",
 		"from": "Fra",
 		"year": "år",
-      "closeFacets":"Luk filtrering",
+		"closeFacets": "Luk filtrering",
 		"slowResponse": {
 			"title": "Lang respons tid",
 			"text": "Vi beklager for lang respons tid, vi oplever meget trafik i øjeblikket"
 		},
 		"remove": "Fjern",
-		"deselect":"Fravælg",
+		"deselect": "Fravælg",
 		"searchingIn": "Søger kun på",
 		"desc": "beskrivelse",
 		"title": "titel",
@@ -137,12 +136,12 @@
 		"drArchive": "DR-arkivet",
 		"search": "Søgning",
 		"record": "Udsendelse",
-      "goToFrontpage": "Gå til forsiden",
-      "backToSearch": "Tilbage til søge resultater"
+		"goToFrontpage": "DR Arkiv",
+		"backToSearch": "Tilbage til søge resultater"
 	},
 	"timeSearch": {
 		"timeMachine": "Udvælg en periode, som du gerne vil se indhold fra",
-      "seePeriodResultsAlt": "Gå til resultat for den udvalgte periode",
+		"seePeriodResultsAlt": "Gå til resultat for den udvalgte periode",
 		"periodOf": "Periode på {number} år",
 		"searchDate": "Søg via dato",
 		"searchCategories": "Søg via kategori",
@@ -214,20 +213,25 @@
 		"unknownLength": "Ukendt tidsperiode"
 	},
 	"additionalInfo": {
-		"openButton":"Gå til oversigt over nedslag i udsendelsen med billeder",
-		"goToBroadcast":"gå til udsendelsen"
+		"openButton": "Åben oversigt over nedslag i udsendelsen med billeder",
+		"goToBroadcast": "gå til udsendelsen"
 	},
 	"search": {
-		"score":"relevans",
-		"title_sort_da":"titel",
-		"asc":"stigende",
-		"desc":"faldende",
-	  "searching": "Søger.", 
+		"currentSort": "valgt sortering",
+		"sortedAsc": "sorteret efter stigende rækkefølge",
+		"sortedDesc": "sorteret efter faldende rækkefølge",
+		"sortAscending": "Tryk for at sortere efter stigende rækkefølge",
+		"sortDescending": "Tryk for at sortere efter faldende rækkefølge",
+		"score": "relevans",
+		"title_sort_da": "titel",
+		"asc": "stigende",
+		"desc": "faldende",
+		"searching": "Søger.",
 		"searchComplete": "Søgning fuldført. Fandt {count} resultater, sorteret efter {sort}, vist i {view}-visning, i {dir} rækkefølge",
 		"grid": "gitter",
 		"list": "liste",
-    "gridView": "Skift til gittervisning",
-    "listView": "Skift til listevisning",
+		"gridView": "Gittervisning",
+		"listView": "Listevisning",
 		"showing": "Viser",
 		"outOf": "ud af",
 		"recordThumbnail": "Miniaturebillede af {title}",
@@ -253,7 +257,7 @@
 		"previousPage": "Forrige side",
 		"page": "Side",
 		"goToPage": "Gå til side {n}",
-      "currentPage": "nuværende side {n}",
+		"currentPage": "nuværende side {n}",
 		"goToThePage": "Gå til siden",
 		"morePagesMessage": {
 			"1": "For hurtigst muligt at kunne vise dig et godt søgeresultat, har vi valgt kun at hente ca. 1.000 af de ",
@@ -264,8 +268,6 @@
 		},
 		"sortAfter": "Sorteret efter ",
 		"sortBy": "Sorter efter",
-		"sortedAsc": "sorteret stigende",
-		"sortedDesc": "sortered faldende",
 		"selected": "Valgt",
 		"title": "Titel",
 		"relevance": "Bedste match",
@@ -342,9 +344,9 @@
 		"contactUs": "Kontakt os gerne, hvis du har brug for hjælp"
 	},
 	"record": {
-		"episode":"Episode",
-		"tvChannel":"Sendt på TV kanal",
-		"radioChannel":"Sendt på radio kanal",
+		"episode": "Episode",
+		"tvChannel": "Sendt på TV kanal",
+		"radioChannel": "Sendt på radio kanal",
 		"duration": "Varighed",
 		"noBroadcastData": "Ingen sendetid",
 		"seeMaterial": "See material",
@@ -380,7 +382,7 @@
 	"radioOptions": {
 		"SelectedSearchMethod": "Vælg hvad der søges i",
 		"SelectedSearchMaterials": "Vælg hvilke materialetyper der søges i",
-      "preliminaryPeriodSearch": "Vælg om der skal søges på en dato eller en periode"
+		"preliminaryPeriodSearch": "Vælg om der skal søges på en dato eller en periode"
 	},
 	"footer": {
 		"contactInfo": "Kontaktinformationer",

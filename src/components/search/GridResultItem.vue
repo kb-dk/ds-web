@@ -234,9 +234,6 @@ export default defineComponent({
 
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', {
-				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
-			});
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation || '');
 			imageDataObj.imgOption = 'cover';
@@ -248,9 +245,6 @@ export default defineComponent({
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', {
-				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
-			});
 			imageDataObj.imgTitle = props.resultdata?.title;
 
 			if (props.resultdata?.kaltura_id) {
