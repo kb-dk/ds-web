@@ -107,22 +107,26 @@
 						left-icon-name="photo_library"
 						right-icon-name="expand_more"
 						button-type="btn-dropdown-default"
-						button-size="medium"
-						button-color="light"
+						button-size="default"
+						button-color="transparent"
 						@click="toggleAdditionalInfo(true)"
 					></KBButton>
 					<KBButton
-						v-if="true"
+						v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
 						button-type="btn-dropdown-default"
-						:button-text="$t('search.rerun')"
+						:button-text="`${$t('search.rerun')} ${
+							resultdata.rerun_cluster.data.response.docs.length > 5
+								? '(5+)'
+								: `(${resultdata.rerun_cluster.data.response.docs.length})`
+						}`"
 						:title="$t('search.rerunButton')"
 						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
 						:button-is-active="isRerunsOpen"
 						right-icon-name="expand_more"
 						left-icon-name="content_copy"
 						class="btn-reg"
-						button-size="medium"
-						button-color="light"
+						button-size="default"
+						button-color="transparent"
 						@click="toggleAdditionalInfo(false)"
 					></KBButton>
 				</div>
@@ -134,9 +138,11 @@
 					:open="isThumbnailsOpen"
 				></AdditionalInfo>
 				<AdditionalInfoReruns
+					v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
 					:id="resultdata.id"
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:open="isRerunsOpen"
+					:reruns="resultdata.rerun_cluster.data.response.docs"
 				></AdditionalInfoReruns>
 			</div>
 			<div

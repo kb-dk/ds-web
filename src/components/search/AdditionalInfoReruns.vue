@@ -5,20 +5,17 @@
 			class="extra-content"
 		>
 			<div
-				v-for="(item, index) in rerunsData"
+				v-for="(item, index) in reruns"
 				:key="index"
-				role="link"
 				class="rerun"
-				:replace="router.currentRoute.value.name === 'Record' ? true : false"
 			>
 				<router-link
 					:to="{ path: 'post/' + item.id }"
 					class="title"
-					role="link"
 					:data-testid="addTestDataEnrichment('link', 'addition-info-reruns', `top-link`, index)"
 					:title="item.title"
 				>
-					<p class="label-regular-bold">
+					<p class="label-regular">
 						<span class="when">{{ getStartTime(item) }}</span>
 
 						<span>
@@ -38,11 +35,11 @@
 								:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
 								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
 							>
-								{{ item.origin.split('.')[1] === 'tv' ? 'play_circle_filled' : 'volume_up' }}
+								{{ item.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 							</span>
 							<p class="label-small">
 								<span class="where">{{ item.creator_affiliation + ',' }}</span>
-								<span class="broadcast-title">{{ item.title[0] }}</span>
+								<span class="broadcast-title">{{ item.title ? item.title[0] : t('app.titles.unknown') }}</span>
 							</p>
 						</div>
 						<div class="subtitle-metadata">
@@ -65,10 +62,11 @@
 							<span
 								role="img"
 								class="material-icons episode-split-icon"
+								aria-hidden="true"
 							>
 								segment
 							</span>
-							<p class="label-small-bold">
+							<p class="label-small">
 								<span class="episode-text">
 									{{ `${t('search.episode')} ${item.episode}` }}
 								</span>
@@ -83,6 +81,9 @@
 					</div>
 				</router-link>
 			</div>
+			<div v-if="reruns.length > 5">
+				<p>{{ t('search.rerunInfo', { rerunCount: reruns.length }) }}</p>
+			</div>
 		</div>
 		<div
 			class="vert-dot"
@@ -94,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { APIService } from '@/api/api-service';
 import gsap from 'gsap';
 import { useRouter } from 'vue-router';
@@ -111,6 +112,7 @@ export default defineComponent({
 		id: { type: String, required: true },
 		fileId: { type: String, required: true },
 		open: { type: Boolean },
+		reruns: { type: Array as PropType<GenericSearchResultType[]>, required: true },
 	},
 	setup(props) {
 		const { t, locale } = useI18n();
@@ -123,8 +125,6 @@ export default defineComponent({
 		const thumbnailRefs = ref<HTMLAnchorElement[]>([]);
 
 		const showReruns = () => {
-			console.log('WORKING?');
-
 			extraContentShown.value = !extraContentShown.value;
 			if (props.fileId && extraContentShown.value) {
 				if (rerunsData.value.length === 0) {
@@ -229,9 +229,9 @@ export default defineComponent({
 	font-size: 16px;
 	opacity: 0;
 }
-.rerun:hover .subtitle-metadata {
-	transition: border-color 0.5s linear;
-	border-bottom: 1px solid var(--color-border-active);
+.rerun:hover {
+	transition: background-color 0.3s linear;
+	background-color: var(--bg-main-light-20);
 }
 .rerun:hover .arrow {
 	opacity: 1;
@@ -240,7 +240,6 @@ export default defineComponent({
 	position: relative;
 }
 .extra-content-container:hover .vert-dot {
-	background-color: transparent;
 	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
 	transition:
 		transform 0.3s ease-in-out 0s,
@@ -256,24 +255,24 @@ export default defineComponent({
 	position: absolute;
 	height: 16px;
 	text-align: center;
-	color: #002e70;
+	color: var(--bg-default);
 	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
 	top: 50%;
-	width: 10px;
-	line-height: 0.75;
+	width: 11px;
+	line-height: 1;
 	margin-top: -5px;
 	left: 0px;
 	display: none;
-	background: transparent;
+	background: var(--bg-backdrop);
 	z-index: 1;
 }
 .title {
 	text-decoration: none;
 	margin-top: 0;
 }
-.title > .label-regular-bold {
+.title > .label-regular {
 	transition: all 0.5s ease-in-out 0s;
-	color: #002e70;
+	color: var(--color-default);
 	text-overflow: ellipsis;
 	max-width: 100%;
 	white-space: nowrap;
@@ -282,14 +281,12 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 3px;
-	color: #002e70;
 }
 .extra-content {
 	height: 0px;
 	margin-bottom: 0px;
 	overflow: hidden;
 	display: none;
-	background-color: var(--bg-additional-info);
 	position: relative;
 	border-left: 1px solid rgba(230, 230, 230, 1);
 	padding-bottom: 15px;
@@ -299,12 +296,12 @@ export default defineComponent({
 }
 
 .rerun {
-	padding: 5px;
+	padding: 5px 5px 15px 5px;
 	box-sizing: border-box;
 	border-bottom: 1px solid transparent;
 }
 .subtitle {
-	color: var(--color-body-text);
+	color: var(--color-default);
 	display: flex;
 	flex-direction: column;
 }
@@ -325,9 +322,6 @@ export default defineComponent({
 .where {
 	padding-right: 5px;
 	text-overflow: ellipsis;
-}
-.episode-text {
-	color: #002e70;
 }
 .episode-split-icon {
 	padding-right: 3px;

@@ -261,6 +261,7 @@
      "thumbnailLink": "Thumbnail {index} at {timestamp}",
      "rerun": "Reruns",
      "rerunButton":"See reruns",
+     "rerunInfo":"This is a section out of a total {rerunCount} reruns for this program",
      "of":"of",
      "startTime":"Start time",
      "dataQuantity":{

@@ -14,6 +14,7 @@ import { normalizeFq } from '@/utils/filter-utils';
 import router from '@/router';
 import { calcEstimatedTimeSearchStringLength } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useNotificationStore } from './notificationStore';
+import SearchResults from '@/components/search/SearchResults.vue';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -370,11 +371,16 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 				currentSearchUUID,
 			);
-
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
 				searchResult.value = responseData.data.response.docs;
+				searchResult.value.map(async (result) => {
+					if (result.rerun_cluster_id) {
+						result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
+					}
+					return result;
+				});
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
 				noHits.value = numFound.value === 0;

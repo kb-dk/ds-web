@@ -260,6 +260,7 @@
      "thumbnailLink": "Billede {index} ved {timestamp}",
      "rerun":"Genudsendelser",
      "rerunButton":"Se genudsendelser",
+     "rerunInfo":"Dette er et udsnit af i alt {rerunCount} genudsendelser for dette program",
      "of":"af",
      "startTime":"starttid",
     "dataQuantity":{
