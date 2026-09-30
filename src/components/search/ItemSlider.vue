@@ -6,10 +6,17 @@
 		<button
 			v-if="displaySliderArrows && scrollLeft >= 25"
 			class="item-slider-direction-arrow left"
+			aria-hidden="true"
+			tabindex="-1"
 			@click="moveSlider(-550)"
 		>
 			<div class="item-slider-direction-arrow-inner">
-				<span class="material-icons">arrow_back_ios_new</span>
+				<span
+					aria-hidden="true"
+					class="material-icons"
+				>
+					arrow_back_ios_new
+				</span>
 			</div>
 		</button>
 		<div
@@ -21,9 +28,18 @@
 		<button
 			v-if="displaySliderArrows && scrollLeft <= maxScrollWidth - 25"
 			class="item-slider-direction-arrow right"
+			aria-hidden="true"
+			tabindex="-1"
 			@click="moveSlider(550)"
 		>
-			<div class="item-slider-direction-arrow-inner"><span class="material-icons">arrow_forward_ios</span></div>
+			<div class="item-slider-direction-arrow-inner">
+				<span
+					aria-hidden="true"
+					class="material-icons"
+				>
+					arrow_forward_ios
+				</span>
+			</div>
 		</button>
 	</div>
 </template>

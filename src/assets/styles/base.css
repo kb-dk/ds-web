@@ -3,6 +3,7 @@
 :focus-visible {
 	outline: 2px solid var(--color-border-light-focused);
 	outline-offset: 2px;
+	box-shadow: 0 0 0 4px var(--color-border-active) !important;
 	border-radius: 4px;
     transition: all 0.2s ease-in-out;
 }

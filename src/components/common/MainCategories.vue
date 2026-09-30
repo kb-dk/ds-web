@@ -31,7 +31,10 @@
 				>
 					{{ t(`categories.${santizeAndSimplify(entity.name)}`) }}
 					<span class="number label-regular">{{ entity.number.toLocaleString('de-DE') }}</span>
-					<span :class="['category-image', 'material-icons', { outline: returnFilledIconStatus(entity.name) }]">
+					<span
+						aria-hidden="true"
+						:class="['category-image', 'material-icons', { outline: returnFilledIconStatus(entity.name) }]"
+					>
 						{{ returnCategoryIcon(entity.name) }}
 					</span>
 				</router-link>

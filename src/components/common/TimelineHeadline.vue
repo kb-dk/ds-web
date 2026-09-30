@@ -7,7 +7,10 @@
 		:aria-expanded="open"
 		@click="dispatchClick($event)"
 	>
-		<div class="material-icons icon">
+		<div
+			aria-hidden="true"
+			class="material-icons icon"
+		>
 			{{ icon }}
 		</div>
 		<div class="headline">

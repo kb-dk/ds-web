@@ -50,12 +50,6 @@ export default defineComponent({
 	color: var(--color-main);
 }
 
-.material-icons {
-	position: relative;
-	top: 5px;
-	margin-left: 15px;
-}
-
 @media (min-width: 990px) {
 	.contact-relative {
 		left: 15%;

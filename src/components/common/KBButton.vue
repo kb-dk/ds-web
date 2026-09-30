@@ -10,6 +10,7 @@
 	>
 		<span
 			v-if="leftIconName || customIconLeft"
+			aria-hidden="true"
 			class="material-icons left"
 			:class="customIconLeft"
 		>
@@ -18,6 +19,7 @@
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName || customIconRight"
+			aria-hidden="true"
 			class="material-icons right"
 			:class="customIconRight"
 		>
@@ -36,6 +38,7 @@
 	>
 		<span
 			v-if="leftIconName || customIconLeft"
+			aria-hidden="true"
 			class="material-icons left"
 			:class="customIconLeft"
 		>
@@ -44,6 +47,7 @@
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName || customIconRight"
+			aria-hidden="true"
 			class="material-icons right"
 			:class="customIconRight"
 		>
@@ -62,6 +66,7 @@
 	>
 		<span
 			v-if="leftIconName || customIconLeft"
+			aria-hidden="true"
 			:class="['material-icons left', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ leftIconName }}
@@ -69,6 +74,7 @@
 		<span class="btn-text">{{ buttonText }}</span>
 		<span
 			v-if="rightIconName || customIconRight"
+			aria-hidden="true"
 			:class="['material-icons right', { outline: iconFilled, customIconLeft }]"
 		>
 			{{ rightIconName }}
