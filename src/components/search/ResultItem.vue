@@ -116,7 +116,7 @@
 					<KBButton
 						v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
 						button-type="btn-dropdown-default"
-						:button-text="`${$t('search.rerun', 0)} ${
+						:button-text="`${$t('search.rerun', resultdata.rerun_cluster.data.response.docs.length)} ${
 							resultdata.rerun_cluster.data.response.docs.length > 5
 								? '(5+)'
 								: `(${resultdata.rerun_cluster.data.response.docs.length})`
