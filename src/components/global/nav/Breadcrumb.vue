@@ -1,11 +1,22 @@
 <template>
 	<div :class="`bg-container ${currentPage}`">
 		<div class="breadcrumb container">
-			<span class="material-icons home-icon">home</span>
-			<span class="material-icons back-arrow">chevron_left</span>
+			<span
+				aria-hidden="true"
+				class="material-icons home-icon"
+			>
+				home
+			</span>
+			<span
+				aria-hidden="true"
+				class="material-icons back-arrow"
+			>
+				chevron_left
+			</span>
 			<router-link
 				class="level-3"
 				:to="{ name: 'Home' }"
+				:aria-label="t('breadcrumb.goToFrontpage')"
 			>
 				{{ t('breadcrumb.frontpage') }}
 			</router-link>
@@ -13,6 +24,7 @@
 			<span
 				v-if="$route.name === 'Search'"
 				class="line"
+				aria-hidden="true"
 			>
 				/
 			</span>
@@ -25,6 +37,7 @@
 			<span
 				v-if="$route.name === 'Record' && lastPath"
 				class="line level-5"
+				aria-hidden="true"
 			>
 				/
 			</span>
@@ -33,7 +46,7 @@
 				class="level-5 btn-reg"
 				:data-testid="addTestDataEnrichment('button', 'breadcrumb', 'search-page-with-result', 3)"
 				:to="lastPath"
-				:title="t('breadcrumb.search')"
+				:aria-label="t('breadcrumb.backToSearch')"
 			>
 				<span class="breadcrumb-title">{{ t('breadcrumb.search') }}{{ searchWord }}</span>
 			</router-link>

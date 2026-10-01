@@ -3,10 +3,13 @@
 		v-bind="attrs"
 		class="btn"
 		:class="{ active: active, 'relevance-btn': !hasArrowIcons }"
+		:aria-pressed="hasArrowIcons ? active : undefined"
+		:aria-label="accessibleLabel"
 	>
 		<span
 			v-if="leftIconName"
 			class="material-icons"
+			aria-hidden="true"
 		>
 			{{ leftIconName }}
 		</span>
@@ -14,6 +17,7 @@
 		<div
 			v-if="hasArrowIcons"
 			class="sort-arrows"
+			aria-hidden="true"
 		>
 			<span
 				class="material-icons"
@@ -30,53 +34,34 @@
 		</div>
 	</button>
 </template>
-
 <script lang="ts">
-import { defineComponent, useAttrs } from 'vue';
-
+import { computed, defineComponent, useAttrs } from 'vue';
+import { useI18n } from 'vue-i18n';
 export default defineComponent({
 	name: 'KBButtonSort',
 	props: {
-		hasArrowIcons: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-		leftIconName: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
-		active: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-		isAscSort: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-		isDescSort: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-		buttonText: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
+		hasArrowIcons: { type: Boolean, default: false },
+		leftIconName: { type: String, default: '' },
+		active: { type: Boolean, default: false },
+		isAscSort: { type: Boolean, default: false },
+		isDescSort: { type: Boolean, default: false },
+		buttonText: { type: String, default: '' },
 	},
-	setup() {
+	setup(props) {
 		const attrs = useAttrs();
-		return { attrs };
+		const { t } = useI18n();
+		const accessibleLabel = computed(() => {
+			if (!props.hasArrowIcons) {
+				return props.active ? `${props.buttonText}, ${t('search.currentSort')}` : props.buttonText;
+			}
+			if (props.active) {
+				const currentDirection = props.isAscSort ? t('search.sortedAsc') : t('search.sortedDesc');
+				const nextDirection = props.isAscSort ? t('search.sortDescending') : t('search.sortAscending');
+				return `${props.buttonText}, ${t('search.currentSort')}, ${currentDirection}. ${nextDirection}`;
+			}
+			return `${props.buttonText}. ${props.isAscSort ? t('search.sortAscending') : t('search.sortDescending')}`;
+		});
+		return { attrs, accessibleLabel };
 	},
 });
 </script>

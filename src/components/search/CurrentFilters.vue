@@ -26,6 +26,7 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
+							:aria-label="`${extractFilterText(channel)} - ${t('facets.deselect')} ${t('app.titles.filter')}`"
 							@click="removeSingleFilterAndSearch(channel)"
 						></KBButton>
 						|
@@ -41,6 +42,7 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
+							:aria-label="`${extractFilterText(category)} - ${t('facets.deselect')} ${t('app.titles.filter')}`"
 							@click="removeSingleFilterAndSearch(category)"
 						></KBButton>
 						|
@@ -60,6 +62,9 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
+							:aria-label="`${presentDateSpan()} ${approxTimeDifference()} - ${t('facets.deselect')} ${t(
+								'app.titles.filter',
+							)}`"
 							@click="resetYearsAndSearch('startTime')"
 						></KBButton>
 						|
@@ -72,6 +77,9 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
+							:aria-label="`${t('facets.searchingIn')} ${t(
+								`facets.${searchResultStore.preliminarySearchMethod}`,
+							)} - ${t('facets.deselect')} ${t('app.titles.filter')}`"
 							@click="removePreliminarySearchFilterAndSearch()"
 						></KBButton>
 					</div>
@@ -83,6 +91,9 @@
 							button-color="main"
 							button-size="small"
 							right-icon-name="close"
+							:aria-label="`${t('facets.searchingIn')} ${preliminaryFilterText} - ${t('facets.deselect')} ${t(
+								'app.titles.filter',
+							)}`"
 							@click="removePreliminaryFilterAndSearch()"
 						></KBButton>
 						|

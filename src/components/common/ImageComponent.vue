@@ -10,14 +10,15 @@
 			:class="`image-item ${loaded ? 'loaded' : ''}`"
 			:src="data.imgSrc"
 			:style="imgStyle()"
-			:alt="data.altText"
+			alt=""
 			:title="data.title"
+			aria-hidden="true"
 			@load="loaded = true"
 		/>
 		<span
 			v-if="data.icon"
 			role="img"
-			:aria-label="`${data.icon} ${t('app.a11y.imageComponentTitle')}`"
+			aria-hidden="true"
 			:class="data.iconLowerRight ? 'type-symbol material-icons lower-right' : 'type-symbol material-icons'"
 			:style="`color: ${data.iconColor}`"
 		>

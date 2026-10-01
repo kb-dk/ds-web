@@ -7,7 +7,20 @@
 			v-if="iconName"
 			class="icon"
 		>
-			<span class="material-icons">
+			<span
+				v-if="iconAltText"
+				role="img"
+				:aria-label="iconAltText"
+				class="material-icons"
+			>
+				{{ iconName }}
+			</span>
+
+			<span
+				v-else
+				aria-hidden="true"
+				class="material-icons"
+			>
 				{{ iconName }}
 			</span>
 		</div>
@@ -21,7 +34,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-// import { useI18n } from 'vue-i18n';
 type SpotSizeType = 'small' | 'medium' | 'large' | 'max';
 type ColorType = 'main' | 'light';
 export default defineComponent({
@@ -43,10 +55,15 @@ export default defineComponent({
 				return '';
 			},
 		},
+		iconAltText: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
 	},
 	setup() {
-		// const { t } = useI18n();
-		// return t;
+		return {};
 	},
 });
 </script>
@@ -90,7 +107,6 @@ export default defineComponent({
 .spot .inner {
 	width: 100%;
 	padding: 36px 20px 20px 20px;
-	height: calc(100% - 80px);
 	display: flex;
 	justify-content: start;
 	align-items: flex-start;
@@ -135,7 +151,7 @@ export default defineComponent({
 		border-radius: var(--rounded-medium);
 	}
 	.spot.medium {
-		height: 280px;
+		height: 310px;
 	}
 	.spot.medium .inner {
 		padding-bottom: 20px;

@@ -1,5 +1,8 @@
 <template>
-	<div :class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'">
+	<article
+		:aria-labelledby="`article-title-${index}`"
+		:class="searchResultStore.loading ? 'result-item-wrapper' : 'result-item-wrapper data'"
+	>
 		<div class="backfade"></div>
 		<Transition
 			name="result"
@@ -10,90 +13,88 @@
 				class="outer-container"
 			>
 				<div class="container top-container">
-					<div class="information">
-						<router-link
-							:to="{ path: 'post/' + resultdata.id }"
-							class="title"
-							role="link"
-							:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
-							:title="resultdata.title"
-						>
-							<p class="label-medium-bold">
+					<router-link
+						:to="{ path: 'post/' + resultdata.id }"
+						class="container"
+						role="link"
+						:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
+						:title="resultdata.title"
+					>
+						<div class="information">
+							<h3
+								:id="`article-title-${index}`"
+								class="label-medium-bold"
+							>
 								{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
 								<span>
 									<div
 										role="img"
 										class="material-icons arrow"
-										:aria-label="t('app.a11y.goToPost')"
+										aria-hidden="true"
 									>
 										keyboard_arrow_right
 									</div>
 								</span>
-							</p>
-						</router-link>
-						<div class="subtitle">
-							<div class="subtitle-metadata">
-								<span
-									role="img"
-									:class="`icons schedule material-icons ${
-										resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
-									}`"
-									:aria-label="t('app.a11y.broadcastTimeAndPlace')"
-								>
-									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
-								</span>
-								<p class="label-small">
-									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
-									<span class="when">{{ starttime }}</span>
-								</p>
-							</div>
-							<div class="subtitle-metadata">
-								<div
-									role="img"
-									class="material-icons icons schedule timeSVG"
-									:aria-label="t('app.a11y.broadcastDuration')"
-									aria-hidden="true"
-								>
-									schedule
-								</div>
-								<p class="label-small">
-									<span class="duration">{{ duration }}</span>
-								</p>
-							</div>
-							<div
-								v-if="resultdata.episode"
-								class="episode subtitle-metadata"
-							>
-								<span
-									role="img"
-									class="material-icons episode-split-icon"
-								>
-									segment
-								</span>
-								<p class="label-small-bold">
-									<span class="episode-text">
-										{{ `${t('search.episode')} ${resultdata.episode}` }}
-									</span>
+							</h3>
+							<div class="subtitle">
+								<div class="subtitle-metadata">
 									<span
-										v-if="resultdata.number_of_episodes"
-										class="episode-text"
+										role="img"
+										:class="`icons schedule material-icons ${
+											resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
+										}`"
+										:aria-label="
+											resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')
+										"
 									>
-										{{ `:${resultdata.number_of_episodes}` }}
+										{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 									</span>
-								</p>
+									<p class="label-small">
+										<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
+										<span class="when">{{ starttime }}</span>
+									</p>
+								</div>
+								<div class="subtitle-metadata">
+									<div
+										:aria-label="t('record.duration')"
+										class="material-icons icons schedule timeSVG"
+									>
+										schedule
+									</div>
+									<p class="label-small">
+										<span class="duration">{{ duration }}</span>
+									</p>
+								</div>
+								<div
+									v-if="resultdata.episode"
+									class="episode subtitle-metadata"
+								>
+									<span
+										:aria-label="t('record.episode')"
+										class="material-icons episode-split-icon"
+									>
+										segment
+									</span>
+									<p class="label-small-bold">
+										<span class="episode-text">
+											{{ `${t('search.episode')} ${resultdata.episode}` }}
+										</span>
+										<span
+											v-if="resultdata.number_of_episodes"
+											class="episode-text"
+										>
+											{{ `:${resultdata.number_of_episodes}` }}
+										</span>
+									</p>
+								</div>
 							</div>
+							<p class="summary fixed-size">
+								{{ resultdata.description }}
+							</p>
 						</div>
-						<p class="summary fixed-size">
-							{{ resultdata.description }}
-						</p>
-					</div>
-					<router-link
-						:to="{ path: 'post/' + resultdata.id }"
-						class="result-image-wrapper"
-						role="link"
-						:data-testid="addTestDataEnrichment('link', 'result-item', `image-link`, index)"
-					>
-						<ImageComponent :image-data="imageData"></ImageComponent>
+						<div class="result-image-wrapper">
+							<ImageComponent :image-data="imageData"></ImageComponent>
+						</div>
 					</router-link>
 				</div>
 				<div class="button-container">
@@ -103,6 +104,7 @@
 						:title="$t('search.thumbnailButton')"
 						:data-testid="addTestDataEnrichment('button', 'result-item', `show-thumbnails`, index)"
 						:button-is-active="isThumbnailsOpen"
+						:aria-label="`${t('additionalInfo.openButton')}`"
 						:button-text="$t('search.thumbnail')"
 						left-icon-name="photo_library"
 						right-icon-name="expand_more"
@@ -132,6 +134,7 @@
 				</div>
 				<AdditionalInfo
 					:id="resultdata.id"
+					:title="resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown')"
 					:type="resultdata.origin.split('.')[1]"
 					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
 					:duration="Number(resultdata.duration_ms)"
@@ -206,7 +209,7 @@
 				<div class="result-image-wrapper skeleton"></div>
 			</div>
 		</Transition>
-	</div>
+	</article>
 </template>
 
 <script lang="ts">
@@ -282,9 +285,6 @@ export default defineComponent({
 		const isRerunsOpen = ref(false);
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', {
-				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
-			});
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 			imageDataObj.imgSrc = getThumbnailPicture(props.resultdata?.creator_affiliation);
 			imageDataObj.imgOption = 'cover';
@@ -296,9 +296,6 @@ export default defineComponent({
 
 		const getImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
-			imageDataObj.altText = t('search.recordThumbnail', {
-				title: props.resultdata?.title ? props.resultdata?.title[0] : t('app.titles.unknown'),
-			});
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
 
 			if (props.resultdata?.kaltura_id) {
@@ -441,7 +438,9 @@ export default defineComponent({
 	flex-direction: column-reverse;
 	justify-content: space-between;
 	gap: 0px;
-	width: 100%;
+	width: calc(100% - 4px);
+	margin-top: 4px;
+	text-decoration: none;
 }
 
 .information {
@@ -460,11 +459,10 @@ export default defineComponent({
 	display: block;
 	width: fit-content;
 }
-.title > .label-medium-bold {
+.label-medium-bold {
 	transition: all 0.5s ease-in-out 0s;
 	color: var(--color-default);
 	text-overflow: ellipsis;
-	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	max-width: 75ch;
@@ -473,7 +471,9 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 7px;
+	margin-top: 0px;
 }
+
 .subtitle {
 	display: flex;
 	flex-direction: column;
@@ -662,6 +662,7 @@ export default defineComponent({
 	overflow: hidden;
 	position: relative;
 	margin-top: 10px;
+	color: var(--bg-default);
 }
 
 .placeholder-t:before,

@@ -12,24 +12,28 @@
 			<span class="title-span">
 				<span
 					v-if="notification.severity === Severity.SUCCESS"
+					aria-hidden="true"
 					class="material-icons title-icon"
 				>
 					check
 				</span>
 				<span
 					v-if="notification.severity === Severity.ERROR"
+					aria-hidden="true"
 					class="material-icons title-icon"
 				>
 					warning
 				</span>
 				<span
 					v-if="notification.severity === Severity.INFO"
+					aria-hidden="true"
 					class="material-icons title-icon"
 				>
 					info
 				</span>
 				<span
 					v-if="notification.severity === Severity.WARNING"
+					aria-hidden="true"
 					class="material-icons title-icon"
 				>
 					notifications

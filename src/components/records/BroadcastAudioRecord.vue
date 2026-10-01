@@ -46,13 +46,23 @@
 			</div>
 			<div class="right-side">
 				<div class="right-side-metadata-box">
-					<p class="lead">{{ $t('record.aired') }}</p>
+					<h3 class="lead">{{ $t('record.aired') }}</h3>
 					<div class="info label-medium">
-						<span class="material-icons blue">event</span>
+						<span
+							aria-hidden="true"
+							class="material-icons blue"
+						>
+							event
+						</span>
 						{{ getBroadcastDate(recordData.startTime, locale) }}
 					</div>
 					<div class="info label-medium">
-						<span class="material-icons blue">schedule</span>
+						<span
+							aria-hidden="true"
+							class="material-icons blue"
+						>
+							schedule
+						</span>
 						{{ $t('record.timestamp') }} {{ getBroadcastTime(recordData.startTime) }} -
 						{{ getBroadcastTime(recordData.endTime) }}
 						<span class="broadcast-duration">
@@ -64,14 +74,24 @@
 						</span>
 					</div>
 					<div class="info label-medium">
-						<span class="material-icons blue">tv</span>
+						<span
+							aria-hidden="true"
+							class="material-icons blue"
+						>
+							tv
+						</span>
 						{{ recordData.publication.publishedOn.broadcastDisplayName }}
 					</div>
 					<div
 						v-if="recordData.encodesCreativeWork?.episodeNumber"
 						class="info label-medium"
 					>
-						<span class="material-icons">segment</span>
+						<span
+							aria-hidden="true"
+							class="material-icons"
+						>
+							segment
+						</span>
 						<span class="episode-text">
 							{{ `${$t('search.episode')} ${recordData.encodesCreativeWork?.episodeNumber}` }}
 						</span>
@@ -290,6 +310,7 @@ temporary styling until patterns from design system are implemented
 }
 
 h3 {
+	font-weight: 100;
 	margin-top: 0;
 }
 h4 {

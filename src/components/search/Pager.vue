@@ -67,7 +67,12 @@
 					:to="navLink(pageNumber as number)"
 					:class="{ active: pageNumber === currentPageRef }"
 					:title="`${$t('search.page')} ${pageNumber}`"
-					:aria-label="$t('search.goToPage', Number(pageNumber))"
+					:aria-current="pageNumber === currentPageRef ? 'page' : undefined"
+					:aria-label="
+						pageNumber === currentPageRef
+							? $t('search.currentPage', Number(pageNumber))
+							: $t('search.goToPage', Number(pageNumber))
+					"
 					:data-testid="addTestDataEnrichment('link', 'pager', 'page', index)"
 					@click="goToPage(pageNumber as number)"
 				>
