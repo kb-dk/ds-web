@@ -214,6 +214,7 @@
 	},
 	"additionalInfo": {
 		"openButton": "Åben oversigt over nedslag i udsendelsen med billeder",
+		"openButtonReruns": "Åben oversig over genudsendelser for programmet",
 		"goToBroadcast": "gå til udsendelsen"
 	},
 	"search": {
@@ -228,7 +229,7 @@
 		"desc": "faldende",
 		"searching": "Søger.",
 		"searchComplete": "Søgning fuldført. Fandt {count} resultater, sorteret efter {sort}, vist i {view}-visning, i {dir} rækkefølge",
-		"rerun":"Genudsendelser",
+		"rerun":"Genudsendelse | Genudsendelser",
      	"rerunButton":"Se genudsendelser",
      	"rerunInfo":"Dette er et udsnit af i alt {rerunCount} genudsendelser for dette program",
 		"grid": "gitter",

@@ -214,6 +214,7 @@
 	},
 	"additionalInfo": {
 		"openButton": "Open overview of points in the broadcast with images",
+		"openButtonReruns": "Open overview of reruns for this program",
 		"goToBroadcast": "go to broadcast"
 	},
 	"search": {
@@ -228,7 +229,7 @@
 		"desc": "descending",
 		"searching": "Searching.",
 		"searchComplete": "Search complete. Found {count} results, sorted by {sort}, presented in {view} view, in {dir} order",
-		"rerun": "Reruns",
+		"rerun": "Rerun | Reruns",
      	"rerunButton":"See reruns",
      	"rerunInfo":"This is a section out of a total {rerunCount} reruns for this program",
 		"grid": "grid",

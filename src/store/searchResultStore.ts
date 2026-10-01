@@ -14,7 +14,6 @@ import { normalizeFq } from '@/utils/filter-utils';
 import router from '@/router';
 import { calcEstimatedTimeSearchStringLength } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useNotificationStore } from './notificationStore';
-import SearchResults from '@/components/search/SearchResults.vue';
 
 export const useSearchResultStore = defineStore('searchResults', () => {
 	let currentSearchUUID = '';
@@ -70,7 +69,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (loading.value) {
 			return t('search.searching');
 		}
-
+		if (!sort.value) {
+			return t('search.relevance');
+		}
 		return t('search.searchComplete', {
 			count: numFound.value,
 			sort: t(`search.${decodeURIComponent(sort.value).split(' ')[0]}`),
@@ -106,7 +107,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			getFacetResults(lastSearchQuery.value);
 		}
 	};
-
 	const setRotationalResult = (items: GenericSearchResultType[]) => {
 		rotationalResult.value = items;
 	};

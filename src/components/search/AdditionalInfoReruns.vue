@@ -13,19 +13,25 @@
 					:to="{ path: 'post/' + item.id }"
 					class="title"
 					:data-testid="addTestDataEnrichment('link', 'addition-info-reruns', `top-link`, index)"
-					:title="item.title"
+					:title="`${item.title} ${t('record.aired')} ${getStartTime(item)}`"
 				>
 					<p class="label-regular">
+						<span
+							:aria-label="t('search.rerun', 1)"
+							role="image"
+							class="material-icons rerun-icon"
+						>
+							content_copy
+						</span>
 						<span class="when">{{ getStartTime(item) }}</span>
 
 						<span>
-							<div
-								role="img"
+							<span
 								class="material-icons arrow"
-								:aria-label="t('app.a11y.goToPost')"
+								aria-hidden="true"
 							>
 								keyboard_arrow_right
-							</div>
+							</span>
 						</span>
 					</p>
 					<div class="subtitle">
@@ -33,7 +39,7 @@
 							<span
 								role="img"
 								:class="`icons schedule material-icons ${item.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'}`"
-								:aria-label="t('app.a11y.broadcastTimeAndPlace')"
+								:aria-label="`${item.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')}`"
 							>
 								{{ item.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 							</span>
@@ -47,7 +53,6 @@
 								role="img"
 								class="material-icons icons schedule timeSVG"
 								:aria-label="t('app.a11y.broadcastDuration')"
-								aria-hidden="true"
 							>
 								schedule
 							</div>
@@ -60,7 +65,6 @@
 							class="episode subtitle-metadata"
 						>
 							<span
-								role="img"
 								class="material-icons episode-split-icon"
 								aria-hidden="true"
 							>
@@ -81,13 +85,17 @@
 					</div>
 				</router-link>
 			</div>
-			<div v-if="reruns.length > 5">
+			<div
+				v-if="reruns.length > 5"
+				class="rerun-info"
+			>
 				<p>{{ t('search.rerunInfo', { rerunCount: reruns.length }) }}</p>
 			</div>
 		</div>
 		<div
 			class="vert-dot"
 			:class="{ visible: open }"
+			aria-hidden="true"
 		>
 			•
 		</div>
@@ -95,77 +103,50 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
-import { APIService } from '@/api/api-service';
+import { defineComponent, inject, PropType, ref, watch } from 'vue';
 import gsap from 'gsap';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { convertSecondstoShow } from '@/utils/time-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { type GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+
 export default defineComponent({
 	name: 'AdditionalInfoReruns',
 	props: {
 		id: { type: String, required: true },
 		fileId: { type: String, required: true },
-		open: { type: Boolean },
+		open: { type: Boolean, required: true },
 		reruns: { type: Array as PropType<GenericSearchResultType[]>, required: true },
 	},
 	setup(props) {
 		const { t, locale } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		const extraContentShown = ref(false);
 		const rerunsData = ref([] as GenericSearchResultType[]);
 		const router = useRouter();
-
 		const extraContentRef = ref<HTMLElement | null>(null);
 		const thumbnailRefs = ref<HTMLAnchorElement[]>([]);
-
 		const showReruns = () => {
-			extraContentShown.value = !extraContentShown.value;
-			if (props.fileId && extraContentShown.value) {
-				if (rerunsData.value.length === 0) {
-					requestExtraReruns();
-				}
-			}
-			if (extraContentShown.value === true) {
+			if (props.open) {
 				gsap.set(extraContentRef.value, {
 					display: 'block',
 				});
 			}
 			gsap.to(extraContentRef.value, {
-				height: extraContentShown.value ? 'auto' : '0px',
-				opacity: extraContentShown.value ? '1' : '0',
-				marginBottom: extraContentShown.value ? '20px' : '0px',
+				height: props.open ? 'auto' : '0px',
+				opacity: props.open ? '1' : '0',
+				marginBottom: props.open ? '20px' : '0px',
 				duration: 0.2,
 				onComplete: () => {
-					if (extraContentShown.value === false) {
+					if (!props.open) {
 						gsap.set(extraContentRef.value, {
 							display: 'none',
 						});
 					}
 				},
 			});
-		};
-
-		const requestExtraReruns = () => {
-			APIService.getMoreLikeThisRecords(props.id)
-				.then((moreLikeThis) => {
-					rerunsData.value = moreLikeThis.data.response.docs;
-				})
-				.catch(() => {
-					errorManager.submitCustomError(
-						'reruns-error',
-						t('error.infoError.title'),
-						t('error.infoError.thumbnails'),
-						Severity.INFO,
-						false,
-						Priority.LOW,
-					);
-				});
 		};
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
@@ -176,21 +157,6 @@ export default defineComponent({
 		const getDuration = (resultItem: GenericSearchResultType) => {
 			return resultItem ? formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t) : '';
 		};
-		onMounted(() => {
-			watch(
-				() => props.id,
-				(newVal: string, oldVal: string) => {
-					if (newVal !== oldVal) {
-						rerunsData.value = [];
-						extraContentShown.value = false;
-					}
-				},
-			);
-
-			if (props.open) {
-				showReruns();
-			}
-		});
 		watch(
 			() => props.open,
 			() => {
@@ -198,7 +164,6 @@ export default defineComponent({
 			},
 		);
 		return {
-			extraContentShown,
 			showReruns,
 			extraContentRef,
 			thumbnailRefs,
@@ -269,6 +234,7 @@ export default defineComponent({
 .title {
 	text-decoration: none;
 	margin-top: 0;
+	display: block;
 }
 .title > .label-regular {
 	transition: all 0.5s ease-in-out 0s;
@@ -281,6 +247,9 @@ export default defineComponent({
 	position: relative;
 	display: block;
 	margin-bottom: 3px;
+}
+.title > .label-regular .rerun-icon {
+	font-size: var(--fs-meta);
 }
 .extra-content {
 	height: 0px;
@@ -322,6 +291,10 @@ export default defineComponent({
 .where {
 	padding-right: 5px;
 	text-overflow: ellipsis;
+}
+.when,
+.rerun-info {
+	padding-left: 5px;
 }
 .episode-split-icon {
 	padding-right: 3px;

@@ -116,7 +116,7 @@
 					<KBButton
 						v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
 						button-type="btn-dropdown-default"
-						:button-text="`${$t('search.rerun')} ${
+						:button-text="`${$t('search.rerun', 0)} ${
 							resultdata.rerun_cluster.data.response.docs.length > 5
 								? '(5+)'
 								: `(${resultdata.rerun_cluster.data.response.docs.length})`
@@ -124,6 +124,7 @@
 						:title="$t('search.rerunButton')"
 						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
 						:button-is-active="isRerunsOpen"
+						:aria-label="`${t('additionalInfo.openButtonReruns')}`"
 						right-icon-name="expand_more"
 						left-icon-name="content_copy"
 						class="btn-reg"
@@ -283,6 +284,7 @@ export default defineComponent({
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
 		const isThumbnailsOpen = ref(false);
 		const isRerunsOpen = ref(false);
+
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
@@ -369,8 +371,8 @@ export default defineComponent({
 			addTestDataEnrichment,
 			errorManager,
 			isThumbnailsOpen,
-			isRerunsOpen,
 			toggleAdditionalInfo,
+			isRerunsOpen,
 		};
 	},
 });
