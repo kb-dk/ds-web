@@ -60,6 +60,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
 	const notificationStore = useNotificationStore();
 	const searchFieldFocused = ref(false);
+	const rerunsFailed = ref<Array<string>>([]);
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -390,7 +391,20 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchResult.value = responseData.data.response.docs;
 				searchResult.value.map(async (result) => {
 					if (result.rerun_cluster_id) {
-						result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
+						try {
+							result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
+						} catch (err: unknown) {
+							rerunsFailed.value.push(result.rerun_cluster_id);
+							error.value = (err as AxiosError).message;
+							errorManager.submitCustomError(
+								'search-result-rerun-error',
+								t('error.infoError.title'),
+								t('error.infoError.reruns'),
+								Severity.INFO,
+								false,
+								Priority.LOW,
+							);
+						}
 					}
 					return result;
 				});
@@ -511,5 +525,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		preliminaryPeriodSearch,
 		searchFieldFocused,
 		searchStatusMessage,
+		rerunsFailed,
 	};
 });

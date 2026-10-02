@@ -114,14 +114,18 @@
 						@click="toggleAdditionalInfo(true)"
 					></KBButton>
 					<KBButton
-						v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
+						v-if="
+							(resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0) ||
+							searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)
+						"
+						:disabled="searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)"
 						button-type="btn-dropdown-default"
-						:button-text="`${$t('search.rerun')} ${
-							resultdata.rerun_cluster.data.response.docs.length > 5
-								? '(5+)'
-								: `(${resultdata.rerun_cluster.data.response.docs.length})`
-						}`"
-						:title="$t('search.rerunButton')"
+						:button-text="rerunButtonText"
+						:title="
+							searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)
+								? $t('error.infoError.reruns')
+								: $t('search.rerunButton')
+						"
 						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
 						:button-is-active="isRerunsOpen"
 						:aria-label="`${t('additionalInfo.openButtonReruns')}`"
@@ -214,7 +218,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -285,6 +289,17 @@ export default defineComponent({
 		const isThumbnailsOpen = ref(false);
 		const isRerunsOpen = ref(false);
 
+		const rerunButtonText = computed(() => {
+			let rerunText = t('search.rerun');
+			if (searchResultStore.rerunsFailed.includes(props.resultdata.rerun_cluster_id)) {
+				return rerunText + ' (?)';
+			}
+			props.resultdata.rerun_cluster.data.response.docs.length > 5
+				? (rerunText += ' (5+)')
+				: (rerunText += ` (${props.resultdata.rerun_cluster.data.response.docs.length})`);
+			return rerunText;
+		});
+
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
@@ -344,6 +359,8 @@ export default defineComponent({
 			() => props.resultdata,
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
+					isRerunsOpen.value = false;
+					isThumbnailsOpen.value = false;
 					if (props.resultdata.origin.split('.')[1] === 'tv') {
 						getImageData();
 					}
@@ -362,7 +379,6 @@ export default defineComponent({
 				getAudioImageData();
 			}
 		});
-
 		return {
 			searchResultStore,
 			imageData,
@@ -373,6 +389,7 @@ export default defineComponent({
 			isThumbnailsOpen,
 			toggleAdditionalInfo,
 			isRerunsOpen,
+			rerunButtonText,
 		};
 	},
 });
