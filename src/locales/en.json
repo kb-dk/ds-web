@@ -214,6 +214,7 @@
 	},
 	"additionalInfo": {
 		"openButton": "Open overview of points in the broadcast with images",
+		"openButtonReruns": "Open overview of reruns for this program",
 		"goToBroadcast": "go to broadcast"
 	},
 	"search": {
@@ -228,6 +229,9 @@
 		"desc": "descending",
 		"searching": "Searching.",
 		"searchComplete": "Search complete. Found {count} results, sorted by {sort}, presented in {view} view, in {dir} order",
+		"rerun": "Rerun",
+     	"rerunButton":"See reruns",
+     	"rerunInfo":"Excerpt of the 5 most recent of {rerunCount} reruns in total",
 		"grid": "grid",
 		"list": "list",
 		"gridView": "Grid view",
@@ -548,6 +552,7 @@
 			"title": "An error occurred",
 			"relatedContent": "Related content is not responding.",
 			"programGuide": "Content could not be found",
+			"reruns": "Reruns could not be found",
 			"featuredContent": "Featured content from this month is not responding.",
 			"thumbnails": "Thumbnails are not responding.",
 			"thumbnail": "Thumbnails are not responding.",
