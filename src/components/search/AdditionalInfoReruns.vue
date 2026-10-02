@@ -17,7 +17,7 @@
 				>
 					<p class="label-regular">
 						<span
-							:aria-label="t('search.rerun', 1)"
+							:aria-label="t('search.rerun')"
 							role="image"
 							class="material-icons rerun-icon"
 						>
