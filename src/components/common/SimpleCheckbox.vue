@@ -20,7 +20,7 @@
 				:disabled="(amount === '0' && !checked) || (disabled && !checked)"
 				:checked="checked"
 				:data-testid="addTestDataEnrichment('input', 'simple-checkbox', title, number)"
-				@change="updateSelection(!checked, title, fqkey)"
+				@change="updateSelection(!checked, value || title, fqkey)"
 			/>
 			<span
 				v-if="icon"
@@ -83,6 +83,13 @@ export default defineComponent({
 			},
 		},
 		title: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
+		},
+		value: {
 			type: String,
 			required: false,
 			default() {
