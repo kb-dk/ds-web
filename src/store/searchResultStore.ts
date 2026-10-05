@@ -226,6 +226,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		resetSort();
 		resetSpellCheck();
 		resetPreliminaryFilters();
+		lastSearchQuery.value = '';
 		currentQuery.value = '';
 		searchFired.value = false;
 		loading.value = false;
