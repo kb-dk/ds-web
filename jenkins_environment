@@ -1,0 +1,17 @@
+# Build settings used by the Jenkins build (shared library: frontendPipeline).
+#
+# Jenkins copies this file to .env.production.local before running `npm run build`.
+# It contains NO secrets: the values are public and visible in the served index.html.
+# Local developer builds do not use this file.
+
+# Path the app is served under, without leading slash, with trailing slash.
+# Used for asset URLs and as the vue-router base (vite.config.mts).
+# Must match where OPS serves the app.
+APP_BASE_PATH=find-materiale/dr-arkivet/
+
+# Absolute public URL of the app, with trailing slash.
+# Used in index.html for og:image / twitter:image (link previews on social media).
+# Same site as the hardcoded og:url / JSON-LD URLs in index.html.
+VITE_SITE_URL=https://www.kb.dk/find-materiale/dr-arkivet/
+
+# VITE_APP_VERSION is set automatically by Jenkins from package.json.
