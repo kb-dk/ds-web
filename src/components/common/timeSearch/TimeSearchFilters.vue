@@ -422,6 +422,7 @@ export default defineComponent({
 	margin-bottom: 0px;
 	font-size: 26px;
 	text-transform: capitalize;
+	padding-left: 20px;
 }
 
 .year-count {
