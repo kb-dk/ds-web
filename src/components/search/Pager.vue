@@ -32,6 +32,7 @@
 				:title="$t('search.previousPage')"
 				:aria-label="$t('search.previousPage')"
 				:data-testid="addTestDataEnrichment('link', 'pager', 'prev-page', 0)"
+				:aria-current="undefined"
 				@click="scrollToHitsContainer()"
 			>
 				<i
@@ -86,6 +87,7 @@
 				:aria-label="$t('search.nextPage')"
 				class="arrow-pager"
 				:data-testid="addTestDataEnrichment('link', 'pager', 'next-page', 0)"
+				:aria-current="undefined"
 				@click="nextPage"
 			>
 				<i

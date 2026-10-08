@@ -16,7 +16,7 @@
 			<router-link
 				class="level-3"
 				:to="{ name: 'Home' }"
-				:aria-label="t('breadcrumb.goToFrontpage')"
+				:aria-label="t('breadcrumb.frontpage')"
 			>
 				{{ t('breadcrumb.frontpage') }}
 			</router-link>
