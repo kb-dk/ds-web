@@ -12,98 +12,146 @@
 				v-if="!searchResultStore.loading && resultdata"
 				class="outer-container"
 			>
-				<router-link
-					:to="{ path: 'post/' + resultdata.id }"
-					class="container"
-					role="link"
-					:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
-					:title="resultdata.title"
-				>
-					<div class="information">
-						<h3
-							:id="`article-title-${index}`"
-							class="label-medium-bold"
-						>
-							{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
-							<span>
-								<div
-									role="img"
-									class="material-icons arrow"
-									aria-hidden="true"
-								>
-									keyboard_arrow_right
-								</div>
-							</span>
-						</h3>
-						<div class="subtitle">
-							<div class="subtitle-metadata">
-								<span
-									role="img"
-									:class="`icons schedule material-icons ${
-										resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
-									}`"
-									:aria-label="
-										resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')
-									"
-								>
-									{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
-								</span>
-								<p class="label-small">
-									<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
-									<span class="when">{{ starttime }}</span>
-								</p>
-							</div>
-							<div class="subtitle-metadata">
-								<div
-									:aria-label="t('record.duration')"
-									class="material-icons icons schedule timeSVG"
-								>
-									schedule
-								</div>
-								<p class="label-small">
-									<span class="duration">{{ duration }}</span>
-								</p>
-							</div>
-							<div
-								v-if="resultdata.episode"
-								class="episode subtitle-metadata"
+				<div class="container top-container">
+					<router-link
+						:to="{ path: 'post/' + resultdata.id }"
+						class="container"
+						role="link"
+						:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
+						:title="resultdata.title"
+					>
+						<div class="information">
+							<h3
+								:id="`article-title-${index}`"
+								class="label-medium-bold"
 							>
-								<span
-									:aria-label="t('record.episode')"
-									class="material-icons episode-split-icon"
-								>
-									segment
-								</span>
-								<p class="label-small-bold">
-									<span class="episode-text">
-										{{ `${t('search.episode')} ${resultdata.episode}` }}
-									</span>
-									<span
-										v-if="resultdata.number_of_episodes"
-										class="episode-text"
+								{{ resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown') }}
+								<span>
+									<div
+										role="img"
+										class="material-icons arrow"
+										aria-hidden="true"
 									>
-										{{ `:${resultdata.number_of_episodes}` }}
+										keyboard_arrow_right
+									</div>
+								</span>
+							</h3>
+							<div class="subtitle">
+								<div class="subtitle-metadata">
+									<span
+										role="img"
+										:class="`icons schedule material-icons ${
+											resultdata.origin.split('.')[1] === 'tv' ? 'playSVG' : 'volumeSVG'
+										}`"
+										:aria-label="
+											resultdata.origin.split('.')[1] === 'tv' ? t('record.tvChannel') : t('record.radioChannel')
+										"
+									>
+										{{ resultdata.origin.split('.')[1] === 'tv' ? 'play_circle' : 'volume_up' }}
 									</span>
-								</p>
+									<p class="label-small">
+										<span class="where">{{ resultdata.creator_affiliation + ',' }}</span>
+										<span class="when">{{ starttime }}</span>
+									</p>
+								</div>
+								<div class="subtitle-metadata">
+									<div
+										:aria-label="t('record.duration')"
+										class="material-icons icons schedule timeSVG"
+									>
+										schedule
+									</div>
+									<p class="label-small">
+										<span class="duration">{{ duration }}</span>
+									</p>
+								</div>
+								<div
+									v-if="resultdata.episode"
+									class="episode subtitle-metadata"
+								>
+									<span
+										:aria-label="t('record.episode')"
+										class="material-icons episode-split-icon"
+									>
+										segment
+									</span>
+									<p class="label-small-bold">
+										<span class="episode-text">
+											{{ `${t('search.episode')} ${resultdata.episode}` }}
+										</span>
+										<span
+											v-if="resultdata.number_of_episodes"
+											class="episode-text"
+										>
+											{{ `:${resultdata.number_of_episodes}` }}
+										</span>
+									</p>
+								</div>
 							</div>
+							<p class="summary fixed-size">
+								{{ resultdata.description }}
+							</p>
 						</div>
-						<p class="summary fixed-size">
-							{{ resultdata.description }}
-						</p>
-					</div>
-					<div class="result-image-wrapper">
-						<ImageComponent :image-data="imageData"></ImageComponent>
-					</div>
-				</router-link>
-
+						<div class="result-image-wrapper">
+							<ImageComponent :image-data="imageData"></ImageComponent>
+						</div>
+					</router-link>
+				</div>
+				<div class="button-container">
+					<KBButton
+						:disabled="resultdata.file_id && resultdata.origin.split('.')[1] === 'tv' ? false : true"
+						class="btn-reg"
+						:title="$t('search.thumbnailButton')"
+						:data-testid="addTestDataEnrichment('button', 'result-item', `show-thumbnails`, index)"
+						:button-is-active="isThumbnailsOpen"
+						:aria-label="`${t('additionalInfo.openButton')}`"
+						:button-text="$t('search.thumbnail')"
+						left-icon-name="photo_library"
+						right-icon-name="expand_more"
+						button-type="btn-dropdown-default"
+						button-size="default"
+						button-color="transparent"
+						@click="toggleAdditionalInfo(true)"
+					></KBButton>
+					<KBButton
+						v-if="
+							(resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0) ||
+							searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)
+						"
+						:disabled="searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)"
+						button-type="btn-dropdown-default"
+						:button-text="rerunButtonText"
+						:title="
+							searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)
+								? $t('error.infoError.reruns')
+								: $t('search.rerunButton')
+						"
+						:data-testid="addTestDataEnrichment('button', 'result-item', `show-reruns`, index)"
+						:button-is-active="isRerunsOpen"
+						:aria-label="`${t('additionalInfo.openButtonReruns')}`"
+						right-icon-name="expand_more"
+						left-icon-name="content_copy"
+						class="btn-reg"
+						button-size="default"
+						button-color="transparent"
+						@click="toggleAdditionalInfo(false)"
+					></KBButton>
+				</div>
 				<AdditionalInfo
 					:id="resultdata.id"
 					:title="resultdata?.title ? resultdata?.title[0] : t('app.titles.unknown')"
 					:type="resultdata.origin.split('.')[1]"
 					:kaltura-id="resultdata.kaltura_id ? resultdata.kaltura_id : ''"
 					:duration="Number(resultdata.duration_ms)"
-					:nr="index"
+					:open="isThumbnailsOpen"
 				></AdditionalInfo>
+				<AdditionalInfoReruns
+					v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
+					:id="resultdata.id"
+					:file-id="resultdata.file_id ? resultdata.file_id : ''"
+					:open="isRerunsOpen"
+					:reruns="resultdata.rerun_cluster.data.response.docs"
+				></AdditionalInfoReruns>
 			</div>
 			<div
 				v-else
@@ -170,7 +218,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { ImageComponentType } from '@/types/ImageComponentType';
@@ -183,12 +231,16 @@ import { Priority, Severity } from '@/types/NotificationType';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import ImageComponent from '@/components/common/ImageComponent.vue';
 import { getThumbnailPicture } from '@/utils/record-utils';
+import KBButton from '@/components/common/KBButton.vue';
+import AdditionalInfoReruns from '@/components/search/AdditionalInfoReruns.vue';
 
 export default defineComponent({
 	name: 'ResultItem',
 	components: {
 		ImageComponent,
 		AdditionalInfo,
+		AdditionalInfoReruns,
+		KBButton,
 	},
 	props: {
 		resultdata: {
@@ -234,6 +286,19 @@ export default defineComponent({
 			} as ImageComponentType),
 		);
 		const placeholderTitleRef = ref<HTMLElement | null>(null);
+		const isThumbnailsOpen = ref(false);
+		const isRerunsOpen = ref(false);
+
+		const rerunButtonText = computed(() => {
+			let rerunText = t('search.rerun');
+			if (searchResultStore.rerunsFailed.includes(props.resultdata.rerun_cluster_id)) {
+				return rerunText + ' (?)';
+			}
+			props.resultdata.rerun_cluster.data.response.docs.length > 5
+				? (rerunText += ' (5+)')
+				: (rerunText += ` (${props.resultdata.rerun_cluster.data.response.docs.length})`);
+			return rerunText;
+		});
 
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
@@ -279,11 +344,23 @@ export default defineComponent({
 			}
 		};
 
+		const toggleAdditionalInfo = (isThumbnails: boolean) => {
+			if (isThumbnails) {
+				isThumbnailsOpen.value = !isThumbnailsOpen.value;
+				isRerunsOpen.value = false;
+			} else {
+				isRerunsOpen.value = !isRerunsOpen.value;
+				isThumbnailsOpen.value = false;
+			}
+		};
+
 		//We need to watch the search result to trigger re-render of thumbmails
 		watch(
 			() => props.resultdata,
 			(newVal, oldVal) => {
 				if (newVal !== oldVal) {
+					isRerunsOpen.value = false;
+					isThumbnailsOpen.value = false;
 					if (props.resultdata.origin.split('.')[1] === 'tv') {
 						getImageData();
 					}
@@ -302,7 +379,6 @@ export default defineComponent({
 				getAudioImageData();
 			}
 		});
-
 		return {
 			searchResultStore,
 			imageData,
@@ -310,6 +386,10 @@ export default defineComponent({
 			t,
 			addTestDataEnrichment,
 			errorManager,
+			isThumbnailsOpen,
+			toggleAdditionalInfo,
+			isRerunsOpen,
+			rerunButtonText,
 		};
 	},
 });
@@ -322,7 +402,7 @@ export default defineComponent({
 	padding: 0;
 }
 
-.result-item-wrapper:hover .arrow {
+.top-container:hover .arrow {
 	opacity: 1;
 }
 
@@ -625,7 +705,11 @@ export default defineComponent({
 	background-size: 200% 100%;
 	background-position: 160% center;
 }
-
+.button-container {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: row;
+}
 @media (min-width: 400px) {
 	.container {
 		gap: 30px;
@@ -715,6 +799,9 @@ export default defineComponent({
 		transition:
 			opacity 0.3s ease-in-out,
 			visibility 0s linear 0s; /* Make visible immediately */
+	}
+	.button-container {
+		margin-top: 10px;
 	}
 }
 

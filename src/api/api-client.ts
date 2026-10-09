@@ -168,7 +168,13 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}`,
+			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&group=true&group.field=rerun_cluster_id&group.main=true&rows=${rowCount}`,
+		);
+	}
+
+	async getRerunsById(clusterId: string, dsId: string) {
+		return await this.httpClient.get(
+			`bff/v1/proxy/search/?q=rerun_cluster_id:"${clusterId}" AND NOT id:"${dsId}"&sort=startTime desc&rows=5`,
 		);
 	}
 

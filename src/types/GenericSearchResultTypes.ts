@@ -1,3 +1,5 @@
+import { APISearchResponseType } from './APIResponseTypes';
+
 export interface GenericSearchResultType {
 	access_billede_aftale: boolean;
 	access_blokeret: boolean;
@@ -48,6 +50,8 @@ export interface GenericSearchResultType {
 	temporal_end_date_da_string: string;
 	temporal_end_time_da_string: string;
 	dr_production_id: string;
+	rerun_cluster_id: string;
+	rerun_cluster: APISearchResponseType;
 }
 
 export interface FacetsType {

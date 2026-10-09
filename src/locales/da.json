@@ -213,7 +213,8 @@
 		"unknownLength": "Ukendt tidsperiode"
 	},
 	"additionalInfo": {
-		"openButton": "Åben oversigt over nedslag i udsendelsen med billeder",
+		"openButton": "Åbn oversigt over nedslag i udsendelsen med billeder",
+		"openButtonReruns": "Åbn oversig over genudsendelser for programmet",
 		"goToBroadcast": "gå til udsendelsen"
 	},
 	"search": {
@@ -228,6 +229,9 @@
 		"desc": "faldende",
 		"searching": "Søger.",
 		"searchComplete": "Søgning fuldført. Fandt {count} resultater, sorteret efter {sort}, vist i {view}-visning, i {dir} rækkefølge",
+		"rerun":"Genudsendt",
+     	"rerunButton":"Se genudsendelser",
+     	"rerunInfo":"Udsnit af de 5 seneste af i alt {rerunCount} genudsendelser",
 		"grid": "gitter",
 		"list": "liste",
 		"gridView": "Gittervisning",
@@ -547,6 +551,7 @@
 			"title": "Der skete en fejl",
 			"relatedContent": "Relateret indhold svarer ikke.",
 			"programGuide": "Indholdet kunne ikke hentes",
+			"reruns": "Genudsendelser kunne ikke hentes",
 			"featuredContent": "Fremhævet indhold under DR gennem tiden svarer ikke.",
 			"thumbnails": "Billede-oversigten svarer ikke.",
 			"thumbnail": "Miniaturebilleder kan ikke hentes.",
