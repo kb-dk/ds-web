@@ -390,25 +390,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
 				searchResult.value = responseData.data.response.docs;
-				searchResult.value.map(async (result) => {
-					if (result.rerun_cluster_id) {
-						try {
-							result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
-						} catch (err: unknown) {
-							rerunsFailed.value.push(result.rerun_cluster_id);
-							error.value = (err as AxiosError).message;
-							errorManager.submitCustomError(
-								'search-result-rerun-error',
-								t('error.infoError.title'),
-								t('error.infoError.reruns'),
-								Severity.INFO,
-								false,
-								Priority.LOW,
-							);
-						}
-					}
-					return result;
-				});
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
 				const resultCountResponse = await APIService.getSearchResultCount(
@@ -435,6 +416,25 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
+				searchResult.value.map(async (result) => {
+					if (result.rerun_cluster_id) {
+						try {
+							result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
+						} catch (err: unknown) {
+							rerunsFailed.value.push(result.rerun_cluster_id);
+							error.value = (err as AxiosError).message;
+							errorManager.submitCustomError(
+								'search-result-rerun-error',
+								t('error.infoError.title'),
+								t('error.infoError.reruns'),
+								Severity.INFO,
+								false,
+								Priority.LOW,
+							);
+						}
+					}
+					return result;
+				});
 			}
 		}
 	};
