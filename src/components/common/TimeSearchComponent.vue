@@ -213,6 +213,7 @@ export default defineComponent({
 <style scoped>
 h2 {
 	color: var(--color-main);
+	padding-left: 20px;
 }
 .result-container {
 	width: 100%;
@@ -220,7 +221,6 @@ h2 {
 	position: relative;
 	display: flex;
 	justify-content: center;
-	margin-bottom: 112px;
 }
 .container-backdrop {
 	position: absolute;
@@ -277,8 +277,7 @@ h2 {
 .time-container {
 	margin: 0;
 	position: relative;
-	padding-bottom: 38px;
-	padding-left: 20px;
+	/* padding-left: 20px; */
 	text-align: left;
 	max-width: 1280px;
 	width: 100%;

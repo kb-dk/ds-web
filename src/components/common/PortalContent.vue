@@ -10,6 +10,7 @@
 		<div
 			role="region"
 			aria-labelledby="selected-month-heading"
+			class="selected-month-region"
 		>
 			<div class="title">
 				<h2 id="selected-month-heading	">
@@ -196,11 +197,15 @@ export default defineComponent({
 h2 {
 	margin: 0px;
 }
+.selected-month-region {
+	width: inherit;
+}
 .title {
 	width: 100%;
 	color: var(--color-main);
 	margin-bottom: 38px;
 	padding-left: 20px;
+	margin-top: 56px;
 }
 .title h2::first-letter {
 	text-transform: capitalize;
@@ -245,7 +250,7 @@ h2 {
 }
 @media (min-width: 640px) {
 	.title {
-		margin-top: 38px;
+		margin-top: 112px;
 	}
 }
 @media (min-width: 990px) {
@@ -254,6 +259,9 @@ h2 {
 	.time-search {
 		width: 100%;
 		margin-left: 0px;
+	}
+	.title {
+		margin-top: 150px;
 	}
 }
 </style>

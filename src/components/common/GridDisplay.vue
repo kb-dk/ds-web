@@ -62,7 +62,7 @@ temporary styling until patterns from design system are implemented
 .grid-display {
 	position: relative;
 	margin-bottom: 80px;
-	margin-top: 34px;
+	margin-top: 56px;
 	width: 100vw;
 	display: flex;
 	justify-content: center;
