@@ -25,12 +25,14 @@
 						>
 							{{
 								query !== '*:*' && query !== ''
-									? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t('search.hitcount', {
+									? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
+											'search.hitcount',
 											hitCountWithoutReruns,
-									  })} "${query}"`
-									: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t('search.filterSearch', {
+									  )} "${query}"`
+									: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
+											'search.filterSearch',
 											hitCountWithoutReruns,
-									  })}`
+									  )}`
 							}}
 						</h2>
 						<p v-if="query !== ''">
