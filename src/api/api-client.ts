@@ -166,9 +166,9 @@ export class APIServiceClient {
 		uuid: string,
 	): Promise<APISearchResponseType> {
 		return await this.httpClient.get(
-			`bff/v1/proxy/search/?q=${encodeURIComponent(
-				query,
-			)}&facet=false${filters}${start}${sort}&fq={!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc'}&queryUUID=${uuid}&rows=${rowCount}`,
+			`bff/v1/proxy/search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&fq=${encodeURIComponent(
+				"{!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc'}",
+			)}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 
