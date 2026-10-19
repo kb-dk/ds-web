@@ -168,7 +168,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&group=true&group.field=rerun_cluster_id&group.main=true&rows=${rowCount}`,
+			)}&facet=false${filters}${start}${sort}&fq={!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc'}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 
@@ -177,7 +177,18 @@ export class APIServiceClient {
 			`bff/v1/proxy/search/?q=rerun_cluster_id:"${clusterId}" AND NOT id:"${dsId}"&sort=startTime desc&rows=5`,
 		);
 	}
-
+	async getSearchResultCount(
+		query: string,
+		filters: string,
+		start: string,
+		uuid: string,
+	): Promise<APISearchResponseType> {
+		return await this.httpClient.get(
+			`bff/v1/proxy/search/?q=${encodeURIComponent(
+				query,
+			)}&facet=false${filters}${start}&queryUUID=${uuid}&fl=numFound&rows=0`,
+		);
+	}
 	async getTimeSearchResults(
 		start: string,
 		end: string,

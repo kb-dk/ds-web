@@ -25,10 +25,23 @@
 						>
 							{{
 								query !== '*:*' && query !== ''
-									? `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.hitcount', hitCount)} "${query}"`
-									: `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.filterSearch', hitCount)}`
+									? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t('search.hitcount', {
+											hitCountWithoutReruns,
+									  })} "${query}"`
+									: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t('search.filterSearch', {
+											hitCountWithoutReruns,
+									  })}`
 							}}
 						</h2>
+						<p v-if="query !== ''">
+							{{
+								$t(
+									'search.rerunCount',
+									{ rerunCount: new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns - hitCount) },
+									hitCountWithoutReruns - hitCount,
+								)
+							}}
+						</p>
 						<span v-else></span>
 					</div>
 				</div>
@@ -57,6 +70,7 @@ export default defineComponent({
 	name: 'HitCount',
 	props: {
 		hitCount: { type: Number, required: true },
+		hitCountWithoutReruns: { type: Number, required: true },
 		query: { type: String || undefined, required: true },
 		noHits: { type: Boolean, required: true },
 	},
@@ -77,7 +91,12 @@ export default defineComponent({
 	position: relative;
 	z-index: 0;
 }
-
+.hit-count h2 {
+	margin-bottom: 0;
+}
+.hit-count p {
+	margin: 0;
+}
 .loading-placeholder {
 	display: flex;
 	gap: 10px;

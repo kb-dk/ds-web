@@ -242,6 +242,7 @@
 		"watchProgram": "Se udsendelse",
 		"searchbtn": "Søg",
 		"hitcount": " resultat fundet med | resultater fundet med",
+		"rerunCount": "(Heraf {rerunCount} genudsendelse) | (Heraf {rerunCount} genudsendelser)",
 		"filterSearch": " resultater fundet med dine filtre",
 		"nohitSubtitle": {
 			"readMore": "Læs mere om, hvad arkivet indeholder.",

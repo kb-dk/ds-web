@@ -30,6 +30,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchFired = ref(false);
 	const { t } = useI18n();
 	const numFound = ref(0);
+	const numFoundWithoutReruns = ref(0);
 	const loading = ref(false);
 	const start = ref('');
 	const sort = ref('');
@@ -410,6 +411,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				});
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
+				const resultCountResponse = await APIService.getSearchResultCount(
+					query,
+					searchFilters,
+					startParam as string,
+					currentSearchUUID,
+				);
+				numFoundWithoutReruns.value = resultCountResponse.data.response.numFound;
 				noHits.value = numFound.value === 0;
 			}
 		} catch (err: unknown) {
@@ -467,6 +475,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		autocompleteResult,
 		errorManager,
 		numFound,
+		numFoundWithoutReruns,
 		loading,
 		error,
 		currentQuery,
