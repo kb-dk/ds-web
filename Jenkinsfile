@@ -1,4 +1,4 @@
-library identifier: "frontendPipeline@DRA-1748-byg-af-frontend-kode",
+library identifier: "frontendPipeline@master",
     retriever: modernSCM(
         scm: [
             $class: "GitSCMSource",
