@@ -392,13 +392,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
-				const resultCountResponse = await APIService.getSearchResultCount(
-					query,
-					searchFilters,
-					startParam as string,
-					currentSearchUUID,
-				);
-				numFoundWithoutReruns.value = resultCountResponse.data.response.numFound;
+				numFoundWithoutReruns.value = responseData.data.facets.raw_total.count;
 				noHits.value = numFound.value === 0;
 			}
 		} catch (err: unknown) {

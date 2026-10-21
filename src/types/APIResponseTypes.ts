@@ -17,9 +17,14 @@ export interface APISearchResponseType {
 		responseHeader: APIResponseHeaderType;
 		facet_counts: FacetsType;
 		spellcheck: SpellCheckType;
+		facets: {
+			count: number;
+			raw_total: {
+				count: number;
+			};
+		};
 	};
 }
-
 export interface APIRecordResponseType {
 	data: GenericRecordType | BroadcastRecordType;
 }
