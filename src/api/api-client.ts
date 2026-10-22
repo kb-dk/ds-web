@@ -177,10 +177,8 @@ export class APIServiceClient {
 	}
 
 	async getRerunsById(searchResultsWithRerun: Array<GenericSearchResultType>): Promise<APISearchResponseGroupType> {
-		const unique = (values: Array<string | undefined | null>) => [...new Set(values.filter((v): v is string => !!v))];
-
-		const clusterIds = unique(searchResultsWithRerun.map((r) => r.rerun_cluster_id));
-		const excludeIds = unique(searchResultsWithRerun.map((r) => r.id));
+		const clusterIds = searchResultsWithRerun.map((r) => r.rerun_cluster_id);
+		const excludeIds = searchResultsWithRerun.map((r) => r.id);
 
 		// Escape quotes/backslashes so each ID is a safe quoted term
 		const quote = (v: string) => `"${v.replace(/(["\\])/g, '\\$1')}"`;
