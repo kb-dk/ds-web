@@ -115,7 +115,7 @@
 					></KBButton>
 					<KBButton
 						v-if="
-							(resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0) ||
+							(resultdata.rerun_cluster && resultdata.rerun_cluster.docs.length > 0) ||
 							searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)
 						"
 						:disabled="searchResultStore.rerunsFailed.includes(resultdata.rerun_cluster_id)"
@@ -146,11 +146,11 @@
 					:open="isThumbnailsOpen"
 				></AdditionalInfo>
 				<AdditionalInfoReruns
-					v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.data.response.docs.length > 0"
+					v-if="resultdata.rerun_cluster && resultdata.rerun_cluster.docs.length > 0"
 					:id="resultdata.id"
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:open="isRerunsOpen"
-					:reruns="resultdata.rerun_cluster.data.response.docs"
+					:reruns="resultdata.rerun_cluster.docs"
 				></AdditionalInfoReruns>
 			</div>
 			<div
@@ -294,9 +294,9 @@ export default defineComponent({
 			if (searchResultStore.rerunsFailed.includes(props.resultdata.rerun_cluster_id)) {
 				return rerunText + ' (?)';
 			}
-			props.resultdata.rerun_cluster.data.response.docs.length > 5
+			props.resultdata.rerun_cluster.docs.length > 5
 				? (rerunText += ' (5+)')
-				: (rerunText += ` (${props.resultdata.rerun_cluster.data.response.docs.length})`);
+				: (rerunText += ` (${props.resultdata.rerun_cluster.docs.length})`);
 			return rerunText;
 		});
 

@@ -25,6 +25,27 @@ export interface APISearchResponseType {
 		};
 	};
 }
+
+export interface APISearchResponseGroupType {
+	data: {
+		grouped: {
+			rerun_cluster_id: {
+				matches: number;
+				groups: [
+					{
+						groupValue: string;
+						doclist: {
+							docs: Array<GenericSearchResultType>;
+							numFound: number;
+							start: number;
+						};
+					},
+				];
+			};
+		};
+	};
+}
+
 export interface APIRecordResponseType {
 	data: GenericRecordType | BroadcastRecordType;
 }

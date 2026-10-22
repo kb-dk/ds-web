@@ -410,25 +410,30 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
-				searchResult.value.map(async (result) => {
-					if (result.rerun_cluster_id) {
-						try {
-							result.rerun_cluster = await APIService.getRerunsById(result.rerun_cluster_id, result.id);
-						} catch (err: unknown) {
-							rerunsFailed.value.push(result.rerun_cluster_id);
-							error.value = (err as AxiosError).message;
-							errorManager.submitCustomError(
-								'search-result-rerun-error',
-								t('error.infoError.title'),
-								t('error.infoError.reruns'),
-								Severity.INFO,
-								false,
-								Priority.LOW,
+				const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
+				if (searchResultReruns.length > 0) {
+					try {
+						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
+						for (const rerunResult of searchResultRerunsResponse.data.grouped.rerun_cluster_id.groups) {
+							const foundResult = searchResult.value.findIndex(
+								(result) => result.rerun_cluster_id === rerunResult.groupValue,
 							);
+							if (foundResult !== -1) {
+								searchResult.value[foundResult].rerun_cluster = rerunResult.doclist;
+							}
 						}
+					} catch (err: unknown) {
+						error.value = (err as AxiosError).message;
+						errorManager.submitCustomError(
+							'search-result-rerun-error',
+							t('error.infoError.title'),
+							t('error.infoError.reruns'),
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
 					}
-					return result;
-				});
+				}
 			}
 		}
 	};

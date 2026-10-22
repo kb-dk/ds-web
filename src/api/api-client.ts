@@ -6,10 +6,12 @@ import {
 	APIAutocompleteResponseType,
 	APIMoreLikeThisResponseType,
 	APIRecordResponseType,
+	APISearchResponseGroupType,
 	APISearchResponseType,
 	APIThumbnailsResponseType,
 	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 // Generic sleep function used for both 'authenticate retries' and 'articial latency in dev environment'
 export function sleep(duration: number): Promise<void> {
@@ -174,10 +176,28 @@ export class APIServiceClient {
 		);
 	}
 
-	async getRerunsById(clusterId: string, dsId: string) {
-		return await this.httpClient.get(
-			`bff/v1/proxy/search/?q=rerun_cluster_id:"${clusterId}" AND NOT id:"${dsId}"&sort=startTime desc&rows=5`,
-		);
+	async getRerunsById(searchResultsWithRerun: Array<GenericSearchResultType>): Promise<APISearchResponseGroupType> {
+		const unique = (values: Array<string | undefined | null>) => [...new Set(values.filter((v): v is string => !!v))];
+
+		const clusterIds = unique(searchResultsWithRerun.map((r) => r.rerun_cluster_id));
+		const excludeIds = unique(searchResultsWithRerun.map((r) => r.id));
+
+		const quote = (v: string) => `"${v.replace(/(["\\])/g, '\\$1')}"`;
+
+		const params = new URLSearchParams();
+		params.set('q', '*:*');
+		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
+		if (excludeIds.length) {
+			params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
+		}
+		// params.set('sort', 'startTime desc');
+		params.set('rows', '100');
+		params.set('group', 'true');
+		params.set('group.field', 'rerun_cluster_id');
+		params.set('group.limit', '5');
+		params.set('group.sort', 'startTime desc');
+		params.set('sort', 'startTime desc');
+		return await this.httpClient.get(`bff/v1/proxy/search/?${params.toString()}`);
 	}
 
 	async getTimeSearchResults(

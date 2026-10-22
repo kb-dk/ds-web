@@ -51,7 +51,11 @@ export interface GenericSearchResultType {
 	temporal_end_time_da_string: string;
 	dr_production_id: string;
 	rerun_cluster_id: string;
-	rerun_cluster: APISearchResponseType;
+	rerun_cluster: {
+		docs: Array<GenericSearchResultType>;
+		numFound: number;
+		start: number;
+	};
 }
 
 export interface FacetsType {
