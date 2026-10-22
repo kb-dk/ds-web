@@ -86,10 +86,10 @@
 				</router-link>
 			</div>
 			<div
-				v-if="reruns.length > 5"
+				v-if="rerunCount > 5"
 				class="rerun-info"
 			>
-				<p>{{ t('search.rerunInfo', { rerunCount: reruns.length }) }}</p>
+				<p>{{ t('search.rerunInfo', { rerunCount: rerunCount }) }}</p>
 			</div>
 		</div>
 		<div
@@ -120,6 +120,7 @@ export default defineComponent({
 		fileId: { type: String, required: true },
 		open: { type: Boolean, required: true },
 		reruns: { type: Array as PropType<GenericSearchResultType[]>, required: true },
+		rerunCount: { type: Number, required: false, default: 0 },
 	},
 	setup(props) {
 		const { t, locale } = useI18n();

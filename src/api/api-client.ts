@@ -182,21 +182,18 @@ export class APIServiceClient {
 		const clusterIds = unique(searchResultsWithRerun.map((r) => r.rerun_cluster_id));
 		const excludeIds = unique(searchResultsWithRerun.map((r) => r.id));
 
+		// Escape quotes/backslashes so each ID is a safe quoted term
 		const quote = (v: string) => `"${v.replace(/(["\\])/g, '\\$1')}"`;
-
 		const params = new URLSearchParams();
 		params.set('q', '*:*');
 		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
 		if (excludeIds.length) {
 			params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
 		}
-		// params.set('sort', 'startTime desc');
-		params.set('rows', '100');
 		params.set('group', 'true');
 		params.set('group.field', 'rerun_cluster_id');
 		params.set('group.limit', '5');
 		params.set('group.sort', 'startTime desc');
-		params.set('sort', 'startTime desc');
 		return await this.httpClient.get(`bff/v1/proxy/search/?${params.toString()}`);
 	}
 

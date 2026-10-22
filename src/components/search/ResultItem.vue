@@ -151,6 +151,7 @@
 					:file-id="resultdata.file_id ? resultdata.file_id : ''"
 					:open="isRerunsOpen"
 					:reruns="resultdata.rerun_cluster.docs"
+					:rerun-count="resultdata.rerun_cluster.numFound"
 				></AdditionalInfoReruns>
 			</div>
 			<div
@@ -294,9 +295,9 @@ export default defineComponent({
 			if (searchResultStore.rerunsFailed.includes(props.resultdata.rerun_cluster_id)) {
 				return rerunText + ' (?)';
 			}
-			props.resultdata.rerun_cluster.docs.length > 5
+			props.resultdata.rerun_cluster.numFound > 5
 				? (rerunText += ' (5+)')
-				: (rerunText += ` (${props.resultdata.rerun_cluster.docs.length})`);
+				: (rerunText += ` (${props.resultdata.rerun_cluster.numFound})`);
 			return rerunText;
 		});
 
