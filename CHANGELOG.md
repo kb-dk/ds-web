@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.1] - 2026-08-20
 
-## Changed
+## Chan ged
 - Fixed small bug where filters status button would not visually update after a star search.
 - Changed a few h2 and h3 around.
 - fixed min-height on item-slider content for a more smooth transition between content and skeletons.
