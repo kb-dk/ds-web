@@ -17,33 +17,7 @@
 		></TimeSearchFilters>
 
 		<div class="result-container">
-			<div class="container-backdrop">
-				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
-				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
-			</div>
 			<div class="time-results">
-				<ItemSlider
-					:padding="false"
-					bg="var(--bg-backdrop)"
-					item-class="time-result"
-					bg-scroll-blue="true"
-				>
-					<template #default="slotProps">
-						<div
-							v-for="(item, index) in timeSearchStore.timeResults"
-							:key="index"
-							class="time-result-item"
-						>
-							<GridResultItem
-								:loading="timeSearchStore.loading"
-								:resultdata="item"
-								:index="index"
-								background="var(--bg-backdrop)"
-								:slot-props="slotProps"
-							></GridResultItem>
-						</div>
-					</template>
-				</ItemSlider>
 				<div class="result-header-container">
 					<div class="result-header">
 						<KBButton
@@ -96,16 +70,11 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 import '@/assets/styles/vue-slider-styles.css';
 import KBButton from '@/components/common/KBButton.vue';
-import ItemSlider from '@/components/search/ItemSlider.vue';
-import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
-		GridResultItem,
 		TimeSearchFilters,
 		KBButton,
-		ItemSlider,
-		ContainerSplitBar,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -222,16 +191,6 @@ h2 {
 	display: flex;
 	justify-content: center;
 }
-.container-backdrop {
-	position: absolute;
-	height: 100%;
-	width: 100vw;
-	background-color: var(--bg-backdrop);
-	justify-content: space-between;
-	display: flex;
-	flex-direction: column;
-	margin-top: 5px;
-}
 .result-header-container {
 	width: 100vw;
 	display: flex;
@@ -242,8 +201,6 @@ h2 {
 }
 .result-header {
 	display: flex;
-	/* weird padding to equal 56 in total */
-	padding-top: 41px;
 	justify-content: end;
 	width: 100%;
 }
@@ -255,7 +212,6 @@ h2 {
 .time-results {
 	position: relative;
 	margin-top: 56px;
-	margin-bottom: 90px;
 	gap: 15px;
 	width: 98vw;
 	max-width: 2400px;
@@ -304,9 +260,6 @@ h2 {
 	}
 	.time-result-item {
 		flex: 0 0 400px;
-	}
-	.time-results {
-		margin-bottom: 72px;
 	}
 }
 </style>
