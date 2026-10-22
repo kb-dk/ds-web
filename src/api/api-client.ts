@@ -185,9 +185,7 @@ export class APIServiceClient {
 		const params = new URLSearchParams();
 		params.set('q', '*:*');
 		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
-		if (excludeIds.length) {
-			params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
-		}
+		params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
 		params.set('group', 'true');
 		params.set('group.field', 'rerun_cluster_id');
 		params.set('group.limit', '5');
