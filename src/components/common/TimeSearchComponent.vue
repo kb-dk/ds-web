@@ -55,9 +55,7 @@ import {
 	timeslots,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
-// import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
