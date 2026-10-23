@@ -24,6 +24,7 @@
 					<div class="hits">
 						<HitCount
 							:hit-count="searchResultStore.numFound"
+							:hit-count-without-reruns="searchResultStore.numFoundWithoutReruns"
 							:no-hits="searchResultStore.noHits"
 							:query="searchResultStore.lastSearchQuery !== undefined ? searchResultStore.lastSearchQuery : ''"
 						/>

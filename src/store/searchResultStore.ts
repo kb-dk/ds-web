@@ -30,6 +30,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchFired = ref(false);
 	const { t } = useI18n();
 	const numFound = ref(0);
+	const numFoundWithoutReruns = ref(0);
 	const loading = ref(false);
 	const start = ref('');
 	const sort = ref('');
@@ -60,6 +61,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const previousRoute = ref({} as RouteLocationNormalizedLoadedGeneric);
 	const notificationStore = useNotificationStore();
 	const searchFieldFocused = ref(false);
+	const rerunsFailed = ref<Array<string>>([]);
 	//We normally display 10 or 40 items per page. This'll make it dynamic
 	const maxPages = computed(() =>
 		totalPages.value > 1000 / Number(rowCount.value) ? 1000 / Number(rowCount.value) : totalPages.value,
@@ -69,7 +71,9 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		if (loading.value) {
 			return t('search.searching');
 		}
-
+		if (!sort.value) {
+			return t('search.relevance');
+		}
 		return t('search.searchComplete', {
 			count: numFound.value,
 			sort: t(`search.${decodeURIComponent(sort.value).split(' ')[0]}`),
@@ -105,7 +109,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			getFacetResults(lastSearchQuery.value);
 		}
 	};
-
 	const setRotationalResult = (items: GenericSearchResultType[]) => {
 		rotationalResult.value = items;
 	};
@@ -384,13 +387,13 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				sortParam as string,
 				currentSearchUUID,
 			);
-
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
 			if (responseMatchesCurrentSearch(comparisonSearchUUID) && searchFired.value) {
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
+				numFoundWithoutReruns.value = responseData.data.facets.raw_total.count;
 				noHits.value = numFound.value === 0;
 			}
 		} catch (err: unknown) {
@@ -408,6 +411,28 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
+				const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
+				if (searchResultReruns.length > 0) {
+					try {
+						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
+						for (const [rerunResultKey, rerunResultValue] of Object.entries(searchResultRerunsResponse.data.expanded)) {
+							const foundResult = searchResult.value.findIndex((result) => result.rerun_cluster_id === rerunResultKey);
+							if (foundResult !== -1) {
+								searchResult.value[foundResult].rerun_cluster = rerunResultValue;
+							}
+						}
+					} catch (err: unknown) {
+						error.value = (err as AxiosError).message;
+						errorManager.submitCustomError(
+							'search-result-rerun-error',
+							t('error.infoError.title'),
+							t('error.infoError.reruns'),
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
+					}
+				}
 			}
 		}
 	};
@@ -448,6 +473,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		autocompleteResult,
 		errorManager,
 		numFound,
+		numFoundWithoutReruns,
 		loading,
 		error,
 		currentQuery,
@@ -506,5 +532,6 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		preliminaryPeriodSearch,
 		searchFieldFocused,
 		searchStatusMessage,
+		rerunsFailed,
 	};
 });
