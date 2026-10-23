@@ -414,12 +414,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				if (searchResultReruns.length > 0) {
 					try {
 						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
-						for (const rerunResult of searchResultRerunsResponse.data.grouped.rerun_cluster_id.groups) {
-							const foundResult = searchResult.value.findIndex(
-								(result) => result.rerun_cluster_id === rerunResult.groupValue,
-							);
+						for (const [rerunResultKey, rerunResultValue] of Object.entries(searchResultRerunsResponse.data.expanded)) {
+							const foundResult = searchResult.value.findIndex((result) => result.rerun_cluster_id === rerunResultKey);
 							if (foundResult !== -1) {
-								searchResult.value[foundResult].rerun_cluster = rerunResult.doclist;
+								searchResult.value[foundResult].rerun_cluster = rerunResultValue;
 							}
 						}
 					} catch (err: unknown) {

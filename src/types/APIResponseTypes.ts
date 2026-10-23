@@ -28,19 +28,12 @@ export interface APISearchResponseType {
 
 export interface APISearchResponseGroupType {
 	data: {
-		grouped: {
-			rerun_cluster_id: {
-				matches: number;
-				groups: [
-					{
-						groupValue: string;
-						doclist: {
-							docs: Array<GenericSearchResultType>;
-							numFound: number;
-							start: number;
-						};
-					},
-				];
+		expanded: {
+			[rerun_cluster_id: string]: {
+				docs: Array<GenericSearchResultType>;
+				numFound: number;
+				start: number;
+				numFoundExact: boolean;
 			};
 		};
 	};

@@ -184,12 +184,13 @@ export class APIServiceClient {
 		const quote = (v: string) => `"${v.replace(/(["\\])/g, '\\$1')}"`;
 		const params = new URLSearchParams();
 		params.set('q', '*:*');
+		params.append('fq', "{!collapse field=rerun_cluster_id sort='startTime desc'}");
 		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
-		params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
-		params.set('group', 'true');
-		params.set('group.field', 'rerun_cluster_id');
-		params.set('group.limit', '5');
-		params.set('group.sort', 'startTime desc');
+		params.append('fq', `-id:(${excludeIds.map(quote).join(',')})`);
+		params.set('expand', 'true');
+		params.set('expand.rows', '5');
+		params.set('expand.sort', 'startTime desc');
+		params.set('rows', '10');
 		return await this.httpClient.get(`bff/v1/proxy/search/?${params.toString()}`);
 	}
 
