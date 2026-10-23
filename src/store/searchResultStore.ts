@@ -30,6 +30,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	const searchFired = ref(false);
 	const { t } = useI18n();
 	const numFound = ref(0);
+	const collapsedResult = ref(true);
 	const numFoundWithoutReruns = ref(0);
 	const loading = ref(false);
 	const start = ref('');
@@ -320,10 +321,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		}
 	};
 
-	const getSearchResults = async (query: string) => {
+	const getSearchResults = async (query: string, collapseResults: boolean) => {
 		setBlockAutocomplete(true);
 		lastSearchQuery.value = query;
-
+		collapsedResult.value = collapseResults;
 		resetAutocomplete();
 		let searchFilters = '';
 		let presetGenreFilters = '';
@@ -385,6 +386,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				startParam as string,
 				sortParam as string,
 				currentSearchUUID,
+				collapseResults,
 			);
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
@@ -392,8 +394,11 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 				searchResult.value = responseData.data.response.docs;
 				spellCheck.value = responseData.data.spellcheck;
 				numFound.value = responseData.data.response.numFound;
-				numFoundWithoutReruns.value = responseData.data.facets.raw_total.count;
 				noHits.value = numFound.value === 0;
+				numFoundWithoutReruns.value = 0;
+				if (collapseResults) {
+					numFoundWithoutReruns.value = responseData.data.facets.raw_total.count;
+				}
 			}
 		} catch (err: unknown) {
 			error.value = (err as AxiosError).message;
@@ -410,28 +415,30 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
-				const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
-				if (searchResultReruns.length > 0) {
-					try {
-						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
-						for (const rerunResult of searchResultRerunsResponse.data.grouped.rerun_cluster_id.groups) {
-							const foundResult = searchResult.value.findIndex(
-								(result) => result.rerun_cluster_id === rerunResult.groupValue,
-							);
-							if (foundResult !== -1) {
-								searchResult.value[foundResult].rerun_cluster = rerunResult.doclist;
+				if (collapseResults) {
+					const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
+					if (searchResultReruns.length > 0) {
+						try {
+							const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
+							for (const rerunResult of searchResultRerunsResponse.data.grouped.rerun_cluster_id.groups) {
+								const foundResult = searchResult.value.findIndex(
+									(result) => result.rerun_cluster_id === rerunResult.groupValue,
+								);
+								if (foundResult !== -1) {
+									searchResult.value[foundResult].rerun_cluster = rerunResult.doclist;
+								}
 							}
+						} catch (err: unknown) {
+							error.value = (err as AxiosError).message;
+							errorManager.submitCustomError(
+								'search-result-rerun-error',
+								t('error.infoError.title'),
+								t('error.infoError.reruns'),
+								Severity.INFO,
+								false,
+								Priority.LOW,
+							);
 						}
-					} catch (err: unknown) {
-						error.value = (err as AxiosError).message;
-						errorManager.submitCustomError(
-							'search-result-rerun-error',
-							t('error.infoError.title'),
-							t('error.infoError.reruns'),
-							Severity.INFO,
-							false,
-							Priority.LOW,
-						);
 					}
 				}
 			}
@@ -474,6 +481,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		autocompleteResult,
 		errorManager,
 		numFound,
+		collapsedResult,
 		numFoundWithoutReruns,
 		loading,
 		error,

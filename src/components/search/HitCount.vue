@@ -24,18 +24,22 @@
 							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
 						>
 							{{
-								query !== '*:*' && query !== ''
-									? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
-											'search.hitcount',
-											hitCountWithoutReruns,
-									  )} "${query}"`
-									: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
-											'search.filterSearch',
-											hitCountWithoutReruns,
-									  )}`
+								collapsedResult
+									? query !== '*:*' && query !== ''
+										? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
+												'search.hitcount',
+												hitCountWithoutReruns,
+										  )} "${query}"`
+										: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
+												'search.filterSearch',
+												hitCountWithoutReruns,
+										  )}`
+									: query !== '*:*' && query !== ''
+									  ? `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.hitcount', hitCount)} "${query}"`
+									  : `${new Intl.NumberFormat('de-DE').format(hitCount)} ${$t('search.filterSearch', hitCount)}`
 							}}
 						</h2>
-						<p v-if="query !== ''">
+						<p v-if="query !== '' && collapsedResult">
 							{{
 								$t(
 									'search.rerunCount',
@@ -71,6 +75,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 export default defineComponent({
 	name: 'HitCount',
 	props: {
+		collapsedResult: { type: Boolean, required: true },
 		hitCount: { type: Number, required: true },
 		hitCountWithoutReruns: { type: Number, required: true },
 		query: { type: String || undefined, required: true },
