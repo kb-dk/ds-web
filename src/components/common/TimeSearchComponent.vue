@@ -17,6 +17,17 @@
 		></TimeSearchFilters>
 
 		<div class="result-container">
+			<div class="bar-container">
+				<div
+					key="1"
+					class="bar bar-1"
+				></div>
+				<div
+					key="2"
+					class="bar bar-2"
+				></div>
+			</div>
+
 			<div class="time-results">
 				<div class="result-header-container">
 					<div class="result-header">
@@ -251,6 +262,21 @@ h2 {
 }
 .time-container p {
 	margin: 0;
+}
+.bar-container {
+	height: fit-content;
+	width: 100vw;
+	position: absolute;
+}
+.bar {
+	height: 17px;
+	width: 100%;
+}
+.bar-1 {
+	background-color: var(--bg-main-2);
+}
+.bar-2 {
+	background-color: var(--bg-secondary-light);
 }
 @media (min-width: 640px) {
 	.container-backdrop {
