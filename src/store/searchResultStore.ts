@@ -415,30 +415,26 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 		} finally {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
-				if (collapseResults) {
-					const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
-					if (searchResultReruns.length > 0) {
-						try {
-							const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
-							for (const rerunResult of searchResultRerunsResponse.data.grouped.rerun_cluster_id.groups) {
-								const foundResult = searchResult.value.findIndex(
-									(result) => result.rerun_cluster_id === rerunResult.groupValue,
-								);
-								if (foundResult !== -1) {
-									searchResult.value[foundResult].rerun_cluster = rerunResult.doclist;
-								}
+				const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
+				if (searchResultReruns.length > 0) {
+					try {
+						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
+						for (const [rerunResultKey, rerunResultValue] of Object.entries(searchResultRerunsResponse.data.expanded)) {
+							const foundResult = searchResult.value.findIndex((result) => result.rerun_cluster_id === rerunResultKey);
+							if (foundResult !== -1) {
+								searchResult.value[foundResult].rerun_cluster = rerunResultValue;
 							}
-						} catch (err: unknown) {
-							error.value = (err as AxiosError).message;
-							errorManager.submitCustomError(
-								'search-result-rerun-error',
-								t('error.infoError.title'),
-								t('error.infoError.reruns'),
-								Severity.INFO,
-								false,
-								Priority.LOW,
-							);
 						}
+					} catch (err: unknown) {
+						error.value = (err as AxiosError).message;
+						errorManager.submitCustomError(
+							'search-result-rerun-error',
+							t('error.infoError.title'),
+							t('error.infoError.reruns'),
+							Severity.INFO,
+							false,
+							Priority.LOW,
+						);
 					}
 				}
 			}
