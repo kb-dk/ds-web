@@ -295,9 +295,7 @@ export default defineComponent({
 			if (searchResultStore.rerunsFailed.includes(props.resultdata.rerun_cluster_id)) {
 				return rerunText + ' (?)';
 			}
-			props.resultdata.rerun_cluster.numFound > 5
-				? (rerunText += ' (5+)')
-				: (rerunText += ` (${props.resultdata.rerun_cluster.numFound})`);
+			rerunText += ` (${props.resultdata.rerun_cluster.numFound})`;
 			return rerunText;
 		});
 
