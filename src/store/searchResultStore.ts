@@ -429,6 +429,8 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 							if (!searchResultReruns.some((docs) => docs.id === rerunResult.id)) {
 								if (!searchResult.value[foundResult].rerun_cluster.docs.some((doc) => doc.id === rerunResult.id)) {
 									searchResult.value[foundResult].rerun_cluster.numFound += 1;
+									// To make sure its always max 5 results
+									searchResult.value[foundResult].rerun_cluster.docs.pop();
 									searchResult.value[foundResult].rerun_cluster.docs.push(rerunResult);
 									searchResult.value[foundResult].rerun_cluster.docs.sort((a, b) =>
 										a.startTime < b.startTime ? 1 : -1,
