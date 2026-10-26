@@ -416,7 +416,7 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 			if (responseMatchesCurrentSearch(comparisonSearchUUID)) {
 				loading.value = false;
 				const searchResultReruns = searchResult.value.filter((result) => result.rerun_cluster_id);
-				if (searchResultReruns.length > 0) {
+				if (searchResultReruns.length > 0 && collapseResults === true) {
 					try {
 						const searchResultRerunsResponse = await APIService.getRerunsById(searchResultReruns);
 						for (const [rerunResultKey, rerunResultValue] of Object.entries(searchResultRerunsResponse.data.expanded)) {
