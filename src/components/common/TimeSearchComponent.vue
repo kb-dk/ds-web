@@ -114,7 +114,7 @@ export default defineComponent({
 
 		const fetchNewTimeResults = () => {
 			updateLink();
-			getTimeResults(true, `random_${Date.now()} ASC`);
+			getTimeResults(true);
 		};
 
 		onMounted(() => {
@@ -130,29 +130,12 @@ export default defineComponent({
 		);
 
 		const updateLink = () => {
-			const dayString = days.value
-				.filter((day: SelectorData) => day.selected)
-				.map((day: SelectorData) => day.value)
-				.join(' OR ');
-			const monthString = months.value
-				.filter((month: SelectorData) => month.selected)
-				.map((month: SelectorData) => month.value)
-				.join(' OR ');
-
-			const timeslotString = timeslots.value
-				.filter((timeslot: SelectorData) => timeslot.selected)
-				.map((timeslot: SelectorData) => timeslot.value)
-				.join(' OR ');
-
 			const fqArray = [];
 			if (startDate.value !== null && endDate.value !== null) {
 				fqArray.push(
 					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 				);
 			}
-			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
-			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
-			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
 			timeSearchLink.value = {
 				name: 'Search',

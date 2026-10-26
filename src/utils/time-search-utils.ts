@@ -36,9 +36,6 @@ const getTimeResults = (allowYearSearch: boolean, sort = 'startTime asc') => {
 	timeSearchStore.getTimeSearchResults(
 		allowYearSearch && startDate.value !== null ? startDate.value.toISOString() : '',
 		allowYearSearch && endDate.value !== null ? endDate.value.toISOString() : '',
-		getSelectedFromArray(months.value),
-		getSelectedFromArray(days.value),
-		getSelectedFromArray(timeslots.value),
 		sort,
 	);
 };
