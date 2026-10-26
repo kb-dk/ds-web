@@ -186,8 +186,8 @@ export class APIServiceClient {
 		params.set('q', '*:*');
 		params.append('fq', "{!collapse field=rerun_cluster_id sort='startTime desc'}");
 		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
-		params.append('fq', `-id:(${excludeIds.map(quote).join(',')})`);
 		params.set('expand', 'true');
+		params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
 		params.set('expand.rows', '5');
 		params.set('expand.sort', 'startTime desc');
 		params.set('rows', '10');

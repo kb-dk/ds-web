@@ -420,6 +420,22 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 								searchResult.value[foundResult].rerun_cluster = rerunResultValue;
 							}
 						}
+						// The rerun API puts the latest result in the response, where the rest is in the expanded list.
+						// So if you make a filter on a later date than the latest. The latest would otherwise not appear in the rerun array
+						for (const rerunResult of searchResultRerunsResponse.data.response.docs) {
+							const foundResult = searchResult.value.findIndex(
+								(result) => result.rerun_cluster_id === rerunResult.rerun_cluster_id,
+							);
+							if (!searchResultReruns.some((docs) => docs.id === rerunResult.id)) {
+								if (!searchResult.value[foundResult].rerun_cluster.docs.some((doc) => doc.id === rerunResult.id)) {
+									searchResult.value[foundResult].rerun_cluster.numFound += 1;
+									searchResult.value[foundResult].rerun_cluster.docs.push(rerunResult);
+									searchResult.value[foundResult].rerun_cluster.docs.sort((a, b) =>
+										a.startTime < b.startTime ? 1 : -1,
+									);
+								}
+							}
+						}
 					} catch (err: unknown) {
 						error.value = (err as AxiosError).message;
 						errorManager.submitCustomError(

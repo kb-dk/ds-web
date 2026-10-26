@@ -28,6 +28,7 @@ export interface APISearchResponseType {
 
 export interface APISearchResponseGroupType {
 	data: {
+		response: { docs: Array<GenericSearchResultType> };
 		expanded: {
 			[rerun_cluster_id: string]: {
 				docs: Array<GenericSearchResultType>;
