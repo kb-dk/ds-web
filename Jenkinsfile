@@ -1,4 +1,4 @@
-library identifier: "frontendPipeline@master",
+library identifier: "frontendPipeline@DRA-1776-playwright",
     retriever: modernSCM(
         scm: [
             $class: "GitSCMSource",
