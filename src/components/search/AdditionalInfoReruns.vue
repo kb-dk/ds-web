@@ -98,6 +98,7 @@
 							name: 'Search',
 							query: {
 								q: rerunClusterQuery,
+								sort: searchResultStore.sort,
 							},
 						}"
 					>
@@ -133,6 +134,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { type GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'AdditionalInfoReruns',
@@ -144,6 +146,7 @@ export default defineComponent({
 		rerunCount: { type: Number, required: false, default: 0 },
 	},
 	setup(props) {
+		const searchResultStore = useSearchResultStore();
 		const { t, locale } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const rerunsData = ref([] as GenericSearchResultType[]);
@@ -200,6 +203,7 @@ export default defineComponent({
 			getStartTime,
 			getDuration,
 			rerunClusterQuery,
+			searchResultStore,
 		};
 	},
 });
