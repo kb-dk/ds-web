@@ -40,10 +40,7 @@
 							button-size="medium"
 							:is-router-link="true"
 							right-icon-name="arrow_forward_ios"
-							:button-text="`${$t('facets.seeResults', {
-								count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
-								resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
-							})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
+							:button-text="buttonText"
 							@click="timeSearchBehavior()"
 						></KBButton>
 					</div>
@@ -54,17 +51,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { SelectorData } from '@/types/TimeSearchTypes';
-import {
-	days,
-	endDate,
-	months,
-	startDate,
-	timeSliderValues,
-	timeslots,
-} from '@/components/common/timeSearch/TimeSearchInitValues';
+import { endDate, startDate, timeSliderValues } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
 import {
@@ -76,7 +65,8 @@ import {
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-
+import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
 import '@/assets/styles/vue-slider-styles.css';
 import KBButton from '@/components/common/KBButton.vue';
 export default defineComponent({
@@ -91,8 +81,18 @@ export default defineComponent({
 		text: { type: String, default: 'black' },
 	},
 	setup() {
+		gsap.registerPlugin(TextPlugin);
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
+		const displayCount = ref(0);
+		const buttonText = computed(() => {
+			const formatted = new Intl.NumberFormat('de-DE').format(displayCount.value);
+			const years = getYears(timeSliderValues.value);
+			return `${t('facets.seeResults', { count: displayCount.value, resultCount: formatted })} (${years} ${t(
+				'timeSearch.year',
+				years,
+			)})`;
+		});
 		const timeSearchLink = ref<RouteLocationRaw>({
 			name: 'Search',
 			query: {
@@ -100,7 +100,7 @@ export default defineComponent({
 				start: 0,
 				rows: 10,
 				fq: [],
-				/* sort: `random_${Date.now()} ASC`, */
+				// /* sort: `random_${Date.now()} ASC`, */
 			},
 		});
 
@@ -121,14 +121,6 @@ export default defineComponent({
 			updateLink();
 		});
 
-		watch(
-			[months, days, timeslots],
-			() => {
-				updateLink();
-			},
-			{ deep: true },
-		);
-
 		const updateLink = () => {
 			const fqArray = [];
 			if (startDate.value !== null && endDate.value !== null) {
@@ -148,11 +140,14 @@ export default defineComponent({
 				},
 			};
 		};
-
+		watch(
+			() => timeSearchStore.numFound,
+			(newVal) => {
+				gsap.to(displayCount, { value: newVal, duration: 0.3, ease: 'power2.out', snap: { value: 1 } });
+			},
+			{ immediate: true },
+		);
 		return {
-			days,
-			months,
-			timeslots,
 			startDate,
 			endDate,
 			timeSearchLink,
@@ -166,6 +161,7 @@ export default defineComponent({
 			getSublineForTimeslots,
 			addTestDataEnrichment,
 			timeSearchBehavior,
+			buttonText,
 		};
 	},
 });
@@ -195,6 +191,10 @@ h2 {
 	display: flex;
 	justify-content: end;
 	width: 100%;
+}
+
+.result-header .btn-cta {
+	transition: all 0.2s ease;
 }
 
 .selection-header {

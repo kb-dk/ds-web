@@ -50,23 +50,6 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		return uuid === currentSearchUUID;
 	};
 
-	const getQueryStringFromArray = (array: string[], prefix: string) => {
-		let selected = '';
-		if (array.length > 0) {
-			selected = prefix;
-		}
-		array.forEach((item, index) => {
-			selected += encodeURIComponent(`${item}`);
-			if (index !== array.length - 1) {
-				selected += ' OR ';
-			}
-		});
-		if (array.length > 0) {
-			selected += ')';
-		}
-		return selected;
-	};
-
 	const setFiltersFromUrl = (URLFilters: string[] | LocationQueryValue[] | string) => {
 		resetAllSelectorValues(days.value);
 		resetAllSelectorValues(months.value);
