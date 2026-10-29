@@ -80,9 +80,7 @@ export default defineComponent({
 		const getCuratedItemFromMonth = (items: CuratedItemsType) => {
 			let currentMonth = new Date().toLocaleString('da-DK', { month: 'long' });
 			currentMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
-			if (curatedItems.value.length > 0) {
-				curatedItems.value = items[currentMonth];
-			}
+			curatedItems.value = items[currentMonth];
 		};
 		const scrambleArray = (list: Array<GenericSearchResultType>) => {
 			return list
