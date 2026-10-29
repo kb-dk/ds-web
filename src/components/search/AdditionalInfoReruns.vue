@@ -89,7 +89,29 @@
 				v-if="rerunCount > 5"
 				class="rerun-info"
 			>
-				<p>{{ t('search.rerunInfo', { rerunCount: rerunCount }) }}</p>
+				<p>
+					{{ t('search.rerunInfo', { rerunCount: rerunCount }) }}.
+					<router-link
+						:title="t('search.rerunLink')"
+						class="rerun-cluster-link"
+						:to="{
+							name: 'Search',
+							query: {
+								q: rerunClusterQuery,
+								sort: searchResultStore.sort,
+							},
+						}"
+					>
+						{{ t('search.rerunLink') }}
+					</router-link>
+
+					<span
+						class="material-icons link-arrow"
+						aria-hidden="true"
+					>
+						keyboard_arrow_right
+					</span>
+				</p>
 			</div>
 		</div>
 		<div
@@ -103,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, inject, PropType, ref, watch } from 'vue';
 import gsap from 'gsap';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -112,6 +134,7 @@ import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { ErrorManagerType } from '@/types/ErrorManagerType';
 import { type GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 import { formatDuration, getBroadcastDate, getBroadcastTime } from '@/utils/time-utils';
+import { useSearchResultStore } from '@/store/searchResultStore';
 
 export default defineComponent({
 	name: 'AdditionalInfoReruns',
@@ -123,6 +146,7 @@ export default defineComponent({
 		rerunCount: { type: Number, required: false, default: 0 },
 	},
 	setup(props) {
+		const searchResultStore = useSearchResultStore();
 		const { t, locale } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
 		const rerunsData = ref([] as GenericSearchResultType[]);
@@ -158,6 +182,8 @@ export default defineComponent({
 		const getDuration = (resultItem: GenericSearchResultType) => {
 			return resultItem ? formatDuration(resultItem.duration, resultItem.startTime, resultItem.endTime, t) : '';
 		};
+		// Quoted so cluster ids with Solr-special characters stay one term.
+		const rerunClusterQuery = computed(() => `rerun_cluster_id:"${props.reruns[0]?.rerun_cluster_id}"`);
 		watch(
 			() => props.open,
 			() => {
@@ -176,6 +202,8 @@ export default defineComponent({
 			rerunsData,
 			getStartTime,
 			getDuration,
+			rerunClusterQuery,
+			searchResultStore,
 		};
 	},
 });
@@ -202,6 +230,29 @@ export default defineComponent({
 .rerun:hover .arrow {
 	opacity: 1;
 }
+
+.link-arrow {
+	color: var(--color-default);
+	position: relative;
+	top: 3px;
+	opacity: 0;
+	transition: all 0.3s ease-in-out 0s;
+	font-size: 16px;
+	left: 5px;
+	font-weight: bold !important;
+}
+
+.rerun-cluster-link {
+	text-decoration: none;
+	border-bottom: 1px solid var(--bg-default);
+	color: var(--color-default);
+	transition: all 0.3s ease-in-out 0s;
+}
+
+.rerun-cluster-link:hover ~ .link-arrow {
+	opacity: 1;
+}
+
 .extra-content-container {
 	position: relative;
 }

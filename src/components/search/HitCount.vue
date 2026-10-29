@@ -23,26 +23,10 @@
 							v-if="query !== ''"
 							:data-testid="addTestDataEnrichment('span', 'hitcount', `hitcount-display`, 0)"
 						>
-							{{
-								query !== '*:*' && query !== ''
-									? `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
-											'search.hitcount',
-											hitCountWithoutReruns,
-									  )} "${query}"`
-									: `${new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns)} ${$t(
-											'search.filterSearch',
-											hitCountWithoutReruns,
-									  )}`
-							}}
+							{{ hitCountText }}
 						</h2>
-						<p v-if="query !== ''">
-							{{
-								$t(
-									'search.rerunCount',
-									{ rerunCount: new Intl.NumberFormat('de-DE').format(hitCountWithoutReruns - hitCount) },
-									hitCountWithoutReruns - hitCount,
-								)
-							}}
+						<p v-if="query !== '' && collapsedResult">
+							{{ $t('search.rerunCount', { rerunCount: formatNumber(rerunCount) }, rerunCount) }}
 						</p>
 						<span v-else></span>
 					</div>
@@ -64,22 +48,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useSearchResultStore } from '@/store/searchResultStore';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 
 export default defineComponent({
 	name: 'HitCount',
 	props: {
+		collapsedResult: { type: Boolean, required: true },
 		hitCount: { type: Number, required: true },
 		hitCountWithoutReruns: { type: Number, required: true },
 		query: { type: String || undefined, required: true },
 		noHits: { type: Boolean, required: true },
 	},
 
-	setup() {
+	setup(props) {
 		const searchResultStore = useSearchResultStore();
-		return { searchResultStore, addTestDataEnrichment };
+		const { t } = useI18n();
+		const formatNumber = (n: number) => new Intl.NumberFormat('de-DE').format(n);
+
+		const displayedCount = computed(() => (props.collapsedResult ? props.hitCountWithoutReruns : props.hitCount));
+		const rerunCount = computed(() => props.hitCountWithoutReruns - props.hitCount);
+
+		const hitCountText = computed(() => {
+			const count = formatNumber(displayedCount.value);
+			return props.query === '*:*'
+				? `${count} ${t('search.filterSearch', displayedCount.value)}`
+				: `${count} ${t('search.hitcount', displayedCount.value)} "${props.query}"`;
+		});
+
+		return { searchResultStore, addTestDataEnrichment, hitCountText, rerunCount, formatNumber };
 	},
 });
 </script>

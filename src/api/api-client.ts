@@ -166,13 +166,19 @@ export class APIServiceClient {
 		start: string,
 		sort: string,
 		uuid: string,
+		collapsed?: boolean,
 	): Promise<APISearchResponseType> {
+		const collapse = collapsed
+			? `&fq=${encodeURIComponent(
+					"{!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc' tag=collapsetag}",
+			  )}&json.facet=${encodeURIComponent(
+					'{"raw_total":{"type":"query","q":"*:*","domain":{"excludeTags":"collapsetag"}}}',
+			  )}`
+			: '';
 		return await this.httpClient.get(
-			`bff/v1/proxy/search/?q=${encodeURIComponent(query)}&facet=false${filters}${start}${sort}&fq=${encodeURIComponent(
-				"{!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc' tag=collapsetag}",
-			)}&json.facet=${encodeURIComponent(
-				'{"raw_total":{"type":"query","q":"*:*","domain":{"excludeTags":"collapsetag"}}}',
-			)}&queryUUID=${uuid}&rows=${rowCount}`,
+			`bff/v1/proxy/search/?q=${encodeURIComponent(
+				query,
+			)}&facet=false${filters}${start}${sort}${collapse}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 

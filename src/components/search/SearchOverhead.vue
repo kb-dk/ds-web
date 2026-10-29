@@ -23,6 +23,7 @@
 				>
 					<div class="hits">
 						<HitCount
+							:collapsed-result="searchResultStore.collapsedResult"
 							:hit-count="searchResultStore.numFound"
 							:hit-count-without-reruns="searchResultStore.numFoundWithoutReruns"
 							:no-hits="searchResultStore.noHits"
