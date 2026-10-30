@@ -106,14 +106,12 @@ import {
 	startYear,
 	timeSliderValues,
 	timeslots,
-	addToEstimatedQueryLength,
-	removeFromEstimatedQueryLength,
 	clearEstimatedQueryLength,
 	allDaysChecked,
 	allMonthsChecked,
 	allTimeslotsChecked,
 } from '@/components/common/timeSearch/TimeSearchInitValues';
-import { dataItem, markerData, pointItem, SelectorData } from '@/types/TimeSearchTypes';
+import { dataItem, markerData, pointItem } from '@/types/TimeSearchTypes';
 import { createSVGCurvedLine } from '@/utils/svg-graph';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
 import {
@@ -122,7 +120,6 @@ import {
 	getSublineForTimeslots,
 	getSublineForYears,
 	getTimeResults,
-	resetAllSelectorValues,
 } from '@/utils/time-search-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -181,15 +178,12 @@ export default defineComponent({
 
 		onMounted(() => {
 			if (props.init) {
-				resetAllSelectorValues(months.value);
-				resetAllSelectorValues(days.value);
-				resetAllSelectorValues(timeslots.value);
 				timeSliderValues.value = initSliderValues.value;
 				const holder = new Date(initEndDate.value.getTime());
 				endDate.value = holder;
 				const holder2 = new Date(initStartDate.value.getTime());
 				startDate.value = holder2;
-				getTimeResults(true, `random_${Date.now()} asc`);
+				getTimeResults(true);
 			}
 			if (props.timeline) {
 				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {
@@ -344,33 +338,6 @@ export default defineComponent({
 			emit('close');
 		};
 
-		const updateCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			array[index].selected = val;
-			if (val) {
-				addToEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
-			} else {
-				removeFromEstimatedQueryLength(array[index].value.length, array[index].name.split('.')[1], array);
-			}
-			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			emitNewSearch();
-		};
-
-		const updateAllCheckbox = (array: SelectorData[], index: number, val: boolean) => {
-			if (val) {
-				array.forEach((item) => {
-					item.selected = true;
-					addToEstimatedQueryLength(item.value.length, item.name.split('.')[1], array);
-				});
-			} else {
-				array.forEach((item) => {
-					item.selected = false;
-					removeFromEstimatedQueryLength(item.value.length, item.name.split('.')[1], array);
-				});
-			}
-			searchResultStore.queryLimitReached = searchResultStore.filterQueryLength > 900;
-			emitNewSearch();
-		};
-
 		return {
 			t,
 			months,
@@ -381,8 +348,6 @@ export default defineComponent({
 			endDate,
 			data,
 			selectYears,
-			updateCheckbox,
-			updateAllCheckbox,
 			updateEndYear,
 			updateStartYear,
 			timeSearchStore,

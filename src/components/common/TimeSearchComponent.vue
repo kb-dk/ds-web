@@ -17,33 +17,18 @@
 		></TimeSearchFilters>
 
 		<div class="result-container">
-			<div class="container-backdrop">
-				<ContainerSplitBar :is-top="true"></ContainerSplitBar>
-				<ContainerSplitBar :is-top="false"></ContainerSplitBar>
+			<div class="bar-container">
+				<div
+					key="1"
+					class="bar bar-1"
+				></div>
+				<div
+					key="2"
+					class="bar bar-2"
+				></div>
 			</div>
+
 			<div class="time-results">
-				<ItemSlider
-					:padding="false"
-					bg="var(--bg-backdrop)"
-					item-class="time-result"
-					bg-scroll-blue="true"
-				>
-					<template #default="slotProps">
-						<div
-							v-for="(item, index) in timeSearchStore.timeResults"
-							:key="index"
-							class="time-result-item"
-						>
-							<GridResultItem
-								:loading="timeSearchStore.loading"
-								:resultdata="item"
-								:index="index"
-								background="var(--bg-backdrop)"
-								:slot-props="slotProps"
-							></GridResultItem>
-						</div>
-					</template>
-				</ItemSlider>
 				<div class="result-header-container">
 					<div class="result-header">
 						<KBButton
@@ -55,10 +40,7 @@
 							button-size="medium"
 							:is-router-link="true"
 							right-icon-name="arrow_forward_ios"
-							:button-text="`${$t('facets.seeResults', {
-								count: Number(new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound)),
-								resultCount: new Intl.NumberFormat('de-DE').format(timeSearchStore.numFound),
-							})} (${getYears(timeSliderValues)} ${$t('timeSearch.year', getYears(timeSliderValues))})`"
+							:button-text="buttonText"
 							@click="timeSearchBehavior()"
 						></KBButton>
 					</div>
@@ -69,21 +51,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { SelectorData } from '@/types/TimeSearchTypes';
-import {
-	days,
-	endDate,
-	months,
-	startDate,
-	timeSliderValues,
-	timeslots,
-} from '@/components/common/timeSearch/TimeSearchInitValues';
+import { endDate, startDate, timeSliderValues } from '@/components/common/timeSearch/TimeSearchInitValues';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import GridResultItem from '@/components/search/GridResultItem.vue';
 import TimeSearchFilters from '@/components/common/timeSearch/TimeSearchFilters.vue';
-// import EdgedContentArea from '@/components/global/content-elements/EdgedContentArea.vue';
 import {
 	getSublineForDays,
 	getSublineForMonths,
@@ -93,19 +65,15 @@ import {
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
-
+import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
 import '@/assets/styles/vue-slider-styles.css';
 import KBButton from '@/components/common/KBButton.vue';
-import ItemSlider from '@/components/search/ItemSlider.vue';
-import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
 export default defineComponent({
 	name: 'TimeSearchComponent',
 	components: {
-		GridResultItem,
 		TimeSearchFilters,
 		KBButton,
-		ItemSlider,
-		ContainerSplitBar,
 	},
 	props: {
 		title: { type: String, default: '' },
@@ -113,8 +81,18 @@ export default defineComponent({
 		text: { type: String, default: 'black' },
 	},
 	setup() {
+		gsap.registerPlugin(TextPlugin);
 		const { t } = useI18n();
 		const timeSearchStore = useTimeSearchStore();
+		const displayCount = ref(0);
+		const buttonText = computed(() => {
+			const formatted = new Intl.NumberFormat('de-DE').format(displayCount.value);
+			const years = getYears(timeSliderValues.value);
+			return `${t('facets.seeResults', { count: displayCount.value, resultCount: formatted })} (${years} ${t(
+				'timeSearch.year',
+				years,
+			)})`;
+		});
 		const timeSearchLink = ref<RouteLocationRaw>({
 			name: 'Search',
 			query: {
@@ -122,7 +100,7 @@ export default defineComponent({
 				start: 0,
 				rows: 10,
 				fq: [],
-				/* sort: `random_${Date.now()} ASC`, */
+				// /* sort: `random_${Date.now()} ASC`, */
 			},
 		});
 
@@ -136,45 +114,20 @@ export default defineComponent({
 
 		const fetchNewTimeResults = () => {
 			updateLink();
-			getTimeResults(true, `random_${Date.now()} ASC`);
+			getTimeResults(true);
 		};
 
 		onMounted(() => {
 			updateLink();
 		});
 
-		watch(
-			[months, days, timeslots],
-			() => {
-				updateLink();
-			},
-			{ deep: true },
-		);
-
 		const updateLink = () => {
-			const dayString = days.value
-				.filter((day: SelectorData) => day.selected)
-				.map((day: SelectorData) => day.value)
-				.join(' OR ');
-			const monthString = months.value
-				.filter((month: SelectorData) => month.selected)
-				.map((month: SelectorData) => month.value)
-				.join(' OR ');
-
-			const timeslotString = timeslots.value
-				.filter((timeslot: SelectorData) => timeslot.selected)
-				.map((timeslot: SelectorData) => timeslot.value)
-				.join(' OR ');
-
 			const fqArray = [];
 			if (startDate.value !== null && endDate.value !== null) {
 				fqArray.push(
 					encodeURIComponent(`startTime:[${startDate.value.toISOString() + ' TO ' + endDate.value.toISOString()}]`),
 				);
 			}
-			dayString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_day_da:(${dayString})`)) : null;
-			monthString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_month:(${monthString})`)) : null;
-			timeslotString !== '' ? fqArray.push(encodeURIComponent(`temporal_start_hour_da:(${timeslotString})`)) : null;
 
 			timeSearchLink.value = {
 				name: 'Search',
@@ -187,11 +140,14 @@ export default defineComponent({
 				},
 			};
 		};
-
+		watch(
+			() => timeSearchStore.numFound,
+			(newVal) => {
+				gsap.to(displayCount, { value: newVal, duration: 0.3, ease: 'power2.out', snap: { value: 1 } });
+			},
+			{ immediate: true },
+		);
 		return {
-			days,
-			months,
-			timeslots,
 			startDate,
 			endDate,
 			timeSearchLink,
@@ -205,6 +161,7 @@ export default defineComponent({
 			getSublineForTimeslots,
 			addTestDataEnrichment,
 			timeSearchBehavior,
+			buttonText,
 		};
 	},
 });
@@ -222,16 +179,6 @@ h2 {
 	display: flex;
 	justify-content: center;
 }
-.container-backdrop {
-	position: absolute;
-	height: 100%;
-	width: 100vw;
-	background-color: var(--bg-backdrop);
-	justify-content: space-between;
-	display: flex;
-	flex-direction: column;
-	margin-top: 5px;
-}
 .result-header-container {
 	width: 100vw;
 	display: flex;
@@ -242,10 +189,12 @@ h2 {
 }
 .result-header {
 	display: flex;
-	/* weird padding to equal 56 in total */
-	padding-top: 41px;
 	justify-content: end;
 	width: 100%;
+}
+
+.result-header .btn-cta {
+	transition: all 0.2s ease;
 }
 
 .selection-header {
@@ -255,7 +204,6 @@ h2 {
 .time-results {
 	position: relative;
 	margin-top: 56px;
-	margin-bottom: 90px;
 	gap: 15px;
 	width: 98vw;
 	max-width: 2400px;
@@ -298,15 +246,27 @@ h2 {
 .time-container p {
 	margin: 0;
 }
+.bar-container {
+	height: fit-content;
+	width: 100vw;
+	position: absolute;
+}
+.bar {
+	height: 17px;
+	width: 100%;
+}
+.bar-1 {
+	background-color: var(--bg-main-2);
+}
+.bar-2 {
+	background-color: var(--bg-secondary-light);
+}
 @media (min-width: 640px) {
 	.container-backdrop {
 		margin-top: 0;
 	}
 	.time-result-item {
 		flex: 0 0 400px;
-	}
-	.time-results {
-		margin-bottom: 72px;
 	}
 }
 </style>

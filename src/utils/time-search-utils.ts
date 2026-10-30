@@ -1,7 +1,7 @@
 import { SelectorData } from '@/types/TimeSearchTypes';
 import { ComposerTranslation } from 'vue-i18n';
 import { useTimeSearchStore } from '@/store/timeSearchStore';
-import { months, days, timeslots, startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
+import { startDate, endDate } from '@/components/common/timeSearch/TimeSearchInitValues';
 
 const getYears = (TimeSliderValues: number[]) => {
 	return Number(TimeSliderValues[1] - TimeSliderValues[0]) === 0
@@ -36,9 +36,6 @@ const getTimeResults = (allowYearSearch: boolean, sort = 'startTime asc') => {
 	timeSearchStore.getTimeSearchResults(
 		allowYearSearch && startDate.value !== null ? startDate.value.toISOString() : '',
 		allowYearSearch && endDate.value !== null ? endDate.value.toISOString() : '',
-		getSelectedFromArray(months.value),
-		getSelectedFromArray(days.value),
-		getSelectedFromArray(timeslots.value),
 		sort,
 	);
 };
