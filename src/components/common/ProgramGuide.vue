@@ -590,7 +590,7 @@ export default defineComponent({
 	position: relative;
 	box-sizing: border-box;
 	padding: 20px 0px 12px 0px;
-	box-shadow: 0 0 14px 0 rgba(153, 153, 153, 0.34) inset;
+	box-shadow: inset 0 0 5px rgba(230, 230, 230, 1);
 }
 
 .extra-program {
