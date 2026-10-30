@@ -66,6 +66,10 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 	);
 
 	const searchStatusMessage = computed(() => {
+		if (loading.value === false && (sort.value === undefined || sort.value === '')) {
+			return '';
+		}
+
 		if (loading.value) {
 			return t('search.searching');
 		}
