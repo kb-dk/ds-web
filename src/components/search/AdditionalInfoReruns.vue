@@ -98,9 +98,10 @@
 							name: 'Search',
 							query: {
 								q: rerunClusterQuery,
-								sort: searchResultStore.sort,
+								sort: 'startTime desc',
 							},
 						}"
+						@click="scrollToTop"
 					>
 						{{ t('search.rerunLink') }}
 					</router-link>
@@ -173,6 +174,12 @@ export default defineComponent({
 				},
 			});
 		};
+		const scrollToTop = () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		};
 		const getStartTime = (resultItem: GenericSearchResultType) => {
 			return resultItem.startTime !== undefined
 				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} 
@@ -204,6 +211,7 @@ export default defineComponent({
 			getDuration,
 			rerunClusterQuery,
 			searchResultStore,
+			scrollToTop,
 		};
 	},
 });
