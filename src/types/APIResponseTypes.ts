@@ -17,6 +17,26 @@ export interface APISearchResponseType {
 		responseHeader: APIResponseHeaderType;
 		facet_counts: FacetsType;
 		spellcheck: SpellCheckType;
+		facets: {
+			count: number;
+			raw_total: {
+				count: number;
+			};
+		};
+	};
+}
+
+export interface APISearchResponseGroupType {
+	data: {
+		response: { docs: Array<GenericSearchResultType> };
+		expanded: {
+			[rerun_cluster_id: string]: {
+				docs: Array<GenericSearchResultType>;
+				numFound: number;
+				start: number;
+				numFoundExact: boolean;
+			};
+		};
 	};
 }
 
