@@ -115,13 +115,6 @@
 				</p>
 			</div>
 		</div>
-		<div
-			class="vert-dot"
-			:class="{ visible: open }"
-			aria-hidden="true"
-		>
-			•
-		</div>
 	</div>
 </template>
 
@@ -263,33 +256,6 @@ export default defineComponent({
 
 .extra-content-container {
 	position: relative;
-}
-.extra-content-container:hover .vert-dot {
-	transform: translate(-50%, 0) scale3d(1.9, 1.9, 1.9);
-	transition:
-		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0s;
-}
-.vert-dot.visible {
-	display: block;
-	transition:
-		transform 0.3s ease-in-out 0s,
-		background-color 0.1s ease-in-out 0.2s;
-}
-.vert-dot {
-	position: absolute;
-	height: 16px;
-	text-align: center;
-	color: var(--bg-default);
-	transform: translate(-50%, -0%) scale3d(1.2, 1.2, 1.2);
-	top: 50%;
-	width: 11px;
-	line-height: 1;
-	margin-top: -5px;
-	left: 0px;
-	display: none;
-	background: var(--bg-backdrop);
-	z-index: 1;
 }
 .title {
 	text-decoration: none;
