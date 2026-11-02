@@ -19,6 +19,8 @@
 						role="link"
 						:data-testid="addTestDataEnrichment('link', 'result-item', `top-link`, index)"
 						:title="resultdata.title"
+						draggable="false"
+						@click.capture="preventNavigationOnSelection"
 					>
 						<div class="information">
 							<h3
@@ -299,6 +301,14 @@ export default defineComponent({
 			return rerunText;
 		});
 
+		// Capture phase: RouterLink navigates in its own click handler, which runs before a normal
+		// @click and only bails out if defaultPrevented is already set.
+		const preventNavigationOnSelection = (event: MouseEvent) => {
+			if (window.getSelection()?.toString().length) {
+				event.preventDefault();
+			}
+		};
+
 		const getAudioImageData = () => {
 			const imageDataObj = {} as ImageComponentType;
 			imageDataObj.imgTitle = props.resultdata?.title ? props.resultdata.title : t('record.seeMaterial');
@@ -389,6 +399,7 @@ export default defineComponent({
 			toggleAdditionalInfo,
 			isRerunsOpen,
 			rerunButtonText,
+			preventNavigationOnSelection,
 		};
 	},
 });
@@ -459,6 +470,7 @@ export default defineComponent({
 	width: calc(100% - 4px);
 	margin-top: 4px;
 	text-decoration: none;
+	user-select: text;
 }
 
 .information {
