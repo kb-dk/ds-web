@@ -1,5 +1,3 @@
-import { APISearchResponseType } from './APIResponseTypes';
-
 export interface GenericSearchResultType {
 	access_billede_aftale: boolean;
 	access_blokeret: boolean;

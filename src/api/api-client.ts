@@ -171,9 +171,9 @@ export class APIServiceClient {
 		const collapse = collapsed
 			? `&fq=${encodeURIComponent(
 					"{!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc' tag=collapsetag}",
-			  )}&json.facet=${encodeURIComponent(
+				)}&json.facet=${encodeURIComponent(
 					'{"raw_total":{"type":"query","q":"*:*","domain":{"excludeTags":"collapsetag"}}}',
-			  )}`
+				)}`
 			: '';
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(

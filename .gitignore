@@ -13,6 +13,8 @@ README_RELEASE_ARTIFACT.md
 .env.local.*
 # lighthouse reports
 *.report.html
+# eslint cache file
+.eslintcache
 
 # Log files
 npm-debug.log*
