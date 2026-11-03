@@ -22,10 +22,6 @@
 					key="1"
 					class="bar bar-1"
 				></div>
-				<div
-					key="2"
-					class="bar bar-2"
-				></div>
 			</div>
 
 			<div class="time-results">
@@ -248,7 +244,7 @@ h2 {
 }
 .bar-container {
 	height: fit-content;
-	width: 100vw;
+	width: 100%;
 	position: absolute;
 }
 .bar {
