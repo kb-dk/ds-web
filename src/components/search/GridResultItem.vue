@@ -228,7 +228,7 @@ export default defineComponent({
 			return resultItem.startTime !== undefined
 				? `${getBroadcastDate(resultItem.startTime as string, locale.value)} ${t('record.timestamp')}${getBroadcastTime(
 						resultItem.startTime as string,
-				  )}`
+					)}`
 				: t('record.noBroadcastData');
 		};
 

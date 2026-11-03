@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 //Types from https://github.com/kaltura/kaltura-player-js/blob/master/ts-typed/player.d.ts
 export interface PlayerType {
 	dimensions: { width: number; height: number };

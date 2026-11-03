@@ -20,21 +20,19 @@ const routes: Array<RouteRecordRaw> = [
 			id: route.params.id,
 			autoplay: route.query.autoplay || null,
 		}),
-		beforeEnter: (to, from, next) => {
+		beforeEnter: (to) => {
 			const query = { ...to.query };
 			const targetKey = Object.keys(query).find((key) => key.toLowerCase() === 'kalturastarttime');
 
 			if (targetKey) {
 				delete query[targetKey];
 
-				next({
+				return {
 					name: to.name,
 					params: to.params,
 					query,
 					replace: true,
-				});
-			} else {
-				next();
+				};
 			}
 		},
 	},
