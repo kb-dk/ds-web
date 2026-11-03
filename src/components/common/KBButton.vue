@@ -86,12 +86,7 @@
 import { defineComponent, PropType, ref, useAttrs, watch } from 'vue';
 
 type ButtonType =
-	| 'btn-cta'
-	| 'btn-main-default'
-	| 'btn-main-medium'
-	| 'btn-main-small'
-	| 'btn-dropdown-default'
-	| 'btn-tag';
+	'btn-cta' | 'btn-main-default' | 'btn-main-medium' | 'btn-main-small' | 'btn-dropdown-default' | 'btn-tag';
 type ButtonSize = 'medium' | 'default' | 'small';
 type ButtonColor = 'light' | 'main' | 'cta' | 'transparent' | 'reset' | 'inverted';
 export default defineComponent({

@@ -68,8 +68,8 @@
 								searchResultStore.loading
 									? 'display-option list loading'
 									: searchResultStore.resultGrid
-									  ? 'display-option list'
-									  : 'display-option list active'
+										? 'display-option list'
+										: 'display-option list active'
 							"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-list', 0)"
 							@click="setGridAndLoadResults(false)"
@@ -88,8 +88,8 @@
 								searchResultStore.loading
 									? 'display-option grid loading'
 									: searchResultStore.resultGrid
-									  ? 'display-option grid active'
-									  : 'display-option grid'
+										? 'display-option grid active'
+										: 'display-option grid'
 							"
 							:data-testid="addTestDataEnrichment('button', 'search-overhead', 'toggle-grid', 0)"
 							@click="setGridAndLoadResults(true)"

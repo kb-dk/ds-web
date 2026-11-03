@@ -533,12 +533,12 @@ export default defineComponent({
 }
 .programs:hover {
 	background-color: var(--bg-main-2);
-	color: var((--color-default));
+	color: var(--color-default);
 	border: 1px solid var(--color-border-active);
 }
 .programs-current {
 	background-color: var(--bg-main-2);
-	color: var((--color-default));
+	color: var(--color-default);
 	border: 1px solid var(--color-border-active);
 }
 .between-program {

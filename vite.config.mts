@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
-import eslint from 'vite-plugin-eslint';
+import eslint from 'vite-plugin-eslint2';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -16,12 +16,12 @@ export default ({ mode }) => {
 					},
 				},
 			}),
-			eslint(),
+			eslint({ build: true }),
 		],
 
 		resolve: {
 			alias: {
-				'@': resolve(__dirname, './src'),
+				'@': resolve(import.meta.dirname, './src'),
 			},
 		},
 

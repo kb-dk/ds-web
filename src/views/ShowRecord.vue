@@ -176,15 +176,15 @@ export default defineComponent({
 						contentNotAllowed.value = true;
 					} else if (err.response?.status !== 404) {
 						errorMsg = t('error.record.loadingFailed');
-						errorManager.submitCustomError(
-							'record-error',
-							t('error.infoError.title'),
-							errorMsg,
-							Severity.ERROR,
-							true,
-							Priority.MEDIUM,
-						);
 					}
+					errorManager.submitCustomError(
+						'record-error',
+						t('error.infoError.title'),
+						errorMsg,
+						Severity.ERROR,
+						true,
+						Priority.MEDIUM,
+					);
 					break;
 				}
 				case 'moreLikeThisCall':
