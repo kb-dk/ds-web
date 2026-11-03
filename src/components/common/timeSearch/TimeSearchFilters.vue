@@ -119,7 +119,7 @@ import {
 	getSublineForMonths,
 	getSublineForTimeslots,
 	getSublineForYears,
-	getTimeResults,
+	getTimeNumberOfResults,
 } from '@/utils/time-search-utils';
 import { addTestDataEnrichment } from '@/utils/test-enrichments';
 import { useSearchResultStore } from '@/store/searchResultStore';
@@ -183,7 +183,7 @@ export default defineComponent({
 				endDate.value = holder;
 				const holder2 = new Date(initStartDate.value.getTime());
 				startDate.value = holder2;
-				getTimeResults(true);
+				getTimeNumberOfResults(true);
 			}
 			if (props.timeline) {
 				for (let i = startYear.value.getFullYear(); i <= endYear.value.getFullYear(); i++) {

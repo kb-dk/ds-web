@@ -110,7 +110,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		});
 	};
 
-	const getTimeSearchResults = async (start: string, end: string, sort: string) => {
+	const getTimeSearchNumberOfResults = async (start: string, end: string, sort: string) => {
 		//https://stackoverflow.com/a/62359248
 		//to get a _GOOD_ uuid, we use the functionality from the createObjectURL method, that creates one, and just get that one.
 
@@ -121,7 +121,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		try {
 			searchFired.value = true;
 			loading.value = true;
-			const responseData = await APIService.getTimeSearchResults(start, end, currentSearchUUID, sort);
+			const responseData = await APIService.getTimeSearchNumberOfResults(start, end, currentSearchUUID, sort);
 
 			comparisonSearchUUID = responseData.data.responseHeader.params.queryUUID || '';
 
@@ -151,7 +151,7 @@ export const useTimeSearchStore = defineStore('timeSearchStore', () => {
 		loading,
 		timeResults,
 		setLoading,
-		getTimeSearchResults,
+		getTimeSearchNumberOfResults,
 		numFound,
 		timeFacetsOpen,
 		setTimeFacetsOpen,

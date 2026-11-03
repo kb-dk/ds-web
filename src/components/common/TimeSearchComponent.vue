@@ -56,7 +56,7 @@ import {
 	getSublineForDays,
 	getSublineForMonths,
 	getSublineForTimeslots,
-	getTimeResults,
+	getTimeNumberOfResults,
 	getYears,
 } from '@/utils/time-search-utils';
 import { RouteLocationRaw } from 'vue-router';
@@ -110,7 +110,7 @@ export default defineComponent({
 
 		const fetchNewTimeResults = () => {
 			updateLink();
-			getTimeResults(true);
+			getTimeNumberOfResults(true);
 		};
 
 		onMounted(() => {
