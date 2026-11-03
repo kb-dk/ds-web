@@ -170,9 +170,9 @@ export default defineComponent({
 				const after = str.substring(endIndex);
 
 				const highlightedString = `<span>${before}<span style="font-weight:bold">${matched}</span>${after}</span>`;
-				return DOMPurify.default.sanitize(highlightedString, { ALLOWED_TAGS: ['span'] });
+				return DOMPurify.default.sanitize(highlightedString, { ALLOWED_TAGS: ['span'], ALLOWED_ATTR: ['style'] });
 			}
-			return str;
+			return DOMPurify.default.sanitize(str, { ALLOWED_TAGS: ['span'] });
 		};
 
 		return {

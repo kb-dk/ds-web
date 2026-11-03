@@ -6,10 +6,12 @@ import {
 	APIAutocompleteResponseType,
 	APIMoreLikeThisResponseType,
 	APIRecordResponseType,
+	APISearchResponseGroupType,
 	APISearchResponseType,
 	APIThumbnailsResponseType,
 	CustomAxiosRequestConfig,
 } from '@/types/APIResponseTypes';
+import { GenericSearchResultType } from '@/types/GenericSearchResultTypes';
 
 // Generic sleep function used for both 'authenticate retries' and 'articial latency in dev environment'
 export function sleep(duration: number): Promise<void> {
@@ -164,15 +166,49 @@ export class APIServiceClient {
 		start: string,
 		sort: string,
 		uuid: string,
+		collapsed?: boolean,
 	): Promise<APISearchResponseType> {
+		const collapse = collapsed
+			? `&fq=${encodeURIComponent(
+					"{!collapse field=rerun_cluster_id nullPolicy=expand sort='startTime desc' tag=collapsetag}",
+			  )}&json.facet=${encodeURIComponent(
+					'{"raw_total":{"type":"query","q":"*:*","domain":{"excludeTags":"collapsetag"}}}',
+			  )}`
+			: '';
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				query,
-			)}&facet=false${filters}${start}${sort}&queryUUID=${uuid}&rows=${rowCount}`,
+			)}&facet=false${filters}${start}${sort}${collapse}&queryUUID=${uuid}&rows=${rowCount}`,
 		);
 	}
 
-	async getTimeSearchResults(start: string, end: string, uuid: string, sort: string): Promise<APISearchResponseType> {
+	async getRerunsById(searchResultsWithRerun: Array<GenericSearchResultType>): Promise<APISearchResponseGroupType> {
+		const clusterIds = searchResultsWithRerun.map((r) => r.rerun_cluster_id);
+		const excludeIds = searchResultsWithRerun.map((r) => r.id);
+
+		// Escape quotes/backslashes so each ID is a safe quoted term
+		const quote = (v: string) => `"${v.replace(/(["\\])/g, '\\$1')}"`;
+		const params = new URLSearchParams();
+		params.set('q', '*:*');
+		params.append('fq', "{!collapse field=rerun_cluster_id sort='startTime desc'}");
+		params.append('fq', `{!terms f=rerun_cluster_id}${clusterIds.join(',')}`);
+		params.set('expand', 'true');
+		params.append('fq', `-id:(${excludeIds.map(quote).join(' OR ')})`);
+		params.set('expand.rows', '5');
+		params.set('expand.sort', 'startTime desc');
+		params.set('rows', '10');
+		return await this.httpClient.get(`bff/v1/proxy/search/?${params.toString()}`);
+	}
+
+	async getTimeSearchResults(
+		start: string,
+		end: string,
+		months: string,
+		days: string,
+		timeslots: string,
+		uuid: string,
+		sort: string,
+	): Promise<APISearchResponseType> {
 		let timeConstraint = '';
 		if (start && end) {
 			timeConstraint = `&fq=startTime:${encodeURIComponent(`[${start} TO ${end}]`)}`;
