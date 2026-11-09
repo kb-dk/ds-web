@@ -4,6 +4,21 @@ All notable changes to ds-web will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-11-09
+
+## Added
+- Display rerun on the searchpage, in a dropdown sorted by latest. Displays 5 results, and if more exists, theres a link to search for all reruns for this program
+
+## Changed
+- Search now filters away results with the same rerun_cluster_id. 
+- Margin/ padding adjustments on the frontpage
+- Accessibility changes throughout the site.
+- Minor search bug, if searching without text
+- Adjustet incorrect styling for mobile users. Color on filter, and breadcrumb positions
+- Filters on searchpage had incorrect category names
+- Code cleanup
+- Fixed minor bugs regarding the filter on searchpage.
+
 ## [1.2.1] - 2026-08-20
 
 ## Changed
