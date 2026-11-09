@@ -16,6 +16,10 @@
 				<div class="record-data">
 					<h2>{{ Array.isArray(recordData.name) ? recordData.name[0] : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
+					<AutomaticSummary
+						v-if="recordData.description"
+						:description="recordData.description"
+					></AutomaticSummary>
 				</div>
 				<div class="back-link">
 					<KBButton
@@ -188,6 +192,7 @@ import ContactUs from '@/components/search/ContactUs.vue';
 import ProgramGuide from '@/components/common/ProgramGuide.vue';
 import KBButton from '@/components/common/KBButton.vue';
 import ContainerSplitBar from '@/components/global/content-elements/ContainerSplitBar.vue';
+import AutomaticSummary from '@/components/common/AutomaticSummary.vue';
 
 export default defineComponent({
 	name: 'BroadcastRecord',
@@ -200,6 +205,7 @@ export default defineComponent({
 		ProgramGuide,
 		KBButton,
 		ContainerSplitBar,
+		AutomaticSummary,
 	},
 
 	props: {
