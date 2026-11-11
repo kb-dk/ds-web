@@ -1,27 +1,58 @@
 <template>
 	<div class="hero-container">
-		<picture>
-			<source
-				:srcset="currentImages.desktop"
-				media="(width > 991px)"
-			/>
-			<source
-				:srcset="currentImages.tablet"
-				media="(width > 641px)"
-			/>
-			<img
-				ref="imageRef"
-				:src="currentImages.mobile"
-				class="bg-image"
-				fetchpriority="high"
-				:alt="locale === 'da' ? currentImages.daAlt : currentImages.enAlt"
-			/>
-		</picture>
-		<div class="credit container">{{ currentImages.credit }}</div>
+		<div class="image-wrapper">
+			<Transition name="slide">
+				<picture :key="currentIndex">
+					<source
+						:srcset="currentImages.desktop"
+						media="(width > 991px)"
+					/>
+					<source
+						:srcset="currentImages.tablet"
+						media="(width > 641px)"
+					/>
+					<img
+						:src="currentImages.mobile"
+						class="bg-image"
+						fetchpriority="high"
+						:alt="locale === 'da' ? currentImages.daAlt : currentImages.enAlt"
+					/>
+				</picture>
+			</Transition>
+			<div class="carousel-controls">
+				<button
+					class="carousel-button pause-button"
+					:aria-label="isPaused ? t('frontpage.hero.play') : t('frontpage.hero.pause')"
+					@click="togglePause"
+				>
+					<span
+						class="material-icons"
+						aria-hidden="true"
+					>
+						{{ isPaused ? 'play_arrow' : 'pause' }}
+					</span>
+				</button>
+				<button
+					v-for="(image, index) in images"
+					:key="index"
+					class="carousel-button"
+					:class="{ active: index === currentIndex }"
+					:aria-label="t('frontpage.hero.goTo', { number: index + 1, total: images.length })"
+					:aria-current="index === currentIndex"
+					@click="goTo(index)"
+				>
+					<span class="indicator"></span>
+				</button>
+			</div>
+		</div>
+		<div class="container">
+			<p class="description label-small">{{ locale === 'da' ? currentImages.daAlt : currentImages.enAlt }}</p>
+			<p class="credit label-small-bold">{{ currentImages.credit }}</p>
+		</div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
 import hero1Desktop from '@/assets/images/hero1_desktop.jpg';
@@ -34,72 +65,176 @@ import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
 import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
 import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
 
+const ROTATION_INTERVAL_MS = 5000;
+
+const images = [
+	{
+		mobile: hero1Mobile,
+		tablet: hero1Tablet,
+		desktop: hero1Desktop,
+		credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
+		daAlt:
+			'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
+		enAlt:
+			'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
+	},
+	{
+		mobile: hero2Mobile,
+		tablet: hero2Tablet,
+		desktop: hero2Desktop,
+		credit: 'Foto: Lars Hansen/Ritzau Scanpix',
+		daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
+		enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
+	},
+	{
+		mobile: hero3Mobile,
+		tablet: hero3Tablet,
+		desktop: hero3Desktop,
+		credit: 'Foto: Erik Gleie/Ritzau Scanpix',
+		daAlt:
+			"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
+		enAlt:
+			"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
+	},
+];
+
 export default defineComponent({
 	name: 'Hero',
 	setup() {
 		const authStore = useAuthStore();
 		const { t, locale } = useI18n();
-		const currentProgress = ref();
-		const imageRef = ref<HTMLImageElement | null>();
-		const currentImages = computed(() => {
-			switch (authStore.heroBannerNumber) {
-				case 1:
-					return {
-						mobile: hero1Mobile,
-						tablet: hero1Tablet,
-						desktop: hero1Desktop,
-						credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
-						daAlt:
-							'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
-						enAlt:
-							'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
-					};
-				case 2:
-					return {
-						mobile: hero2Mobile,
-						tablet: hero2Tablet,
-						desktop: hero2Desktop,
-						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
-						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
-						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
-					};
-				default:
-					return {
-						mobile: hero3Mobile,
-						tablet: hero3Tablet,
-						desktop: hero3Desktop,
-						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
-						daAlt:
-							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
-						enAlt:
-							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
-					};
-			}
-		});
+		const isPaused = ref(false);
+		let timer: ReturnType<typeof setInterval> | undefined;
+
+		const currentIndex = computed(() => Math.max(authStore.heroBannerNumber - 1, 0));
+		const currentImages = computed(() => images[currentIndex.value]);
+
+		const goTo = (index: number) => {
+			authStore.heroBannerNumber = index + 1;
+			if (!isPaused.value) startTimer();
+		};
+
+		const next = () => goTo((currentIndex.value + 1) % images.length);
+
+		const stopTimer = () => {
+			if (timer) clearInterval(timer);
+			timer = undefined;
+		};
+
+		const startTimer = () => {
+			stopTimer();
+			timer = setInterval(next, ROTATION_INTERVAL_MS);
+		};
+
+		const togglePause = () => {
+			isPaused.value = !isPaused.value;
+			if (isPaused.value) stopTimer();
+			else startTimer();
+		};
+
 		onMounted(() => {
-			if (authStore.currentArchiveProgress !== 0) {
-				currentProgress.value = authStore.currentArchiveProgress;
-			}
-			if (imageRef.value) {
-				if (authStore.heroBannerNumber === 0) {
-					const randomNumber = Math.floor(Math.random() * 3) + 1;
-					authStore.heroBannerNumber = randomNumber;
-				}
-			}
+			startTimer();
 		});
 
+		onBeforeUnmount(stopTimer);
+
 		return {
-			authStore,
-			currentProgress,
 			t,
-			imageRef,
-			currentImages,
 			locale,
+			images,
+			currentIndex,
+			currentImages,
+			isPaused,
+			goTo,
+			togglePause,
 		};
 	},
 });
 </script>
 <style scoped>
+.image-wrapper {
+	position: relative;
+	width: 100%;
+	max-width: 1420px;
+	overflow: hidden;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+	transition: transform 0.6s ease-in-out;
+}
+
+.slide-leave-active {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.slide-enter-from {
+	transform: translateX(100%);
+}
+
+.slide-leave-to {
+	transform: translateX(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.slide-enter-active,
+	.slide-leave-active {
+		transition: none;
+	}
+}
+
+.carousel-controls {
+	position: absolute;
+	z-index: 1;
+	right: 24px;
+	bottom: 24px;
+	display: flex;
+	gap: 12px;
+}
+
+.carousel-button {
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid var(--bg-main);
+	background-color: var(--bg-default);
+	color: var(--color-default);
+	cursor: pointer;
+}
+
+.carousel-button:focus-visible {
+	outline: 2px solid var(--bg-main-3);
+	outline-offset: 2px;
+}
+
+.pause-button {
+	background-color: var(--bg-main);
+}
+
+.pause-button .material-icons {
+	font-size: 24px;
+}
+
+.indicator {
+	width: 12px;
+	height: 12px;
+	background-color: transparent;
+}
+
+.carousel-button.active .indicator,
+.carousel-button:hover .indicator {
+	background-color: var(--bg-main);
+}
+
+.carousel-button.pause-button:hover {
+	background-color: var(--bg-main-hover);
+}
+
 .hero-container {
 	position: relative;
 	height: 100%;
@@ -113,12 +248,15 @@ export default defineComponent({
 	align-items: center;
 }
 
-.credit {
+.credit,
+.description {
 	color: var(--color-credits);
 	display: flex;
 	align-items: flex-end;
 	padding-top: 10px;
 	justify-content: flex-end;
+	max-width: 50%;
+	margin: 0;
 }
 
 .bg-image {
@@ -129,13 +267,8 @@ export default defineComponent({
 }
 
 .hero-container picture {
+	display: block;
 	width: 100%;
-}
-
-@media (min-width: 1280px) {
-	.hero-container picture {
-		width: initial;
-	}
 }
 
 @media (min-width: 990px) and (max-width: 1279px) {
@@ -159,7 +292,7 @@ export default defineComponent({
 }
 
 .container {
-	text-align: left;
+	text-align: right;
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
@@ -167,6 +300,9 @@ export default defineComponent({
 	padding-left: 12px;
 	background-color: var(--bg-default);
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {

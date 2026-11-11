@@ -58,7 +58,12 @@
 	},
 	"frontpage": {
 		"fromTheArchive": "The month of {month} on DR through time",
-		"fromTheArchiveAlt": "Find selected broadcasts from this month through time"
+		"fromTheArchiveAlt": "Find selected broadcasts from this month through time",
+		"hero": {
+			"pause": "Pause automatic image rotation",
+			"play": "Start automatic image rotation",
+			"goTo": "Show image {number} of {total}"
+		}
 	},
 	"facets": {
 		"headline": "Filter your search for ",

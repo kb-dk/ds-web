@@ -58,7 +58,12 @@
 	},
 	"frontpage": {
 		"fromTheArchive": "{month} måned på DR gennem tiden",
-		"fromTheArchiveAlt": "Find udvalgte udsendelser fra denne måned gennem tiden"
+		"fromTheArchiveAlt": "Find udvalgte udsendelser fra denne måned gennem tiden",
+		"hero": {
+			"pause": "Sæt automatisk billedskift på pause",
+			"play": "Start automatisk billedskift",
+			"goTo": "Vis billede {number} af {total}"
+		}
 	},
 	"facets": {
 		"headline": "Filtrér din søgning på ",
