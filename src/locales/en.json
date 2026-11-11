@@ -243,7 +243,7 @@
 		"watchProgram": "Watch program",
 		"searchbtn": "Search",
 		"hitcount": " result found with | results found with",
-		"rerunCount": "(Including {rerunCount} rerun) | (Including {rerunCount} reruns)",
+		"rerunCount": "(Including {rerunCount} rerun that match your search) | (Including {rerunCount} reruns that match your search)",
 		"filterSearch": " results found with your filters",
 		"nohit": "Sorry, we did not find any results matching your search for \"{query}\"",
 		"nohitWithFilter": "We are sorrry no {filterSearch}",
