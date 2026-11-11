@@ -436,25 +436,32 @@ export const useSearchResultStore = defineStore('searchResults', () => {
 										searchResult.value[foundResult].rerun_cluster = rerunResultValue;
 									}
 								}
-								// The rerun API puts the latest result in the response, where the rest is in the expanded list.
-								// So if you make a filter on a later date than the latest. The latest would otherwise not appear in the rerun array
-								for (const rerunResult of searchResultRerunsResponse.data.response.docs) {
-									const foundResult = searchResult.value.findIndex(
-										(result) => result.rerun_cluster_id === rerunResult.rerun_cluster_id,
-									);
-									if (!searchResultReruns.some((docs) => docs.id === rerunResult.id)) {
-										if (searchResult.value[foundResult].rerun_cluster) {
-											if (
-												!searchResult.value[foundResult].rerun_cluster.docs.some((doc) => doc.id === rerunResult.id)
-											) {
-												// To make sure its always max 5 results
+							}
+							// The rerun API puts the latest result in the response, where the rest is in the expanded list.
+							// So if you make a filter on a later date than the latest. The latest would otherwise not appear in the rerun array
+							for (const rerunResult of searchResultRerunsResponse.data.response.docs) {
+								const foundResult = searchResult.value.findIndex(
+									(result) => result.rerun_cluster_id === rerunResult.rerun_cluster_id,
+								);
+								if (!searchResultReruns.some((docs) => docs.id === rerunResult.id)) {
+									if (searchResult.value[foundResult].rerun_cluster) {
+										if (!searchResult.value[foundResult].rerun_cluster.docs.some((doc) => doc.id === rerunResult.id)) {
+											// To make sure its always max 5 results
+											if (searchResult.value[foundResult].rerun_cluster.docs.length === 5) {
 												searchResult.value[foundResult].rerun_cluster.docs.pop();
-												searchResult.value[foundResult].rerun_cluster.docs.push(rerunResult);
-												searchResult.value[foundResult].rerun_cluster.docs.sort((a, b) =>
-													a.startTime < b.startTime ? 1 : -1,
-												);
 											}
+											searchResult.value[foundResult].rerun_cluster.docs.push(rerunResult);
+											searchResult.value[foundResult].rerun_cluster.docs.sort((a, b) =>
+												a.startTime < b.startTime ? 1 : -1,
+											);
+											searchResult.value[foundResult].rerun_cluster.numFound += 1;
 										}
+									} else if (rerunResult.id !== searchResult.value[foundResult].id) {
+										searchResult.value[foundResult].rerun_cluster = {
+											numFound: 1,
+											docs: [rerunResult],
+											start: 0,
+										};
 									}
 								}
 							}
