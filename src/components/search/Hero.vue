@@ -20,29 +20,47 @@
 				</picture>
 			</Transition>
 			<div class="carousel-controls">
-				<button
-					class="carousel-button pause-button"
-					:aria-label="isPaused ? t('frontpage.hero.play') : t('frontpage.hero.pause')"
-					@click="togglePause"
-				>
-					<span
-						class="material-icons"
-						aria-hidden="true"
+				<KBButton
+					button-size="medium"
+					button-type="btn-cta"
+					:button-text="t('hero.searchButton') + currentImages.searchText"
+					button-color="cta"
+					class="btn-medium"
+					right-icon-name="arrow_forward_ios"
+					:is-router-link="true"
+					:to="{
+						name: 'Search',
+						query: {
+							q: currentImages.searchText,
+							start: 0,
+						},
+					}"
+				></KBButton>
+				<div>
+					<button
+						class="carousel-button pause-button"
+						:aria-label="isPaused ? t('frontpage.hero.play') : t('frontpage.hero.pause')"
+						@click="togglePause"
 					>
-						{{ isPaused ? 'play_arrow' : 'pause' }}
-					</span>
-				</button>
-				<button
-					v-for="(image, index) in images"
-					:key="index"
-					class="carousel-button"
-					:class="{ active: index === currentIndex }"
-					:aria-label="t('frontpage.hero.goTo', { number: index + 1, total: images.length })"
-					:aria-current="index === currentIndex"
-					@click="goTo(index)"
-				>
-					<span class="indicator"></span>
-				</button>
+						<span
+							class="material-icons"
+							aria-hidden="true"
+						>
+							{{ isPaused ? 'play_arrow' : 'pause' }}
+						</span>
+					</button>
+					<button
+						v-for="(image, index) in images"
+						:key="index"
+						class="carousel-button"
+						:class="{ active: index === currentIndex }"
+						:aria-label="t('frontpage.hero.goTo', { number: index + 1, total: images.length })"
+						:aria-current="index === currentIndex"
+						@click="goTo(index)"
+					>
+						<span class="indicator"></span>
+					</button>
+				</div>
 			</div>
 		</div>
 		<div class="container">
@@ -64,8 +82,9 @@ import hero2Mobile from '@/assets/images/hero2_mobile.jpg';
 import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
 import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
 import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
+import KBButton from '@/components/common/KBButton.vue';
 
-const ROTATION_INTERVAL_MS = 5000;
+const ROTATION_INTERVAL_MS = 7000;
 
 const images = [
 	{
@@ -77,6 +96,7 @@ const images = [
 			'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
 		enAlt:
 			'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
+		searchText: '"kongehuset"',
 	},
 	{
 		mobile: hero2Mobile,
@@ -85,6 +105,7 @@ const images = [
 		credit: 'Foto: Lars Hansen/Ritzau Scanpix',
 		daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
 		enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
+		searchText: '"atomkraft"',
 	},
 	{
 		mobile: hero3Mobile,
@@ -95,11 +116,15 @@ const images = [
 			"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
 		enAlt:
 			"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
+		searchText: '"landsholdet"',
 	},
 ];
 
 export default defineComponent({
 	name: 'Hero',
+	components: {
+		KBButton,
+	},
 	setup() {
 		const authStore = useAuthStore();
 		const { t, locale } = useI18n();
@@ -189,9 +214,16 @@ export default defineComponent({
 	position: absolute;
 	z-index: 1;
 	right: 24px;
-	bottom: 24px;
+	bottom: 12px;
+	display: flex;
+	gap: 38px;
+	flex-direction: column;
+	align-items: flex-end;
+}
+.carousel-controls > div {
 	display: flex;
 	gap: 12px;
+	align-items: center;
 }
 
 .carousel-button {
@@ -255,7 +287,6 @@ export default defineComponent({
 	align-items: flex-end;
 	padding-top: 10px;
 	justify-content: flex-end;
-	max-width: 50%;
 	margin: 0;
 }
 
@@ -303,6 +334,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 	align-items: end;
+	height: 95px;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
@@ -317,11 +349,19 @@ export default defineComponent({
 	.container {
 		max-width: 990px;
 	}
+	.credit,
+	.description {
+		max-width: 75%;
+	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.container {
 		max-width: 1150px;
+	}
+	.credit,
+	.description {
+		max-width: 50%;
 	}
 }
 /* MEDIA QUERY 1150 */

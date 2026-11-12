@@ -585,7 +585,8 @@
 		"progress": "Vi har nået {index}%...",
 		"explanation": "I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
 		"linkText": "Læs mere om DR-arkivet",
-		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+		"searchButton":"Søg på: "
 	},
 	"categories": {
 		"brn-og-unge": "Børn og unge",
