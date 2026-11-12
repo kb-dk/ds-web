@@ -62,7 +62,9 @@
 		"hero": {
 			"pause": "Sæt automatisk billedskift på pause",
 			"play": "Start automatisk billedskift",
-			"goTo": "Vis billede {number} af {total}"
+			"goTo": "Vis billede {number} af {total}: {topic}",
+			"label": "Udvalgte emner",
+			"slide": "{number} af {total}"
 		}
 	},
 	"facets": {
@@ -586,7 +588,7 @@
 		"explanation": "I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
 		"linkText": "Læs mere om DR-arkivet",
 		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
-		"searchButton":"Søg på: "
+		"searchButton": "Søg på \"{query}\""
 	},
 	"categories": {
 		"brn-og-unge": "Børn og unge",

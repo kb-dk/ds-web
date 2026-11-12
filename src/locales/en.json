@@ -62,7 +62,9 @@
 		"hero": {
 			"pause": "Pause automatic image rotation",
 			"play": "Start automatic image rotation",
-			"goTo": "Show image {number} of {total}"
+			"goTo": "Show image {number} of {total}: {topic}",
+			"label": "Featured topics",
+			"slide": "{number} of {total}"
 		}
 	},
 	"facets": {
@@ -587,7 +589,7 @@
 		"explanation": "In DR-arkivet, you will find a vast collection of DR's TV and radio programmes. We continually add both newer and older programmes, so the archive continues to grow and improve.",
 		"linkText": "Read more about DR-arkivet",
 		"link": "https://www.kb.dk/en/find-materials/systems-and-services/dr-arkivet",
-		"searchButton":"Search in: "
+		"searchButton": "Search for \"{query}\""
 	},
 	"categories": {
 		"brn-og-unge": "Children and adolescents",
