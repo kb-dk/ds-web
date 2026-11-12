@@ -111,14 +111,20 @@ export default defineComponent({
 			}
 		});
 
+		// Responses can arrive out of order when the user navigates between records quickly,
+		// so anything fetched for a record that is no longer the current route is dropped.
+		const isStale = (id: string) => route.params.id !== id;
+
 		const getRecord = async (id: string) => {
 			backendError.value = false;
 			spinnerStore.toggleSpinner(true);
 			try {
 				return await APIService.getRecord(id);
 			} catch (err) {
-				handleShowRecordError(err as AxiosError, 'recordCall');
-				backendError.value = true;
+				if (!isStale(id)) {
+					handleShowRecordError(err as AxiosError, 'recordCall');
+					backendError.value = true;
+				}
 			} finally {
 				loading.value = false;
 				spinnerStore.toggleSpinner(false);
@@ -214,8 +220,14 @@ export default defineComponent({
 			const id = route.params.id;
 			const idStr = id as string;
 			const recordResp = await getRecord(idStr);
+			if (isStale(idStr)) {
+				return;
+			}
 			if (recordResp) {
 				const moreLikeThis = await getMoreLikeThisRecords(idStr);
+				if (isStale(idStr)) {
+					return;
+				}
 				recordType.value = recordResp.data['@type'];
 				recordData.value = recordResp.data;
 				document.title = (recordData.value['name'] + t('app.titles.frontpage.archive.suffix')) as string;
@@ -230,6 +242,9 @@ export default defineComponent({
 
 				if (startAndEnd.length > 0) {
 					const moreLikeThisDate = await getMoreLikeThisDate(startAndEnd[0], startAndEnd[1], idStr);
+					if (isStale(idStr)) {
+						return;
+					}
 					if (moreLikeThisDate) moreLikeThisRecords.value = moreLikeThisDate.data.response.docs;
 				}
 			}
@@ -256,8 +271,9 @@ export default defineComponent({
 		watch(
 			() => recordData.value,
 			async () => {
+				const requestedFor = recordData.value;
 				getMoreRecordsThisDayAndCreator().then((records) => {
-					if (records) {
+					if (records && recordData.value === requestedFor) {
 						const responseRecords = records.data.response.docs;
 						const uniqueRecords: GenericSearchResultType[] = [];
 						for (let i = 0; i < responseRecords.length; i++) {
