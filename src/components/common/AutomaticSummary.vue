@@ -45,6 +45,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container {
+	margin-bottom: 56px;
+	margin-top: 38px;
+}
 h3,
 p {
 	margin: 0;
@@ -79,7 +83,6 @@ p {
 }
 .info-container {
 	margin-top: 10px;
-	margin-bottom: 36px;
 	display: flex;
 	flex-direction: row;
 	gap: 7px;

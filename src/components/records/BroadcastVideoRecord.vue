@@ -17,8 +17,8 @@
 					<h2>{{ Array.isArray(recordData.name) ? recordData.name[0] : recordData.name }}</h2>
 					<p>{{ recordData.description }}</p>
 					<AutomaticSummary
-						v-if="recordData.description"
-						:description="recordData.description"
+						v-if="recordData['kb:internal']['kb:summary']"
+						:description="recordData['kb:internal']['kb:summary']"
 					></AutomaticSummary>
 				</div>
 				<div class="back-link">

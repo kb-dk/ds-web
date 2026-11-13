@@ -47,6 +47,7 @@ interface KbInternal {
 	'kb:has_subtitles_for_hearing_impaired': boolean;
 	'kb:is_teletext': boolean;
 	'kb:showviewcode': string;
+	'kb:summary': string;
 }
 
 interface CreativeWork {
