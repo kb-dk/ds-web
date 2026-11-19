@@ -309,7 +309,7 @@
 			"seeAllMaterials": "Se alt materiale",
 			"allMaterialsLink": "https://www.kb.dk/find-materiale"
 		},
-		"placeholder": "Søg...",
+		"placeholder": "Hvad leder du efter?",
 		"limitedFilters": {
 			"title": "For mange filtre",
 			"subtitle": "Du er nået grænsen for antal af filtre vi understøtter. For at tilføjer et andet filter, bliver du nød til at fjerne et andet."

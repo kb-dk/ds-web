@@ -19,6 +19,7 @@
 					<button
 						class="closeBtn material-icons"
 						:aria-label="t('facets.closeFacets')"
+						:data-testid="addTestDataEnrichment('button', 'close', 'facets', 0)"
 						@click="searchResultStore.toggleShowFacets(!searchResultStore.showFacets)"
 					>
 						close
