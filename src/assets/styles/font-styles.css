@@ -16,16 +16,16 @@
     --fw-bold: 700;
 
     /* Font size*/
-    --fs-meta: clamp(0.9375rem, 1.25vw, 1rem);
-    --fs-base: clamp(1.0625rem, 1.25vw, 1.125rem);
-    --fs-base-fixed: 1.125rem;
-    --fs-base-alpha:clamp();
-    --fs-lead: clamp(1.0625rem, 1.8vw, 1.25rem);
-    --fs-sm: clamp(1.125rem, 2vw, 1.375rem);
-    --fs-md:  clamp(1.25rem, 2.2vw, 1.5rem);
-    --fs-lg:  clamp(1.375rem, 2.5vw, 1.625rem);
-    --fs-xl:  clamp(1.75rem, 3.5vw, 2.25rem);
-    --fs-xxl: clamp(2.5rem, 5vw, 3.625rem);  
+    --fs-meta: clamp(0.9375rem, 1.25vw, 1rem); /* 15px – 16px */
+    --fs-base: clamp(1.0625rem, 1.25vw, 1.125rem); /* 17px – 18px */
+    --fs-base-fixed: 1.125rem; /* 18px */
+    --fs-base-alpha: clamp(); /* Not defined */
+    --fs-lead: clamp(1.0625rem, 1.8vw, 1.25rem); /* 17px – 20px */
+    --fs-sm: clamp(1.125rem, 2vw, 1.375rem); /* 18px – 22px */
+    --fs-md: clamp(1.25rem, 2.2vw, 1.5rem); /* 20px – 24px */
+    --fs-lg: clamp(1.375rem, 2.5vw, 1.625rem); /* 22px – 26px */
+    --fs-xl: clamp(1.75rem, 3.5vw, 2.25rem); /* 28px – 36px */
+    --fs-xxl: clamp(2.5rem, 5vw, 3.625rem); /* 40px – 58px */
     --fs-xl-fixed: 66px;
 }
 body,button{
