@@ -58,7 +58,14 @@
 	},
 	"frontpage": {
 		"fromTheArchive": "{month} måned på DR gennem tiden",
-		"fromTheArchiveAlt": "Find udvalgte udsendelser fra denne måned gennem tiden"
+		"fromTheArchiveAlt": "Find udvalgte udsendelser fra denne måned gennem tiden",
+		"hero": {
+			"pause": "Sæt automatisk billedskift på pause",
+			"play": "Start automatisk billedskift",
+			"goTo": "Vis billede {number} af {total}: {topic}",
+			"label": "Udvalgte emner",
+			"slide": "{number} af {total}"
+		}
 	},
 	"facets": {
 		"headline": "Filtrér din søgning på ",
@@ -580,7 +587,8 @@
 		"progress": "Vi har nået {index}%...",
 		"explanation": "I DR-arkivet finder du en stor mængde af DR's TV- og radioudsendelser. Vi tilføjer løbende både nyere og ældre udsendelser, så arkivet bliver større og bedre.",
 		"linkText": "Læs mere om DR-arkivet",
-		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet"
+		"link": "https://www.kb.dk/find-materiale/tjenester/dr-arkivet",
+		"searchButton": "Søg på \"{query}\""
 	},
 	"categories": {
 		"brn-og-unge": "Børn og unge",
