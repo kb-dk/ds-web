@@ -200,12 +200,9 @@ export class APIServiceClient {
 		return await this.httpClient.get(`bff/v1/proxy/search/?${params.toString()}`);
 	}
 
-	async getTimeSearchResults(
+	async getTimeSearchNumberOfResults(
 		start: string,
 		end: string,
-		months: string,
-		days: string,
-		timeslots: string,
 		uuid: string,
 		sort: string,
 	): Promise<APISearchResponseType> {
@@ -216,7 +213,7 @@ export class APIServiceClient {
 		return await this.httpClient.get(
 			`bff/v1/proxy/search/?q=${encodeURIComponent(
 				'*:*',
-			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=8${months}${days}${timeslots}&sort=${sort}`,
+			)}&facet=false&queryUUID=${uuid}${timeConstraint}&rows=0&sort=${sort}&fl=numFound`,
 		);
 	}
 
