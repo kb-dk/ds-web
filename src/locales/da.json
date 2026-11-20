@@ -371,7 +371,13 @@
 		"moreMetadataBroadcast": "Yderligere information om udsendelsen",
 		"missingStreamingUrl": "Vi beklager, men denne post har ingen steaming URL, \n så der er intet at vise.",
 		"noRecordFound": "Vi kan desværre ikke finde den udsendelse, som du forsøger at tilgå :(",
-		"noRecordFoundExplained": "Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner."
+		"noRecordFoundExplained": "Det er er super ærgeligt, og hvordan du er kommet herind er lidt en gåde, men du kan prøve at søge igen for at finde det indhold du savner.",
+		"automaticSummaries": {
+			"title": "Automatisk opsummering",
+			"summaryInfo": "Dette resumé er genereret automatisk af en sprogmodel ud fra udsendelsens lydspor. Af hensyn til privatlivsbeskyttelse (GDPR) er personnavne udeladt fra datagrundlaget, hvorfor medvirkende omtales ved rolle eller funktion.",
+			"readMoreLink": "Læs mere om vores data og AI",
+			"readMoreUrl": "https://www.kb.dk/find-materiale/soegeindgange/dr-arkivet/saadan-bruger-vi-kunstig-intelligens-i-dr-arkivet"
+		}
 	},
 	"duration": {
 		"hours": "t",
