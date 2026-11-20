@@ -194,15 +194,16 @@ export default defineComponent({
 	background-color: var(--bg-default);
 	width: 100%;
 	padding: 0px 0px;
-	height: calc(100% + 1px);
+	height: calc(100% + 2px);
 	box-sizing: border-box;
-	border-bottom: 1px solid var(--color-border-success);
-	border-left: 1px solid var(--color-border-success);
-	border-right: 1px solid var(--color-border-success);
+	border-bottom: 2px solid var(--color-border-success);
+	border-left: 2px solid var(--color-border-success);
+	border-right: 2px solid var(--color-border-success);
 	border-radius: 0 0 var(--rounded-medium) var(--rounded-medium);
-	border-top: 1px solid var(--bg-default);
+	border-top: 2px solid var(--bg-default);
 	position: relative;
 	transition: all 0.2s ease-in-out 0s;
+	margin-top: -1px;
 }
 
 .autocomplete::before {

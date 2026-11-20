@@ -3,7 +3,10 @@
 		v-if="route.name !== 'Record'"
 		class="search-box"
 	>
-		<div :class="isSearchFieldOpen ? 'search-container wide' : 'search-container'">
+		<div
+			:class="isSearchFieldOpen ? 'search-container wide' : 'search-container'"
+			:style="searchResultStore.autocompleteResult.length > 0 && hasFocus ? 'border-bottom-left-radius: 0px' : null"
+		>
 			<div class="container main-12">
 				<form
 					ref="searchFormRef"
