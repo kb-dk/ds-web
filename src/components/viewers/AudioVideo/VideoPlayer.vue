@@ -43,7 +43,11 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		let videoPlayer: PlayerType;
+		let videoPlayer: PlayerType | undefined;
+		let bootstrapped = false;
+		let loading = false;
+		let reloadQueued = false;
+		let unmounted = false;
 		const route = useRoute();
 		const authStore = useAuthStore();
 		const restrictedErrorDispatched = ref(false);
@@ -112,8 +116,12 @@ export default defineComponent({
 		};
 
 		const bootstrapPlayer = () => {
+			if (unmounted) {
+				return;
+			}
+			bootstrapped = true;
 			try {
-				videoPlayer = KalturaPlayer.setup({
+				const player: PlayerType = KalturaPlayer.setup({
 					targetId: 'video-player',
 					playback: {
 						autoplay: route.query?.autoplay ? true : false,
@@ -124,20 +132,27 @@ export default defineComponent({
 							authStore.videoUiConfId !== '' ? authStore.videoUiConfId : import.meta.env.VITE_KALTURA_VIDEO_UI_CONF_ID,
 					},
 				});
-				videoPlayer.loadMedia({ entryId: props.entryId }).then(() => {
-					document
-						.querySelector('.playkit-pre-playback-play-button')
-						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
-					const video = document.querySelector('#video-player') as HTMLElement | null;
-					if (video) {
-						const innerVideo = video?.querySelector('video') as HTMLVideoElement | null;
-						if (innerVideo) {
-							innerVideo.disablePictureInPicture = true;
+				videoPlayer = player;
+				loading = true;
+				player
+					.loadMedia({ entryId: props.entryId })
+					.then(() => {
+						document
+							.querySelector('.playkit-pre-playback-play-button')
+							?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+						const video = document.querySelector('#video-player') as HTMLElement | null;
+						if (video) {
+							const innerVideo = video?.querySelector('video') as HTMLVideoElement | null;
+							if (innerVideo) {
+								innerVideo.disablePictureInPicture = true;
+							}
+							video.setAttribute('data-testid', 'video-player-kaltura-container-0');
 						}
-						video.setAttribute('data-testid', 'video-player-kaltura-container-0');
-					}
-				});
-				videoPlayer.addEventListener(videoPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
+					})
+					// Load failures are reported through the ERROR event below.
+					.catch(() => undefined)
+					.finally(onLoadSettled);
+				player.addEventListener(player.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
 					if (error.code === 1002 && !restrictedErrorDispatched.value) {
 						restrictedErrorDispatched.value = true;
@@ -171,14 +186,52 @@ export default defineComponent({
 			}
 		});
 
+		const destroyPlayer = () => {
+			if (!videoPlayer) {
+				return;
+			}
+			try {
+				videoPlayer.destroy();
+			} catch (e) {
+				// A half-destroyed player leaves its container behind, which makes the next setup() throw.
+				if (!unmounted) {
+					document.getElementById('video-player')?.replaceChildren();
+				}
+			}
+			videoPlayer = undefined;
+		};
+
+		const reloadPlayer = () => {
+			destroyPlayer();
+			restrictedErrorDispatched.value = false;
+			setupPlayer();
+		};
+
+		const onLoadSettled = () => {
+			loading = false;
+			const reload = reloadQueued;
+			reloadQueued = false;
+			if (unmounted) {
+				destroyPlayer();
+			} else if (reload) {
+				reloadPlayer();
+			}
+		};
+
 		watch(
 			() => props.entryId,
 			() => {
-				if (videoPlayer) {
-					videoPlayer.destroy();
+				// Before the first bootstrap there is nothing to replace; it reads the current entryId itself.
+				if (!bootstrapped) {
+					return;
 				}
-				restrictedErrorDispatched.value = false;
-				setupPlayer();
+				// Destroying while loadMedia is in flight lets Kaltura set the old media on the dead player,
+				// so wait for the load to settle and then switch to the latest entryId.
+				if (loading) {
+					reloadQueued = true;
+					return;
+				}
+				reloadPlayer();
 			},
 		);
 
@@ -187,8 +240,9 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (videoPlayer) {
-				videoPlayer.destroy();
+			unmounted = true;
+			if (!loading) {
+				destroyPlayer();
 			}
 		});
 	},
