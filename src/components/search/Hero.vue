@@ -93,7 +93,7 @@
 					aria-atomic="true"
 				>
 					<p class="description label-small">
-						{{ locale === 'da' ? currentImages.daCaption : currentImages.enCaption }}
+						{{ currentImages.caption }}
 						<span class="credit label-small-bold">{{ currentImages.credit }}</span>
 					</p>
 				</figcaption>
@@ -120,36 +120,6 @@ const ROTATION_INTERVAL_MS = 7000;
 const MEDIA_DESKTOP = '(width > 991px)';
 const MEDIA_TABLET = '(width > 641px)';
 
-const images = [
-	{
-		mobile: hero1Mobile,
-		tablet: hero1Tablet,
-		desktop: hero1Desktop,
-		credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
-		daCaption: 'Kong Frederik Xs indsættelse, 14. januar 2024.',
-		enCaption: 'King Frederik X’s inauguration, January 14th 2024.',
-		searchTerm: 'kongehuset',
-	},
-	{
-		mobile: hero2Mobile,
-		tablet: hero2Tablet,
-		desktop: hero2Desktop,
-		credit: 'Foto: Lars Hansen/Ritzau Scanpix',
-		daCaption: 'Landsholdet fejres på Københavns rådhuset efter EM-sejr, 1992.',
-		enCaption: 'The national team celebrated at Copenhagen City Hall after EM win, 1992.',
-		searchTerm: 'atomkraft',
-	},
-	{
-		mobile: hero3Mobile,
-		tablet: hero3Tablet,
-		desktop: hero3Desktop,
-		credit: 'Foto: Erik Gleie/Ritzau Scanpix',
-		daCaption: 'Demonstration mod atomkraft, Rådhuspladsen 1974.',
-		enCaption: 'Anti-nuclear demonstration, City Hall Square 1974.',
-		searchTerm: 'landsholdet',
-	},
-];
-
 export default defineComponent({
 	name: 'Hero',
 	components: {
@@ -162,11 +132,36 @@ export default defineComponent({
 		const isInteracting = ref(false);
 		const isRotating = computed(() => !isPaused.value && !isInteracting.value);
 		let timer: ReturnType<typeof setInterval> | undefined;
-
+		const images = computed(() => [
+			{
+				mobile: hero1Mobile,
+				tablet: hero1Tablet,
+				desktop: hero1Desktop,
+				credit: t('hero.1.credit'),
+				caption: t('hero.1.caption'),
+				searchTerm: 'kongehuset',
+			},
+			{
+				mobile: hero2Mobile,
+				tablet: hero2Tablet,
+				desktop: hero2Desktop,
+				credit: t('hero.2.credit'),
+				caption: t('hero.2.caption'),
+				searchTerm: 'atomkraft',
+			},
+			{
+				mobile: hero3Mobile,
+				tablet: hero3Tablet,
+				desktop: hero3Desktop,
+				credit: t('hero.3.credit'),
+				caption: t('hero.3.caption'),
+				searchTerm: 'landsholdet',
+			},
+		]);
 		const currentIndex = computed(() => Math.max(authStore.heroBannerNumber - 1, 0));
-		const currentImages = computed(() => images[currentIndex.value]);
+		const currentImages = computed(() => images.value[currentIndex.value]);
 		const searchQuery = computed(() => currentImages.value.searchTerm);
-		const variantFor = (image: (typeof images)[number]) => {
+		const variantFor = (image: (typeof images.value)[number]) => {
 			if (window.matchMedia(MEDIA_DESKTOP).matches) {
 				return image.desktop;
 			}
@@ -178,7 +173,7 @@ export default defineComponent({
 
 		const decoded = new Set<string>();
 		const loadImage = async (index: number) => {
-			const src = variantFor(images[index]);
+			const src = variantFor(images.value[index]);
 			if (decoded.has(src)) {
 				return;
 			}
@@ -202,10 +197,10 @@ export default defineComponent({
 				return;
 			}
 			authStore.heroBannerNumber = index + 1;
-			void loadImage((index + 1) % images.length);
+			void loadImage((index + 1) % images.value.length);
 		};
 
-		const next = () => goTo((currentIndex.value + 1) % images.length);
+		const next = () => goTo((currentIndex.value + 1) % images.value.length);
 
 		const stopTimer = () => {
 			if (timer) {
@@ -231,13 +226,12 @@ export default defineComponent({
 		};
 
 		watch(isRotating, (rotating) => (rotating ? startTimer() : stopTimer()));
-
 		onMounted(() => {
 			isPaused.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 			if (isRotating.value) {
 				startTimer();
 			}
-			void loadImage((currentIndex.value + 1) % images.length);
+			void loadImage((currentIndex.value + 1) % images.value.length);
 		});
 
 		onBeforeUnmount(stopTimer);
