@@ -61,7 +61,11 @@
 				:aria-label="t('frontpage.hero.slide', { number: currentIndex + 1, total: images.length })"
 			>
 				<div class="image-wrapper">
-					<Transition name="slide">
+					<Transition
+						:css="false"
+						@enter="onEnter"
+						@leave="onLeave"
+					>
 						<picture :key="currentIndex">
 							<source
 								:srcset="currentImages.desktop"
@@ -115,10 +119,7 @@ import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
 import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
 import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
 import KBButton from '@/components/common/KBButton.vue';
-
-const ROTATION_INTERVAL_MS = 7000;
-const MEDIA_DESKTOP = '(width > 991px)';
-const MEDIA_TABLET = '(width > 641px)';
+import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'Hero',
@@ -131,7 +132,15 @@ export default defineComponent({
 		const isPaused = ref(false);
 		const isInteracting = ref(false);
 		const isRotating = computed(() => !isPaused.value && !isInteracting.value);
-		let timer: ReturnType<typeof setInterval> | undefined;
+		const ROTATION_INTERVAL_S = 7;
+		const SLIDE_DURATION_S = 0.6;
+		const MEDIA_DESKTOP = '(width > 991px)';
+		const MEDIA_TABLET = '(width > 641px)';
+		const prefersReducedMotion = ref(false);
+		const direction = ref<1 | -1>(1);
+		let enterAnimation = ref<null | gsap.core.Tween>(null);
+		let leaveAnimation = ref<null | gsap.core.Tween>(null);
+		let timer: null | gsap.core.Tween = null;
 		const images = computed(() => [
 			{
 				mobile: hero1Mobile,
@@ -186,8 +195,45 @@ export default defineComponent({
 				// Load/decode failed: switch anyway rather than leaving the carousel stuck.
 			}
 		};
-		let goToRequest = 0;
-		const goTo = async (index: number) => {
+
+		const onEnter = (el: Element, done: () => void) => {
+			enterAnimation.value = gsap.fromTo(
+				el,
+				{ xPercent: 100 * direction.value },
+				{
+					xPercent: 0,
+					duration: prefersReducedMotion.value ? 0 : SLIDE_DURATION_S,
+					ease: 'power2.inOut',
+					overwrite: true,
+					onComplete: done,
+				},
+			);
+		};
+
+		const onLeave = (el: Element, done: () => void) => {
+			// Take the outgoing image out of flow so both images overlap while sliding.
+			gsap.set(el, { position: 'absolute', top: 0, left: 0, width: '100%' });
+			leaveAnimation.value = gsap.to(el, {
+				xPercent: -100 * direction.value,
+				duration: prefersReducedMotion.value ? 0 : SLIDE_DURATION_S,
+				ease: 'power2.inOut',
+				overwrite: true,
+				onComplete: done,
+			});
+		};
+
+		// Jump a running slide to its end, so the next slide starts from a fully covered frame
+		// instead of two half-visible images exposing the background.
+		const finishSlideAnimations = () => {
+			if (enterAnimation.value) {
+				enterAnimation.value.progress(1);
+			}
+			if (leaveAnimation.value) {
+				leaveAnimation.value.progress(1);
+			}
+		};
+		const goTo = async (index: number, dir?: 1 | -1) => {
+			let goToRequest = 0;
 			const request = ++goToRequest;
 			if (isRotating.value) {
 				startTimer();
@@ -196,22 +242,24 @@ export default defineComponent({
 			if (request !== goToRequest) {
 				return;
 			}
+			finishSlideAnimations();
+			direction.value = dir ?? (index < currentIndex.value ? -1 : 1);
 			authStore.heroBannerNumber = index + 1;
 			void loadImage((index + 1) % images.value.length);
 		};
 
-		const next = () => goTo((currentIndex.value + 1) % images.value.length);
+		const next = () => goTo((currentIndex.value + 1) % images.value.length, 1);
 
 		const stopTimer = () => {
 			if (timer) {
-				clearInterval(timer);
+				timer.kill();
 			}
-			timer = undefined;
+			timer = null;
 		};
 
 		const startTimer = () => {
 			stopTimer();
-			timer = setInterval(next, ROTATION_INTERVAL_MS);
+			timer = gsap.delayedCall(ROTATION_INTERVAL_S, next);
 		};
 
 		const togglePause = () => {
@@ -227,14 +275,23 @@ export default defineComponent({
 
 		watch(isRotating, (rotating) => (rotating ? startTimer() : stopTimer()));
 		onMounted(() => {
-			isPaused.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			isPaused.value = prefersReducedMotion.value;
 			if (isRotating.value) {
 				startTimer();
 			}
 			void loadImage((currentIndex.value + 1) % images.value.length);
 		});
 
-		onBeforeUnmount(stopTimer);
+		onBeforeUnmount(() => {
+			stopTimer();
+			if (enterAnimation.value) {
+				enterAnimation.value.kill();
+			}
+			if (leaveAnimation.value) {
+				leaveAnimation.value.kill();
+			}
+		});
 
 		return {
 			t,
@@ -249,6 +306,8 @@ export default defineComponent({
 			isInteracting,
 			isRotating,
 			goTo,
+			onEnter,
+			onLeave,
 			togglePause,
 			onFocusOut,
 		};
@@ -271,32 +330,6 @@ export default defineComponent({
 	position: relative;
 	width: 100%;
 	overflow: hidden;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-	transition: transform 0.6s ease-in-out;
-}
-
-.slide-leave-active {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.slide-enter-from {
-	transform: translateX(100%);
-}
-
-.slide-leave-to {
-	transform: translateX(-100%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.slide-enter-active,
-	.slide-leave-active {
-		transition: none;
-	}
 }
 
 .carousel-controls {
