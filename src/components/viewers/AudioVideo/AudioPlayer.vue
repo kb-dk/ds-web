@@ -46,7 +46,11 @@ export default defineComponent({
 	setup(props) {
 		const { t } = useI18n();
 		const errorManager = inject('errorManager') as ErrorManagerType;
-		let audioPlayer: PlayerType;
+		let audioPlayer: PlayerType | undefined;
+		let bootstrapped = false;
+		let loading = false;
+		let reloadQueued = false;
+		let unmounted = false;
 		const route = useRoute();
 		const authStore = useAuthStore();
 		const restrictedErrorDispatched = ref(false);
@@ -114,8 +118,12 @@ export default defineComponent({
 			document.head.appendChild(kalturaScript);
 		};
 		const bootstrapPlayer = () => {
+			if (unmounted) {
+				return;
+			}
+			bootstrapped = true;
 			try {
-				audioPlayer = KalturaPlayer.setup({
+				const player: PlayerType = KalturaPlayer.setup({
 					targetId: 'audio-player',
 					playback: {
 						autoplay: route.query?.autoplay ? true : false,
@@ -129,20 +137,27 @@ export default defineComponent({
 						poster: getThumbnailPicture(props.channel),
 					},
 				});
-				audioPlayer.loadMedia({ entryId: props.entryId }).then(() => {
-					document
-						.querySelector('.playkit-pre-playback-play-button')
-						?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
-					const audio = document.querySelector('#audio-player') as HTMLElement | null;
-					if (audio) {
-						const innerAudio = audio?.querySelector('video') as HTMLVideoElement | null;
-						if (innerAudio) {
-							innerAudio.disablePictureInPicture = true;
+				audioPlayer = player;
+				loading = true;
+				player
+					.loadMedia({ entryId: props.entryId })
+					.then(() => {
+						document
+							.querySelector('.playkit-pre-playback-play-button')
+							?.setAttribute('data-testid', 'player-kaltura-playbutton-0');
+						const audio = document.querySelector('#audio-player') as HTMLElement | null;
+						if (audio) {
+							const innerAudio = audio?.querySelector('video') as HTMLVideoElement | null;
+							if (innerAudio) {
+								innerAudio.disablePictureInPicture = true;
+							}
+							audio.setAttribute('data-testid', 'audio-player-kaltura-container-0');
 						}
-						audio.setAttribute('data-testid', 'audio-player-kaltura-container-0');
-					}
-				});
-				audioPlayer.addEventListener(audioPlayer.Event.ERROR, (e: KalturaErrorEvent) => {
+					})
+					// Load failures are reported through the ERROR event below.
+					.catch(() => undefined)
+					.finally(onLoadSettled);
+				player.addEventListener(player.Event.ERROR, (e: KalturaErrorEvent) => {
 					const error = e.payload;
 					if (error.code === 1002 && !restrictedErrorDispatched.value) {
 						restrictedErrorDispatched.value = true;
@@ -175,14 +190,52 @@ export default defineComponent({
 			}
 		});
 
+		const destroyPlayer = () => {
+			if (!audioPlayer) {
+				return;
+			}
+			try {
+				audioPlayer.destroy();
+			} catch (e) {
+				// A half-destroyed player leaves its container behind, which makes the next setup() throw.
+				if (!unmounted) {
+					document.getElementById('audio-player')?.replaceChildren();
+				}
+			}
+			audioPlayer = undefined;
+		};
+
+		const reloadPlayer = () => {
+			destroyPlayer();
+			restrictedErrorDispatched.value = false;
+			setupPlayer();
+		};
+
+		const onLoadSettled = () => {
+			loading = false;
+			const reload = reloadQueued;
+			reloadQueued = false;
+			if (unmounted) {
+				destroyPlayer();
+			} else if (reload) {
+				reloadPlayer();
+			}
+		};
+
 		watch(
 			() => props.entryId,
 			() => {
-				if (audioPlayer) {
-					audioPlayer.destroy();
+				// Before the first bootstrap there is nothing to replace; it reads the current entryId itself.
+				if (!bootstrapped) {
+					return;
 				}
-				restrictedErrorDispatched.value = false;
-				setupPlayer();
+				// Destroying while loadMedia is in flight lets Kaltura set the old media on the dead player,
+				// so wait for the load to settle and then switch to the latest entryId.
+				if (loading) {
+					reloadQueued = true;
+					return;
+				}
+				reloadPlayer();
 			},
 		);
 
@@ -191,8 +244,9 @@ export default defineComponent({
 		};
 
 		onBeforeUnmount(() => {
-			if (audioPlayer) {
-				audioPlayer.destroy();
+			unmounted = true;
+			if (!loading) {
+				destroyPlayer();
 			}
 		});
 	},

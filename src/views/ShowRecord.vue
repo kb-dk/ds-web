@@ -256,8 +256,9 @@ export default defineComponent({
 		watch(
 			() => recordData.value,
 			async () => {
+				const requestedFor = recordData.value;
 				getMoreRecordsThisDayAndCreator().then((records) => {
-					if (records) {
+					if (records && recordData.value === requestedFor) {
 						const responseRecords = records.data.response.docs;
 						const uniqueRecords: GenericSearchResultType[] = [];
 						for (let i = 0; i < responseRecords.length; i++) {
