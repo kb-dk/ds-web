@@ -313,7 +313,7 @@ input[type='search']::-webkit-search-results-decoration {
 	border-radius: var(--rounded-small);
 	display: flex;
 	position: absolute;
-	top: 239px;
+	top: 236px;
 	flex-direction: column;
 	max-width: calc(100% - 24px);
 }
