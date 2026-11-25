@@ -1,27 +1,112 @@
 <template>
 	<div class="hero-container">
-		<picture>
-			<source
-				:srcset="currentImages.desktop"
-				media="(width > 991px)"
-			/>
-			<source
-				:srcset="currentImages.tablet"
-				media="(width > 641px)"
-			/>
-			<img
-				ref="imageRef"
-				:src="currentImages.mobile"
-				class="bg-image"
-				fetchpriority="high"
-				:alt="locale === 'da' ? currentImages.daAlt : currentImages.enAlt"
-			/>
-		</picture>
-		<div class="credit container">{{ currentImages.credit }}</div>
+		<section
+			class="carousel"
+			aria-roledescription="carousel"
+			:aria-label="t('frontpage.hero.label')"
+			@focusin="isInteracting = true"
+			@focusout="onFocusOut"
+		>
+			<div
+				class="carousel-controls"
+				@mouseenter="isInteracting = true"
+				@mouseleave="isInteracting = false"
+			>
+				<div>
+					<button
+						class="carousel-button pause-button"
+						:aria-label="isPaused ? t('frontpage.hero.play') : t('frontpage.hero.pause')"
+						@click="togglePause"
+					>
+						<span
+							class="material-icons"
+							aria-hidden="true"
+						>
+							{{ isPaused ? 'play_arrow' : 'pause' }}
+						</span>
+					</button>
+					<button
+						v-for="(image, index) in images"
+						:key="index"
+						class="carousel-button"
+						:class="{ active: index === currentIndex }"
+						:aria-label="t('frontpage.hero.goTo', { number: index + 1, total: images.length, topic: image.searchTerm })"
+						:aria-current="index === currentIndex"
+						@click="goTo(index)"
+					>
+						<span class="indicator"></span>
+					</button>
+				</div>
+				<KBButton
+					button-size="medium"
+					button-type="btn-cta"
+					:button-text="t('hero.searchButton', { query: currentImages.searchTerm })"
+					button-color="cta"
+					class="btn-medium"
+					right-icon-name="arrow_forward_ios"
+					:is-router-link="true"
+					:to="{
+						name: 'Search',
+						query: {
+							q: searchQuery,
+							start: 0,
+						},
+					}"
+				></KBButton>
+			</div>
+			<figure
+				class="slide"
+				role="group"
+				aria-roledescription="slide"
+				:aria-label="t('frontpage.hero.slide', { number: currentIndex + 1, total: images.length })"
+			>
+				<div class="image-wrapper">
+					<Transition
+						:css="false"
+						@enter="onEnter"
+						@leave="onLeave"
+					>
+						<picture :key="currentIndex">
+							<source
+								:srcset="currentImages.desktop"
+								:media="MEDIA_DESKTOP"
+								width="1920"
+								height="960"
+							/>
+							<source
+								:srcset="currentImages.tablet"
+								:media="MEDIA_TABLET"
+								width="1200"
+								height="700"
+							/>
+							<!-- Empty alt: the figcaption below carries the description, so screen readers read it once. -->
+							<img
+								:src="currentImages.mobile"
+								class="bg-image"
+								fetchpriority="high"
+								width="800"
+								height="700"
+								alt=""
+							/>
+						</picture>
+					</Transition>
+				</div>
+				<figcaption
+					class="container"
+					:aria-live="isRotating ? 'off' : 'polite'"
+					aria-atomic="true"
+				>
+					<p class="description label-small">
+						{{ currentImages.caption }}
+						<span class="credit label-small-bold">{{ currentImages.credit }}</span>
+					</p>
+				</figcaption>
+			</figure>
+		</section>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/authStore';
 import hero1Desktop from '@/assets/images/hero1_desktop.jpg';
@@ -33,73 +118,280 @@ import hero2Mobile from '@/assets/images/hero2_mobile.jpg';
 import hero3Desktop from '@/assets/images/hero3_desktop.jpg';
 import hero3Tablet from '@/assets/images/hero3_tablet.jpg';
 import hero3Mobile from '@/assets/images/hero3_mobile.jpg';
+import KBButton from '@/components/common/KBButton.vue';
+import gsap from 'gsap';
 
 export default defineComponent({
 	name: 'Hero',
+	components: {
+		KBButton,
+	},
 	setup() {
 		const authStore = useAuthStore();
 		const { t, locale } = useI18n();
-		const currentProgress = ref();
-		const imageRef = ref<HTMLImageElement | null>();
-		const currentImages = computed(() => {
-			switch (authStore.heroBannerNumber) {
-				case 1:
-					return {
-						mobile: hero1Mobile,
-						tablet: hero1Tablet,
-						desktop: hero1Desktop,
-						credit: 'Foto: Jonas Olufson/Ritzau Scanpix',
-						daAlt:
-							'Billede af statsminister Mette Frederiksen, der proklamerer Frederik 10. som Danmarks nye konge 14. januar 2024',
-						enAlt:
-							'Image of the Danish Prime Minister Mette Frederiksen proclaiming Frederik X as King of Denmark on January 14th 2026',
-					};
-				case 2:
-					return {
-						mobile: hero2Mobile,
-						tablet: hero2Tablet,
-						desktop: hero2Desktop,
-						credit: 'Foto: Lars Hansen/Ritzau Scanpix',
-						daAlt: 'Billede af demonstration mod atomkraft på Københavns Rådhusplads 1976',
-						enAlt: 'Image of demonstration against nuclear power on City Hall Square, Copenhagen in 1976',
-					};
-				default:
-					return {
-						mobile: hero3Mobile,
-						tablet: hero3Tablet,
-						desktop: hero3Desktop,
-						credit: 'Foto: Erik Gleie/Ritzau Scanpix',
-						daAlt:
-							"Billede af Danmarks landshold på Københavns Rådhus' balkon efter at have vundet mændenes EM i fodbold i 1992",
-						enAlt:
-							"Image of Denmark's national team on the balcony of Copenhagen City Hall after winning the men's European Football Championship in 1992",
-					};
+		const isPaused = ref(false);
+		const isInteracting = ref(false);
+		const isRotating = computed(() => !isPaused.value && !isInteracting.value);
+		const ROTATION_INTERVAL_S = 7;
+		const SLIDE_DURATION_S = 0.6;
+		const MEDIA_DESKTOP = '(width > 991px)';
+		const MEDIA_TABLET = '(width > 641px)';
+		const prefersReducedMotion = ref(false);
+		const direction = ref<1 | -1>(1);
+		let enterAnimation = ref<null | gsap.core.Tween>(null);
+		let leaveAnimation = ref<null | gsap.core.Tween>(null);
+		let timer: null | gsap.core.Tween = null;
+		const images = computed(() => [
+			{
+				mobile: hero1Mobile,
+				tablet: hero1Tablet,
+				desktop: hero1Desktop,
+				credit: t('hero.1.credit'),
+				caption: t('hero.1.caption'),
+				searchTerm: 'kongehuset',
+			},
+			{
+				mobile: hero2Mobile,
+				tablet: hero2Tablet,
+				desktop: hero2Desktop,
+				credit: t('hero.2.credit'),
+				caption: t('hero.2.caption'),
+				searchTerm: 'atomkraft',
+			},
+			{
+				mobile: hero3Mobile,
+				tablet: hero3Tablet,
+				desktop: hero3Desktop,
+				credit: t('hero.3.credit'),
+				caption: t('hero.3.caption'),
+				searchTerm: 'landsholdet',
+			},
+		]);
+		const currentIndex = computed(() => Math.max(authStore.heroBannerNumber - 1, 0));
+		const currentImages = computed(() => images.value[currentIndex.value]);
+		const searchQuery = computed(() => currentImages.value.searchTerm);
+		const variantFor = (image: (typeof images.value)[number]) => {
+			if (window.matchMedia(MEDIA_DESKTOP).matches) {
+				return image.desktop;
 			}
-		});
+			if (window.matchMedia(MEDIA_TABLET).matches) {
+				return image.tablet;
+			}
+			return image.mobile;
+		};
+
+		const decoded = new Set<string>();
+		const loadImage = async (index: number) => {
+			const src = variantFor(images.value[index]);
+			if (decoded.has(src)) {
+				return;
+			}
+			const img = new Image();
+			img.src = src;
+			try {
+				await img.decode();
+				decoded.add(src);
+			} catch {
+				// Load/decode failed: switch anyway rather than leaving the carousel stuck.
+			}
+		};
+
+		const onEnter = (el: Element, done: () => void) => {
+			enterAnimation.value = gsap.fromTo(
+				el,
+				{ xPercent: 100 * direction.value },
+				{
+					xPercent: 0,
+					duration: prefersReducedMotion.value ? 0 : SLIDE_DURATION_S,
+					ease: 'power2.inOut',
+					overwrite: true,
+					onComplete: done,
+				},
+			);
+		};
+
+		const onLeave = (el: Element, done: () => void) => {
+			// Take the outgoing image out of flow so both images overlap while sliding.
+			gsap.set(el, { position: 'absolute', top: 0, left: 0, width: '100%' });
+			leaveAnimation.value = gsap.to(el, {
+				xPercent: -100 * direction.value,
+				duration: prefersReducedMotion.value ? 0 : SLIDE_DURATION_S,
+				ease: 'power2.inOut',
+				overwrite: true,
+				onComplete: done,
+			});
+		};
+
+		// Jump a running slide to its end, so the next slide starts from a fully covered frame
+		// instead of two half-visible images exposing the background.
+		const finishSlideAnimations = () => {
+			if (enterAnimation.value) {
+				enterAnimation.value.progress(1);
+			}
+			if (leaveAnimation.value) {
+				leaveAnimation.value.progress(1);
+			}
+		};
+		const goTo = async (index: number, dir?: 1 | -1) => {
+			let goToRequest = 0;
+			const request = ++goToRequest;
+			if (isRotating.value) {
+				startTimer();
+			}
+			await loadImage(index);
+			if (request !== goToRequest) {
+				return;
+			}
+			finishSlideAnimations();
+			direction.value = dir ?? (index < currentIndex.value ? -1 : 1);
+			authStore.heroBannerNumber = index + 1;
+			void loadImage((index + 1) % images.value.length);
+		};
+
+		const next = () => goTo((currentIndex.value + 1) % images.value.length, 1);
+
+		const stopTimer = () => {
+			if (timer) {
+				timer.kill();
+			}
+			timer = null;
+		};
+
+		const startTimer = () => {
+			stopTimer();
+			timer = gsap.delayedCall(ROTATION_INTERVAL_S, next);
+		};
+
+		const togglePause = () => {
+			isPaused.value = !isPaused.value;
+		};
+
+		const onFocusOut = (event: FocusEvent) => {
+			const carousel = event.currentTarget as HTMLElement;
+			if (!carousel.contains(event.relatedTarget as Node | null)) {
+				isInteracting.value = false;
+			}
+		};
+
+		watch(isRotating, (rotating) => (rotating ? startTimer() : stopTimer()));
 		onMounted(() => {
-			if (authStore.currentArchiveProgress !== 0) {
-				currentProgress.value = authStore.currentArchiveProgress;
+			prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			isPaused.value = prefersReducedMotion.value;
+			if (isRotating.value) {
+				startTimer();
 			}
-			if (imageRef.value) {
-				if (authStore.heroBannerNumber === 0) {
-					const randomNumber = Math.floor(Math.random() * 3) + 1;
-					authStore.heroBannerNumber = randomNumber;
-				}
+			void loadImage((currentIndex.value + 1) % images.value.length);
+		});
+
+		onBeforeUnmount(() => {
+			stopTimer();
+			if (enterAnimation.value) {
+				enterAnimation.value.kill();
+			}
+			if (leaveAnimation.value) {
+				leaveAnimation.value.kill();
 			}
 		});
 
 		return {
-			authStore,
-			currentProgress,
 			t,
-			imageRef,
-			currentImages,
 			locale,
+			images,
+			MEDIA_DESKTOP,
+			MEDIA_TABLET,
+			currentIndex,
+			currentImages,
+			searchQuery,
+			isPaused,
+			isInteracting,
+			isRotating,
+			goTo,
+			onEnter,
+			onLeave,
+			togglePause,
+			onFocusOut,
 		};
 	},
 });
 </script>
 <style scoped>
+.carousel {
+	--caption-height: 75px;
+	position: relative;
+	width: 100%;
+	max-width: 1420px;
+}
+
+.slide {
+	margin: 0;
+}
+
+.image-wrapper {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+
+.carousel-controls {
+	position: absolute;
+	z-index: 1;
+	right: 24px;
+	bottom: calc(var(--caption-height));
+	display: flex;
+	gap: 28px;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+}
+.carousel-controls > div {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+
+.carousel-button {
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--bg-main);
+	background-color: var(--bg-default);
+	color: var(--color-default);
+	cursor: pointer;
+	border-radius: var(--rounded-medium);
+}
+
+.carousel-button:focus-visible {
+	outline: 2px solid var(--bg-main-3);
+	outline-offset: 2px;
+}
+
+.pause-button {
+	background-color: var(--bg-main);
+}
+
+.pause-button .material-icons {
+	font-size: 24px;
+}
+
+.indicator {
+	width: 16px;
+	height: 16px;
+	background-color: transparent;
+	border-radius: var(--rounded-small);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.carousel-button.active .indicator,
+.carousel-button:hover .indicator {
+	background-color: var(--bg-main);
+}
+
+.carousel-button.pause-button:hover {
+	background-color: var(--bg-main-hover);
+}
+
 .hero-container {
 	position: relative;
 	height: 100%;
@@ -113,12 +405,10 @@ export default defineComponent({
 	align-items: center;
 }
 
-.credit {
+.description {
 	color: var(--color-credits);
-	display: flex;
-	align-items: flex-end;
-	padding-top: 10px;
-	justify-content: flex-end;
+	margin: 0;
+	text-align: right;
 }
 
 .bg-image {
@@ -129,13 +419,8 @@ export default defineComponent({
 }
 
 .hero-container picture {
+	display: block;
 	width: 100%;
-}
-
-@media (min-width: 1280px) {
-	.hero-container picture {
-		width: initial;
-	}
 }
 
 @media (min-width: 990px) and (max-width: 1279px) {
@@ -159,7 +444,7 @@ export default defineComponent({
 }
 
 .container {
-	text-align: left;
+	text-align: right;
 	margin-right: auto;
 	margin-left: auto;
 	box-sizing: border-box;
@@ -167,6 +452,12 @@ export default defineComponent({
 	padding-left: 12px;
 	background-color: var(--bg-default);
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	height: var(--caption-height);
+	padding-top: 46px;
+	margin-bottom: 38px;
 }
 /* MEDIA QUERY 480 */
 @media (min-width: 480px) {
@@ -179,13 +470,24 @@ export default defineComponent({
 /* MEDIA QUERY 640 */
 @media (min-width: 640px) {
 	.container {
+		padding-top: 10px;
 		max-width: 990px;
+		margin-bottom: 0px;
+	}
+	.description {
+		max-width: 75%;
+	}
+	.carousel-controls {
+		bottom: calc(var(--caption-height) + 12px);
 	}
 }
 /* MEDIA QUERY 990 */
 @media (min-width: 990px) {
 	.container {
 		max-width: 1150px;
+	}
+	.description {
+		max-width: 50%;
 	}
 }
 /* MEDIA QUERY 1150 */
@@ -199,6 +501,14 @@ export default defineComponent({
 	.container {
 		padding-right: 12px;
 		padding-left: 12px;
+	}
+	.carousel-button {
+		height: 28px;
+		width: 28px;
+	}
+	.indicator {
+		width: 14px;
+		height: 14px;
 	}
 }
 </style>
